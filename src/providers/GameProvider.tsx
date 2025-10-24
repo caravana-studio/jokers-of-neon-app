@@ -1,5 +1,7 @@
 import { PropsWithChildren, createContext, useContext, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { AccountInterface } from "starknet";
+import { createGame } from "../api/createGame.ts";
 import { SKIP_IN_GAME_TUTORIAL } from "../constants/localStorage";
 import {
   acumSfx,
@@ -15,7 +17,7 @@ import { useGameActions } from "../dojo/useGameActions.tsx";
 import { useUsername } from "../dojo/utils/useUsername.tsx";
 import { useFeatureFlagEnabled } from "../featureManagement/useFeatureFlagEnabled.ts";
 import { useAudio } from "../hooks/useAudio.tsx";
-import { useCustomNavigate } from "../hooks/useCustomNavigate.tsx";
+import { useCustomToast } from "../hooks/useCustomToast.tsx";
 import { useTournaments } from "../hooks/useTournaments.tsx";
 import { useCardAnimations } from "../providers/CardAnimationsProvider";
 import { useAnimationStore } from "../state/useAnimationStore.ts";
@@ -23,14 +25,13 @@ import { useCurrentHandStore } from "../state/useCurrentHandStore.ts";
 import { useDeckStore } from "../state/useDeckStore.ts";
 import { useGameStore } from "../state/useGameStore.ts";
 import { Card } from "../types/Card";
+import { logEvent } from "../utils/analytics.ts";
 import { getPlayAnimationDuration } from "../utils/getPlayAnimationDuration.ts";
 import { animatePlay } from "../utils/playEvents/animatePlay.ts";
 import { useCardData } from "./CardDataProvider.tsx";
 import { gameProviderDefaults } from "./gameProviderDefaults.ts";
 import { useSettings } from "./SettingsProvider.tsx";
-import { AccountInterface } from "starknet";
 import { TutorialGameContext } from "./TutorialGameProvider.tsx";
-import { logEvent } from "../utils/analytics.ts";
 
 export interface IGameContext {
   executeCreateGame: (gameId?: number, username?: string) => void;
@@ -132,18 +133,13 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const { refetchSpecialCardsData } = useCardData();
 
   const navigate = useNavigate();
-  const customNavigate = useCustomNavigate();
   const {
-    setup: {
-      clientComponents: { Game },
-    },
     switchToController,
-    accountType,
     setup: { client },
+    account: { account }
   } = useDojo();
 
   const {
-    createGame,
     play,
     discard,
     changeModifierCard,
@@ -155,6 +151,9 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     approve,
   } = useGameActions();
 
+    const { showErrorToast } = useCustomToast();
+  
+    
   const { sfxVolume, animationSpeed } = useSettings();
 
   const { play: discardSound } = useAudio(discardSfx, sfxVolume);
@@ -233,51 +232,39 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setGameError(false);
     resetLevel();
     setGameLoading(true);
-    let gameId = providedGameId;
     logEvent("create_game")
     if (username) {
       try {
-        if (!providedGameId) {
-          if (tournamentId) {
-            console.log("Registering user in tournament ", tournamentId);
-            gameId = await enterTournament(tournamentId, username);
-          } else {
-            console.log("No tournament ID provided, minting game directly");
-            gameId = await mintGame(username);
-          }
-        }
-        if (gameId) {
-          console.log("Creating game...", gameId);
-          createGame(gameId!, username)
+          console.log("Creating game...");
+          createGame({userAddress: account.address, playerName: username})
             .then(async (response) => {
-              const { gameId: newGameId, hand } = response;
+              const newGameId = response?.data?.slot?.game_id;
+              console.log(`game ${newGameId} created`);
               if (newGameId) {
                 setGameId(newGameId);
                 replaceCards(hand);
                 fetchDeck(client, newGameId, getCardData);
                 clearPreSelection();
 
-                console.log(`game ${newGameId} created`);
 
                 setPreSelectionLocked(false);
                 setRoundRewards(undefined);
                 setState(GameStateEnum.NotSet);
                 navigate("/demo");
               } else {
+                showErrorToast("Error creating game")
+                console.error("Error creating game", response);
                 setGameError(true);
                 navigate("/my-games");
               }
             })
             .catch((error) => {
               console.error("Error creating game", error);
+              showErrorToast("Error creating game")
               setGameError(true);
               navigate("/my-games");
             });
-        } else {
-          console.error("No gameId");
-          setGameError(true);
-          navigate("/my-games");
-        }
+
       } catch (error) {
         console.error("Error registering user in tournament", error);
         setGameError(true);
