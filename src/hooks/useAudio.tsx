@@ -4,6 +4,15 @@ import { Capacitor, PluginListenerHandle } from "@capacitor/core";
 import { Howl } from "howler";
 import { useCallback, useEffect, useRef } from "react";
 import { SFX_ON } from "../constants/localStorage";
+import { runNativeAudioTask } from "../utils/nativeAudioQueue";
+
+const toNativeAssetPath = (path: string) => {
+  const sanitized = path.replace(/^\/+/, "");
+  return sanitized.startsWith("public/") ? sanitized : `public/${sanitized}`;
+};
+
+const toNativeAssetId = (path: string) =>
+  `sfx_${path.replace(/^\/+/, "").replace(/[^\w-]/g, "_")}`;
 
 /**
  * useAudio hook for short sound effects (SFX)
@@ -14,18 +23,32 @@ import { SFX_ON } from "../constants/localStorage";
 export const useAudio = (audioPath: string, volume: number = 1) => {
   const isNative = Capacitor.isNativePlatform();
   const soundRef = useRef<Howl | null>(null);
-  const assetId = useRef<string>(`sfx_${audioPath}`);
+  const assetId = useRef<string>(toNativeAssetId(audioPath));
+
+  useEffect(() => {
+    assetId.current = toNativeAssetId(audioPath);
+  }, [audioPath]);
 
   // 🔹 Prepare sound
   useEffect(() => {
     const setup = async () => {
       if (isNative) {
         try {
-          await NativeAudio.preload({
-            assetId: assetId.current,
-            assetPath: audioPath,
-            audioChannelNum: 2, // default for SFX
-            isUrl: false,
+          const nativeAssetPath = toNativeAssetPath(audioPath);
+
+          await runNativeAudioTask(async () => {
+            await NativeAudio.preload({
+              assetId: assetId.current,
+              assetPath: nativeAssetPath,
+              audioChannelNum: 2, // default for SFX (Android)
+              channels: 2,
+              isUrl: false,
+            } as any);
+
+            await NativeAudio.setVolume({
+              assetId: assetId.current,
+              volume,
+            }).catch(() => {});
           });
         } catch (err) {
           console.warn("NativeAudio preload error:", err);
@@ -43,19 +66,28 @@ export const useAudio = (audioPath: string, volume: number = 1) => {
 
     return () => {
       if (isNative) {
-        NativeAudio.unload({ assetId: assetId.current }).catch(() => {});
+        runNativeAudioTask(() =>
+          NativeAudio.unload({ assetId: assetId.current }).catch(() => {})
+        );
       } else if (soundRef.current) {
         soundRef.current.unload();
       }
     };
   }, [audioPath]);
 
-  // 🔹 Update volume (web only)
+  // 🔹 Update volume
   useEffect(() => {
-    if (!isNative && soundRef.current) {
+    if (isNative) {
+      runNativeAudioTask(() =>
+        NativeAudio.setVolume({
+          assetId: assetId.current,
+          volume,
+        }).catch(() => {})
+      );
+    } else if (soundRef.current) {
       soundRef.current.volume(volume ?? 0);
     }
-  }, [volume]);
+  }, [isNative, volume]);
 
   // 🔹 Pause when app goes background
   useEffect(() => {
@@ -85,16 +117,28 @@ export const useAudio = (audioPath: string, volume: number = 1) => {
 
     try {
       if (isNative) {
-        // ensure it uses the requested channel
-        await NativeAudio.unload({ assetId: assetId.current }).catch(() => {});
-        await NativeAudio.preload({
-          assetId: assetId.current,
-          assetPath: audioPath,
-          audioChannelNum: channel,
-          isUrl: false,
-        });
+        const nativeAssetPath = toNativeAssetPath(audioPath);
 
-        await NativeAudio.play({ assetId: assetId.current });
+        // ensure it uses the requested channel
+        await runNativeAudioTask(async () => {
+          await NativeAudio.unload({ assetId: assetId.current }).catch(
+            () => {}
+          );
+          await NativeAudio.preload({
+            assetId: assetId.current,
+            assetPath: nativeAssetPath,
+            audioChannelNum: channel,
+            channels: channel,
+            isUrl: false,
+          } as any);
+
+          await NativeAudio.setVolume({
+            assetId: assetId.current,
+            volume,
+          }).catch(() => {});
+
+          await NativeAudio.play({ assetId: assetId.current });
+        });
       } else if (soundRef.current) {
         soundRef.current.stop();
         soundRef.current.play();
@@ -102,12 +146,14 @@ export const useAudio = (audioPath: string, volume: number = 1) => {
     } catch (err) {
       console.warn("Audio play error:", err);
     }
-  }, []);
+  }, [audioPath, isNative, volume]);
 
   const stop = useCallback(async () => {
     try {
       if (isNative) {
-        await NativeAudio.stop({ assetId: assetId.current });
+        await runNativeAudioTask(() =>
+          NativeAudio.stop({ assetId: assetId.current })
+        );
       } else if (soundRef.current) {
         soundRef.current.stop();
       }

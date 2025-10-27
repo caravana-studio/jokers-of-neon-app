@@ -1,3 +1,5 @@
+import { NativeAudio } from "@capacitor-community/native-audio";
+import { Capacitor } from "@capacitor/core";
 import { Howl } from "howler";
 import {
   createContext,
@@ -7,11 +9,13 @@ import {
   useState,
 } from "react";
 import { useLocation } from "react-router-dom";
-import { Capacitor } from "@capacitor/core";
-import { NativeAudio } from "@capacitor-community/native-audio";
 import { mainMenuUrls } from "../components/Menu/useContextMenuItems";
 import { SETTINGS_MUSIC_VOLUME, SOUND_OFF } from "../constants/localStorage.ts";
 import { useGameStore } from "../state/useGameStore.ts";
+import { runNativeAudioTask } from "../utils/nativeAudioQueue";
+
+const delay = (ms: number) =>
+  new Promise<void>((resolve) => setTimeout(resolve, ms));
 
 interface AudioPlayerContextProps {
   isPlaying: boolean;
@@ -43,7 +47,9 @@ export const AudioPlayerProvider = ({
     !localStorage.getItem(SOUND_OFF)
   );
   const [musicVolume, setMusicVolume] = useState(0.2);
-  const [currentActiveSongPath, setCurrentActiveSongPath] = useState<string | null>(null);
+  const [currentActiveSongPath, setCurrentActiveSongPath] = useState<
+    string | null
+  >(null);
 
   const location = useLocation();
   const { isRageRound } = useGameStore();
@@ -80,31 +86,42 @@ export const AudioPlayerProvider = ({
     const playWithFade = async () => {
       if (isNative) {
         try {
-          // stop old track
-          await NativeAudio.stop({ assetId: "bg_music" }).catch(() => {});
-          await NativeAudio.unload({ assetId: "bg_music" }).catch(() => {});
+          const shouldPlay = await runNativeAudioTask(async () => {
+            await NativeAudio.stop({ assetId: "bg_music" }).catch(() => {});
+            await NativeAudio.unload({ assetId: "bg_music" }).catch(() => {});
 
-          if (!currentActiveSongPath || !gameWithSound) return;
+            if (!currentActiveSongPath || !gameWithSound) {
+              return false;
+            }
 
-          // ✅ make sure path is relative (no leading slash)
-          const safePath = currentActiveSongPath.startsWith("/")
-            ? currentActiveSongPath.slice(1)
-            : currentActiveSongPath;
+            const safePath = currentActiveSongPath.startsWith("/")
+              ? currentActiveSongPath.slice(1)
+              : currentActiveSongPath;
+            const nativeAssetPath = safePath.startsWith("public/")
+              ? safePath
+              : `public/${safePath}`;
 
-          await NativeAudio.preload({
-            assetId: "bg_music",
-            assetPath: safePath,
-            audioChannelNum: 1,
-            isUrl: false,
+            await NativeAudio.preload({
+              assetId: "bg_music",
+              assetPath: nativeAssetPath,
+              audioChannelNum: 1,
+              channels: 1,
+              isUrl: false,
+            } as any);
+
+            await NativeAudio.setVolume({
+              assetId: "bg_music",
+              volume: musicVolume,
+            }).catch(() => {});
+
+            await delay(200);
+            await NativeAudio.play({ assetId: "bg_music" });
+            return true;
           });
 
-          // short fade-in simulation
-          setTimeout(() => {
-            NativeAudio.play({ assetId: "bg_music" });
-          }, 200); // slight delay for preload
-
-          setIsPlaying(true);
+          setIsPlaying(shouldPlay);
         } catch (err) {
+          setIsPlaying(false);
           console.warn("NativeAudio bg_music error:", err);
         }
         return;
@@ -162,7 +179,10 @@ export const AudioPlayerProvider = ({
 
     return () => {
       if (isNative) {
-        NativeAudio.stop({ assetId: "bg_music" }).catch(() => {});
+        runNativeAudioTask(() =>
+          NativeAudio.stop({ assetId: "bg_music" }).catch(() => {})
+        );
+        setIsPlaying(false);
       } else if (activeSoundInstance) {
         activeSoundInstance.stop();
         activeSoundInstance.unload();
@@ -171,12 +191,19 @@ export const AudioPlayerProvider = ({
     };
   }, [currentActiveSongPath, gameWithSound, musicVolume]);
 
-  // 🔹 update volume on web dynamically
+  // 🔹 update volume dynamically
   useEffect(() => {
-    if (!isNative && sound) {
+    if (isNative) {
+      runNativeAudioTask(() =>
+        NativeAudio.setVolume({
+          assetId: "bg_music",
+          volume: musicVolume,
+        }).catch(() => {})
+      );
+    } else if (sound) {
       sound.volume(musicVolume);
     }
-  }, [musicVolume, sound]);
+  }, [isNative, musicVolume, sound]);
 
   // 🔹 persist volume
   useEffect(() => {
@@ -212,7 +239,9 @@ export const AudioPlayerProvider = ({
 export const useAudioPlayer = (): AudioPlayerContextProps => {
   const context = useContext(AudioPlayerContext);
   if (!context) {
-    throw new Error("useAudioPlayer must be used within an AudioPlayerProvider");
+    throw new Error(
+      "useAudioPlayer must be used within an AudioPlayerProvider"
+    );
   }
   return context;
 };
