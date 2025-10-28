@@ -1,4 +1,23 @@
 {
+  "shop": {
+    "title": "Loja",
+    "season-pass": {
+      "more-jokers-with": "Mais Jokers com",
+      "season-pass": "PASSO DE TEMPORADA {{season}}",
+      "facts": {
+        "1-title": "Recompensas exclusivas",
+        "1-description-1": "Progressando através da temporada 1 dá mais recompensas.",
+        "1-description-2": "Todas as suas recompensas são transferíveis.",
+        "2-title": "Mais jogos por dia",
+        "2-description-1": "Você pode jogar 4 jogos de Jokers por dia em vez de 2.",
+        "2-description-2": "Cada jogo recupera cada 4 horas em vez de 12.",
+        "3-title": "Descontos em packs",
+        "3-description-1": "20% de desconto em cada pack de temporada 1 que compras.",
+        "3-description-2": ""
+      },
+      "buy": "COMPRAR"
+    }
+  },
   "loading-screen": {
     "error": "Erro ao carregar o jogo",
     "skip": "Pular",

@@ -103,6 +103,9 @@ const bgConfig: Record<string, { bg: BackgroundType; decoration?: boolean }> = {
   profile: {
     bg: BackgroundType.Game,
   },
+  shop: {
+    bg: BackgroundType.Game
+  },
 };
 
 export const Background = ({ children }: PropsWithChildren) => {
