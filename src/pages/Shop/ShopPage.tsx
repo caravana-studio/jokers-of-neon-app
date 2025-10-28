@@ -5,6 +5,7 @@ import { MobileDecoration } from "../../components/MobileDecoration";
 import { BLUE } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { SeasonPassRow } from "./SeasonPassRow";
+import { PackRow } from "./PackRow";
 
 export const ShopPage = () => {
   const { isSmallScreen } = useResponsiveValues();
@@ -14,7 +15,7 @@ export const ShopPage = () => {
   return (
     <DelayedLoading ms={200}>
       <MobileDecoration />
-      <Flex flexDir={"column"} w="100%" h="100%" overflowY={"auto"}>
+      <Flex flexDir={"column"} w="100%" h="100%" overflowY={"auto"} overflowX={"hidden"}>
         <Flex
           w="100%"
           borderBottom={`1px solid ${BLUE}`}
@@ -29,7 +30,7 @@ export const ShopPage = () => {
         </Flex>
         <Flex flexDir={"column"} gap={2} my={2}>
           <SeasonPassRow />
-          <Flex h="500px" w="100%" bgColor="red" />
+          <PackRow packId={1} />
         </Flex>
       </Flex>
     </DelayedLoading>

@@ -16,6 +16,50 @@
         "3-description-2": ""
       },
       "buy": "BUY"
+    },
+    "packs": {
+      "buy": "BUY",
+      "player-pack": "Player pack",
+      "limited-edition": "Limited edition",
+      "size": "Size",
+      "offering-rates": "Offering rates",
+      "transferrable-legend": "All items in purchased packs are transferrable.",
+      "skins-legend": "Player packs do not contain skinned cards.",
+      "1": {
+        "name": "ADVANCED",
+        "description": {
+          "1": "Boost your deck with this pack",
+          "2": ""
+        }
+      },
+      "2": {
+        "name": "EPIC",
+        "description": {
+          "1": "High chances of getting a special card",
+          "2": ""
+        }
+      },
+      "3": {
+        "name": "LEGENDARY",
+        "description": {
+          "1": "1 guaranteed special card",
+          "2": "Higher chances of getting rare cards"
+        }
+      },
+      "4": {
+        "name": "COLLECTOR",
+        "description": {
+          "1": "Get the rarest items with this pack available for limited time",
+          "2": "1 guaranteed skinned special card"
+        }
+      },
+      "5": {
+        "name": "COLLECTOR XL",
+        "description": {
+          "1": "Extra large pack with the rarest items. Available for limited time.",
+          "2": "Big, Rare, It doesn't get any better than this"
+        }
+      }
     }
   },
   "loading-screen": {
