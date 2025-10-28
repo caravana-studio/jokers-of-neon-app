@@ -1,9 +1,10 @@
-import { Button, Flex, Heading, Text } from "@chakra-ui/react";
+import { Button, Flex, Heading, Spinner, Text } from "@chakra-ui/react";
 import { faCaretRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { mintPack } from "../../api/mintPack";
 import { GalaxyBackground } from "../../components/backgrounds/galaxy/GalaxyBackground";
 import { GalaxyBackgroundIntensity } from "../../components/backgrounds/galaxy/types";
 import CachedImage from "../../components/CachedImage";
@@ -11,6 +12,7 @@ import { DelayedLoading } from "../../components/DelayedLoading";
 import { LootBoxRateInfo } from "../../components/Info/LootBoxRateInfo";
 import { MobileDecoration } from "../../components/MobileDecoration";
 import { RARITY, RarityLabels } from "../../constants/rarity";
+import { useDojo } from "../../dojo/useDojo";
 import { CardTypes } from "../../enums/cardTypes";
 import { useCardData } from "../../providers/CardDataProvider";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
@@ -18,16 +20,6 @@ import { colorizeText } from "../../utils/getTooltip";
 import Stack from "./CardStack/Stack";
 import PackTear from "./PackTear";
 import { SplitPackOnce } from "./SplitPackOnce";
-
-const POSSIBLE_CARD_IDS = [
-  [7, 52, 10022, 10023],
-  [2, 8, 10001, 100025],
-  [3, 43, 52, 10040],
-  [4, 20, 28, 10011],
-];
-
-const CARD_IDS =
-  POSSIBLE_CARD_IDS[Math.floor(Math.random() * POSSIBLE_CARD_IDS.length)];
 
 const getIntensity = (type: CardTypes, rarity: RARITY) => {
   switch (type) {
@@ -62,6 +54,8 @@ export const ExternalPack = () => {
   const { t: tGame } = useTranslation("game");
   const { getCardData } = useCardData();
 
+  const { account } = useDojo();
+
   const [allCardsSeen, setAllCardsSeen] = useState(false);
 
   const [step, setStep] = useState(0);
@@ -88,6 +82,16 @@ export const ExternalPack = () => {
   } = getCardData(highlightedCard ?? 0);
 
   const navigate = useNavigate();
+
+  const [buying, setBuying] = useState(false);
+
+  const [obtainedCards, setObtainedCards] = useState<
+    {
+      card_id: number;
+      skin_id: number;
+    }[]
+  >([]);
+
 
   return (
     <DelayedLoading ms={100}>
@@ -268,36 +272,67 @@ export const ExternalPack = () => {
             zIndex={2}
             pointerEvents={step >= 3 ? "all" : "none"}
           >
-            <Stack
-              randomRotation={true}
-              sensitivity={180}
-              sendToBackOnClick={true}
-              cardDimensions={{
-                width: packWidth - 10,
-                height: packHeight - 40,
-              }}
-              cardsData={CARD_IDS.map((cid, index) => ({
-                id: index,
-                cardId: cid,
-                img: `/Cards/${cid}.png`,
-              })).reverse()}
-              onCardChange={(cardId) => {
-                setHighlightedCard(cardId);
-              }}
-              onAllSeen={() => setAllCardsSeen(true)}
-            />
+            {obtainedCards?.length > 0 && (
+              <Stack
+                randomRotation={true}
+                sensitivity={180}
+                sendToBackOnClick={true}
+                cardDimensions={{
+                  width: packWidth - 10,
+                  height: packHeight - 40,
+                }}
+                cardsData={obtainedCards.map((card, index) => ({
+                  id: index,
+                  cardId: card.card_id,
+                  img: `/Cards/${card.card_id}${card.skin_id !== 1 ? `-sk${card.skin_id}` : ""}.png`,
+                }))}
+                onCardChange={(cardId) => {
+                  setHighlightedCard(cardId);
+                }}
+                onAllSeen={() => setAllCardsSeen(true)}
+              />
+            )}
           </Flex>
 
           {step === 0 && (
             <Button
               mt={6}
-              onClick={() => setStep(1)}
+              onClick={() => {
+                setBuying(true);
+                mintPack({
+                  packId: 3,
+                  recipient: account.account?.address,
+                })
+                  .then((response) => {
+                    console.log("r", response.mintedCards);
+                    console.log(
+                      "maped",
+                      response.mintedCards.map((card: any) => ({
+                        card_id: card.card_id,
+                        skin_id: card.skin_id,
+                      }))
+                    );
+                    setBuying(false);
+                    setObtainedCards(
+                      response.mintedCards.map((card: any) => ({
+                        card_id: card.card_id,
+                        skin_id: card.skin_id,
+                      }))
+                    );
+                    setStep(1);
+                  })
+                  .catch((error) => {
+                    setBuying(false);
+                    console.log(error);
+                  });
+              }}
               width="40%"
               variant={"secondarySolid"}
               fontFamily="Oxanium"
               fontSize={14}
+              isDisabled={buying}
             >
-              BUY · $9.99
+              {buying ? <Spinner size="sm" /> : "BUY · $9.99"}
             </Button>
           )}
           {step === 4 && (
