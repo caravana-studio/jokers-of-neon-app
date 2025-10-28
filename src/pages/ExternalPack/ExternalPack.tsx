@@ -3,7 +3,7 @@ import { faCaretRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { mintPack } from "../../api/mintPack";
 import { GalaxyBackground } from "../../components/backgrounds/galaxy/GalaxyBackground";
 import { GalaxyBackgroundIntensity } from "../../components/backgrounds/galaxy/types";
@@ -49,6 +49,9 @@ export const ExternalPack = () => {
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "external-pack",
   });
+
+  const params = useParams();
+  const packId = Number(params.packId ?? 1);
 
   const { t: tDocs } = useTranslation("docs");
   const { t: tGame } = useTranslation("game");
@@ -237,7 +240,7 @@ export const ExternalPack = () => {
                     step={step}
                   />
                   <CachedImage
-                    src="/packs/4.png"
+                    src={`/packs/${packId}.png`}
                     h="100%"
                     // boxShadow={"0 0 20px 0px white, inset 0 0 10px 0px white"}
                   />
@@ -249,7 +252,7 @@ export const ExternalPack = () => {
                 <SplitPackOnce
                   width={packWidth}
                   height={packHeight}
-                  src="/packs/4.png"
+                    src={`/packs/${packId}.png`}
                   onDone={() => {
                     setStep(3);
 
@@ -284,7 +287,7 @@ export const ExternalPack = () => {
                 cardsData={obtainedCards.map((card, index) => ({
                   id: index,
                   cardId: card.card_id,
-                  img: `/Cards/${card.card_id}${card.skin_id !== 1 ? `-sk${card.skin_id}` : ""}.png`,
+                  img: `/Cards/${card.card_id}${card.skin_id !== 1 ? `_sk${card.skin_id}` : ""}.png`,
                 }))}
                 onCardChange={(cardId) => {
                   setHighlightedCard(cardId);
@@ -300,7 +303,7 @@ export const ExternalPack = () => {
               onClick={() => {
                 setBuying(true);
                 mintPack({
-                  packId: 3,
+                  packId,
                   recipient: account.account?.address,
                 })
                   .then((response) => {
