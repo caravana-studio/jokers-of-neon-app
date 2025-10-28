@@ -326,7 +326,7 @@
     },
     "10107": {
       "name": "Bênção de Héstia",
-      "description": "As cartas queimadas acumulam seus ^blue(pontos)^; se for um Joker, acumula ^violet(+1 multi)^."
+      "description": "As cartas queimadas acumulam seus ^blue(pontos)^; se for um Joker, acumula ^violet(+1 multi)^. Actualmente ^blue(+{{points}} pontos)^  ^violet(+{{multi}} multi)^."
     },
     "10108": {
       "name": "Roleta de Naipes",
