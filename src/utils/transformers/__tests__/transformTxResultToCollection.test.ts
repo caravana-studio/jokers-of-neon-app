@@ -108,7 +108,7 @@ test('should handle multiple categories and special ids', () => {
         quality: 3n,
         skin_id: 1n,
         skin_rarity: 1n,
-        special_id: 10030n,
+        special_id: 10113n,
         tier: 1n,
         token_id: 3n,
       }
@@ -146,7 +146,7 @@ test('should handle multiple categories and special ids', () => {
         id: 2,
         cards: [
           {
-            id: 10030,
+            id: 10113,
             userNfts: [
               {
                 nftId: "3",

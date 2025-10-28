@@ -136,22 +136,6 @@
       "name": "Doctrina de neón",
       "description": "Convierte dos cartas jugadas en cartas de neón."
     },
-    "10027": {
-      "name": "Blackjack",
-      "description": "Logra exactamente ^blue(21 puntos)^ con tus cartas jugadas para obtener ^violet(+21 multi)^."
-    },
-    "10028": {
-      "name": "Juego Eficiente",
-      "description": "Gana ^violet(+10 multi)^ y ^blue(+50 puntos)^ al jugar 3 o menos cartas."
-    },
-    "10029": {
-      "name": "Sacrificio Especial",
-      "description": "Obtén ^violet(+1 multi)^ (acumulativo) por cada carta especial vendida. ^violet(Actualmente +{{multi}} multi)^."
-    },
-    "10030": {
-      "name": "Rompedor de Rages",
-      "description": "Obtén ^violet(+2 multi)^ (acumulativo) por cada Rage derrotada. ^violet(Actualmente +{{multi}} multi)^."
-    },
     "10031": {
       "name": "Atajo",
       "description": "Los puntos necesarios para superar la ronda se reducen en un 20%"
@@ -236,10 +220,6 @@
       "name": "Multiplicador Especial",
       "description": "Obtén ^violet(+3 multi)^ por cada carta especial que poseas."
     },
-    "10052": {
-      "name": "Coleccionista",
-      "description": "Gana ^blue(+1 puntos)^ por cada carta en tu mazo."
-    },
     "10053": {
       "name": "Reinicio de Rage",
       "description": "Permite volver a tirar cartas de Rage una vez por ronda. Cuesta 500 por cada carta Rage en la ronda."
@@ -248,21 +228,9 @@
       "name": "Omitir Bonus",
       "description": "Gana ^blue(+25 puntos)^ (acumulativos) por cada caja de botín omitida (abierta sin seleccionar una carta). ^blue(Actualmente +{{points}} puntos)^."
     },
-    "10055": {
-      "name": "Recompensas Quemadas",
-      "description": "Gana ^blue(+15 puntos)^ (acumulativos) por cada carta quemada de tu mazo. ^blue(Actualmente +{{points}} puntos)^."
-    },
     "10056": {
       "name": "Guardián de Slots",
       "description": "Gana ^blue(+100 puntos)^ por cada Slot desbloqueado pero vacío."
-    },
-    "10057": {
-      "name": "Gran apostador",
-      "description": "Cada Carta Alta jugada tiene 50% de posibilidades de ganar ^violet(+1 multi)^ (acumulativo). ^violet(Actualmente +{{multi}} multi)^."
-    },
-    "10058": {
-      "name": "Ruleta de Palos",
-      "description": "Obtén ^violet(+5 multi)^ por cada carta que coincida con un palo aleatorio. El palo cambia cada ronda."
     },
     "10059": {
       "name": "Guardián de Tréboles",
@@ -279,10 +247,6 @@
     "10062": {
       "name": "Mano de modificadores",
       "description": "Obtén ^violet(+5 de multi)^ por cada carta modificadora que tengas en tu mano."
-    },
-    "10063": {
-      "name": "Piromano",
-      "description": "Obtén un 50% de descuento al quemar cartas."
     },
     "10064": {
       "name": "Multiplicador de Cuadrados",
@@ -318,7 +282,7 @@
     },
     "10072": {
       "name": "Escalera Ascendente",
-      "description": "Gana ^blue(+10 puntos)^ acumulativos por cada escalera jugada. ^blue(Actualmente tienes +{{points}} puntos)^."
+      "description": "Gana ^blue(+10 puntos)^ acumulativos por cada escalera jugada. ^blue(Actualmente +{{points}} puntos)^."
     },
     "10073": {
       "name": "Relatividad",
@@ -335,6 +299,62 @@
     "10080": {
       "name": "Fortuna de la Reina",
       "description": "Cada reina jugada tiene 50% de probabilidad de ganar ^yellow(+150 monedas)^."
+    },
+    "10101": {
+      "name": "Póster Desgastado",
+      "description": "Comienza con ^blue(+100 puntos)^, pierde ^blue(10 puntos)^ por cada jugada hasta llegar a ^blue(10 puntos)^."
+    },
+    "10102": {
+      "name": "Domador de Oportunidades",
+      "description": "Intercambia un descarte por una jugada."
+    },
+    "10103": {
+      "name": "Blackjack",
+      "description": "Si el valor total de las cartas es menor que 21, gana ^blue(+21 puntos)^; si es exactamente 21, gana ^violet(+21 multi)^."
+    },
+    "10104": {
+      "name": "Malabarista de Puntos",
+      "description": "Las cartas descartadas dan su valor ^blue(×10 puntos)^."
+    },
+    "10105": {
+      "name": "Coleccionista",
+      "description": "Gana ^blue(+1 puntos)^ por cada carta en tu mazo."
+    },
+    "10106": {
+      "name": "Círculo de la Fortuna",
+      "description": "Lanza un número aleatorio entre 0 y 36; si es par, el resultado en ^blue(puntos x2)^; si es impar, el resultado en ^yellow(monedas x2)^; si es 0, gana ^blue(+300 puntos)^."
+    },
+    "10107": {
+      "name": "Bendición de Hestia",
+      "description": "Las cartas quemadas acumulan sus ^blue(puntos)^; si es un Joker, se acumula ^violet(+1 multi)^. Actualmente ^blue(+{{points}} puntos)^  ^violet(+{{multi}} multi)^."
+    },
+    "10108": {
+      "name": "Ruleta de Palos",
+      "description": "Elige un palo aleatorio en cada jugada; gana ^violet(+5 multi)^ por cada carta de ese palo jugada."
+    },
+    "10109": {
+      "name": "Joker Colgado",
+      "description": "Si tu mano contiene un Joker, tiene un 25% de probabilidad de acumular ^blue(+10 puntos)^."
+    },
+    "10110": {
+      "name": "Sacrifio Especial",
+      "description": "Obtén ^violet(+1 multi)^ (acumulativos) por cada carta especial vendida. ^violet(Actualmente +{{multi}} multi)^."
+    },
+    "10111": {
+      "name": "High Roller",
+      "description": "Cada Carta Alta jugada tiene un 50% de probabilidad de ganar ^violet(+1 multi)^ (acumulativos). ^violet(Actualmente +{{multi}} multi)^."
+    },
+    "10112": {
+      "name": "Juego Eficiente",
+      "description": "Obtén ^violet(+10 multi)^ y ^blue(+50 puntos)^ al jugar 3 o menos cartas."
+    },
+    "10113": {
+      "name": "Rompedor de Rages",
+      "description": "Obtén ^violet(+2 multi)^ (acumulativos) por cada Rage derrotada. ^violet(Actualmente +{{multi}} multi)^."
+    },
+    "10114": {
+      "name": "Recompensas Quemadas",
+      "description": "Obtén ^blue(+15 puntos)^ (acumulativos) por cada carta quemada de tu mazo. ^blue(Actualmente +{{points}} puntos)^."
     },
     "19901": {
       "name": "Reembolso Afortunado",

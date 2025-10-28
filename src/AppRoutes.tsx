@@ -35,6 +35,7 @@ import { PowerupHighlightProvider } from "./providers/HighlightProvider/PowerupH
 import { StoreProvider } from "./providers/StoreProvider";
 import TutorialGameProvider from "./providers/TutorialGameProvider";
 import { SeasonProgressionPage } from "./pages/SeasonProgression/SeasonProgressionPage";
+import { ShopPage } from "./pages/Shop/ShopPage";
 
 export const AppRoutes = () => {
   const location = useLocation();
@@ -220,7 +221,7 @@ export const AppRoutes = () => {
         }
       />
       <Route
-        path="/external-pack"
+        path="/external-pack/:packId?"
         element={
           <AnimatedPage>
             <ExternalPack />
@@ -253,6 +254,14 @@ export const AppRoutes = () => {
         element={
           <AnimatedPage>
             <SeasonProgressionPage />
+          </AnimatedPage>
+        }
+      />
+      <Route
+        path="/shop"
+        element={
+          <AnimatedPage>
+            <ShopPage />
           </AnimatedPage>
         }
       />

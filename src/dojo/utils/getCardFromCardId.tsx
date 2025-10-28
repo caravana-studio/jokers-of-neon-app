@@ -1,7 +1,7 @@
 import { CardTypes } from "../../enums/cardTypes";
 import { getCardTypeFromCardId } from "./getCardTypeFromCardId";
 
-export const getCardFromCardId = (cardId: number, index: number) => {
+export const getCardFromCardId = (cardId: number, index: number, skin_id = 1) => {
   const cardType = getCardTypeFromCardId(cardId);
   return {
     isModifier: cardType === CardTypes.MODIFIER,
@@ -9,6 +9,6 @@ export const getCardFromCardId = (cardId: number, index: number) => {
     card_id: cardId,
     id: cardId?.toString() ?? "",
     idx: index,
-    img: `${cardId}.png`,
+    img: `${cardId}${skin_id !== 1 ? `-sk${skin_id}` : ""}.png`,
   };
 };
