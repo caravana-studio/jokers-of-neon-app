@@ -1,9 +1,10 @@
 import { Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { keyframes } from "@emotion/react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import CachedImage from "../../components/CachedImage";
-import { SeasonPass } from "../../components/SeasonPass/SeasonPass";
-import { BLUE, VIOLET_LIGHT } from "../../theme/colors";
+import { LootBoxRateInfo } from "../../components/Info/LootBoxRateInfo";
+import { BLUE } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 
 const coinPulse = keyframes`
@@ -45,11 +46,15 @@ interface PackRowProps {
   packId: number;
 }
 
+const PACK_SIZES = [3, 3, 4, 4, 4, 6];
+
 export const PackRow = ({ packId }: PackRowProps) => {
   const { t } = useTranslation("intermediate-screens", {
-    keyPrefix: "shop.pack",
+    keyPrefix: "shop.packs",
   });
+  const isLimitedEdition = packId > 3;
   const { isSmallScreen } = useResponsiveValues();
+  const navigate = useNavigate();
   return (
     <>
       <Flex
@@ -64,20 +69,74 @@ export const PackRow = ({ packId }: PackRowProps) => {
         backgroundPosition={"center"}
       >
         <Flex w="100%" justifyContent="center" alignItems="center" my={4}>
-          <Flex w="60%" flexDir={"column"} gap={4}>
-            <Fact number={1} />
-            <Fact number={2} />
-            <Fact number={3} />
-        <Button
-          variant={"secondarySolid"}
-          w="50%"
-          fontFamily="Oxanium"
-          fontSize={13}
-          mt={2}
-          h={isSmallScreen ? "30px" : "40px"}
-        >
-          {t("buy")} · $9.99
-        </Button>
+          <Flex
+            w="60%"
+            flexDir={"column"}
+            justifyContent={"center"}
+            alignItems={"center"}
+            px={2}
+          >
+            <Heading
+              fontSize={isSmallScreen ? 18 : 20}
+              variant="italic"
+              textShadow={"0 0 5px white"}
+            >
+              {t(`${packId}.name`)}
+            </Heading>
+            <Heading
+              fontSize={isSmallScreen ? 11 : 14}
+              lineHeight={1}
+              color={isLimitedEdition ? "gold" : "lightViolet"}
+              textShadow={"0 0 5px black"}
+              mb={4}
+            >
+              {t(isLimitedEdition ? "limited-edition" : `player-pack`)}
+            </Heading>
+            <Flex flexDir="column" gap={1.5} mb={3}>
+              <Text fontSize={isSmallScreen ? 12 : 15} lineHeight={1}>
+                {t(`${packId}.description.1`)}
+              </Text>
+              <Text fontSize={isSmallScreen ? 12 : 15} lineHeight={1}>
+                {t(`${packId}.description.2`)}
+              </Text>
+              <Text fontSize={isSmallScreen ? 12 : 15} lineHeight={1}>
+                {t(`size`)}: {PACK_SIZES[packId]}
+              </Text>
+            </Flex>
+            <Flex flexDir="column" gap={1} mb={2}>
+              <Text
+                fontSize={isSmallScreen ? 8 : 12}
+                lineHeight={1}
+                color="blueLight"
+                textAlign={"center"}
+              >
+                {t(`transferrable-legend`)}
+              </Text>
+              {!isLimitedEdition && (
+                <Text
+                  fontSize={isSmallScreen ? 8 : 12}
+                  color="blueLight"
+                  textAlign={"center"}
+                  lineHeight={1}
+                >
+                  {t("skins-legend")}
+                </Text>
+              )}
+            </Flex>
+            <LootBoxRateInfo name={"test"} details={"details"} />
+            <Button
+              variant={"secondarySolid"}
+              w="70%"
+              fontFamily="Oxanium"
+              fontSize={13}
+              mt={4}
+              h={isSmallScreen ? "30px" : "40px"}
+              onClick={() => {
+                navigate(`/external-pack/${packId}`)
+              }}
+            >
+              {t("buy")} · $9.99
+            </Button>
           </Flex>
           <Flex
             w="40%"
@@ -87,29 +146,14 @@ export const PackRow = ({ packId }: PackRowProps) => {
             alignItems="center"
             pr={6}
           >
-            <CachedImage src={`/packs/${packId}.png`} boxShadow={"0 0 15px 0px white, inset 0 0 5px 0 white"} />
+            <CachedImage
+            w="90%"
+              src={`/packs/${packId}.png`}
+              boxShadow={"0 0 15px 0px white, inset 0 0 5px 0 white"}
+            />
           </Flex>
         </Flex>
       </Flex>
     </>
-  );
-};
-
-const Fact = ({ number }: { number: number }) => {
-  const { t } = useTranslation("intermediate-screens", {
-    keyPrefix: "shop.season-pass.facts",
-  });
-  const { isSmallScreen } = useResponsiveValues();
-
-  return (
-    <Flex flexDir="column" gap={0.5}>
-      <Text fontSize={isSmallScreen ? 15 : 20}>{t(`${number}-title`)}</Text>
-      <Text fontSize={isSmallScreen ? 10 : 12} lineHeight={1}>
-        {t(`${number}-description-1`)}
-      </Text>
-      <Text fontSize={isSmallScreen ? 10 : 12} lineHeight={1}>
-        {t(`${number}-description-2`)}
-      </Text>
-    </Flex>
   );
 };

@@ -28,36 +28,36 @@
       "1": {
         "name": "ADVANCED",
         "description": {
-          "1": "Boost your deck with this pack",
-          "2": ""
+          "1": "Upgrade your collection with higher odds of rare cards.",
+          "2": "Up to 50% chance to pull a Special card."
         }
       },
       "2": {
         "name": "EPIC",
         "description": {
-          "1": "High chances of getting a special card",
-          "2": ""
+          "1": "A premium pack with a strong chance of hitting Specials.",
+          "2": "Up to 75% chance to get a Special card, includes A and S tiers."
         }
       },
       "3": {
         "name": "LEGENDARY",
         "description": {
-          "1": "1 guaranteed special card",
-          "2": "Higher chances of getting rare cards"
+          "1": "Guaranteed Special card in every pack.",
+          "2": "Highest odds for A and S tier Specials, truly legendary rewards."
         }
       },
       "4": {
         "name": "COLLECTOR",
         "description": {
-          "1": "Get the rarest items with this pack available for limited time",
-          "2": "1 guaranteed skinned special card"
+          "1": "Limited-edition pack featuring ultra-rare cards and skins.",
+          "2": "1 guaranteed skinned Special card with top-tier odds."
         }
       },
       "5": {
         "name": "COLLECTOR XL",
         "description": {
-          "1": "Extra large pack with the rarest items. Available for limited time.",
-          "2": "Big, Rare, It doesn't get any better than this"
+          "1": "Massive pack loaded with the rarest content of the season.",
+          "2": "2 guaranteed skinned Special cards with top-tier odds."
         }
       }
     }

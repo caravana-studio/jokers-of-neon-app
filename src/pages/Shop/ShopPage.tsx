@@ -14,7 +14,7 @@ export const ShopPage = () => {
   });
   return (
     <DelayedLoading ms={200}>
-      <MobileDecoration />
+      <MobileDecoration fadeToBlack />
       <Flex flexDir={"column"} w="100%" h="100%" overflowY={"auto"} overflowX={"hidden"}>
         <Flex
           w="100%"
@@ -24,12 +24,16 @@ export const ShopPage = () => {
           px={isSmallScreen ? "15px" : "30px"}
           pb={3}
         >
-          <Heading fontSize={isSmallScreen ? "sm" : "lg"} variant="italic">
+          <Heading zIndex={10} fontSize={isSmallScreen ? "sm" : "lg"} variant="italic">
             {t("title")}
           </Heading>
         </Flex>
         <Flex flexDir={"column"} gap={2} my={2}>
           <SeasonPassRow />
+          <PackRow packId={5} />
+          <PackRow packId={4} />
+          <PackRow packId={3} />
+          <PackRow packId={2} />
           <PackRow packId={1} />
         </Flex>
       </Flex>

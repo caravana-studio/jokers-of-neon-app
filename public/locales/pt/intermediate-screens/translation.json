@@ -16,6 +16,49 @@
         "3-description-2": ""
       },
       "buy": "COMPRAR"
+    },
+    "packs": {
+      "player-pack": "Pack de jogador",
+      "limited-edition": "Edition limitada",
+      "size": "Tamanho",
+      "offering-rates": "Taxas de oferta",
+      "transferrable-legend": "Todos os itens na loja podem ser transferidos.",
+      "skins-legend": "Os packs não contêm cartas com skin.",
+      "1": {
+        "name": "AVANÇADO",
+        "description": {
+          "1": "Melhore sua coleção com maiores chances de conseguir cartas raras.",
+          "2": "Até 50% de chance de obter uma carta Especial."
+        }
+      },
+      "2": {
+        "name": "ÉPICO",
+        "description": {
+          "1": "Um pacote premium com grandes chances de conseguir cartas Especiais.",
+          "2": "Até 75% de chance de obter uma carta Especial, inclui níveis A e S."
+        }
+      },
+      "3": {
+        "name": "LENDÁRIO",
+        "description": {
+          "1": "Garante uma carta Especial em cada pacote.",
+          "2": "As maiores chances de conseguir cartas Especiais de nível A e S."
+        }
+      },
+      "4": {
+        "name": "COLECIONADOR",
+        "description": {
+          "1": "Pacote de edição limitada com cartas e skins ultra raras.",
+          "2": "1 carta Especial com skin garantida e as melhores chances."
+        }
+      },
+      "5": {
+        "name": "COLECIONADOR XL",
+        "description": {
+          "1": "Pacote gigante com os itens mais raros da temporada.",
+          "2": "2 cartas Especiais com skin garantidas e as melhores chances."
+        }
+      }
     }
   },
   "loading-screen": {
