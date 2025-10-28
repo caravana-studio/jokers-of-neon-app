@@ -1,4 +1,67 @@
 {
+  "shop": {
+    "title": "Shop",
+    "season-pass": {
+      "more-jokers-with": "More Jokers with",
+      "season-pass": "SEASON {{season}} PASS",
+      "facts": {
+        "1-title": "Exclusive rewards",
+        "1-description-1": "Progressing through season 1 gives vou extra rewards.",
+        "1-description-2": "All your rewards are transferrable.",
+        "2-title": "More games per day",
+        "2-description-1": "You can play 4 games of Jokers per day instead of 2.",
+        "2-description-2": "Every game recovers every 4 hours intead of 12.",
+        "3-title": "Discounts on packs",
+        "3-description-1": "20% discount on every Season 1 pack you buy.",
+        "3-description-2": ""
+      },
+      "buy": "BUY"
+    },
+    "packs": {
+      "buy": "BUY",
+      "player-pack": "Player pack",
+      "limited-edition": "Limited edition",
+      "size": "Size",
+      "offering-rates": "Offering rates",
+      "transferrable-legend": "All items in purchased packs are transferrable.",
+      "skins-legend": "Player packs do not contain skinned cards.",
+      "1": {
+        "name": "ADVANCED",
+        "description": {
+          "1": "Upgrade your collection with higher odds of rare cards.",
+          "2": "Up to 50% chance to pull a Special card."
+        }
+      },
+      "2": {
+        "name": "EPIC",
+        "description": {
+          "1": "A premium pack with a strong chance of hitting Specials.",
+          "2": "Up to 75% chance to get a Special card, includes A and S tiers."
+        }
+      },
+      "3": {
+        "name": "LEGENDARY",
+        "description": {
+          "1": "Guaranteed Special card in every pack.",
+          "2": "Highest odds for A and S tier Specials, truly legendary rewards."
+        }
+      },
+      "4": {
+        "name": "COLLECTOR",
+        "description": {
+          "1": "Limited-edition pack featuring ultra-rare cards and skins.",
+          "2": "1 guaranteed skinned Special card with top-tier odds."
+        }
+      },
+      "5": {
+        "name": "COLLECTOR XL",
+        "description": {
+          "1": "Massive pack loaded with the rarest content of the season.",
+          "2": "2 guaranteed skinned Special cards with top-tier odds."
+        }
+      }
+    }
+  },
   "loading-screen": {
     "error": "Error loading the game",
     "skip": "Skip",
