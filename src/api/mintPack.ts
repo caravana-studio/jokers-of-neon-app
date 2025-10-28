@@ -20,7 +20,8 @@ export async function mintPack({ packId, recipient }: MintPackParams) {
   }
 
   const baseUrl =
-    import.meta.env.VITE_GAME_API_URL?.replace(/\/$/, "") || DEFAULT_API_BASE_URL;
+    import.meta.env.VITE_GAME_API_URL?.replace(/\/$/, "") ||
+    DEFAULT_API_BASE_URL;
   const requestUrl = `${baseUrl}/api/pack/mint`;
 
   const response = await fetch(requestUrl, {
@@ -42,5 +43,16 @@ export async function mintPack({ packId, recipient }: MintPackParams) {
     );
   }
 
-  return response.json();
+  const json = await response.json();
+
+  if (!json.mintedCards || json.mintedCards.length === 0) {
+    throw new Error("mintPack: No cards minted");
+  }
+
+  return json.mintedCards.sort((a: any, b: any) => {
+    if (a.skin_id !== b.skin_id) {
+      return b.skin_id - a.skin_id;
+    }
+    return b.card_id - a.card_id;
+  });
 }

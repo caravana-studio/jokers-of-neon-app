@@ -30,7 +30,7 @@ const getIntensity = (type: CardTypes, rarity: RARITY) => {
     case CardTypes.SPECIAL:
       switch (rarity) {
         case RARITY.C:
-          return GalaxyBackgroundIntensity.LOW;
+          return GalaxyBackgroundIntensity.MEDIUM;
         case RARITY.B:
           return GalaxyBackgroundIntensity.MEDIUM;
         case RARITY.A:
@@ -304,17 +304,9 @@ export const ExternalPack = () => {
                   recipient: account.account?.address,
                 })
                   .then((response) => {
-                    console.log("r", response.mintedCards);
-                    console.log(
-                      "maped",
-                      response.mintedCards.map((card: any) => ({
-                        card_id: card.card_id,
-                        skin_id: card.skin_id,
-                      }))
-                    );
                     setBuying(false);
                     setObtainedCards(
-                      response.mintedCards.map((card: any) => ({
+                      response.map((card: any) => ({
                         card_id: card.card_id,
                         skin_id: card.skin_id,
                       }))
