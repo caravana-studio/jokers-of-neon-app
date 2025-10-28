@@ -1479,8 +1479,8 @@
   },
   "contracts": [
     {
-      "address": "0x7222847c1a3e4844a3f42b15ca8a7cab53ab5a2cb2dd884a2827c5088e4def0",
-      "class_hash": "0x3435070826eb151ce6b4076d3cfd2995b373a4a41de0f048a7f6e775c9032d2",
+      "address": "0x4d95219f44baa64bf847baf8913c38942a06f79f66ba094c6ce9d33547f3e56",
+      "class_hash": "0x335a7922740794884792ce2dc4f36226ee35ad9ba246e6aab41a329f3df2f8b",
       "abi": [
         {
           "type": "impl",
@@ -2119,8 +2119,8 @@
       ]
     },
     {
-      "address": "0x1093bef8c050d62da9945dfcbb62a295bb0c7c37bb0670b395ef4473a8b174e",
-      "class_hash": "0x8cd8beae7a4da2066a1443558bddcae6a52e6265c922f60aef8f19a570bb43",
+      "address": "0x72206e02806f5a46f23ccb3b9b1d6a90dbfb22e1f8418b86dc9f6b092df4922",
+      "class_hash": "0x2df27af0dc3fe0b61949832c02ca81f402a71fe833a6d3c4270b144855b49e3",
       "abi": [
         {
           "type": "impl",
@@ -4198,8 +4198,8 @@
       ]
     },
     {
-      "address": "0x7c8ddd684eafc5eb06a7179768f9be3152d369522d325dd0dcffc2083591bcc",
-      "class_hash": "0x1c90866918f70ae87b06f23e470c2969cc156e21da2688778d39f061eb4bc9e",
+      "address": "0x473fbae85389281a18706e347565a6e4a575772d3c943824237ab156967deba",
+      "class_hash": "0x42ce499d12dabd5590b5870d974ee18498e1b2eae50e1770ef01e4471590b5f",
       "abi": [
         {
           "type": "impl",
@@ -9050,8 +9050,8 @@
       ]
     },
     {
-      "address": "0x56cc0aa668706d0bb712353c823476a4131c944921ac06d48b5576c753d3ed9",
-      "class_hash": "0x49b398a21896c9b16a2d4b3bc6cafbc14898c1ff77540558c850ef5bc1722d2",
+      "address": "0x1175f06d6dfc1118bf1538f60248088fca33d3b2e8e8570f12fce36c4b117dc",
+      "class_hash": "0x57aba68b3d0ec09e48e7c40189517ee53d416e9794e4fc0f5efe38299bfc637",
       "abi": [
         {
           "type": "impl",
@@ -9169,15 +9169,11 @@
               "type": "core::bool"
             },
             {
-              "name": "special_id",
+              "name": "card_id",
               "type": "core::integer::u32"
             },
             {
-              "name": "category_id",
-              "type": "core::integer::u32"
-            },
-            {
-              "name": "tier",
+              "name": "rarity",
               "type": "core::integer::u32"
             },
             {
@@ -10281,8 +10277,8 @@
       ]
     },
     {
-      "address": "0x643ebed6518683534094c132386939d2eb2896361348f0a1e37199af4b2a93f",
-      "class_hash": "0x7ceb78f64bac1dfe7e20e767934a466c02dab1ef5f867b544e9a8e2ead7461d",
+      "address": "0x3366f1c485e2120879b6d3be54a8fefa6d1b623ea38f6e1c83472c6ee2a8bf0",
+      "class_hash": "0x56910632e2b2a8aba5a2d1bfe58193943c027147cf403a16190f9c0b9385bd1",
       "abi": [
         {
           "type": "impl",
