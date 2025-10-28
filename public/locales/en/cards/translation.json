@@ -762,7 +762,7 @@
     },
     "10107": {
       "name": "Hestia Blessing",
-      "description": "Burned cards accumulate their ^blue(points)^; if it's a Joker, ^violet(+1 multi)^ is accumulated."
+      "description": "Burned cards accumulate their ^blue(points)^; if it's a Joker, ^violet(+1 multi)^ is accumulated. Currently ^blue(+{{points}} points)^  ^violet(+{{multi}} multi)^."
     },
     "10108": {
       "name": "Suit Roulette",
