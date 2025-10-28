@@ -326,7 +326,7 @@
     },
     "10107": {
       "name": "Bendición de Hestia",
-      "description": "Las cartas quemadas acumulan sus ^blue(puntos)^; si es un Joker, se acumula ^violet(+1 multi)^."
+      "description": "Las cartas quemadas acumulan sus ^blue(puntos)^; si es un Joker, se acumula ^violet(+1 multi)^. Actualmente ^blue(+{{points}} puntos)^  ^violet(+{{multi}} multi)^."
     },
     "10108": {
       "name": "Ruleta de Palos",
