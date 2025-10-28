@@ -572,22 +572,6 @@
       "name": "Neon Doctrine",
       "description": "Convert two played cards into neon cards."
     },
-    "10027": {
-      "name": "Blackjack",
-      "description": "Hit exactly ^blue(21 points)^ with your played cards to gain ^violet(+21 multi)^."
-    },
-    "10028": {
-      "name": "Efficient Play",
-      "description": "Earn ^violet(+10 multi)^ and ^blue(+50 points)^ when playing 3 or fewer cards."
-    },
-    "10029": {
-      "name": "Special Sacrifice",
-      "description": "Gain ^violet(+1 multi)^ (stacking) for every special card sold. Currently ^violet(+{{multi}} multi)^."
-    },
-    "10030": {
-      "name": "Rage Breaker",
-      "description": "Gain ^violet(+2 multi)^ (stacking) for each Rage defeated. Currently ^violet(+{{multi}} multi)^."
-    },
     "10031": {
       "name": "Shortcut",
       "description": "Reduces the points needed to beat the round by 20%"
@@ -672,10 +656,6 @@
       "name": "Special Multiplier",
       "description": "Gain ^violet(+3 multi)^ for each active special card"
     },
-    "10052": {
-      "name": "Deck Collector",
-      "description": "Earn ^blue(+1 points)^ for every card in your deck."
-    },
     "10053": {
       "name": "Fury Reset",
       "description": "Allows rerolling Rage cards once per round. Costs 500 per Rage card in the round."
@@ -684,21 +664,9 @@
       "name": "Skip Bonus",
       "description": "Gain  ^blue(+25 points)^ (stacking) for each loot box skipped (opened without selecting a card). Currently  ^blue(+{{points}} points)^."
     },
-    "10055": {
-      "name": "Burning Rewards",
-      "description": "Gain ^blue(+15 points)^ (stacking) for each card burned from your deck. Currently  ^blue(+{{points}} points)^."
-    },
     "10056": {
       "name": "Slot Saver",
       "description": "Earn ^blue(+100 points)^ for each unlocked but empty card slot."
-    },
-    "10057": {
-      "name": "High Rollers",
-      "description": "Each High Card played has a 50% chance to gain ^violet(+1 multi)^ (stacking). Currently ^violet(+{{multi}} multi)^."
-    },
-    "10058": {
-      "name": "Suit Roulette",
-      "description": "Gain ^violet(+5 multi)^ for every card matching a randomly chosen suit. The suit changes each round."
     },
     "10059": {
       "name": "Club Keeper",
@@ -715,10 +683,6 @@
     "10062": {
       "name": "Hand of modifiers",
       "description": "Gain ^violet(+5 multi)^ for each modifier card held in your hand."
-    },
-    "10063": {
-      "name": "Pyromaniac",
-      "description": "50% discount on burn cards."
     },
     "10064": {
       "name": "Quad Multiplier",
@@ -771,6 +735,62 @@
     "10080": {
       "name": "Queens Fortune",
       "description": "Each Queen that scores has a 50% chance to grant ^yellow(+150 cash)^."
+    },
+    "10101": {
+      "name": "Faded Poster",
+      "description": "Starts at ^blue(+100 points)^, loses ^blue(10 points)^ per play until it reaches ^blue(10 points)^."
+    },
+    "10102": {
+      "name": "Tamer of Chances",
+      "description": "Swap one discard for one play."
+    },
+    "10103": {
+      "name": "Blackjack",
+      "description": "If card values sum under 21, gain ^blue(+21 points)^; if exactly 21, gain ^violet(+21 multi)^."
+    },
+    "10104": {
+      "name": "Point Juggler",
+      "description": "Discarded cards give their value ^blue(×10 points)^."
+    },
+    "10105": {
+      "name": "Deck Collector",
+      "description": "Earn ^blue(+1 points)^ for every card in your deck."
+    },
+    "10106": {
+      "name": "Circle of Fortune",
+      "description": "Rolls a random number between 0 and 36; if even, result on ^blue(points x2)^; if odd, result on ^yellow(cash x2)^; if 0, ^blue(+300 points)^."
+    },
+    "10107": {
+      "name": "Hestia Blessing",
+      "description": "Burned cards accumulate their ^blue(points)^; if it's a Joker, ^violet(+1 multi)^ is accumulated. Currently ^blue(+{{points}} points)^  ^violet(+{{multi}} multi)^."
+    },
+    "10108": {
+      "name": "Suit Roulette",
+      "description": "Choose a random suit each play; gain ^violet(+5 multi)^ for each card of that suit played."
+    },
+    "10109": {
+      "name": "Hanged Joker",
+      "description": "If your hand contains a joker, it has a 25% chance to accumulate ^blue(+10 points)^. Currently ^blue(+{{points}} points)^."
+    },
+    "10110": {
+      "name": "Special Sacrifice",
+      "description": "Gain ^violet(+1 multi)^ (stacking) for every special card sold. Currently ^violet(+{{multi}} multi)^."
+    },
+    "10111": {
+      "name": "High Roller",
+      "description": "Each High Card played has a 50% chance to gain ^violet(+1 multi)^ (stacking). Currently ^violet(+{{multi}} multi)^."
+    },
+    "10112": {
+      "name": "Efficient Play",
+      "description": "Earn ^violet(+10 multi)^ and ^blue(+50 points)^ when playing 3 or fewer cards."
+    },
+    "10113": {
+      "name": "Rage Breaker",
+      "description": "Gain ^violet(+2 multi)^ (stacking) for each Rage defeated. Currently ^violet(+{{multi}} multi)^."
+    },
+    "10114": {
+      "name": "Burning Rewards",
+      "description": "Gain ^blue(+15 points)^ (stacking) for each card burned from your deck. Currently  ^blue(+{{points}} points)^."
     },
     "19901": {
       "name": "Lucky Cashback",

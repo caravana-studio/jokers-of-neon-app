@@ -221,7 +221,7 @@ export const AppRoutes = () => {
         }
       />
       <Route
-        path="/external-pack"
+        path="/external-pack/:packId?"
         element={
           <AnimatedPage>
             <ExternalPack />
