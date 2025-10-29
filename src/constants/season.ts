@@ -1,0 +1,1 @@
+export const SEASON_NUMBER = import.meta.env.VITE_SEASON_NUMBER ?? 1;
