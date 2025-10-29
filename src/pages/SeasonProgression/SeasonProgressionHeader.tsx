@@ -6,10 +6,16 @@ import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { SeasonPassUnlocked } from "../../components/SeasonPass/SeasonPassUnlocked";
 import { useTranslation } from "react-i18next";
 import { STEP_HEIGHT } from "./Step";
+import { SEASON_NUMBER } from "../../constants/season";
 
-const SEASON_PASS_UNLOCKED = false;
 
-export const SeasonProgressionHeader = () => {
+interface SeasonProgressionHeaderProps {
+  seasonPassUnlocked: boolean;
+}
+
+export const SeasonProgressionHeader = ({
+  seasonPassUnlocked,
+}: SeasonProgressionHeaderProps) => {
   const { isSmallScreen } = useResponsiveValues();
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "season-progression",
@@ -52,7 +58,7 @@ export const SeasonProgressionHeader = () => {
             whiteSpace={"nowrap"}
             wordBreak={"keep-all"}
           >
-            {t("season", { season: 1 })}
+            {t("season", { season: SEASON_NUMBER })}
           </Heading>
           <Box ml={1}>
             <Clock date={new Date()} />
@@ -68,7 +74,7 @@ export const SeasonProgressionHeader = () => {
         alignItems="flex-end"
         flexDir={"column"}
       >
-        {SEASON_PASS_UNLOCKED ? (
+        {seasonPassUnlocked ? (
           <SeasonPassUnlocked />
         ) : (
           <SeasonPassBuyButton />
