@@ -77,35 +77,43 @@ export const PackRow = ({ packId }: PackRowProps) => {
             px={2}
           >
             <Heading
-              fontSize={isSmallScreen ? 18 : 20}
+              fontSize={isSmallScreen ? 18 : 35}
               variant="italic"
               textShadow={"0 0 5px white"}
             >
               {t(`${packId}.name`)}
             </Heading>
             <Heading
-              fontSize={isSmallScreen ? 11 : 14}
+              fontSize={isSmallScreen ? 11 : 18}
               lineHeight={1}
               color={isLimitedEdition ? "gold" : "lightViolet"}
               textShadow={"0 0 5px black"}
-              mb={4}
+              mb={isSmallScreen ? 4 : 8}
             >
               {t(isLimitedEdition ? "limited-edition" : `player-pack`)}
             </Heading>
-            <Flex flexDir="column" gap={1.5} mb={3}>
-              <Text fontSize={isSmallScreen ? 12 : 15} lineHeight={1}>
+            <Flex
+              flexDir="column"
+              gap={isSmallScreen ? 1.5 : 3}
+              mb={isSmallScreen ? 3 : 6}
+            >
+              <Text fontSize={isSmallScreen ? 12 : 18} lineHeight={1}>
                 {t(`${packId}.description.1`)}
               </Text>
-              <Text fontSize={isSmallScreen ? 12 : 15} lineHeight={1}>
+              <Text fontSize={isSmallScreen ? 12 : 18} lineHeight={1}>
                 {t(`${packId}.description.2`)}
               </Text>
-              <Text fontSize={isSmallScreen ? 12 : 15} lineHeight={1}>
+              <Text fontSize={isSmallScreen ? 12 : 18} lineHeight={1}>
                 {t(`size`)}: {PACK_SIZES[packId]}
               </Text>
             </Flex>
-            <Flex flexDir="column" gap={1} mb={2}>
+            <Flex
+              flexDir="column"
+              gap={isSmallScreen ? 1 : 2}
+              mb={isSmallScreen ? 2 : 4}
+            >
               <Text
-                fontSize={isSmallScreen ? 8 : 12}
+                fontSize={isSmallScreen ? 8 : 15}
                 lineHeight={1}
                 color="blueLight"
                 textAlign={"center"}
@@ -114,7 +122,7 @@ export const PackRow = ({ packId }: PackRowProps) => {
               </Text>
               {!isLimitedEdition && (
                 <Text
-                  fontSize={isSmallScreen ? 8 : 12}
+                  fontSize={isSmallScreen ? 8 : 15}
                   color="blueLight"
                   textAlign={"center"}
                   lineHeight={1}
@@ -126,13 +134,13 @@ export const PackRow = ({ packId }: PackRowProps) => {
             <LootBoxRateInfo name={"test"} details={"details"} />
             <Button
               variant={"secondarySolid"}
-              w="70%"
+              w={isSmallScreen ? "70%" : "300px"}
               fontFamily="Oxanium"
-              fontSize={13}
-              mt={4}
+              fontSize={isSmallScreen ? 13 : 16}
+              mt={isSmallScreen ? 4 : 8}
               h={isSmallScreen ? "30px" : "40px"}
               onClick={() => {
-                navigate(`/external-pack/${packId}`)
+                navigate(`/external-pack/${packId}`);
               }}
             >
               {t("buy")} · $9.99
@@ -140,14 +148,14 @@ export const PackRow = ({ packId }: PackRowProps) => {
           </Flex>
           <Flex
             w="40%"
-            justifyContent="flex-end"
+            justifyContent={isSmallScreen ? "center" : "flex-start"}
             animation={`${seasonPassPulse} 4s ease-in-out infinite`}
             transformOrigin="center"
             alignItems="center"
             pr={6}
           >
             <CachedImage
-            w="90%"
+              w={isSmallScreen ? "90%" : "300px"}
               src={`/packs/${packId}.png`}
               boxShadow={"0 0 15px 0px white, inset 0 0 5px 0 white"}
             />
