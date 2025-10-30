@@ -1,4 +1,13 @@
 {
+  "daily-games": {
+    "next-live-in": "Next live in",
+    "out-of-lives": "You ran out of lives",
+    "get-more-lives": "Get more lives with",
+    "season-pass": "SEASON PASS",
+    "you-have-1-live-left": "You have 1 live left",
+    "you-have-x-lives-left": "You have {{lives}} lives left",
+    "new-game": "New game"
+  },
   "shop": {
     "title": "Shop",
     "season-pass": {
