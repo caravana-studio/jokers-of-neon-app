@@ -53,7 +53,7 @@ export const DailyGames = () => {
             ? t("you-have-1-live-left")
             : t("you-have-x-lives-left", { lives: AVAILABLE_LIVES })}
       </Text>
-      <Flex w="100%" justifyContent={"center"} gap={2}>
+      <Flex w="100%" justifyContent={"center"} gap={isSmallScreen ? 2 : 6}>
         {slots.map((unlockedPercentage, index) => (
           <DailyGame
             key={index}
@@ -66,7 +66,7 @@ export const DailyGames = () => {
         {AVAILABLE_LIVES > 0 ? (
           <Button
             onClick={handleCreateGame}
-            width="100px"
+            width={isSmallScreen ? "100px" : "200px"}
             ml={1}
             fontSize={isSmallScreen ? 10 : 15}
             h={isSmallScreen ? "30px" : "50px"}
@@ -76,7 +76,7 @@ export const DailyGames = () => {
           </Button>
         ) : (
           <Flex
-            width="100px"
+            width={isSmallScreen ? "100px" : "200px"}
             ml={1}
             fontSize={isSmallScreen ? 9 : 15}
             h={isSmallScreen ? "30px" : "50px"}
