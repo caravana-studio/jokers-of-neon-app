@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { BannerRenderer } from "../../components/BannerRenderer/BannerRenderer";
 import { ConfirmationModal } from "../../components/ConfirmationModal";
 import { DelayedLoading } from "../../components/DelayedLoading";
+import { PositionedDiscordLink } from "../../components/DiscordLink";
 import { MobileBottomBar } from "../../components/MobileBottomBar";
 import { MobileDecoration } from "../../components/MobileDecoration";
 import { ProfileTile } from "../../components/ProfileTile";
@@ -21,7 +22,7 @@ import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { logEvent } from "../../utils/analytics";
 import { APP_URL, isNative } from "../../utils/capacitorUtils";
 import { getMajor, getMinor, getPatch } from "../../utils/versionUtils";
-import { PositionedDiscordLink } from "../../components/DiscordLink";
+import { PacksBanner } from "./banners/PacksBanner";
 
 export const NewHome = () => {
   const { t } = useTranslation(["home"]);
@@ -161,8 +162,8 @@ export const NewHome = () => {
                 <ProfileTile />
               </Flex>
             </Flex>
-            <Flex flexDir={"column"} gap={3} alignItems={"center"} w="100%">
-              <Flex flexDir={isSmallScreen ? "column" : "row"} gap={3} w="100%">
+            <Flex flexDir={"column"} gap={1.5} alignItems={"center"} w="100%" mt={isSmallScreen ? "-25px" : 0}>
+              <Flex flexDir={isSmallScreen ? "column" : "row"} gap={1.5} w="100%">
                 {banners[0] && <BannerRenderer banner={banners[0]} />}
                 {banners[1] && <BannerRenderer banner={banners[1]} />}
               </Flex>

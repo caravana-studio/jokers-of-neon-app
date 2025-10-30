@@ -6,41 +6,7 @@ import CachedImage from "../../components/CachedImage";
 import { LootBoxRateInfo } from "../../components/Info/LootBoxRateInfo";
 import { BLUE } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
-
-const coinPulse = keyframes`
-  0% {
-    transform: scale(1.5) rotate(0deg);
-  }
-  50% {
-    transform: scale(1.6) rotate(3deg);
-  }
-  100% {
-    transform: scale(1.5) rotate(0deg);
-  }
-`;
-const coinPulseBack = keyframes`
-  0% {
-    transform: scale(1.3) rotate(0deg);
-  }
-  50% {
-    transform: scale(1.4) rotate(-3deg);
-  }
-  100% {
-    transform: scale(1.3) rotate(0deg);
-  }
-`;
-
-const seasonPassPulse = keyframes`
-  0% {
-    transform: scale(1) translateY(0) ;
-  }
-  50% {
-    transform: scale(1) translateY(5px);
-  }
-  100% {
-    transform: scale(1) translateY(0) ;
-  }
-`;
+import { packAnimation } from "../../constants/animations";
 
 interface PackRowProps {
   packId: number;
@@ -149,7 +115,7 @@ export const PackRow = ({ packId }: PackRowProps) => {
           <Flex
             w="40%"
             justifyContent={isSmallScreen ? "center" : "flex-start"}
-            animation={`${seasonPassPulse} 4s ease-in-out infinite`}
+            animation={`${packAnimation} 4s ease-in-out infinite`}
             transformOrigin="center"
             alignItems="center"
             pr={6}
