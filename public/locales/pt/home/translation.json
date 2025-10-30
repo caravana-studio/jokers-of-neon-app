@@ -14,6 +14,9 @@
     "level": "Nível",
     "dailyMissions": "Missões Diárias"
   },
+  "packs": {
+    "title": "Pacotes"
+  },
   "leaderboard": {
     "title": "Classificação",
     "tournament": "Torneio ativo",
