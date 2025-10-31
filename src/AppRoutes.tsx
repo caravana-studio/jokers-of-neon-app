@@ -37,6 +37,7 @@ import TutorialGameProvider from "./providers/TutorialGameProvider";
 import { SeasonProgressionPage } from "./pages/SeasonProgression/SeasonProgressionPage";
 import { ShopPage } from "./pages/Shop/ShopPage";
 import { FreePackPage } from "./pages/FreePackPage";
+import { ClaimSeasonPackPage } from "./pages/ClaimSeasonPackPage";
 
 export const AppRoutes = () => {
   const location = useLocation();
@@ -263,6 +264,14 @@ export const AppRoutes = () => {
         element={
           <AnimatedPage>
             <FreePackPage />
+          </AnimatedPage>
+        }
+      />      
+      <Route
+        path="/claim-season-pack/:level/:premium"
+        element={
+          <AnimatedPage>
+            <ClaimSeasonPackPage />
           </AnimatedPage>
         }
       />

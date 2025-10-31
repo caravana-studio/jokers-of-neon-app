@@ -15,8 +15,8 @@ export const Step = ({ step }: StepProps) => {
   return (
     <Flex h={`${STEP_HEIGHT}px`} w="100%" borderBottom={`1px solid ${BLUE}`}>
       <StepIcons step={step} />
-      <StepReward reward={step.free} />
-      <StepReward reward={step.premium} />
+      <StepReward reward={step.free} type="free" level={step.level} />
+      <StepReward reward={step.premium} type="premium" level={step.level} />
     </Flex>
   );
 };

@@ -5,6 +5,7 @@ export interface IStep {
   xp: number;
   free?: IReward;
   premium?: IReward;
+  level: number;
 }
 
 export interface IReward {

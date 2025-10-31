@@ -94,6 +94,7 @@ const transformSeasonLine = (
 ): IStep[] => {
   return entries.map((entry) => {
     const xp = Number(entry.required_xp);
+    const level = Number(entry.level);
 
     if (!Number.isFinite(xp)) {
       throw new Error(
@@ -123,6 +124,7 @@ const transformSeasonLine = (
         seasonPassUnlockedAtLevel,
         true
       ),
+      level,
     };
   });
 };

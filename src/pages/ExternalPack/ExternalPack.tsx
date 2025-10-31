@@ -52,9 +52,13 @@ export interface SimplifiedCard {
 
 interface ExternalPackProps {
   initialCards?: SimplifiedCard[];
+  onContinue?: () => void;
 }
 
-export const ExternalPack = ({ initialCards = [] }: ExternalPackProps) => {
+export const ExternalPack = ({
+  initialCards = [],
+  onContinue,
+}: ExternalPackProps) => {
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "external-pack",
   });
@@ -97,10 +101,8 @@ export const ExternalPack = ({ initialCards = [] }: ExternalPackProps) => {
 
   const [buying, setBuying] = useState(false);
 
-  const [obtainedCards, setObtainedCards] = useState<
-    SimplifiedCard[]
-  >(initialCards);
-
+  const [obtainedCards, setObtainedCards] =
+    useState<SimplifiedCard[]>(initialCards);
 
   return (
     <DelayedLoading ms={100}>
@@ -114,7 +116,9 @@ export const ExternalPack = ({ initialCards = [] }: ExternalPackProps) => {
           position="absolute"
           bottom={isSmallScreen ? "30px" : "80px"}
           right={isSmallScreen ? "15px" : "30px"}
-          onClick={() => navigate("/")}
+          onClick={() => {
+            onContinue ? onContinue() : navigate("/");
+          }}
           zIndex={20}
         >
           {isSmallScreen ? (
@@ -258,7 +262,7 @@ export const ExternalPack = ({ initialCards = [] }: ExternalPackProps) => {
                 <SplitPackOnce
                   width={packWidth}
                   height={packHeight}
-                    src={`/packs/${packId}.png`}
+                  src={`/packs/${packId}.png`}
                   onDone={() => {
                     setStep(3);
 
