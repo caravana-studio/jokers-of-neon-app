@@ -53,18 +53,20 @@ export interface SimplifiedCard {
 interface ExternalPackProps {
   initialCards?: SimplifiedCard[];
   onContinue?: () => void;
+  providedPackId?: number;
 }
 
 export const ExternalPack = ({
-  initialCards = [],
+  initialCards,
   onContinue,
+  providedPackId,
 }: ExternalPackProps) => {
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "external-pack",
   });
 
   const params = useParams();
-  const packId = Number(params.packId ?? 1);
+  const packId = providedPackId ?? Number(params.packId ?? 1);
 
   const { t: tDocs } = useTranslation("docs");
   const { t: tGame } = useTranslation("game");
@@ -102,7 +104,7 @@ export const ExternalPack = ({
   const [buying, setBuying] = useState(false);
 
   const [obtainedCards, setObtainedCards] =
-    useState<SimplifiedCard[]>(initialCards);
+    useState<SimplifiedCard[]>(initialCards ?? []);
 
   return (
     <DelayedLoading ms={100}>

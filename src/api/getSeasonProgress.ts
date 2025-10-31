@@ -164,7 +164,6 @@ export async function getSeasonProgress({
   });
 
   const progressJson = await progressResponse.json();
-  console.log("progressJson", progressJson);
 
   const seasonPassUnlocked = !!Number(progressJson?.data?.has_season_pass ?? 0);
   const playerProgress = Number(progressJson?.data?.season_xp ?? 0);

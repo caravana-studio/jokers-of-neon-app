@@ -12,13 +12,13 @@ interface PackRowProps {
   packId: number;
 }
 
-const PACK_SIZES = [3, 3, 4, 4, 4, 6];
+const PACK_SIZES = [0, 3, 3, 4, 4, 4, 6];
 
 export const PackRow = ({ packId }: PackRowProps) => {
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "shop.packs",
   });
-  const isLimitedEdition = packId > 3;
+  const isLimitedEdition = packId > 4;
   const { isSmallScreen } = useResponsiveValues();
   const navigate = useNavigate();
   return (

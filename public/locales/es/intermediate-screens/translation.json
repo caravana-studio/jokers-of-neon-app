@@ -32,35 +32,35 @@
         "offering-rates": "Tarifas de oferta",
         "transferrable-legend": "Todos los items en las tiendas pueden ser transferidos.",
         "skins-legend": "Los packs no contienen cartas con skin.",
-        "1": {
+        "2": {
           "name": "AVANZADO",
           "description": {
             "1": "Mejora tu colección con mayores probabilidades de obtener cartas raras.",
             "2": "Hasta un 50% de probabilidad de conseguir una carta Especial."
           }
         },
-        "2": {
+        "3": {
           "name": "ÉPICO",
           "description": {
             "1": "Un paquete premium con altas probabilidades de obtener cartas Especiales.",
             "2": "Hasta un 75% de probabilidad de conseguir una carta Especial, incluye rangos A y S."
           }
         },
-        "3": {
+        "4": {
           "name": "LEGENDARIO",
           "description": {
             "1": "Garantiza una carta Especial en cada paquete.",
             "2": "Las mayores probabilidades de obtener cartas Especiales de rango A y S."
           }
         },
-        "4": {
+        "5": {
           "name": "COLECCIONISTA",
           "description": {
             "1": "Paquete de edición limitada con cartas y skins ultra raras.",
             "2": "1 carta Especial con skin garantizada y las mejores probabilidades."
           }
         },
-        "5": {
+        "6": {
           "name": "COLECCIONISTA XL",
           "description": {
             "1": "Paquete masivo con el contenido más raro de la temporada.",

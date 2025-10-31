@@ -1,9 +1,11 @@
-import { Button, Flex, Heading, Text } from "@chakra-ui/react";
+import { Button, Flex, Heading, Spinner, Text } from "@chakra-ui/react";
 import { keyframes } from "@emotion/react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import CachedImage from "../../components/CachedImage";
 import { SeasonPass } from "../../components/SeasonPass/SeasonPass";
 import { SEASON_NUMBER } from "../../constants/season";
+import { useSeasonPass } from "../../providers/SeasonPassProvider";
 import { BLUE, VIOLET_LIGHT } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 
@@ -47,6 +49,10 @@ export const SeasonPassRow = () => {
     keyPrefix: "shop.season-pass",
   });
   const { isSmallScreen } = useResponsiveValues();
+
+  const { purchaseSeasonPass } = useSeasonPass();
+  const [isLoading, setIsLoading] = useState(false);
+
   return (
     <>
       <Flex
@@ -60,10 +66,7 @@ export const SeasonPassRow = () => {
         backgroundSize={"cover"}
         backgroundPosition={"center"}
       >
-        <Flex
-          position="relative"
-          w={isSmallScreen ? "100%" : "600px"}
-        >
+        <Flex position="relative" w={isSmallScreen ? "100%" : "600px"}>
           <CachedImage
             src="/shop/season-pass/coins-front.png"
             position="absolute"
@@ -133,8 +136,15 @@ export const SeasonPassRow = () => {
           fontSize={isSmallScreen ? 13 : 18}
           mt={isSmallScreen ? 2 : 6}
           h={isSmallScreen ? "30px" : "50px"}
+          isDisabled={isLoading}
+          onClick={() => {
+            setIsLoading(true);
+            purchaseSeasonPass()
+              .then(() => setIsLoading(false))
+              .catch(() => setIsLoading(false));
+          }}
         >
-          {t("buy")} · $9.99
+          {isLoading ? <Spinner size="xs" /> : <>{t("buy")} · $9.99</>}
         </Button>
       </Flex>
     </>
