@@ -9,7 +9,6 @@ import { IStep } from "./types";
 
 export const SeasonProgressionPage = () => {
   const [steps, setSteps] = useState<IStep[]>([]);
-  const [seasonPassUnlocked, setSeasonPassUnlocked] = useState<boolean>(false);
   const [playerProgress, setPlayerProgress] = useState<number>(0);
   const [isLoading, setIsLoading] = useState(true);
   const {
@@ -21,7 +20,6 @@ export const SeasonProgressionPage = () => {
       getSeasonProgress({ userAddress: account.address }).then((data) => {
         setIsLoading(false);
         setSteps(data.steps);
-        setSeasonPassUnlocked(data.seasonPassUnlocked);
         setPlayerProgress(data.playerProgress);
       });
     }
@@ -30,7 +28,7 @@ export const SeasonProgressionPage = () => {
   return (
     <DelayedLoading ms={200} loading={isLoading}>
       <MobileDecoration fadeToBlack />
-      <SeasonProgressionHeader seasonPassUnlocked={seasonPassUnlocked} />
+      <SeasonProgressionHeader />
       <SeasonProgressionContent steps={steps} playerProgress={playerProgress} />
     </DelayedLoading>
   );

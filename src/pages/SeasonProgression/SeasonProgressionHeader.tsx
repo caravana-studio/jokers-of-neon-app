@@ -1,25 +1,20 @@
 import { Box, Flex, Heading } from "@chakra-ui/react";
+import { useTranslation } from "react-i18next";
 import { Clock } from "../../components/Clock";
 import { SeasonPassBuyButton } from "../../components/SeasonPass/SeasonPassBuyButton";
+import { SeasonPassUnlocked } from "../../components/SeasonPass/SeasonPassUnlocked";
+import { SEASON_NUMBER } from "../../constants/season";
+import { useSeasonPass } from "../../providers/SeasonPassProvider";
 import { BLUE } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
-import { SeasonPassUnlocked } from "../../components/SeasonPass/SeasonPassUnlocked";
-import { useTranslation } from "react-i18next";
 import { STEP_HEIGHT } from "./Step";
-import { SEASON_NUMBER } from "../../constants/season";
 
-
-interface SeasonProgressionHeaderProps {
-  seasonPassUnlocked: boolean;
-}
-
-export const SeasonProgressionHeader = ({
-  seasonPassUnlocked,
-}: SeasonProgressionHeaderProps) => {
+export const SeasonProgressionHeader = () => {
   const { isSmallScreen } = useResponsiveValues();
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "season-progression",
   });
+  const { seasonPassUnlocked } = useSeasonPass();
   return (
     <Flex
       w="100%"
@@ -64,7 +59,7 @@ export const SeasonProgressionHeader = ({
             <Clock date={new Date()} />
           </Box>
         </Flex>
-        <Heading mb={3} fontWeight={100} fontSize={isSmallScreen ?11 : 18}>
+        <Heading mb={3} fontWeight={100} fontSize={isSmallScreen ? 11 : 18}>
           {t("free-rewards")}
         </Heading>
       </Flex>
@@ -74,11 +69,7 @@ export const SeasonProgressionHeader = ({
         alignItems="flex-end"
         flexDir={"column"}
       >
-        {seasonPassUnlocked ? (
-          <SeasonPassUnlocked />
-        ) : (
-          <SeasonPassBuyButton />
-        )}
+        {seasonPassUnlocked ? <SeasonPassUnlocked /> : <SeasonPassBuyButton />}
       </Flex>
     </Flex>
   );

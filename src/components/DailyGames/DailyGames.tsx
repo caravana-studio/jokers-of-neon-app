@@ -2,15 +2,11 @@ import { Button, Flex, Text } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useGameContext } from "../../providers/GameProvider";
+import { useSeasonPass } from "../../providers/SeasonPassProvider";
 import { BLUE } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { Countdown } from "../Countdown";
 import { DailyGame } from "./DailyGame";
-const SEASON_PASS_UNLOCKED = true;
-const TOTAL_SLOTS = SEASON_PASS_UNLOCKED ? 4 : 2;
-const AVAILABLE_LIVES: number = 2;
-const NEXT_LIVE_IN = new Date(Date.now() + 1000 * 60 * 60 * 2);
-const RECHARGE_TIME = SEASON_PASS_UNLOCKED ? 4 : 12;
 
 export const DailyGames = () => {
   const { t } = useTranslation("intermediate-screens", {
@@ -18,6 +14,12 @@ export const DailyGames = () => {
   });
   const { prepareNewGame, executeCreateGame } = useGameContext();
   const navigate = useNavigate();
+  const { seasonPassUnlocked } = useSeasonPass();
+
+  const TOTAL_SLOTS = seasonPassUnlocked ? 4 : 2;
+  const AVAILABLE_LIVES: number = 2;
+  const NEXT_LIVE_IN = new Date(Date.now() + 1000 * 60 * 60 * 2);
+  const RECHARGE_TIME = seasonPassUnlocked ? 4 : 12;
 
   const { isSmallScreen } = useResponsiveValues();
 
@@ -57,7 +59,7 @@ export const DailyGames = () => {
         {slots.map((unlockedPercentage, index) => (
           <DailyGame
             key={index}
-            seasonPassUnlocked={SEASON_PASS_UNLOCKED}
+            seasonPassUnlocked={seasonPassUnlocked}
             unlockedPercentage={unlockedPercentage}
             nextLiveIn={NEXT_LIVE_IN}
             noLives={AVAILABLE_LIVES === 0}
@@ -109,7 +111,7 @@ export const DailyGames = () => {
           </Flex>
         )}
       </Flex>
-      {AVAILABLE_LIVES === 0 && !SEASON_PASS_UNLOCKED && (
+      {AVAILABLE_LIVES === 0 && !seasonPassUnlocked && (
         <Flex
           gap={1}
           justifyContent={"center"}

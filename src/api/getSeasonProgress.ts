@@ -5,7 +5,6 @@ import { IReward, IStep } from "../pages/SeasonProgression/types";
 
 const DEFAULT_API_BASE_URL = "http://localhost:3001";
 const DEFAULT_SEASON_ID = SEASON_NUMBER;
-const DEFAULT_RESULTS_LIMIT = 50;
 
 export type GetSeasonLineParams = {
   userAddress: string;
@@ -131,8 +130,11 @@ const transformSeasonLine = (
 export async function getSeasonProgress({
   userAddress,
   seasonId = DEFAULT_SEASON_ID,
-  limit = DEFAULT_RESULTS_LIMIT,
-}: GetSeasonLineParams): Promise<{steps: IStep[], seasonPassUnlocked: boolean, playerProgress: number}> {
+}: GetSeasonLineParams): Promise<{
+  steps: IStep[];
+  seasonPassUnlocked: boolean;
+  playerProgress: number;
+}> {
   if (!userAddress) {
     throw new Error("getSeasonLine: userAddress is required");
   }
@@ -159,18 +161,18 @@ export async function getSeasonProgress({
     },
   });
 
-
   const progressJson = await progressResponse.json();
+  console.log("progressJson", progressJson);
 
-  const seasonPassUnlocked = progressJson?.data?.has_season_pass;
+  const seasonPassUnlocked = !!Number(progressJson?.data?.has_season_pass ?? 0);
   const playerProgress = Number(progressJson?.data?.season_xp ?? 0);
-  const seasonPassUnlockedAtLevel =
-    seasonPassUnlocked &&
-    Number(progressJson?.data?.season_pass_unlocked_at_level ?? 0);
+  const seasonPassUnlockedAtLevel = seasonPassUnlocked
+    ? Number(progressJson?.data?.season_pass_unlocked_at_level ?? 0)
+    : 0;
 
   const seasonLineRequestUrl = `${baseUrl}/api/season/line/${encodeURIComponent(
     userAddress
-  )}/${seasonId}/${limit}`;
+  )}/${seasonId}`;
 
   const seasonLineResponse = await fetch(seasonLineRequestUrl, {
     method: "GET",
@@ -207,9 +209,10 @@ export async function getSeasonProgress({
     seasonPassUnlocked,
     playerProgress,
     steps: transformSeasonLine(
-    json.data,
-    seasonPassUnlocked,
-    playerProgress,
-    seasonPassUnlockedAtLevel
-  )};
+      json.data,
+      seasonPassUnlocked,
+      playerProgress,
+      seasonPassUnlockedAtLevel
+    ),
+  };
 }
