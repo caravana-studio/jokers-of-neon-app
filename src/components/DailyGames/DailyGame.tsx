@@ -9,7 +9,7 @@ import { Countdown } from "../Countdown";
 interface DailyGameProps {
   seasonPassUnlocked: boolean;
   unlockedPercentage: number;
-  nextLiveIn: Date;
+  nextLiveIn: Date | undefined;
   noLives?: boolean;
 }
 
@@ -66,9 +66,9 @@ export const DailyGame = ({
           <Text lineHeight={0.9} textTransform={"lowercase"} fontSize={isSmallScreen ? 10 : 13} w={isSmallScreen ? "40px" : "50px"}>
             {t("next-live-in")}
           </Text>
-          <Countdown targetDate={nextLiveIn}>
+          {nextLiveIn && <Countdown targetDate={nextLiveIn}>
             {({ formatted }) => <Text fontSize={isSmallScreen ? 10 : 13} fontWeight={"bold"}>{formatted}</Text>}
-          </Countdown>
+          </Countdown>}
         </Flex>
       )}
     </Flex>

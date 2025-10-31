@@ -1,8 +1,12 @@
 import { Button, Flex, Text } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { useDojo } from "../../dojo/useDojo";
 import { useGameContext } from "../../providers/GameProvider";
 import { useSeasonPass } from "../../providers/SeasonPassProvider";
+import { claimLives } from "../../queries/claimLives";
+import { getPlayerLives } from "../../queries/getPlayerLives";
 import { BLUE } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { Countdown } from "../Countdown";
@@ -15,10 +19,37 @@ export const DailyGames = () => {
   const { prepareNewGame, executeCreateGame } = useGameContext();
   const navigate = useNavigate();
   const { seasonPassUnlocked } = useSeasonPass();
+  const [availableLives, setAvailableLives] = useState(0);
+  const [totalSlots, setTotalSlots] = useState(seasonPassUnlocked ? 4 : 2);
+  const [nextLiveIn, setNextLiveIn] = useState<Date | undefined>(undefined);
 
-  const TOTAL_SLOTS = seasonPassUnlocked ? 4 : 2;
-  const AVAILABLE_LIVES: number = 2;
-  const NEXT_LIVE_IN = new Date(Date.now() + 1000 * 60 * 60 * 2);
+  const fetchPlayerLives = () => {
+    getPlayerLives({ playerAddress: account.address }).then((response) => {
+      console.log("getPlayerLives response", response);
+      response.data?.available_lives &&
+        setAvailableLives(Number(response.data.available_lives));
+      response.data?.max_lives &&
+        setTotalSlots(Number(response.data.max_lives));
+      response.data?.next_live_timestamp &&
+        setNextLiveIn(response.data.next_live_timestamp);
+    });
+  };
+
+  const {
+    account: { account },
+  } = useDojo();
+
+  useEffect(() => {
+    fetchPlayerLives();
+
+    claimLives({ playerAddress: account.address })
+      .then((response) => {
+        console.log("claimLives response", response);
+        fetchPlayerLives();
+      })
+      .catch(() => {});
+  }, []);
+
   const RECHARGE_TIME = seasonPassUnlocked ? 4 : 12;
 
   const { isSmallScreen } = useResponsiveValues();
@@ -30,13 +61,13 @@ export const DailyGames = () => {
   };
   const rechargeMs = RECHARGE_TIME * 60 * 60 * 1000;
 
-  const slots = Array.from({ length: TOTAL_SLOTS }, (_, slotIndex) => {
-    if (slotIndex < AVAILABLE_LIVES) {
+  const slots = Array.from({ length: totalSlots }, (_, slotIndex) => {
+    if (slotIndex < availableLives) {
       return 100;
     }
 
-    if (slotIndex === AVAILABLE_LIVES) {
-      const timeUntilNext = NEXT_LIVE_IN.getTime() - Date.now();
+    if (slotIndex === availableLives) {
+      const timeUntilNext = (nextLiveIn?.getTime() ?? 0) - Date.now();
       const progress = 1 - timeUntilNext / rechargeMs;
       const clampedProgress = Math.min(Math.max(progress, 0), 1);
 
@@ -49,11 +80,11 @@ export const DailyGames = () => {
   return (
     <Flex flexDir="column" gap={2}>
       <Text textTransform={"uppercase"} textAlign={"center"}>
-        {AVAILABLE_LIVES === 0
+        {availableLives === 0
           ? t("out-of-lives")
-          : AVAILABLE_LIVES === 1
+          : availableLives === 1
             ? t("you-have-1-live-left")
-            : t("you-have-x-lives-left", { lives: AVAILABLE_LIVES })}
+            : t("you-have-x-lives-left", { lives: availableLives })}
       </Text>
       <Flex w="100%" justifyContent={"center"} gap={isSmallScreen ? 2 : 6}>
         {slots.map((unlockedPercentage, index) => (
@@ -61,11 +92,11 @@ export const DailyGames = () => {
             key={index}
             seasonPassUnlocked={seasonPassUnlocked}
             unlockedPercentage={unlockedPercentage}
-            nextLiveIn={NEXT_LIVE_IN}
-            noLives={AVAILABLE_LIVES === 0}
+            nextLiveIn={nextLiveIn}
+            noLives={availableLives === 0}
           />
         ))}
-        {AVAILABLE_LIVES > 0 ? (
+        {availableLives > 0 ? (
           <Button
             onClick={handleCreateGame}
             width={isSmallScreen ? "100px" : "200px"}
@@ -97,7 +128,7 @@ export const DailyGames = () => {
             >
               {t("next-live-in")}
             </Text>
-            <Countdown targetDate={NEXT_LIVE_IN}>
+            {nextLiveIn &&<Countdown targetDate={nextLiveIn}>
               {({ formatted }) => (
                 <Text
                   fontSize={isSmallScreen ? 9 : 15}
@@ -107,11 +138,11 @@ export const DailyGames = () => {
                   {formatted}
                 </Text>
               )}
-            </Countdown>
+            </Countdown>}
           </Flex>
         )}
       </Flex>
-      {AVAILABLE_LIVES === 0 && !seasonPassUnlocked && (
+      {availableLives === 0 && !seasonPassUnlocked && (
         <Flex
           gap={1}
           justifyContent={"center"}
