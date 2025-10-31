@@ -67,6 +67,7 @@ export const ClaimSeasonPackPage = () => {
   return packs?.length > 0 && !transitioning ? (
     <ExternalPack
       initialCards={packs[currentPackIndex].mintedCards}
+      packId={packs[currentPackIndex].packId}
       onContinue={
         packs[currentPackIndex + 1]
           ? () => transitionTo(currentPackIndex + 1)

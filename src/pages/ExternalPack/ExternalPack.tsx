@@ -53,13 +53,13 @@ export interface SimplifiedCard {
 interface ExternalPackProps {
   initialCards?: SimplifiedCard[];
   onContinue?: () => void;
-  providedPackId?: number;
+  packId?: number;
 }
 
 export const ExternalPack = ({
   initialCards,
   onContinue,
-  providedPackId,
+  packId: providedPackId,
 }: ExternalPackProps) => {
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "external-pack",
@@ -103,8 +103,9 @@ export const ExternalPack = ({
 
   const [buying, setBuying] = useState(false);
 
-  const [obtainedCards, setObtainedCards] =
-    useState<SimplifiedCard[]>(initialCards ?? []);
+  const [obtainedCards, setObtainedCards] = useState<SimplifiedCard[]>(
+    initialCards ?? []
+  );
 
   return (
     <DelayedLoading ms={100}>
