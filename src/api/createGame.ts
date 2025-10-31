@@ -1,3 +1,5 @@
+import { SEASON_NUMBER } from "../constants/season";
+
 const DEFAULT_API_BASE_URL = "http://localhost:3001";
 const DEFAULT_OPTIONAL_HEX = "0x0";
 
@@ -7,6 +9,7 @@ export type CreateGameParams = {
   settingsId?: string;
   to?: string;
   seed?: string;
+  seasonId?: number;
 };
 
 export async function createGame({
@@ -15,6 +18,7 @@ export async function createGame({
   settingsId = DEFAULT_OPTIONAL_HEX,
   to,
   seed = DEFAULT_OPTIONAL_HEX,
+  seasonId = SEASON_NUMBER,
 }: CreateGameParams) {
   if (!userAddress) {
     throw new Error("createGame: userAddress is required");
@@ -26,11 +30,14 @@ export async function createGame({
 
   const apiKey = import.meta.env.VITE_GAME_API_KEY;
   if (!apiKey) {
-    throw new Error("createGame: Missing VITE_GAME_API_KEY environment variable");
+    throw new Error(
+      "createGame: Missing VITE_GAME_API_KEY environment variable"
+    );
   }
 
   const baseUrl =
-    import.meta.env.VITE_GAME_API_URL?.replace(/\/$/, "") || DEFAULT_API_BASE_URL;
+    import.meta.env.VITE_GAME_API_URL?.replace(/\/$/, "") ||
+    DEFAULT_API_BASE_URL;
   const requestUrl = `${baseUrl}/api/game/create`;
 
   const response = await fetch(requestUrl, {
@@ -43,6 +50,7 @@ export async function createGame({
       user_address: userAddress,
       player_name: playerName,
       settings_id: settingsId,
+      season_id: seasonId,
       to: to ?? userAddress,
       seed,
     }),
