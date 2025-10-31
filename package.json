@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "codegen": "graphql-codegen",
     "generate": "sozo build --typescript --manifest-path ../jokers-of-neon-core/Scarb.toml --bindings-output ./src/dojo",
-    "test": "vitest"
+    "test": "vitest",
+    "postinstall": "npm rebuild rollup"
   },
   "dependencies": {
     "@capacitor/android": "^7.4.1",
