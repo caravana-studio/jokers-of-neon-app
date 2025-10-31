@@ -36,6 +36,7 @@ import { StoreProvider } from "./providers/StoreProvider";
 import TutorialGameProvider from "./providers/TutorialGameProvider";
 import { SeasonProgressionPage } from "./pages/SeasonProgression/SeasonProgressionPage";
 import { ShopPage } from "./pages/Shop/ShopPage";
+import { FreePackPage } from "./pages/FreePackPage";
 
 export const AppRoutes = () => {
   const location = useLocation();
@@ -254,6 +255,14 @@ export const AppRoutes = () => {
         element={
           <AnimatedPage>
             <SeasonProgressionPage />
+          </AnimatedPage>
+        }
+      />      
+      <Route
+        path="/free-pack"
+        element={
+          <AnimatedPage>
+            <FreePackPage />
           </AnimatedPage>
         }
       />

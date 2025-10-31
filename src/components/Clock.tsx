@@ -5,9 +5,11 @@ import { Countdown } from "./Countdown";
 
 interface ClockProps {
   date: Date;
+  fontSize?: number;
+  iconSize?: string;
 }
 
-export const Clock = ({ date }: ClockProps) => {
+export const Clock = ({ date, fontSize, iconSize = "12px"}: ClockProps) => {
   return (
     <Flex
       gap={1}
@@ -19,9 +21,9 @@ export const Clock = ({ date }: ClockProps) => {
       justifyContent={"center"}
       zIndex={10}
     >
-      <IconComponent icon={Icons.CLOCK} width={"12px"} height={"12px"} />
+      <IconComponent icon={Icons.CLOCK} width={iconSize} height={iconSize} />
       <Countdown targetDate={date}>
-        {({ formatted }) => <Text mt={0.5}>{formatted}</Text>}
+        {({ formatted }) => <Text mt={0.5} fontSize={fontSize}>{formatted}</Text>}
       </Countdown>
     </Flex>
   );

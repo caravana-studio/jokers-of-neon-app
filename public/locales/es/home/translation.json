@@ -14,6 +14,18 @@
     "level": "Nivel",
     "dailyMissions": "Misiones diarias"
   },
+  "packs": {
+    "title": "Paquetes",
+    "free-pack-in": "paquete gratis en",
+    "free-pack-ready": "¡Paquete gratis listo!",
+    "claim-now": "Abrir",
+    "open-pack-stages": {
+      "stage-0": "Procesando pago",
+      "stage-1": "Chequeando las probabilidades",
+      "stage-2": "Paquete listo",
+      "stage-3": "¡Abramos!"
+    }
+  },
   "leaderboard": {
     "title": "Clasificación",
     "tournament": "Torneo activo",

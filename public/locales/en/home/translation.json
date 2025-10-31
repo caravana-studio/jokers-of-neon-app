@@ -14,6 +14,18 @@
     "level": "level",
     "dailyMissions": "Daily Missions"
   },
+  "packs": {
+    "title": "Packs",
+    "free-pack-in": "free pack in",
+    "free-pack-ready": "free pack ready!",
+    "claim-now": "Open now",
+    "open-pack-stages": {
+      "stage-0": "Processing payment",
+      "stage-1": "Rolling the odds",
+      "stage-2": "Pack is ready",
+      "stage-3": "Let's open it"
+    }
+  },
   "leaderboard": {
     "title": "Leaderboard",
     "tournament": "Tournament active",

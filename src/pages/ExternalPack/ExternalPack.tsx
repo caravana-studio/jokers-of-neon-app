@@ -45,7 +45,16 @@ const getIntensity = (type: CardTypes, rarity: RARITY) => {
   }
 };
 
-export const ExternalPack = () => {
+export interface SimplifiedCard {
+  card_id: number;
+  skin_id: number;
+}
+
+interface ExternalPackProps {
+  initialCards?: SimplifiedCard[];
+}
+
+export const ExternalPack = ({ initialCards = [] }: ExternalPackProps) => {
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "external-pack",
   });
@@ -61,7 +70,7 @@ export const ExternalPack = () => {
 
   const [allCardsSeen, setAllCardsSeen] = useState(false);
 
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(initialCards ? 1 : 0);
 
   const { isSmallScreen } = useResponsiveValues();
 
@@ -89,11 +98,8 @@ export const ExternalPack = () => {
   const [buying, setBuying] = useState(false);
 
   const [obtainedCards, setObtainedCards] = useState<
-    {
-      card_id: number;
-      skin_id: number;
-    }[]
-  >([]);
+    SimplifiedCard[]
+  >(initialCards);
 
 
   return (
