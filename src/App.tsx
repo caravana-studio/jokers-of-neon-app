@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import { AppRoutes } from "./AppRoutes";
 import { Background } from "./components/Background";
 import { Layout } from "./components/Layout";
+import { useDojo } from "./dojo/DojoContext";
 import { AudioPlayerProvider } from "./providers/AudioPlayerProvider";
 import { CardAnimationsProvider } from "./providers/CardAnimationsProvider";
 import { CardDataProvider } from "./providers/CardDataProvider";
@@ -16,9 +17,14 @@ import { InformationPopUpProvider } from "./providers/InformationPopUpProvider";
 import { PageTransitionsProvider } from "./providers/PageTransitionsProvider";
 import { SeasonPassProvider } from "./providers/SeasonPassProvider";
 import { SettingsProvider } from "./providers/SettingsProvider";
+import { claimLives } from "./queries/claimLives";
 import ZoomPrevention from "./utils/ZoomPrevention";
 
 function App() {
+  const {
+    account: { account },
+  } = useDojo();
+
   useEffect(() => {
     const askForTracking = async () => {
       try {
@@ -33,6 +39,8 @@ function App() {
         console.error("Error checking tracking permission:", err);
       }
     };
+
+    claimLives({ playerAddress: account.address }).catch(() => {});
 
     askForTracking();
   }, []);
