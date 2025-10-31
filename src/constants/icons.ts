@@ -32,6 +32,7 @@ import BackIcon from "../assets/MenuIcons/back.png";
 import DeckIcon from "../assets/MenuIcons/deck.png";
 import ListIcon from "../assets/MenuIcons/list.png";
 import MoreIcon from "../assets/MenuIcons/more.png";
+import FreepackIcon from "../assets/free-pack.png";
 
 export const Icons = {
   HEART: HeartIcon,
@@ -68,6 +69,7 @@ export const Icons = {
   UNCHECK: UnCheckIcon,
   CLOCK: ClockIcon,
   LEADERBOARD: LeaderboardIcon,
+  FREEPACK: FreepackIcon,
 } as const;
 
 export type IconType = keyof typeof Icons;
