@@ -9,12 +9,11 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { getUserCards } from "../../api/getUserCards";
 import { DelayedLoading } from "../../components/DelayedLoading";
 import { MobileDecoration } from "../../components/MobileDecoration";
 import { Icons } from "../../constants/icons";
-import { getUserSpecialCards } from "../../dojo/queries/getUserSpecialCards";
 import { useDojo } from "../../dojo/useDojo";
-import { useUsername } from "../../dojo/utils/useUsername";
 import { BLUE } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import CollectionGrid from "./Collection";
@@ -22,6 +21,7 @@ import { Collection } from "./types";
 export const MyCollectionPage = () => {
   const { isSmallScreen } = useResponsiveValues();
   const {
+    account: { account },
     setup: { client, useBurnerAcc },
     switchToController,
   } = useDojo();
@@ -33,16 +33,14 @@ export const MyCollectionPage = () => {
     keyPrefix: "my-collection",
   });
 
-  const loggedInUser = useUsername();
-
   useEffect(() => {
-    if (loggedInUser) {
-      getUserSpecialCards(client, loggedInUser).then((collections) => {
+    if (account?.address) {
+      getUserCards(account.address).then((collections) => {
         setIsLoading(false);
         setMyCollection(collections);
       });
     }
-  }, [loggedInUser]);
+  }, [account?.address]);
 
   return (
     <DelayedLoading ms={0}>
