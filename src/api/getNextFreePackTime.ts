@@ -63,8 +63,12 @@ export async function getNextFreePackTime(
     );
   }
 
+  const nowSeconds = Math.floor(Date.now() / 1000);
+  const canClaim = epochSeconds === 0 || epochSeconds <= nowSeconds;
+
   return {
-    canClaim: epochSeconds === 0,
-    nextTime: epochSeconds > 0 ? new Date(epochSeconds * 1000) : undefined,
+    canClaim,
+    nextTime:
+      !canClaim && epochSeconds > 0 ? new Date(epochSeconds * 1000) : undefined,
   };
 }

@@ -28,7 +28,6 @@ export const FreePack = () => {
   useEffect(() => {
     if (account?.address) {
       getNextFreePackTime(account.address).then((date) => {
-        console.log("Free pack date", date);
         setNextTime(date.nextTime);
         setCanClaim(date.canClaim);
         setIsLoading(false);
