@@ -369,11 +369,11 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
           const durations = {
             cardPlayScore: calculateDuration(
-              response.cardPlayScoreEvents?.map((item) => item.hand).flat() ??
+              response.cardPlayEvents?.map((item) => item.hand).flat() ??
                 []
             ),
             specialCardPlayScore: calculateDuration(
-              response.specialCardPlayScoreEvents
+              response.cardPlayEvents
             ),
           };
 
@@ -386,7 +386,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
           //   state.setLevelUpHand(response.levelUpHandEvent);
           // }
 
-          response.cardPlayScoreEvents?.forEach((event, index) => {
+          response.cardPlayEvents?.forEach((event, index) => {
             const isCash = event.eventType === EventTypeEnum.Cash;
             const special_idx = event.specials[0]?.idx;
 
