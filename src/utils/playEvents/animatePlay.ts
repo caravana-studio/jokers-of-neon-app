@@ -1,3 +1,4 @@
+import { postLevelXP } from "../../api/postLevelXP";
 import { EventTypeEnum } from "../../dojo/typescript/custom";
 import { Suits } from "../../enums/suits";
 import { Card } from "../../types/Card";
@@ -39,6 +40,7 @@ interface AnimatePlayConfig {
   setCurrentScore: (score: number) => void;
   resetRage: () => void;
   unPreSelectAllPowerUps: () => void;
+  address: string;
 }
 
 export const animatePlay = (config: AnimatePlayConfig) => {
@@ -76,6 +78,7 @@ export const animatePlay = (config: AnimatePlayConfig) => {
     addPoints,
     resetRage,
     unPreSelectAllPowerUps,
+    address,
   } = config;
 
   if (!playEvents) return;
@@ -97,7 +100,9 @@ export const animatePlay = (config: AnimatePlayConfig) => {
     specialCardPlayScore: calculateDuration(
       playEvents.specialCardPlayScoreEvents
     ),
-    accumDuration: playEvents.acumulativeEvents? playEvents.acumulativeEvents.length * 500 : 0,
+    accumDuration: playEvents.acumulativeEvents
+      ? playEvents.acumulativeEvents.length * 500
+      : 0,
   };
 
   const playDuration = 500;
@@ -152,8 +157,7 @@ export const animatePlay = (config: AnimatePlayConfig) => {
               idx: handIndexes,
               animationIndex: 200 + index,
             });
-            suit &&
-              changeCardsSuit(handIndexes, suit);
+            suit && changeCardsSuit(handIndexes, suit);
           }
         }, playAnimationDuration * index);
       });
@@ -305,15 +309,16 @@ export const animatePlay = (config: AnimatePlayConfig) => {
             animationIndex: 800 + index,
           });
           addMulti(quantity);
-        } 
+        }
       }, playAnimationDuration * index);
     });
   };
 
   const handleGameEnd = () => {
     if (playEvents.cardActivateEvent) {
-      const specialCardInHand =
-        specialCards.find(card =>  card.card_id == playEvents.cardActivateEvent?.special_id);
+      const specialCardInHand = specialCards.find(
+        (card) => card.card_id == playEvents.cardActivateEvent?.special_id
+      );
       if (specialCardInHand) {
         if (specialCardInHand?.card_id == 10023) {
           setAnimateSecondChanceCard(true);
@@ -321,7 +326,7 @@ export const animatePlay = (config: AnimatePlayConfig) => {
           setAnimateSpecialCardDefault({
             specialId: specialCardInHand.card_id,
             bgPath: `Cards/3d/${specialCardInHand.card_id}-l0.png`,
-              animatedImgPath: `Cards/3d/${specialCardInHand.card_id}-l1.png`,
+            animatedImgPath: `Cards/3d/${specialCardInHand.card_id}-l1.png`,
           });
         }
       }
@@ -335,10 +340,15 @@ export const animatePlay = (config: AnimatePlayConfig) => {
         setRoundRewards({
           ...playEvents.detailEarned!,
           roundNumber: playEvents.levelPassed?.round,
-          level_passed: playEvents.levelPassed?.level_passed ? playEvents.levelPassed?.level : 0,
+          level_passed: playEvents.levelPassed?.level_passed
+            ? playEvents.levelPassed?.level
+            : 0,
         });
         navigate("/rewards");
       }, 1000);
+      playEvents.levelPassed?.level_passed &&
+        playEvents.levelPassed?.level &&
+        postLevelXP({ address, level: playEvents.levelPassed?.level }).catch((e) => console.error("Error posting level XP", e));
       setPreSelectionLocked(true);
     } else {
       playEvents.cards && replaceCards(playEvents.cards);
@@ -387,7 +397,9 @@ export const animatePlay = (config: AnimatePlayConfig) => {
 
   setTimeout(
     () => handleAccumulativeCards(),
-    ALL_CARDS_DURATION - durations.accumDuration + (durations.accumDuration > 0 ? playDuration : 0)
+    ALL_CARDS_DURATION -
+      durations.accumDuration +
+      (durations.accumDuration > 0 ? playDuration : 0)
   );
 
   setTimeout(() => {
@@ -405,7 +417,5 @@ export const animatePlay = (config: AnimatePlayConfig) => {
 
     handleGameEnd();
     setCardTransformationLock(false);
-
   }, ALL_CARDS_DURATION + playDuration);
-
 };
