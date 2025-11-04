@@ -3,7 +3,7 @@ import "./App.scss";
 
 import { AnimatedPage } from "./components/AnimatedPage";
 import { GameStoreLoader } from "./components/GameStoreLoader";
-import { Profile } from "./components/Profile/Profile";
+import { ProfilePage } from "./pages/Profile/ProfilePage";
 import { ShopStoreLoader } from "./components/ShopStoreLoader";
 import { BudokanEndpoint } from "./pages/BudokanEndpoint";
 import { DeckPage } from "./pages/Deck/DeckPage";
@@ -99,7 +99,7 @@ export const AppRoutes = () => {
         path="/profile"
         element={
           <AnimatedPage>
-            <Profile />
+            <ProfilePage />
           </AnimatedPage>
         }
       />

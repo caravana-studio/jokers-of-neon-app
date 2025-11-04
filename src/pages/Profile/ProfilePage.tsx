@@ -5,10 +5,10 @@ import { Icons } from "../../constants/icons";
 import { useDojo } from "../../dojo/useDojo";
 import { useUsername } from "../../dojo/utils/useUsername";
 import { useProfileStore } from "../../state/useProfileStore";
-import { Loading } from "../Loading";
+import { Loading } from "../../components/Loading";
 import { ProfileContent } from "./ProfileContent";
 
-export const Profile = () => {
+export const ProfilePage = () => {
   const {
     setup: { useBurnerAcc, account, client },
     switchToController,
