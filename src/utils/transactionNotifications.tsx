@@ -102,12 +102,12 @@ export const showTransactionToast = (
   );
 };
 
-export const showAchievementToast = (achievementIds: string[]): void => {
+export const showDailyMissionToast = (dailyMissionIds: string[]): void => {
   const basePosition = isMobile ? "top-left" : "bottom-left";
   const leftPosition = isMobile ? "8px" : "26px";
   const marginTop = isMobile ? 80 : 60;
 
-  const getAchievementToastOptions = (): ExternalToast => {
+  const getToastOptions = (): ExternalToast => {
     const baseStyle = {
       position: isNative
         ? "absolute"
@@ -124,9 +124,9 @@ export const showAchievementToast = (achievementIds: string[]): void => {
     };
   };
 
-  achievementIds.forEach((achievementId, index) => {
+  dailyMissionIds.forEach((id, index) => {
     const difficulty =
-      DAILY_MISSIONS[achievementId] ?? DailyMissionDifficulty.EASY;
+      DAILY_MISSIONS[id] ?? DailyMissionDifficulty.EASY;
     const xp = XP_PER_DIFFICULTY[difficulty];
     setTimeout(() => {
       toast.custom(
@@ -165,12 +165,12 @@ export const showAchievementToast = (achievementIds: string[]): void => {
                 {i18n.t(`title`, { ns: "achievements" })} +{xp}XP
               </Text>
               <Text fontSize={isMobile ? "12px" : "14px"} fontWeight="semibold">
-                {i18n.t(`data.${achievementId}`, { ns: "achievements" })}
+                {i18n.t(`data.${id}`, { ns: "achievements" })}
               </Text>
             </Box>
           </Box>
         ),
-        getAchievementToastOptions()
+        getToastOptions()
       );
     }, index * 200);
   });

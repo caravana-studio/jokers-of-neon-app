@@ -19,7 +19,7 @@ import { useDojo } from "./useDojo";
 import { achievementSfx } from "../constants/sfx";
 import { useAudio } from "../hooks/useAudio";
 import { useSettings } from "../providers/SettingsProvider";
-import { handleAchievements } from "../utils/handleAchievements";
+import { handleXPEvents } from "../utils/handleXPEvents";
 import { getModifiersForContract } from "./utils/getModifiersForContract";
 
 const createGameEmptyResponse = {
@@ -72,7 +72,7 @@ export const useGameActions = () => {
         );
         console.log("Game " + gameId + " created");
 
-        await handleAchievements(tx.value.events, achievementSound);
+        await handleXPEvents(tx.value.events, achievementSound, account.address);
 
         return {
           gameId,
@@ -213,7 +213,7 @@ export const useGameActions = () => {
 
       updateTransactionToast(transaction_hash, tx.isSuccess());
       if (tx.isSuccess()) {
-        await handleAchievements(tx.value.events, achievementSound);
+        await handleXPEvents(tx.value.events, achievementSound, account.address);
         return getPlayEvents(tx.value.events);
       }
       return;
@@ -242,7 +242,7 @@ export const useGameActions = () => {
 
       updateTransactionToast(transaction_hash, tx.isSuccess());
       if (tx.isSuccess()) {
-        await handleAchievements(tx.value.events, achievementSound);
+        await handleXPEvents(tx.value.events, achievementSound, account.address);
         return {
           success: true,
           cards: getCardsFromEvents(tx.value.events),
@@ -279,7 +279,7 @@ export const useGameActions = () => {
       const success = updateTransactionToast(transaction_hash, tx.isSuccess());
 
       if (tx.isSuccess()) {
-        await handleAchievements(tx.value.events, achievementSound);
+        await handleXPEvents(tx.value.events, achievementSound, account.address);
       }
 
       return { success };
@@ -306,7 +306,7 @@ export const useGameActions = () => {
       const success = updateTransactionToast(transaction_hash, tx.isSuccess());
 
       if (tx.isSuccess()) {
-        await handleAchievements(tx.value.events, achievementSound);
+        await handleXPEvents(tx.value.events, achievementSound, account.address);
       }
 
       return { success };
@@ -346,7 +346,7 @@ export const useGameActions = () => {
       if (tx.isSuccess()) {
         const events = tx.value.events;
 
-        await handleAchievements(tx.value.events, achievementSound);
+        await handleXPEvents(tx.value.events, achievementSound, account.address);
         return getPlayEvents(events);
       }
       return;
@@ -383,7 +383,7 @@ export const useGameActions = () => {
           getNumberValueFromEvents(events, MINT_GAME_EVENT_KEY, 2, 0);
         console.log("Game " + gameId + " minted");
 
-        await handleAchievements(tx.value.events, achievementSound);
+        await handleXPEvents(tx.value.events, achievementSound, account.address);
 
         return gameId;
       } else {

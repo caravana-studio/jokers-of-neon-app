@@ -322,6 +322,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             addMulti,
             resetRage,
             unPreSelectAllPowerUps,
+            address: account.address,
           });
           fetchDeck(client, gameId, getCardData);
           refetchSpecialCardsData(modId, gameId, specialCards);

@@ -106,7 +106,7 @@ export interface CashEvent {
   special_idx: number;
 }
 
-export interface AchievementCompleted {
+export interface DailyMissionCompleted {
   player: string;
-  achievementId: string;
+  dailyMissionId: string;
 }
