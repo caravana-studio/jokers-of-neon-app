@@ -19,11 +19,16 @@ import { SeasonPassProvider } from "./providers/SeasonPassProvider";
 import { SettingsProvider } from "./providers/SettingsProvider";
 import { claimLives } from "./queries/claimLives";
 import ZoomPrevention from "./utils/ZoomPrevention";
+import { Purchases, LOG_LEVEL } from '@revenuecat/purchases-capacitor';
+import { useUsername } from "./dojo/utils/useUsername";
+import { getRevenueCatApiKey } from "./utils/getRevenueCatApiKey";
 
 function App() {
   const {
     account: { account },
   } = useDojo();
+
+  const username = useUsername()
 
   useEffect(() => {
     const askForTracking = async () => {
@@ -43,7 +48,17 @@ function App() {
     claimLives({ playerAddress: account.address }).catch(() => {});
 
     askForTracking();
+
+    (async function () {
+      await Purchases.setLogLevel({ level: LOG_LEVEL.DEBUG });
+      await Purchases.configure({
+        apiKey: getRevenueCatApiKey(),
+        appUserID: username,
+      });
+    })();
+
   }, []);
+
 
   return (
     <SettingsProvider>
