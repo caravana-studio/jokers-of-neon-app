@@ -5,10 +5,12 @@ import { SpeedInsights } from "@vercel/speed-insights/react";
 import { AppTrackingTransparency } from "capacitor-plugin-app-tracking-transparency";
 import { AnimatePresence } from "framer-motion";
 import { useEffect } from "react";
+import { createProfile, fetchProfile } from "./api/profile";
 import { AppRoutes } from "./AppRoutes";
 import { Background } from "./components/Background";
 import { Layout } from "./components/Layout";
 import { useDojo } from "./dojo/DojoContext";
+import { useUsername } from "./dojo/utils/useUsername";
 import { AudioPlayerProvider } from "./providers/AudioPlayerProvider";
 import { CardAnimationsProvider } from "./providers/CardAnimationsProvider";
 import { CardDataProvider } from "./providers/CardDataProvider";
@@ -24,6 +26,8 @@ function App() {
   const {
     account: { account },
   } = useDojo();
+
+  const username = useUsername();
 
   useEffect(() => {
     const askForTracking = async () => {
@@ -41,6 +45,12 @@ function App() {
     };
 
     claimLives({ playerAddress: account.address }).catch(() => {});
+
+    fetchProfile(account.address).then((profile) => {
+      if (profile.username === "" && username) {
+        createProfile(account.address, username, 1);
+      }
+    });
 
     askForTracking();
   }, []);
