@@ -13,10 +13,9 @@ export interface PlayEvents {
   secondChanceEvent?: boolean;
   powerUpEvents?: PowerUpScore[];
   cardPlayChangeEvents?: CardPlayEvent[];
-  cardPlayScoreEvents?: CardPlayEvent[];
-  specialCardPlayScoreEvents?: CardPlayEvent[];
   cardActivateEvent?: CardActivateEvent;
   acumulativeEvents?: CardPlayEvent[];
+  cardPlayEvents?: CardPlayEvent[];
 }
 
 export interface CardPlayEvent {
