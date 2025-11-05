@@ -1,7 +1,7 @@
 import { Box, SystemStyleObject } from "@chakra-ui/react";
 import { faVolumeHigh, faVolumeXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useAudioPlayer } from "../providers/AudioPlayerProvider";
+import { useSettings } from "../providers/SettingsProvider";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 
 interface AudioPlayerProps {
@@ -15,9 +15,9 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({
   isEnabled,
   onClick,
 }) => {
-  const { isPlaying, toggleSound } = useAudioPlayer();
-  const effectiveIsEnabled = isEnabled ?? isPlaying;
-  const effectiveOnClick = onClick ?? toggleSound;
+  const { musicOn, toggleMusic } = useSettings();
+  const effectiveIsEnabled = isEnabled ?? musicOn;
+  const effectiveOnClick = onClick ?? toggleMusic;
 
   const { isSmallScreen } = useResponsiveValues();
 
