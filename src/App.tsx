@@ -8,7 +8,6 @@ import { useEffect } from "react";
 import { AppRoutes } from "./AppRoutes";
 import { Background } from "./components/Background";
 import { Layout } from "./components/Layout";
-import { AudioPlayerProvider } from "./providers/AudioPlayerProvider";
 import { CardAnimationsProvider } from "./providers/CardAnimationsProvider";
 import { CardDataProvider } from "./providers/CardDataProvider";
 import { GameProvider } from "./providers/GameProvider";
@@ -37,26 +36,24 @@ function App() {
   }, []);
 
   return (
-    <SettingsProvider>
+    <SettingsProvider
+      introSongPath={"music/intro-track.mp3"}
+      baseSongPath={"music/game-track.mp3"}
+      rageSongPath={"music/rage_soundtrack.mp3"}
+    >
       <ZoomPrevention>
         <CardAnimationsProvider>
           <CardDataProvider>
             <GameProvider>
               <PageTransitionsProvider>
                 <InformationPopUpProvider>
-                  <AudioPlayerProvider
-                    introSongPath={"music/intro-track.mp3"}
-                    baseSongPath={"music/game-track.mp3"}
-                    rageSongPath={"music/rage_soundtrack.mp3"}
-                  >
-                    <Background>
-                      <Layout>
-                        <AnimatePresence mode="wait">
-                          <AppRoutes />
-                        </AnimatePresence>
-                      </Layout>
-                    </Background>
-                  </AudioPlayerProvider>
+                  <Background>
+                    <Layout>
+                      <AnimatePresence mode="wait">
+                        <AppRoutes />
+                      </AnimatePresence>
+                    </Layout>
+                  </Background>
                 </InformationPopUpProvider>
               </PageTransitionsProvider>
             </GameProvider>
