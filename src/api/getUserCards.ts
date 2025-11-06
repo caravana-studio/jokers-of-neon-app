@@ -1,6 +1,6 @@
 import type { Collection } from "../pages/MyCollection/types";
 import { fillCollections } from "../pages/MyCollection/utils";
-import { transformAPIResultToCollection } from "../utils/transformers/transformApiResultToCollection";
+import { transformAPIResultToCollection } from "../utils/transformers/transformAPIResultToCollection";
 
 const DEFAULT_API_BASE_URL = "http://localhost:3001";
 
@@ -91,7 +91,6 @@ export async function getUserCards(userAddress: string): Promise<Collection[]> {
     // TODO: remove this
     .filter((entry) => entry.cardId >= 10100);
 
-    console.log("userCards", userCards);  
 
   return fillCollections(transformAPIResultToCollection(userCards));
 }
