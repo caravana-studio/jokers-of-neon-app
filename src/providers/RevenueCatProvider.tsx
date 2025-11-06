@@ -28,6 +28,15 @@ type PurchasesClient = WebPurchasesInstance | typeof CapacitorPurchases;
 
 type RevenueCatPackage = NativePackage | WebPackage;
 
+type RevenueCatPurchaseOptions = {
+  customerEmail?: string;
+  htmlTarget?: HTMLElement;
+  selectedLocale?: string;
+  defaultLocale?: string;
+  metadata?: Record<string, string | null> | null;
+  skipSuccessPage?: boolean;
+};
+
 type RevenueCatProductSummary = {
   id: string;
   formattedPrice: string;
@@ -35,6 +44,7 @@ type RevenueCatProductSummary = {
 
 type RevenueCatFormattedOfferings = {
   packs: RevenueCatProductSummary[];
+  packPackages: Record<string, RevenueCatPackage>;
   seasonPass: RevenueCatProductSummary | null;
   seasonPassPackage: RevenueCatPackage | null;
 };
@@ -44,6 +54,14 @@ type RevenueCatContextValue = {
   loading: boolean;
   refreshOfferings: () => Promise<void>;
   purchases: PurchasesClient | null;
+  purchasePackage: (
+    rcPackage: RevenueCatPackage,
+    options?: RevenueCatPurchaseOptions
+  ) => Promise<void>;
+  purchasePackageById: (
+    packageId: string,
+    options?: RevenueCatPurchaseOptions
+  ) => Promise<void>;
 };
 
 const RevenueCatContext = createContext<RevenueCatContextValue>({
@@ -51,6 +69,8 @@ const RevenueCatContext = createContext<RevenueCatContextValue>({
   loading: false,
   refreshOfferings: async () => {},
   purchases: null,
+  purchasePackage: async () => {},
+  purchasePackageById: async () => {},
 });
 
 type UnknownRecord = Record<string, unknown>;
@@ -193,6 +213,7 @@ const normalizeOfferings = (
   if (!current || !isRecord(current)) {
     return {
       packs: [],
+      packPackages: {},
       seasonPass: null,
       seasonPassPackage: null,
     };
@@ -205,6 +226,7 @@ const normalizeOfferings = (
     : [];
 
   const packs: RevenueCatProductSummary[] = [];
+  const packPackages: Record<string, RevenueCatPackage> = {};
   let seasonPass: RevenueCatProductSummary | null = null;
   let seasonPassPackage: RevenueCatPackage | null = null;
 
@@ -226,12 +248,14 @@ const normalizeOfferings = (
     } else {
       if (!packs.some((pack) => pack.id === summary.id)) {
         packs.push(summary);
+        packPackages[summary.id] = pkg as RevenueCatPackage;
       }
     }
   }
 
   return {
     packs,
+    packPackages,
     seasonPass,
     seasonPassPackage,
   };
@@ -327,14 +351,98 @@ export const RevenueCatProvider = ({ children }: PropsWithChildren) => {
     }
   }, [configureRevenueCat, fetchOfferings, username]);
 
+  const purchasePackage = useCallback(
+    async (
+      rcPackage: RevenueCatPackage,
+      options?: RevenueCatPurchaseOptions
+    ) => {
+      if (!rcPackage) {
+        throw new Error("purchasePackage: missing package");
+      }
+
+      if (!purchasesRef.current) {
+        throw new Error(
+          "purchasePackage: RevenueCat purchases client not available"
+        );
+      }
+
+      if (isNative) {
+        await (purchasesRef.current as typeof CapacitorPurchases).purchasePackage(
+          {
+            aPackage: rcPackage as NativePackage,
+          }
+        );
+      } else {
+        await (purchasesRef.current as WebPurchasesInstance).purchase({
+          rcPackage: rcPackage as WebPackage,
+          customerEmail: options?.customerEmail,
+          htmlTarget: options?.htmlTarget,
+          selectedLocale: options?.selectedLocale,
+          defaultLocale: options?.defaultLocale,
+          metadata: options?.metadata ?? undefined,
+          skipSuccessPage: options?.skipSuccessPage,
+        });
+      }
+    },
+    []
+  );
+
+  const purchasePackageById = useCallback(
+    async (packageId: string, options?: RevenueCatPurchaseOptions) => {
+      if (!packageId) {
+        throw new Error("purchasePackageById: missing package id");
+      }
+
+      const normalizedId = packageId.toLowerCase();
+
+      let resolvedPackage: RevenueCatPackage | null = null;
+
+      if (
+        offerings?.seasonPassPackage &&
+        getPackageIdentifier(offerings.seasonPassPackage)?.toLowerCase() ===
+          normalizedId
+      ) {
+        resolvedPackage = offerings.seasonPassPackage;
+      } else if (offerings?.packPackages) {
+        const candidate = offerings.packPackages[packageId];
+        const fallbackCandidate =
+          offerings.packPackages[normalizedId] ??
+          offerings.packPackages[
+            Object.keys(offerings.packPackages).find(
+              (key) => key.toLowerCase() === normalizedId
+            ) ?? ""
+          ];
+        resolvedPackage = candidate ?? fallbackCandidate ?? null;
+      }
+
+      if (!resolvedPackage) {
+        throw new Error(
+          `purchasePackageById: package '${packageId}' not found in offerings`
+        );
+      }
+
+      await purchasePackage(resolvedPackage, options);
+    },
+    [offerings, purchasePackage]
+  );
+
   const value = useMemo<RevenueCatContextValue>(
     () => ({
       offerings,
       loading,
       refreshOfferings: fetchOfferings,
       purchases: purchasesClient,
+      purchasePackage,
+      purchasePackageById,
     }),
-    [fetchOfferings, loading, offerings, purchasesClient]
+    [
+      fetchOfferings,
+      loading,
+      offerings,
+      purchasesClient,
+      purchasePackage,
+      purchasePackageById,
+    ]
   );
 
   return (

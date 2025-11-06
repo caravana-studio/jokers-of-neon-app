@@ -1,7 +1,3 @@
-import type { PurchasesPackage as NativePackage } from "@revenuecat/purchases-capacitor";
-import { Purchases as CapacitorPurchases } from "@revenuecat/purchases-capacitor";
-import type { Package as WebPackage } from "@revenuecat/purchases-js";
-import { Purchases as WebPurchases } from "@revenuecat/purchases-js";
 import {
   PropsWithChildren,
   createContext,
@@ -14,7 +10,6 @@ import {
 import { getSeasonProgress } from "../api/getSeasonProgress";
 import { SEASON_NUMBER } from "../constants/season";
 import { useDojo } from "../dojo/DojoContext";
-import { isNative } from "../utils/capacitorUtils";
 import { showPurchaseSuccessToast } from "../utils/transactionNotifications";
 import { useRevenueCat } from "./RevenueCatProvider";
 
@@ -31,7 +26,6 @@ const SeasonPassContext = createContext<SeasonPassContextValue>({
 });
 
 const DEFAULT_API_BASE_URL = "http://localhost:3001";
-type WebPurchasesInstance = ReturnType<typeof WebPurchases.configure>;
 
 export const SeasonPassProvider = ({ children }: PropsWithChildren) => {
   const {
@@ -40,7 +34,7 @@ export const SeasonPassProvider = ({ children }: PropsWithChildren) => {
   const [seasonPassUnlocked, setSeasonPassUnlocked] = useState(false);
 
   const userAddress = account?.address;
-  const { purchases, offerings } = useRevenueCat();
+  const { offerings, purchasePackageById } = useRevenueCat();
 
   const fetchSeasonPassUnlocked = useCallback(async () => {
     if (!userAddress) {
@@ -61,19 +55,16 @@ export const SeasonPassProvider = ({ children }: PropsWithChildren) => {
     fetchSeasonPassUnlocked();
   }, [fetchSeasonPassUnlocked]);
 
+  const seasonPassId = offerings?.seasonPass?.id;
+
   const purchaseSeasonPass = useCallback(async () => {
     if (!userAddress) {
       console.warn("purchaseSeasonPass: missing user address");
       return;
     }
-    console.log("purchases", purchases);
-    if (!purchases) {
-      console.warn("purchaseSeasonPass: RevenueCat purchases client not ready");
-      return;
-    }
 
-    const seasonPassPackage = offerings?.seasonPassPackage;
-    if (!seasonPassPackage) {
+    const seasonPassPackageId = seasonPassId;
+    if (!seasonPassPackageId) {
       console.warn(
         "purchaseSeasonPass: missing RevenueCat season pass package"
       );
@@ -81,16 +72,7 @@ export const SeasonPassProvider = ({ children }: PropsWithChildren) => {
     }
 
     try {
-      if (isNative) {
-        await (purchases as typeof CapacitorPurchases).purchasePackage({
-          aPackage: seasonPassPackage as NativePackage,
-        });
-      } else {
-        const response = await (purchases as WebPurchasesInstance).purchase({
-          rcPackage: seasonPassPackage as WebPackage,
-        });
-        console.log("response", response);
-      }
+      await purchasePackageById(seasonPassPackageId);
 
       const apiKey = import.meta.env.VITE_GAME_API_KEY;
       if (!apiKey) {
@@ -134,8 +116,8 @@ export const SeasonPassProvider = ({ children }: PropsWithChildren) => {
     }
   }, [
     fetchSeasonPassUnlocked,
-    offerings?.seasonPassPackage,
-    purchases,
+    seasonPassId,
+    purchasePackageById,
     userAddress,
   ]);
 

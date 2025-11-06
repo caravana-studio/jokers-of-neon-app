@@ -26,6 +26,9 @@
       },
       "buy": "COMPRAR",
       "packs": {
+        "purchase-error-title": "Compra fallida",
+        "purchase-error-no-account": "No pudimos encontrar tu cuenta. Por favor, intenta cerrar sesión y volver a iniciarla.",
+        "purchase-error-description": "No pudimos completar tu compra de pack. Por favor, inténtalo de nuevo.",
         "player-pack": "Pack de jugador",
         "limited-edition": "Editión limitada",
         "size": "Tamaño",
@@ -108,7 +111,9 @@
     "level": "NIVEL"
   },
   "external-pack": {
-    "continue": "Continuar"
+    "continue": "Continuar",
+    "open": "Abrir",
+    "draw-line": "Traza una línea para abrir"
   },
   "my-games": {
     "title": "Juegos",

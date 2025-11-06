@@ -27,6 +27,9 @@
       "buy": "BUY"
     },
     "packs": {
+      "purchase-error-title": "Purchase failed",
+      "purchase-error-no-account": "We couldn't find your account. Please try logging out and back in.",
+      "purchase-error-description": "We couldn't complete your pack purchase. Please try again.",
       "buy": "BUY",
       "player-pack": "Player pack",
       "limited-edition": "Limited edition",
@@ -109,7 +112,9 @@
     "level": "LEVEL"
   },
   "external-pack": {
-    "continue": "Continue"
+    "continue": "Continue",
+    "open": "Open",
+    "draw-line": "Draw a line to open"
   },
   "my-games": {
     "title": "Games",

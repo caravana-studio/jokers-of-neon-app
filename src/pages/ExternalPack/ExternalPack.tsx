@@ -1,15 +1,13 @@
-import { Button, Flex, Heading, Spinner, Text } from "@chakra-ui/react";
+import { Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { faCaretRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate, useParams } from "react-router-dom";
-import { mintPack } from "../../api/mintPack";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { GalaxyBackground } from "../../components/backgrounds/galaxy/GalaxyBackground";
 import { GalaxyBackgroundIntensity } from "../../components/backgrounds/galaxy/types";
 import CachedImage from "../../components/CachedImage";
 import { DelayedLoading } from "../../components/DelayedLoading";
-import { LootBoxRateInfo } from "../../components/Info/LootBoxRateInfo";
 import { MobileDecoration } from "../../components/MobileDecoration";
 import { RARITY, RarityLabels } from "../../constants/rarity";
 import { useDojo } from "../../dojo/useDojo";
@@ -61,12 +59,13 @@ export const ExternalPack = ({
   onContinue,
   packId: providedPackId,
 }: ExternalPackProps) => {
-  const { t } = useTranslation("intermediate-screens", {
-    keyPrefix: "external-pack",
-  });
+  const { t } = useTranslation("intermediate-screens");
 
   const params = useParams();
-  const packId = providedPackId ?? Number(params.packId ?? 1);
+  const location = useLocation();
+  const locationState = location.state as ExternalPackProps | null;
+  const packId =
+    providedPackId ?? locationState?.packId ?? Number(params.packId ?? 1);
 
   const { t: tDocs } = useTranslation("docs");
   const { t: tGame } = useTranslation("game");
@@ -76,7 +75,13 @@ export const ExternalPack = ({
 
   const [allCardsSeen, setAllCardsSeen] = useState(false);
 
-  const [step, setStep] = useState(initialCards ? 1 : 0);
+  const initialCardsSource =
+    (initialCards && initialCards.length > 0 ? initialCards : undefined) ??
+    (locationState?.initialCards && locationState.initialCards.length > 0
+      ? locationState.initialCards
+      : undefined);
+
+  const [step, setStep] = useState(0);
 
   const { isSmallScreen } = useResponsiveValues();
 
@@ -104,7 +109,7 @@ export const ExternalPack = ({
   const [buying, setBuying] = useState(false);
 
   const [obtainedCards, setObtainedCards] = useState<SimplifiedCard[]>(
-    initialCards ?? []
+    initialCardsSource ?? []
   );
 
   return (
@@ -127,7 +132,7 @@ export const ExternalPack = ({
           {isSmallScreen ? (
             <FontAwesomeIcon color="white" fontSize={13} icon={faCaretRight} />
           ) : (
-            t("continue")
+            t("external-pack.continue")
           )}
         </Button>
       )}
@@ -154,13 +159,16 @@ export const ExternalPack = ({
                   variant="italic"
                   textTransform="unset"
                 >
-                  LEGENDARY
+                  {t(`shop.packs.${packId}.name`)}
                 </Heading>
                 <Text size="l" fontWeight={600}>
-                  - PLAYER PACK -
+                  -{" "}
+                  {t(
+                    `shop.packs.${packId > 4 ? "limited-edition" : "player-pack"}`
+                  )}{" "}
+                  -
                 </Text>
               </Flex>
-              <LootBoxRateInfo name={"test"} details={"details"} />
             </>
           )}
 
@@ -216,7 +224,7 @@ export const ExternalPack = ({
                 animation: "fadeIn 1s ease 3s forwards",
               }}
             >
-              <Text size="lg">Draw a line to open</Text>
+              <Text size="lg">{t("external-pack.draw-line")}</Text>
             </Flex>
           )}
 
@@ -314,33 +322,14 @@ export const ExternalPack = ({
             <Button
               mt={6}
               onClick={() => {
-                setBuying(true);
-                mintPack({
-                  packId,
-                  recipient: account.account?.address,
-                })
-                  .then((response) => {
-                    setBuying(false);
-                    setObtainedCards(
-                      response.map((card: any) => ({
-                        card_id: card.card_id,
-                        skin_id: card.skin_id,
-                      }))
-                    );
-                    setStep(1);
-                  })
-                  .catch((error) => {
-                    setBuying(false);
-                    console.log(error);
-                  });
+                setStep(1);
               }}
               width="40%"
               variant={"secondarySolid"}
               fontFamily="Oxanium"
               fontSize={14}
-              isDisabled={buying}
             >
-              {buying ? <Spinner size="sm" /> : "BUY · $9.99"}
+              {t("external-pack.open")}
             </Button>
           )}
           {step === 4 && (
