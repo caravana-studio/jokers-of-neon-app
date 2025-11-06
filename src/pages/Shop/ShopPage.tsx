@@ -1,8 +1,10 @@
 import { Flex, Heading } from "@chakra-ui/react";
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { DelayedLoading } from "../../components/DelayedLoading";
 import { MobileDecoration } from "../../components/MobileDecoration";
 import { useSeasonPass } from "../../providers/SeasonPassProvider";
+import { useRevenueCat } from "../../providers/RevenueCatProvider";
 import { BLUE } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { PackRow } from "./PackRow";
@@ -15,6 +17,14 @@ export const ShopPage = () => {
   });
 
   const { seasonPassUnlocked } = useSeasonPass();
+  const { offerings } = useRevenueCat();
+
+  useEffect(() => {
+    if (offerings) {
+      console.log("RevenueCat offerings", offerings);
+    }
+  }, [offerings]);
+
   return (
     <DelayedLoading ms={200}>
       <MobileDecoration fadeToBlack />
@@ -42,12 +52,12 @@ export const ShopPage = () => {
           </Heading>
         </Flex>
         <Flex flexDir={"column"} gap={2} my={2}>
-          {!seasonPassUnlocked && <SeasonPassRow />}
-          <PackRow packId={6} />
-          <PackRow packId={5} />
-          <PackRow packId={4} />
-          <PackRow packId={3} />
-          <PackRow packId={2} />
+          {!seasonPassUnlocked && <SeasonPassRow price={offerings?.seasonPass?.formattedPrice} />}
+          <PackRow packId={6} price={offerings?.packs?.find(pack => pack.id === "pack_collector_xl")?.formattedPrice} />
+          <PackRow packId={5} price={offerings?.packs.find(pack => pack.id === "pack_collector")?.formattedPrice} />
+          <PackRow packId={4} price={offerings?.packs.find(pack => pack.id === "pack_legendary")?.formattedPrice} />
+          <PackRow packId={3} price={offerings?.packs.find(pack => pack.id === "pack_epic")?.formattedPrice} />
+          <PackRow packId={2} price={offerings?.packs.find(pack => pack.id === "pack_advanced")?.formattedPrice} />
         </Flex>
       </Flex>
     </DelayedLoading>

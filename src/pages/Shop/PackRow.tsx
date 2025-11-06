@@ -10,11 +10,12 @@ import { packAnimation } from "../../constants/animations";
 
 interface PackRowProps {
   packId: number;
+  price?: string;
 }
 
 const PACK_SIZES = [0, 3, 3, 4, 4, 4, 6];
 
-export const PackRow = ({ packId }: PackRowProps) => {
+export const PackRow = ({ packId, price = "$" }: PackRowProps) => {
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "shop.packs",
   });
@@ -109,7 +110,7 @@ export const PackRow = ({ packId }: PackRowProps) => {
                 navigate(`/external-pack/${packId}`);
               }}
             >
-              {t("buy")} · $9.99
+              {t("buy")} · {price}
             </Button>
           </Flex>
           <Flex
