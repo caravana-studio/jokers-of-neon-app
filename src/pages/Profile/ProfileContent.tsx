@@ -6,12 +6,12 @@ import { useDojo } from "../../dojo/DojoContext";
 import { useUsername } from "../../dojo/utils/useUsername";
 import { ProfileStore } from "../../state/useProfileStore";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
-import { DelayedLoading } from "../DelayedLoading";
-import { PositionedDiscordLink } from "../DiscordLink";
-import { DeleteAccBtn } from "../Menu/Buttons/DeleteAccBtn";
-import { LogoutMenuBtn } from "../Menu/Buttons/Logout/LogoutMenuBtn";
-import { MenuBtn } from "../Menu/Buttons/MenuBtn";
-import { MobileDecoration } from "../MobileDecoration";
+import { DelayedLoading } from "../../components/DelayedLoading";
+import { PositionedDiscordLink } from "../../components/DiscordLink";
+import { DeleteAccBtn } from "../../components/Menu/Buttons/DeleteAccBtn";
+import { LogoutMenuBtn } from "../../components/Menu/Buttons/Logout/LogoutMenuBtn";
+import { MenuBtn } from "../../components/Menu/Buttons/MenuBtn";
+import { MobileDecoration } from "../../components/MobileDecoration";
 import { ProfileStats } from "./ProfileStats";
 
 export const ProfileContent = ({
@@ -21,7 +21,7 @@ export const ProfileContent = ({
   data: ProfileData;
   onUpdateAvatar: ProfileStore["updateAvatar"];
 }) => {
-  const { playerStats, profile, levelXp, currentBadges, totalBadges } = data;
+  const { playerStats, profile, xpLine, currentBadges, totalBadges } = data;
 
   const btnWidth = "18px";
   const { setup } = useDojo();
@@ -56,7 +56,7 @@ export const ProfileContent = ({
             games={playerStats.games}
             victories={playerStats.victories}
             currentXp={profile.currentXp}
-            levelXp={levelXp}
+            xpLine={xpLine}
             profilePicture={profile.avatarId}
             onUpdateAvatar={(avatarId) =>
               onUpdateAvatar(

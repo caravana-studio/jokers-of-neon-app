@@ -1,6 +1,6 @@
 import { Box, Collapse, Flex, Heading, Text } from "@chakra-ui/react";
 import { ProfileStat } from "./ProfileStat";
-import { ProgressBar } from "../CompactRoundData/ProgressBar";
+import { ProgressBar } from "../../components/CompactRoundData/ProgressBar";
 import { VIOLET } from "../../theme/colors";
 import { useTranslation } from "react-i18next";
 import { ProfilePicture } from "./ProfilePicture";
@@ -15,7 +15,10 @@ export interface ProfileStatsProps {
   games: number;
   victories: number;
   currentXp: number;
-  levelXp: number;
+  xpLine: {
+    prevLevelXp: number;
+    nextLevelXp: number;
+  };
 }
 
 export const ProfileStats: React.FC<
@@ -31,7 +34,7 @@ export const ProfileStats: React.FC<
   games,
   victories,
   currentXp,
-  levelXp,
+  xpLine,
 }) => {
   const [profilePickerVisible, setProfilePickerVisible] = useState(false);
   const [profilePictureId, setProfilePictureId] = useState<number | string>(
@@ -45,6 +48,17 @@ export const ProfileStats: React.FC<
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "profile-menu",
   });
+
+  const prevLevelXp = Math.max(0, xpLine.prevLevelXp);
+  const nextLevelXp = Math.max(prevLevelXp, xpLine.nextLevelXp);
+  const levelRange = nextLevelXp - prevLevelXp;
+  const normalizedCurrentXp = Math.max(currentXp, prevLevelXp);
+  const progress =
+    levelRange > 0
+      ? ((Math.min(normalizedCurrentXp, nextLevelXp) - prevLevelXp) /
+          levelRange) *
+        100
+      : 0;
 
   return (
     <Flex
@@ -141,11 +155,11 @@ export const ProfileStats: React.FC<
               mt={-1}
               variant="italic"
             >
-              {levelXp}
+              {nextLevelXp}
             </Heading>
           </Box>
         </Flex>
-        <ProgressBar progress={(currentXp / levelXp) * 100} color={VIOLET} />
+        <ProgressBar progress={progress} color={VIOLET} />
       </Box>
     </Flex>
   );
