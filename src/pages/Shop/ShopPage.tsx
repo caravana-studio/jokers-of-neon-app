@@ -1,5 +1,4 @@
 import { Flex, Heading } from "@chakra-ui/react";
-import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { DelayedLoading } from "../../components/DelayedLoading";
 import { MobileDecoration } from "../../components/MobileDecoration";
@@ -18,12 +17,9 @@ export const ShopPage = () => {
 
   const { seasonPassUnlocked } = useSeasonPass();
   const { offerings } = useRevenueCat();
-
-  useEffect(() => {
-    if (offerings) {
-      console.log("RevenueCat offerings", offerings);
-    }
-  }, [offerings]);
+  const seasonPassPrice = offerings?.seasonPass?.formattedPrice ?? "$";
+  const findPackPrice = (identifier: string) =>
+    offerings?.packs?.find((pack) => pack.id === identifier)?.formattedPrice;
 
   return (
     <DelayedLoading ms={200}>
@@ -52,12 +48,12 @@ export const ShopPage = () => {
           </Heading>
         </Flex>
         <Flex flexDir={"column"} gap={2} my={2}>
-          {!seasonPassUnlocked && <SeasonPassRow price={offerings?.seasonPass?.formattedPrice} />}
-          <PackRow packId={6} price={offerings?.packs?.find(pack => pack.id === "pack_collector_xl")?.formattedPrice} />
-          <PackRow packId={5} price={offerings?.packs.find(pack => pack.id === "pack_collector")?.formattedPrice} />
-          <PackRow packId={4} price={offerings?.packs.find(pack => pack.id === "pack_legendary")?.formattedPrice} />
-          <PackRow packId={3} price={offerings?.packs.find(pack => pack.id === "pack_epic")?.formattedPrice} />
-          <PackRow packId={2} price={offerings?.packs.find(pack => pack.id === "pack_advanced")?.formattedPrice} />
+          {!seasonPassUnlocked && <SeasonPassRow price={seasonPassPrice} />}
+          <PackRow packId={6} price={findPackPrice("pack_collector_xl")} />
+          <PackRow packId={5} price={findPackPrice("pack_collector")} />
+          <PackRow packId={4} price={findPackPrice("pack_legendary")} />
+          <PackRow packId={3} price={findPackPrice("pack_epic")} />
+          <PackRow packId={2} price={findPackPrice("pack_advanced")} />
         </Flex>
       </Flex>
     </DelayedLoading>

@@ -48,8 +48,8 @@ function App() {
 
   return (
     <SettingsProvider>
-      <SeasonPassProvider>
-        <RevenueCatProvider>
+      <RevenueCatProvider>
+        <SeasonPassProvider>
           <ZoomPrevention>
             <CardAnimationsProvider>
               <CardDataProvider>
@@ -77,8 +77,8 @@ function App() {
             <Analytics />
             <SpeedInsights />
           </ZoomPrevention>
-        </RevenueCatProvider>
-      </SeasonPassProvider>
+        </SeasonPassProvider>
+      </RevenueCatProvider>
     </SettingsProvider>
   );
 }

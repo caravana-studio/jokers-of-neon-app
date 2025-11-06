@@ -13,16 +13,20 @@ import {
   LOG_LEVEL,
   PurchasesOfferings as NativeOfferings,
 } from "@revenuecat/purchases-capacitor";
+import type { PurchasesPackage as NativePackage } from "@revenuecat/purchases-capacitor";
 import {
   Purchases as WebPurchases,
   Offerings as WebOfferings,
 } from "@revenuecat/purchases-js";
+import type { Package as WebPackage } from "@revenuecat/purchases-js";
 import { useUsername } from "../dojo/utils/useUsername";
 import { isNative } from "../utils/capacitorUtils";
 import { getRevenueCatApiKey } from "../utils/getRevenueCatApiKey";
 
 type WebPurchasesInstance = ReturnType<typeof WebPurchases.configure>;
 type PurchasesClient = WebPurchasesInstance | typeof CapacitorPurchases;
+
+type RevenueCatPackage = NativePackage | WebPackage;
 
 type RevenueCatProductSummary = {
   id: string;
@@ -32,6 +36,7 @@ type RevenueCatProductSummary = {
 type RevenueCatFormattedOfferings = {
   packs: RevenueCatProductSummary[];
   seasonPass: RevenueCatProductSummary | null;
+  seasonPassPackage: RevenueCatPackage | null;
 };
 
 type RevenueCatContextValue = {
@@ -185,17 +190,11 @@ const normalizeOfferings = (
   }
 
   const current = rawOfferings.current;
-  if (!current) {
+  if (!current || !isRecord(current)) {
     return {
       packs: [],
       seasonPass: null,
-    };
-  }
-
-  if (!isRecord(current)) {
-    return {
-      packs: [],
-      seasonPass: null,
+      seasonPassPackage: null,
     };
   }
 
@@ -207,6 +206,7 @@ const normalizeOfferings = (
 
   const packs: RevenueCatProductSummary[] = [];
   let seasonPass: RevenueCatProductSummary | null = null;
+  let seasonPassPackage: RevenueCatPackage | null = null;
 
   for (const pkg of availablePackages) {
     const id = getPackageIdentifier(pkg);
@@ -221,6 +221,7 @@ const normalizeOfferings = (
     if (isSeasonPassIdentifier(id)) {
       if (!seasonPass) {
         seasonPass = summary;
+        seasonPassPackage = pkg as RevenueCatPackage;
       }
     } else {
       if (!packs.some((pack) => pack.id === summary.id)) {
@@ -232,6 +233,7 @@ const normalizeOfferings = (
   return {
     packs,
     seasonPass,
+    seasonPassPackage,
   };
 };
 
@@ -240,11 +242,15 @@ export const RevenueCatProvider = ({ children }: PropsWithChildren) => {
   const [offerings, setOfferings] =
     useState<RevenueCatFormattedOfferings | null>(null);
   const [loading, setLoading] = useState(false);
-  const purchasesRef = useRef<PurchasesClient | null>(
-    isNative ? CapacitorPurchases : null
-  );
+  const [purchasesClient, setPurchasesClient] =
+    useState<PurchasesClient | null>(isNative ? CapacitorPurchases : null);
+  const purchasesRef = useRef<PurchasesClient | null>(purchasesClient);
   const hasConfiguredRef = useRef(false);
   const lastUsernameRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    purchasesRef.current = purchasesClient;
+  }, [purchasesClient]);
 
   const fetchOfferings = useCallback(async () => {
     if (!purchasesRef.current || !hasConfiguredRef.current) {
@@ -285,12 +291,14 @@ export const RevenueCatProvider = ({ children }: PropsWithChildren) => {
           appUserID: username,
         });
         purchasesRef.current = CapacitorPurchases;
+        setPurchasesClient(CapacitorPurchases);
       } else {
         const purchasesInstance = WebPurchases.configure({
           apiKey,
           appUserId: username,
         });
         purchasesRef.current = purchasesInstance;
+        setPurchasesClient(purchasesInstance);
       }
 
       hasConfiguredRef.current = true;
@@ -324,9 +332,9 @@ export const RevenueCatProvider = ({ children }: PropsWithChildren) => {
       offerings,
       loading,
       refreshOfferings: fetchOfferings,
-      purchases: purchasesRef.current,
+      purchases: purchasesClient,
     }),
-    [fetchOfferings, loading, offerings]
+    [fetchOfferings, loading, offerings, purchasesClient]
   );
 
   return (
