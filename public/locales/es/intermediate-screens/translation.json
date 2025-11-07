@@ -29,6 +29,7 @@
         "purchase-error-title": "Compra fallida",
         "purchase-error-no-account": "No pudimos encontrar tu cuenta. Por favor, intenta cerrar sesión y volver a iniciarla.",
         "purchase-error-description": "No pudimos completar tu compra de pack. Por favor, inténtalo de nuevo.",
+        "purchase-error-no-package": "No pudimos completar tu compra de pack. Problema de configuración.",
         "player-pack": "Pack de jugador",
         "limited-edition": "Editión limitada",
         "size": "Tamaño",

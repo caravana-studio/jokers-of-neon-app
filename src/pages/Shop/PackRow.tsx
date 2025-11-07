@@ -63,7 +63,11 @@ export const PackRow = ({ packId, packageId, price = "$" }: PackRowProps) => {
         availablePackageIds.length === 0 ||
         !availablePackageIds.includes(packageId.toLowerCase())
       ) {
-        navigate(`/external-pack/${packId}`);
+        toast({
+          status: "error",
+          title: t("purchase-error-title"),
+          description: t("purchase-error-no-package"),
+        });
         return;
       }
 
@@ -88,18 +92,12 @@ export const PackRow = ({ packId, packageId, price = "$" }: PackRowProps) => {
       });
     } catch (error) {
       console.error("Failed to purchase pack", error);
-      if (
-        error instanceof Error &&
-        /package '.*' not found/i.test(error.message)
-      ) {
-        navigate(`/external-pack/${packId}`);
-      } else {
-        toast({
-          status: "error",
-          title: t("purchase-error-title"),
-          description: t("purchase-error-description"),
-        });
-      }
+
+      toast({
+        status: "error",
+        title: t("purchase-error-title"),
+        description: t("purchase-error-description"),
+      });
     } finally {
       setIsPurchasing(false);
     }
