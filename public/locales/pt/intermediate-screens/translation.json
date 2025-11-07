@@ -1,4 +1,8 @@
 {
+  "maintenance": {
+    "title": "Manutenção em progresso",
+    "description": "Estamos atualizando Jokers of Neon para trazer novas funcionalidades e melhorias. O jogo estará disponível em breve, obrigado pela sua paciência!"
+  },
   "loading-screen": {
     "error": "Erro ao carregar o jogo",
     "skip": "Pular",
