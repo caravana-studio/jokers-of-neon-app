@@ -345,6 +345,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
               addRerolls(response.detailEarned.rerolls);
           }
         } else {
+          rollbackPlay();
           setPreSelectionLocked(false);
           clearPreSelection();
         }
