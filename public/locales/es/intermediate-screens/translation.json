@@ -36,6 +36,9 @@
         "offering-rates": "Tarifas de oferta",
         "transferrable-legend": "Todos los items en las tiendas pueden ser transferidos.",
         "skins-legend": "Los packs no contienen cartas con skin.",
+        "1": {
+          "name": "BÁSICO"
+        },
         "2": {
           "name": "AVANZADO",
           "description": {

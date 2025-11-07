@@ -38,6 +38,7 @@ import { SeasonProgressionPage } from "./pages/SeasonProgression/SeasonProgressi
 import { ShopPage } from "./pages/Shop/ShopPage";
 import { FreePackPage } from "./pages/FreePackPage";
 import { ClaimSeasonPackPage } from "./pages/ClaimSeasonPackPage";
+import { PurchasingPackPage } from "./pages/PurchasingPackPage";
 
 export const AppRoutes = () => {
   const location = useLocation();
@@ -264,6 +265,14 @@ export const AppRoutes = () => {
         element={
           <AnimatedPage>
             <FreePackPage />
+          </AnimatedPage>
+        }
+      />     
+      <Route
+        path="/purchasing-pack"
+        element={
+          <AnimatedPage>
+            <PurchasingPackPage />
           </AnimatedPage>
         }
       />      

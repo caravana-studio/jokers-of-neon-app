@@ -71,6 +71,7 @@ export const PackRow = ({ packId, packageId, price = "$" }: PackRowProps) => {
         return;
       }
 
+      navigate("/purchasing-pack");
       await purchasePackageById(packageId);
       const mintedCards = await mintPack({
         packId,
@@ -92,6 +93,7 @@ export const PackRow = ({ packId, packageId, price = "$" }: PackRowProps) => {
       });
     } catch (error) {
       console.error("Failed to purchase pack", error);
+      navigate("/shop");
 
       toast({
         status: "error",

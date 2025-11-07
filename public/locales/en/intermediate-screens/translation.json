@@ -38,6 +38,9 @@
       "offering-rates": "Offering rates",
       "transferrable-legend": "All items in purchased packs are transferrable.",
       "skins-legend": "Player packs do not contain skinned cards.",
+      "1": {
+        "name": "BASIC"
+      },
       "2": {
         "name": "ADVANCED",
         "description": {

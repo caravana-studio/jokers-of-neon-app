@@ -12,6 +12,7 @@
   },
   "game": {
     "tutorial": "Tutorial",
+    "skin": "Skin",
     "compact-round-data": {
       "my-score": "Puntuación",
       "target": "Objetivo",
@@ -24,7 +25,8 @@
       "Rage": "Furia",
       "Neon": "Neón",
       "Pack": "Paquete",
-      "Joker": "Comodín"
+      "Joker": "Comodín",
+      "skin-special": "Especial con SKIN"
     },
     "card-highlight": {
       "buttons": {
