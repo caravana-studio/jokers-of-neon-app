@@ -39,6 +39,8 @@ interface AnimatePlayConfig {
   setCurrentScore: (score: number) => void;
   resetRage: () => void;
   unPreSelectAllPowerUps: () => void;
+  clearRoundSound: () => void;
+  clearLevelSound: () => void;
 }
 
 export const animatePlay = (config: AnimatePlayConfig) => {
@@ -76,6 +78,8 @@ export const animatePlay = (config: AnimatePlayConfig) => {
     addPoints,
     resetRage,
     unPreSelectAllPowerUps,
+    clearRoundSound,
+    clearLevelSound,
   } = config;
 
   if (!playEvents) return;
@@ -330,6 +334,7 @@ export const animatePlay = (config: AnimatePlayConfig) => {
             ? playEvents.levelPassed?.level
             : 0,
         });
+        playEvents.levelPassed?.level_passed ? clearLevelSound() : clearRoundSound();
         navigate("/rewards");
       }, 1000);
       setPreSelectionLocked(true);

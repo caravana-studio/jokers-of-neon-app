@@ -43,7 +43,7 @@ export const CompactRoundData = () => {
               variant="italic"
               width="50px"
             >
-              <RollingNumber n={currentScore} />
+              <RollingNumber n={currentScore} sound />
             </Heading>
           </Box>
 

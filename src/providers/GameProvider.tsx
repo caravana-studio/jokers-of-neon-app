@@ -4,6 +4,8 @@ import { SKIP_IN_GAME_TUTORIAL } from "../constants/localStorage";
 import {
   acumSfx,
   cashSfx,
+  clearLevel,
+  clearRound,
   discardSfx,
   multiSfx,
   negativeMultiSfx,
@@ -163,6 +165,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const { play: multiSound } = useAudio(multiSfx, sfxVolume);
   const { play: acumSound } = useAudio(acumSfx, sfxVolume);
   const { play: negativeMultiSound } = useAudio(negativeMultiSfx, sfxVolume);
+  const { play: clearRoundSound } = useAudio(clearRound, sfxVolume);
+  const { play: clearLevelSound } = useAudio(clearLevel, sfxVolume);
 
   const playAnimationDuration = getPlayAnimationDuration(level, animationSpeed);
 
@@ -335,6 +339,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             addMulti,
             resetRage,
             unPreSelectAllPowerUps,
+            clearRoundSound,
+            clearLevelSound
           });
           fetchDeck(client, gameId, getCardData);
           refetchSpecialCardsData(modId, gameId, specialCards);
