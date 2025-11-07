@@ -166,6 +166,8 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
       setAnimateSpecialCardDefault: emptyFn,
       resetRage: emptyFn,
       unPreSelectAllPowerUps: useGameStore.getState().unPreSelectAllPowerUps,
+      clearRoundSound: emptyFn,
+      clearLevelSound: emptyFn,
     });
   };
 

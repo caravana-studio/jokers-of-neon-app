@@ -60,7 +60,7 @@ const RewardItem = ({
           <RerollIndicators rerolls={value} justifyContent="flex-end" />
         ) : (
           <Heading size="s">
-            {skip ? value : <RollingNumber n={value} delay={rollingDelay} />}
+            {skip ? value : <RollingNumber n={value} delay={rollingDelay} sound />}
           </Heading>
         )}
       </Flex>
@@ -222,6 +222,7 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
               {skip ? total : <RollingNumber
                 delay={(DELAY_START + rewardLines * STAGGER) * 1000}
                 n={total}
+                sound
               />}
               <CashSymbol />
             </Heading>
