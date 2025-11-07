@@ -6,7 +6,13 @@ import { VIOLET, VIOLET_LIGHT } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { SeasonPass } from "./SeasonPass";
 
-export const SeasonPassBuyButton = () => {
+interface ISeasonPassBuyButtonProps {
+  onSeasonPassPurchased?: () => void;
+}
+
+export const SeasonPassBuyButton = ({
+  onSeasonPassPurchased,
+}: ISeasonPassBuyButtonProps) => {
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "season-pass",
   });
@@ -36,7 +42,9 @@ export const SeasonPassBuyButton = () => {
           onClick={() => {
             setIsLoading(true);
             purchaseSeasonPass()
-              .then(() => setIsLoading(false))
+              .then(() => {setIsLoading(false)
+                onSeasonPassPurchased?.()
+              })
               .catch(() => setIsLoading(false));
           }}
         >

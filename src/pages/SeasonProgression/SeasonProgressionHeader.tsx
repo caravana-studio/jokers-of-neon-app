@@ -9,7 +9,13 @@ import { BLUE } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { STEP_HEIGHT } from "./Step";
 
-export const SeasonProgressionHeader = () => {
+interface ISeasonProgressionHeaderProps {
+  onSeasonPassPurchased: () => void;
+}
+
+export const SeasonProgressionHeader = ({
+  onSeasonPassPurchased,
+}: ISeasonProgressionHeaderProps) => {
   const { isSmallScreen } = useResponsiveValues();
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "season-progression",
@@ -69,7 +75,7 @@ export const SeasonProgressionHeader = () => {
         alignItems="flex-end"
         flexDir={"column"}
       >
-        {seasonPassUnlocked ? <SeasonPassUnlocked /> : <SeasonPassBuyButton />}
+        {seasonPassUnlocked ? <SeasonPassUnlocked /> : <SeasonPassBuyButton onSeasonPassPurchased={onSeasonPassPurchased}/>}
       </Flex>
     </Flex>
   );
