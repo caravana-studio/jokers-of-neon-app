@@ -15,20 +15,29 @@ export const SeasonProgressionPage = () => {
     account: { account },
   } = useDojo();
 
+  const fetchSeasonProgress = () => {
+    setIsLoading(true);
+    getSeasonProgress({ userAddress: account?.address }).then((data) => {
+      setIsLoading(false);
+      setSteps(data.steps);
+      setPlayerProgress(data.playerProgress);
+    });
+  };
+
   useEffect(() => {
     if (account?.address) {
-      getSeasonProgress({ userAddress: account.address }).then((data) => {
-        setIsLoading(false);
-        setSteps(data.steps);
-        setPlayerProgress(data.playerProgress);
-      });
+      fetchSeasonProgress();
     }
   }, [account.address]);
 
   return (
     <DelayedLoading ms={200} loading={isLoading}>
       <MobileDecoration fadeToBlack />
-      <SeasonProgressionHeader />
+      <SeasonProgressionHeader
+        onSeasonPassPurchased={() => {
+          fetchSeasonProgress();
+        }}
+      />
       <SeasonProgressionContent steps={steps} playerProgress={playerProgress} />
     </DelayedLoading>
   );

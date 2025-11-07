@@ -125,6 +125,7 @@
     "continue-btn": "continue",
     "start-btn": "start",
     "tuto": "Tutorial",
+    "learn": "Do you want to learn how to play?",
     "surrender": {
       "action": "Surrender",
       "confirmation-modal": {
