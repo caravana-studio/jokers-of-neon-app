@@ -1,4 +1,4 @@
-import { Box, Checkbox, Flex, Heading, Text } from "@chakra-ui/react";
+import { Box, Button, Checkbox, Flex, Heading, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -35,11 +35,9 @@ export const MyGames = () => {
 
   const { data: games, isLoading, error, refetch } = useGetMyGames();
 
-
   const { isSmallScreen } = useResponsiveValues();
 
   const [showFinishedGames, setShowFinishedGames] = useState(false);
-
 
   const [surrenderedIds, setSurrenderedIds] = useState<number[]>([]);
 
@@ -75,7 +73,7 @@ export const MyGames = () => {
     removeGameId();
   }, []);
 
-
+  const navigate = useNavigate();
 
   return (
     <DelayedLoading ms={100}>
@@ -96,20 +94,44 @@ export const MyGames = () => {
           justifyContent={"center"}
           alignItems={"center"}
         >
-          <Heading mb={8} zIndex={2} variant="italic" size={"md"}>
+          <Heading mb={3} zIndex={2} variant="italic" size={"md"}>
             {t("title")}
           </Heading>
+          <Flex
+            px={[2, 4]}
+            py={isSmallScreen ? 0 : 4}
+            width={{ base: "90%", sm: "70%", md: "900px" }}
+            justifyContent={isSmallScreen ? "space-between" : "center"}
+            gap={8}
+            alignItems={"center"}
+            zIndex={2}
+            mb={5}
+          >
+            <Text fontSize={isSmallScreen ? 12 : 20}>
+              {t("learn")}
+            </Text>
+            <Button
+              size={"sm"}
+              width={isSmallScreen ? "90px" : "110px"}
+              h={isSmallScreen ? "25px" : undefined}
+              
+              onClick={() => navigate("/tutorial")}
+              disabled={isLoading}
+            >
+              {t("tuto")}
+            </Button>
+          </Flex>
           <Box
             border="2px solid #DAA1E8FF"
             boxShadow={`0px 0px 20px 15px ${VIOLET}`}
-            filter="blur(0.5px)"
             backgroundColor="rgba(0, 0, 0, 1)"
             borderRadius="20px"
             display="grid"
             px={[4, 8]}
             py={isSmallScreen ? 0 : 4}
             width={{ base: "90%", sm: "70%", md: "900px" }}
-            height="100%"
+            flexGrow={1}
+            minH={0}
             maxHeight="500px"
             overflowY="auto"
           >
