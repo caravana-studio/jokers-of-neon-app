@@ -30,7 +30,7 @@ const RoundNode = ({ data }: any) => {
   const stateInMap = state === GameStateEnum.Map;
   const reachable = reachableNodes.includes(data.id.toString()) && stateInMap;
 
-  const title = t("name", { round: data.round });
+  const title = t("name");
 
   const refetchAndNavigate = async () => {
     await refetchGameStore(client, gameId);

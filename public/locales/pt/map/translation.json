@@ -1,9 +1,9 @@
 {
   "round": {
-    "name": "Rodada normal {{round}}"
+    "name": "Rodada normal"
   },
   "rage": {
-    "name": "Rodada de rage {{round}}",
+    "name": "Rodada de rage",
     "power": "Poder: {{power}}",
     "intermediate": "Intermediário",
     "final": "Final"
