@@ -3,10 +3,20 @@ import { useTranslation } from "react-i18next";
 import { DelayedLoading } from "../../components/DelayedLoading";
 import { MobileDecoration } from "../../components/MobileDecoration";
 import { useSeasonPass } from "../../providers/SeasonPassProvider";
+import { useRevenueCat } from "../../providers/RevenueCatProvider";
 import { BLUE } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { PackRow } from "./PackRow";
 import { SeasonPassRow } from "./SeasonPassRow";
+import { useShopDistribution } from "../../queries/useShopDistribution";
+
+const PACK_PACKAGE_IDS: Record<number, string> = {
+  6: "pack_collector_xl",
+  5: "pack_collector",
+  4: "pack_legendary",
+  3: "pack_epic",
+  2: "pack_advanced",
+};
 
 export const ShopPage = () => {
   const { isSmallScreen } = useResponsiveValues();
@@ -15,8 +25,20 @@ export const ShopPage = () => {
   });
 
   const { seasonPassUnlocked } = useSeasonPass();
+  const { offerings } = useRevenueCat();
+  const seasonPassPrice = offerings?.seasonPass?.formattedPrice ?? "$";
+  const getPackPrice = (packId: number) => {
+    const packageId = PACK_PACKAGE_IDS[packId];
+    if (!packageId) {
+      return undefined;
+    }
+    return offerings?.packs?.find((pack) => pack.id === packageId)
+      ?.formattedPrice;
+  };
+  const {distribution, loading} = useShopDistribution();
+
   return (
-    <DelayedLoading ms={200}>
+    <DelayedLoading loading={loading}>
       <MobileDecoration fadeToBlack />
       <Flex
         flexDir={"column"}
@@ -42,12 +64,12 @@ export const ShopPage = () => {
           </Heading>
         </Flex>
         <Flex flexDir={"column"} gap={2} my={2}>
-          {!seasonPassUnlocked && <SeasonPassRow />}
-          <PackRow packId={6} />
-          <PackRow packId={5} />
-          <PackRow packId={4} />
-          <PackRow packId={3} />
-          <PackRow packId={2} />
+          {!seasonPassUnlocked && <SeasonPassRow price={seasonPassPrice} id={distribution?.season_pass ?? "season_pass"} />}
+          {
+            distribution?.packs?.map((pack) => {
+              return <PackRow packId={pack.packId} packageId={pack.shopId} price={getPackPrice(pack.packId)} />;
+            })
+          }
         </Flex>
       </Flex>
     </DelayedLoading>

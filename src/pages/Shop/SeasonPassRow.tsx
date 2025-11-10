@@ -44,7 +44,12 @@ const seasonPassPulse = keyframes`
   }
 `;
 
-export const SeasonPassRow = () => {
+interface SeasonPassRowProps {
+  price?: string;
+  id: string;
+}
+
+export const SeasonPassRow = ({ id, price = "$" }: SeasonPassRowProps) => {
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "shop.season-pass",
   });
@@ -144,7 +149,13 @@ export const SeasonPassRow = () => {
               .catch(() => setIsLoading(false));
           }}
         >
-          {isLoading ? <Spinner size="xs" /> : <>{t("buy")} · $9.99</>}
+          {isLoading ? (
+            <Spinner size="xs" />
+          ) : (
+            <>
+              {t("buy")} · {price}
+            </>
+          )}
         </Button>
       </Flex>
     </>

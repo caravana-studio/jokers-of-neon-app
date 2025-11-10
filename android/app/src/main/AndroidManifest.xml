@@ -51,6 +51,9 @@
                 <data android:scheme="jokers" />
             </intent-filter>
         </activity>
+        <activity 
+            android:name="com.your.Activity"
+            android:launchMode="standard" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

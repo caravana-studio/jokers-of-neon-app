@@ -8,7 +8,7 @@ export const handleAchievementPush = async (
   const payloads: PushActionsPayload[] = [
     {
       actions: achievementEvents.map(
-        (achievement) => achievement.achievementId
+        (achievement) => achievement.dailyMissionId
       ),
       address: achievementEvents[0].player,
     },

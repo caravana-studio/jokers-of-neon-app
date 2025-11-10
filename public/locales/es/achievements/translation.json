@@ -31,5 +31,11 @@
     "slot-1": "Compra todas los slots",
     "straight-flush-1": "Juega una escalera de color",
     "neon-play-1": "Juega una mano neon"
+  },
+  "purchases": {
+    "success": {
+      "title": "Compra completada",
+      "season-pass": "Pase de temporada desbloqueado"
+    }
   }
 }

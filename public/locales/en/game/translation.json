@@ -12,6 +12,7 @@
   },
   "game": {
     "tutorial": "Tutorial",
+    "skin": "Skin",
     "compact-round-data": {
       "my-score": "My score",
       "target": "Target",
@@ -24,7 +25,8 @@
       "Rage": "Rage",
       "Neon": "Neon",
       "Pack": "Pack",
-      "Joker": "Joker"
+      "Joker": "Joker",
+      "skin-special": "Skinned Special"
     },
     "card-highlight": {
       "buttons": {

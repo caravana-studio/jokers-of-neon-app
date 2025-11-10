@@ -7,14 +7,16 @@ type Props = {
   onOpened?: () => void; // callback when the pack opens
   onFail?: () => void; // optional: callback when a stroke ends without opening
   step: number; // current step of the parent component
+  color: "white" | "black";
 };
 
 export default function PackTear({
   width = 360,
-  height = 20,
+  height = 40,
   onOpened,
   onFail,
   step,
+  color,
 }: Props) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [opened, setOpened] = useState(false);
@@ -23,7 +25,7 @@ export default function PackTear({
   // bins across the tear line to verify horizontal coverage
   const BIN_COUNT = 24; // more bins = finer detection
   const COVERAGE_TARGET = 0.8; // 80% of bins touched
-  const TEAR_BAND_HEIGHT = 28; // vertical band where the stroke must pass
+  const TEAR_BAND_HEIGHT = 40; // vertical band where the stroke must pass
   const LINE_THICKNESS = 3; // visual line thickness
 
   // internal state
@@ -55,7 +57,8 @@ export default function PackTear({
     ctx.lineJoin = "round";
     ctx.lineCap = "round";
     ctx.lineWidth = LINE_THICKNESS;
-    ctx.strokeStyle = "rgba(255,255,255,0.9)";
+    ctx.strokeStyle =
+      color === "white" ? "rgba(255,255,255,0.9)" : "rgba(0, 0, 0, 0.9)";
   }, [width, height]);
 
   const clearCanvas = () => {
@@ -171,7 +174,7 @@ export default function PackTear({
         position: "absolute",
         alignItems: "center",
         marginLeft: "-30px",
-        marginTop: "15px",
+        marginTop: "5px",
         width,
         height,
         userSelect: "none",
@@ -180,12 +183,20 @@ export default function PackTear({
     >
       <Flex
         ml="30px"
-        mr="25px"
+        mr="22px"
         opacity={step === 1 ? 1 : 0}
         transition="all 1s ease"
-        backgroundColor={isDrawing ? "rgba(255,255,255,0.4)" : "rgba(255,255,255,0.1)"}
+        backgroundColor={
+          isDrawing
+            ? color === "white"
+              ? "rgba(255,255,255,0.4)"
+              : "rgba(255,0,0,0.8)"
+            : color === "white"
+              ? "rgba(255,255,255,0.1)"
+              : "rgba(255,0,0,0.4)"
+        }
         width="100%"
-        height="3px"
+        height="4px"
         position="relative"
         overflow="hidden"
         borderRadius="md"
@@ -196,7 +207,9 @@ export default function PackTear({
           left: "-30%",
           width: "50%",
           height: "100%",
-          background: isDrawing ? '' : "linear-gradient(90deg, transparent, white, transparent)",
+          background: isDrawing
+            ? ""
+            : `linear-gradient(90deg, transparent, white, transparent)`,
           filter: "blur(1px)",
           animation: "glowMove 2s linear infinite",
           animationPlayState: isDrawing ? "paused" : "running",
@@ -220,11 +233,12 @@ export default function PackTear({
       />
 
       {/* Debug guide for the tear band: */}
-      {/*       <div style={{
+{/*             <div style={{
         position:"absolute", left:0, right:0,
         top:(height - Math.min(TEAR_BAND_HEIGHT, height))/2,
         height:Math.min(TEAR_BAND_HEIGHT, height),
-        border:"1px dashed rgba(255,255,255,0.25)"
+        border:"1px dashed rgba(255,255,255,0.25)",
+        pointerEvents:"none"
       }}/> */}
     </Flex>
   );
