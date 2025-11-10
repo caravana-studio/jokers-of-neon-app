@@ -4,7 +4,7 @@ import "./App.scss";
 import { AnimatedPage } from "./components/AnimatedPage";
 import { GameStoreLoader } from "./components/GameStoreLoader";
 import { ShopStoreLoader } from "./components/ShopStoreLoader";
-import { ClaimSeasonPackPage } from "./pages/ClaimSeasonPackPage";
+import { ClaimMultipleRewardsPage } from "./pages/ClaimMultipleRewardsPage";
 import { DeckPage } from "./pages/Deck/DeckPage";
 import { DocsPage } from "./pages/Docs/Docs";
 import { DynamicStorePage } from "./pages/DynamicStore/DynamicStorePage";
@@ -301,7 +301,15 @@ export const AppRoutes = () => {
         path="/claim-season-pack/:level/:premium"
         element={
           <AnimatedPage>
-            <ClaimSeasonPackPage />
+            <ClaimMultipleRewardsPage />
+          </AnimatedPage>
+        }
+      />
+      <Route
+        path="/unclaimed-rewards"
+        element={
+          <AnimatedPage>
+            <ClaimMultipleRewardsPage />
           </AnimatedPage>
         }
       />
