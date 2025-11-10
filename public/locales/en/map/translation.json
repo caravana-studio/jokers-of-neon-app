@@ -1,9 +1,9 @@
 {
   "round": {
-    "name": "Normal round {{round}}"
+    "name": "Normal round"
   },
   "rage": {
-    "name": "Rage round {{round}}",
+    "name": "Rage round",
     "power": "Power: {{power}}",
     "intermediate": "Intermediate",
     "final": "Final"

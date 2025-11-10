@@ -34,7 +34,7 @@ const RageNode = ({ data }: any) => {
   const reachable = reachableNodes.includes(data.id.toString()) && stateInMap;
   const [isHovered, setIsHovered] = useState(false);
 
-  const title = `${t("name", { round: data.rageData.round })} - ${t(data.last ? "final" : "intermediate")}`;
+  const title = `${t("name")} - ${t(data.last ? "final" : "intermediate")}`;
   const content = `${t("power", { power: data.rageData.power })}`;
 
   const refetchAndNavigate = async () => {
