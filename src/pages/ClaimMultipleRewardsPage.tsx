@@ -10,7 +10,7 @@ import { useDojo } from "../dojo/useDojo";
 import { LoadingProgress } from "../types/LoadingProgress";
 import { ExternalPack } from "./ExternalPack/ExternalPack";
 
-export const ClaimSeasonPackPage = () => {
+export const ClaimMultipleRewardsPage = () => {
   const {
     account: { account },
   } = useDojo();
@@ -21,17 +21,18 @@ export const ClaimSeasonPackPage = () => {
   const navigate = useNavigate();
 
   const params = useParams();
-  const level = Number(params.level);
+  const level = Number(params.level ?? 0);
   const isPremium = params.premium === "premium";
 
   const [packs, setPacks] = useState<SeasonRewardPack[]>([]);
   const [currentPackIndex, setCurrentPackIndex] = useState<number>(0);
   const [transitioning, setTransitioning] = useState<boolean>(false);
 
+  const claimFn = claimSeasonReward({ address: account.address, level, isPremium })
+
   useEffect(() => {
     if (account?.address) {
-      claimSeasonReward({ address: account.address, level, isPremium })
-        .then((packs) => {
+        claimFn.then((packs) => {
           setPacks(packs);
           setCurrentPackIndex(0);
         })

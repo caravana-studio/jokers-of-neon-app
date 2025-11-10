@@ -24,6 +24,7 @@ import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { logEvent } from "../../utils/analytics";
 import { APP_URL, isNative } from "../../utils/capacitorUtils";
 import { getMajor, getMinor, getPatch } from "../../utils/versionUtils";
+import { UnclaimedRewards } from "../../components/UnclaimedRewards";
 
 export const NewHome = () => {
   const { t } = useTranslation(["home"]);
@@ -41,6 +42,7 @@ export const NewHome = () => {
   const {
     setup: { useBurnerAcc },
   } = useDojo();
+
   useEffect(() => {
     logEvent("open_home_page");
     if (isNative) {
@@ -106,6 +108,7 @@ export const NewHome = () => {
   return (
     <DelayedLoading ms={100}>
       {!useBurnerAcc && <FreePack />}
+      {!useBurnerAcc && <UnclaimedRewards />}
       <PositionedDiscordLink />
       <MobileDecoration />
       {/*       <RemoveScroll>
