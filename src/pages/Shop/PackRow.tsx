@@ -71,8 +71,8 @@ export const PackRow = ({ packId, packageId, price = "$" }: PackRowProps) => {
         return;
       }
 
-      navigate("/purchasing-pack");
       await purchasePackageById(packageId);
+      navigate("/purchasing-pack");
       const mintedCards = await mintPack({
         packId,
         recipient: account.address,
