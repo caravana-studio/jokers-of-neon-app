@@ -1,6 +1,7 @@
 import type { Collection } from "../pages/MyCollection/types";
 import { fillCollections } from "../pages/MyCollection/utils";
-import { transformAPIResultToCollection } from "../utils/transformers/transformApiResultToCollection";
+import { transformAPIResultToCollection } from "../utils/transformers/transformAPIResultToCollection";
+import { transformAPIResultToTraditionalCollection } from "../utils/transformers/transformAPIResultToTraditionalCollection";
 
 const DEFAULT_API_BASE_URL = "http://localhost:3001";
 
@@ -31,7 +32,11 @@ type GetUserCardsApiResponse = {
   }>;
 };
 
-export async function getUserCards(userAddress: string): Promise<Collection[]> {
+export async function getUserCards(userAddress: string): Promise<{
+  specials: Collection[];
+  traditionals: Collection;
+  neons: Collection;
+}> {
   if (!userAddress) {
     throw new Error("getUserCards: userAddress is required");
   }
@@ -76,22 +81,38 @@ export async function getUserCards(userAddress: string): Promise<Collection[]> {
     throw new Error("getUserCards: API did not return a valid cards array");
   }
 
-  const userCards: UserCard[] = json.data
-    .map((entry) => ({
-      tokenId: entry.token_id,
-      marketable: Boolean(entry.marketable),
-      cardId: Number(entry.card_id),
-      rarity: Number(entry.rarity),
-      count: Number(entry.count),
-      owner: entry.owner,
-      skinId: Number(entry.skin_id),
-      skinRarity: Number(entry.skin_rarity),
-      quality: Number(entry.quality),
-    }))
-    // TODO: remove this
-    .filter((entry) => entry.cardId >= 10100);
+  const userCards: UserCard[] = json.data.map((entry) => ({
+    tokenId: entry.token_id,
+    marketable: Boolean(entry.marketable),
+    cardId: Number(entry.card_id),
+    rarity: Number(entry.rarity),
+    count: Number(entry.count),
+    owner: entry.owner,
+    skinId: Number(entry.skin_id),
+    skinRarity: Number(entry.skin_rarity),
+    quality: Number(entry.quality),
+  }));
 
-    console.log("userCards", userCards);  
+  console.log("userCards", userCards);
+  console.log("t", transformAPIResultToCollection(userCards));
 
-  return fillCollections(transformAPIResultToCollection(userCards));
+  return {
+    specials: fillCollections(
+      transformAPIResultToCollection(
+        userCards.filter((card) => card.cardId >= 10100)
+      )
+    ),
+    traditionals: {
+      id: -1,
+      cards: transformAPIResultToTraditionalCollection(
+        userCards.filter((card) => card.cardId < 100)
+      ),
+    },
+    neons: {
+      id: -2,
+      cards: transformAPIResultToTraditionalCollection(
+        userCards.filter((card) => card.cardId >= 200 && card.cardId < 300)
+      ),
+    },
+  };
 }

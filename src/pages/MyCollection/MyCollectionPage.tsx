@@ -28,6 +28,15 @@ export const MyCollectionPage = () => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [myCollection, setMyCollection] = useState<Collection[]>([]);
+  const [traditionalCollection, setTraditionalCollection] =
+    useState<Collection>({
+      id: -1,
+      cards: [],
+    });
+  const [neonCollection, setNeonCollection] = useState<Collection>({
+    id: -2,
+    cards: [],
+  });
 
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "my-collection",
@@ -35,9 +44,11 @@ export const MyCollectionPage = () => {
 
   useEffect(() => {
     if (account?.address) {
-      getUserCards(account.address).then((collections) => {
+      getUserCards(account.address).then((data) => {
         setIsLoading(false);
-        setMyCollection(collections);
+        setMyCollection(data.specials);
+        setTraditionalCollection(data.traditionals);
+        setNeonCollection(data.neons);
       });
     }
   }, [account?.address]);
@@ -95,6 +106,8 @@ export const MyCollectionPage = () => {
               <CollectionGrid key={collection.id} collection={collection} />
             ))
           )}
+          <CollectionGrid collection={traditionalCollection} />
+          <CollectionGrid collection={neonCollection} />
         </Flex>
         <Box h="50px" />
       </Flex>

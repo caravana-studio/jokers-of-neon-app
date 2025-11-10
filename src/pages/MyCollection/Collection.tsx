@@ -51,6 +51,9 @@ const CollectionGrid: React.FC<Props> = ({ collection, hideHighlight = false }) 
 
   const cardHeight = CARD_HEIGHT * (customCardScale ?? 1);
   const cardWith = CARD_WIDTH * (customCardScale ?? 1);
+  
+  const length = collection.id < 0 ? 53 : collection.cards.length
+  
   return (
     <Box px={6} w="100%">
       {highlightedCard && !hideHighlight && (
@@ -71,7 +74,7 @@ const CollectionGrid: React.FC<Props> = ({ collection, hideHighlight = false }) 
           {collection.id < 25 ? t("sx", { season: collection.id }) : t(`c${collection.id}`) }
         </Heading>
         <Text ml={2} fontSize="8px" color="gray.400">
-          ({ownedCount}/{collection.cards.length})
+          ({ownedCount}/{length})
         </Text>
         <Box ml="auto" mr={2}>
           <FontAwesomeIcon
