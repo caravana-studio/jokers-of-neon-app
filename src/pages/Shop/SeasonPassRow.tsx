@@ -46,9 +46,10 @@ const seasonPassPulse = keyframes`
 
 interface SeasonPassRowProps {
   price?: string;
+  id: string;
 }
 
-export const SeasonPassRow = ({ price = "$" }: SeasonPassRowProps) => {
+export const SeasonPassRow = ({ id, price = "$" }: SeasonPassRowProps) => {
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "shop.season-pass",
   });

@@ -8,6 +8,7 @@ import { BLUE } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { PackRow } from "./PackRow";
 import { SeasonPassRow } from "./SeasonPassRow";
+import { useShopDistribution } from "../../queries/useShopDistribution";
 
 const PACK_PACKAGE_IDS: Record<number, string> = {
   6: "pack_collector_xl",
@@ -34,9 +35,10 @@ export const ShopPage = () => {
     return offerings?.packs?.find((pack) => pack.id === packageId)
       ?.formattedPrice;
   };
+  const {distribution, loading} = useShopDistribution();
 
   return (
-    <DelayedLoading ms={200}>
+    <DelayedLoading loading={loading}>
       <MobileDecoration fadeToBlack />
       <Flex
         flexDir={"column"}
@@ -62,32 +64,12 @@ export const ShopPage = () => {
           </Heading>
         </Flex>
         <Flex flexDir={"column"} gap={2} my={2}>
-          {!seasonPassUnlocked && <SeasonPassRow price={seasonPassPrice} />}
-          <PackRow
-            packId={6}
-            packageId={PACK_PACKAGE_IDS[6]}
-            price={getPackPrice(6)}
-          />
-          <PackRow
-            packId={5}
-            packageId={PACK_PACKAGE_IDS[5]}
-            price={getPackPrice(5)}
-          />
-          <PackRow
-            packId={4}
-            packageId={PACK_PACKAGE_IDS[4]}
-            price={getPackPrice(4)}
-          />
-          <PackRow
-            packId={3}
-            packageId={PACK_PACKAGE_IDS[3]}
-            price={getPackPrice(3)}
-          />
-          <PackRow
-            packId={2}
-            packageId={PACK_PACKAGE_IDS[2]}
-            price={getPackPrice(2)}
-          />
+          {!seasonPassUnlocked && <SeasonPassRow price={seasonPassPrice} id={distribution?.season_pass ?? "season_pass"} />}
+          {
+            distribution?.packs?.map((pack) => {
+              return <PackRow packId={pack.packId} packageId={pack.shopId} price={getPackPrice(pack.packId)} />;
+            })
+          }
         </Flex>
       </Flex>
     </DelayedLoading>
