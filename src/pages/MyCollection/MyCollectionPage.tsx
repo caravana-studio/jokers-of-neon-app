@@ -1,18 +1,9 @@
-import {
-  Box,
-  Button,
-  Divider,
-  Flex,
-  Heading,
-  Spinner,
-  Text,
-} from "@chakra-ui/react";
+import { Box, Divider, Flex, Heading, Spinner } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { getUserCards } from "../../api/getUserCards";
 import { DelayedLoading } from "../../components/DelayedLoading";
 import { MobileDecoration } from "../../components/MobileDecoration";
-import { Icons } from "../../constants/icons";
 import { useDojo } from "../../dojo/useDojo";
 import { BLUE } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
@@ -22,8 +13,6 @@ export const MyCollectionPage = () => {
   const { isSmallScreen } = useResponsiveValues();
   const {
     account: { account },
-    setup: { client, useBurnerAcc },
-    switchToController,
   } = useDojo();
 
   const [isLoading, setIsLoading] = useState(true);
@@ -78,26 +67,7 @@ export const MyCollectionPage = () => {
           gap={4}
           overflowY="auto"
         >
-          {useBurnerAcc ? (
-            <Flex
-              w="100%"
-              h="100%"
-              flexDir="column"
-              gap={5}
-              justifyContent="center"
-              alignItems="center"
-            >
-              <Text size="lg">{t("no-collection")}</Text>
-              <Button size={["md", "sm"]} onClick={() => switchToController()}>
-                {t("login")}
-                <img
-                  src={Icons.CARTRIDGE}
-                  width={"16px"}
-                  style={{ marginLeft: "8px" }}
-                />
-              </Button>
-            </Flex>
-          ) : isLoading ? (
+          {isLoading ? (
             <Flex w="100%" h="100%" justifyContent="center" alignItems="center">
               <Spinner color="white" />
             </Flex>

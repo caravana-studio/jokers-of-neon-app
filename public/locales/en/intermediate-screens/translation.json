@@ -214,7 +214,8 @@
   },
   "common": {
     "go-back-btn": "Go back",
-    "login": "Login"
+    "login": "Login",
+    "login-to-access": "Please, login to access this page"
   },
   "profile-menu": {
     "level": "Level",

@@ -3,13 +3,14 @@ import "./App.scss";
 
 import { AnimatedPage } from "./components/AnimatedPage";
 import { GameStoreLoader } from "./components/GameStoreLoader";
-import { ProfilePage } from "./pages/Profile/ProfilePage";
 import { ShopStoreLoader } from "./components/ShopStoreLoader";
 import { BudokanEndpoint } from "./pages/BudokanEndpoint";
+import { ClaimSeasonPackPage } from "./pages/ClaimSeasonPackPage";
 import { DeckPage } from "./pages/Deck/DeckPage";
 import { DocsPage } from "./pages/Docs/Docs";
 import { DynamicStorePage } from "./pages/DynamicStore/DynamicStorePage";
 import { ExternalPack } from "./pages/ExternalPack/ExternalPack";
+import { FreePackPage } from "./pages/FreePackPage";
 import { GamePage } from "./pages/Game/GamePage";
 import { GamePageTutorial } from "./pages/Game/GamePageTutorial";
 import { GameOver } from "./pages/GameOver/GameOver";
@@ -25,19 +26,19 @@ import { OpenLootBox } from "./pages/OpenLootBox/Stages/OpenLootBox";
 import { OpenLootBoxCardSelection } from "./pages/OpenLootBox/Stages/OpenLootBoxCardSelection";
 import { PlaysLayout } from "./pages/Plays/PlaysLayout";
 import { PreviewPage } from "./pages/Preview/PreviewPage";
+import { ProfilePage } from "./pages/Profile/ProfilePage";
 import { Redirect } from "./pages/Redirect";
 import { RewardsPage } from "./pages/RewardsPage";
+import { SeasonProgressionPage } from "./pages/SeasonProgression/SeasonProgressionPage";
 import { SettingsPage } from "./pages/SettingsPage";
+import { ShopPage } from "./pages/Shop/ShopPage";
 import { TestPage } from "./pages/TestPage";
 import { VibrationPage } from "./pages/VibrationPage";
 import { CardHighlightProvider } from "./providers/HighlightProvider/CardHighlightProvider";
 import { PowerupHighlightProvider } from "./providers/HighlightProvider/PowerupHighlightProvider";
 import { StoreProvider } from "./providers/StoreProvider";
 import TutorialGameProvider from "./providers/TutorialGameProvider";
-import { SeasonProgressionPage } from "./pages/SeasonProgression/SeasonProgressionPage";
-import { ShopPage } from "./pages/Shop/ShopPage";
-import { FreePackPage } from "./pages/FreePackPage";
-import { ClaimSeasonPackPage } from "./pages/ClaimSeasonPackPage";
+import { LoginGate } from "./utils/LoginGate";
 
 export const AppRoutes = () => {
   const location = useLocation();
@@ -89,9 +90,11 @@ export const AppRoutes = () => {
         path="/my-collection"
         element={
           <AnimatedPage>
-            <CardHighlightProvider>
-              <MyCollectionPage />
-            </CardHighlightProvider>
+            <LoginGate>
+              <CardHighlightProvider>
+                <MyCollectionPage />
+              </CardHighlightProvider>
+            </LoginGate>
           </AnimatedPage>
         }
       />
@@ -99,7 +102,9 @@ export const AppRoutes = () => {
         path="/profile"
         element={
           <AnimatedPage>
-            <ProfilePage />
+            <LoginGate>
+              <ProfilePage />
+            </LoginGate>
           </AnimatedPage>
         }
       />
@@ -250,23 +255,27 @@ export const AppRoutes = () => {
             <PlaysLayout />
           </AnimatedPage>
         }
-      />      
+      />
       <Route
         path="/season"
         element={
           <AnimatedPage>
-            <SeasonProgressionPage />
+            <LoginGate>
+              <SeasonProgressionPage />
+            </LoginGate>
           </AnimatedPage>
         }
-      />      
+      />
       <Route
         path="/free-pack"
         element={
           <AnimatedPage>
-            <FreePackPage />
+            <LoginGate>
+              <FreePackPage />
+            </LoginGate>
           </AnimatedPage>
         }
-      />      
+      />
       <Route
         path="/claim-season-pack/:level/:premium"
         element={
@@ -279,7 +288,9 @@ export const AppRoutes = () => {
         path="/shop"
         element={
           <AnimatedPage>
-            <ShopPage />
+            <LoginGate>
+              <ShopPage />
+            </LoginGate>
           </AnimatedPage>
         }
       />

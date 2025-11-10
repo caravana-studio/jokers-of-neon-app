@@ -212,7 +212,8 @@
   },
   "common": {
     "go-back-btn": "Atrás",
-    "login": "Iniciar sesión"
+    "login": "Iniciar sesión",
+    "login-to-access": "Por favor, inicia sesión para acceder a esta página"
   },
   "profile-menu": {
     "level": "Nivel",
