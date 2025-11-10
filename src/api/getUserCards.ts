@@ -1,5 +1,8 @@
 import type { Collection } from "../pages/MyCollection/types";
-import { fillCollections } from "../pages/MyCollection/utils";
+import {
+  fillCollections,
+  fillTraditionalCollection,
+} from "../pages/MyCollection/utils";
 import { transformAPIResultToCollection } from "../utils/transformers/transformAPIResultToCollection";
 import { transformAPIResultToTraditionalCollection } from "../utils/transformers/transformAPIResultToTraditionalCollection";
 
@@ -93,9 +96,6 @@ export async function getUserCards(userAddress: string): Promise<{
     quality: Number(entry.quality),
   }));
 
-  console.log("userCards", userCards);
-  console.log("t", transformAPIResultToCollection(userCards));
-
   return {
     specials: fillCollections(
       transformAPIResultToCollection(
@@ -104,14 +104,26 @@ export async function getUserCards(userAddress: string): Promise<{
     ),
     traditionals: {
       id: -1,
-      cards: transformAPIResultToTraditionalCollection(
-        userCards.filter((card) => card.cardId < 100)
+      cards: fillTraditionalCollection(
+        transformAPIResultToTraditionalCollection(
+          userCards.filter(
+            (card) => card.cardId >= 0 && card.cardId <= 52
+          )
+        ),
+        0,
+        52
       ),
     },
     neons: {
       id: -2,
-      cards: transformAPIResultToTraditionalCollection(
-        userCards.filter((card) => card.cardId >= 200 && card.cardId < 300)
+      cards: fillTraditionalCollection(
+        transformAPIResultToTraditionalCollection(
+          userCards.filter(
+            (card) => card.cardId >= 200 && card.cardId <= 252
+          )
+        ),
+        200,
+        252
       ),
     },
   };

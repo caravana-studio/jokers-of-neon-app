@@ -1,5 +1,5 @@
 import type { UserCard } from "../../api/getUserCards";
-import { Collection, NftCards, UserNft } from "../../pages/MyCollection/types";
+import { NftCards, UserNft } from "../../pages/MyCollection/types";
 
 export const transformAPIResultToTraditionalCollection = (
   userCards: UserCard[]
@@ -43,6 +43,5 @@ export const transformAPIResultToTraditionalCollection = (
 
   cards.sort((a, b) => a.id - b.id);
 
-  return cards
-  
+  return cards;
 };

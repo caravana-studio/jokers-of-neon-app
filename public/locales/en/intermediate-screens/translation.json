@@ -235,6 +235,8 @@
     "no-collection": "Please login to see your collection",
     "login": "Login",
     "collections": {
+      "traditionals": "Traditional Cards",
+      "neons": "Neon Cards",
       "sx": "Season {{season}}",
       "c99": "GG Exclusive Collection - v1"
     }

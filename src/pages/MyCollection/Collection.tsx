@@ -25,13 +25,14 @@ import { useTranslation } from "react-i18next";
 type Props = {
   collection: Collection;
   hideHighlight?: boolean;
+  defaultOpen?: boolean;
 };
 
-const CollectionGrid: React.FC<Props> = ({ collection, hideHighlight = false }) => {
+const CollectionGrid: React.FC<Props> = ({ collection, hideHighlight = false, defaultOpen = true }) => {
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "my-collection.collections",
   });
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(defaultOpen);
   const ownedCount = collection.cards.filter(
     (card) => card.userNfts.length > 0
   ).length;
@@ -71,7 +72,13 @@ const CollectionGrid: React.FC<Props> = ({ collection, hideHighlight = false }) 
         onClick={() => setOpen((o) => !o)}
       >
         <Heading variant="italic" size="xs">
-          {collection.id < 25 ? t("sx", { season: collection.id }) : t(`c${collection.id}`) }
+          {collection.id === -1
+            ? t("traditionals")
+            : collection.id === -2
+            ? t("neons")
+            : collection.id < 25
+            ? t("sx", { season: collection.id })
+            : t(`c${collection.id}`)}
         </Heading>
         <Text ml={2} fontSize="8px" color="gray.400">
           ({ownedCount}/{length})

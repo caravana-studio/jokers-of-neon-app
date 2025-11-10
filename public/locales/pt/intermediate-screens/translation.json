@@ -233,6 +233,8 @@
     "no-collection": "Por favor, inicie sessão para ver sua coleção",
     "login": "Iniciar sessão",
     "collections": {
+      "traditionals": "Cartas tradicionais",
+      "neons": "Cartas de Neon",
       "sx": "Temporada {{season}}",
       "c99": "Coleção exclusiva GG - v1"
     }

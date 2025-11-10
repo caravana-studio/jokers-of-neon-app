@@ -106,8 +106,11 @@ export const MyCollectionPage = () => {
               <CollectionGrid key={collection.id} collection={collection} />
             ))
           )}
-          <CollectionGrid collection={traditionalCollection} />
-          <CollectionGrid collection={neonCollection} />
+          <CollectionGrid
+            collection={traditionalCollection}
+            defaultOpen={false}
+          />
+          <CollectionGrid collection={neonCollection} defaultOpen={false} />
         </Flex>
         <Box h="50px" />
       </Flex>
