@@ -41,7 +41,7 @@ export const TournamentEntries = () => {
       justifyContent={"space-between"}
     >
       <CachedImage
-        src="tournament-entry.png"
+        src="/tournament-entry.png"
         h={isSmallScreen ? "60px" : "100px"}
         mr={3}
       />
