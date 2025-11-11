@@ -1,6 +1,9 @@
 import { Button, Flex } from "@chakra-ui/react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { claimSeasonReward } from "../../api/claimSeasonReward";
+import { useDojo } from "../../dojo/useDojo";
 import { RewardStatus } from "../../enums/rewardStatus";
 import { VIOLET } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
@@ -11,15 +14,20 @@ interface StepRewardProps {
   reward?: IReward;
   type: "free" | "premium";
   level: number;
+  refetch: () => void;
 }
 
-export const StepReward = ({ reward, type, level }: StepRewardProps) => {
+export const StepReward = ({ reward, type, level, refetch }: StepRewardProps) => {
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "season-progression",
   });
+  const {
+    account: { account },
+  } = useDojo();
   const { isSmallScreen } = useResponsiveValues();
   const pack = reward?.packs?.[0];
   const navigate = useNavigate();
+  const [claiming, setClaiming] = useState(false);
 
   return (
     <Flex
@@ -31,7 +39,7 @@ export const StepReward = ({ reward, type, level }: StepRewardProps) => {
     >
       {pack && reward && (
         <>
-          <Packs reward={reward} />
+          <Packs reward={reward} claiming={claiming} />
 
           {reward.status === RewardStatus.UNCLAIMED && (
             <Flex position={"absolute"} bottom={2.5} zIndex={4}>
@@ -42,7 +50,19 @@ export const StepReward = ({ reward, type, level }: StepRewardProps) => {
                 boxShadow={`0 0 5px 2px ${VIOLET}`}
                 variant="secondarySolid"
                 onClick={() => {
-                  navigate(`/claim-season-pack/${level}/${type}`);
+                  if (reward.tournamentEntries > 0) {
+                    setClaiming(true);
+                    claimSeasonReward({
+                      address: account.address,
+                      level,
+                      isPremium: type === "premium",
+                    }).then(() => {
+                      setClaiming(false);
+                      refetch()
+                    });
+                  } else {
+                    navigate(`/claim-season-pack/${level}/${type}`);
+                  }
                 }}
               >
                 {t("claim")}

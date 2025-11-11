@@ -5,6 +5,7 @@ import { IReward, IStep } from "../pages/SeasonProgression/types";
 
 const DEFAULT_API_BASE_URL = "http://localhost:3001";
 const DEFAULT_SEASON_ID = SEASON_NUMBER;
+const TOURNAMENT_ENTRY_PACK_ID = 100;
 
 export type GetSeasonLineParams = {
   userAddress: string;
@@ -64,16 +65,24 @@ const parseReward = (
     return undefined;
   }
 
+  const tournamentEntries = rewards.filter(
+    (packId) => packId === TOURNAMENT_ENTRY_PACK_ID
+  ).length;
+
   const packs = rewards
-    .filter((packId) => packId in PackType)
+    .filter(
+      (packId) =>
+        packId !== TOURNAMENT_ENTRY_PACK_ID && packId in PackType
+    )
     .map((packId) => packId as PackType);
 
-  if (packs.length === 0) {
+  if (packs.length === 0 && tournamentEntries === 0) {
     return undefined;
   }
 
   return {
     packs,
+    tournamentEntries,
     status: getStatus(
       claimed,
       level,
