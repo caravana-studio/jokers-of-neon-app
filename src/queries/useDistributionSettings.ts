@@ -5,6 +5,7 @@ export enum BannerType {
   LEADERBOARD = "LEADERBOARD",
   PACKS = "PACKS",
   IMAGE = "image",
+  TOURNAMENT = "TOURNAMENT",
 }
 
 export interface Banner {

@@ -11,8 +11,9 @@ import { BLUE } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { Podium } from "./Podium";
 import { SeePrizesSwitcher } from "./SeePrizesSwitcher";
+import { TournamentEntries } from "./TournamentEntries";
 
-export const NewLeaderboardPage = () => {
+export const TournamentPage = () => {
   const { tournament } = useTournamentSettings();
   const { t } = useTranslation("home", { keyPrefix: "leaderboard" });
   const { isSmallScreen } = useResponsiveValues();
@@ -76,6 +77,7 @@ export const NewLeaderboardPage = () => {
           alignItems={"center"}
           mt={tournament?.isActive ? 4 : 8}
         >
+          <TournamentEntries />
           <Flex
             minH={0}
             flexGrow={1}

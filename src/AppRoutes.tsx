@@ -4,7 +4,6 @@ import "./App.scss";
 import { AnimatedPage } from "./components/AnimatedPage";
 import { GameStoreLoader } from "./components/GameStoreLoader";
 import { ShopStoreLoader } from "./components/ShopStoreLoader";
-import { BudokanEndpoint } from "./pages/BudokanEndpoint";
 import { ClaimSeasonPackPage } from "./pages/ClaimSeasonPackPage";
 import { DeckPage } from "./pages/Deck/DeckPage";
 import { DocsPage } from "./pages/Docs/Docs";
@@ -39,13 +38,13 @@ import { PowerupHighlightProvider } from "./providers/HighlightProvider/PowerupH
 import { StoreProvider } from "./providers/StoreProvider";
 import TutorialGameProvider from "./providers/TutorialGameProvider";
 import { LoginGate } from "./utils/LoginGate";
+import { TournamentPage } from "./pages/NewLeaderboardPage/TournamentPage";
 
 export const AppRoutes = () => {
   const location = useLocation();
 
   return (
     <Routes location={location} key={location.pathname}>
-      <Route path="/play/:gameId" element={<BudokanEndpoint />} />
       <Route
         path="/"
         element={
@@ -54,14 +53,6 @@ export const AppRoutes = () => {
           </AnimatedPage>
         }
       />
-      {/*       <Route
-        path="/mods"
-        element={
-          <AnimatedPage>
-            <SelectMod />
-          </AnimatedPage>
-        }
-      /> */}
       <Route
         path="/login"
         element={
@@ -173,6 +164,14 @@ export const AppRoutes = () => {
         element={
           <AnimatedPage>
             <NewLeaderboardPage />
+          </AnimatedPage>
+        }
+      />
+      <Route
+        path="/tournament"
+        element={
+          <AnimatedPage>
+            <TournamentPage />
           </AnimatedPage>
         }
       />

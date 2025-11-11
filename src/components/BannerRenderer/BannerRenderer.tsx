@@ -2,6 +2,7 @@ import { DailyMissionsBanner } from "../../pages/NewHome/banners/DailyMissionsBa
 import { ImageBanner } from "../../pages/NewHome/banners/ImageBanner";
 import { LeaderboardBanner } from "../../pages/NewHome/banners/LeaderboardBanner";
 import { PacksBanner } from "../../pages/NewHome/banners/PacksBanner";
+import { TournamentBanner } from "../../pages/NewHome/banners/TournamentBanner";
 import { Banner, BannerType } from "../../queries/useDistributionSettings";
 
 interface BannerRendererProps {
@@ -14,6 +15,8 @@ export const BannerRenderer: React.FC<BannerRendererProps> = ({ banner }) => {
       return <DailyMissionsBanner />;
     case BannerType.LEADERBOARD:
       return <LeaderboardBanner />;
+    case BannerType.TOURNAMENT:
+      return <TournamentBanner />;
     case BannerType.PACKS:
       return (
         <PacksBanner

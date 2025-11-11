@@ -34,7 +34,7 @@ import { useSettings } from "./SettingsProvider.tsx";
 import { TutorialGameContext } from "./TutorialGameProvider.tsx";
 
 export interface IGameContext {
-  executeCreateGame: (gameId?: number, username?: string) => void;
+  executeCreateGame: (isTournament?: boolean) => void;
   play: () => void;
   discard: () => void;
   changeModifierCard: (
@@ -136,7 +136,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const {
     switchToController,
     setup: { client },
-    account: { account }
+    account: { account },
   } = useDojo();
 
   const {
@@ -151,9 +151,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     approve,
   } = useGameActions();
 
-    const { showErrorToast } = useCustomToast();
-  
-    
+  const { showErrorToast } = useCustomToast();
+
   const { sfxVolume, animationSpeed } = useSettings();
 
   const { play: discardSound } = useAudio(discardSfx, sfxVolume);
@@ -224,47 +223,41 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     }
   };
 
-  const executeCreateGame = async (
-    providedGameId?: number,
-    usernameParameter?: string
-  ) => {
-    const username = usernameParameter || usernameLS;
+  const executeCreateGame = async (isTournament = false) => {
     setGameError(false);
     resetLevel();
     setGameLoading(true);
-    logEvent("create_game")
-    if (username) {
+    logEvent("create_game");
+    if (usernameLS) {
       try {
-          console.log("Creating game...");
-          createGame({userAddress: account.address, playerName: username})
-            .then(async (response) => {
-              const newGameId = response?.data?.slot?.game_id;
-              console.log(`game ${newGameId} created`);
-              if (newGameId) {
-                setGameId(newGameId);
-                replaceCards(hand);
-                fetchDeck(client, newGameId, getCardData);
-                clearPreSelection();
+        console.log("Creating game...");
+        createGame({ userAddress: account.address, playerName: usernameLS, isTournament })
+          .then(async (response) => {
+            const newGameId = response?.data?.slot?.game_id;
+            console.log(`game ${newGameId} created`);
+            if (newGameId) {
+              setGameId(newGameId);
+              replaceCards(hand);
+              fetchDeck(client, newGameId, getCardData);
+              clearPreSelection();
 
-
-                setPreSelectionLocked(false);
-                setRoundRewards(undefined);
-                setState(GameStateEnum.NotSet);
-                navigate("/demo");
-              } else {
-                showErrorToast("Error creating game")
-                console.error("Error creating game", response);
-                setGameError(true);
-                navigate("/my-games");
-              }
-            })
-            .catch((error) => {
-              console.error("Error creating game", error);
-              showErrorToast("Error creating game")
+              setPreSelectionLocked(false);
+              setRoundRewards(undefined);
+              setState(GameStateEnum.NotSet);
+              navigate("/demo");
+            } else {
+              showErrorToast("Error creating game");
+              console.error("Error creating game", response);
               setGameError(true);
               navigate("/my-games");
-            });
-
+            }
+          })
+          .catch((error) => {
+            console.error("Error creating game", error);
+            showErrorToast("Error creating game");
+            setGameError(true);
+            navigate("/my-games");
+          });
       } catch (error) {
         console.error("Error registering user in tournament", error);
         setGameError(true);
