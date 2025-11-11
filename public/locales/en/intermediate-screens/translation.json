@@ -122,6 +122,8 @@
     "start-btn": "start",
     "tuto": "Tutorial",
     "learn": "Do you want to learn how to play?",
+    "tournament-active": "There is an active tournament!",
+    "join": "Join now",
     "surrender": {
       "action": "Surrender",
       "confirmation-modal": {
