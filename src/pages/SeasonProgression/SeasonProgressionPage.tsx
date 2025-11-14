@@ -38,7 +38,11 @@ export const SeasonProgressionPage = () => {
           fetchSeasonProgress();
         }}
       />
-      <SeasonProgressionContent steps={steps} playerProgress={playerProgress} />
+      <SeasonProgressionContent
+        steps={steps}
+        playerProgress={playerProgress}
+        refetch={fetchSeasonProgress}
+      />
     </DelayedLoading>
   );
 };

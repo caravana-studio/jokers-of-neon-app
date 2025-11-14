@@ -22,7 +22,7 @@ export const GameBox = ({
     keyPrefix: "my-games",
   });
 
-  const { executeCreateGame, prepareNewGame, surrenderGame } = useGameContext();
+  const { prepareNewGame, surrenderGame } = useGameContext();
   const { setGameId } = useGameStore();
 
   const { isSmallScreen } = useResponsiveValues();
@@ -33,12 +33,8 @@ export const GameBox = ({
   const handleContinueButtonClick = async () => {
     setIsLoading(true);
     prepareNewGame();
-    if (game.status === GameStateEnum.NotStarted) {
-      executeCreateGame(game.id);
-    } else {
-      setGameId(game.id);
-      navigate(stateToPageMap[game.status as GameStateEnum]);
-    }
+    setGameId(game.id);
+    navigate(stateToPageMap[game.status as GameStateEnum]);
   };
 
   const handleSurrenderButtonClick = async () => {

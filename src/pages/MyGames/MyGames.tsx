@@ -9,6 +9,7 @@ import { MobileDecoration } from "../../components/MobileDecoration.tsx";
 import { GameStateEnum } from "../../dojo/typescript/custom.ts";
 import { useGameContext } from "../../providers/GameProvider.tsx";
 import { useGetMyGames } from "../../queries/useGetMyGames.ts";
+import { useTournamentSettings } from "../../queries/useTournamentSettings.ts";
 import { useGameStore } from "../../state/useGameStore.ts";
 import { VIOLET } from "../../theme/colors.tsx";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
@@ -38,6 +39,8 @@ export const MyGames = () => {
   const { isSmallScreen } = useResponsiveValues();
 
   const [showFinishedGames, setShowFinishedGames] = useState(false);
+
+  const { tournament } = useTournamentSettings();
 
   const [surrenderedIds, setSurrenderedIds] = useState<number[]>([]);
 
@@ -107,14 +110,11 @@ export const MyGames = () => {
             zIndex={2}
             mb={5}
           >
-            <Text fontSize={isSmallScreen ? 12 : 20}>
-              {t("learn")}
-            </Text>
+            <Text fontSize={isSmallScreen ? 12 : 20}>{t("learn")}</Text>
             <Button
               size={"sm"}
               width={isSmallScreen ? "90px" : "110px"}
               h={isSmallScreen ? "25px" : undefined}
-              
               onClick={() => navigate("/tutorial")}
               disabled={isLoading}
             >
@@ -172,10 +172,35 @@ export const MyGames = () => {
               </Flex>
             </Flex>
           </Box>
+          {tournament?.isActive && !tournament?.isFinished && (
+            <Flex
+              px={[2, 4]}
+              py={isSmallScreen ? 0 : 4}
+              width={{ base: "90%", sm: "70%", md: "900px" }}
+              justifyContent={isSmallScreen ? "space-between" : "center"}
+              gap={8}
+              alignItems={"center"}
+              zIndex={2}
+              mt={5}
+            >
+              <Text fontSize={isSmallScreen ? 12 : 20}>
+                {t("tournament-active")}
+              </Text>
+              <Button
+                size={"sm"}
+                width={isSmallScreen ? "90px" : "110px"}
+                h={isSmallScreen ? "25px" : undefined}
+                onClick={() => navigate("/tournament")}
+              >
+                {t("join")}
+              </Button>
+            </Flex>
+          )}
         </Flex>
         <Flex w="100%" h="25%" justifyContent={"center"} alignItems={"center"}>
           <DailyGames />
         </Flex>
+
         {/*  {isSmallScreen ? (
           <MobileBottomBar
             firstButton={{

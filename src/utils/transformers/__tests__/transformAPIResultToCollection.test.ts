@@ -1,13 +1,13 @@
 import { expect, test } from "vitest";
-import { transformAPIResultToCollection } from "../transformAPIResultToCollection";
 import type { UserCard } from "../../../api/getUserCards";
+import { transformAPIResultToCollection } from "../transformAPIResultToCollection";
 
 test("groups cards by rarity with a single entry", () => {
   const input: UserCard[] = [
     {
       tokenId: "145",
       marketable: false,
-      cardId: 9,
+      cardId: 10109,
       rarity: 1,
       count: 0,
       owner: "0x123",
@@ -24,7 +24,7 @@ test("groups cards by rarity with a single entry", () => {
       id: 1,
       cards: [
         {
-          id: 9,
+          id: 10109,
           userNfts: [
             {
               nftId: "145",
@@ -43,7 +43,7 @@ test("groups multiple entries with the same cardId into one card", () => {
     {
       tokenId: "145",
       marketable: false,
-      cardId: 9,
+      cardId: 10109,
       rarity: 1,
       count: 0,
       owner: "0x123",
@@ -54,7 +54,7 @@ test("groups multiple entries with the same cardId into one card", () => {
     {
       tokenId: "146",
       marketable: false,
-      cardId: 9,
+      cardId: 10109,
       rarity: 1,
       count: 0,
       owner: "0x123",
@@ -71,7 +71,7 @@ test("groups multiple entries with the same cardId into one card", () => {
       id: 1,
       cards: [
         {
-          id: 9,
+          id: 10109,
           userNfts: [
             {
               nftId: "145",
@@ -95,7 +95,7 @@ test("handles multiple rarities and card ids", () => {
     {
       tokenId: "145",
       marketable: false,
-      cardId: 9,
+      cardId: 10109,
       rarity: 1,
       count: 0,
       owner: "0x123",
@@ -106,7 +106,7 @@ test("handles multiple rarities and card ids", () => {
     {
       tokenId: "146",
       marketable: false,
-      cardId: 223,
+      cardId: 10108,
       rarity: 1,
       count: 0,
       owner: "0x123",
@@ -117,7 +117,7 @@ test("handles multiple rarities and card ids", () => {
     {
       tokenId: "147",
       marketable: true,
-      cardId: 50,
+      cardId: 10209,
       rarity: 2,
       count: 0,
       owner: "0x123",
@@ -134,22 +134,22 @@ test("handles multiple rarities and card ids", () => {
       id: 1,
       cards: [
         {
-          id: 9,
-          userNfts: [
-            {
-              nftId: "145",
-              skin: 1,
-              quality: 7,
-            },
-          ],
-        },
-        {
-          id: 223,
+          id: 10108,
           userNfts: [
             {
               nftId: "146",
               skin: 1,
               quality: 10,
+            },
+          ],
+        },
+        {
+          id: 10109,
+          userNfts: [
+            {
+              nftId: "145",
+              skin: 1,
+              quality: 7,
             },
           ],
         },
@@ -159,7 +159,7 @@ test("handles multiple rarities and card ids", () => {
       id: 2,
       cards: [
         {
-          id: 50,
+          id: 10209,
           userNfts: [
             {
               nftId: "147",

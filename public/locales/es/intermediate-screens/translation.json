@@ -102,7 +102,9 @@
     "free-rewards": "RECOMPENSAS GRATIS",
     "season": "TEMPORADA {{season}}",
     "my-xp": "Mi XP",
-    "claim": "RECLAMAR"
+    "claim": "RECLAMAR",
+    "tournament-entry": "Entrada de torneo",
+    "claiming-in-progress": "Reclamando..."
   },
   "map": {
     "level": "NIVEL"
@@ -119,6 +121,8 @@
     "start-btn": "Iniciar",
     "tuto": "Tutorial",
     "learn": "¿Quieres aprender a jugar?",
+    "tournament-active": "¡Hay un torneo activo!",
+    "join": "Únete ahora",
     "surrender": {
       "action": "Rendirse",
       "confirmation-modal": {

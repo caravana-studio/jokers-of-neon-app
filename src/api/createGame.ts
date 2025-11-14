@@ -10,6 +10,7 @@ export type CreateGameParams = {
   to?: string;
   seed?: string;
   seasonId?: number;
+  isTournament?: boolean;
 };
 
 export async function createGame({
@@ -19,6 +20,7 @@ export async function createGame({
   to,
   seed = DEFAULT_OPTIONAL_HEX,
   seasonId = SEASON_NUMBER,
+  isTournament = false,
 }: CreateGameParams) {
   if (!userAddress) {
     throw new Error("createGame: userAddress is required");
@@ -52,6 +54,7 @@ export async function createGame({
       settings_id: settingsId,
       season_id: seasonId,
       to: to ?? userAddress,
+      is_tournament: isTournament,
       seed,
     }),
   });

@@ -2,7 +2,8 @@ import { Flex } from "@chakra-ui/react";
 import { faCheck, faLock, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { RewardStatus } from "../../enums/rewardStatus";
-import { STEP_HEIGHT, StepProps } from "./Step";
+import { STEP_HEIGHT } from "./Step";
+import { IStep } from "./types";
 
 const getIcon = (status?: RewardStatus) => {
   switch (status) {
@@ -17,7 +18,11 @@ const getIcon = (status?: RewardStatus) => {
   }
 };
 
-export const StepIcons = ({ step }: StepProps) => {
+export interface StepIconsProps {
+  step: IStep;
+}
+
+export const StepIcons = ({ step }: StepIconsProps) => {
   const freeIcon = getIcon(step.free?.status);
   const premiumIcon = getIcon(step.premium?.status);
 

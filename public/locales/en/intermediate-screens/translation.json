@@ -103,7 +103,9 @@
     "free-rewards": "FREE REWARDS",
     "season": "SEASON {{season}}",
     "my-xp": "My XP",
-    "claim": "CLAIM"
+    "claim": "CLAIM",
+    "tournament-entry": "Tournament entry",
+    "claiming-in-progress": "Claiming in progress..."
   },
   "map": {
     "level": "LEVEL"
@@ -120,6 +122,8 @@
     "start-btn": "start",
     "tuto": "Tutorial",
     "learn": "Do you want to learn how to play?",
+    "tournament-active": "There is an active tournament!",
+    "join": "Join now",
     "surrender": {
       "action": "Surrender",
       "confirmation-modal": {

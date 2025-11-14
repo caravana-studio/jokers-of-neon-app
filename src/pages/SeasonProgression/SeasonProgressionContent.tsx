@@ -26,17 +26,19 @@ function calculateProgress(steps: IStep[], playerProgress: number): number {
 interface SeasonProgressionContentProps {
   steps: IStep[];
   playerProgress: number;
+  refetch: () => void;
 }
 
 export const SeasonProgressionContent = ({
   steps,
   playerProgress,
+  refetch,
 }: SeasonProgressionContentProps) => {
   return (
     <Flex w="100%" marginTop={`${STEP_HEIGHT}px`} position="relative" overflowY="auto">
       <Flex position="absolute" w="100%" flexDir={"column"}  pb="100px">
         {steps.map((step, index) => {
-          return <Step key={index} step={step} />;
+          return <Step key={index} step={step} refetch={refetch} />;
         })}
       </Flex>
       <Flex position="absolute" w="100%" h={`${steps.length * STEP_HEIGHT}px`}>
