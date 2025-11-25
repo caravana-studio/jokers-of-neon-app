@@ -38,14 +38,15 @@ const StoreNode = ({ data }: any) => {
   const { id: gameId } = useGameStore();
   const navigate = useCustomNavigate();
 
-  const { reachableNodes, setSelectedNodeData, selectedNodeData } = useMap();
+  const { reachableNodes, setSelectedNodeData, selectedNodeData, isNodeTransactionPending, setNodeTransactionPending, activeNodeId, setActiveNodeId } = useMap();
   const { isSmallScreen } = useResponsiveValues();
 
   const { state, setShopId } = useGameStore();
   const { refetch} = useStore()
 
   const stateInMap = state === GameStateEnum.Map;
-  const reachable = reachableNodes.includes(data.id.toString()) && stateInMap;
+  const isActiveNode = activeNodeId === data.id.toString();
+  const reachable = reachableNodes.includes(data.id.toString()) && stateInMap && (!isNodeTransactionPending || isActiveNode);
 
   const title = t(`${data.shopId}.name`);
   const content = t(
@@ -95,6 +96,8 @@ const StoreNode = ({ data }: any) => {
           },
         }}
         onClick={() => {
+          if (isNodeTransactionPending && !isActiveNode) return;
+
           isSmallScreen &&
             setSelectedNodeData({
               id: data.id,
@@ -106,12 +109,17 @@ const StoreNode = ({ data }: any) => {
 
           if (data.current && !stateInMap) {
             navigate(GameStateEnum.Store);
-          } else if (stateInMap && reachable && !isSmallScreen) {
+          } else if (stateInMap && reachableNodes.includes(data.id.toString()) && !isSmallScreen) {
+            setActiveNodeId(data.id.toString());
+            setNodeTransactionPending(true);
             advanceNode(gameId, data.id).then((response) => {
               if (response) {
                 setShopId(data.shopId);
                 refetch()
                 navigate(GameStateEnum.Store);
+              } else {
+                setNodeTransactionPending(false);
+                setActiveNodeId(null);
               }
             });
           }

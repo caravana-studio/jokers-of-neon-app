@@ -35,6 +35,10 @@ interface MapContextType {
   reachableNodes: string[];
   selectedNodeData: SelectedNodeData | undefined;
   setSelectedNodeData: (data: SelectedNodeData | undefined) => void;
+  isNodeTransactionPending: boolean;
+  setNodeTransactionPending: (pending: boolean) => void;
+  activeNodeId: string | null;
+  setActiveNodeId: (id: string | null) => void;
 }
 
 const MapContext = createContext<MapContextType | undefined>(undefined);
@@ -50,6 +54,8 @@ export const MapProvider = ({ children }: MapProviderProps) => {
   const [selectedNodeData, setSelectedNodeData] = useState<
     SelectedNodeData | undefined
   >();
+  const [isNodeTransactionPending, setNodeTransactionPending] = useState(false);
+  const [activeNodeId, setActiveNodeId] = useState<string | null>(null);
 
   const { isSmallScreen } = useResponsiveValues();
 
@@ -195,6 +201,10 @@ export const MapProvider = ({ children }: MapProviderProps) => {
         reachableNodes,
         selectedNodeData,
         setSelectedNodeData,
+        isNodeTransactionPending,
+        setNodeTransactionPending,
+        activeNodeId,
+        setActiveNodeId,
       }}
     >
       {children}

@@ -23,12 +23,13 @@ const RoundNode = ({ data }: any) => {
       setup: { client },
     } = useDojo();
 
-  const { reachableNodes, setSelectedNodeData, selectedNodeData } = useMap();
+  const { reachableNodes, setSelectedNodeData, selectedNodeData, isNodeTransactionPending, setNodeTransactionPending, activeNodeId, setActiveNodeId } = useMap();
   const { isSmallScreen } = useResponsiveValues();
   const { state, refetchGameStore } = useGameStore();
 
   const stateInMap = state === GameStateEnum.Map;
-  const reachable = reachableNodes.includes(data.id.toString()) && stateInMap;
+  const isActiveNode = activeNodeId === data.id.toString();
+  const reachable = reachableNodes.includes(data.id.toString()) && stateInMap && (!isNodeTransactionPending || isActiveNode);
 
   const title = t("name");
 
@@ -84,6 +85,8 @@ const RoundNode = ({ data }: any) => {
           },
         }}
         onClick={() => {
+          if (isNodeTransactionPending && !isActiveNode) return;
+
           isSmallScreen &&
             setSelectedNodeData({
               id: data.id,
@@ -92,10 +95,15 @@ const RoundNode = ({ data }: any) => {
             });
           if (data.current && !stateInMap) {
             navigate(GameStateEnum.Round);
-          } else if (stateInMap && reachable && !isSmallScreen) {
+          } else if (stateInMap && reachableNodes.includes(data.id.toString()) && !isSmallScreen) {
+            setActiveNodeId(data.id.toString());
+            setNodeTransactionPending(true);
             advanceNode(gameId, data.id).then((response) => {
               if (response) {
                 refetchAndNavigate();
+              } else {
+                setNodeTransactionPending(false);
+                setActiveNodeId(null);
               }
             });
           }
