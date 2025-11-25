@@ -2,6 +2,7 @@
   "round": {
     "name": "Ronda normal"
   },
+  "here": "Estás aquí",
   "rage": {
     "name": "Ronda rage",
     "power": "Poder: {{power}}",
