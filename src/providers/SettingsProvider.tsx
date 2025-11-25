@@ -1,5 +1,6 @@
 import { NativeAudio } from "@capacitor-community/native-audio";
-import { Capacitor } from "@capacitor/core";
+import { App } from "@capacitor/app";
+import { Capacitor, PluginListenerHandle } from "@capacitor/core";
 import { Howl } from "howler";
 import React, {
   ReactNode,
@@ -76,6 +77,7 @@ export const SettingsProvider = ({
   });
   const [isMusicPlaying, setIsMusicPlaying] = useState(false);
   const [sound, setSound] = useState<Howl | undefined>(undefined);
+  const [nativePlaybackKey, setNativePlaybackKey] = useState(0);
   const [currentActiveSongPath, setCurrentActiveSongPath] = useState<
     string | null
   >(null);
@@ -210,7 +212,7 @@ export const SettingsProvider = ({
       }
       clearTimeout(fadeTimeout);
     };
-  }, [currentActiveSongPath, musicOn, musicVolume, isNative]);
+  }, [currentActiveSongPath, musicOn, musicVolume, isNative, nativePlaybackKey]);
 
   useEffect(() => {
     if (isNative) {
@@ -224,6 +226,34 @@ export const SettingsProvider = ({
       sound.volume(musicVolume);
     }
   }, [isNative, musicVolume, sound]);
+
+  useEffect(() => {
+    if (!isNative) return;
+
+    let pauseHandle: PluginListenerHandle | undefined;
+    let resumeHandle: PluginListenerHandle | undefined;
+
+    const registerListeners = async () => {
+      pauseHandle = await App.addListener("pause", async () => {
+        await runNativeAudioTask(() =>
+          NativeAudio.stop({ assetId: "bg_music" }).catch(() => {})
+        );
+        setIsMusicPlaying(false);
+      });
+
+      resumeHandle = await App.addListener("resume", () => {
+        if (!musicOn || !currentActiveSongPath) return;
+        setNativePlaybackKey((key) => key + 1);
+      });
+    };
+
+    registerListeners();
+
+    return () => {
+      pauseHandle?.remove();
+      resumeHandle?.remove();
+    };
+  }, [isNative, musicOn, currentActiveSongPath]);
 
   useEffect(() => {
     const savedVolume = localStorage.getItem(SETTINGS_SFX_VOLUME);
