@@ -48,7 +48,7 @@ const StoreNode = ({ data }: any) => {
   const stateInMap = state === GameStateEnum.Map;
   const reachable = reachableNodes.includes(data.id.toString()) && stateInMap;
 
-  const title = tMap('legend.nodes.shop.title') + ' ' + t (`${data.shopId}.name`);
+  const title = `${tMap('legend.nodes.shop.title')} ${t(`${data.shopId}.name`)}`;
   const content = t(
     `${data.shopId}.content`,
     getStoreItemsBasedOnShopId(data.shopId)
