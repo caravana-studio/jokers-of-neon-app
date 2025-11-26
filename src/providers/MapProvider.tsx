@@ -13,7 +13,7 @@ import { useDojo } from "../dojo/useDojo";
 import { getLayoutedElements } from "../pages/Map/layout";
 import { NodeData, NodeType } from "../pages/Map/types";
 import { useGameStore } from "../state/useGameStore";
-import { BLUE, BLUE_LIGHT } from "../theme/colors";
+import { BLUE, VIOLET_LIGHT } from "../theme/colors";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import { getRageNodeData } from "../utils/getRageNodeData";
 
@@ -139,7 +139,7 @@ export const MapProvider = ({ children }: MapProviderProps) => {
           shouldPulse,
         },
         style: {
-          stroke: visibleLine ? (shouldPulse ? BLUE_LIGHT : BLUE) : "#fff",
+          stroke: visibleLine ? (shouldPulse ? VIOLET_LIGHT : BLUE) : "#fff",
           strokeWidth: 2,
           strokeDasharray: visibleLine ? undefined : "5 5",
           opacity: visibleLine ? 1 : 0.3,

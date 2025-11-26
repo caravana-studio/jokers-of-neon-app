@@ -21,15 +21,6 @@ const MapEdge = (props: EdgeProps) => {
   });
 
   const shouldPulse = Boolean(data?.shouldPulse);
-  const baseStrokeWidth = (() => {
-    const width = style?.strokeWidth;
-    if (typeof width === "number") return width;
-    if (typeof width === "string") {
-      const parsed = Number.parseFloat(width);
-      return Number.isNaN(parsed) ? 2 : parsed;
-    }
-    return 2;
-  })();
 
   return (
     <>
@@ -48,7 +39,7 @@ const MapEdge = (props: EdgeProps) => {
           d={edgePath}
           pathLength={1}
           stroke="#fff"
-          strokeWidth={baseStrokeWidth + 1}
+          strokeWidth={1}
           fill="none"
           className="map-edge__pulse-layer"
           pointerEvents="none"

@@ -12,7 +12,7 @@
 @keyframes mapEdgePulse {
   0% {
     stroke-dashoffset: 0;
-    opacity: 0.4;
+    opacity: 0.6;
   }
   40% {
     opacity: 1;
@@ -22,6 +22,6 @@
   }
   100% {
     stroke-dashoffset: 1;
-    opacity: 0.4;
+    opacity: 0.6;
   }
 }
