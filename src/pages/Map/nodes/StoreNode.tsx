@@ -96,7 +96,7 @@ const StoreNode = ({ data }: any) => {
           },
         }}
         onClick={() => {
-          if (isNodeTransactionPending && !isActiveNode) return;
+          if (isNodeTransactionPending) return;
 
           isSmallScreen &&
             setSelectedNodeData({

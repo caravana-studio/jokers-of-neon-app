@@ -69,7 +69,7 @@ const RageNode = ({ data }: any) => {
           cursor: stateInMap && reachable ? "pointer" : "default",
         }}
         onClick={() => {
-          if (isNodeTransactionPending && !isActiveNode) return;
+          if (isNodeTransactionPending) return;
 
           isSmallScreen &&
             setSelectedNodeData({
