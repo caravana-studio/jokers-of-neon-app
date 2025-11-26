@@ -21,7 +21,6 @@ import {
   lootboxTransitionLabels,
 } from "../constants/settingsLabels";
 import { Speed } from "../enums/settings";
-import { useAudioPlayer } from "../providers/AudioPlayerProvider";
 import { useSettings } from "../providers/SettingsProvider";
 import { NEON_PINK } from "../theme/colors";
 import AudioPlayer from "./AudioPlayer";
@@ -37,8 +36,10 @@ export const SettingsContent = () => {
     setAnimationSpeed,
     lootboxTransition,
     setLootboxTransition,
+    musicVolume,
+    setMusicVolume,
+    musicOn,
   } = useSettings();
-  const { musicVolume, setMusicVolume, isPlaying } = useAudioPlayer();
 
   const { t, i18n } = useTranslation(["game"], { keyPrefix: "settings-modal" });
 
@@ -129,7 +130,7 @@ export const SettingsContent = () => {
           max={0.4}
           step={0.01}
           value={musicVolume}
-          isDisabled={!isPlaying}
+          isDisabled={!musicOn}
           onChange={(value) => setMusicVolume(value)}
         >
           <SliderTrack>
