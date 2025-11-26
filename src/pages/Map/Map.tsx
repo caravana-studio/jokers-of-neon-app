@@ -1,5 +1,6 @@
 import ReactFlow, { Controls } from "reactflow";
 import "reactflow/dist/style.css";
+import "./Map.css";
 import EmojiNode from "./nodes/EmojiNode";
 
 import { Flex } from "@chakra-ui/react";
@@ -20,6 +21,7 @@ import { NodeDetailsMobileButton } from "./NodeDetailsMobileButton";
 import RageNode from "./nodes/RageNode";
 import RoundNode from "./nodes/RoundNode";
 import RewardNode from "./nodes/StoreNode";
+import MapEdge from "./MapEdge";
 import { NodeType } from "./types";
 
 export const Map = () => {
@@ -114,6 +116,7 @@ export const Map = () => {
           [NodeType.ROUND]: RoundNode,
           [NodeType.CHALLENGE]: RoundNode,
         }}
+        edgeTypes={{ map: MapEdge }}
         panOnScroll={false}
         zoomOnScroll={true}
         nodesDraggable={false}

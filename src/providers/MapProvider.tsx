@@ -13,7 +13,7 @@ import { useDojo } from "../dojo/useDojo";
 import { getLayoutedElements } from "../pages/Map/layout";
 import { NodeData, NodeType } from "../pages/Map/types";
 import { useGameStore } from "../state/useGameStore";
-import { BLUE } from "../theme/colors";
+import { BLUE, VIOLET_LIGHT } from "../theme/colors";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import { getRageNodeData } from "../utils/getRageNodeData";
 
@@ -125,18 +125,23 @@ export const MapProvider = ({ children }: MapProviderProps) => {
       const targetNode = nodes.find((n) => n.id === edge.target);
 
       const isReachable = targetNode?.id === currentNode.id;
+      const sourceVisited = Boolean(sourceNode?.data?.visited);
+      const targetVisited = Boolean(targetNode?.data?.visited);
+      const isCompletedPath = sourceVisited && targetVisited;
 
-      const visibleLine =
-        (sourceNode?.data?.visited && targetNode?.data?.visited) ||
-        (isReachable && stateInMap);
+      const visibleLine = isCompletedPath || (isReachable && stateInMap);
+      const shouldPulse = !isCompletedPath && visibleLine;
+
       return {
         ...edge,
+        data: {
+          ...edge.data,
+          shouldPulse,
+        },
         style: {
-          stroke:
-            sourceNode?.data?.visited && targetNode?.data?.visited
-              ? BLUE
-              : "#fff",
-          strokeDasharray: visibleLine ? "unset" : "5 5",
+          stroke: visibleLine ? (shouldPulse ? VIOLET_LIGHT : BLUE) : "#fff",
+          strokeWidth: 2,
+          strokeDasharray: visibleLine ? undefined : "5 5",
           opacity: visibleLine ? 1 : 0.3,
         },
       };
@@ -153,7 +158,7 @@ export const MapProvider = ({ children }: MapProviderProps) => {
           id: node.id + "-" + childId,
           source: node.id.toString(),
           target: childId.toString(),
-          type: "straight",
+          type: "map",
           style: {
             stroke: "#fff",
             opacity: 0.2,
