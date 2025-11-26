@@ -1,6 +1,7 @@
 import { Flex } from "@chakra-ui/react";
 import useResizeObserver from "@react-hook/resize-observer";
 import { useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { PowerUpComponent } from "../../../components/PowerUpComponent";
 import { useGameStore } from "../../../state/useGameStore";
@@ -15,6 +16,7 @@ interface PowerUpComponentProps {
 export const PowerUpsComponent = ({
   doubleRow = false,
 }: PowerUpComponentProps) => {
+  const { t } = useTranslation("store");
   const { powerUps } = useShopStore();
   const { powerUps: playerPowerUps, maxPowerUpSlots } = useGameStore();
   const flexRef = useRef<HTMLDivElement>(null);
@@ -67,6 +69,7 @@ export const PowerUpsComponent = ({
                 powerUp={isBlocked ? { ...powerUp, purchased: true } : powerUp}
                 width={powerUpWidth > maxWidth ? maxWidth : powerUpWidth}
                 inStore
+                customPurchasedText={isBlocked ? t("store.labels.no-powerup-slots") : undefined}
                 onClick={() => {
                   if (!powerUp.purchased && !isBlocked) {
                     navigate("/preview/power-up", {

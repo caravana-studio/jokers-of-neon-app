@@ -6,6 +6,7 @@ interface PurchasedLblProps {
   fontSize: number;
   position?: "centered" | "bottom";
   topOffset?: string;
+  customText?: string;
 }
 
 export const PurchasedLbl: React.FC<PurchasedLblProps> = ({
@@ -13,10 +14,13 @@ export const PurchasedLbl: React.FC<PurchasedLblProps> = ({
   fontSize,
   topOffset,
   position = "centered",
+  customText,
 }) => {
   const { t } = useTranslation(["store"]);
 
   if (!purchased) return null;
+
+  const displayText = customText || t("store.labels.purchased");
 
   return (
     <Box
@@ -29,7 +33,7 @@ export const PurchasedLbl: React.FC<PurchasedLblProps> = ({
       }}
     >
       <Heading variant="italic" fontSize={fontSize} textAlign="center">
-        {t("store.labels.purchased").toLocaleUpperCase()}
+        {displayText.toLocaleUpperCase()}
       </Heading>
     </Box>
   );
