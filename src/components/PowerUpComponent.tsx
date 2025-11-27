@@ -20,6 +20,7 @@ interface PowerUpProps {
   containerSx?: SystemStyleObject;
   isActive?: boolean;
   hideTooltip?: boolean;
+  customPurchasedText?: string;
 }
 export const PowerUpComponent = ({
   powerUp,
@@ -29,6 +30,7 @@ export const PowerUpComponent = ({
   containerSx,
   isActive,
   hideTooltip = false,
+  customPurchasedText,
 }: PowerUpProps) => {
   const { powerUpIsPreselected } = useGameStore();
   const calculatedIsActive =
@@ -72,6 +74,7 @@ export const PowerUpComponent = ({
         purchased={purchased ?? false}
         topOffset={`${isSmallScreen ? width / 3 - 10 : width / 3 - 15}px`}
         fontSize={isSmallScreen ? 6 : 11 * cardScale}
+        customText={customPurchasedText}
       />
       <HighlightAnimation
         start={calculatedIsActive}
