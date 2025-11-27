@@ -29,9 +29,14 @@ export const Map = () => {
     edges,
     fitViewToCurrentNode,
     fitViewToFullMap,
+    fitViewToNode,
     layoutReady,
     selectedNodeData,
     reachableNodes,
+    isNodeTransactionPending,
+    setNodeTransactionPending,
+    activeNodeId,
+    setActiveNodeId,
   } = useMap();
 
   const {
@@ -71,24 +76,39 @@ export const Map = () => {
   };
 
   const handleGoClick = () => {
-    selectedNodeData &&
-      advanceNode(gameId, selectedNodeData.id).then((response) => {
+    if (!selectedNodeData) return;
+
+    setActiveNodeId(selectedNodeData.id.toString());
+    setNodeTransactionPending(true);
+    fitViewToNode(selectedNodeData.id.toString());
+
+    advanceNode(gameId, selectedNodeData.id)
+      .then((response) => {
         if (response) {
-          switch (selectedNodeData?.nodeType) {
-            case NodeType.RAGE:
-              refetchAndNavigate(GameStateEnum.Rage);
-              break;
-            case NodeType.ROUND:
-              refetchAndNavigate(GameStateEnum.Round);
-              break;
-            case NodeType.STORE:
-              navigate(GameStateEnum.Store);
-              selectedNodeData.shopId && setShopId(selectedNodeData.shopId);
-              break;
-            default:
-              break;
-          }
+          setTimeout(() => {
+            switch (selectedNodeData?.nodeType) {
+              case NodeType.RAGE:
+                refetchAndNavigate(GameStateEnum.Rage);
+                break;
+              case NodeType.ROUND:
+                refetchAndNavigate(GameStateEnum.Round);
+                break;
+              case NodeType.STORE:
+                selectedNodeData.shopId && setShopId(selectedNodeData.shopId);
+                navigate(GameStateEnum.Store);
+                break;
+              default:
+                break;
+            }
+          }, 600);
+        } else {
+          setNodeTransactionPending(false);
+          setActiveNodeId(null);
         }
+      })
+      .catch(() => {
+        setNodeTransactionPending(false);
+        setActiveNodeId(null);
       });
   };
 

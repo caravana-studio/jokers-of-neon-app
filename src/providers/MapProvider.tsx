@@ -30,6 +30,7 @@ interface MapContextType {
   edges: Edge[];
   fitViewToCurrentNode: () => void;
   fitViewToFullMap: () => void;
+  fitViewToNode: (nodeId: string) => void;
   currentNode: Node | undefined;
   layoutReady: boolean;
   reachableNodes: string[];
@@ -189,6 +190,15 @@ export const MapProvider = ({ children }: MapProviderProps) => {
     reactFlowInstance.fitView({ padding: 0.1 });
   };
 
+  const fitViewToNode = (nodeId: string) => {
+    reactFlowInstance.fitView({
+      nodes: [{ id: nodeId }],
+      padding: 0.3,
+      duration: 800,
+      maxZoom: isSmallScreen ? 1.5 : 2,
+    });
+  };
+
   return (
     <MapContext.Provider
       value={{
@@ -196,6 +206,7 @@ export const MapProvider = ({ children }: MapProviderProps) => {
         edges,
         fitViewToCurrentNode,
         fitViewToFullMap,
+        fitViewToNode,
         currentNode,
         layoutReady,
         reachableNodes,

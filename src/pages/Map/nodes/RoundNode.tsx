@@ -23,7 +23,7 @@ const RoundNode = ({ data }: any) => {
       setup: { client },
     } = useDojo();
 
-  const { reachableNodes, setSelectedNodeData, selectedNodeData, isNodeTransactionPending, setNodeTransactionPending, activeNodeId, setActiveNodeId } = useMap();
+  const { reachableNodes, setSelectedNodeData, selectedNodeData, isNodeTransactionPending, setNodeTransactionPending, activeNodeId, setActiveNodeId, fitViewToNode } = useMap();
   const { isSmallScreen } = useResponsiveValues();
   const { state, refetchGameStore } = useGameStore();
 
@@ -87,30 +87,45 @@ const RoundNode = ({ data }: any) => {
         onClick={() => {
           if (isNodeTransactionPending) return;
 
-          isSmallScreen &&
+          if (isSmallScreen) {
             setSelectedNodeData({
               id: data.id,
               title: title,
               nodeType: NodeType.ROUND,
             });
-          if (data.current && !stateInMap) {
+          } else if (data.current && !stateInMap) {
             navigate(GameStateEnum.Round);
-          } else if (stateInMap && reachableNodes.includes(data.id.toString()) && !isSmallScreen) {
-            setActiveNodeId(data.id.toString());
-            setNodeTransactionPending(true);
-            advanceNode(gameId, data.id)
-              .then((response) => {
-                if (response) {
-                  refetchAndNavigate();
-                } else {
+          } else if (stateInMap && reachableNodes.includes(data.id.toString())) {
+            // Desktop: verificar si ya está seleccionado para navegarlo o solo seleccionarlo
+            if (selectedNodeData?.id === data.id) {
+              // Segundo click: navegar con animación
+              setActiveNodeId(data.id.toString());
+              setNodeTransactionPending(true);
+              fitViewToNode(data.id.toString());
+
+              advanceNode(gameId, data.id)
+                .then((response) => {
+                  if (response) {
+                    setTimeout(() => {
+                      refetchAndNavigate();
+                    }, 600);
+                  } else {
+                    setNodeTransactionPending(false);
+                    setActiveNodeId(null);
+                  }
+                })
+                .catch(() => {
                   setNodeTransactionPending(false);
                   setActiveNodeId(null);
-                }
-              })
-              .catch(() => {
-                setNodeTransactionPending(false);
-                setActiveNodeId(null);
+                });
+            } else {
+              // Primer click: solo mostrar información
+              setSelectedNodeData({
+                id: data.id,
+                title: title,
+                nodeType: NodeType.ROUND,
               });
+            }
           }
         }}
       >

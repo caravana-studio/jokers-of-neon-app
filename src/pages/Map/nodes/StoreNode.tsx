@@ -38,7 +38,7 @@ const StoreNode = ({ data }: any) => {
   const { id: gameId } = useGameStore();
   const navigate = useCustomNavigate();
 
-  const { reachableNodes, setSelectedNodeData, selectedNodeData, isNodeTransactionPending, setNodeTransactionPending, activeNodeId, setActiveNodeId } = useMap();
+  const { reachableNodes, setSelectedNodeData, selectedNodeData, isNodeTransactionPending, setNodeTransactionPending, activeNodeId, setActiveNodeId, fitViewToNode } = useMap();
   const { isSmallScreen } = useResponsiveValues();
 
   const { state, setShopId } = useGameStore();
@@ -98,7 +98,7 @@ const StoreNode = ({ data }: any) => {
         onClick={() => {
           if (isNodeTransactionPending) return;
 
-          isSmallScreen &&
+          if (isSmallScreen) {
             setSelectedNodeData({
               id: data.id,
               title: title,
@@ -106,27 +106,43 @@ const StoreNode = ({ data }: any) => {
               nodeType: NodeType.STORE,
               shopId: data.shopId,
             });
-
-          if (data.current && !stateInMap) {
+          } else if (data.current && !stateInMap) {
             navigate(GameStateEnum.Store);
-          } else if (stateInMap && reachableNodes.includes(data.id.toString()) && !isSmallScreen) {
-            setActiveNodeId(data.id.toString());
-            setNodeTransactionPending(true);
-            advanceNode(gameId, data.id)
-              .then((response) => {
-                if (response) {
-                  setShopId(data.shopId);
-                  refetch();
-                  navigate(GameStateEnum.Store);
-                } else {
+          } else if (stateInMap && reachableNodes.includes(data.id.toString())) {
+            // Desktop: verificar si ya está seleccionado para navegarlo o solo seleccionarlo
+            if (selectedNodeData?.id === data.id) {
+              // Segundo click: navegar con animación
+              setActiveNodeId(data.id.toString());
+              setNodeTransactionPending(true);
+              fitViewToNode(data.id.toString());
+
+              advanceNode(gameId, data.id)
+                .then((response) => {
+                  if (response) {
+                    setTimeout(() => {
+                      setShopId(data.shopId);
+                      refetch();
+                      navigate(GameStateEnum.Store);
+                    }, 600);
+                  } else {
+                    setNodeTransactionPending(false);
+                    setActiveNodeId(null);
+                  }
+                })
+                .catch(() => {
                   setNodeTransactionPending(false);
                   setActiveNodeId(null);
-                }
-              })
-              .catch(() => {
-                setNodeTransactionPending(false);
-                setActiveNodeId(null);
+                });
+            } else {
+              // Primer click: solo mostrar información
+              setSelectedNodeData({
+                id: data.id,
+                title: title,
+                content: content,
+                nodeType: NodeType.STORE,
+                shopId: data.shopId,
               });
+            }
           }
         }}
       >
