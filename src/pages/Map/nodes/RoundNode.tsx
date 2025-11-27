@@ -98,14 +98,19 @@ const RoundNode = ({ data }: any) => {
           } else if (stateInMap && reachableNodes.includes(data.id.toString()) && !isSmallScreen) {
             setActiveNodeId(data.id.toString());
             setNodeTransactionPending(true);
-            advanceNode(gameId, data.id).then((response) => {
-              if (response) {
-                refetchAndNavigate();
-              } else {
+            advanceNode(gameId, data.id)
+              .then((response) => {
+                if (response) {
+                  refetchAndNavigate();
+                } else {
+                  setNodeTransactionPending(false);
+                  setActiveNodeId(null);
+                }
+              })
+              .catch(() => {
                 setNodeTransactionPending(false);
                 setActiveNodeId(null);
-              }
-            });
+              });
           }
         }}
       >
