@@ -27,7 +27,8 @@ export const FreePackPage = () => {
         .then((mintedCards) => {
           setMintedCards(mintedCards);
         })
-        .catch(() => {
+        .catch((e) => {
+          console.error("Error claiming free pack:", e);
           navigate("/");
         });
     }
