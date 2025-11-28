@@ -44,12 +44,12 @@ export const StorePreviewCardComponentMobile = ({
         flexDirection="column"
         justifyContent="space-between"
         alignItems="center"
-        pt={4}
+        pt={5}
         w="100%"
         h="100%"
         textAlign="center"
       >
-        <Flex justifyContent="flex-end" mr={3} w="100%" zIndex={2}>
+        <Flex justifyContent="flex-end" mr={8} w="100%" zIndex={2}>
           <MobileCoins />
         </Flex>
         <Flex

@@ -1,5 +1,4 @@
 import { Flex } from "@chakra-ui/react";
-import CoinIcon from "../../assets/coins.svg?component";
 import { CashSymbol } from "../../components/CashSymbol";
 import { RollingNumber } from "../../components/RollingNumber";
 import { useGameStore } from "../../state/useGameStore";
@@ -30,10 +29,9 @@ export const Coins = ({ rolling = false }: CoinsProps) => {
   return (
     <Flex
       flexDirection={isSmallScreen ? "row" : "column"}
-      alignItems="center"
+      alignItems="flex-end"
       gap={1}
     >
-      <CoinIcon height={isSmallScreen ? 25 : 27} />
       <Flex
         gap={1.5}
         alignItems="center"
@@ -41,13 +39,13 @@ export const Coins = ({ rolling = false }: CoinsProps) => {
         border={isSmallScreen ? "none" : "1px solid white"}
         borderRadius="8px"
         color="white"
-        minWidth={{ base: "50px", sm: "70px" }}
-        width={getPxBasedOnDigits(cash)}
-        p={{ base: "5px 5px", sm: "15px 6px" }}
-        fontSize="13px"
+        minWidth={{ base: 0, sm: "70px" }}
+        width={isSmallScreen ? "unset" : getPxBasedOnDigits(cash)}
+        p={{ base: 0, sm: "15px 6px" }}
+        fontSize={isSmallScreen ? "9px": "13px"}
       >
+        <CashSymbol size={isSmallScreen ? 2 : undefined} />
         {rolling ? <RollingNumber n={cash} /> : <span>{cash}</span>}
-        <CashSymbol />
       </Flex>
     </Flex>
   );
