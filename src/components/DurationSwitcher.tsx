@@ -1,11 +1,4 @@
-import {
-  Flex,
-  ResponsiveValue,
-  Tab,
-  TabList,
-  Tabs,
-  Text,
-} from "@chakra-ui/react";
+import { Flex, Tab, TabList, Tabs, Text } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { Duration } from "../enums/duration";
 import { useResponsiveValues } from "../theme/responsiveSettings";
@@ -68,54 +61,62 @@ export const DurationSwitcher = ({
       >
         <TabList>
           <Tab>
-            <Flex flexDir="column">
-              <Text
-                sx={{
-                  textDecoration: discountPrice ? "line-through" : "none",
-                  fontSize: discountPrice
-                    ? discountPriceFontSize
-                    : priceFontSize,
-                  lineHeight: discountPrice
-                    ? discountPriceLineHeight
-                    : priceLineHeight,
-                }}
-              >
-                {price}
-                <CashSymbol />
-              </Text>
-              {discountPrice && discountPrice > 0 ? (
-                <Text fontSize={priceFontSize} lineHeight={priceLineHeight}>
-                  {discountPrice}
-                  <CashSymbol />
+            <Flex flexDir="column" gap={1}>
+              <Flex gap={1} justifyContent={"center"} alignItems="center">
+                {!discountPrice && <CashSymbol />}
+                <Text
+                  sx={{
+                    textDecoration: discountPrice ? "line-through" : "none",
+                    fontSize: discountPrice
+                      ? discountPriceFontSize
+                      : priceFontSize,
+                    lineHeight: discountPrice
+                      ? discountPriceLineHeight
+                      : priceLineHeight,
+                  }}
+                >
+                  {price}
                 </Text>
+              </Flex>
+              {discountPrice && discountPrice > 0 ? (
+                <Flex gap={1} justifyContent={"center"} alignItems="center">
+                  <CashSymbol />
+                  <Text fontSize={priceFontSize} lineHeight={priceLineHeight}>
+                    {discountPrice}
+                  </Text>
+                </Flex>
               ) : (
                 <></>
               )}
             </Flex>
           </Tab>
           <Tab>
-            <Flex flexDir="column">
-              <Text
-                sx={{
-                  textDecoration: temporalDiscountPrice
-                    ? "line-through"
-                    : "none",
-                  fontSize: temporalDiscountPrice
-                    ? discountPriceFontSize
-                    : priceFontSize,
-                  lineHeight: temporalDiscountPrice
-                    ? discountPriceLineHeight
-                    : priceLineHeight,
-                }}
-              >
-                {temporalPrice}
-                <CashSymbol />
-              </Text>
-              {temporalDiscountPrice && temporalDiscountPrice > 0 ? (
-                <Text fontSize={priceFontSize} lineHeight={1}>
-                  {temporalDiscountPrice}
-                  <CashSymbol />
+            <Flex flexDir="column" gap={1}>
+              <Flex gap={1} justifyContent={"center"} alignItems="center">
+                {!discountPrice && <CashSymbol />}
+                <Text
+                  sx={{
+                    textDecoration: temporalDiscountPrice
+                      ? "line-through"
+                      : "none",
+                    fontSize: temporalDiscountPrice
+                      ? discountPriceFontSize
+                      : priceFontSize,
+                    lineHeight: temporalDiscountPrice
+                      ? discountPriceLineHeight
+                      : priceLineHeight,
+                  }}
+                >
+                  {temporalPrice}
                 </Text>
+              </Flex>
+              {temporalDiscountPrice && temporalDiscountPrice > 0 ? (
+                <Flex gap={1} justifyContent={"center"} alignItems="center">
+                  <CashSymbol />
+                  <Text fontSize={priceFontSize} lineHeight={1}>
+                    {temporalDiscountPrice}
+                  </Text>
+                </Flex>
               ) : (
                 <></>
               )}

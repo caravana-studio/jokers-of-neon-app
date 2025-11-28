@@ -59,9 +59,16 @@ const RewardItem = ({
         {reroll ? (
           <RerollIndicators rerolls={value} justifyContent="flex-end" />
         ) : (
-          <Heading size="s">
-            {skip ? value : <RollingNumber n={value} delay={rollingDelay} sound />}
-          </Heading>
+          <Flex gap={1} alignItems="center" justifyContent={"center"}>
+            <CashSymbol />
+            <Heading size="s">
+              {skip ? (
+                value
+              ) : (
+                <RollingNumber n={value} delay={rollingDelay} sound />
+              )}
+            </Heading>
+          </Flex>
         )}
       </Flex>
     </Box>
@@ -88,7 +95,6 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
     rerolls,
     total,
   } = roundRewards;
-  console.log('roundRewards', roundRewards);
 
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "rewards-details.labels",
@@ -179,26 +185,26 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
           w="100%"
         >
           <RewardItem
-           skip={skip}
+            skip={skip}
             label={labels[0]}
             value={round_defeat}
             rollingDelay={DELAY_START * 1000 + 500}
           />
           <RewardItem
-           skip={skip}
+            skip={skip}
             label={labels[2]}
             value={hands_left_cash}
             rollingDelay={(DELAY_START + STAGGER) * 1000}
           />
           <RewardItem
-           skip={skip}
+            skip={skip}
             label={labels[3]}
             value={discard_left_cash}
             rollingDelay={(DELAY_START + STAGGER) * 1000}
           />
           {rage_card_defeated_cash > 0 && (
             <RewardItem
-             skip={skip}
+              skip={skip}
               label={labels[5]}
               value={rage_card_defeated_cash}
               rollingDelay={(DELAY_START + STAGGER) * 1000}
@@ -216,17 +222,23 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
             w="100%"
             justifyContent="space-between"
           >
-            <Heading color="lightViolet" variant="italic">
+            <Heading color="DIAMONDS">
               {t("total")}
             </Heading>
-            <Heading color="lightViolet" variant="italic">
-              {skip ? total : <RollingNumber
-                delay={(DELAY_START + rewardLines * STAGGER) * 1000}
-                n={total}
-                sound
-              />}
+            <Flex gap={1} alignItems="center" justifyContent={"center"}>
               <CashSymbol />
-            </Heading>
+              <Heading color="DIAMONDS" variant="italic">
+                {skip ? (
+                  total
+                ) : (
+                  <RollingNumber
+                    delay={(DELAY_START + rewardLines * STAGGER) * 1000}
+                    n={total}
+                    sound
+                  />
+                )}
+              </Heading>
+            </Flex>
           </Flex>
         </StaggeredList>
       </PinkBox>
