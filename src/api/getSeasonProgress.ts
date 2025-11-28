@@ -5,6 +5,7 @@ import { IReward, IStep } from "../pages/SeasonProgression/types";
 
 const DEFAULT_API_BASE_URL = "http://localhost:3001";
 const DEFAULT_SEASON_ID = SEASON_NUMBER;
+const TOURNAMENT_ENTRY_PACK_ID = 100;
 
 export type GetSeasonLineParams = {
   userAddress: string;
@@ -64,16 +65,24 @@ const parseReward = (
     return undefined;
   }
 
+  const tournamentEntries = rewards.filter(
+    (packId) => packId === TOURNAMENT_ENTRY_PACK_ID
+  ).length;
+
   const packs = rewards
-    .filter((packId) => packId in PackType)
+    .filter(
+      (packId) =>
+        packId !== TOURNAMENT_ENTRY_PACK_ID && packId in PackType
+    )
     .map((packId) => packId as PackType);
 
-  if (packs.length === 0) {
+  if (packs.length === 0 && tournamentEntries === 0) {
     return undefined;
   }
 
   return {
     packs,
+    tournamentEntries,
     status: getStatus(
       claimed,
       level,
@@ -136,6 +145,7 @@ export async function getSeasonProgress({
   steps: IStep[];
   seasonPassUnlocked: boolean;
   playerProgress: number;
+  tournamentEntries: number;
 }> {
   if (!userAddress) {
     throw new Error("getSeasonLine: userAddress is required");
@@ -170,6 +180,8 @@ export async function getSeasonProgress({
   const seasonPassUnlockedAtLevel = seasonPassUnlocked
     ? Number(progressJson?.data?.season_pass_unlocked_at_level ?? 0)
     : 0;
+
+  const tournamentEntries = Number(progressJson?.data?.tournament_ticket ?? 0);
 
   const seasonLineRequestUrl = `${baseUrl}/api/season/line/${encodeURIComponent(
     userAddress
@@ -209,6 +221,7 @@ export async function getSeasonProgress({
   return {
     seasonPassUnlocked,
     playerProgress,
+    tournamentEntries,
     steps: transformSeasonLine(
       json.data,
       seasonPassUnlocked,

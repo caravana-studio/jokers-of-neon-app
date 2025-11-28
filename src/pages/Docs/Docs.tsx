@@ -36,9 +36,9 @@ export const DocsPage: React.FC<DocsProps> = ({ lastIndexTab = 0 }) => {
       setIsLoading(false);
       setMyCollection([]);
     } else {
-      getUserCards(account.address).then((collections) => {
+      getUserCards(account.address).then((data) => {
         setIsLoading(false);
-        setMyCollection(collections);
+        setMyCollection(data.specials);
       });
     }
   }, [account.address, useBurnerAcc]);

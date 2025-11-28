@@ -109,7 +109,9 @@
     "free-rewards": "RECOMPENSAS GRATIS",
     "season": "TEMPORADA {{season}}",
     "my-xp": "Mi XP",
-    "claim": "RECLAMAR"
+    "claim": "RECLAMAR",
+    "tournament-entry": "Entrada de torneo",
+    "claiming-in-progress": "Reclamando..."
   },
   "map": {
     "level": "NIVEL"
@@ -128,6 +130,8 @@
     "start-btn": "Iniciar",
     "tuto": "Tutorial",
     "learn": "¿Quieres aprender a jugar?",
+    "tournament-active": "¡Hay un torneo activo!",
+    "join": "Únete ahora",
     "surrender": {
       "action": "Rendirse",
       "confirmation-modal": {
@@ -221,7 +225,8 @@
   },
   "common": {
     "go-back-btn": "Atrás",
-    "login": "Iniciar sesión"
+    "login": "Iniciar sesión",
+    "login-to-access": "Por favor, inicia sesión para acceder a esta página"
   },
   "profile-menu": {
     "level": "Nivel",
@@ -242,6 +247,8 @@
     "no-collection": "Por favor, inicia sesión para ver tu colección",
     "login": "Iniciar sesión",
     "collections": {
+      "traditionals": "Cartas tradicionales",
+      "neons": "Cartas de Neón",
       "sx": "Temporada {{season}}",
       "c99": "Colección exclusiva GG - v1"
     }

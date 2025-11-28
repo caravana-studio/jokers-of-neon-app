@@ -24,7 +24,7 @@ interface PackRowProps {
   price?: string;
 }
 
-const PACK_SIZES = [0, 3, 3, 4, 4, 4, 6];
+const PACK_SIZES = [0, 3, 3, 4, 4, 5, 10];
 
 export const PackRow = ({ packId, packageId, price = "$" }: PackRowProps) => {
   const { t } = useTranslation("intermediate-screens", {

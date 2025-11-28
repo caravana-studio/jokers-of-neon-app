@@ -8,8 +8,17 @@
     },
     "join-discord": "Junte-se ao nosso Discord!",
     "leaderboard-banner": {
-      "title": "Torneio ativo",
+      "title": "Classificação",
       "button": "Classificação completa"
+    },
+    "tournament-banner": {
+      "title": "Torneio ativo",
+      "button": "Torneio",
+      "no-entries": "Você não tem entradas para jogar o torneio",
+      "unlock": "Desbloqueie entradas progredindo na temporada",
+      "entry": "Você tem 1 entrada para jogar o torneio",
+      "entries": "Você tem {{entries}} entradas para jogar o torneio",
+      "play-tournament": "Jogar torneio"
     },
     "level": "Nível",
     "dailyMissions": "Missões Diárias"

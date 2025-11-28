@@ -3,8 +3,8 @@ import { useTranslation } from "react-i18next";
 import { Clock } from "../../components/Clock";
 import { SeasonPassBuyButton } from "../../components/SeasonPass/SeasonPassBuyButton";
 import { SeasonPassUnlocked } from "../../components/SeasonPass/SeasonPassUnlocked";
-import { SEASON_NUMBER } from "../../constants/season";
 import { useSeasonPass } from "../../providers/SeasonPassProvider";
+import { useSeason } from "../../queries/useSeason";
 import { BLUE } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { STEP_HEIGHT } from "./Step";
@@ -21,6 +21,10 @@ export const SeasonProgressionHeader = ({
     keyPrefix: "season-progression",
   });
   const { seasonPassUnlocked } = useSeasonPass();
+  const { season } = useSeason();
+
+  const seasonNumber = season?.number ?? 1;
+  const seasonFinishDate = season?.finishDate;
   return (
     <Flex
       w="100%"
@@ -59,11 +63,13 @@ export const SeasonProgressionHeader = ({
             whiteSpace={"nowrap"}
             wordBreak={"keep-all"}
           >
-            {t("season", { season: SEASON_NUMBER })}
+            {t("season", { season: seasonNumber })}
           </Heading>
-          <Box ml={1}>
-            <Clock date={new Date()} />
-          </Box>
+          {seasonFinishDate && (
+            <Box ml={1}>
+              <Clock date={seasonFinishDate} />
+            </Box>
+          )}
         </Flex>
         <Heading mb={3} fontWeight={100} fontSize={isSmallScreen ? 11 : 18}>
           {t("free-rewards")}
