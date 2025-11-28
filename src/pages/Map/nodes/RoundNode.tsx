@@ -13,6 +13,21 @@ import { BLUE, VIOLET } from "../../../theme/colors";
 import { useResponsiveValues } from "../../../theme/responsiveSettings";
 import { TooltipContent } from "../TooltipContent";
 import { NodeType } from "../types";
+import { HereSign } from "./HereSign";
+
+const reachablePulse = keyframes`
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  70% {
+    transform: scale(1.4);
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+`;
 
 const clickPulse = keyframes`
   0% {
@@ -31,9 +46,9 @@ const RoundNode = ({ data }: any) => {
   const { id: gameId } = useGameStore();
   const navigate = useCustomNavigate();
 
-    const {
-      setup: { client },
-    } = useDojo();
+  const {
+    setup: { client },
+  } = useDojo();
 
   const { reachableNodes, setSelectedNodeData, selectedNodeData, isNodeTransactionPending, setNodeTransactionPending, activeNodeId, setActiveNodeId, fitViewToNode, pulsingNodeId, setPulsingNodeId } = useMap();
   const { isSmallScreen } = useResponsiveValues();
@@ -76,6 +91,7 @@ const RoundNode = ({ data }: any) => {
           color: "white",
           cursor: stateInMap && reachable ? "pointer" : "default",
           boxShadow: data.current ? `0px 0px 18px 6px ${BLUE}` : "none",
+          position: "relative",
         }}
         sx={{
           transition: "all 0.2s ease-in-out",
@@ -95,6 +111,22 @@ const RoundNode = ({ data }: any) => {
                 : "rgba(255,255,255,0.3)",
             transform: "scale(1.2)",
           },
+          ...(reachable && !data.current
+            ? {
+              "&::after": {
+                content: '""',
+                position: "absolute",
+                inset: "-6px",
+                borderRadius: 14,
+                border: `2px solid ${VIOLET}`,
+                animation: `${reachablePulse} 1.8s ease-out infinite`,
+                pointerEvents: "none",
+                opacity: 0.8,
+                zIndex: -1,
+                transformOrigin: "center",
+              },
+            }
+            : {}),
         }}
         onClick={() => {
           if (isNodeTransactionPending) return;
@@ -165,6 +197,7 @@ const RoundNode = ({ data }: any) => {
             }}
           />
         )}
+        {data.current && <HereSign />}
 
         <Handle type="target" position={Position.Top} style={{ opacity: 0 }} />
         <Handle
