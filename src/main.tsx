@@ -23,6 +23,7 @@ import "./index.css";
 import { LoadingScreen } from "./pages/LoadingScreen/LoadingScreen.tsx";
 import { MobileBrowserBlocker } from "./pages/MobileBrowserBlocker.tsx";
 import { VersionMismatch } from "./pages/VersionMismatch.tsx";
+import { SettingsProvider } from "./providers/SettingsProvider.tsx";
 import { StarknetProvider } from "./providers/StarknetProvider.tsx";
 import { fetchVersion } from "./queries/fetchVersion.ts";
 import customTheme from "./theme/theme";
@@ -108,7 +109,9 @@ async function init() {
                     <DojoProvider value={setupResult}>
                       <BrowserRouter>
                         <Toaster />
-                        <App />
+                        <SettingsProvider>
+                          <App />
+                        </SettingsProvider>
                       </BrowserRouter>
                     </DojoProvider>
                   </WalletProvider>
