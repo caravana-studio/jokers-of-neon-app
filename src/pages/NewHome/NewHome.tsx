@@ -24,8 +24,6 @@ import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { logEvent } from "../../utils/analytics";
 import { APP_URL, isNative } from "../../utils/capacitorUtils";
 import { getMajor, getMinor, getPatch } from "../../utils/versionUtils";
-import { LeaderboardBanner } from "./banners/LeaderboardBanner";
-import { TournamentBanner } from "./banners/TournamentBanner";
 
 export const NewHome = () => {
   const { t } = useTranslation(["home"]);
@@ -186,8 +184,6 @@ export const NewHome = () => {
               {banners[2] && isSmallScreen && (
                 <BannerRenderer banner={banners[2]} />
               )}
-              <TournamentBanner />
-              <LeaderboardBanner />
             </Flex>
           </Flex>
         </Flex>

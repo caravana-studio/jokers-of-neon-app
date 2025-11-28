@@ -145,10 +145,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     changeModifierCard,
     sellSpecialCard,
     sellPowerup,
-    mintGame,
     surrenderGame,
     transferGame,
-    approve,
   } = useGameActions();
 
   const { showErrorToast } = useCustomToast();
@@ -215,7 +213,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     console.log(account);
 
     try {
-      await approve(gameId);
       await transferGame(account, gameId, newUsername ?? "");
       console.log("Game transfer successful.");
     } catch (error) {

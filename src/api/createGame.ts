@@ -1,26 +1,29 @@
 import { SEASON_NUMBER } from "../constants/season";
 
 const DEFAULT_API_BASE_URL = "http://localhost:3001";
-const DEFAULT_OPTIONAL_HEX = "0x0";
 
 export type CreateGameParams = {
   userAddress: string;
   playerName: string;
-  settingsId?: string;
-  to?: string;
-  seed?: string;
   seasonId?: number;
   isTournament?: boolean;
+  seed?: string;
 };
+
+interface CreateGamePayload {
+  user_address: string;
+  player_name: string;
+  season_id: number;
+  is_tournament: boolean;
+  seed?: string;
+}
 
 export async function createGame({
   userAddress,
   playerName,
-  settingsId = DEFAULT_OPTIONAL_HEX,
-  to,
-  seed = DEFAULT_OPTIONAL_HEX,
   seasonId = SEASON_NUMBER,
   isTournament = false,
+  seed,
 }: CreateGameParams) {
   if (!userAddress) {
     throw new Error("createGame: userAddress is required");
@@ -42,21 +45,24 @@ export async function createGame({
     DEFAULT_API_BASE_URL;
   const requestUrl = `${baseUrl}/api/game/create`;
 
+  const payload: CreateGamePayload = {
+    user_address: userAddress,
+    player_name: playerName,
+    season_id: seasonId,
+    is_tournament: isTournament,
+  };
+
+  if (seed) {
+    payload.seed = seed;
+  }
+
   const response = await fetch(requestUrl, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       "X-API-Key": apiKey,
     },
-    body: JSON.stringify({
-      user_address: userAddress,
-      player_name: playerName,
-      settings_id: settingsId,
-      season_id: seasonId,
-      to: to ?? userAddress,
-      is_tournament: isTournament,
-      seed,
-    }),
+    body: JSON.stringify(payload),
   });
 
   if (!response.ok) {

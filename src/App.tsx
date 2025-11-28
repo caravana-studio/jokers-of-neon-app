@@ -10,6 +10,7 @@ import { AppRoutes } from "./AppRoutes";
 import { Background } from "./components/Background";
 import { Layout } from "./components/Layout";
 import { useDojo } from "./dojo/DojoContext";
+import { useGameActions } from "./dojo/useGameActions";
 import { useUsername } from "./dojo/utils/useUsername";
 import { AudioPlayerProvider } from "./providers/AudioPlayerProvider";
 import { CardAnimationsProvider } from "./providers/CardAnimationsProvider";
@@ -18,8 +19,6 @@ import { GameProvider } from "./providers/GameProvider";
 import { InformationPopUpProvider } from "./providers/InformationPopUpProvider";
 import { PageTransitionsProvider } from "./providers/PageTransitionsProvider";
 import { SeasonPassProvider } from "./providers/SeasonPassProvider";
-import { SettingsProvider } from "./providers/SettingsProvider";
-import { claimLives } from "./queries/claimLives";
 import ZoomPrevention from "./utils/ZoomPrevention";
 
 function App() {
@@ -28,6 +27,8 @@ function App() {
   } = useDojo();
 
   const username = useUsername();
+
+  const { claimLives } = useGameActions();
 
   useEffect(() => {
     const askForTracking = async () => {
@@ -44,7 +45,7 @@ function App() {
       }
     };
 
-    claimLives({ playerAddress: account.address }).catch(() => {});
+    claimLives().catch(() => {});
 
     fetchProfile(account.address).then((profile) => {
       if (profile.username === "" && username) {
@@ -56,37 +57,35 @@ function App() {
   }, []);
 
   return (
-    <SettingsProvider>
-      <SeasonPassProvider>
-        <ZoomPrevention>
-          <CardAnimationsProvider>
-            <CardDataProvider>
-              <GameProvider>
-                <PageTransitionsProvider>
-                  <InformationPopUpProvider>
-                    <AudioPlayerProvider
-                      introSongPath={"/music/intro-track.mp3"}
-                      baseSongPath={"/music/game-track.mp3"}
-                      rageSongPath={"/music/rage_soundtrack.mp3"}
-                    >
-                      <Background>
-                        <Layout>
-                          <AnimatePresence mode="wait">
-                            <AppRoutes />
-                          </AnimatePresence>
-                        </Layout>
-                      </Background>
-                    </AudioPlayerProvider>
-                  </InformationPopUpProvider>
-                </PageTransitionsProvider>
-              </GameProvider>
-            </CardDataProvider>
-          </CardAnimationsProvider>
-          <Analytics />
-          <SpeedInsights />
-        </ZoomPrevention>
-      </SeasonPassProvider>
-    </SettingsProvider>
+    <SeasonPassProvider>
+      <ZoomPrevention>
+        <CardAnimationsProvider>
+          <CardDataProvider>
+            <GameProvider>
+              <PageTransitionsProvider>
+                <InformationPopUpProvider>
+                  <AudioPlayerProvider
+                    introSongPath={"/music/intro-track.mp3"}
+                    baseSongPath={"/music/game-track.mp3"}
+                    rageSongPath={"/music/rage_soundtrack.mp3"}
+                  >
+                    <Background>
+                      <Layout>
+                        <AnimatePresence mode="wait">
+                          <AppRoutes />
+                        </AnimatePresence>
+                      </Layout>
+                    </Background>
+                  </AudioPlayerProvider>
+                </InformationPopUpProvider>
+              </PageTransitionsProvider>
+            </GameProvider>
+          </CardDataProvider>
+        </CardAnimationsProvider>
+        <Analytics />
+        <SpeedInsights />
+      </ZoomPrevention>
+    </SeasonPassProvider>
   );
 }
 
