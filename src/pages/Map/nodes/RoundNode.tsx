@@ -1,4 +1,5 @@
 import { Box, Tooltip } from "@chakra-ui/react";
+import { keyframes } from "@emotion/react";
 import { useTranslation } from "react-i18next";
 import { Handle, Position } from "reactflow";
 import CachedImage from "../../../components/CachedImage";
@@ -13,6 +14,17 @@ import { useResponsiveValues } from "../../../theme/responsiveSettings";
 import { TooltipContent } from "../TooltipContent";
 import { NodeType } from "../types";
 
+const clickPulse = keyframes`
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+`;
+
 const RoundNode = ({ data }: any) => {
   const { t } = useTranslation("map", { keyPrefix: "round" });
   const { advanceNode } = useShopActions();
@@ -23,7 +35,7 @@ const RoundNode = ({ data }: any) => {
       setup: { client },
     } = useDojo();
 
-  const { reachableNodes, setSelectedNodeData, selectedNodeData, isNodeTransactionPending, setNodeTransactionPending, activeNodeId, setActiveNodeId, fitViewToNode } = useMap();
+  const { reachableNodes, setSelectedNodeData, selectedNodeData, isNodeTransactionPending, setNodeTransactionPending, activeNodeId, setActiveNodeId, fitViewToNode, pulsingNodeId, setPulsingNodeId } = useMap();
   const { isSmallScreen } = useResponsiveValues();
   const { state, refetchGameStore } = useGameStore();
 
@@ -101,14 +113,20 @@ const RoundNode = ({ data }: any) => {
               // Segundo click: navegar con animación
               setActiveNodeId(data.id.toString());
               setNodeTransactionPending(true);
+              setPulsingNodeId(data.id.toString());
               fitViewToNode(data.id.toString());
+
+              // Limpiar el pulso después de que termine la animación
+              setTimeout(() => {
+                setPulsingNodeId(null);
+              }, 800);
 
               advanceNode(gameId, data.id)
                 .then((response) => {
                   if (response) {
                     setTimeout(() => {
                       refetchAndNavigate();
-                    }, 600);
+                    }, 900);
                   } else {
                     setNodeTransactionPending(false);
                     setActiveNodeId(null);
@@ -133,6 +151,20 @@ const RoundNode = ({ data }: any) => {
           src={`/map/icons/round/round${reachable || data.visited || data.current ? "" : "-off"}.png`}
           alt="round"
         />
+
+        {pulsingNodeId === data.id.toString() && (
+          <Box
+            position="absolute"
+            width="100%"
+            height="100%"
+            borderRadius={10}
+            border="3px solid white"
+            sx={{
+              animation: `${clickPulse} 0.8s ease-out forwards`,
+              pointerEvents: "none",
+            }}
+          />
+        )}
 
         <Handle type="target" position={Position.Top} style={{ opacity: 0 }} />
         <Handle

@@ -37,6 +37,8 @@ export const Map = () => {
     setNodeTransactionPending,
     activeNodeId,
     setActiveNodeId,
+    pulsingNodeId,
+    setPulsingNodeId,
   } = useMap();
 
   const {
@@ -80,7 +82,13 @@ export const Map = () => {
 
     setActiveNodeId(selectedNodeData.id.toString());
     setNodeTransactionPending(true);
+    setPulsingNodeId(selectedNodeData.id.toString());
     fitViewToNode(selectedNodeData.id.toString());
+
+    // Limpiar el pulso después de que termine la animación
+    setTimeout(() => {
+      setPulsingNodeId(null);
+    }, 800);
 
     advanceNode(gameId, selectedNodeData.id)
       .then((response) => {
@@ -100,7 +108,7 @@ export const Map = () => {
               default:
                 break;
             }
-          }, 600);
+          }, 900);
         } else {
           setNodeTransactionPending(false);
           setActiveNodeId(null);

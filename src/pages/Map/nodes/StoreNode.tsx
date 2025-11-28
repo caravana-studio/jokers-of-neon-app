@@ -1,4 +1,5 @@
 import { Box, Tooltip } from "@chakra-ui/react";
+import { keyframes } from "@emotion/react";
 import { useTranslation } from "react-i18next";
 import { Handle, Position } from "reactflow";
 import CachedImage from "../../../components/CachedImage";
@@ -6,12 +7,23 @@ import { GameStateEnum } from "../../../dojo/typescript/custom";
 import { useShopActions } from "../../../dojo/useShopActions";
 import { useCustomNavigate } from "../../../hooks/useCustomNavigate";
 import { useMap } from "../../../providers/MapProvider";
+import { useStore } from "../../../providers/StoreProvider";
 import { useGameStore } from "../../../state/useGameStore";
 import { BLUE, VIOLET } from "../../../theme/colors";
 import { useResponsiveValues } from "../../../theme/responsiveSettings";
 import { TooltipContent } from "../TooltipContent";
 import { NodeType } from "../types";
-import { useStore } from "../../../providers/StoreProvider";
+
+const clickPulse = keyframes`
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+`;
 
 const getStoreItemsBasedOnShopId = (shopId: number) => {
   switch (shopId) {
@@ -38,7 +50,7 @@ const StoreNode = ({ data }: any) => {
   const { id: gameId } = useGameStore();
   const navigate = useCustomNavigate();
 
-  const { reachableNodes, setSelectedNodeData, selectedNodeData, isNodeTransactionPending, setNodeTransactionPending, activeNodeId, setActiveNodeId, fitViewToNode } = useMap();
+  const { reachableNodes, setSelectedNodeData, selectedNodeData, isNodeTransactionPending, setNodeTransactionPending, activeNodeId, setActiveNodeId, fitViewToNode, pulsingNodeId, setPulsingNodeId } = useMap();
   const { isSmallScreen } = useResponsiveValues();
 
   const { state, setShopId } = useGameStore();
@@ -114,7 +126,13 @@ const StoreNode = ({ data }: any) => {
               // Segundo click: navegar con animación
               setActiveNodeId(data.id.toString());
               setNodeTransactionPending(true);
+              setPulsingNodeId(data.id.toString());
               fitViewToNode(data.id.toString());
+
+              // Limpiar el pulso después de que termine la animación
+              setTimeout(() => {
+                setPulsingNodeId(null);
+              }, 800);
 
               advanceNode(gameId, data.id)
                 .then((response) => {
@@ -123,7 +141,7 @@ const StoreNode = ({ data }: any) => {
                       setShopId(data.shopId);
                       refetch();
                       navigate(GameStateEnum.Store);
-                    }, 600);
+                    }, 900);
                   } else {
                     setNodeTransactionPending(false);
                     setActiveNodeId(null);
@@ -151,6 +169,20 @@ const StoreNode = ({ data }: any) => {
           src={`/map/icons/rewards/${data.shopId}${reachable || data.visited || data.current ? "" : "-off"}.png`}
           alt="shop"
         />
+
+        {pulsingNodeId === data.id.toString() && (
+          <Box
+            position="absolute"
+            width="100%"
+            height="100%"
+            borderRadius="100%"
+            border="3px solid white"
+            sx={{
+              animation: `${clickPulse} 0.8s ease-out forwards`,
+              pointerEvents: "none",
+            }}
+          />
+        )}
 
         <Handle type="target" position={Position.Top} style={{ opacity: 0 }} />
         <Handle

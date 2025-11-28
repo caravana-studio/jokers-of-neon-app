@@ -40,6 +40,8 @@ interface MapContextType {
   setNodeTransactionPending: (pending: boolean) => void;
   activeNodeId: string | null;
   setActiveNodeId: (id: string | null) => void;
+  pulsingNodeId: string | null;
+  setPulsingNodeId: (id: string | null) => void;
 }
 
 const MapContext = createContext<MapContextType | undefined>(undefined);
@@ -57,6 +59,7 @@ export const MapProvider = ({ children }: MapProviderProps) => {
   >();
   const [isNodeTransactionPending, setNodeTransactionPending] = useState(false);
   const [activeNodeId, setActiveNodeId] = useState<string | null>(null);
+  const [pulsingNodeId, setPulsingNodeId] = useState<string | null>(null);
 
   const { isSmallScreen } = useResponsiveValues();
 
@@ -194,7 +197,7 @@ export const MapProvider = ({ children }: MapProviderProps) => {
     reactFlowInstance.fitView({
       nodes: [{ id: nodeId }],
       padding: 0.3,
-      duration: 800,
+      duration: 1200,
       maxZoom: isSmallScreen ? 1.5 : 2,
     });
   };
@@ -216,6 +219,8 @@ export const MapProvider = ({ children }: MapProviderProps) => {
         setNodeTransactionPending,
         activeNodeId,
         setActiveNodeId,
+        pulsingNodeId,
+        setPulsingNodeId,
       }}
     >
       {children}

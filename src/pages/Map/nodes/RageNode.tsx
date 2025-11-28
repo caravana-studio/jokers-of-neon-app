@@ -1,4 +1,5 @@
 import { Box, Tooltip } from "@chakra-ui/react";
+import { keyframes } from "@emotion/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Handle, Position } from "reactflow";
@@ -14,6 +15,17 @@ import { useResponsiveValues } from "../../../theme/responsiveSettings";
 import { TooltipContent } from "../TooltipContent";
 import { NodeType } from "../types";
 
+const clickPulse = keyframes`
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+`;
+
 const RageNode = ({ data }: any) => {
   const { t } = useTranslation("map", { keyPrefix: "rage" });
 
@@ -21,7 +33,7 @@ const RageNode = ({ data }: any) => {
   const { id: gameId, refetchGameStore } = useGameStore();
   const navigate = useCustomNavigate();
 
-  const { reachableNodes, setSelectedNodeData, selectedNodeData, isNodeTransactionPending, setNodeTransactionPending, activeNodeId, setActiveNodeId, fitViewToNode } = useMap();
+  const { reachableNodes, setSelectedNodeData, selectedNodeData, isNodeTransactionPending, setNodeTransactionPending, activeNodeId, setActiveNodeId, fitViewToNode, pulsingNodeId, setPulsingNodeId } = useMap();
   const { isSmallScreen } = useResponsiveValues();
 
   const {
@@ -86,14 +98,20 @@ const RageNode = ({ data }: any) => {
               // Segundo click: navegar con animación
               setActiveNodeId(data.id.toString());
               setNodeTransactionPending(true);
+              setPulsingNodeId(data.id.toString());
               fitViewToNode(data.id.toString());
+
+              // Limpiar el pulso después de que termine la animación
+              setTimeout(() => {
+                setPulsingNodeId(null);
+              }, 800);
 
               advanceNode(gameId, data.id)
                 .then((response) => {
                   if (response) {
                     setTimeout(() => {
                       refetchAndNavigate();
-                    }, 600);
+                    }, 900);
                   } else {
                     setNodeTransactionPending(false);
                     setActiveNodeId(null);
@@ -132,6 +150,21 @@ const RageNode = ({ data }: any) => {
             alt="rage"
           />
         </Box>
+
+        {pulsingNodeId === data.id.toString() && (
+          <Box
+            position="absolute"
+            width="90%"
+            height="90%"
+            borderRadius="full"
+            border="3px solid white"
+            sx={{
+              animation: `${clickPulse} 0.8s ease-out forwards`,
+              pointerEvents: "none",
+            }}
+          />
+        )}
+
         <Handle type="target" position={Position.Top} style={{ opacity: 0 }} />
         <Handle
           type="source"
