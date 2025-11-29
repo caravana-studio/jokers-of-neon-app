@@ -77,6 +77,8 @@ export const ManagePage = () => {
     />
   );
 
+  const goBackButton = <GoBackButton />;
+
   return (
     <DelayedLoading ms={100}>
       {highlightedSpecialCard && (
@@ -99,7 +101,7 @@ export const ManagePage = () => {
           preselectedPowerup={highlightedPowerup as PowerUp | undefined}
           onCardClick={handleCardClick}
           onPowerupClick={handlePowerupClick}
-          goBackButton={<GoBackButton />}
+          goBackButton={goBackButton}
         />
       ) : (
         <ManagePageContent
@@ -109,7 +111,7 @@ export const ManagePage = () => {
           preselectedPowerup={highlightedPowerup as PowerUp | undefined}
           onCardClick={handleCardClick}
           onPowerupClick={handlePowerupClick}
-          goBackButton={<GoBackButton />}
+          goBackButton={goBackButton}
         />
       )}
       {specialConfirmationModalOpen && (

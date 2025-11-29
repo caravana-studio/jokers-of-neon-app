@@ -10,9 +10,10 @@ import { useStore } from "../../providers/StoreProvider.tsx";
 import { useGameStore } from "../../state/useGameStore.ts";
 import { useShopStore } from "../../state/useShopStore.ts";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
+import { useNavigate } from "react-router-dom";
 
 export const PreviewSlot = () => {
-  const navigate = useCustomNavigate();
+  const navigate = useNavigate();
   const { specialSlotItem, locked } = useShopStore();
   const { isSmallScreen } = useResponsiveValues();
 
@@ -33,7 +34,7 @@ export const PreviewSlot = () => {
 
   const handleBuyClick = () => {
     buySpecialSlot();
-    navigate(GameStateEnum.Store);
+    navigate("/store");
   };
 
   const buyButton = (
