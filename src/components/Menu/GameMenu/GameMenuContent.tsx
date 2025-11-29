@@ -8,8 +8,9 @@ import {
   DrawerOverlay,
   Flex,
   Text,
+  Box,
 } from "@chakra-ui/react";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useFeatureFlagEnabled } from "../../../featureManagement/useFeatureFlagEnabled";
 import { ControllerIcon } from "../../../icons/ControllerIcon";
 import { useGameStore } from "../../../state/useGameStore";
@@ -23,6 +24,7 @@ import { MyGamesMenuBtn } from "../Buttons/MyGamesMenuBtn";
 import { SettingsMenuBtn } from "../Buttons/SettingsMenuBtn";
 import { TutorialBtn } from "../Buttons/TutorialBtn";
 import { BackMenuBtn } from "../Buttons/BackMenuBtn";
+import { DailyMissions } from "../../DailyMissions/DailyMissions";
 
 interface GameMenuContentProps {
   isOpen: boolean;
@@ -88,18 +90,28 @@ export const GameMenuContent: React.FC<GameMenuContentProps> = ({
         <DrawerBody
           display="flex"
           flexDir="column"
-          justifyContent="center"
-          alignItems="flex-start"
-          py={8}
+          justifyContent="space-between"
+          alignItems="center"
+          py={4}
           fontSize={fontSize}
-          gap={5}
+          overflow="hidden"
         >
-          <BackMenuBtn width={iconWidth} label onClose={onClose} />
-          <DocsMenuBtn width={iconWidth} label onClose={onClose}  />
-          <SettingsMenuBtn width={iconWidth} label onClose={onClose} />
+          {/* Daily Missions Section - Centered in middle */}
+          <Flex w="100%" justifyContent="center" alignItems="center" flex={1} overflow="hidden">
+            <Box w="100%" maxW="500px" overflow="hidden">
+              <DailyMissions showTitle={true} fontSize={fontSize} />
+            </Box>
+          </Flex>
+
+          {/* Menu Buttons - Bottom */}
+          <Flex flexDir="column" gap={4} w="100%" alignItems="flex-start" flex={1} justifyContent="center">
+            <BackMenuBtn width={iconWidth} label onClose={onClose} />
+            <DocsMenuBtn width={iconWidth} label onClose={onClose} />
+            <SettingsMenuBtn width={iconWidth} label onClose={onClose} />
+          </Flex>
         </DrawerBody>
 
-        <DrawerFooter justifyContent="flex-start" fontSize={fontSize}>
+        <DrawerFooter justifyContent="flex-start" fontSize={fontSize} alignItems="center">
           <LogoutMenuBtn width={iconWidth} label />
         </DrawerFooter>
       </DrawerContent>
