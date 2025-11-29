@@ -96,4 +96,11 @@ export const SPECIALS_RARITY: Record<number, RARITY> = {
   19903: RARITY.S,
 };
 
+export const SKINS_RARITY: Record<number, RARITY> = {
+  2: RARITY.C,
+  3: RARITY.B,
+  4: RARITY.A,
+  5: RARITY.S,
+}
+
 export const SPECIALS_CUMULATIVE = [10105, 10107, 10109, 10111, 10113, 10114, 19903];

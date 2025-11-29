@@ -27,6 +27,10 @@
       "buy": "BUY"
     },
     "packs": {
+      "purchase-error-title": "Purchase failed",
+      "purchase-error-no-account": "We couldn't find your account. Please try logging out and back in.",
+      "purchase-error-description": "We couldn't complete your pack purchase. Please try again.",
+      "purchase-error-no-package": "We couldn't complete your pack purchase. Configuration problem.",
       "buy": "BUY",
       "player-pack": "Player pack",
       "limited-edition": "Limited edition",
@@ -34,6 +38,9 @@
       "offering-rates": "Offering rates",
       "transferrable-legend": "All items in purchased packs are transferrable.",
       "skins-legend": "Player packs do not contain skinned cards.",
+      "1": {
+        "name": "BASIC"
+      },
       "2": {
         "name": "ADVANCED",
         "description": {
@@ -111,7 +118,9 @@
     "level": "LEVEL"
   },
   "external-pack": {
-    "continue": "Continue"
+    "continue": "Continue",
+    "open": "Open",
+    "draw-line": "Draw a line to open"
   },
   "my-games": {
     "title": "Games",

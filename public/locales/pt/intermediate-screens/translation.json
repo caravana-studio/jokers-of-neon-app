@@ -27,12 +27,19 @@
       "buy": "COMPRAR"
     },
     "packs": {
+      "purchase-error-title": "Compra falhou",
+      "purchase-error-no-account": "Não conseguimos encontrar sua conta. Por favor, tente sair e voltar a iniciar sessão.",
+      "purchase-error-description": "Não conseguimos completar sua compra de pack. Por favor, tente novamente.",
+      "purchase-error-no-package": "Não conseguimos completar sua compra de pack. Problema de configuração.",
       "player-pack": "Pack de jogador",
       "limited-edition": "Edition limitada",
       "size": "Tamanho",
       "offering-rates": "Taxas de oferta",
       "transferrable-legend": "Todos os itens na loja podem ser transferidos.",
       "skins-legend": "Os packs não contêm cartas com skin.",
+      "1": {
+        "name": "BÁSICO"
+      },
       "2": {
         "name": "AVANÇADO",
         "description": {
@@ -110,7 +117,9 @@
     "level": "NÍVEL"
   },
   "external-pack": {
-    "continue": "Continuar"
+    "continue": "Continuar",
+    "open": "Abrir",
+    "draw-line": "Desenha uma linha para abrir"
   },
   "my-games": {
     "title": "Jogos",

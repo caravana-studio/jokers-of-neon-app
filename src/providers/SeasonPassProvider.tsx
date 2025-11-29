@@ -10,6 +10,8 @@ import {
 import { getSeasonProgress } from "../api/getSeasonProgress";
 import { SEASON_NUMBER } from "../constants/season";
 import { useDojo } from "../dojo/DojoContext";
+import { showPurchaseSuccessToast } from "../utils/transactionNotifications";
+import { useRevenueCat } from "./RevenueCatProvider";
 
 type SeasonPassContextValue = {
   seasonPassUnlocked: boolean;
@@ -32,6 +34,7 @@ export const SeasonPassProvider = ({ children }: PropsWithChildren) => {
   const [seasonPassUnlocked, setSeasonPassUnlocked] = useState(false);
 
   const userAddress = account?.address;
+  const { offerings, purchasePackageById } = useRevenueCat();
 
   const fetchSeasonPassUnlocked = useCallback(async () => {
     if (!userAddress) {
@@ -52,13 +55,25 @@ export const SeasonPassProvider = ({ children }: PropsWithChildren) => {
     fetchSeasonPassUnlocked();
   }, [fetchSeasonPassUnlocked]);
 
+  const seasonPassId = offerings?.seasonPass?.id;
+
   const purchaseSeasonPass = useCallback(async () => {
     if (!userAddress) {
       console.warn("purchaseSeasonPass: missing user address");
       return;
     }
 
+    const seasonPassPackageId = seasonPassId;
+    if (!seasonPassPackageId) {
+      console.warn(
+        "purchaseSeasonPass: missing RevenueCat season pass package"
+      );
+      return;
+    }
+
     try {
+      await purchasePackageById(seasonPassPackageId);
+
       const apiKey = import.meta.env.VITE_GAME_API_KEY;
       if (!apiKey) {
         throw new Error(
@@ -93,13 +108,18 @@ export const SeasonPassProvider = ({ children }: PropsWithChildren) => {
           }`
         );
       }
-
+      showPurchaseSuccessToast("season-pass");
       await fetchSeasonPassUnlocked();
     } catch (error) {
       console.error("Failed to purchase season pass", error);
       throw error;
     }
-  }, [fetchSeasonPassUnlocked, userAddress]);
+  }, [
+    fetchSeasonPassUnlocked,
+    seasonPassId,
+    purchasePackageById,
+    userAddress,
+  ]);
 
   const value = useMemo(
     () => ({

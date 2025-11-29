@@ -21,11 +21,13 @@ import { EnteringTournament } from "./pages/MyGames/EnteringTournament";
 import { MyGames } from "./pages/MyGames/MyGames";
 import { NewHome } from "./pages/NewHome/NewHome";
 import { NewLeaderboardPage } from "./pages/NewLeaderboardPage/NewLeaderboardPage";
+import { TournamentPage } from "./pages/NewLeaderboardPage/TournamentPage";
 import { OpenLootBox } from "./pages/OpenLootBox/Stages/OpenLootBox";
 import { OpenLootBoxCardSelection } from "./pages/OpenLootBox/Stages/OpenLootBoxCardSelection";
 import { PlaysLayout } from "./pages/Plays/PlaysLayout";
 import { PreviewPage } from "./pages/Preview/PreviewPage";
 import { ProfilePage } from "./pages/Profile/ProfilePage";
+import { PurchasingPackPage } from "./pages/PurchasingPackPage";
 import { Redirect } from "./pages/Redirect";
 import { RewardsPage } from "./pages/RewardsPage";
 import { SeasonProgressionPage } from "./pages/SeasonProgression/SeasonProgressionPage";
@@ -38,7 +40,6 @@ import { PowerupHighlightProvider } from "./providers/HighlightProvider/PowerupH
 import { StoreProvider } from "./providers/StoreProvider";
 import TutorialGameProvider from "./providers/TutorialGameProvider";
 import { LoginGate } from "./utils/LoginGate";
-import { TournamentPage } from "./pages/NewLeaderboardPage/TournamentPage";
 
 export const AppRoutes = () => {
   const location = useLocation();
@@ -272,6 +273,14 @@ export const AppRoutes = () => {
             <LoginGate>
               <FreePackPage />
             </LoginGate>
+          </AnimatedPage>
+        }
+      />
+      <Route
+        path="/purchasing-pack"
+        element={
+          <AnimatedPage>
+            <PurchasingPackPage />
           </AnimatedPage>
         }
       />

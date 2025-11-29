@@ -106,9 +106,7 @@ export async function getUserCards(userAddress: string): Promise<{
       id: -1,
       cards: fillTraditionalCollection(
         transformAPIResultToTraditionalCollection(
-          userCards.filter(
-            (card) => card.cardId >= 0 && card.cardId <= 52
-          )
+          userCards.filter((card) => card.cardId >= 0 && card.cardId <= 52)
         ),
         0,
         52
@@ -118,9 +116,7 @@ export async function getUserCards(userAddress: string): Promise<{
       id: -2,
       cards: fillTraditionalCollection(
         transformAPIResultToTraditionalCollection(
-          userCards.filter(
-            (card) => card.cardId >= 200 && card.cardId <= 252
-          )
+          userCards.filter((card) => card.cardId >= 200 && card.cardId <= 252)
         ),
         200,
         252

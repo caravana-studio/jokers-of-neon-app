@@ -102,27 +102,28 @@ export const showTransactionToast = (
   );
 };
 
-export const showDailyMissionToast = (dailyMissionIds: string[]): void => {
-  const basePosition = isMobile ? "top-left" : "bottom-left";
-  const leftPosition = isMobile ? "8px" : "26px";
-  const marginTop = isMobile ? 80 : 60;
+const basePosition = isMobile ? "top-left" : "bottom-left";
+const leftPosition = isMobile ? "8px" : "26px";
+const marginTop = isMobile ? 80 : 60;
 
-  const getToastOptions = (): ExternalToast => {
-    const baseStyle = {
-      position: isNative
-        ? "absolute"
-        : ((isMobile ? "top-left" : "bottom-left") as any),
-      left: leftPosition,
-      margin: 0,
-      ...(isNative ? { top: nativePaddingTop } : { offset: "0px" }),
-    };
-
-    return {
-      position: basePosition,
-      style: baseStyle,
-      duration: 7000,
-    };
+const getToastOptions = (): ExternalToast => {
+  const baseStyle = {
+    position: isNative
+      ? "absolute"
+      : ((isMobile ? "top-left" : "bottom-left") as any),
+    left: leftPosition,
+    margin: 0,
+    ...(isNative ? { top: nativePaddingTop } : { offset: "0px" }),
   };
+
+  return {
+    position: basePosition,
+    style: baseStyle,
+    duration: 7000,
+  };
+};
+
+export const showDailyMissionToast = (dailyMissionIds: string[]): void => {
 
   dailyMissionIds.forEach((id, index) => {
     const difficulty =
@@ -174,6 +175,54 @@ export const showDailyMissionToast = (dailyMissionIds: string[]): void => {
       );
     }, index * 200);
   });
+};
+
+
+export const showPurchaseSuccessToast = (id: string): void => {
+
+      toast.custom(
+        (t) => (
+          <Box
+            display="flex"
+            alignItems="center"
+            bg="black"
+            borderRadius="12px"
+            p="10px"
+            pl={isMobile ? "8px" : "80px"}
+            px="20px"
+            boxShadow={`0px 0px 10px 1px white`}
+            maxW="300px"
+            color="white"
+            gap="10px"
+            onClick={() => {
+              toast.dismiss(t);
+            }}
+          >
+            <Image
+              src="/logos/joker-logo.png"
+              alt="Joker Icon"
+              boxSize={isMobile ? "16px" : "20px"}
+              color="white"
+            />
+            <Box>
+              <Text
+                fontSize={isMobile ? "10px" : "12px"}
+                color={VIOLET_LIGHT}
+                fontWeight="bold"
+                fontFamily="Sonara"
+                textTransform="uppercase"
+              >
+                {i18n.t(`purchases.success.title`, { ns: "achievements" })}
+              </Text>
+              <Text fontSize={isMobile ? "12px" : "14px"} fontWeight="semibold">
+                {i18n.t(`purchases.success.${id}`, { ns: "achievements" })}
+              </Text>
+            </Box>
+          </Box>
+        ),
+        getToastOptions()
+      );
+
 };
 
 const openTx = function (transaction_hash: string): void {
