@@ -31,6 +31,7 @@ interface MapContextType {
   fitViewToCurrentNode: () => void;
   fitViewToFullMap: () => void;
   fitViewToNode: (nodeId: string) => void;
+  animateToNodeDuringTransaction: (nodeId: string, transactionPromise: Promise<any>) => Promise<void>;
   currentNode: Node | undefined;
   layoutReady: boolean;
   reachableNodes: string[];
@@ -207,6 +208,95 @@ export const MapProvider = ({ children }: MapProviderProps) => {
     });
   };
 
+  const animateToNodeDuringTransaction = async (
+    nodeId: string,
+    transactionPromise: Promise<any>
+  ): Promise<void> => {
+    const startTime = Date.now();
+    const targetNode = nodes.find((n) => n.id === nodeId);
+
+    if (!targetNode) return;
+
+    const currentView = reactFlowInstance.getViewport();
+    const targetZoom = isSmallScreen ? 1.5 : 2;
+
+    // Calcular la posición objetivo
+    const targetX = -targetNode.position.x * targetZoom + window.innerWidth / 2;
+    const targetY = -targetNode.position.y * targetZoom + window.innerHeight / 2;
+
+    // Calcular la distancia total (combinando desplazamiento y zoom)
+    const deltaX = targetX - currentView.x;
+    const deltaY = targetY - currentView.y;
+    const deltaZoom = targetZoom - currentView.zoom;
+
+    // Distancia euclidiana normalizada (considera tanto posición como zoom)
+    const positionDistance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+    const zoomDistance = Math.abs(deltaZoom) * 1000; // Factor de escala para zoom
+    const totalDistance = positionDistance + zoomDistance;
+
+    // La animación debe durar mínimo 4 segundos
+    // Usamos una constante de tiempo que hace que la animación progrese lentamente
+    const animationDuration = 4000; // 4 segundos mínimo
+    const timeConstant = animationDuration / 3; // Ajuste para que llegue cerca del 95% en 4 segundos
+
+    let animationFrame: number | null = null;
+    let isTransactionComplete = false;
+    let animationStopped = false;
+
+    // Esperar la transacción y marcarla como completa
+    transactionPromise.then(() => {
+      isTransactionComplete = true;
+    }).catch(() => {
+      isTransactionComplete = true;
+    });
+
+    const animate = () => {
+      if (animationStopped) return;
+
+      const elapsed = Date.now() - startTime;
+
+      if (isTransactionComplete) {
+        // Si la transacción termina, simplemente detener la animación donde esté
+        // No acelerar ni completar al objetivo final
+        animationStopped = true;
+
+        // Pequeña transición suave de 100ms solo para evitar corte brusco
+        reactFlowInstance.setViewport(
+          reactFlowInstance.getViewport(),
+          { duration: 100 }
+        );
+        return;
+      }
+
+      // Función logarítmica invertida: 1 - e^(-t/τ)
+      // La animación progresa normalmente durante 4 segundos mínimo
+      const rawProgress = 1 - Math.exp(-elapsed / timeConstant);
+      const maxProgress = 0.95; // Máximo 95% para que no llegue completamente
+      const progress = Math.min(rawProgress, maxProgress);
+
+      // Interpolar entre la vista actual y la objetivo
+      const currentX = currentView.x + deltaX * progress;
+      const currentY = currentView.y + deltaY * progress;
+      const currentZoom = currentView.zoom + deltaZoom * progress;
+
+      reactFlowInstance.setViewport({
+        x: currentX,
+        y: currentY,
+        zoom: currentZoom,
+      });
+
+      animationFrame = requestAnimationFrame(animate);
+    };
+
+    animationFrame = requestAnimationFrame(animate);
+
+    // Esperar a que la transacción termine
+    await transactionPromise;
+
+    // Esperar un momento breve para que la animación se detenga suavemente
+    await new Promise(resolve => setTimeout(resolve, 150));
+  };
+
   return (
     <MapContext.Provider
       value={{
@@ -215,6 +305,7 @@ export const MapProvider = ({ children }: MapProviderProps) => {
         fitViewToCurrentNode,
         fitViewToFullMap,
         fitViewToNode,
+        animateToNodeDuringTransaction,
         currentNode,
         layoutReady,
         reachableNodes,

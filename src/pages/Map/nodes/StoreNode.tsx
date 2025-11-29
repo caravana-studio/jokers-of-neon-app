@@ -66,7 +66,7 @@ const StoreNode = ({ data }: any) => {
   const { id: gameId } = useGameStore();
   const navigate = useCustomNavigate();
 
-  const { reachableNodes, setSelectedNodeData, selectedNodeData, isNodeTransactionPending, setNodeTransactionPending, activeNodeId, setActiveNodeId, fitViewToNode, pulsingNodeId, setPulsingNodeId } = useMap();
+  const { reachableNodes, setSelectedNodeData, selectedNodeData, isNodeTransactionPending, setNodeTransactionPending, activeNodeId, setActiveNodeId, fitViewToNode, animateToNodeDuringTransaction, pulsingNodeId, setPulsingNodeId } = useMap();
   const { isSmallScreen } = useResponsiveValues();
 
   const { state, setShopId } = useGameStore();
@@ -140,7 +140,7 @@ const StoreNode = ({ data }: any) => {
             }
             : {}),
         }}
-        onClick={() => {
+        onClick={async () => {
           if (isNodeTransactionPending) return;
 
           if (isSmallScreen) {
@@ -160,30 +160,32 @@ const StoreNode = ({ data }: any) => {
               setActiveNodeId(data.id.toString());
               setNodeTransactionPending(true);
               setPulsingNodeId(data.id.toString());
-              fitViewToNode(data.id.toString());
 
-              // Limpiar el pulso después de que termine la animación
-              setTimeout(() => {
+              const transactionPromise = advanceNode(gameId, data.id);
+
+              try {
+                await animateToNodeDuringTransaction(
+                  data.id.toString(),
+                  transactionPromise
+                );
+
+                const response = await transactionPromise;
+
                 setPulsingNodeId(null);
-              }, 800);
 
-              advanceNode(gameId, data.id)
-                .then((response) => {
-                  if (response) {
-                    setTimeout(() => {
-                      setShopId(data.shopId);
-                      refetch();
-                      navigate(GameStateEnum.Store);
-                    }, 900);
-                  } else {
-                    setNodeTransactionPending(false);
-                    setActiveNodeId(null);
-                  }
-                })
-                .catch(() => {
+                if (response) {
+                  setShopId(data.shopId);
+                  refetch();
+                  navigate(GameStateEnum.Store);
+                } else {
                   setNodeTransactionPending(false);
                   setActiveNodeId(null);
-                });
+                }
+              } catch (error) {
+                setPulsingNodeId(null);
+                setNodeTransactionPending(false);
+                setActiveNodeId(null);
+              }
             } else {
               // Primer click: solo mostrar información
               setSelectedNodeData({

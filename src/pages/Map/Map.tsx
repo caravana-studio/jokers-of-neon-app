@@ -32,6 +32,7 @@ export const Map = () => {
     fitViewToCurrentNode,
     fitViewToFullMap,
     fitViewToNode,
+    animateToNodeDuringTransaction,
     layoutReady,
     selectedNodeData,
     reachableNodes,
@@ -79,47 +80,49 @@ export const Map = () => {
     navigate(state);
   };
 
-  const handleGoClick = () => {
+  const handleGoClick = async () => {
     if (!selectedNodeData) return;
 
     setActiveNodeId(selectedNodeData.id.toString());
     setNodeTransactionPending(true);
     setPulsingNodeId(selectedNodeData.id.toString());
-    fitViewToNode(selectedNodeData.id.toString());
 
-    // Limpiar el pulso después de que termine la animación
-    setTimeout(() => {
+    const transactionPromise = advanceNode(gameId, selectedNodeData.id);
+
+    try {
+      await animateToNodeDuringTransaction(
+        selectedNodeData.id.toString(),
+        transactionPromise
+      );
+
+      const response = await transactionPromise;
+
       setPulsingNodeId(null);
-    }, 800);
 
-    advanceNode(gameId, selectedNodeData.id)
-      .then((response) => {
-        if (response) {
-          setTimeout(() => {
-            switch (selectedNodeData?.nodeType) {
-              case NodeType.RAGE:
-                refetchAndNavigate(GameStateEnum.Rage);
-                break;
-              case NodeType.ROUND:
-                refetchAndNavigate(GameStateEnum.Round);
-                break;
-              case NodeType.STORE:
-                selectedNodeData.shopId && setShopId(selectedNodeData.shopId);
-                navigate(GameStateEnum.Store);
-                break;
-              default:
-                break;
-            }
-          }, 900);
-        } else {
-          setNodeTransactionPending(false);
-          setActiveNodeId(null);
+      if (response) {
+        switch (selectedNodeData?.nodeType) {
+          case NodeType.RAGE:
+            await refetchAndNavigate(GameStateEnum.Rage);
+            break;
+          case NodeType.ROUND:
+            await refetchAndNavigate(GameStateEnum.Round);
+            break;
+          case NodeType.STORE:
+            selectedNodeData.shopId && setShopId(selectedNodeData.shopId);
+            navigate(GameStateEnum.Store);
+            break;
+          default:
+            break;
         }
-      })
-      .catch(() => {
+      } else {
         setNodeTransactionPending(false);
         setActiveNodeId(null);
-      });
+      }
+    } catch (error) {
+      setPulsingNodeId(null);
+      setNodeTransactionPending(false);
+      setActiveNodeId(null);
+    }
   };
 
   return (
@@ -145,11 +148,14 @@ export const Map = () => {
           [NodeType.CHALLENGE]: RoundNode,
         }}
         edgeTypes={{ map: MapEdge }}
-        panOnScroll={false}
-        zoomOnScroll={true}
+        panOnScroll={!isNodeTransactionPending}
+        zoomOnScroll={!isNodeTransactionPending}
+        panOnDrag={!isNodeTransactionPending}
         nodesDraggable={false}
         nodesConnectable={false}
         edgesFocusable={false}
+        zoomOnPinch={!isNodeTransactionPending}
+        zoomOnDoubleClick={!isNodeTransactionPending}
       >
         {!isSmallScreen && (
           <Controls
