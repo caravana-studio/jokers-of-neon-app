@@ -3,9 +3,9 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useDojo } from "../../dojo/useDojo";
+import { useGameActions } from "../../dojo/useGameActions";
 import { useGameContext } from "../../providers/GameProvider";
 import { useSeasonPass } from "../../providers/SeasonPassProvider";
-import { claimLives } from "../../queries/claimLives";
 import { getPlayerLives } from "../../queries/getPlayerLives";
 import { BLUE } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
@@ -23,26 +23,31 @@ export const DailyGames = () => {
   const [totalSlots, setTotalSlots] = useState(seasonPassUnlocked ? 4 : 2);
   const [nextLiveIn, setNextLiveIn] = useState<Date | undefined>(undefined);
 
-  const fetchPlayerLives = () => {
-    getPlayerLives({ playerAddress: account.address }).then((response) => {
-      console.log("getPlayerLives response", response);
-      response.data?.available_lives &&
-        setAvailableLives(Number(response.data.available_lives));
-      response.data?.max_lives &&
-        setTotalSlots(Number(response.data.max_lives));
-      response.data?.next_live_timestamp &&
-        setNextLiveIn(response.data.next_live_timestamp);
-    });
-  };
-
   const {
+    setup: { client },
     account: { account },
   } = useDojo();
+
+  const { claimLives } = useGameActions();
+  
+  const fetchPlayerLives = () => {
+    getPlayerLives(client, { playerAddress: account.address }).then(
+      (response) => {
+        console.log("getPlayerLives response", response);
+        if (!response.success || !response.data) return;
+
+        setAvailableLives(response.data.available_lives);
+        setTotalSlots(response.data.max_lives);
+        response.data.next_live_timestamp &&
+          setNextLiveIn(response.data.next_live_timestamp);
+      }
+    );
+  };
 
   useEffect(() => {
     fetchPlayerLives();
 
-    claimLives({ playerAddress: account.address })
+    claimLives()
       .then((response) => {
         console.log("claimLives response", response);
         fetchPlayerLives();
@@ -128,17 +133,19 @@ export const DailyGames = () => {
             >
               {t("next-live-in")}
             </Text>
-            {nextLiveIn &&<Countdown targetDate={nextLiveIn}>
-              {({ formatted }) => (
-                <Text
-                  fontSize={isSmallScreen ? 9 : 15}
-                  fontWeight={"bold"}
-                  lineHeight={1}
-                >
-                  {formatted}
-                </Text>
-              )}
-            </Countdown>}
+            {nextLiveIn && (
+              <Countdown targetDate={nextLiveIn}>
+                {({ formatted }) => (
+                  <Text
+                    fontSize={isSmallScreen ? 9 : 15}
+                    fontWeight={"bold"}
+                    lineHeight={1}
+                  >
+                    {formatted}
+                  </Text>
+                )}
+              </Countdown>
+            )}
           </Flex>
         )}
       </Flex>

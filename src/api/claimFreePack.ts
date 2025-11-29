@@ -59,10 +59,6 @@ export async function claimFreePack(recipient: string): Promise<MintedCard[]> {
     );
   }
 
-  if (!json.transactionHash) {
-    throw new Error("claimFreePack: Missing transaction hash in API response");
-  }
-
   if (!Array.isArray(json.mintedCards) || json.mintedCards.length === 0) {
     throw new Error("claimFreePack: No minted cards returned by API");
   }

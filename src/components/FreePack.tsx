@@ -16,6 +16,7 @@ export const FreePack = () => {
     keyPrefix: "packs",
   });
   const {
+    setup: { client },
     account: { account },
   } = useDojo();
 
@@ -27,13 +28,13 @@ export const FreePack = () => {
 
   useEffect(() => {
     if (account?.address) {
-      getNextFreePackTime(account.address).then((date) => {
+      getNextFreePackTime(client, account.address).then((date) => {
         setNextTime(date.nextTime);
         setCanClaim(date.canClaim);
         setIsLoading(false);
       });
     }
-  }, [account?.address]);
+  }, [account?.address, client]);
 
   return (
     <Flex
