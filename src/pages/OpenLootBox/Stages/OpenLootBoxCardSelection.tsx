@@ -202,7 +202,7 @@ export const OpenLootBoxCardSelection = () => {
                   specialCardCount > 0 && !animationRunning
                     ? {
                         onClick: () => {
-                          navigate("/manage");
+                          navigate("/manage", { state: { returnToLootBox: true } });
                         },
                         label: t("store.packs.special-cards-btn"),
                       }

@@ -20,7 +20,7 @@ export const ManageSpecialCardsButton: React.FC<
       opacity={opacity}
       transition="opacity 0.3s ease"
       onClick={() => {
-        navigate("/manage");
+        navigate("/manage", { state: { returnToLootBox: true } });
       }}
     >
       {t("store.packs.special-cards-btn")}
