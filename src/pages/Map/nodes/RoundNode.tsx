@@ -29,6 +29,17 @@ const reachablePulse = keyframes`
   }
 `;
 
+const clickPulse = keyframes`
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+`;
+
 const RoundNode = ({ data }: any) => {
   const { t } = useTranslation("map", { keyPrefix: "round" });
   const { advanceNode } = useShopActions();
@@ -39,12 +50,13 @@ const RoundNode = ({ data }: any) => {
     setup: { client },
   } = useDojo();
 
-  const { reachableNodes, setSelectedNodeData, selectedNodeData } = useMap();
+  const { reachableNodes, setSelectedNodeData, selectedNodeData, isNodeTransactionPending, setNodeTransactionPending, activeNodeId, setActiveNodeId, fitViewToNode, animateToNodeDuringTransaction, pulsingNodeId, setPulsingNodeId } = useMap();
   const { isSmallScreen } = useResponsiveValues();
   const { state, refetchGameStore } = useGameStore();
 
   const stateInMap = state === GameStateEnum.Map;
-  const reachable = reachableNodes.includes(data.id.toString()) && stateInMap;
+  const isActiveNode = activeNodeId === data.id.toString();
+  const reachable = reachableNodes.includes(data.id.toString()) && stateInMap && (!isNodeTransactionPending || isActiveNode);
 
   const title = t("name");
 
@@ -101,36 +113,71 @@ const RoundNode = ({ data }: any) => {
           },
           ...(reachable && !data.current
             ? {
-                "&::after": {
-                  content: '""',
-                  position: "absolute",
-                  inset: "-6px",
-                  borderRadius: 14,
-                  border: `2px solid ${VIOLET}`,
-                  animation: `${reachablePulse} 1.8s ease-out infinite`,
-                  pointerEvents: "none",
-                  opacity: 0.8,
-                  zIndex: -1,
-                  transformOrigin: "center",
-                },
-              }
+              "&::after": {
+                content: '""',
+                position: "absolute",
+                inset: "-6px",
+                borderRadius: 14,
+                border: `2px solid ${VIOLET}`,
+                animation: `${reachablePulse} 1.8s ease-out infinite`,
+                pointerEvents: "none",
+                opacity: 0.8,
+                zIndex: -1,
+                transformOrigin: "center",
+              },
+            }
             : {}),
         }}
-        onClick={() => {
-          isSmallScreen &&
+        onClick={async () => {
+          if (isNodeTransactionPending) return;
+
+          if (isSmallScreen) {
             setSelectedNodeData({
               id: data.id,
               title: title,
               nodeType: NodeType.ROUND,
             });
-          if (data.current && !stateInMap) {
+          } else if (data.current && !stateInMap) {
             navigate(GameStateEnum.Round);
-          } else if (stateInMap && reachable && !isSmallScreen) {
-            advanceNode(gameId, data.id).then((response) => {
-              if (response) {
-                refetchAndNavigate();
+          } else if (stateInMap && reachableNodes.includes(data.id.toString())) {
+            // Desktop: verificar si ya está seleccionado para navegarlo o solo seleccionarlo
+            if (selectedNodeData?.id === data.id) {
+              // Segundo click: navegar con animación
+              setActiveNodeId(data.id.toString());
+              setNodeTransactionPending(true);
+              setPulsingNodeId(data.id.toString());
+
+              const transactionPromise = advanceNode(gameId, data.id);
+
+              try {
+                await animateToNodeDuringTransaction(
+                  data.id.toString(),
+                  transactionPromise
+                );
+
+                const response = await transactionPromise;
+
+                setPulsingNodeId(null);
+
+                if (response) {
+                  await refetchAndNavigate();
+                } else {
+                  setNodeTransactionPending(false);
+                  setActiveNodeId(null);
+                }
+              } catch (error) {
+                setPulsingNodeId(null);
+                setNodeTransactionPending(false);
+                setActiveNodeId(null);
               }
-            });
+            } else {
+              // Primer click: solo mostrar información
+              setSelectedNodeData({
+                id: data.id,
+                title: title,
+                nodeType: NodeType.ROUND,
+              });
+            }
           }
         }}
       >
@@ -139,6 +186,19 @@ const RoundNode = ({ data }: any) => {
           alt="round"
         />
 
+        {pulsingNodeId === data.id.toString() && (
+          <Box
+            position="absolute"
+            width="100%"
+            height="100%"
+            borderRadius={10}
+            border="3px solid white"
+            sx={{
+              animation: `${clickPulse} 0.8s ease-out forwards`,
+              pointerEvents: "none",
+            }}
+          />
+        )}
         {data.current && <HereSign />}
 
         <Handle type="target" position={Position.Top} style={{ opacity: 0 }} />
