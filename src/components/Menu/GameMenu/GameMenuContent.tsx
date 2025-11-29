@@ -24,7 +24,6 @@ import { MyGamesMenuBtn } from "../Buttons/MyGamesMenuBtn";
 import { SettingsMenuBtn } from "../Buttons/SettingsMenuBtn";
 import { TutorialBtn } from "../Buttons/TutorialBtn";
 import { BackMenuBtn } from "../Buttons/BackMenuBtn";
-import { DailyMissionsMenuBtn } from "../Buttons/DailyMissionsMenuBtn";
 import { DailyMissions } from "../../DailyMissions/DailyMissions";
 
 interface GameMenuContentProps {
