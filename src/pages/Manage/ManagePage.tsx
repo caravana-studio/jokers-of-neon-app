@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useLocation } from "react-router-dom";
 import { ConfirmationModal } from "../../components/ConfirmationModal";
 import { DelayedLoading } from "../../components/DelayedLoading";
 import { GoBackButton } from "../../components/GoBackButton";
@@ -21,8 +20,6 @@ import { SellButton } from "./SellButton";
 
 export const ManagePage = () => {
   const { t } = useTranslation("intermediate-screens");
-  const location = useLocation();
-  const returnToLootBox = location.state?.returnToLootBox;
 
   const {
     setup: { client },
@@ -80,11 +77,7 @@ export const ManagePage = () => {
     />
   );
 
-  const goBackButton = returnToLootBox ? (
-    <GoBackButton text={t("common.go-back-btn")} />
-  ) : (
-    <GoBackButton />
-  );
+  const goBackButton = <GoBackButton />;
 
   return (
     <DelayedLoading ms={100}>
