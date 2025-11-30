@@ -9,6 +9,9 @@ const getPxForStepNumber = (stepNumber: number): number => {
   return stepNumber * STEP_HEIGHT - STEP_HEIGHT / 2;
 };
 function calculateProgress(steps: IStep[], playerProgress: number): number {
+  if (playerProgress === 0) {
+    return 0;
+  }
   for (let i = 0; i < steps.length; i++) {
     if (steps[i].xp === playerProgress) {
       return getPxForStepNumber(i + 1);
@@ -20,7 +23,7 @@ function calculateProgress(steps: IStep[], playerProgress: number): number {
       return getPxForStepNumber(i) + difference;
     }
   }
-  return 0;
+  return steps.length * STEP_HEIGHT;
 }
 
 interface SeasonProgressionContentProps {
