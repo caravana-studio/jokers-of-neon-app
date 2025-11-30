@@ -35,7 +35,8 @@ export const ClaimSeasonPackPage = () => {
           setPacks(packs);
           setCurrentPackIndex(0);
         })
-        .catch(() => {
+        .catch((error) => {
+          console.error("Error claiming season reward:", error);
           navigate("/");
         });
     }
