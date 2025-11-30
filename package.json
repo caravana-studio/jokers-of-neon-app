@@ -13,6 +13,9 @@
     "test": "vitest",
     "postinstall": "npm rebuild rollup"
   },
+  "engines": {
+    "node": ">=20"
+  },
   "dependencies": {
     "@capacitor/android": "^7.4.1",
     "@capacitor/app": "^7.1.0",
