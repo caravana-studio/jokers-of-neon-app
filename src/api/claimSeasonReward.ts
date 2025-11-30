@@ -96,12 +96,6 @@ export async function claimSeasonReward({
     );
   }
 
-  if (!json.transactionHash) {
-    throw new Error(
-      "claimSeasonReward: Missing transaction hash in API response"
-    );
-  }
-
   if (!Array.isArray(json.mintedCards) || json.mintedCards.length === 0) {
     throw new Error("claimSeasonReward: No minted cards returned by API");
   }
