@@ -8,7 +8,7 @@ import { defineConfig, type Plugin, type UserConfig } from "vite";
 import topLevelAwait from "vite-plugin-top-level-await";
 import wasm from "vite-plugin-wasm";
 
-type BuildTarget = "main" | "standaloneShop";
+type BuildTarget = "main" | "standaloneShop" | "all";
 
 const rootDir = fileURLToPath(new URL(".", import.meta.url));
 const indexHtml = path.resolve(rootDir, "index.html");
@@ -16,6 +16,7 @@ const standaloneShopHtml = path.resolve(rootDir, "standalone-shop.html");
 
 const createConfig = (target: BuildTarget): UserConfig => {
   const isStandaloneShop = target === "standaloneShop";
+  const isAll = target === "all";
   const config: UserConfig = {
     base: "./",
     plugins: [react(), wasm(), topLevelAwait(), svgx()],
@@ -24,6 +25,8 @@ const createConfig = (target: BuildTarget): UserConfig => {
       rollupOptions: {
         input: isStandaloneShop
           ? { shop: standaloneShopHtml }
+          : isAll
+          ? { main: indexHtml, shop: standaloneShopHtml }
           : indexHtml,
       },
     },
@@ -77,7 +80,9 @@ const htmlFallbackPlugin = (fallback: string): Plugin => {
 
 export default defineConfig(({ mode }) => {
   const target: BuildTarget =
-    process.env.STANDALONE_SHOP === "true" || mode === "standalone-shop"
+    process.env.BUILD_ALL === "true" || mode === "all"
+      ? "all"
+      : process.env.STANDALONE_SHOP === "true" || mode === "standalone-shop"
       ? "standaloneShop"
       : "main";
 
