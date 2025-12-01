@@ -9,6 +9,7 @@ import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { PackRow } from "./PackRow";
 import { SeasonPassRow } from "./SeasonPassRow";
 import { useShopDistribution } from "../../queries/useShopDistribution";
+import { AppType, useAppContext } from "../../providers/AppContextProvider";
 
 const PACK_PACKAGE_IDS: Record<number, string> = {
   6: "pack_collector_xl",
@@ -37,6 +38,9 @@ export const ShopPage = () => {
   };
   const {distribution, loading} = useShopDistribution();
 
+  const appType = useAppContext();
+  const isShop = appType === AppType.SHOP;
+
   return (
     <DelayedLoading loading={loading}>
       <MobileDecoration fadeToBlack />
@@ -55,13 +59,13 @@ export const ShopPage = () => {
           px={isSmallScreen ? "15px" : "30px"}
           pb={3}
         >
-          <Heading
+          {!isShop && <Heading
             zIndex={10}
             fontSize={isSmallScreen ? "sm" : "lg"}
             variant="italic"
           >
             {t("title")}
-          </Heading>
+          </Heading>}
         </Flex>
         <Flex flexDir={"column"} gap={2} my={2}>
           {!seasonPassUnlocked && <SeasonPassRow price={seasonPassPrice} id={distribution?.season_pass ?? "season_pass"} />}
