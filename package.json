@@ -7,6 +7,7 @@
     "dev": "vite",
     "dev:shop": "STANDALONE_SHOP=true vite --mode standalone-shop",
     "build": "tsc && vite build",
+    "build:shop": "tsc && STANDALONE_SHOP=true vite build --mode standalone-shop",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "codegen": "graphql-codegen",
