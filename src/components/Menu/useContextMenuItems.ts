@@ -26,6 +26,11 @@ export const gameUrls = [
   "/preview/:type",
   "/loot-box-cards-selection",
   "/manage",
+  "/map",
+  "/docs",
+  "/deck",
+  "/plays",
+  "/settings-game",
 ];
 
 export const getIcon = (state: GameStateEnum) => {
