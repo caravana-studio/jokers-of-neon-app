@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import { isMobile } from "react-device-detect";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import { CashSymbol } from "./CashSymbol";
@@ -28,7 +28,7 @@ export const PriceBox = ({
   const powerUpBottom = isSmallScreen ? 40 : 20;
 
   return (
-    <Box
+    <Flex
       sx={{
         position: absolutePosition ? "absolute" : "default",
         bottom: `-${isPowerUp ? powerUpBottom : 8}%`,
@@ -39,14 +39,16 @@ export const PriceBox = ({
         borderRadius: ["3px", "3px", "4px"],
         boxShadow: "0px 0px 10px 2px white",
         color: "white",
-        px: 2,
-        pt: "1px",
+        px: isSmallScreen ? 2 : 3,
+        py: "1px",
         opacity: purchased ? 0.5 : 1,
         pointerEvents: "none",
         fontWeight: 400,
       }}
+      flexDir="column"
+      gap={isSmallScreen ? 1 : 1.5}
     >
-      <Box
+      <Flex
         sx={{
           textDecoration: discountPrice > 0 ? "line-through" : "none",
           fontSize: discountPrice ? finalDiscountFontSize : finalFontSize,
@@ -54,17 +56,25 @@ export const PriceBox = ({
           mt: discountPrice > 0 ? 0.5 : 0,
           opacity: discountPrice > 0 ? 0.7 : 1,
         }}
+        gap={1}
+        justifyContent="center"
+        alignItems="center"
       >
+        {!discountPrice && <CashSymbol />}
         {price}
-        <CashSymbol />
-      </Box>
+      </Flex>
 
       {discountPrice > 0 && (
-        <Box mt={[0.5,1]} sx={{ fontSize: finalFontSize, lineHeight: 0.8 }}>
-          {discountPrice}
+        <Flex
+          justifyContent="center"
+          alignItems="center"
+          gap={1}
+          sx={{ fontSize: finalFontSize, lineHeight: 0.8 }}
+        >
           <CashSymbol />
-        </Box>
+          {discountPrice}
+        </Flex>
       )}
-    </Box>
+    </Flex>
   );
 };

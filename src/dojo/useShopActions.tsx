@@ -13,7 +13,7 @@ import { getCardsFromEvents } from "../utils/getCardsFromEvents";
 import { getEventKey } from "../utils/getEventKey";
 import { getNumberValueFromEvent } from "../utils/getNumberValueFromEvent";
 import { getPowerUpsFromEvents } from "../utils/getPowerUpsFromEvents";
-import { handleAchievements } from "../utils/handleAchievements";
+import { handleXPEvents } from "../utils/handleXPEvents";
 import {
   failedTransactionToast,
   showTransactionToast,
@@ -58,7 +58,7 @@ export const useShopActions = () => {
 
       updateTransactionToast(transaction_hash, tx.isSuccess());
       if (tx.isSuccess()) {
-        await handleAchievements(tx.value.events, achievementSound);
+        await handleXPEvents(tx.value.events, achievementSound, account.address);
         const event = tx.value.events.find(
           (event) => event.keys[1] === DESTROYED_SPECIAL_CARD_EVENT_KEY
         );
@@ -110,7 +110,7 @@ export const useShopActions = () => {
       const success = updateTransactionToast(transaction_hash, tx.isSuccess());
 
       if (tx.isSuccess()) {
-        await handleAchievements(tx.value.events, achievementSound);
+        await handleXPEvents(tx.value.events, achievementSound, account.address);
       }
 
       return { success };
@@ -137,7 +137,7 @@ export const useShopActions = () => {
       });
 
       if (tx.isSuccess()) {
-        await handleAchievements(tx.value.events, achievementSound);
+        await handleXPEvents(tx.value.events, achievementSound, account.address);
         const event = tx.value.events.find(
           (event) => event.keys[1] === DESTROYED_SPECIAL_CARD_EVENT_KEY
         );
@@ -175,7 +175,7 @@ export const useShopActions = () => {
       });
 
       if (tx.isSuccess()) {
-        await handleAchievements(tx.value.events, achievementSound);
+        await handleXPEvents(tx.value.events, achievementSound, account.address);
       }
 
       return updateTransactionToast(transaction_hash, tx.isSuccess());
@@ -203,7 +203,7 @@ export const useShopActions = () => {
       const success = updateTransactionToast(transaction_hash, tx.isSuccess());
 
       if (tx.isSuccess()) {
-        await handleAchievements(tx.value.events, achievementSound);
+        await handleXPEvents(tx.value.events, achievementSound, account.address);
       }
 
       return { success };
@@ -237,7 +237,7 @@ export const useShopActions = () => {
       const success = updateTransactionToast(transaction_hash, tx.isSuccess());
 
       if (tx.isSuccess()) {
-        await handleAchievements(tx.value.events, achievementSound);
+        await handleXPEvents(tx.value.events, achievementSound, account.address);
       }
 
       return { success };
@@ -263,7 +263,7 @@ export const useShopActions = () => {
       const success = updateTransactionToast(transaction_hash, tx.isSuccess());
 
       if (tx.isSuccess()) {
-        await handleAchievements(tx.value.events, achievementSound);
+        await handleXPEvents(tx.value.events, achievementSound, account.address);
       }
 
       return { success };
@@ -293,7 +293,7 @@ export const useShopActions = () => {
       const success = updateTransactionToast(transaction_hash, tx.isSuccess());
 
       if (tx.isSuccess()) {
-        await handleAchievements(tx.value.events, achievementSound);
+        await handleXPEvents(tx.value.events, achievementSound, account.address);
       }
 
       return { success };
@@ -323,7 +323,7 @@ export const useShopActions = () => {
       const success = updateTransactionToast(transaction_hash, tx.isSuccess());
 
       if (tx.isSuccess()) {
-        await handleAchievements(tx.value.events, achievementSound);
+        await handleXPEvents(tx.value.events, achievementSound, account.address);
       }
 
       return { success };
@@ -353,7 +353,7 @@ export const useShopActions = () => {
       const success = updateTransactionToast(transaction_hash, tx.isSuccess());
 
       if (tx.isSuccess()) {
-        await handleAchievements(tx.value.events, achievementSound);
+        await handleXPEvents(tx.value.events, achievementSound, account.address);
       }
 
       return { success };
@@ -376,7 +376,7 @@ export const useShopActions = () => {
       });
 
       if (tx.isSuccess()) {
-        await handleAchievements(tx.value.events, achievementSound);
+        await handleXPEvents(tx.value.events, achievementSound, account.address);
       }
 
       return updateTransactionToast(transaction_hash, tx.isSuccess());

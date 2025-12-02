@@ -17,11 +17,11 @@ import { useMap } from "../../providers/MapProvider";
 import { useGameStore } from "../../state/useGameStore";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { MobileCoins } from "../store/Coins";
+import MapEdge from "./MapEdge";
 import { NodeDetailsMobileButton } from "./NodeDetailsMobileButton";
 import RageNode from "./nodes/RageNode";
 import RoundNode from "./nodes/RoundNode";
 import RewardNode from "./nodes/StoreNode";
-import MapEdge from "./MapEdge";
 import { NodeType } from "./types";
 
 export const Map = () => {
@@ -128,15 +128,15 @@ export const Map = () => {
   return (
     <div style={{ height: "100%", width: "100%", zIndex: 10 }}>
       <MobileDecoration fadeToBlack />
-      {isSmallScreen ? (
-        <Flex position="absolute" top={"10px"} left={5} zIndex={1000}>
-          <MobileCoins fontSize={"15px"} iconSize={19} />
-        </Flex>
-      ) : (
-        <Flex position="absolute" top={"17px"} left={"55px"} zIndex={1000}>
-          <MobileCoins fontSize={"20px"} iconSize={24} />
-        </Flex>
-      )}
+      <Flex
+        position="absolute"
+        top={isSmallScreen ? "20px" : "35px"}
+        left={isSmallScreen ? 5 : "65px"}
+        zIndex={1000}
+      >
+        <MobileCoins />
+      </Flex>
+
       <ReactFlow
         nodes={nodes}
         edges={edges}

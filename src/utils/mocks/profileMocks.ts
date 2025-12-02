@@ -5,8 +5,11 @@ export const profileMock = {
     games: 10,
     victories: 7,
     currentXp: 1500,
-    levelXp: 2000,
     currentBadges: 2,
     totalBadges: 3,
     profilePicture: 7,
+    xpLine: {
+        prevLevelXp: 1000,
+        nextLevelXp: 2000,
+    },
 }

@@ -1,5 +1,5 @@
 import { SPECIALS_RARITY } from "../../data/specialCards";
-import { Collection } from "./types";
+import { Collection, NftCards } from "./types";
 
 export function fillCollections(collections: Collection[]): Collection[] {
   // Create a map to organize cards by category
@@ -77,6 +77,42 @@ export function fillCollections(collections: Collection[]): Collection[] {
 
   // Sort collections by ID
   result.sort((a, b) => a.id - b.id);
+
+  return result;
+}
+
+export function fillTraditionalCollection(
+  cards: NftCards[],
+  startId: number,
+  endId: number
+): NftCards[] {
+  if (
+    !Number.isFinite(startId) ||
+    !Number.isFinite(endId) ||
+    startId > endId
+  ) {
+    throw new Error("fillTraditionalCollection: invalid range provided");
+  }
+
+  const cardMap = new Map<number, NftCards>();
+  cards.forEach((card) => {
+    if (Number.isFinite(card.id)) {
+      cardMap.set(card.id, card);
+    }
+  });
+
+  const result: NftCards[] = [];
+  for (let cardId = startId; cardId <= endId; cardId += 1) {
+    const card = cardMap.get(cardId);
+    if (card) {
+      result.push(card);
+    } else {
+      result.push({
+        id: cardId,
+        userNfts: [],
+      });
+    }
+  }
 
   return result;
 }

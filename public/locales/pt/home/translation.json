@@ -8,11 +8,32 @@
     },
     "join-discord": "Junte-se ao nosso Discord!",
     "leaderboard-banner": {
-      "title": "Torneio ativo",
+      "title": "Classificação",
       "button": "Classificação completa"
+    },
+    "tournament-banner": {
+      "title": "Torneio ativo",
+      "button": "Torneio",
+      "no-entries": "Você não tem entradas para jogar o torneio",
+      "unlock": "Desbloqueie entradas progredindo na temporada",
+      "entry": "Você tem 1 entrada para jogar o torneio",
+      "entries": "Você tem {{entries}} entradas para jogar o torneio",
+      "play-tournament": "Jogar torneio"
     },
     "level": "Nível",
     "dailyMissions": "Missões Diárias"
+  },
+  "packs": {
+    "title": "Pacotes",
+    "free-pack-in": "pacote grátis em",
+    "free-pack-ready": "pacote grátis pronto!",
+    "claim-now": "Abrir",
+    "open-pack-stages": {
+      "stage-0": "Processando o pagamento",
+      "stage-1": "Rolando as chances",
+      "stage-2": "Pacote pronto",
+      "stage-3": "Vamos abrir!"
+    }
   },
   "leaderboard": {
     "title": "Classificação",
@@ -63,6 +84,7 @@
     "settings": "Configurações",
     "map": "Mapa",
     "deck": "Deck",
+    "season": "Temporada",
     "plays": "Jogadas",
     "more": "Mais",
     "round": "Rodada",
