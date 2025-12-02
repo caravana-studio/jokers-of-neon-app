@@ -5,7 +5,7 @@ import { useCurrentPageInfo } from "../../../hooks/useCurrentPageInfo";
 import { AnimatedText } from "../../AnimatedText";
 import { LogoutMenuListBtn } from "../Buttons/Logout/LogoutMenuListBtn";
 import { ContextMenuItem } from "../ContextMenuItem";
-import { mainMenuUrls, useContextMenuItems } from "../useContextMenuItems";
+import { gameUrls, mainMenuUrls, useContextMenuItems } from "../useContextMenuItems";
 
 export const SidebarMenu = () => {
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ export const SidebarMenu = () => {
       onMoreClick: undefined,
     });
 
-  const inGame = !mainMenuUrls.some((url) =>
+  const inGame = gameUrls.some((url) =>
     matchPath({ path: url, end: true }, window.location.pathname)
   );
 

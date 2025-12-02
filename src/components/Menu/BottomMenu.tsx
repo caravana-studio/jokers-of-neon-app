@@ -1,11 +1,11 @@
 import { Flex } from "@chakra-ui/react";
 import { useState } from "react";
 import { matchPath } from "react-router-dom";
+import { isNative } from "../../utils/capacitorUtils";
+import { isTutorial } from "../../utils/isTutorial";
 import { ContextMenuItem } from "./ContextMenuItem";
 import { GameMenuContent } from "./GameMenu/GameMenuContent";
-import { mainMenuUrls, useContextMenuItems } from "./useContextMenuItems";
-import { isTutorial } from "../../utils/isTutorial";
-import { isNative } from "../../utils/capacitorUtils";
+import { gameUrls, useContextMenuItems } from "./useContextMenuItems";
 
 export const BottomMenu = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -31,11 +31,11 @@ export const BottomMenu = () => {
         position="absolute"
         bottom={isNative ? "30px" : "0px"}
       >
-        {(mainMenuUrls.some((url) =>
+        {(gameUrls.some((url) =>
           matchPath({ path: url, end: true }, window.location.pathname)
         )
-          ? mainMenuItems
-          : inGameMenuItems
+          ? inGameMenuItems
+          : mainMenuItems
         ).map((item) => (
           <ContextMenuItem {...item} nameKey={item.key} disabled={inTutorial} />
         ))}

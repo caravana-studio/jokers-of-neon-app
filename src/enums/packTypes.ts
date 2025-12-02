@@ -1,4 +1,5 @@
 export enum PackType {
+  NONE,
   BASIC,
   ADVANCED,
   EPIC,
