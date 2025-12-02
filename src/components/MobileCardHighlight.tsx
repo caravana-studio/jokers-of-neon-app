@@ -101,10 +101,16 @@ export const MobileCardHighlight = ({
 
   const [opacity, setOpacity] = useState(0);
   const [scale, setScale] = useState(0.8);
+  const [enableTilt, setEnableTilt] = useState(false);
 
   useEffect(() => {
     setOpacity(1);
     setScale(1);
+    // Enable tilt after the scale animation completes (500ms)
+    const timer = setTimeout(() => {
+      setEnableTilt(true);
+    }, 500);
+    return () => clearTimeout(timer);
   }, []);
 
   return (
@@ -164,7 +170,7 @@ export const MobileCardHighlight = ({
         transition="all 0.5s ease"
       >
         {!animation ? (
-          <CardImage3D card={card} hideTooltip small={false} />
+          <CardImage3D card={card} hideTooltip small={false} disableTilt={!enableTilt} />
         ) : (
           <LootBox boxId={card.card_id ?? 0} />
         )}

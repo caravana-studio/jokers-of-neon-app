@@ -91,9 +91,17 @@ export const OpenLootBoxCardSelection = () => {
   const { isSmallScreen } = useResponsiveValues();
 
   const {
-    highlightItem: highlightSpecialCard,
+    highlightItem: highlightSpecialCardOriginal,
     highlightedItem: highlightedSpecialCard,
   } = useCardHighlight();
+
+  const highlightSpecialCard = (card: Card) => {
+    console.log('[OpenLootBoxCardSelection] highlightSpecialCard called', {
+      cardId: card.card_id,
+      cardType: card.type,
+    });
+    highlightSpecialCardOriginal(card);
+  };
 
   const chooseDisabled =
     specialCardsToKeep > maxSpecialCards - currentSpecialCardsLength;

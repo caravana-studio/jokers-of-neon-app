@@ -231,11 +231,13 @@ export const AppRoutes = () => {
         path="/loot-box-cards-selection"
         element={
           <StoreProvider>
-            <AnimatedPage>
-              <GameStoreLoader>
-                <OpenLootBoxCardSelection />
-              </GameStoreLoader>
-            </AnimatedPage>
+            <CardHighlightProvider>
+              <AnimatedPage>
+                <GameStoreLoader>
+                  <OpenLootBoxCardSelection />
+                </GameStoreLoader>
+              </AnimatedPage>
+            </CardHighlightProvider>
           </StoreProvider>
         }
       />

@@ -24,13 +24,16 @@ export const DraggableCard = ({
     : undefined;
 
   const handleTouchStart = (event: any) => {
+    console.log('[DraggableCard] Touch start', { id, hasOnCardHold: !!onCardHold });
     holdTimeout.current = setTimeout(() => {
+      console.log('[DraggableCard] Hold timeout triggered', { id });
       onCardHold?.();
-      holdTimeout.current = null; 
-    }, 200); 
+      holdTimeout.current = null;
+    }, 200);
   };
 
   const handleTouchMove = () => {
+    console.log('[DraggableCard] Touch move - cancelling hold', { id });
     if (holdTimeout.current) {
       clearTimeout(holdTimeout.current); // Cancel hold if movement detected
       holdTimeout.current = null;
@@ -38,6 +41,7 @@ export const DraggableCard = ({
   };
 
   const handleTouchEnd = () => {
+    console.log('[DraggableCard] Touch end', { id, hadTimeout: !!holdTimeout.current });
     if (holdTimeout.current) {
       clearTimeout(holdTimeout.current); // Clear timeout on touch end
     }

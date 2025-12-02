@@ -1,4 +1,5 @@
 import { Flex, Text } from "@chakra-ui/react";
+import React from "react";
 import { useTranslation } from "react-i18next";
 import { FlipCard } from "../../components/animations/FlipCardAnimation";
 import { TiltCard } from "../../components/TiltCard";
@@ -35,6 +36,10 @@ export const FlipCardGrid = ({
   const { animationSpeed } = useSettings();
   const flipSpeed = getFlipSpeed(animationSpeed) / 1000;
   const { t } = useTranslation(["store"]);
+
+  // Track touch start time to differentiate between tap and long press
+  const touchStartTimeRef = React.useRef<number>(0);
+  const wasLongPressRef = React.useRef<boolean>(false);
 
   return (
     <FullScreenCardContainer>
@@ -84,13 +89,33 @@ export const FlipCardGrid = ({
                     scale={adjustedCardScale}
                     card={card}
                     onClick={() => {
-                      if (!animationRunning) {
+                      console.log('[FlipCardGrid] onClick triggered', {
+                        cardId: card.card_id,
+                        cardType: card.type,
+                        animationRunning,
+                        wasLongPress: wasLongPressRef.current,
+                      });
+                      if (!animationRunning && !wasLongPressRef.current) {
+                        console.log('[FlipCardGrid] Toggling card');
                         onCardToggle(card);
+                      } else {
+                        console.log('[FlipCardGrid] onClick blocked', {
+                          reason: animationRunning ? 'animation running' : 'was long press'
+                        });
                       }
+                      // Reset the long press flag after handling click
+                      wasLongPressRef.current = false;
                     }}
                     onHold={
                       card.type === CardTypes.SPECIAL && onCardLongPress
-                        ? () => onCardLongPress(card)
+                        ? () => {
+                            console.log('[FlipCardGrid] onHold triggered', {
+                              cardId: card.card_id,
+                              cardType: card.type,
+                            });
+                            wasLongPressRef.current = true;
+                            onCardLongPress(card);
+                          }
                         : undefined
                     }
                   />
