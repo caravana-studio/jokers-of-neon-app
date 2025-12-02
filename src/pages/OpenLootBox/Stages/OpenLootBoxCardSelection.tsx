@@ -11,6 +11,7 @@ import {
   MobileBottomBar,
 } from "../../../components/MobileBottomBar";
 import { MobileDecoration } from "../../../components/MobileDecoration";
+import { MobileCardHighlight } from "../../../components/MobileCardHighlight";
 import { useDojo } from "../../../dojo/DojoContext";
 import { GameStateEnum } from "../../../dojo/typescript/custom";
 import { useCardsFlipAnimation } from "../../../hooks/useCardsFlipAnimation";
@@ -24,6 +25,8 @@ import { FlipCardGrid } from "../FlipCardGrid";
 import { ManageSpecialCardsButton } from "../ManageSpecialCardsButton";
 import { CardTypes } from "../../../enums/cardTypes";
 import { useCardData } from "../../../providers/CardDataProvider";
+import { useCardHighlight } from "../../../providers/HighlightProvider/CardHighlightProvider";
+import { Card } from "../../../types/Card";
 
 export const OpenLootBoxCardSelection = () => {
   const {
@@ -87,6 +90,11 @@ export const OpenLootBoxCardSelection = () => {
   const { t } = useTranslation(["store"]);
   const { isSmallScreen } = useResponsiveValues();
 
+  const {
+    highlightItem: highlightSpecialCard,
+    highlightedItem: highlightedSpecialCard,
+  } = useCardHighlight();
+
   const chooseDisabled =
     specialCardsToKeep > maxSpecialCards - currentSpecialCardsLength;
   const allSelected = cardsToKeep.length === cards.length;
@@ -137,6 +145,9 @@ export const OpenLootBoxCardSelection = () => {
 
   return (
     <DelayedLoading ms={50}>
+      {highlightedSpecialCard && (
+        <MobileCardHighlight card={highlightedSpecialCard as Card} />
+      )}
       {isSmallScreen && <MobileDecoration />}
       <BackgroundDecoration contentHeight={isSmallScreen ? "85%" : "60%"}>
         {cards.length > 0 ? (
@@ -180,6 +191,7 @@ export const OpenLootBoxCardSelection = () => {
                 animationRunning={animationRunning}
                 onCardToggle={toggleCard}
                 onGridClick={skipFlipping}
+                onCardLongPress={highlightSpecialCard}
               />
             </Flex>
             <Flex
