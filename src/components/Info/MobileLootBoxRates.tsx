@@ -1,15 +1,8 @@
-import { useTranslation } from "react-i18next";
-import { Box, Flex, Text, VStack, HStack, Image, Collapse, Icon, Heading } from "@chakra-ui/react";
+import { Box, Flex, Heading, Text, VStack, HStack, Image, Collapse, Icon } from "@chakra-ui/react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
 import theme from "../../theme/theme";
-import { InformationIcon } from "./InformationIcon";
-import { useResponsiveValues } from "../../theme/responsiveSettings";
-
-interface LootBoxRateInfoProps {
-  name: string;
-  details?: string;
-}
 
 interface CardRate {
   name: string;
@@ -22,6 +15,11 @@ interface CardRate {
 interface ItemSection {
   itemNumber: number;
   cards: CardRate[];
+}
+
+interface MobileLootBoxRatesProps {
+  onClose: () => void;
+  packId: number;
 }
 
 // Data structure for Advanced Pack (pack ID 3)
@@ -179,26 +177,25 @@ const ItemSectionComponent = ({ section }: { section: ItemSection }) => {
   );
 };
 
-export const LootBoxRateInfo: React.FC<LootBoxRateInfoProps> = ({
-  name,
-  details,
-}) => {
+export const MobileLootBoxRates = ({ onClose, packId }: MobileLootBoxRatesProps) => {
   const { t } = useTranslation(["store"]);
   const { neonGreen } = theme.colors;
-  const { isSmallScreen } = useResponsiveValues();
 
-  // New Pokemon TCG style content for mobile
-  const newInfoContent = (
-    <Box
-      width="100%"
-      maxWidth="600px"
-      maxHeight="85vh"
-      overflowY="auto"
-      bg="rgba(10, 10, 20, 0.98)"
-      borderRadius="lg"
-      border="2px solid"
-      borderColor={neonGreen}
-      onClick={(e) => e.stopPropagation()}
+  // For now, only showing Advanced Pack data
+  // You can extend this to support other pack IDs in the future
+  const packData = packId === 3 ? advancedPackData : [];
+
+  return (
+    <Flex
+      position="fixed"
+      top={0}
+      left={0}
+      right={0}
+      bottom={0}
+      bg="rgba(0, 0, 0, 0.95)"
+      zIndex={2000}
+      flexDirection="column"
+      onClick={onClose}
     >
       {/* Header */}
       <Box
@@ -207,9 +204,7 @@ export const LootBoxRateInfo: React.FC<LootBoxRateInfoProps> = ({
         borderColor={neonGreen}
         py={4}
         px={4}
-        position="sticky"
-        top={0}
-        zIndex={1}
+        onClick={(e) => e.stopPropagation()}
       >
         <Heading
           size="lg"
@@ -223,9 +218,15 @@ export const LootBoxRateInfo: React.FC<LootBoxRateInfoProps> = ({
       </Box>
 
       {/* Content */}
-      <Box px={4} py={4}>
+      <Box
+        flex={1}
+        overflowY="auto"
+        px={4}
+        py={4}
+        onClick={(e) => e.stopPropagation()}
+      >
         <VStack spacing={0} align="stretch">
-          {advancedPackData.map((section) => (
+          {packData.map((section) => (
             <ItemSectionComponent key={section.itemNumber} section={section} />
           ))}
         </VStack>
@@ -236,41 +237,11 @@ export const LootBoxRateInfo: React.FC<LootBoxRateInfoProps> = ({
           color="gray.500"
           fontSize="sm"
           mt={6}
-          mb={2}
+          mb={4}
         >
-          Tap anywhere to close
+          {t("common.tap-to-close", "Tap anywhere to close")}
         </Text>
       </Box>
-    </Box>
-  );
-
-  // Old simple content for desktop (fallback)
-  const oldInfoContent = (
-    <Box>
-      <Heading mb={4} fontWeight={"400"} fontSize={"sm"}>
-        {name}
-      </Heading>
-      <Text color={neonGreen} fontSize={"sm"}>
-        {t("store.packs.offering-rates")}: <br />
-        {details?.split("\n").map((line, index) => (
-          <span key={index}>
-            {line}
-            <br />
-          </span>
-        ))}
-      </Text>
-    </Box>
-  );
-
-  const infoContent = isSmallScreen ? newInfoContent : oldInfoContent;
-
-  return (
-    <Flex gap={2} alignItems={"center"}>
-      <Text>{t("store.packs.offering-rates")}</Text>
-      <InformationIcon
-        title="Offering rates"
-        informationContent={infoContent}
-      />
     </Flex>
   );
 };
