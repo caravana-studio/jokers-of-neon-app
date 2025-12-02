@@ -79,189 +79,189 @@
           "2": "2 guaranteed skinned Special cards with top-tier odds."
         }
       }
+    }
+  },
+  "maintenance": {
+    "title": "Maintenance in Progress",
+    "description": "We're updating Jokers of Neon to bring you new features and improvements. The game will be back shortly, thanks for your patience!"
+  },
+  "loading-screen": {
+    "error": "Error loading the game",
+    "skip": "Skip",
+    "steps": {
+      "1": "Setting the stage",
+      "2": "Turning on the neon lights",
+      "3": "Gathering all the jokers",
+      "4": "Loading the leaderboard",
+      "5": "Almost ready, let's play!"
     },
-    "maintenance": {
-      "title": "Maintenance in Progress",
-      "description": "We're updating Jokers of Neon to bring you new features and improvements. The game will be back shortly, thanks for your patience!"
-    },
-    "loading-screen": {
-      "error": "Error loading the game",
-      "skip": "Skip",
-      "steps": {
-        "1": "Setting the stage",
-        "2": "Turning on the neon lights",
-        "3": "Gathering all the jokers",
-        "4": "Loading the leaderboard",
-        "5": "Almost ready, let's play!"
-      },
-      "presents": "PRESENTS",
-      "powered-by": "Powered by"
-    },
-    "mobile-blocker": {
-      "mobile-browsers-are-not-supported": "MOBILE BROWSERS ARE NOT SUPPORTED",
-      "please-download-the-app-to-continue": "Please download the app to continue"
-    },
-    "version-mismatch": {
-      "new-version-available": "NEW VERSION AVAILABLE",
-      "please-update": "Please update to continue",
-      "update": "UPDATE"
-    },
-    "season-progression": {
-      "free-rewards": "FREE REWARDS",
-      "season": "SEASON {{season}}",
-      "my-xp": "My XP",
-      "claim": "CLAIM",
-      "tournament-entry": "Tournament entry",
-      "claiming-in-progress": "Claiming in progress..."
-    },
-    "map": {
-      "level": "LEVEL"
-    },
-    "external-pack": {
-      "continue": "Continue",
-      "open": "Open",
-      "draw-line": "Draw a line to open"
-    },
-    "my-games": {
-      "title": "Games",
-      "go-back": "Go back",
-      "start-game": "New game",
-      "show-finished-games": "Show finished games",
-      "continue-btn": "continue",
-      "start-btn": "start",
-      "tuto": "Tutorial",
-      "learn": "Do you want to learn how to play?",
-      "tournament-active": "There is an active tournament!",
-      "join": "Join now",
-      "surrender": {
-        "action": "Surrender",
-        "confirmation-modal": {
-          "title": "Surrender",
-          "description": "Are you sure you want to surrender the game #{{gameId}}? There is no way to undo this action."
-        }
-      },
-      "level-lbl": "Level",
-      "round-lbl": "R",
-      "status-lbl": "Status",
-      "points-lbl": "points",
-      "no-games": "You don't have any games. Start a new one!",
-      "create-game": {
-        "stage-1": "Setting up the stage",
-        "stage-2": "Pulling up a chair for {{username}}",
-        "stage-3": "Preparing shops",
-        "stage-4": "Shuffling cards",
-        "stage-5": "The game is about to begin..."
-      }
-    },
-    "game-over": {
-      "current-position": "You are in position number {{position}}, do you want to keep it?",
-      "login": "Login",
-      "skip": "Skip",
-      "gameOver-msj": "GAME OVER",
-      "table": {
-        "gameOver-leader-msj": "Congratulations! You're the top player on the leaderboard!",
-        "gameOver-top5-msj": "Great job! You're in the top 5! Keep it up!"
-      },
-      "btn": {
-        "gameOver-share-btn": "SHARE ON",
-        "gameOver-newGame-btn": "START NEW GAME"
-      }
-    },
-    "login": {
-      "error-labels": {
-        "error-noUsername-login": "Please enter username",
-        "error-shortUsername-login": "Username must be at least 3 characters",
-        "error-longUsername-login": "Username must be at most 15 characters",
-        "error-invalidUsername-login": "Username must contain only letters, numbers, points or dashes"
-      },
-      "labels": {
-        "label-login": "Introduce username",
-        "placeholder-login": "username"
-      },
-      "btn": {
-        "goBack-login-btn": "GO BACK",
-        "startGame-login-btn": "START GAME"
-      }
-    },
-    "rewards-details": {
-      "labels": {
-        "title": "Round {{round}} completed!",
-        "title-level": "Level {{level}} completed!",
-        "base": "base",
-        "level-bonus": "Level bonus",
-        "discards-left": "{{discards}} Discards left",
-        "hands-left": "{{hands}} Hands left",
-        "rage": "{{cards}} Rage defeated",
-        "rerolls": "rerolls",
-        "total": "total",
-        "final-score": "- Final score: {{score}} -",
-        "continue-btn": "continue"
-      }
-    },
-    "special-cards": {
-      "title": "Special cards",
-      "go-back": "Go back",
-      "sell": "Sell",
-      "sell-for": "Sell for ¢ {{price}}",
+    "presents": "PRESENTS",
+    "powered-by": "Powered by"
+  },
+  "mobile-blocker": {
+    "mobile-browsers-are-not-supported": "MOBILE BROWSERS ARE NOT SUPPORTED",
+    "please-download-the-app-to-continue": "Please download the app to continue"
+  },
+  "version-mismatch": {
+    "new-version-available": "NEW VERSION AVAILABLE",
+    "please-update": "Please update to continue",
+    "update": "UPDATE"
+  },
+  "season-progression": {
+    "free-rewards": "FREE REWARDS",
+    "season": "SEASON {{season}}",
+    "my-xp": "My XP",
+    "claim": "CLAIM",
+    "tournament-entry": "Tournament entry",
+    "claiming-in-progress": "Claiming in progress..."
+  },
+  "map": {
+    "level": "LEVEL"
+  },
+  "external-pack": {
+    "continue": "Continue",
+    "open": "Open",
+    "draw-line": "Draw a line to open"
+  },
+  "my-games": {
+    "title": "Games",
+    "go-back": "Go back",
+    "start-game": "New game",
+    "show-finished-games": "Show finished games",
+    "continue-btn": "continue",
+    "start-btn": "start",
+    "tuto": "Tutorial",
+    "learn": "Do you want to learn how to play?",
+    "tournament-active": "There is an active tournament!",
+    "join": "Join now",
+    "surrender": {
+      "action": "Surrender",
       "confirmation-modal": {
-        "title": "Sell special card",
-        "description": "Are you sure you want to sell this special card for ¢{{price}}? There is no way to undo this action."
-      },
-      "locked-slot": "Unlock special card slot"
-    },
-    "mods": {
-      "title": "Select the Jokers of Neon version you want to play",
-      "back": "Back",
-      "community-mods": "Community mods"
-    },
-    "power-ups": {
-      "title": "Power-ups",
-      "confirmation-modal": {
-        "title": "Sell powerup",
-        "description": "Are you sure you want to sell this Power-up for ¢{{price}}? There is no way to undo this action."
+        "title": "Surrender",
+        "description": "Are you sure you want to surrender the game #{{gameId}}? There is no way to undo this action."
       }
     },
-    "open-lootbox": {
-      "click-open": "Click to open",
-      "tap-open": "Tap to open"
+    "level-lbl": "Level",
+    "round-lbl": "R",
+    "status-lbl": "Status",
+    "points-lbl": "points",
+    "no-games": "You don't have any games. Start a new one!",
+    "create-game": {
+      "stage-1": "Setting up the stage",
+      "stage-2": "Pulling up a chair for {{username}}",
+      "stage-3": "Preparing shops",
+      "stage-4": "Shuffling cards",
+      "stage-5": "The game is about to begin..."
+    }
+  },
+  "game-over": {
+    "current-position": "You are in position number {{position}}, do you want to keep it?",
+    "login": "Login",
+    "skip": "Skip",
+    "gameOver-msj": "GAME OVER",
+    "table": {
+      "gameOver-leader-msj": "Congratulations! You're the top player on the leaderboard!",
+      "gameOver-top5-msj": "Great job! You're in the top 5! Keep it up!"
     },
-    "common": {
-      "go-back-btn": "Go back",
-      "login": "Login",
-      "login-to-access": "Please, login to access this page"
+    "btn": {
+      "gameOver-share-btn": "SHARE ON",
+      "gameOver-newGame-btn": "START NEW GAME"
+    }
+  },
+  "login": {
+    "error-labels": {
+      "error-noUsername-login": "Please enter username",
+      "error-shortUsername-login": "Username must be at least 3 characters",
+      "error-longUsername-login": "Username must be at most 15 characters",
+      "error-invalidUsername-login": "Username must contain only letters, numbers, points or dashes"
     },
-    "profile-menu": {
-      "level": "Level",
-      "streaks": "Streaks",
-      "days": "Days",
-      "games": "Games",
-      "victories": "Victories",
-      "next-level": "Next lvl",
-      "my-xp": "My XP",
-      "my-badges": "My badges",
-      "coming-soon": "Coming soon",
-      "select-profile-picture": "Select profile picture",
-      "connect": "Connect",
-      "no-profile": "Please login to see your profile"
+    "labels": {
+      "label-login": "Introduce username",
+      "placeholder-login": "username"
     },
-    "my-collection": {
-      "title": "Collection",
-      "no-collection": "Please login to see your collection",
-      "login": "Login",
-      "collections": {
-        "traditionals": "Traditional Cards",
-        "neons": "Neon Cards",
-        "sx": "Season {{season}}",
-        "c99": "GG Exclusive Collection - v1"
-      }
+    "btn": {
+      "goBack-login-btn": "GO BACK",
+      "startGame-login-btn": "START GAME"
+    }
+  },
+  "rewards-details": {
+    "labels": {
+      "title": "Round {{round}} completed!",
+      "title-level": "Level {{level}} completed!",
+      "base": "base",
+      "level-bonus": "Level bonus",
+      "discards-left": "{{discards}} Discards left",
+      "hands-left": "{{hands}} Hands left",
+      "rage": "{{cards}} Rage defeated",
+      "rerolls": "rerolls",
+      "total": "total",
+      "final-score": "- Final score: {{score}} -",
+      "continue-btn": "continue"
+    }
+  },
+  "special-cards": {
+    "title": "Special cards",
+    "go-back": "Go back",
+    "sell": "Sell",
+    "sell-for": "Sell for ¢ {{price}}",
+    "confirmation-modal": {
+      "title": "Sell special card",
+      "description": "Are you sure you want to sell this special card for ¢{{price}}? There is no way to undo this action."
     },
-    "wallet-provider": {
-      "login": "LOGIN",
-      "guest": "PLAY AS GUEST",
-      "terms": {
-        "agreement": "By continuing you are agreeing to Jokers of Neon's",
-        "link": "Terms and Conditions"
-      }
+    "locked-slot": "Unlock special card slot"
+  },
+  "mods": {
+    "title": "Select the Jokers of Neon version you want to play",
+    "back": "Back",
+    "community-mods": "Community mods"
+  },
+  "power-ups": {
+    "title": "Power-ups",
+    "confirmation-modal": {
+      "title": "Sell powerup",
+      "description": "Are you sure you want to sell this Power-up for ¢{{price}}? There is no way to undo this action."
+    }
+  },
+  "open-lootbox": {
+    "click-open": "Click to open",
+    "tap-open": "Tap to open"
+  },
+  "common": {
+    "go-back-btn": "Go back",
+    "login": "Login",
+    "login-to-access": "Please, login to access this page"
+  },
+  "profile-menu": {
+    "level": "Level",
+    "streaks": "Streaks",
+    "days": "Days",
+    "games": "Games",
+    "victories": "Victories",
+    "next-level": "Next lvl",
+    "my-xp": "My XP",
+    "my-badges": "My badges",
+    "coming-soon": "Coming soon",
+    "select-profile-picture": "Select profile picture",
+    "connect": "Connect",
+    "no-profile": "Please login to see your profile"
+  },
+  "my-collection": {
+    "title": "Collection",
+    "no-collection": "Please login to see your collection",
+    "login": "Login",
+    "collections": {
+      "traditionals": "Traditional Cards",
+      "neons": "Neon Cards",
+      "sx": "Season {{season}}",
+      "c99": "GG Exclusive Collection - v1"
+    }
+  },
+  "wallet-provider": {
+    "login": "LOGIN",
+    "guest": "PLAY AS GUEST",
+    "terms": {
+      "agreement": "By continuing you are agreeing to Jokers of Neon's",
+      "link": "Terms and Conditions"
     }
   }
 }
