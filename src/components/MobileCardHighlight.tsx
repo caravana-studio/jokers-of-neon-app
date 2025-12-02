@@ -99,14 +99,17 @@ export const MobileCardHighlight = ({
     }
   };
 
-  const [opacity, setOpacity] = useState(0);
-  const [scale, setScale] = useState(0.8);
+  const [isVisible, setIsVisible] = useState(false);
   const [enableTilt, setEnableTilt] = useState(false);
 
   useEffect(() => {
-    setOpacity(1);
-    setScale(1);
-    // Enable tilt after the scale animation completes (500ms)
+    // Use double requestAnimationFrame to ensure layout is fully calculated and painted
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        setIsVisible(true);
+      });
+    });
+    // Enable tilt after the component is fully visible (500ms)
     const timer = setTimeout(() => {
       setEnableTilt(true);
     }, 500);
@@ -121,9 +124,10 @@ export const MobileCardHighlight = ({
       width={"100%"}
       height={"100%"}
       zIndex={1100}
-      opacity={opacity}
+      visibility={isVisible ? "visible" : "hidden"}
+      opacity={isVisible ? 1 : 0}
       flexDirection={"column"}
-      transition="opacity 0.5s ease"
+      transition="opacity 0.3s ease"
       justifyContent={"center"}
       alignItems={"center"}
       backdropFilter="blur(5px)"
@@ -166,8 +170,6 @@ export const MobileCardHighlight = ({
         height={isPack ? "45vh" : "auto"}
         justifyContent={"center"}
         position={"relative"}
-        transform={`scale(${scale})`}
-        transition="all 0.5s ease"
       >
         {!animation ? (
           <CardImage3D card={card} hideTooltip small={false} disableTilt={!enableTilt} />
