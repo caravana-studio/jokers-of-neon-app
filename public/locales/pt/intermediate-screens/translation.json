@@ -11,6 +11,7 @@
   "shop": {
     "title": "Loja",
     "season-pass": {
+      "unlocked": "DESBLOQUEADO",
       "more-jokers-with": "Mais Jokers com",
       "season-pass": "PASSO DE TEMPORADA {{season}}",
       "facts": {
@@ -27,6 +28,7 @@
       "buy": "COMPRAR"
     },
     "packs": {
+      "buy": "COMPRAR",
       "purchase-error-title": "Compra falhou",
       "purchase-error-no-account": "Não conseguimos encontrar sua conta. Por favor, tente sair e voltar a iniciar sessão.",
       "purchase-error-description": "Não conseguimos completar sua compra de pack. Por favor, tente novamente.",

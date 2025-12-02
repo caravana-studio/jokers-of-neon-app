@@ -2,14 +2,14 @@ import { Flex, Heading } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { DelayedLoading } from "../../components/DelayedLoading";
 import { MobileDecoration } from "../../components/MobileDecoration";
-import { useSeasonPass } from "../../providers/SeasonPassProvider";
+import { AppType, useAppContext } from "../../providers/AppContextProvider";
 import { useRevenueCat } from "../../providers/RevenueCatProvider";
+import { useSeasonPass } from "../../providers/SeasonPassProvider";
+import { useShopDistribution } from "../../queries/useShopDistribution";
 import { BLUE } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { PackRow } from "./PackRow";
 import { SeasonPassRow } from "./SeasonPassRow";
-import { useShopDistribution } from "../../queries/useShopDistribution";
-import { AppType, useAppContext } from "../../providers/AppContextProvider";
 
 const PACK_PACKAGE_IDS: Record<number, string> = {
   6: "pack_collector_xl",
@@ -25,9 +25,9 @@ export const ShopPage = () => {
     keyPrefix: "shop",
   });
 
-  const { seasonPassUnlocked } = useSeasonPass();
+  const { seasonPassUnlocked, loading: loadingSeasonPass } = useSeasonPass();
   const { offerings } = useRevenueCat();
-  const seasonPassPrice = offerings?.seasonPass?.formattedPrice ?? "$";
+  const seasonPassPrice = offerings?.seasonPass?.formattedPrice;
   const getPackPrice = (packId: number) => {
     const packageId = PACK_PACKAGE_IDS[packId];
     if (!packageId) {
@@ -36,13 +36,13 @@ export const ShopPage = () => {
     return offerings?.packs?.find((pack) => pack.id === packageId)
       ?.formattedPrice;
   };
-  const {distribution, loading} = useShopDistribution();
+  const { distribution, loading } = useShopDistribution();
 
   const appType = useAppContext();
   const isShop = appType === AppType.SHOP;
 
   return (
-    <DelayedLoading loading={loading}>
+    <DelayedLoading loading={loading || loadingSeasonPass}>
       <MobileDecoration fadeToBlack />
       <Flex
         flexDir={"column"}
@@ -59,21 +59,35 @@ export const ShopPage = () => {
           px={isSmallScreen ? "15px" : "30px"}
           pb={3}
         >
-          {!isShop && <Heading
-            zIndex={10}
-            fontSize={isSmallScreen ? "sm" : "lg"}
-            variant="italic"
-          >
-            {t("title")}
-          </Heading>}
+          {!isShop && (
+            <Heading
+              zIndex={10}
+              fontSize={isSmallScreen ? "sm" : "lg"}
+              variant="italic"
+            >
+              {t("title")}
+            </Heading>
+          )}
         </Flex>
-        <Flex flexDir={"column"} gap={2} my={2}>
-          {!seasonPassUnlocked && <SeasonPassRow price={seasonPassPrice} id={distribution?.season_pass ?? "season_pass"} />}
-          {
-            distribution?.packs?.map((pack) => {
-              return <PackRow packId={pack.packId} packageId={pack.shopId} price={getPackPrice(pack.packId)} />;
-            })
-          }
+        <Flex
+          flexDir={seasonPassUnlocked ? "column-reverse" : "column"}
+          gap={2}
+          my={2}
+        >
+          <SeasonPassRow
+            price={seasonPassPrice}
+            id={distribution?.season_pass ?? "season_pass"}
+            unlocked={seasonPassUnlocked}
+          />
+          {distribution?.packs?.map((pack) => {
+            return (
+              <PackRow
+                packId={pack.packId}
+                packageId={pack.shopId}
+                price={getPackPrice(pack.packId)}
+              />
+            );
+          })}
         </Flex>
       </Flex>
     </DelayedLoading>

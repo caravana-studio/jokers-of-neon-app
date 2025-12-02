@@ -26,7 +26,7 @@ interface PackRowProps {
 
 const PACK_SIZES = [0, 3, 3, 4, 4, 5, 10];
 
-export const PackRow = ({ packId, packageId, price = "$" }: PackRowProps) => {
+export const PackRow = ({ packId, packageId, price }: PackRowProps) => {
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "shop.packs",
   });
@@ -71,7 +71,7 @@ export const PackRow = ({ packId, packageId, price = "$" }: PackRowProps) => {
         return;
       }
 
-      await purchasePackageById(packageId);
+      const result = await purchasePackageById(packageId);
       navigate("/purchasing-pack");
       const mintedCards = await mintPack({
         packId,
@@ -189,10 +189,14 @@ export const PackRow = ({ packId, packageId, price = "$" }: PackRowProps) => {
               fontSize={isSmallScreen ? 13 : 16}
               mt={isSmallScreen ? 4 : 8}
               h={isSmallScreen ? "30px" : "40px"}
-              isDisabled={isPurchasing}
+              isDisabled={isPurchasing || !price}
               onClick={handlePurchase}
             >
-              {isPurchasing ? <Spinner size="xs" /> : `${t("buy")} · ${price}`}
+              {isPurchasing || !price ? (
+                <Spinner size="xs" />
+              ) : (
+                `${t("buy")} · ${price}`
+              )}
             </Button>
           </Flex>
           <Flex
