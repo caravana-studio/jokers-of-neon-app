@@ -1,3 +1,5 @@
+import { NativeAudio } from "@capacitor-community/native-audio";
+import { Capacitor } from "@capacitor/core";
 import { Howl } from "howler";
 import {
   createContext,
@@ -10,6 +12,10 @@ import { useLocation } from "react-router-dom";
 import { mainMenuUrls } from "../components/Menu/useContextMenuItems";
 import { SETTINGS_MUSIC_VOLUME, SOUND_OFF } from "../constants/localStorage.ts";
 import { useGameStore } from "../state/useGameStore.ts";
+import { runNativeAudioTask } from "../utils/nativeAudioQueue";
+
+const delay = (ms: number) =>
+  new Promise<void>((resolve) => setTimeout(resolve, ms));
 
 interface AudioPlayerContextProps {
   isPlaying: boolean;
@@ -34,25 +40,24 @@ export const AudioPlayerProvider = ({
   rageSongPath,
   introSongPath,
 }: AudioPlayerProviderProps) => {
+  const isNative = Capacitor.isNativePlatform();
   const [sound, setSound] = useState<Howl | undefined>(undefined);
   const [isPlaying, setIsPlaying] = useState(false);
   const [gameWithSound, setGameWithSound] = useState(
     !localStorage.getItem(SOUND_OFF)
   );
   const [musicVolume, setMusicVolume] = useState(0.2);
-
   const [currentActiveSongPath, setCurrentActiveSongPath] = useState<
     string | null
   >(null);
 
   const location = useLocation();
   const { isRageRound } = useGameStore();
-
   const isMainMenuRoute = mainMenuUrls.includes(location.pathname);
 
+  // 🔹 determine which track should be active
   useEffect(() => {
     let newActiveSongPath: string;
-
     if (isMainMenuRoute) {
       newActiveSongPath = introSongPath;
     } else if (isRageRound) {
@@ -73,65 +78,134 @@ export const AudioPlayerProvider = ({
     currentActiveSongPath,
   ]);
 
+  // 🔹 handle background music
   useEffect(() => {
-    const currentHowlSource = sound ? (sound as any)._src[0] : null;
-
     let activeSoundInstance: Howl | undefined = sound;
+    let fadeTimeout: NodeJS.Timeout;
 
-    if (
-      currentActiveSongPath === null ||
-      currentActiveSongPath !== currentHowlSource ||
-      !sound
-    ) {
-      if (sound) {
-        sound.stop();
-        sound.unload();
-      }
+    const playWithFade = async () => {
+      if (isNative) {
+        try {
+          const shouldPlay = await runNativeAudioTask(async () => {
+            await NativeAudio.stop({ assetId: "bg_music" }).catch(() => {});
+            await NativeAudio.unload({ assetId: "bg_music" }).catch(() => {});
 
-      if (currentActiveSongPath === null) {
-        activeSoundInstance = undefined;
-      } else {
-        const newSound = new Howl({
-          src: [currentActiveSongPath],
-          loop: true,
-          volume: musicVolume,
-        });
-        activeSoundInstance = newSound;
-      }
+            if (!currentActiveSongPath || !gameWithSound) {
+              return false;
+            }
 
-      setSound(activeSoundInstance);
-    } else {
-      activeSoundInstance = sound;
-    }
+            const safePath = currentActiveSongPath.startsWith("/")
+              ? currentActiveSongPath.slice(1)
+              : currentActiveSongPath;
+            const nativeAssetPath = safePath.startsWith("public/")
+              ? safePath
+              : `public/${safePath}`;
 
-    if (activeSoundInstance) {
-      if (gameWithSound) {
-        if (!activeSoundInstance.playing()) {
-          activeSoundInstance.play();
+            await NativeAudio.preload({
+              assetId: "bg_music",
+              assetPath: nativeAssetPath,
+              audioChannelNum: 1,
+              channels: 1,
+              isUrl: false,
+            } as any);
+
+            await NativeAudio.setVolume({
+              assetId: "bg_music",
+              volume: musicVolume,
+            }).catch(() => {});
+
+            await delay(200);
+            await NativeAudio.play({ assetId: "bg_music" });
+            return true;
+          });
+
+          setIsPlaying(shouldPlay);
+        } catch (err) {
+          setIsPlaying(false);
+          console.warn("NativeAudio bg_music error:", err);
         }
-        setIsPlaying(true);
-      } else {
-        activeSoundInstance.stop();
-        setIsPlaying(false);
+        return;
       }
-    } else {
-      setIsPlaying(false);
-    }
+
+      // 🧠 web (Howler)
+      const currentHowlSource = sound ? (sound as any)._src[0] : null;
+
+      if (
+        currentActiveSongPath === null ||
+        currentActiveSongPath !== currentHowlSource ||
+        !sound
+      ) {
+        // fade out old track
+        if (sound) {
+          sound.fade(musicVolume, 0, 1000);
+          fadeTimeout = setTimeout(() => {
+            sound.stop();
+            sound.unload();
+          }, 1000);
+        }
+
+        // fade in new track
+        if (currentActiveSongPath && gameWithSound) {
+          const newSound = new Howl({
+            src: [currentActiveSongPath],
+            loop: true,
+            volume: 0,
+          });
+          setSound(newSound);
+
+          newSound.play();
+          newSound.fade(0, musicVolume, 1000);
+          setIsPlaying(true);
+        } else {
+          setIsPlaying(false);
+        }
+      } else {
+        // same track, just toggle on/off
+        if (sound) {
+          if (gameWithSound) {
+            if (!sound.playing()) sound.play();
+            sound.fade(0, musicVolume, 500);
+            setIsPlaying(true);
+          } else {
+            sound.fade(musicVolume, 0, 500);
+            setTimeout(() => sound.stop(), 500);
+            setIsPlaying(false);
+          }
+        }
+      }
+    };
+
+    playWithFade();
 
     return () => {
-      if (activeSoundInstance) {
+      if (isNative) {
+        runNativeAudioTask(() =>
+          NativeAudio.stop({ assetId: "bg_music" }).catch(() => {})
+        );
+        setIsPlaying(false);
+      } else if (activeSoundInstance) {
         activeSoundInstance.stop();
         activeSoundInstance.unload();
       }
+      clearTimeout(fadeTimeout);
     };
   }, [currentActiveSongPath, gameWithSound, musicVolume]);
 
+  // 🔹 update volume dynamically
   useEffect(() => {
-    if (sound) {
+    if (isNative) {
+      runNativeAudioTask(() =>
+        NativeAudio.setVolume({
+          assetId: "bg_music",
+          volume: musicVolume,
+        }).catch(() => {})
+      );
+    } else if (sound) {
       sound.volume(musicVolume);
     }
-  }, [musicVolume, sound]);
+  }, [isNative, musicVolume, sound]);
 
+  // 🔹 persist volume
   useEffect(() => {
     const savedVolume = localStorage.getItem(SETTINGS_MUSIC_VOLUME);
     if (savedVolume !== null) {

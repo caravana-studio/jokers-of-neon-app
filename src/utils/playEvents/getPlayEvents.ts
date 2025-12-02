@@ -9,6 +9,7 @@ import {
   scoreEventFilter,
   specialScoreEventFilter,
 } from "../scoreEventFilter";
+import { sortCardPlayEvents } from "../sortCardPlayEvents";
 import { suitOrNeonEventFilter } from "../suitOrNeonEventFilter";
 import { getCardActivateEvent } from "./getCardActivateEvent";
 import { getCardPlayEvents } from "./getCardPlayEvents";
@@ -40,12 +41,12 @@ export const getPlayEvents = (events: DojoEvent[]): PlayEvents => {
     powerUpEvents: getPowerUpEvents(events),
     acumulativeEvents: cardPlayEvents.filter(acumEventFilter),
     cardPlayChangeEvents: cardPlayEvents.filter(suitOrNeonEventFilter),
-    cardPlayScoreEvents: cardPlayEvents
-      .filter(scoreEventFilter)
-      .filter(cardScoreEventFilter),
-    specialCardPlayScoreEvents: cardPlayEvents
-      .filter(scoreEventFilter)
-      .filter(specialScoreEventFilter),
+    cardPlayEvents: [
+      ...cardPlayEvents.filter(scoreEventFilter).filter(cardScoreEventFilter),
+      ...cardPlayEvents
+        .filter(scoreEventFilter)
+        .filter(specialScoreEventFilter),
+    ].sort(sortCardPlayEvents),
     cardActivateEvent: getCardActivateEvent(events),
   };
 

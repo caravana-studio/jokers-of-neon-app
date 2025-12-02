@@ -37,6 +37,7 @@ import { isNative } from "./utils/capacitorUtils.ts";
 import { preloadSpineAnimations } from "./utils/preloadAnimations.ts";
 import { registerServiceWorker } from "./utils/registerServiceWorker.ts";
 import { getMajor, getMinor } from "./utils/versionUtils.ts";
+import { Maintenance } from "./pages/Maintenance.tsx";
 
 const I18N_NAMESPACES = [
   "game",
@@ -83,7 +84,16 @@ async function init() {
     );
   }
 
-  fetchVersion().then((version) => {
+  fetchVersion().then((data) => {
+    const version = data.version;
+    // If the maintenance flag is set, block the app
+    if (data.maintenance) {
+      return root.render(
+        <I18nextProvider i18n={localI18n} defaultNS={undefined}>
+          <Maintenance />
+        </I18nextProvider>
+      );
+    }
     // If the major or minor version is different, block the app
     if (
       isNative &&

@@ -1,10 +1,10 @@
 import { Flex, Heading, Text } from "@chakra-ui/react";
-import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
-import CoinsIcon from "../../assets/coins.svg?component";
 import { CashSymbol } from "../../components/CashSymbol";
 import { RollingNumber } from "../../components/RollingNumber";
 import { useGameStore } from "../../state/useGameStore";
+import { DIAMONDS } from "../../theme/colors";
+import { useResponsiveValues } from "../../theme/responsiveSettings";
 
 interface ICoinsProps {
   rolling?: boolean;
@@ -17,11 +17,7 @@ export const Coins = ({ rolling = false }: ICoinsProps) => {
 
   return (
     <Flex alignItems={"center"} className="store-tutorial-step-1">
-      <CoinsIcon
-        style={{ transform: `translateY(${isMobile ? "4px" : "6px"})` }}
-        width={isMobile ? "35px" : "50px"}
-        height={"auto"}
-      />
+      <CashSymbol />
       <Heading
         variant={"italic"}
         size={{ base: "s", sm: "s" }}
@@ -43,7 +39,6 @@ export const Coins = ({ rolling = false }: ICoinsProps) => {
       >
         {t("store.labels.coins").toString() + " "}
         {rolling ? <RollingNumber className="italic" n={cash} /> : cash}
-        <CashSymbol />
       </Heading>
     </Flex>
   );
@@ -54,24 +49,31 @@ interface MobileCoins {
   iconSize?: number;
 }
 
-export const MobileCoins: React.FC<MobileCoins> = ({ fontSize, iconSize }) => {
+export const MobileCoins: React.FC<MobileCoins> = ({ fontSize: providedFontSize, iconSize: providedIconSize }) => {
   const { cash } = useGameStore();
+  
+  const { isSmallScreen } = useResponsiveValues();
+  
+  const fontSize = providedFontSize ? providedFontSize : isSmallScreen ? "17px" : "25px";
+  const iconSize = providedIconSize ? providedIconSize : isSmallScreen ? 19 : 27;
 
   return (
-    <Flex flexDirection="row" alignItems="center" gap={1}>
-      <CoinsIcon height={iconSize ?? 25} />
-      <Flex
-        gap={1.5}
-        alignItems="center"
-        justifyContent="center"
-        color="white"
-        minWidth={{ base: "50px", sm: "70px" }}
-        p={{ base: "5px 5px", sm: "15px 6px" }}
+    <Flex
+      flexDirection="row"
+      alignItems="center"
+      justifyContent={"center"}
+      gap={1.5}
+    >
+      <CashSymbol size={iconSize} />
+      <Text
+      textShadow={`0 0 10px ${DIAMONDS}`}
+        fontFamily={"Orbitron"}
+        fontWeight={800}
+        color={DIAMONDS}
+        fontSize={fontSize ?? "18px"}
       >
-        <Text fontSize={fontSize ?? "18px"} mt={1}>
-          {cash} <CashSymbol />
-        </Text>
-      </Flex>
+        {cash}
+      </Text>
     </Flex>
   );
 };

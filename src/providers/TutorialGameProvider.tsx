@@ -167,6 +167,8 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
       resetRage: emptyFn,
       unPreSelectAllPowerUps: useGameStore.getState().unPreSelectAllPowerUps,
       address: '0x0',
+      clearRoundSound: emptyFn,
+      clearLevelSound: emptyFn,
     });
   };
 

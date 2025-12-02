@@ -7,6 +7,8 @@ PODS:
     - Capacitor
   - CapacitorBrowser (7.0.2):
     - Capacitor
+  - CapacitorCommunityNativeAudio (7.0.1):
+    - Capacitor
   - CapacitorCordova (7.4.3)
   - CapacitorHaptics (7.0.2):
     - Capacitor
@@ -42,6 +44,7 @@ DEPENDENCIES:
   - "CapacitorApp (from `../../node_modules/@capacitor/app`)"
   - "CapacitorAppLauncher (from `../../node_modules/@capacitor/app-launcher`)"
   - "CapacitorBrowser (from `../../node_modules/@capacitor/browser`)"
+  - "CapacitorCommunityNativeAudio (from `../../node_modules/@capacitor-community/native-audio`)"
   - "CapacitorCordova (from `../../node_modules/@capacitor/ios`)"
   - "CapacitorHaptics (from `../../node_modules/@capacitor/haptics`)"
   - CapacitorPluginAppTrackingTransparency (from `../../node_modules/capacitor-plugin-app-tracking-transparency`)
@@ -73,6 +76,8 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capacitor/app-launcher"
   CapacitorBrowser:
     :path: "../../node_modules/@capacitor/browser"
+  CapacitorCommunityNativeAudio:
+    :path: "../../node_modules/@capacitor-community/native-audio"
   CapacitorCordova:
     :path: "../../node_modules/@capacitor/ios"
   CapacitorHaptics:
@@ -91,6 +96,7 @@ SPEC CHECKSUMS:
   CapacitorApp: 846d4b4a1dbb19dd1e9029c08ba6f028aa7be862
   CapacitorAppLauncher: 96930b89740f1deabc737df750dbc3e9a0430f34
   CapacitorBrowser: 45c681e7abc3b4384e54eb52bafeef1347d98fa8
+  CapacitorCommunityNativeAudio: 146110e0969d2378d886a8cfb7f9ca3288840607
   CapacitorCordova: 435121e81a2df4d0034f0fb11fcefab5104cfdb5
   CapacitorHaptics: 09d96bcb5a2b74ede8fd039b4cdf58fc43dcacf1
   CapacitorPluginAppTrackingTransparency: 2a2792623a5a72795f2e8f9ab3f1147573732fd8

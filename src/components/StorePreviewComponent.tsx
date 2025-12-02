@@ -1,20 +1,17 @@
 import { Box, Button, Flex, HStack, Heading, Text } from "@chakra-ui/react";
+import { ReactNode } from "react";
 import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
 import CachedImage from "../components/CachedImage.tsx";
 import { CARD_HEIGHT, CARD_WIDTH } from "../constants/visualProps.ts";
+import { GameStateEnum } from "../dojo/typescript/custom.ts";
 import { Duration } from "../enums/duration.ts";
-import { Coins } from "../pages/store/Coins.tsx";
+import { useCustomNavigate } from "../hooks/useCustomNavigate.tsx";
+import { StoreTopBar } from "../pages/DynamicStore/storeComponents/TopBar/StoreTopBar.tsx";
 import theme from "../theme/theme";
+import { colorizeText } from "../utils/getTooltip.tsx";
 import { CashSymbol } from "./CashSymbol.tsx";
 import { DurationSwitcher } from "./DurationSwitcher.tsx";
-import { LootBoxRateInfo } from "./Info/LootBoxRateInfo.tsx";
-import { BarButtonProps } from "./MobileBottomBar.tsx";
-import { ReactNode } from "react";
-import { colorizeText } from "../utils/getTooltip.tsx";
-import { useCustomNavigate } from "../hooks/useCustomNavigate.tsx";
-import { GameStateEnum } from "../dojo/typescript/custom.ts";
 
 const SIZE_MULTIPLIER = isMobile ? 1.3 : 2;
 const { white, neonGreen } = theme.colors;
@@ -70,7 +67,11 @@ export const StorePreviewComponent = ({
         justifyContent={"center"}
         minHeight={isMobile ? "100%" : "unset"}
         height={isMobile ? "unset" : "100%"}
+        alignItems={"center"}
       >
+        <Flex width={{ base: "85%", sm: "60%" }} mb={2}>
+          <StoreTopBar hideReroll />
+        </Flex>
         <Flex
           flexDirection={"column"}
           justifyContent={"center"}
@@ -246,24 +247,28 @@ export const StorePreviewComponent = ({
                         >
                           {t("store.preview-card.title.price")}
                         </Heading>
-                        <Heading
-                          fontSize={{ base: "sm", sm: "lg" }}
-                          variant="italic"
-                          textDecoration={
-                            discountPrice ? "line-through" : "none"
-                          }
-                        >
-                          {price}
-                          <CashSymbol />
-                        </Heading>
-                        {discountPrice !== 0 && (
+                        <Flex gap={1} alignItems="center" justifyContent={"center"}>
+                          {!discountPrice && <CashSymbol />}
                           <Heading
                             fontSize={{ base: "sm", sm: "lg" }}
                             variant="italic"
+                            textDecoration={
+                              discountPrice ? "line-through" : "none"
+                            }
                           >
-                            {discountPrice}
-                            <CashSymbol />
+                            {price}
                           </Heading>
+                        </Flex>
+                        {discountPrice !== 0 && (
+                          <Flex gap={1} alignItems="center" justifyContent={"center"}>
+                            <CashSymbol />
+                            <Heading
+                              fontSize={{ base: "sm", sm: "lg" }}
+                              variant="italic"
+                            >
+                              {discountPrice}
+                            </Heading>
+                          </Flex>
                         )}
                       </Flex>
                     )}
@@ -280,11 +285,10 @@ export const StorePreviewComponent = ({
           m={1000}
           mt={{ base: 4, sm: 8 }}
           mb={4}
-          justifyContent={"space-between"}
+          justifyContent={"flex-end"}
           margin={"0 auto"}
           flexDirection={{ base: "column", sm: "row" }}
         >
-          <Coins />
           <HStack gap={4}>
             {buyButton}
             <Button

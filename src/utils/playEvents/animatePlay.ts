@@ -41,6 +41,8 @@ interface AnimatePlayConfig {
   resetRage: () => void;
   unPreSelectAllPowerUps: () => void;
   address: string;
+  clearRoundSound: () => void;
+  clearLevelSound: () => void;
 }
 
 export const animatePlay = (config: AnimatePlayConfig) => {
@@ -79,6 +81,8 @@ export const animatePlay = (config: AnimatePlayConfig) => {
     resetRage,
     unPreSelectAllPowerUps,
     address,
+    clearRoundSound,
+    clearLevelSound,
   } = config;
 
   if (!playEvents) return;
@@ -94,12 +98,7 @@ export const animatePlay = (config: AnimatePlayConfig) => {
     neonPlay: playEvents.neonPlayEvent ? playAnimationDuration : 0,
     powerUps: calculateDuration(playEvents.powerUpEvents),
     cardPlayChange: calculateDuration(playEvents.cardPlayChangeEvents),
-    cardPlayScore: calculateDuration(
-      playEvents.cardPlayScoreEvents?.map((item) => item.hand).flat() ?? []
-    ),
-    specialCardPlayScore: calculateDuration(
-      playEvents.specialCardPlayScoreEvents
-    ),
+    cardPlayEvents: calculateDuration(playEvents.cardPlayEvents),
     accumDuration: playEvents.acumulativeEvents
       ? playEvents.acumulativeEvents.length * 500
       : 0,
@@ -164,89 +163,83 @@ export const animatePlay = (config: AnimatePlayConfig) => {
     });
   };
 
-  const handleSpecialCardPlayScoreEvents = () => {
-    playEvents.specialCardPlayScoreEvents?.forEach((event, index) => {
-      const isPoints = event.eventType === EventTypeEnum.Point;
-      const isMulti = event.eventType === EventTypeEnum.Multi;
-      const isCash = event.eventType === EventTypeEnum.Cash;
-      const special_idx = event.specials[0]?.idx;
-      const quantity = event.specials[0]?.quantity;
-
-      setTimeout(() => {
-        if (isPoints) {
-          pointsSound();
-          setAnimatedCard({
-            special_idx,
-            idx: [],
-            points: quantity,
-            animationIndex: 300 + index,
-          });
-          addPoints(quantity);
-        } else if (isMulti) {
-          multiSound();
-          setAnimatedCard({
-            special_idx,
-            idx: [],
-            multi: quantity,
-            animationIndex: 300 + index,
-          });
-          addMulti(quantity);
-        } else if (isCash) {
-          cashSound();
-          addCash(quantity);
-          setAnimatedCard({
-            special_idx,
-            idx: [],
-            cash: quantity,
-            animationIndex: 300 + index,
-          });
-        }
-      }, playAnimationDuration * index);
-    });
-  };
-
-  const handleCardPlayScoreEvents = () => {
-    playEvents.cardPlayScoreEvents?.forEach((event, index) => {
+  const handleCardPlayEvents = () => {
+    playEvents.cardPlayEvents?.forEach((event, index) => {
       const isPoints = event.eventType === EventTypeEnum.Point;
       const isMulti = event.eventType === EventTypeEnum.Multi;
       const isCash = event.eventType === EventTypeEnum.Cash;
       const special_idx = event.specials[0]?.idx;
 
-      setTimeout(() => {
-        event.hand.forEach((card, innerIndex) => {
-          const { idx, quantity } = card;
-          setTimeout(() => {
-            if (isPoints) {
-              pointsSound();
-              setAnimatedCard({
-                special_idx,
-                idx: [idx],
-                points: quantity,
-                animationIndex: 400 + index,
-              });
-              addPoints(quantity);
-            } else if (isMulti) {
-              quantity > 0 ? multiSound() : negativeMultiSound();
-              setAnimatedCard({
-                special_idx,
-                idx: [idx],
-                multi: quantity,
-                animationIndex: 400 + index,
-              });
-              addMulti(quantity);
-            } else if (isCash) {
-              cashSound();
-              addCash(quantity);
-              setAnimatedCard({
-                special_idx,
-                idx: [idx],
-                cash: quantity,
-                animationIndex: 400 + index,
-              });
-            }
-          }, playAnimationDuration * innerIndex);
-        });
-      }, playAnimationDuration * index);
+      if (event.hand.length > 0) {
+        setTimeout(() => {
+          event.hand.forEach((card, innerIndex) => {
+            const { idx, quantity } = card;
+            setTimeout(() => {
+              if (isPoints) {
+                pointsSound();
+                setAnimatedCard({
+                  special_idx,
+                  idx: [idx],
+                  points: quantity,
+                  animationIndex: 400 + index,
+                });
+                addPoints(quantity);
+              } else if (isMulti) {
+                quantity > 0 ? multiSound() : negativeMultiSound();
+                setAnimatedCard({
+                  special_idx,
+                  idx: [idx],
+                  multi: quantity,
+                  animationIndex: 400 + index,
+                });
+                addMulti(quantity);
+              } else if (isCash) {
+                cashSound();
+                addCash(quantity);
+                setAnimatedCard({
+                  special_idx,
+                  idx: [idx],
+                  cash: quantity,
+                  animationIndex: 400 + index,
+                });
+              }
+            }, playAnimationDuration * innerIndex);
+          });
+        }, playAnimationDuration * index);
+      } else {
+        const quantity = event.specials[0]?.quantity;
+
+        setTimeout(() => {
+          if (isPoints) {
+            pointsSound();
+            setAnimatedCard({
+              special_idx,
+              idx: [],
+              points: quantity,
+              animationIndex: 300 + index,
+            });
+            addPoints(quantity);
+          } else if (isMulti) {
+            multiSound();
+            setAnimatedCard({
+              special_idx,
+              idx: [],
+              multi: quantity,
+              animationIndex: 300 + index,
+            });
+            addMulti(quantity);
+          } else if (isCash) {
+            cashSound();
+            addCash(quantity);
+            setAnimatedCard({
+              special_idx,
+              idx: [],
+              cash: quantity,
+              animationIndex: 300 + index,
+            });
+          }
+        }, playAnimationDuration * index);
+      }
     });
   };
 
@@ -344,6 +337,7 @@ export const animatePlay = (config: AnimatePlayConfig) => {
             ? playEvents.levelPassed?.level
             : 0,
         });
+        playEvents.levelPassed?.level_passed ? clearLevelSound() : clearRoundSound();
         navigate("/rewards");
       }, 1000);
       playEvents.levelPassed?.level_passed &&
@@ -367,27 +361,16 @@ export const animatePlay = (config: AnimatePlayConfig) => {
   });
 
   setTimeout(
-    () => handleSpecialCardPlayScoreEvents(),
+    () => handleCardPlayEvents(),
     durations.neonPlay + durations.cardPlayChange
   );
 
-  setTimeout(
-    () => {
-      handleCardPlayScoreEvents();
-    },
-    durations.neonPlay +
-      durations.cardPlayChange +
-      durations.specialCardPlayScore
-  );
 
   setTimeout(
     () => {
       handlePowerUps();
     },
-    durations.neonPlay +
-      durations.cardPlayChange +
-      durations.specialCardPlayScore +
-      durations.cardPlayScore
+    durations.neonPlay + durations.cardPlayChange + durations.cardPlayEvents
   );
 
   setTimeout(() => {

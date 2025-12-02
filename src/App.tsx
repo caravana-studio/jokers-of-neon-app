@@ -20,6 +20,7 @@ import { InformationPopUpProvider } from "./providers/InformationPopUpProvider";
 import { PageTransitionsProvider } from "./providers/PageTransitionsProvider";
 import { RevenueCatProvider } from "./providers/RevenueCatProvider";
 import { SeasonPassProvider } from "./providers/SeasonPassProvider";
+import { SettingsProvider } from "./providers/SettingsProvider";
 import ZoomPrevention from "./utils/ZoomPrevention";
 
 function App() {
@@ -60,33 +61,35 @@ function App() {
   return (
     <RevenueCatProvider>
       <SeasonPassProvider>
-        <ZoomPrevention>
-          <CardAnimationsProvider>
-            <CardDataProvider>
-              <GameProvider>
-                <PageTransitionsProvider>
-                  <InformationPopUpProvider>
-                    <AudioPlayerProvider
-                      introSongPath={"/music/intro-track.mp3"}
-                      baseSongPath={"/music/game-track.mp3"}
-                      rageSongPath={"/music/rage_soundtrack.mp3"}
-                    >
-                      <Background>
-                        <Layout>
-                          <AnimatePresence mode="wait">
-                            <AppRoutes />
-                          </AnimatePresence>
-                        </Layout>
-                      </Background>
-                    </AudioPlayerProvider>
-                  </InformationPopUpProvider>
-                </PageTransitionsProvider>
-              </GameProvider>
-            </CardDataProvider>
-          </CardAnimationsProvider>
-          <Analytics />
-          <SpeedInsights />
-        </ZoomPrevention>
+        <SettingsProvider>
+          <ZoomPrevention>
+            <CardAnimationsProvider>
+              <CardDataProvider>
+                <GameProvider>
+                  <PageTransitionsProvider>
+                    <InformationPopUpProvider>
+                      <AudioPlayerProvider
+                        introSongPath={"/music/intro-track.mp3"}
+                        baseSongPath={"/music/game-track.mp3"}
+                        rageSongPath={"/music/rage_soundtrack.mp3"}
+                      >
+                        <Background>
+                          <Layout>
+                            <AnimatePresence mode="wait">
+                              <AppRoutes />
+                            </AnimatePresence>
+                          </Layout>
+                        </Background>
+                      </AudioPlayerProvider>
+                    </InformationPopUpProvider>
+                  </PageTransitionsProvider>
+                </GameProvider>
+              </CardDataProvider>
+            </CardAnimationsProvider>
+            <Analytics />
+            <SpeedInsights />
+          </ZoomPrevention>
+        </SettingsProvider>
       </SeasonPassProvider>
     </RevenueCatProvider>
   );

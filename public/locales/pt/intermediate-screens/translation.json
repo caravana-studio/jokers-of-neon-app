@@ -11,9 +11,12 @@
   "shop": {
     "title": "Loja",
     "season-pass": {
-      "unlocked": "DESBLOQUEADO",
       "more-jokers-with": "Mais Jokers com",
-      "season-pass": "PASSO DE TEMPORADA {{season}}",
+      "season-pass-x": "PASSO DE TEMPORADA {{season}}",
+      "more-rewards-with": "Mais recompensas com",
+      "season-pass": "PASSO DE TEMPORADA",
+      "buy": "COMPRAR",
+      "unlocked": "DESBLOQUEADO",
       "facts": {
         "1-title": "Recompensas exclusivas",
         "1-description-1": "Progressando através da temporada 1 dá mais recompensas.",
@@ -24,8 +27,7 @@
         "3-title": "Descontos em packs",
         "3-description-1": "20% de desconto em cada pack de temporada 1 que compras.",
         "3-description-2": ""
-      },
-      "buy": "COMPRAR"
+      }
     },
     "packs": {
       "buy": "COMPRAR",
@@ -77,190 +79,188 @@
           "2": "2 cartas Especiais com skin garantidas e as melhores chances."
         }
       }
-    }
-  },
-  "loading-screen": {
-    "error": "Erro ao carregar o jogo",
-    "skip": "Pular",
-    "steps": {
-      "1": "Preparando o cenário",
-      "2": "Ativando as luzes de neônio",
-      "3": "Coletando todos os Jokers",
-      "4": "Carregando o ranking",
-      "5": "Quase pronto, vamos jogar!"
     },
-    "presents": "APRESENTA",
-    "powered-by": "Impulsionado por"
-  },
-  "mobile-blocker": {
-    "mobile-browsers-are-not-supported": "NAVEGADORES MÓVILES NÃO SÃO SUPORTADOS",
-    "please-download-the-app-to-continue": "Por favor, baixe o aplicativo para continuar"
-  },
-  "version-mismatch": {
-    "new-version-available": "NOVA VERSÃO DISPONÍVEL",
-    "please-update": "Por favor, atualize para continuar",
-    "update": "ATUALIZAR"
-  },
-  "season-pass": {
-    "more-rewards-with": "Mais recompensas com",
-    "season-pass": "PASSO DE TEMPORADA",
-    "buy": "COMPRAR",
-    "unlocked": "DESBLOQUEADO"
-  },
-  "season-progression": {
-    "free-rewards": "RECOMPENSAS GRATIS",
-    "season": "TEMPORADA {{season}}",
-    "my-xp": "Mi XP",
-    "claim": "RECLAMAR",
-    "tournament-entry": "Entrada de torneo",
-    "claiming-in-progress": "Reclamando..."
-  },
-  "map": {
-    "level": "NÍVEL"
-  },
-  "external-pack": {
-    "continue": "Continuar",
-    "open": "Abrir",
-    "draw-line": "Desenha uma linha para abrir"
-  },
-  "my-games": {
-    "title": "Jogos",
-    "go-back": "Voltar",
-    "start-game": "Novo jogo",
-    "show-finished-games": "Mostrar jogos terminados",
-    "continue-btn": "continuar",
-    "start-btn": "iniciar",
-    "tuto": "Tutorial",
-    "learn": "Você quer aprender a jogar?",
-    "tournament-active": "Existe um torneio ativo!",
-    "join": "Junte-se agora",
-    "surrender": {
-      "action": "Desistir",
-      "confirmation-modal": {
-        "title": "Desistir",
-        "description": "Tem certeza de que deseja desistir do jogo #{{gameId}}? Esta ação não pode ser desfeita."
+    "maintenance": {
+      "title": "Manutenção em progresso",
+      "description": "Estamos atualizando Jokers of Neon para trazer novas funcionalidades e melhorias. O jogo estará disponível em breve, obrigado pela sua paciência!"
+    },
+    "loading-screen": {
+      "error": "Erro ao carregar o jogo",
+      "skip": "Pular",
+      "steps": {
+        "1": "Preparando o cenário",
+        "2": "Ativando as luzes de neônio",
+        "3": "Coletando todos os Jokers",
+        "4": "Carregando o ranking",
+        "5": "Quase pronto, vamos jogar!"
+      },
+      "presents": "APRESENTA",
+      "powered-by": "Impulsionado por"
+    },
+    "mobile-blocker": {
+      "mobile-browsers-are-not-supported": "NAVEGADORES MÓVILES NÃO SÃO SUPORTADOS",
+      "please-download-the-app-to-continue": "Por favor, baixe o aplicativo para continuar"
+    },
+    "version-mismatch": {
+      "new-version-available": "NOVA VERSÃO DISPONÍVEL",
+      "please-update": "Por favor, atualize para continuar",
+      "update": "ATUALIZAR"
+    },
+    "season-progression": {
+      "free-rewards": "RECOMPENSAS GRATIS",
+      "season": "TEMPORADA {{season}}",
+      "my-xp": "Mi XP",
+      "claim": "RECLAMAR",
+      "tournament-entry": "Entrada de torneo",
+      "claiming-in-progress": "Reclamando..."
+    },
+    "map": {
+      "level": "NÍVEL"
+    },
+    "external-pack": {
+      "continue": "Continuar",
+      "open": "Abrir",
+      "draw-line": "Desenha uma linha para abrir"
+    },
+    "my-games": {
+      "title": "Jogos",
+      "go-back": "Voltar",
+      "start-game": "Novo jogo",
+      "show-finished-games": "Mostrar jogos terminados",
+      "continue-btn": "continuar",
+      "start-btn": "iniciar",
+      "tuto": "Tutorial",
+      "learn": "Você quer aprender a jogar?",
+      "tournament-active": "Existe um torneio ativo!",
+      "join": "Junte-se agora",
+      "surrender": {
+        "action": "Desistir",
+        "confirmation-modal": {
+          "title": "Desistir",
+          "description": "Tem certeza de que deseja desistir do jogo #{{gameId}}? Esta ação não pode ser desfeita."
+        }
+      },
+      "level-lbl": "Nível",
+      "round-lbl": "R",
+      "status-lbl": "Estado",
+      "points-lbl": "pontos",
+      "no-games": "Você não tem nenhum jogo. Comece um novo!",
+      "create-game": {
+        "stage-1": "Montando o palco",
+        "stage-2": "Puxando uma cadeira para {{username}}",
+        "stage-3": "Preparando as lojas",
+        "stage-4": "Embaralhando as cartas",
+        "stage-5": "O jogo está prestes a começar..."
       }
     },
-    "level-lbl": "Nível",
-    "round-lbl": "R",
-    "status-lbl": "Estado",
-    "points-lbl": "pontos",
-    "no-games": "Você não tem nenhum jogo. Comece um novo!",
-    "create-game": {
-      "stage-1": "Montando o palco",
-      "stage-2": "Puxando uma cadeira para {{username}}",
-      "stage-3": "Preparando as lojas",
-      "stage-4": "Embaralhando as cartas",
-      "stage-5": "O jogo está prestes a começar..."
-    }
-  },
-  "game-over": {
-    "current-position": "Você está na posição número {{position}}, deseja mantê-lo?",
-    "login": "Login",
-    "skip": "Pular",
-    "gameOver-msj": "FIM DE JOGO",
-    "table": {
-      "gameOver-leader-msj": "Parabéns! Você é o melhor jogador da classificação!",
-      "gameOver-top5-msj": "Ótimo trabalho! Você está entre os 5 melhores! Continue assim!"
+    "game-over": {
+      "current-position": "Você está na posição número {{position}}, deseja mantê-lo?",
+      "login": "Login",
+      "skip": "Pular",
+      "gameOver-msj": "FIM DE JOGO",
+      "table": {
+        "gameOver-leader-msj": "Parabéns! Você é o melhor jogador da classificação!",
+        "gameOver-top5-msj": "Ótimo trabalho! Você está entre os 5 melhores! Continue assim!"
+      },
+      "btn": {
+        "gameOver-share-btn": "COMPARTILHAR NO",
+        "gameOver-newGame-btn": "INICIAR NOVO JOGO"
+      }
     },
-    "btn": {
-      "gameOver-share-btn": "COMPARTILHAR NO",
-      "gameOver-newGame-btn": "INICIAR NOVO JOGO"
-    }
-  },
-  "login": {
-    "error-labels": {
-      "error-noUsername-login": "Por favor, insira um nome de usuário",
-      "error-shortUsername-login": "O nome de usuário deve ter pelo menos 3 caracteres",
-      "error-longUsername-login": "O nome de usuário deve ter no máximo 15 caracteres",
-      "error-invalidUsername-login": "O nome de usuário deve conter apenas letras, números, pontos ou traços"
+    "login": {
+      "error-labels": {
+        "error-noUsername-login": "Por favor, insira um nome de usuário",
+        "error-shortUsername-login": "O nome de usuário deve ter pelo menos 3 caracteres",
+        "error-longUsername-login": "O nome de usuário deve ter no máximo 15 caracteres",
+        "error-invalidUsername-login": "O nome de usuário deve conter apenas letras, números, pontos ou traços"
+      },
+      "labels": {
+        "label-login": "Digite o nome de usuário",
+        "placeholder-login": "nome de usuário"
+      },
+      "btn": {
+        "goBack-login-btn": "VOLTAR",
+        "startGame-login-btn": "INICIAR JOGO"
+      }
     },
-    "labels": {
-      "label-login": "Digite o nome de usuário",
-      "placeholder-login": "nome de usuário"
+    "rewards-details": {
+      "labels": {
+        "title": "Rodada {{round}} completada!",
+        "title-level": "Nível {{level}} completado!",
+        "base": "base",
+        "level-bonus": "Bônus de nível",
+        "discards-left": "{{discards}} Descartes",
+        "hands-left": "{{hands}} Mãos",
+        "rage": "{{cards}} Rage vencidas",
+        "total": "total",
+        "final-score": "- Pontuação final: {{score}} -",
+        "continue-btn": "continuar"
+      }
     },
-    "btn": {
-      "goBack-login-btn": "VOLTAR",
-      "startGame-login-btn": "INICIAR JOGO"
-    }
-  },
-  "rewards-details": {
-    "labels": {
-      "title": "Rodada {{round}} completada!",
-      "title-level": "Nível {{level}} completado!",
-      "base": "base",
-      "level-bonus": "Bônus de nível",
-      "discards-left": "{{discards}} Descartes",
-      "hands-left": "{{hands}} Mãos",
-      "rage": "{{cards}} Rage vencidas",
-      "total": "total",
-      "final-score": "- Pontuação final: {{score}} -",
-      "continue-btn": "continuar"
-    }
-  },
-  "special-cards": {
-    "title": "Cartas especiais",
-    "go-back": "Voltar",
-    "sell": "Vender",
-    "sell-for": "Vender por ¢ {{price}}",
-    "confirmation-modal": {
-      "title": "Vender cartão especial",
-      "description": "Tem certeza de que deseja vender este cartão especial por ¢{{price}}? Não há como desfazer esta ação."
+    "special-cards": {
+      "title": "Cartas especiais",
+      "go-back": "Voltar",
+      "sell": "Vender",
+      "sell-for": "Vender por ¢ {{price}}",
+      "confirmation-modal": {
+        "title": "Vender cartão especial",
+        "description": "Tem certeza de que deseja vender este cartão especial por ¢{{price}}? Não há como desfazer esta ação."
+      },
+      "locked-slot": "Desbloquear slot de carta especial"
     },
-    "locked-slot": "Desbloquear slot de carta especial"
-  },
-  "mods": {
-    "title": "Selecione a versão do Jokers of Neon que você deseja jogar",
-    "back": "Voltar",
-    "community-mods": "Mods da comunidade"
-  },
-  "power-ups": {
-    "title": "Power-ups",
-    "confirmation-modal": {
-      "title": "Vender powerup",
-      "description": "Tem certeza de que deseja vender este Power-up por ¢{{price}}? Não há como desfazer esta ação."
-    }
-  },
-  "open-lootbox": {
-    "click-open": "Clique para abrir",
-    "tap-open": "Toque para abrir"
-  },
-  "common": {
-    "go-back-btn": "Voltar",
-    "login": "Login",
-    "login-to-access": "Por favor, faça login para acessar esta página"
-  },
-  "profile-menu": {
-    "level": "Nível",
-    "streaks": "Sequências",
-    "days": "Dias",
-    "games": "Jogos",
-    "victories": "Vitórias",
-    "next-level": "Próx. nível",
-    "my-xp": "Meu XP",
-    "my-badges": "Minhas medalhas",
-    "coming-soon": "Em breve",
-    "select-profile-picture": "Selecionar foto de perfil",
-    "connect": "Conectar",
-    "no-profile": "Faça login para ver seu perfil"
-  },
-  "my-collection": {
-    "title": "Coleção",
-    "no-collection": "Por favor, inicie sessão para ver sua coleção",
-    "login": "Iniciar sessão",
-    "collections": {
-      "traditionals": "Cartas tradicionais",
-      "neons": "Cartas de Neon",
-      "sx": "Temporada {{season}}",
-      "c99": "Coleção exclusiva GG - v1"
-    }
-  },
-  "wallet-provider": {
-    "login": "ENTRAR",
-    "guest": "CONVIDADO",
-    "terms": {
-      "agreement": "Ao continuar, você concorda com os",
-      "link": "Termos e Condições"
+    "mods": {
+      "title": "Selecione a versão do Jokers of Neon que você deseja jogar",
+      "back": "Voltar",
+      "community-mods": "Mods da comunidade"
+    },
+    "power-ups": {
+      "title": "Power-ups",
+      "confirmation-modal": {
+        "title": "Vender powerup",
+        "description": "Tem certeza de que deseja vender este Power-up por ¢{{price}}? Não há como desfazer esta ação."
+      }
+    },
+    "open-lootbox": {
+      "click-open": "Clique para abrir",
+      "tap-open": "Toque para abrir"
+    },
+    "common": {
+      "go-back-btn": "Voltar",
+      "login": "Login",
+      "login-to-access": "Por favor, faça login para acessar esta página"
+    },
+    "profile-menu": {
+      "level": "Nível",
+      "streaks": "Sequências",
+      "days": "Dias",
+      "games": "Jogos",
+      "victories": "Vitórias",
+      "next-level": "Próx. nível",
+      "my-xp": "Meu XP",
+      "my-badges": "Minhas medalhas",
+      "coming-soon": "Em breve",
+      "select-profile-picture": "Selecionar foto de perfil",
+      "connect": "Conectar",
+      "no-profile": "Faça login para ver seu perfil"
+    },
+    "my-collection": {
+      "title": "Coleção",
+      "no-collection": "Por favor, inicie sessão para ver sua coleção",
+      "login": "Iniciar sessão",
+      "collections": {
+        "traditionals": "Cartas tradicionais",
+        "neons": "Cartas de Neon",
+        "sx": "Temporada {{season}}",
+        "c99": "Coleção exclusiva GG - v1"
+      }
+    },
+    "wallet-provider": {
+      "login": "ENTRAR",
+      "guest": "CONVIDADO",
+      "terms": {
+        "agreement": "Ao continuar, você concorda com os",
+        "link": "Termos e Condições"
+      }
     }
   }
 }

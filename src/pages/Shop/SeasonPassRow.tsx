@@ -109,7 +109,7 @@ export const SeasonPassRow = ({ id, price, unlocked }: SeasonPassRowProps) => {
             lineHeight={1}
             textShadow={`0 0 7px ${VIOLET_LIGHT}`}
           >
-            {t("season-pass", { season: SEASON_NUMBER })}
+            {t("season-pass-x", { season: SEASON_NUMBER })}
           </Heading>
         </Flex>
         <Flex

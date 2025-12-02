@@ -42,7 +42,8 @@
       "loot-boxes": "Loot Boxes",
       "utilities": "Utilities",
       "no-coins": "Not enough coins",
-      "manage": "Manage items"
+      "manage": "Manage items",
+      "no-powerup-slots": "No space"
     },
     "titles": {
       "level-game": "Level up your game",
@@ -136,7 +137,7 @@
       "content": "{{specials}} special cards, {{lootboxes}} loot boxes"
     },
     "4": {
-      "name": "Level ups",
+      "name": "LevelUps",
       "content": "{{levelups}} level ups, {{specials}} special cards"
     },
     "5": {

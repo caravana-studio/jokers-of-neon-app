@@ -44,7 +44,8 @@ export const NewHome = () => {
   useEffect(() => {
     logEvent("open_home_page");
     if (isNative) {
-      fetchVersion().then(async (version) => {
+      fetchVersion().then(async (data) => {
+        const version = data.version;
         setVersion(version);
         try {
           const res = await Preferences.get({ key: SKIPPED_VERSION });
