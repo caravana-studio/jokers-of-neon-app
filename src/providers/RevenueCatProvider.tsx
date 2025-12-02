@@ -13,12 +13,18 @@ import {
   LOG_LEVEL,
   PurchasesOfferings as NativeOfferings,
 } from "@revenuecat/purchases-capacitor";
-import type { PurchasesPackage as NativePackage } from "@revenuecat/purchases-capacitor";
+import type {
+  MakePurchaseResult as NativePurchaseResult,
+  PurchasesPackage as NativePackage,
+} from "@revenuecat/purchases-capacitor";
 import {
   Purchases as WebPurchases,
   Offerings as WebOfferings,
 } from "@revenuecat/purchases-js";
-import type { Package as WebPackage } from "@revenuecat/purchases-js";
+import type {
+  Package as WebPackage,
+  PurchaseResult as WebPurchaseResult,
+} from "@revenuecat/purchases-js";
 import { useUsername } from "../dojo/utils/useUsername";
 import { isNative } from "../utils/capacitorUtils";
 import { getRevenueCatApiKey } from "../utils/getRevenueCatApiKey";
@@ -27,6 +33,7 @@ type WebPurchasesInstance = ReturnType<typeof WebPurchases.configure>;
 type PurchasesClient = WebPurchasesInstance | typeof CapacitorPurchases;
 
 type RevenueCatPackage = NativePackage | WebPackage;
+type RevenueCatPurchaseResult = WebPurchaseResult | NativePurchaseResult;
 
 type RevenueCatPurchaseOptions = {
   customerEmail?: string;
@@ -57,11 +64,11 @@ type RevenueCatContextValue = {
   purchasePackage: (
     rcPackage: RevenueCatPackage,
     options?: RevenueCatPurchaseOptions
-  ) => Promise<void>;
+  ) => Promise<RevenueCatPurchaseResult>;
   purchasePackageById: (
     packageId: string,
     options?: RevenueCatPurchaseOptions
-  ) => Promise<void>;
+  ) => Promise<RevenueCatPurchaseResult>;
 };
 
 const RevenueCatContext = createContext<RevenueCatContextValue>({
@@ -69,8 +76,12 @@ const RevenueCatContext = createContext<RevenueCatContextValue>({
   loading: false,
   refreshOfferings: async () => {},
   purchases: null,
-  purchasePackage: async () => {},
-  purchasePackageById: async () => {},
+  purchasePackage: async (): Promise<RevenueCatPurchaseResult> => {
+    throw new Error("purchasePackage: RevenueCat provider not initialized");
+  },
+  purchasePackageById: async (): Promise<RevenueCatPurchaseResult> => {
+    throw new Error("purchasePackageById: RevenueCat provider not initialized");
+  },
 });
 
 type UnknownRecord = Record<string, unknown>;
@@ -355,7 +366,7 @@ export const RevenueCatProvider = ({ children }: PropsWithChildren) => {
     async (
       rcPackage: RevenueCatPackage,
       options?: RevenueCatPurchaseOptions
-    ) => {
+    ): Promise<RevenueCatPurchaseResult> => {
       if (!rcPackage) {
         throw new Error("purchasePackage: missing package");
       }
@@ -367,13 +378,13 @@ export const RevenueCatProvider = ({ children }: PropsWithChildren) => {
       }
 
       if (isNative) {
-        await (purchasesRef.current as typeof CapacitorPurchases).purchasePackage(
-          {
-            aPackage: rcPackage as NativePackage,
-          }
-        );
+        return (
+          purchasesRef.current as typeof CapacitorPurchases
+        ).purchasePackage({
+          aPackage: rcPackage as NativePackage,
+        });
       } else {
-        await (purchasesRef.current as WebPurchasesInstance).purchase({
+        return (purchasesRef.current as WebPurchasesInstance).purchase({
           rcPackage: rcPackage as WebPackage,
           customerEmail: options?.customerEmail,
           htmlTarget: options?.htmlTarget,
@@ -388,7 +399,10 @@ export const RevenueCatProvider = ({ children }: PropsWithChildren) => {
   );
 
   const purchasePackageById = useCallback(
-    async (packageId: string, options?: RevenueCatPurchaseOptions) => {
+    async (
+      packageId: string,
+      options?: RevenueCatPurchaseOptions
+    ): Promise<RevenueCatPurchaseResult> => {
       if (!packageId) {
         throw new Error("purchasePackageById: missing package id");
       }
@@ -421,7 +435,7 @@ export const RevenueCatProvider = ({ children }: PropsWithChildren) => {
         );
       }
 
-      await purchasePackage(resolvedPackage, options);
+      return purchasePackage(resolvedPackage, options);
     },
     [offerings, purchasePackage]
   );

@@ -1,4 +1,4 @@
-import { Flex, Link, Text } from "@chakra-ui/react";
+import { Flex, Heading, Link, Text } from "@chakra-ui/react";
 import { useBurnerManager } from "@dojoengine/create-burner";
 import { useAccount, useConnect, useDisconnect } from "@starknet-react/core";
 import {
@@ -14,15 +14,15 @@ import { useTranslation } from "react-i18next";
 import { Account, AccountInterface } from "starknet";
 import LanguageSwitcher from "../components/LanguageSwitcher";
 import { MobileDecoration } from "../components/MobileDecoration";
-import { Icons } from "../constants/icons";
+import { PositionedVersion } from "../components/version/PositionedVersion";
 import { ACCOUNT_TYPE, GAME_ID, LOGGED_USER } from "../constants/localStorage";
 import { PreThemeLoadingPage } from "../pages/PreThemeLoadingPage";
+import { AppType, useAppContext } from "../providers/AppContextProvider";
 import { useGetLastGameId } from "../queries/useGetLastGameId";
 import { logEvent } from "../utils/analytics";
 import { isNative, nativePaddingTop } from "../utils/capacitorUtils";
 import { controller } from "./controller/controller";
 import { SetupResult } from "./setup";
-import { PositionedVersion } from "../components/version/PositionedVersion";
 
 const CHAIN = import.meta.env.VITE_CHAIN;
 
@@ -71,6 +71,11 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "wallet-provider",
   });
+
+  const appType = useAppContext();
+
+  const allowGuest =
+    CHAIN !== "mainnet" && CHAIN !== "sepolia" && appType !== AppType.SHOP;
 
   const { disconnect } = useDisconnect();
 
@@ -184,6 +189,18 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     }
   };
 
+  const buttonStyles = {
+    color: "white",
+    height: isMobile ? "40px" : "50px",
+    width: allowGuest
+      ? isMobile
+        ? "110px"
+        : "230px"
+      : isMobile
+        ? "180px"
+        : "300px",
+  };
+
   if (!finalAccount) {
     return (
       <PreThemeLoadingPage>
@@ -192,10 +209,31 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
           top={nativePaddingTop}
           bottom={isNative ? "30px" : "0px"}
         />
-        <img width={isMobile ? "90%" : "60%"} src="logos/logo.png" alt="logo" />
+        <Flex
+          flexDirection={"column"}
+          gap={0}
+          w="100%"
+          justifyContent={"center"}
+          alignItems={"center"}
+        >
+          <img
+            width={isMobile ? "90%" : "60%"}
+            src="logos/logo.png"
+            alt="logo"
+          />
+          <Heading
+            lineHeight={1}
+            variant={"italic"}
+            mb={isMobile ? 3 : "50px"}
+            letterSpacing={1}
+            fontSize={isMobile ? 20 : 30}
+          >
+            SHOP
+          </Heading>
+        </Flex>
         <Flex flexDirection={"row"} gap={"30px"}>
           <button
-            style={{ color: "white" }}
+            style={buttonStyles}
             className="login-button"
             onClick={() => {
               logEvent("connect_controller_click");
@@ -213,20 +251,15 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                flexGrow: 0,
               }}
             >
-              <div>{t("login")} </div>
-              <img
-                src={Icons.CARTRIDGE}
-                width={isMobile ? "16px" : "22px"}
-                style={{ marginLeft: "8px" }}
-              />
+              {t("login")}
+              {/* <img src={Icons.CARTRIDGE} width={isMobile ? "16px" : "22px"} /> */}
             </div>
           </button>
-          {CHAIN !== "mainnet" && CHAIN !== "sepolia" && (
+          {allowGuest && (
             <button
-              style={{ color: "white" }}
+              style={buttonStyles}
               className="login-button secondary"
               disabled={isLoading}
               onClick={() => {

@@ -47,9 +47,10 @@ const seasonPassPulse = keyframes`
 interface SeasonPassRowProps {
   price?: string;
   id: string;
+  unlocked: boolean;
 }
 
-export const SeasonPassRow = ({ id, price = "$" }: SeasonPassRowProps) => {
+export const SeasonPassRow = ({ id, price, unlocked }: SeasonPassRowProps) => {
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "shop.season-pass",
   });
@@ -141,7 +142,7 @@ export const SeasonPassRow = ({ id, price = "$" }: SeasonPassRowProps) => {
           fontSize={isSmallScreen ? 13 : 18}
           mt={isSmallScreen ? 2 : 6}
           h={isSmallScreen ? "30px" : "50px"}
-          isDisabled={isLoading}
+          isDisabled={isLoading || !price || unlocked}
           onClick={() => {
             setIsLoading(true);
             purchaseSeasonPass()
@@ -149,8 +150,10 @@ export const SeasonPassRow = ({ id, price = "$" }: SeasonPassRowProps) => {
               .catch(() => setIsLoading(false));
           }}
         >
-          {isLoading ? (
+          {isLoading || !price ? (
             <Spinner size="xs" />
+          ) : unlocked ? (
+            t("unlocked")
           ) : (
             <>
               {t("buy")} · {price}

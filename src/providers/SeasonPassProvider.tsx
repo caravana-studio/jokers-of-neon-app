@@ -15,12 +15,14 @@ import { useRevenueCat } from "./RevenueCatProvider";
 
 type SeasonPassContextValue = {
   seasonPassUnlocked: boolean;
+  loading: boolean;
   refetchSeasonPassUnlocked: () => Promise<void>;
   purchaseSeasonPass: () => Promise<void>;
 };
 
 const SeasonPassContext = createContext<SeasonPassContextValue>({
   seasonPassUnlocked: false,
+  loading: false,
   refetchSeasonPassUnlocked: async () => {},
   purchaseSeasonPass: async () => {},
 });
@@ -32,6 +34,7 @@ export const SeasonPassProvider = ({ children }: PropsWithChildren) => {
     account: { account },
   } = useDojo();
   const [seasonPassUnlocked, setSeasonPassUnlocked] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const userAddress = account?.address;
   const { offerings, purchasePackageById } = useRevenueCat();
@@ -39,15 +42,19 @@ export const SeasonPassProvider = ({ children }: PropsWithChildren) => {
   const fetchSeasonPassUnlocked = useCallback(async () => {
     if (!userAddress) {
       setSeasonPassUnlocked(false);
+      setLoading(false);
       return;
     }
 
+    setLoading(true);
     try {
       const progress = await getSeasonProgress({ userAddress });
       setSeasonPassUnlocked(Boolean(progress.seasonPassUnlocked));
     } catch (error) {
       console.error("Failed to fetch season pass status", error);
       setSeasonPassUnlocked(false);
+    } finally {
+      setLoading(false);
     }
   }, [userAddress]);
 
@@ -71,6 +78,7 @@ export const SeasonPassProvider = ({ children }: PropsWithChildren) => {
       return;
     }
 
+    setLoading(true);
     try {
       await purchasePackageById(seasonPassPackageId);
 
@@ -113,6 +121,8 @@ export const SeasonPassProvider = ({ children }: PropsWithChildren) => {
     } catch (error) {
       console.error("Failed to purchase season pass", error);
       throw error;
+    } finally {
+      setLoading(false);
     }
   }, [
     fetchSeasonPassUnlocked,
@@ -124,10 +134,11 @@ export const SeasonPassProvider = ({ children }: PropsWithChildren) => {
   const value = useMemo(
     () => ({
       seasonPassUnlocked,
+      loading,
       refetchSeasonPassUnlocked: fetchSeasonPassUnlocked,
       purchaseSeasonPass,
     }),
-    [seasonPassUnlocked, fetchSeasonPassUnlocked, purchaseSeasonPass]
+    [seasonPassUnlocked, loading, fetchSeasonPassUnlocked, purchaseSeasonPass]
   );
 
   return (

@@ -5,7 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:shop": "STANDALONE_SHOP=true vite --mode standalone-shop",
     "build": "tsc && vite build",
+    "build:shop": "tsc && STANDALONE_SHOP=true vite build --mode standalone-shop && cp dist-shop/standalone-shop.html dist-shop/index.html",
+    "build:all": "tsc && BUILD_ALL=true vite build --mode all",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "codegen": "graphql-codegen",
