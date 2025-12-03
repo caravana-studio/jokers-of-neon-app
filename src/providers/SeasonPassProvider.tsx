@@ -8,7 +8,6 @@ import {
   useState,
 } from "react";
 import { getSeasonProgress } from "../api/getSeasonProgress";
-import { SEASON_NUMBER } from "../constants/season";
 import { useDojo } from "../dojo/DojoContext";
 import { showPurchaseSuccessToast } from "../utils/transactionNotifications";
 import { useRevenueCat } from "./RevenueCatProvider";
@@ -81,55 +80,17 @@ export const SeasonPassProvider = ({ children }: PropsWithChildren) => {
     setLoading(true);
     try {
       await purchasePackageById(seasonPassPackageId);
-
-      const apiKey = import.meta.env.VITE_GAME_API_KEY;
-      if (!apiKey) {
-        throw new Error(
-          "purchaseSeasonPass: Missing VITE_GAME_API_KEY environment variable"
-        );
-      }
-
-      const baseUrl =
-        import.meta.env.VITE_GAME_API_URL?.replace(/\/$/, "") ||
-        DEFAULT_API_BASE_URL;
-
-      const parsedSeasonId = Number(SEASON_NUMBER);
-      const seasonId = Number.isFinite(parsedSeasonId) ? parsedSeasonId : 1;
-
-      const response = await fetch(`${baseUrl}/api/season/purchase-pass`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-API-Key": apiKey,
-        },
-        body: JSON.stringify({
-          address: userAddress,
-          season_id: seasonId,
-        }),
-      });
-
-      if (!response.ok) {
-        const errorDetails = await response.text().catch(() => "");
-        throw new Error(
-          `purchaseSeasonPass: ${response.status} ${response.statusText}${
-            errorDetails ? ` - ${errorDetails}` : ""
-          }`
-        );
-      }
-      showPurchaseSuccessToast("season-pass");
       await fetchSeasonPassUnlocked();
+      setSeasonPassUnlocked(true);
+      showPurchaseSuccessToast("season-pass");
     } catch (error) {
       console.error("Failed to purchase season pass", error);
+      setLoading(false);
       throw error;
     } finally {
       setLoading(false);
     }
-  }, [
-    fetchSeasonPassUnlocked,
-    seasonPassId,
-    purchasePackageById,
-    userAddress,
-  ]);
+  }, [fetchSeasonPassUnlocked, seasonPassId, purchasePackageById, userAddress]);
 
   const value = useMemo(
     () => ({

@@ -14,7 +14,7 @@ export const SeasonPassBuyButton = ({
   onSeasonPassPurchased,
 }: ISeasonPassBuyButtonProps) => {
   const { t } = useTranslation("intermediate-screens", {
-    keyPrefix: "season-pass",
+    keyPrefix: "shop.season-pass",
   });
   const { isSmallScreen } = useResponsiveValues();
   const { purchaseSeasonPass } = useSeasonPass();

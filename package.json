@@ -61,6 +61,7 @@
     "@starknet-io/types-js": "^0.8.4",
     "@starknet-react/chains": "^5.0.1",
     "@starknet-react/core": "^5.0.1",
+    "@supabase/supabase-js": "^2.86.0",
     "@svgx/vite-plugin-react": "^1.0.1",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
