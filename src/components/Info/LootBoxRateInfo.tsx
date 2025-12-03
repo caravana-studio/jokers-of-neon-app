@@ -1,7 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { Box, Flex, Text, VStack, HStack, Image, Collapse, Icon, Heading } from "@chakra-ui/react";
-import { useState } from "react";
-import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
+import { Box, Flex, Text, VStack, HStack, Image, Heading } from "@chakra-ui/react";
 import theme from "../../theme/theme";
 import { InformationIcon } from "./InformationIcon";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
@@ -205,23 +203,21 @@ const collectorPackData: ItemSection[] = [
   {
     itemNumber: 4,
     cards: [
-      { name: "Special C", imageId: 200, percentage: "30.0%", isSpecial: true, rarity: "C" },
-      { name: "Special B", imageId: 201, percentage: "10.0%", isSpecial: true, rarity: "B" },
-      { name: "Special A", imageId: 202, percentage: "0.0%", isSpecial: true, rarity: "A" },
-      { name: "Special S", imageId: 203, percentage: "0.0%", isSpecial: true, rarity: "S" },
+      { name: "Special A", imageId: 202, percentage: "30.0%", isSpecial: true, rarity: "A" },
+      { name: "Special S", imageId: 203, percentage: "10.0%", isSpecial: true, rarity: "S" },
+      { name: "Skin Special C", imageId: 200, percentage: "39.9%", isSpecial: true, rarity: "C" },
+      { name: "Skin Special B", imageId: 201, percentage: "17.0%", isSpecial: true, rarity: "B" },
+      { name: "Skin Special A", imageId: 202, percentage: "3.0%", isSpecial: true, rarity: "A" },
+      { name: "Skin Special S", imageId: 203, percentage: "0.1%", isSpecial: true, rarity: "S" },
     ],
   },
   {
     itemNumber: 5,
     cards: [
-      { name: "Tradicional", imageId: 1, percentage: "0.0%" },
-      { name: "Joker", imageId: 50, percentage: "0.0%" },
-      { name: "Neon", imageId: 100, percentage: "0.0%" },
-      { name: "Neon Joker", imageId: 150, percentage: "0.0%" },
-      { name: "Special C", imageId: 200, percentage: "0.0%", isSpecial: true, rarity: "C" },
-      { name: "Special B", imageId: 201, percentage: "0.0%", isSpecial: true, rarity: "B" },
-      { name: "Special A", imageId: 202, percentage: "0.0%", isSpecial: true, rarity: "A" },
-      { name: "Special S", imageId: 203, percentage: "0.0%", isSpecial: true, rarity: "S" },
+      { name: "Skin Special C", imageId: 200, percentage: "30.0%", isSpecial: true, rarity: "C" },
+      { name: "Skin Special B", imageId: 201, percentage: "30.0%", isSpecial: true, rarity: "B" },
+      { name: "Skin Special A", imageId: 202, percentage: "30.0%", isSpecial: true, rarity: "A" },
+      { name: "Skin Special S", imageId: 203, percentage: "10.0%", isSpecial: true, rarity: "S" },
     ],
   },
 ];
@@ -301,51 +297,42 @@ const collectorXLPackData: ItemSection[] = [
   {
     itemNumber: 7,
     cards: [
-      { name: "Special C", imageId: 200, percentage: "30.0%", isSpecial: true, rarity: "C" },
-      { name: "Special B", imageId: 201, percentage: "10.0%", isSpecial: true, rarity: "B" },
-      { name: "Special A", imageId: 202, percentage: "0.0%", isSpecial: true, rarity: "A" },
-      { name: "Special S", imageId: 203, percentage: "0.0%", isSpecial: true, rarity: "S" },
+      { name: "Skin Special C", imageId: 200, percentage: "39.9%", isSpecial: true, rarity: "C" },
+      { name: "Skin Special B", imageId: 201, percentage: "17.0%", isSpecial: true, rarity: "B" },
+      { name: "Skin Special A", imageId: 202, percentage: "3.0%", isSpecial: true, rarity: "A" },
+      { name: "Skin Special S", imageId: 203, percentage: "0.1%", isSpecial: true, rarity: "S" },
     ],
   },
   {
     itemNumber: 8,
     cards: [
-      { name: "Special C", imageId: 200, percentage: "30.0%", isSpecial: true, rarity: "C" },
-      { name: "Special B", imageId: 201, percentage: "10.0%", isSpecial: true, rarity: "B" },
-      { name: "Special A", imageId: 202, percentage: "0.0%", isSpecial: true, rarity: "A" },
-      { name: "Special S", imageId: 203, percentage: "0.0%", isSpecial: true, rarity: "S" },
+      { name: "Skin Special C", imageId: 200, percentage: "39.9%", isSpecial: true, rarity: "C" },
+      { name: "Skin Special B", imageId: 201, percentage: "17.0%", isSpecial: true, rarity: "B" },
+      { name: "Skin Special A", imageId: 202, percentage: "3.0%", isSpecial: true, rarity: "A" },
+      { name: "Skin Special S", imageId: 203, percentage: "0.1%", isSpecial: true, rarity: "S" },
     ],
   },
   {
     itemNumber: 9,
     cards: [
-      { name: "Tradicional", imageId: 1, percentage: "0.0%" },
-      { name: "Joker", imageId: 50, percentage: "0.0%" },
-      { name: "Neon", imageId: 100, percentage: "0.0%" },
-      { name: "Neon Joker", imageId: 150, percentage: "0.0%" },
-      { name: "Special C", imageId: 200, percentage: "0.0%", isSpecial: true, rarity: "C" },
-      { name: "Special B", imageId: 201, percentage: "0.0%", isSpecial: true, rarity: "B" },
-      { name: "Special A", imageId: 202, percentage: "0.0%", isSpecial: true, rarity: "A" },
-      { name: "Special S", imageId: 203, percentage: "0.0%", isSpecial: true, rarity: "S" },
+      { name: "Skin Special C", imageId: 200, percentage: "30.0%", isSpecial: true, rarity: "C" },
+      { name: "Skin Special B", imageId: 201, percentage: "30.0%", isSpecial: true, rarity: "B" },
+      { name: "Skin Special A", imageId: 202, percentage: "30.0%", isSpecial: true, rarity: "A" },
+      { name: "Skin Special S", imageId: 203, percentage: "10.0%", isSpecial: true, rarity: "S" },
     ],
   },
   {
     itemNumber: 10,
     cards: [
-      { name: "Tradicional", imageId: 1, percentage: "0.0%" },
-      { name: "Joker", imageId: 50, percentage: "0.0%" },
-      { name: "Neon", imageId: 100, percentage: "0.0%" },
-      { name: "Neon Joker", imageId: 150, percentage: "0.0%" },
-      { name: "Special C", imageId: 200, percentage: "0.0%", isSpecial: true, rarity: "C" },
-      { name: "Special B", imageId: 201, percentage: "0.0%", isSpecial: true, rarity: "B" },
-      { name: "Special A", imageId: 202, percentage: "0.0%", isSpecial: true, rarity: "A" },
-      { name: "Special S", imageId: 203, percentage: "0.0%", isSpecial: true, rarity: "S" },
+      { name: "Skin Special C", imageId: 200, percentage: "30.0%", isSpecial: true, rarity: "C" },
+      { name: "Skin Special B", imageId: 201, percentage: "30.0%", isSpecial: true, rarity: "B" },
+      { name: "Skin Special A", imageId: 202, percentage: "30.0%", isSpecial: true, rarity: "A" },
+      { name: "Skin Special S", imageId: 203, percentage: "10.0%", isSpecial: true, rarity: "S" },
     ],
   },
 ];
 
 const ItemSectionComponent = ({ section }: { section: ItemSection }) => {
-  const [isOpen, setIsOpen] = useState(true);
   const { neonGreen, neonPink } = theme.colors;
 
   // Filter out cards with 0.0% probability
@@ -367,25 +354,15 @@ const ItemSectionComponent = ({ section }: { section: ItemSection }) => {
         p={3}
         bg="rgba(30, 30, 40, 0.8)"
         alignItems="center"
-        justifyContent="space-between"
-        cursor="pointer"
-        onClick={() => setIsOpen(!isOpen)}
-        _hover={{ bg: "rgba(40, 40, 50, 0.8)" }}
+        justifyContent="center"
       >
         <Text fontSize="md" fontWeight="600" color="white">
           Cartas {section.itemNumber}
         </Text>
-        <Icon
-          as={isOpen ? ChevronUpIcon : ChevronDownIcon}
-          w={6}
-          h={6}
-          color={neonGreen}
-        />
       </Flex>
 
       {/* Cards List */}
-      <Collapse in={isOpen} animateOpacity>
-        <VStack spacing={0} align="stretch" p={2}>
+      <VStack spacing={0} align="stretch" p={2}>
           {visibleCards.map((card, index) => (
             <HStack
               key={`${card.name}-${index}`}
@@ -445,7 +422,6 @@ const ItemSectionComponent = ({ section }: { section: ItemSection }) => {
             </HStack>
           ))}
         </VStack>
-      </Collapse>
     </Box>
   );
 };
@@ -516,26 +492,26 @@ export const LootBoxRateInfo: React.FC<LootBoxRateInfoProps> = ({
   // New Pokemon TCG style content for mobile
   const newInfoContent = (
     <Box
-      width="100%"
+      width="calc(100% - 32px)"
       maxWidth="600px"
-      maxHeight="85vh"
+      maxHeight="calc(85vh - 32px)"
       overflowY="auto"
-      bg="rgba(10, 10, 20, 0.98)"
       borderRadius="lg"
-      border="2px solid"
-      borderColor={neonGreen}
+      m={4}
       onClick={(e) => e.stopPropagation()}
     >
       {/* Header */}
       <Box
         bg="rgba(20, 20, 30, 0.98)"
-        borderBottom="2px solid"
+        border="2px solid"
         borderColor={neonGreen}
+        borderRadius="lg lg 0 0"
         py={4}
         px={4}
         position="sticky"
         top={0}
         zIndex={1}
+        boxShadow="0 4px 12px rgba(0, 0, 0, 0.6)"
       >
         <Heading
           size="lg"
@@ -549,7 +525,12 @@ export const LootBoxRateInfo: React.FC<LootBoxRateInfoProps> = ({
       </Box>
 
       {/* Content */}
-      <Box px={4} py={4}>
+      <Box
+        bg="rgba(10, 10, 20, 0.98)"
+        borderRadius="0 0 lg lg"
+        px={4}
+        py={4}
+      >
         <VStack spacing={0} align="stretch">
           {packData.map((section) => (
             <ItemSectionComponent key={section.itemNumber} section={section} />
