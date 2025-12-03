@@ -3,12 +3,9 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { getDailyMissions } from "../../dojo/queries/getDailyMissions";
 import { useDojo } from "../../dojo/useDojo";
-import { VIOLET_LIGHT } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { DailyMission } from "../../types/DailyMissions";
-import { IconComponent } from "../IconComponent";
-import { Icons } from "../../constants/icons";
-import { Clock } from "../Clock";
+import { MissionRow } from "./MissionRow";
 
 const RESET_TIME = import.meta.env.VITE_RESET_TIME_UTC || "6";
 
@@ -80,27 +77,6 @@ export const DailyMissions = ({ showTitle = true, fontSize }: DailyMissionsProps
           ))
         )}
       </Flex>
-    </Flex>
-  );
-};
-
-const MissionRow = ({ mission, fontSize }: { mission: DailyMission; fontSize?: string }) => {
-  const { isSmallScreen } = useResponsiveValues();
-  const size = isSmallScreen ? "18px" : "20px";
-
-  const color = mission.completed ? VIOLET_LIGHT : "white";
-  return (
-    <Flex alignItems="center" gap={2} my={0}>
-      <IconComponent
-        icon={mission.completed ? Icons.CHECK : Icons.UNCHECK}
-        width={size}
-        height={size}
-        color={color}
-      />
-      <Text fontSize={fontSize || (isSmallScreen ? "12px" : "14px")} color={color} lineHeight="1.4">
-        {mission.description} -
-        <span style={{ fontFamily: "Orbitron" }}> {mission.xp} XP</span>
-      </Text>
     </Flex>
   );
 };
