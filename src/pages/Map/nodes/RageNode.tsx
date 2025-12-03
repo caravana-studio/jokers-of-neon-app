@@ -30,17 +30,6 @@ const reachablePulse = keyframes`
   }
 `;
 
-const clickPulse = keyframes`
-  0% {
-    transform: scale(1);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(2);
-    opacity: 0;
-  }
-`;
-
 const RageNode = ({ data }: any) => {
   const { t } = useTranslation("map", { keyPrefix: "rage" });
 
@@ -48,7 +37,7 @@ const RageNode = ({ data }: any) => {
   const { id: gameId, refetchGameStore } = useGameStore();
   const navigate = useCustomNavigate();
 
-  const { reachableNodes, setSelectedNodeData, selectedNodeData, isNodeTransactionPending, setNodeTransactionPending, activeNodeId, setActiveNodeId, fitViewToNode, animateToNodeDuringTransaction, pulsingNodeId, setPulsingNodeId } = useMap();
+  const { reachableNodes, setSelectedNodeData, selectedNodeData } = useMap();
   const { isSmallScreen } = useResponsiveValues();
 
   const {
@@ -58,8 +47,7 @@ const RageNode = ({ data }: any) => {
   const { state } = useGameStore();
 
   const stateInMap = state === GameStateEnum.Map;
-  const isActiveNode = activeNodeId === data.id.toString();
-  const reachable = reachableNodes.includes(data.id.toString()) && stateInMap && (!isNodeTransactionPending || isActiveNode);
+  const reachable = reachableNodes.includes(data.id.toString()) && stateInMap;
   const [isHovered, setIsHovered] = useState(false);
 
   const title = `${t("name")} - ${t(data.last ? "final" : "intermediate")}`;
@@ -114,58 +102,22 @@ const RageNode = ({ data }: any) => {
               }
             : {}),
         }}
-        onClick={async () => {
-          if (isNodeTransactionPending) return;
-
-          if (isSmallScreen) {
+        onClick={() => {
+          isSmallScreen &&
             setSelectedNodeData({
               id: data.id,
               title,
               content,
               nodeType: NodeType.RAGE,
             });
-          } else if (data.current && !stateInMap) {
+          if (data.current && !stateInMap) {
             navigate(GameStateEnum.Rage);
-          } else if (stateInMap && reachableNodes.includes(data.id.toString())) {
-            // Desktop: verificar si ya está seleccionado para navegarlo o solo seleccionarlo
-            if (selectedNodeData?.id === data.id) {
-              // Segundo click: navegar con animación
-              setActiveNodeId(data.id.toString());
-              setNodeTransactionPending(true);
-              setPulsingNodeId(data.id.toString());
-
-              const transactionPromise = advanceNode(gameId, data.id);
-
-              try {
-                await animateToNodeDuringTransaction(
-                  data.id.toString(),
-                  transactionPromise
-                );
-
-                const response = await transactionPromise;
-
-                setPulsingNodeId(null);
-
-                if (response) {
-                  await refetchAndNavigate();
-                } else {
-                  setNodeTransactionPending(false);
-                  setActiveNodeId(null);
-                }
-              } catch (error) {
-                setPulsingNodeId(null);
-                setNodeTransactionPending(false);
-                setActiveNodeId(null);
+          } else if (stateInMap && reachable && !isSmallScreen) {
+            advanceNode(gameId, data.id).then((response) => {
+              if (response) {
+                refetchAndNavigate();
               }
-            } else {
-              // Primer click: solo mostrar información
-              setSelectedNodeData({
-                id: data.id,
-                title,
-                content,
-                nodeType: NodeType.RAGE,
-              });
-            }
+            });
           }
         }}
       >
@@ -188,20 +140,6 @@ const RageNode = ({ data }: any) => {
             alt="rage"
           />
         </Box>
-
-        {pulsingNodeId === data.id.toString() && (
-          <Box
-            position="absolute"
-            width="90%"
-            height="90%"
-            borderRadius="full"
-            border="3px solid white"
-            sx={{
-              animation: `${clickPulse} 0.8s ease-out forwards`,
-              pointerEvents: "none",
-            }}
-          />
-        )}
 
         <Handle type="target" position={Position.Top} style={{ opacity: 0 }} />
         <Handle

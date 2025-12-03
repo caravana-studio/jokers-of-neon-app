@@ -15,17 +15,6 @@ import { TooltipContent } from "../TooltipContent";
 import { NodeType } from "../types";
 import { HereSign } from "./HereSign";
 
-const clickPulse = keyframes`
-  0% {
-    transform: scale(1);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(2);
-        opacity: 0;
-  }
-`;
-
 const reachablePulse = keyframes`
   0% {
     transform: scale(1);
@@ -66,15 +55,14 @@ const StoreNode = ({ data }: any) => {
   const { id: gameId } = useGameStore();
   const navigate = useCustomNavigate();
 
-  const { reachableNodes, setSelectedNodeData, selectedNodeData, isNodeTransactionPending, setNodeTransactionPending, activeNodeId, setActiveNodeId, fitViewToNode, animateToNodeDuringTransaction, pulsingNodeId, setPulsingNodeId } = useMap();
+  const { reachableNodes, setSelectedNodeData, selectedNodeData } = useMap();
   const { isSmallScreen } = useResponsiveValues();
 
   const { state, setShopId } = useGameStore();
   const { refetch } = useStore();
 
   const stateInMap = state === GameStateEnum.Map;
-  const isActiveNode = activeNodeId === data.id.toString();
-  const reachable = reachableNodes.includes(data.id.toString()) && stateInMap && (!isNodeTransactionPending || isActiveNode);
+  const reachable = reachableNodes.includes(data.id.toString()) && stateInMap;
 
   const title = `${tMap('legend.nodes.shop.title')} ${t(`${data.shopId}.name`)}`;
   const content = t(
@@ -140,10 +128,8 @@ const StoreNode = ({ data }: any) => {
             }
             : {}),
         }}
-        onClick={async () => {
-          if (isNodeTransactionPending) return;
-
-          if (isSmallScreen) {
+        onClick={() => {
+          isSmallScreen &&
             setSelectedNodeData({
               id: data.id,
               title: title,
@@ -151,51 +137,9 @@ const StoreNode = ({ data }: any) => {
               nodeType: NodeType.STORE,
               shopId: data.shopId,
             });
-          } else if (data.current && !stateInMap) {
+
+          if (data.current && !stateInMap) {
             navigate(GameStateEnum.Store);
-          } else if (stateInMap && reachableNodes.includes(data.id.toString())) {
-            // Desktop: verificar si ya está seleccionado para navegarlo o solo seleccionarlo
-            if (selectedNodeData?.id === data.id) {
-              // Segundo click: navegar con animación
-              setActiveNodeId(data.id.toString());
-              setNodeTransactionPending(true);
-              setPulsingNodeId(data.id.toString());
-
-              const transactionPromise = advanceNode(gameId, data.id);
-
-              try {
-                await animateToNodeDuringTransaction(
-                  data.id.toString(),
-                  transactionPromise
-                );
-
-                const response = await transactionPromise;
-
-                setPulsingNodeId(null);
-
-                if (response) {
-                  setShopId(data.shopId);
-                  refetch();
-                  navigate(GameStateEnum.Store);
-                } else {
-                  setNodeTransactionPending(false);
-                  setActiveNodeId(null);
-                }
-              } catch (error) {
-                setPulsingNodeId(null);
-                setNodeTransactionPending(false);
-                setActiveNodeId(null);
-              }
-            } else {
-              // Primer click: solo mostrar información
-              setSelectedNodeData({
-                id: data.id,
-                title: title,
-                content: content,
-                nodeType: NodeType.STORE,
-                shopId: data.shopId,
-              });
-            }
           } else if (stateInMap && reachable && !isSmallScreen) {
             advanceNode(gameId, data.id).then((response) => {
               if (response) {
@@ -214,20 +158,6 @@ const StoreNode = ({ data }: any) => {
           src={`/map/icons/rewards/${data.shopId}${reachable || data.visited || data.current ? "" : "-off"}.png`}
           alt="shop"
         />
-
-        {pulsingNodeId === data.id.toString() && (
-          <Box
-            position="absolute"
-            width="100%"
-            height="100%"
-            borderRadius="100%"
-            border="3px solid white"
-            sx={{
-              animation: `${clickPulse} 0.8s ease-out forwards`,
-              pointerEvents: "none",
-            }}
-          />
-        )}
 
         <Handle type="target" position={Position.Top} style={{ opacity: 0 }} />
         <Handle
