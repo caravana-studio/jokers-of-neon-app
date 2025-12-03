@@ -1,14 +1,24 @@
-import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Spinner, Text } from "@chakra-ui/react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSeasonPass } from "../../providers/SeasonPassProvider";
 import { VIOLET, VIOLET_LIGHT } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { SeasonPass } from "./SeasonPass";
 
-export const SeasonPassBuyButton = () => {
+interface ISeasonPassBuyButtonProps {
+  onSeasonPassPurchased?: () => void;
+}
+
+export const SeasonPassBuyButton = ({
+  onSeasonPassPurchased,
+}: ISeasonPassBuyButtonProps) => {
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "season-pass",
   });
   const { isSmallScreen } = useResponsiveValues();
+  const { purchaseSeasonPass } = useSeasonPass();
+  const [isLoading, setIsLoading] = useState(false);
   return (
     <>
       <Flex flexDir="column" textAlign="center" w="90%">
@@ -28,11 +38,24 @@ export const SeasonPassBuyButton = () => {
           w={isSmallScreen ? "130px" : "200px"}
           h={isSmallScreen ? "22px" : "30px"}
           justifyContent={"space-between"}
+          isDisabled={isLoading}
+          onClick={() => {
+            setIsLoading(true);
+            purchaseSeasonPass()
+              .then(() => {setIsLoading(false)
+                onSeasonPassPurchased?.()
+              })
+              .catch(() => setIsLoading(false));
+          }}
         >
           <Flex w="60%">
-            <Text textAlign={"center"} w="100%">
-              {t("buy")}
-            </Text>
+            {isLoading ? (
+              <Spinner size="xs" />
+            ) : (
+              <Text textAlign={"center"} w="100%">
+                {t("buy")}
+              </Text>
+            )}
           </Flex>
           <Box justifyContent="flex-end">
             <SeasonPass w={isSmallScreen ? "50px" : "75px"} rotate="-20deg" />

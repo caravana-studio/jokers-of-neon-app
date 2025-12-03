@@ -103,6 +103,15 @@ const bgConfig: Record<string, { bg: BackgroundType; decoration?: boolean }> = {
   profile: {
     bg: BackgroundType.Game,
   },
+  shop: {
+    bg: BackgroundType.Game,
+  },
+  "external-pack": {
+    bg: BackgroundType.Store,
+  },
+  "purchasing-pack": {
+    bg: BackgroundType.Store,
+  },
 };
 
 export const Background = ({ children }: PropsWithChildren) => {
@@ -224,7 +233,7 @@ export const BackgroundDecoration = ({
             width={"65%"}
             maxW={"300px"}
             ml={4}
-              zIndex={10}
+            zIndex={10}
           />
         </Box>
       )}
@@ -248,11 +257,11 @@ export const BackgroundDecoration = ({
             maxHeight="70px"
             position="fixed"
             bottom={0}
-          zIndex={10}
+            zIndex={10}
           />
 
           <Box
-              zIndex={10}
+            zIndex={10}
             sx={{
               position: "fixed",
               bottom: 16,

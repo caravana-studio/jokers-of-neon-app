@@ -83,7 +83,7 @@ export const MobileBottomBar = ({
       justifyContent={isSmallScreen ? "space-between" : "center "}
       gap={isSmallScreen ? 0 : 8}
       alignItems={"center"}
-      zIndex={1000}
+      zIndex={900}
     >
       <Box w="30px" />
 

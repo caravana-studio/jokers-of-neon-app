@@ -23,6 +23,11 @@ import "./index.css";
 import { LoadingScreen } from "./pages/LoadingScreen/LoadingScreen.tsx";
 import { MobileBrowserBlocker } from "./pages/MobileBrowserBlocker.tsx";
 import { VersionMismatch } from "./pages/VersionMismatch.tsx";
+import {
+  AppContextProvider,
+  AppType,
+} from "./providers/AppContextProvider.tsx";
+import { SettingsProvider } from "./providers/SettingsProvider.tsx";
 import { StarknetProvider } from "./providers/StarknetProvider.tsx";
 import { fetchVersion } from "./queries/fetchVersion.ts";
 import customTheme from "./theme/theme";
@@ -109,24 +114,28 @@ async function init() {
     const queryClient = new QueryClient();
     root.render(
       <FadeInOut isVisible fadeInDelay={shouldSkipPresentation ? 0.5 : 1.5}>
-        <StarknetProvider>
-          <I18nextProvider i18n={localI18n} defaultNS={undefined}>
-            <QueryClientProvider client={queryClient}>
-              <ChakraBaseProvider theme={theme}>
-                <FeatureFlagProvider>
-                  <WalletProvider value={setupResult}>
-                    <DojoProvider value={setupResult}>
-                      <BrowserRouter>
-                        <Toaster />
-                        <App />
-                      </BrowserRouter>
-                    </DojoProvider>
-                  </WalletProvider>
-                </FeatureFlagProvider>
-              </ChakraBaseProvider>
-            </QueryClientProvider>
-          </I18nextProvider>
-        </StarknetProvider>
+        <AppContextProvider appType={AppType.FULL_GAME}>
+          <StarknetProvider>
+            <I18nextProvider i18n={localI18n} defaultNS={undefined}>
+              <QueryClientProvider client={queryClient}>
+                <ChakraBaseProvider theme={theme}>
+                  <FeatureFlagProvider>
+                    <WalletProvider value={setupResult}>
+                      <DojoProvider value={setupResult}>
+                        <BrowserRouter>
+                          <Toaster />
+                          <SettingsProvider>
+                            <App />
+                          </SettingsProvider>
+                        </BrowserRouter>
+                      </DojoProvider>
+                    </WalletProvider>
+                  </FeatureFlagProvider>
+                </ChakraBaseProvider>
+              </QueryClientProvider>
+            </I18nextProvider>
+          </StarknetProvider>
+        </AppContextProvider>
       </FadeInOut>
     );
   };

@@ -5,12 +5,19 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:shop": "STANDALONE_SHOP=true vite --mode standalone-shop",
     "build": "tsc && vite build",
+    "build:shop": "tsc && STANDALONE_SHOP=true vite build --mode standalone-shop && cp dist-shop/standalone-shop.html dist-shop/index.html",
+    "build:all": "tsc && BUILD_ALL=true vite build --mode all",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "codegen": "graphql-codegen",
     "generate": "sozo build --typescript --manifest-path ../jokers-of-neon-core/Scarb.toml --bindings-output ./src/dojo",
-    "test": "vitest"
+    "test": "vitest",
+    "postinstall": "npm rebuild rollup"
+  },
+  "engines": {
+    "node": ">=20"
   },
   "dependencies": {
     "@capacitor-community/native-audio": "^7.0.1",
@@ -48,6 +55,8 @@
     "@latticexyz/utils": "2.0.12",
     "@metamask/sdk": "^0.32.1",
     "@react-hook/resize-observer": "^2.0.2",
+    "@revenuecat/purchases-capacitor": "^11.2.10",
+    "@revenuecat/purchases-js": "^1.17.1",
     "@solana/web3.js": "^1.98.2",
     "@starknet-io/types-js": "^0.8.4",
     "@starknet-react/chains": "^5.0.1",

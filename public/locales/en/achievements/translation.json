@@ -31,5 +31,11 @@
     "slot-1": "Buy all the slots",
     "straight-flush-1": "Play a straight flush",
     "neon-play-1": "Play a neon hand"
+  },
+  "purchases": {
+    "success": {
+      "title": "Purchase completed",
+      "season-pass": "Season pass unlocked"
+    }
   }
 }

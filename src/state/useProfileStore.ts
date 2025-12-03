@@ -1,6 +1,13 @@
 import { create } from "zustand";
-import { getProfile, getPlayerStats, createProfile, getProfileLevelConfigByAddress } from "../dojo/queries/getProfile";
 import type { Account, AccountInterface } from "starknet";
+import {
+  fetchProfile,
+  fetchProfileLevelConfigByAddress,
+  fetchProfileLevelConfigByLevel,
+  fetchProfileStats,
+  updateProfileAvatar,
+  createProfile as createProfileApi,
+} from "../api/profile";
 
 export type ProfileStore = {
   profileData: ProfileData | null;
@@ -29,31 +36,68 @@ export const useProfileStore = create<ProfileStore>((set, get) => ({
   profileData: null,
   loading: false,
 
-  fetchProfileData: async (client, userAddress, snAccount, username) => {
+  fetchProfileData: async (_client, userAddress, _snAccount, username) => {
     set({ loading: true });
 
     try {
-      let profile = await getProfile(client, userAddress);
+      let profile = await fetchProfile(userAddress);
+      const badgesCount = profile.badgesIds.length;
+      const sanitizeNumber = (value: number) =>
+        Number.isFinite(value) ? value : 0;
+      const toInt = (value: number) => Math.trunc(sanitizeNumber(value));
+      const sanitizedTotalXp = sanitizeNumber(profile.totalXp);
+      const sanitizedCurrentXp = sanitizeNumber(profile.currentXp);
 
-      if (profile && profile.username === "" && snAccount && username) {
-        await createProfile(client, snAccount, userAddress, username, 1);
-        profile = await getProfile(client, userAddress); 
+      if (profile.username === "" && username) {
+        const fallbackAvatarId =
+          toInt(profile.avatarId) > 0 ? toInt(profile.avatarId) : 1;
+        await createProfileApi(userAddress, username, fallbackAvatarId);
+        profile = await fetchProfile(userAddress);
       }
 
-      const playerStats = await getPlayerStats(client, userAddress);
-      const levelXp = await getProfileLevelConfigByAddress(client, userAddress);
+      const userLevel = toInt(profile.level);
 
-      if (!profile || !playerStats) {
-        set({ profileData: null, loading: false });
-        return;
-      }
+      const [statsResult, levelConfigResult] =
+        await Promise.all([
+          fetchProfileStats(userAddress).catch((error) => {
+            console.log("Error fetching profile stats", error);
+            return null;
+          }),
+          fetchProfileLevelConfigByAddress(userAddress).catch((error) => {
+            console.log("Error fetching profile level config", error);
+            return null;
+          })
+        ]);
+
+      const nextLevelXpValue =
+        levelConfigResult !== null
+          ? sanitizeNumber(levelConfigResult.xpRequired)
+          : sanitizedTotalXp > 0
+          ? sanitizedTotalXp
+          : sanitizedCurrentXp;
+
+      const prevLevelXpValue = 0;
 
       const profileData: ProfileData = {
-        levelXp: levelXp ?? profile.currentXp,
-        currentBadges: 0,
-        totalBadges: 0,
-        profile,
-        playerStats,
+        currentBadges: badgesCount,
+        totalBadges: badgesCount,
+        profile: {
+          username: profile.username,
+          currentXp: sanitizedCurrentXp,
+          level: toInt(profile.level),
+          streak: toInt(profile.dailyStreak),
+          avatarId: toInt(profile.avatarId),
+        },
+        playerStats: {
+          games: statsResult
+            ? toInt(statsResult.gamesPlayed)
+            : toInt(profile.availableGames),
+          victories: statsResult ? toInt(statsResult.gamesWon) : 0,
+        },
+        xpLine: {
+          prevLevelXp: userLevel > 0 ? Math.max(0, prevLevelXpValue) : 0,
+          nextLevelXp: nextLevelXpValue,
+        },
       };
 
       set({ profileData, loading: false });
@@ -63,16 +107,19 @@ export const useProfileStore = create<ProfileStore>((set, get) => ({
     }
   },
 
-  updateAvatar: async (client, snAccount, address, avatarId) => {
+  updateAvatar: async (_client, _snAccount, address, avatarId) => {
     try {
-      await client.profile_system.updateAvatar(snAccount, address, avatarId);
+      await updateProfileAvatar(address, avatarId);
+      const normalizedAvatarId = Number.isFinite(Number(avatarId))
+        ? Math.trunc(Number(avatarId))
+        : avatarId;
 
       const current = get().profileData;
       if (current) {
         set({
           profileData: {
             ...current,
-            profile: { ...current.profile, avatarId },
+            profile: { ...current.profile, avatarId: normalizedAvatarId },
           },
         });
       }
