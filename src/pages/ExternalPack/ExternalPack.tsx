@@ -160,7 +160,7 @@ export const ExternalPack = ({
                   - PLAYER PACK -
                 </Text>
               </Flex>
-              <LootBoxRateInfo name={"test"} details={"details"} />
+              <LootBoxRateInfo name="LEGENDARY" details="Player Pack" packId={packId} />
             </>
           )}
 
