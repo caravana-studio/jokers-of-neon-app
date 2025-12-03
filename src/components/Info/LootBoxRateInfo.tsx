@@ -348,6 +348,11 @@ const ItemSectionComponent = ({ section }: { section: ItemSection }) => {
   const [isOpen, setIsOpen] = useState(true);
   const { neonGreen, neonPink } = theme.colors;
 
+  // Filter out cards with 0.0% probability
+  const visibleCards = section.cards.filter(
+    (card) => card.percentage !== "0.0%"
+  );
+
   return (
     <Box
       bg="rgba(20, 20, 30, 0.95)"
@@ -381,7 +386,7 @@ const ItemSectionComponent = ({ section }: { section: ItemSection }) => {
       {/* Cards List */}
       <Collapse in={isOpen} animateOpacity>
         <VStack spacing={0} align="stretch" p={2}>
-          {section.cards.map((card, index) => (
+          {visibleCards.map((card, index) => (
             <HStack
               key={`${card.name}-${index}`}
               p={2}
