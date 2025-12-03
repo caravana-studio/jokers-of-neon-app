@@ -1,3 +1,20 @@
+import type {
+  PurchasesPackage as NativePackage,
+  MakePurchaseResult as NativePurchaseResult,
+} from "@revenuecat/purchases-capacitor";
+import {
+  Purchases as CapacitorPurchases,
+  LOG_LEVEL,
+  PurchasesOfferings as NativeOfferings,
+} from "@revenuecat/purchases-capacitor";
+import type {
+  Package as WebPackage,
+  PurchaseResult as WebPurchaseResult,
+} from "@revenuecat/purchases-js";
+import {
+  Offerings as WebOfferings,
+  Purchases as WebPurchases,
+} from "@revenuecat/purchases-js";
 import {
   PropsWithChildren,
   createContext,
@@ -8,23 +25,7 @@ import {
   useRef,
   useState,
 } from "react";
-import {
-  Purchases as CapacitorPurchases,
-  LOG_LEVEL,
-  PurchasesOfferings as NativeOfferings,
-} from "@revenuecat/purchases-capacitor";
-import type {
-  MakePurchaseResult as NativePurchaseResult,
-  PurchasesPackage as NativePackage,
-} from "@revenuecat/purchases-capacitor";
-import {
-  Purchases as WebPurchases,
-  Offerings as WebOfferings,
-} from "@revenuecat/purchases-js";
-import type {
-  Package as WebPackage,
-  PurchaseResult as WebPurchaseResult,
-} from "@revenuecat/purchases-js";
+import { useDojo } from "../dojo/DojoContext";
 import { useUsername } from "../dojo/utils/useUsername";
 import { isNative } from "../utils/capacitorUtils";
 import { getRevenueCatApiKey } from "../utils/getRevenueCatApiKey";
@@ -33,7 +34,7 @@ type WebPurchasesInstance = ReturnType<typeof WebPurchases.configure>;
 type PurchasesClient = WebPurchasesInstance | typeof CapacitorPurchases;
 
 type RevenueCatPackage = NativePackage | WebPackage;
-type RevenueCatPurchaseResult = WebPurchaseResult | NativePurchaseResult;
+export type RevenueCatPurchaseResult = WebPurchaseResult | NativePurchaseResult;
 
 type RevenueCatPurchaseOptions = {
   customerEmail?: string;
@@ -57,6 +58,7 @@ type RevenueCatFormattedOfferings = {
 };
 
 type RevenueCatContextValue = {
+  userId: string | null;
   offerings: RevenueCatFormattedOfferings | null;
   loading: boolean;
   refreshOfferings: () => Promise<void>;
@@ -72,6 +74,7 @@ type RevenueCatContextValue = {
 };
 
 const RevenueCatContext = createContext<RevenueCatContextValue>({
+  userId: null,
   offerings: null,
   loading: false,
   refreshOfferings: async () => {},
@@ -274,6 +277,12 @@ const normalizeOfferings = (
 
 export const RevenueCatProvider = ({ children }: PropsWithChildren) => {
   const username = useUsername();
+  const {
+    account: { account },
+  } = useDojo();
+
+  const userId =
+    username && account?.address ? `${username},${account.address}` : null;
   const [offerings, setOfferings] =
     useState<RevenueCatFormattedOfferings | null>(null);
   const [loading, setLoading] = useState(false);
@@ -312,7 +321,7 @@ export const RevenueCatProvider = ({ children }: PropsWithChildren) => {
   }, []);
 
   const configureRevenueCat = useCallback(async () => {
-    if (!username || hasConfiguredRef.current) {
+    if (!userId || !username || !account?.address || hasConfiguredRef.current) {
       return;
     }
 
@@ -323,31 +332,31 @@ export const RevenueCatProvider = ({ children }: PropsWithChildren) => {
         await CapacitorPurchases.setLogLevel({ level: LOG_LEVEL.DEBUG });
         await CapacitorPurchases.configure({
           apiKey,
-          appUserID: username,
+          appUserID: userId,
         });
         purchasesRef.current = CapacitorPurchases;
         setPurchasesClient(CapacitorPurchases);
       } else {
         const purchasesInstance = WebPurchases.configure({
           apiKey,
-          appUserId: username,
+          appUserId: userId,
         });
         purchasesRef.current = purchasesInstance;
         setPurchasesClient(purchasesInstance);
       }
 
       hasConfiguredRef.current = true;
-      lastUsernameRef.current = username;
+      lastUsernameRef.current = userId;
       await fetchOfferings();
     } catch (error) {
       console.error("Failed to configure RevenueCat", error);
       setOfferings(null);
       setLoading(false);
     }
-  }, [fetchOfferings, username]);
+  }, [fetchOfferings, userId]);
 
   useEffect(() => {
-    if (!username) {
+    if (!userId) {
       return;
     }
 
@@ -356,11 +365,11 @@ export const RevenueCatProvider = ({ children }: PropsWithChildren) => {
       return;
     }
 
-    if (lastUsernameRef.current !== username) {
-      lastUsernameRef.current = username;
+    if (lastUsernameRef.current !== userId) {
+      lastUsernameRef.current = userId;
       fetchOfferings();
     }
-  }, [configureRevenueCat, fetchOfferings, username]);
+  }, [configureRevenueCat, fetchOfferings, userId]);
 
   const purchasePackage = useCallback(
     async (
@@ -442,6 +451,7 @@ export const RevenueCatProvider = ({ children }: PropsWithChildren) => {
 
   const value = useMemo<RevenueCatContextValue>(
     () => ({
+      userId,
       offerings,
       loading,
       refreshOfferings: fetchOfferings,
@@ -450,6 +460,7 @@ export const RevenueCatProvider = ({ children }: PropsWithChildren) => {
       purchasePackageById,
     }),
     [
+      userId,
       fetchOfferings,
       loading,
       offerings,

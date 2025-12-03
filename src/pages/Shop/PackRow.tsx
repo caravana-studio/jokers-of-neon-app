@@ -15,8 +15,10 @@ import { LootBoxRateInfo } from "../../components/Info/LootBoxRateInfo";
 import { packAnimation } from "../../constants/animations";
 import { useDojo } from "../../dojo/DojoContext";
 import { useRevenueCat } from "../../providers/RevenueCatProvider";
+import { listenForPurchase } from "../../queries/listenForPurchase";
 import { BLUE } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
+import { useUsername } from "../../dojo/utils/useUsername";
 
 interface PackRowProps {
   packId: number;
@@ -37,6 +39,7 @@ export const PackRow = ({ packId, packageId, price }: PackRowProps) => {
   const {
     account: { account },
   } = useDojo();
+  const username = useUsername();
   const { purchasePackageById, offerings } = useRevenueCat();
   const [isPurchasing, setIsPurchasing] = useState(false);
 
@@ -71,26 +74,24 @@ export const PackRow = ({ packId, packageId, price }: PackRowProps) => {
         return;
       }
 
-      const result = await purchasePackageById(packageId);
-      navigate("/purchasing-pack");
-      const mintedCards = await mintPack({
-        packId,
-        recipient: account.address,
+      listenForPurchase(username ?? "", "pack_purchases", (payload) => {
+        const simplifiedCards = payload.new.minted_cards.map(
+          (card: { card_id: number; skin_id: number }) => ({
+            card_id: card.card_id,
+            skin_id: card.skin_id,
+          })
+        );
+
+        navigate(`/external-pack/${packId}`, {
+          state: {
+            initialCards: simplifiedCards,
+            packId,
+          },
+        });
       });
 
-      const simplifiedCards = mintedCards.map(
-        (card: { card_id: number; skin_id: number }) => ({
-          card_id: card.card_id,
-          skin_id: card.skin_id,
-        })
-      );
-
-      navigate(`/external-pack/${packId}`, {
-        state: {
-          initialCards: simplifiedCards,
-          packId,
-        },
-      });
+      await purchasePackageById(packageId);
+      
     } catch (error) {
       console.error("Failed to purchase pack", error);
       navigate("/shop");
