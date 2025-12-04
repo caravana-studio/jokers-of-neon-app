@@ -1,5 +1,6 @@
 import { Box } from "@chakra-ui/react";
 import { BLUE_LIGHT } from "../../theme/colors";
+import Lightning from "../animations/Lightning/Lightning";
 
 interface IProgressBarProps {
   progress: number;

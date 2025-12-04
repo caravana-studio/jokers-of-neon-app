@@ -2,16 +2,16 @@ import { Flex } from "@chakra-ui/react";
 import Galaxy from "./Galaxy";
 import { galaxyIntensityConfigs } from "./config";
 
-import { GalaxyBackgroundIntensity } from "./types";
+import { Intensity } from "../../../types/intensity";
 
 interface GalaxyBackgroundProps {
   opacity?: number;
-  intensity?: GalaxyBackgroundIntensity;
+  intensity?: Intensity;
 }
 
 export const GalaxyBackground = ({
   opacity = 1,
-  intensity = GalaxyBackgroundIntensity.MEDIUM,
+  intensity = Intensity.MEDIUM,
 }: GalaxyBackgroundProps) => {
   return (
     <Flex

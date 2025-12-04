@@ -7,11 +7,13 @@ import { ModifiableCard } from "../../components/ModifiableCard.tsx";
 import { TiltCard } from "../../components/TiltCard.tsx";
 import { PRESELECTED_CARD_SECTION_ID } from "../../constants/general.ts";
 import { CARD_HEIGHT, CARD_WIDTH } from "../../constants/visualProps.ts";
+import { useCardHighlight } from "../../providers/HighlightProvider/CardHighlightProvider.tsx";
+import { useLightningAnimation } from "../../providers/LightningAnimationProvider.tsx";
 import { useAnimationStore } from "../../state/useAnimationStore.ts";
 import { useCurrentHandStore } from "../../state/useCurrentHandStore.ts";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 import { Card } from "../../types/Card.ts";
-import { useCardHighlight } from "../../providers/HighlightProvider/CardHighlightProvider.tsx";
+import { Intensity } from "../../types/intensity.ts";
 
 export const MobilePreselectedCardsSection = () => {
   const { discardAnimation, playAnimation } = useAnimationStore();
@@ -26,6 +28,7 @@ export const MobilePreselectedCardsSection = () => {
   const { setNodeRef } = useDroppable({
     id: PRESELECTED_CARD_SECTION_ID,
   });
+  const { showLightningAnimation } = useLightningAnimation();
 
   const [boxWidth, setBoxWidth] = useState(0);
   const boxRef = useRef<HTMLDivElement>(null);
@@ -94,6 +97,10 @@ export const MobilePreselectedCardsSection = () => {
                         card={modifiedCard}
                         onClick={() => {
                           togglePreselected(idx);
+                          showLightningAnimation({
+                            intensityLevel: Intensity.MEDIUM,
+                            color: "violet"
+                          });
                         }}
                         onHold={() => {
                           isSmallScreen && highlightCard(card);
