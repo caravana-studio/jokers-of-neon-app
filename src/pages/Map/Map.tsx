@@ -57,18 +57,13 @@ export const Map = () => {
         fitViewToFullMap();
       }, 400);
 
-      let timeout2: ReturnType<typeof setTimeout> | undefined;
-
-      // Solo hacer zoom al nodo actual en desktop
-      if (!isSmallScreen) {
-        timeout2 = setTimeout(() => {
-          fitViewToCurrentNode();
-        }, 1000);
-      }
+      const timeout2 = setTimeout(() => {
+        fitViewToCurrentNode();
+      }, 1000);
 
       return () => {
         clearTimeout(timeout1);
-        if (timeout2) clearTimeout(timeout2);
+        clearTimeout(timeout2);
       };
     }
   }, [layoutReady, nodes, isSmallScreen]);
@@ -148,10 +143,14 @@ export const Map = () => {
           [NodeType.CHALLENGE]: RoundNode,
         }}
         panOnScroll={false}
-        zoomOnScroll={true}
+        zoomOnScroll={!isNodeTransactionPending}
         nodesDraggable={false}
         nodesConnectable={false}
         edgesFocusable={false}
+        panOnDrag={!isNodeTransactionPending}
+        zoomOnPinch={!isNodeTransactionPending}
+        zoomOnDoubleClick={!isNodeTransactionPending}
+        elementsSelectable={!isNodeTransactionPending}
       >
         {!isSmallScreen && (
           <Controls

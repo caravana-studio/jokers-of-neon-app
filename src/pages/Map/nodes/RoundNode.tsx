@@ -74,8 +74,9 @@ const RoundNode = ({ data }: any) => {
           justifyContent: "center",
           fontSize: 24,
           color: "white",
-          cursor: stateInMap && reachable ? "pointer" : "default",
+          cursor: isNodeTransactionPending ? "default" : (stateInMap && reachable ? "pointer" : "default"),
           boxShadow: data.current ? `0px 0px 18px 6px ${BLUE}` : "none",
+          pointerEvents: isNodeTransactionPending ? "none" : "auto",
         }}
         sx={{
           transition: "all 0.2s ease-in-out",

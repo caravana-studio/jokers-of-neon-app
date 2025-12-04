@@ -78,7 +78,8 @@ const RageNode = ({ data }: any) => {
             selectedNodeData?.id === data.id || isHovered || data.current
               ? "scale(1.2)"
               : "scale(1)",
-          cursor: stateInMap && reachable ? "pointer" : "default",
+          cursor: isNodeTransactionPending ? "default" : (stateInMap && reachable ? "pointer" : "default"),
+          pointerEvents: isNodeTransactionPending ? "none" : "auto",
         }}
         onClick={() => {
           if (isNodeTransactionPending) return;
