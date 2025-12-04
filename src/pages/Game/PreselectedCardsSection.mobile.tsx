@@ -28,7 +28,6 @@ export const MobilePreselectedCardsSection = () => {
   const { setNodeRef } = useDroppable({
     id: PRESELECTED_CARD_SECTION_ID,
   });
-  const { showLightningAnimation } = useLightningAnimation();
 
   const [boxWidth, setBoxWidth] = useState(0);
   const boxRef = useRef<HTMLDivElement>(null);
@@ -97,10 +96,6 @@ export const MobilePreselectedCardsSection = () => {
                         card={modifiedCard}
                         onClick={() => {
                           togglePreselected(idx);
-                          showLightningAnimation({
-                            intensityLevel: Intensity.MEDIUM,
-                            color: "violet"
-                          });
                         }}
                         onHold={() => {
                           isSmallScreen && highlightCard(card);
