@@ -57,16 +57,21 @@ export const Map = () => {
         fitViewToFullMap();
       }, 400);
 
-      const timeout2 = setTimeout(() => {
-        fitViewToCurrentNode();
-      }, 1000);
+      let timeout2: ReturnType<typeof setTimeout> | undefined;
+
+      // Solo hacer zoom al nodo actual en desktop
+      if (!isSmallScreen) {
+        timeout2 = setTimeout(() => {
+          fitViewToCurrentNode();
+        }, 1000);
+      }
 
       return () => {
         clearTimeout(timeout1);
-        clearTimeout(timeout2);
+        if (timeout2) clearTimeout(timeout2);
       };
     }
-  }, [layoutReady, nodes]);
+  }, [layoutReady, nodes, isSmallScreen]);
 
   const isReachable = reachableNodes.includes(
     selectedNodeData?.id?.toString() ?? ""

@@ -108,42 +108,32 @@ const RoundNode = ({ data }: any) => {
           } else if (data.current && !stateInMap) {
             navigate(GameStateEnum.Round);
           } else if (stateInMap && reachableNodes.includes(data.id.toString())) {
-            // Desktop: verificar si ya está seleccionado para navegarlo o solo seleccionarlo
-            if (selectedNodeData?.id === data.id) {
-              // Segundo click: navegar con animación
-              setActiveNodeId(data.id.toString());
-              setNodeTransactionPending(true);
-              setPulsingNodeId(data.id.toString());
-              fitViewToNode(data.id.toString());
+            // Desktop: navegar con un solo click
+            setActiveNodeId(data.id.toString());
+            setNodeTransactionPending(true);
+            setPulsingNodeId(data.id.toString());
+            fitViewToNode(data.id.toString());
 
-              // Limpiar el pulso después de que termine la animación
-              setTimeout(() => {
-                setPulsingNodeId(null);
-              }, 800);
+            // Limpiar el pulso después de que termine la animación
+            setTimeout(() => {
+              setPulsingNodeId(null);
+            }, 800);
 
-              advanceNode(gameId, data.id)
-                .then((response) => {
-                  if (response) {
-                    setTimeout(() => {
-                      refetchAndNavigate();
-                    }, 900);
-                  } else {
-                    setNodeTransactionPending(false);
-                    setActiveNodeId(null);
-                  }
-                })
-                .catch(() => {
+            advanceNode(gameId, data.id)
+              .then((response) => {
+                if (response) {
+                  setTimeout(() => {
+                    refetchAndNavigate();
+                  }, 900);
+                } else {
                   setNodeTransactionPending(false);
                   setActiveNodeId(null);
-                });
-            } else {
-              // Primer click: solo mostrar información
-              setSelectedNodeData({
-                id: data.id,
-                title: title,
-                nodeType: NodeType.ROUND,
+                }
+              })
+              .catch(() => {
+                setNodeTransactionPending(false);
+                setActiveNodeId(null);
               });
-            }
           }
         }}
       >
