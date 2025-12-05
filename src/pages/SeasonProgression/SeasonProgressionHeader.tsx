@@ -1,19 +1,30 @@
 import { Box, Flex, Heading } from "@chakra-ui/react";
+import { useTranslation } from "react-i18next";
 import { Clock } from "../../components/Clock";
 import { SeasonPassBuyButton } from "../../components/SeasonPass/SeasonPassBuyButton";
+import { SeasonPassUnlocked } from "../../components/SeasonPass/SeasonPassUnlocked";
+import { useSeasonPass } from "../../providers/SeasonPassProvider";
+import { useSeason } from "../../queries/useSeason";
 import { BLUE } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
-import { SeasonPassUnlocked } from "../../components/SeasonPass/SeasonPassUnlocked";
-import { useTranslation } from "react-i18next";
 import { STEP_HEIGHT } from "./Step";
 
-const SEASON_PASS_UNLOCKED = false;
+interface ISeasonProgressionHeaderProps {
+  onSeasonPassPurchased: () => void;
+}
 
-export const SeasonProgressionHeader = () => {
+export const SeasonProgressionHeader = ({
+  onSeasonPassPurchased,
+}: ISeasonProgressionHeaderProps) => {
   const { isSmallScreen } = useResponsiveValues();
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "season-progression",
   });
+  const { seasonPassUnlocked } = useSeasonPass();
+  const { season } = useSeason();
+
+  const seasonNumber = season?.number ?? 1;
+  const seasonFinishDate = season?.finishDate;
   return (
     <Flex
       w="100%"
@@ -52,13 +63,15 @@ export const SeasonProgressionHeader = () => {
             whiteSpace={"nowrap"}
             wordBreak={"keep-all"}
           >
-            {t("season", { season: 1 })}
+            {t("season", { season: seasonNumber })}
           </Heading>
-          <Box ml={1}>
-            <Clock date={new Date()} />
-          </Box>
+          {seasonFinishDate && (
+            <Box ml={1}>
+              <Clock date={seasonFinishDate} />
+            </Box>
+          )}
         </Flex>
-        <Heading mb={3} fontWeight={100} fontSize={isSmallScreen ?11 : 18}>
+        <Heading mb={3} fontWeight={100} fontSize={isSmallScreen ? 11 : 18}>
           {t("free-rewards")}
         </Heading>
       </Flex>
@@ -68,11 +81,7 @@ export const SeasonProgressionHeader = () => {
         alignItems="flex-end"
         flexDir={"column"}
       >
-        {SEASON_PASS_UNLOCKED ? (
-          <SeasonPassUnlocked />
-        ) : (
-          <SeasonPassBuyButton />
-        )}
+        {seasonPassUnlocked ? <SeasonPassUnlocked /> : <SeasonPassBuyButton onSeasonPassPurchased={onSeasonPassPurchased}/>}
       </Flex>
     </Flex>
   );

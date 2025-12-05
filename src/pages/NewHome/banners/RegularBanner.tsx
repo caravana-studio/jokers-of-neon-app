@@ -6,14 +6,15 @@ import { useResponsiveValues } from "../../../theme/responsiveSettings";
 interface RegularBannerProps extends PropsWithChildren {
   title: string;
   date?: Date;
+  onClick?: () => void;
 }
 
 export const RegularBanner = ({
   title,
   children,
   date,
+  onClick,
 }: RegularBannerProps) => {
-
   const { isSmallScreen } = useResponsiveValues();
   return (
     <Flex
@@ -21,11 +22,19 @@ export const RegularBanner = ({
       h="auto"
       backgroundColor="rgba(0,0,0,0.5)"
       borderRadius={"15px"}
-      p={4}
+      px={isSmallScreen ? 4 : 6}
+      py={isSmallScreen ? 1 : 4}
       flexDir={"column"}
+      onClick={onClick}
+      cursor={onClick ? "pointer" : "default"}
     >
       <Flex w="100%" justifyContent="space-between" alignItems="center">
-        <Heading mt={1} size={isSmallScreen ? "s" : "md"} mb={2} variant="italic">
+        <Heading
+          mt={1}
+          fontSize={isSmallScreen ? 12 : 16}
+          mb={2}
+          variant="italic"
+        >
           {title}
         </Heading>
         {date && <Clock date={date} />}
