@@ -136,7 +136,7 @@
     "title": "Power-ups",
     "confirmation-modal": {
       "title": "Sell powerup",
-      "description": "Are you sure you want to sell this Power-up for \u00c2\u00a2{{price}}? There is no way to undo this action."
+      "description": "Are you sure you want to sell this Power-up for ¢{{price}}? There is no way to undo this action."
     }
   },
   "open-lootbox": {
