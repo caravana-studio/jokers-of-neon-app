@@ -1,14 +1,11 @@
-import { Flex, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { IconComponent } from "../../../components/IconComponent";
-import { Icons } from "../../../constants/icons";
 import { getDailyMissions } from "../../../dojo/queries/getDailyMissions";
 import { useDojo } from "../../../dojo/useDojo";
-import { VIOLET_LIGHT } from "../../../theme/colors";
 import { useResponsiveValues } from "../../../theme/responsiveSettings";
 import { DailyMission } from "../../../types/DailyMissions";
 import { RegularBanner } from "./RegularBanner";
 import { useTranslation } from "react-i18next";
+import { MissionRow } from "../../../components/DailyMissions/MissionRow";
 
 const RESET_TIME = import.meta.env.VITE_RESET_TIME_UTC || "6";
 
@@ -53,32 +50,18 @@ export const DailyMissionsBanner = () => {
   }, []);
   const date = getNextResetDate();
 
+  const { isSmallScreen } = useResponsiveValues();
+
   return (
     <RegularBanner title={t("dailyMissions")} date={date}>
       {dailyMissions.map((mission) => (
-        <MissionRow mission={mission} />
+        <MissionRow
+          key={mission.description}
+          mission={mission}
+          fontSize={isSmallScreen ? "14px" : "18px"}
+          iconSize={isSmallScreen ? "20px" : "30px"}
+        />
       ))}
     </RegularBanner>
-  );
-};
-
-const MissionRow = ({ mission }: { mission: DailyMission }) => {
-  const { isSmallScreen } = useResponsiveValues();
-  const size = isSmallScreen ? "20px" : "30px";
-
-  const color = mission.completed ? VIOLET_LIGHT : "white";
-  return (
-    <Flex alignItems={"center"} gap={2} my={isSmallScreen ? 0 : 1}>
-      <IconComponent
-        icon={mission.completed ? Icons.CHECK : Icons.UNCHECK}
-        width={size}
-        height={size}
-        color={color}
-      />
-      <Text fontSize={isSmallScreen ? "14px" : "18px"} color={color}>
-        {mission.description} -
-        <span style={{ fontFamily: "Orbitron" }}> {mission.xp} XP</span>
-      </Text>
-    </Flex>
   );
 };
