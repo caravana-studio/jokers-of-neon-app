@@ -27,8 +27,11 @@ import {
 } from "react";
 import { useDojo } from "../dojo/DojoContext";
 import { useUsername } from "../dojo/utils/useUsername";
-import { isNative } from "../utils/capacitorUtils";
+import { isNative as realNative } from "../utils/capacitorUtils";
 import { getRevenueCatApiKey } from "../utils/getRevenueCatApiKey";
+
+const forceWebPayments = import.meta.env.VITE_FORCE_WEB_PAYMENTS
+const isNative = forceWebPayments ? false : realNative;
 
 type WebPurchasesInstance = ReturnType<typeof WebPurchases.configure>;
 type PurchasesClient = WebPurchasesInstance | typeof CapacitorPurchases;
