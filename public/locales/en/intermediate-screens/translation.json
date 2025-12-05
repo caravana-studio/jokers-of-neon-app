@@ -120,7 +120,7 @@
     "title": "Special cards",
     "go-back": "Go back",
     "sell": "Sell",
-    "sell-for": "Sell for \u00c2\u00a2 {{price}}",
+    "sell-for": "Sell for ¢{{price}}",
     "confirmation-modal": {
       "title": "Sell special card",
       "description": "Are you sure you want to sell this special card for \u00c2\u00a2{{price}}? There is no way to undo this action."
