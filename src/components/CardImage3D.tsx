@@ -151,7 +151,7 @@ const ConditionalTilt = ({
   disableTilt?: boolean;
 }) => {
   const { isSmallScreen } = useResponsiveValues();
-  return isSmallScreen && small || disableTilt ? (
+  return (isSmallScreen && small) || disableTilt ? (
     <>{children}</>
   ) : (
     <Tilt

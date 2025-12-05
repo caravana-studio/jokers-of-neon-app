@@ -103,11 +103,11 @@ export const FlipCardGrid = ({
                           reason: animationRunning ? 'animation running' : 'was long press'
                         });
                       }
-                      // Reset the long press flag after handling click
+                      // Reset flag after onClick
                       wasLongPressRef.current = false;
                     }}
                     onHold={
-                      card.type === CardTypes.SPECIAL && onCardLongPress
+                      onCardLongPress
                         ? () => {
                             console.log('[FlipCardGrid] onHold triggered', {
                               cardId: card.card_id,
@@ -120,7 +120,7 @@ export const FlipCardGrid = ({
                     }
                   />
                 </FlipCard>
-                {isSmallScreen && card.type === CardTypes.SPECIAL && (
+                {isSmallScreen && (
                   <Text
                     position="absolute"
                     bottom="-24px"
