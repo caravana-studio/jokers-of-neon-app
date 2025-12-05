@@ -2,7 +2,6 @@ import { useTranslation } from "react-i18next";
 import { Box, Flex, Text, VStack, HStack, Image, Heading } from "@chakra-ui/react";
 import theme from "../../theme/theme";
 import { InformationIcon } from "./InformationIcon";
-import { useResponsiveValues } from "../../theme/responsiveSettings";
 
 interface LootBoxRateInfoProps {
   name: string;
@@ -449,7 +448,6 @@ export const LootBoxRateInfo: React.FC<LootBoxRateInfoProps> = ({
 }) => {
   const { t } = useTranslation(["store"]);
   const { neonGreen } = theme.colors;
-  const { isSmallScreen } = useResponsiveValues();
 
   // Detect which pack this is by ID (most reliable) or name (fallback)
   const nameLower = name.toLowerCase();
@@ -501,9 +499,8 @@ export const LootBoxRateInfo: React.FC<LootBoxRateInfoProps> = ({
     itemsCount: packData.length
   });
 
-  // Show new Pokemon TCG-style content for all packs on mobile
-  // (In the future, only show for Advanced and Specials when all packs have data)
-  const shouldShowNewContent = isSmallScreen;
+  // Show new Pokemon TCG-style content for all packs on both mobile and desktop
+  const shouldShowNewContent = true;
 
   // New Pokemon TCG style content for mobile
   const newInfoContent = (
