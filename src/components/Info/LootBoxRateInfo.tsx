@@ -386,11 +386,11 @@ const ItemSectionComponent = ({ section }: { section: ItemSection }) => {
                 justifyContent="center"
               >
                 <Image
-                  src={`/Cards/${card.imageId}.png`}
+                  src={card.rarity === "S" ? "/rarity/tier-s.png" : `/Cards/${card.imageId}.png`}
                   alt={card.name}
                   w="100%"
                   h="100%"
-                  objectFit="cover"
+                  objectFit={card.rarity === "S" ? "contain" : "cover"}
                   fallback={
                     <Text fontSize="xs" color="gray.500">
                       {card.name}
