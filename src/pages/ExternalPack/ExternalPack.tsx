@@ -5,7 +5,7 @@ import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { GalaxyBackground } from "../../components/backgrounds/galaxy/GalaxyBackground";
-import { GalaxyBackgroundIntensity } from "../../components/backgrounds/galaxy/types";
+import { Intensity } from "../../types/intensity";
 import CachedImage from "../../components/CachedImage";
 import { DelayedLoading } from "../../components/DelayedLoading";
 import { MobileDecoration } from "../../components/MobileDecoration";
@@ -27,27 +27,27 @@ const getIntensity = (
 ) => {
   switch (type) {
     case CardTypes.JOKER:
-      return GalaxyBackgroundIntensity.MEDIUM;
+      return Intensity.MEDIUM;
     case CardTypes.NEON:
-      return GalaxyBackgroundIntensity.MEDIUM;
+      return Intensity.MEDIUM;
     case CardTypes.SPECIAL:
       if (highlightedCardSkin) {
-        return GalaxyBackgroundIntensity.MAX;
+        return Intensity.MAX;
       }
       switch (rarity) {
         case RARITY.C:
-          return GalaxyBackgroundIntensity.MEDIUM;
+          return Intensity.MEDIUM;
         case RARITY.B:
-          return GalaxyBackgroundIntensity.MEDIUM;
+          return Intensity.MEDIUM;
         case RARITY.A:
-          return GalaxyBackgroundIntensity.HIGH;
+          return Intensity.HIGH;
         case RARITY.S:
-          return GalaxyBackgroundIntensity.MAX;
+          return Intensity.MAX;
         default:
-          return GalaxyBackgroundIntensity.MEDIUM;
+          return Intensity.MEDIUM;
       }
     default:
-      return GalaxyBackgroundIntensity.LOW;
+      return Intensity.LOW;
   }
 };
 

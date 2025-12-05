@@ -17,6 +17,7 @@ import { CardAnimationsProvider } from "./providers/CardAnimationsProvider";
 import { CardDataProvider } from "./providers/CardDataProvider";
 import { GameProvider } from "./providers/GameProvider";
 import { InformationPopUpProvider } from "./providers/InformationPopUpProvider";
+import { BackgroundAnimationProvider } from "./providers/BackgroundAnimationProvider";
 import { PageTransitionsProvider } from "./providers/PageTransitionsProvider";
 import { RevenueCatProvider } from "./providers/RevenueCatProvider";
 import { SeasonPassProvider } from "./providers/SeasonPassProvider";
@@ -74,11 +75,13 @@ function App() {
                         rageSongPath={"/music/rage_soundtrack.mp3"}
                       >
                         <Background>
-                          <Layout>
-                            <AnimatePresence mode="wait">
-                              <AppRoutes />
-                            </AnimatePresence>
-                          </Layout>
+                          <BackgroundAnimationProvider>
+                            <Layout>
+                              <AnimatePresence mode="wait">
+                                <AppRoutes />
+                              </AnimatePresence>
+                            </Layout>
+                          </BackgroundAnimationProvider>
                         </Background>
                       </AudioPlayerProvider>
                     </InformationPopUpProvider>

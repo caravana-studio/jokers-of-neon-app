@@ -21,6 +21,7 @@ import { FeatureFlagProvider } from "./featureManagement/FeatureFlagProvider.tsx
 import localI18n from "./i18n.ts";
 import "./index.css";
 import { LoadingScreen } from "./pages/LoadingScreen/LoadingScreen.tsx";
+import { Maintenance } from "./pages/Maintenance.tsx";
 import { MobileBrowserBlocker } from "./pages/MobileBrowserBlocker.tsx";
 import { VersionMismatch } from "./pages/VersionMismatch.tsx";
 import {
@@ -37,7 +38,6 @@ import { isNative } from "./utils/capacitorUtils.ts";
 import { preloadSpineAnimations } from "./utils/preloadAnimations.ts";
 import { registerServiceWorker } from "./utils/registerServiceWorker.ts";
 import { getMajor, getMinor } from "./utils/versionUtils.ts";
-import { Maintenance } from "./pages/Maintenance.tsx";
 
 const I18N_NAMESPACES = [
   "game",
