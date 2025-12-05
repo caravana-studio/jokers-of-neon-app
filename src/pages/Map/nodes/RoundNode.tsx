@@ -29,6 +29,17 @@ const reachablePulse = keyframes`
   }
 `;
 
+const clickPulse = keyframes`
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+`;
+
 const RoundNode = ({ data }: any) => {
   const { t } = useTranslation("map", { keyPrefix: "round" });
   const { advanceNode } = useShopActions();
@@ -39,12 +50,13 @@ const RoundNode = ({ data }: any) => {
     setup: { client },
   } = useDojo();
 
-  const { reachableNodes, setSelectedNodeData, selectedNodeData } = useMap();
+  const { reachableNodes, setSelectedNodeData, selectedNodeData, isNodeTransactionPending, setNodeTransactionPending, activeNodeId, setActiveNodeId, fitViewToNode, pulsingNodeId, setPulsingNodeId } = useMap();
   const { isSmallScreen } = useResponsiveValues();
   const { state, refetchGameStore } = useGameStore();
 
   const stateInMap = state === GameStateEnum.Map;
-  const reachable = reachableNodes.includes(data.id.toString()) && stateInMap;
+  const isActiveNode = activeNodeId === data.id.toString();
+  const reachable = reachableNodes.includes(data.id.toString()) && stateInMap && (!isNodeTransactionPending || isActiveNode);
 
   const title = t("name");
 
@@ -117,20 +129,43 @@ const RoundNode = ({ data }: any) => {
             : {}),
         }}
         onClick={() => {
-          isSmallScreen &&
+          if (isNodeTransactionPending) return;
+
+          if (isSmallScreen) {
             setSelectedNodeData({
               id: data.id,
               title: title,
               nodeType: NodeType.ROUND,
             });
-          if (data.current && !stateInMap) {
+          } else if (data.current && !stateInMap) {
             navigate(GameStateEnum.Round);
-          } else if (stateInMap && reachable && !isSmallScreen) {
-            advanceNode(gameId, data.id).then((response) => {
-              if (response) {
-                refetchAndNavigate();
-              }
-            });
+          } else if (stateInMap && reachableNodes.includes(data.id.toString())) {
+            // Desktop: navegar con un solo click
+            setActiveNodeId(data.id.toString());
+            setNodeTransactionPending(true);
+            setPulsingNodeId(data.id.toString());
+            fitViewToNode(data.id.toString());
+
+            // Limpiar el pulso después de que termine la animación
+            setTimeout(() => {
+              setPulsingNodeId(null);
+            }, 800);
+
+            advanceNode(gameId, data.id)
+              .then((response) => {
+                if (response) {
+                  setTimeout(() => {
+                    refetchAndNavigate();
+                  }, 900);
+                } else {
+                  setNodeTransactionPending(false);
+                  setActiveNodeId(null);
+                }
+              })
+              .catch(() => {
+                setNodeTransactionPending(false);
+                setActiveNodeId(null);
+              });
           }
         }}
       >
@@ -139,6 +174,19 @@ const RoundNode = ({ data }: any) => {
           alt="round"
         />
 
+        {pulsingNodeId === data.id.toString() && (
+          <Box
+            position="absolute"
+            width="100%"
+            height="100%"
+            borderRadius={10}
+            border="3px solid white"
+            sx={{
+              animation: `${clickPulse} 0.8s ease-out forwards`,
+              pointerEvents: "none",
+            }}
+          />
+        )}
         {data.current && <HereSign />}
 
         <Handle type="target" position={Position.Top} style={{ opacity: 0 }} />

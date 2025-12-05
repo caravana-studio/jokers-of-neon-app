@@ -31,9 +31,16 @@ export const Map = () => {
     edges,
     fitViewToCurrentNode,
     fitViewToFullMap,
+    fitViewToNode,
     layoutReady,
     selectedNodeData,
     reachableNodes,
+    isNodeTransactionPending,
+    setNodeTransactionPending,
+    activeNodeId,
+    setActiveNodeId,
+    pulsingNodeId,
+    setPulsingNodeId,
   } = useMap();
 
   const {
@@ -52,16 +59,21 @@ export const Map = () => {
         fitViewToFullMap();
       }, 400);
 
-      const timeout2 = setTimeout(() => {
-        fitViewToCurrentNode();
-      }, 1000);
+      let timeout2: ReturnType<typeof setTimeout> | undefined;
+
+      // Solo hacer zoom al nodo actual en desktop
+      if (!isSmallScreen) {
+        timeout2 = setTimeout(() => {
+          fitViewToCurrentNode();
+        }, 1000);
+      }
 
       return () => {
         clearTimeout(timeout1);
-        clearTimeout(timeout2);
+        if (timeout2) clearTimeout(timeout2);
       };
     }
-  }, [layoutReady, nodes]);
+  }, [layoutReady, nodes, isSmallScreen]);
 
   const isReachable = reachableNodes.includes(
     selectedNodeData?.id?.toString() ?? ""
@@ -73,24 +85,45 @@ export const Map = () => {
   };
 
   const handleGoClick = () => {
-    selectedNodeData &&
-      advanceNode(gameId, selectedNodeData.id).then((response) => {
+    if (!selectedNodeData) return;
+
+    setActiveNodeId(selectedNodeData.id.toString());
+    setNodeTransactionPending(true);
+    setPulsingNodeId(selectedNodeData.id.toString());
+    fitViewToNode(selectedNodeData.id.toString());
+
+    // Limpiar el pulso después de que termine la animación
+    setTimeout(() => {
+      setPulsingNodeId(null);
+    }, 800);
+
+    advanceNode(gameId, selectedNodeData.id)
+      .then((response) => {
         if (response) {
-          switch (selectedNodeData?.nodeType) {
-            case NodeType.RAGE:
-              refetchAndNavigate(GameStateEnum.Rage);
-              break;
-            case NodeType.ROUND:
-              refetchAndNavigate(GameStateEnum.Round);
-              break;
-            case NodeType.STORE:
-              navigate(GameStateEnum.Store);
-              selectedNodeData.shopId && setShopId(selectedNodeData.shopId);
-              break;
-            default:
-              break;
-          }
+          setTimeout(() => {
+            switch (selectedNodeData?.nodeType) {
+              case NodeType.RAGE:
+                refetchAndNavigate(GameStateEnum.Rage);
+                break;
+              case NodeType.ROUND:
+                refetchAndNavigate(GameStateEnum.Round);
+                break;
+              case NodeType.STORE:
+                selectedNodeData.shopId && setShopId(selectedNodeData.shopId);
+                navigate(GameStateEnum.Store);
+                break;
+              default:
+                break;
+            }
+          }, 900);
+        } else {
+          setNodeTransactionPending(false);
+          setActiveNodeId(null);
         }
+      })
+      .catch(() => {
+        setNodeTransactionPending(false);
+        setActiveNodeId(null);
       });
   };
 

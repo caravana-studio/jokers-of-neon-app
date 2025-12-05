@@ -13,7 +13,20 @@ import { BLUE, VIOLET } from "../../../theme/colors";
 import { useResponsiveValues } from "../../../theme/responsiveSettings";
 import { TooltipContent } from "../TooltipContent";
 import { NodeType } from "../types";
+
 import { HereSign } from "./HereSign";
+
+const clickPulse = keyframes`
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+`;
+
 
 const reachablePulse = keyframes`
   0% {
@@ -55,14 +68,15 @@ const StoreNode = ({ data }: any) => {
   const { id: gameId } = useGameStore();
   const navigate = useCustomNavigate();
 
-  const { reachableNodes, setSelectedNodeData, selectedNodeData } = useMap();
+  const { reachableNodes, setSelectedNodeData, selectedNodeData, isNodeTransactionPending, setNodeTransactionPending, activeNodeId, setActiveNodeId, fitViewToNode, pulsingNodeId, setPulsingNodeId } = useMap();
   const { isSmallScreen } = useResponsiveValues();
 
   const { state, setShopId } = useGameStore();
   const { refetch } = useStore();
 
   const stateInMap = state === GameStateEnum.Map;
-  const reachable = reachableNodes.includes(data.id.toString()) && stateInMap;
+  const isActiveNode = activeNodeId === data.id.toString();
+  const reachable = reachableNodes.includes(data.id.toString()) && stateInMap && (!isNodeTransactionPending || isActiveNode);
 
   const title = `${tMap('legend.nodes.shop.title')} ${t(`${data.shopId}.name`)}`;
   const content = t(
@@ -129,7 +143,9 @@ const StoreNode = ({ data }: any) => {
             : {}),
         }}
         onClick={() => {
-          isSmallScreen &&
+          if (isNodeTransactionPending) return;
+
+          if (isSmallScreen) {
             setSelectedNodeData({
               id: data.id,
               title: title,
@@ -137,17 +153,37 @@ const StoreNode = ({ data }: any) => {
               nodeType: NodeType.STORE,
               shopId: data.shopId,
             });
-
-          if (data.current && !stateInMap) {
+          } else if (data.current && !stateInMap) {
             navigate(GameStateEnum.Store);
-          } else if (stateInMap && reachable && !isSmallScreen) {
-            advanceNode(gameId, data.id).then((response) => {
-              if (response) {
-                setShopId(data.shopId);
-                refetch();
-                navigate(GameStateEnum.Store);
-              }
-            });
+          } else if (stateInMap && reachableNodes.includes(data.id.toString())) {
+            // Desktop: navegar con un solo click
+            setActiveNodeId(data.id.toString());
+            setNodeTransactionPending(true);
+            setPulsingNodeId(data.id.toString());
+            fitViewToNode(data.id.toString());
+
+            // Limpiar el pulso después de que termine la animación
+            setTimeout(() => {
+              setPulsingNodeId(null);
+            }, 800);
+
+            advanceNode(gameId, data.id)
+              .then((response) => {
+                if (response) {
+                  setTimeout(() => {
+                    setShopId(data.shopId);
+                    refetch();
+                    navigate(GameStateEnum.Store);
+                  }, 900);
+                } else {
+                  setNodeTransactionPending(false);
+                  setActiveNodeId(null);
+                }
+              })
+              .catch(() => {
+                setNodeTransactionPending(false);
+                setActiveNodeId(null);
+              });
           }
         }}
       >
@@ -158,6 +194,20 @@ const StoreNode = ({ data }: any) => {
           src={`/map/icons/rewards/${data.shopId}${reachable || data.visited || data.current ? "" : "-off"}.png`}
           alt="shop"
         />
+
+        {pulsingNodeId === data.id.toString() && (
+          <Box
+            position="absolute"
+            width="100%"
+            height="100%"
+            borderRadius="100%"
+            border="3px solid white"
+            sx={{
+              animation: `${clickPulse} 0.8s ease-out forwards`,
+              pointerEvents: "none",
+            }}
+          />
+        )}
 
         <Handle type="target" position={Position.Top} style={{ opacity: 0 }} />
         <Handle

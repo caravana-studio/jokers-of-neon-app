@@ -30,11 +30,18 @@ interface MapContextType {
   edges: Edge[];
   fitViewToCurrentNode: () => void;
   fitViewToFullMap: () => void;
+  fitViewToNode: (nodeId: string) => void;
   currentNode: Node | undefined;
   layoutReady: boolean;
   reachableNodes: string[];
   selectedNodeData: SelectedNodeData | undefined;
   setSelectedNodeData: (data: SelectedNodeData | undefined) => void;
+  isNodeTransactionPending: boolean;
+  setNodeTransactionPending: (pending: boolean) => void;
+  activeNodeId: string | null;
+  setActiveNodeId: (id: string | null) => void;
+  pulsingNodeId: string | null;
+  setPulsingNodeId: (id: string | null) => void;
 }
 
 const MapContext = createContext<MapContextType | undefined>(undefined);
@@ -50,6 +57,9 @@ export const MapProvider = ({ children }: MapProviderProps) => {
   const [selectedNodeData, setSelectedNodeData] = useState<
     SelectedNodeData | undefined
   >();
+  const [isNodeTransactionPending, setNodeTransactionPending] = useState(false);
+  const [activeNodeId, setActiveNodeId] = useState<string | null>(null);
+  const [pulsingNodeId, setPulsingNodeId] = useState<string | null>(null);
 
   const { isSmallScreen } = useResponsiveValues();
 
@@ -188,6 +198,15 @@ export const MapProvider = ({ children }: MapProviderProps) => {
     reactFlowInstance.fitView({ padding: 0.1 });
   };
 
+  const fitViewToNode = (nodeId: string) => {
+    reactFlowInstance.fitView({
+      nodes: [{ id: nodeId }],
+      padding: 0.3,
+      duration: 1200,
+      maxZoom: isSmallScreen ? 1.5 : 2,
+    });
+  };
+
   return (
     <MapContext.Provider
       value={{
@@ -195,11 +214,18 @@ export const MapProvider = ({ children }: MapProviderProps) => {
         edges,
         fitViewToCurrentNode,
         fitViewToFullMap,
+        fitViewToNode,
         currentNode,
         layoutReady,
         reachableNodes,
         selectedNodeData,
         setSelectedNodeData,
+        isNodeTransactionPending,
+        setNodeTransactionPending,
+        activeNodeId,
+        setActiveNodeId,
+        pulsingNodeId,
+        setPulsingNodeId,
       }}
     >
       {children}
