@@ -5,11 +5,12 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
-  Text
+  Text,
 } from "@chakra-ui/react";
 import { CircleFlagLanguage } from "react-circle-flags";
 import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
+import { isNative } from "../utils/capacitorUtils";
 
 const LanguageSwitcher = () => {
   const { i18n } = useTranslation(["home"]);
@@ -24,7 +25,7 @@ const LanguageSwitcher = () => {
       zIndex={999}
       position="absolute"
       left={isMobile ? "15px" : "45px"}
-      top={isMobile ? "50px" : "40px"}
+      top={isMobile ? (isNative ? "50px" : "15px") : "40px"}
     >
       <Menu>
         <MenuButton
@@ -46,10 +47,11 @@ const LanguageSwitcher = () => {
             onClick={() => changeLanguage("en")}
             gap={2}
           >
-            <CircleFlagLanguage width={isMobile ? "25px" : "30px"} languageCode="en-us" />
-            <Text ml={8}>
-            English
-            </Text>
+            <CircleFlagLanguage
+              width={isMobile ? "25px" : "30px"}
+              languageCode="en-us"
+            />
+            <Text ml={8}>English</Text>
           </MenuItem>
           <MenuItem
             height={"40px"}
@@ -57,7 +59,10 @@ const LanguageSwitcher = () => {
             onClick={() => changeLanguage("es")}
             gap={2}
           >
-            <CircleFlagLanguage width={isMobile ? "25px" : "30px"} languageCode="es" />
+            <CircleFlagLanguage
+              width={isMobile ? "25px" : "30px"}
+              languageCode="es"
+            />
             <Text ml={8}>Español</Text>
           </MenuItem>
           <MenuItem
@@ -66,7 +71,10 @@ const LanguageSwitcher = () => {
             onClick={() => changeLanguage("pt")}
             gap={2}
           >
-            <CircleFlagLanguage width={isMobile ? "25px" : "30px"} languageCode="pt" />
+            <CircleFlagLanguage
+              width={isMobile ? "25px" : "30px"}
+              languageCode="pt"
+            />
             <Text ml={8}>Português</Text>
           </MenuItem>
         </MenuList>

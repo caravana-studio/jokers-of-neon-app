@@ -6,7 +6,7 @@ import { SeasonPass } from "./SeasonPass";
 
 export const SeasonPassUnlocked = () => {
   const { t } = useTranslation("intermediate-screens", {
-    keyPrefix: "season-pass",
+    keyPrefix: "shop.season-pass",
   });
   const { isSmallScreen } = useResponsiveValues();
   return (

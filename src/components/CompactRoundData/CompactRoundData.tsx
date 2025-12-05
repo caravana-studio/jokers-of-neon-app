@@ -1,5 +1,6 @@
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
+import { Coins } from "../../pages/Game/Coins";
 import { useGameStore } from "../../state/useGameStore";
 import { BLUE_LIGHT, VIOLET } from "../../theme/colors";
 import { RollingNumber } from "../RollingNumber";
@@ -71,7 +72,10 @@ export const CompactRoundData = () => {
           </Box>
         </Flex>
         <ProgressBar progress={(currentScore / targetScore) * 100} />
-        <ScoreTotal />
+        <Flex w="100%" justify="space-between">
+          <Coins rolling />
+          <ScoreTotal />
+        </Flex>
       </Box>
     </Flex>
   );

@@ -26,6 +26,11 @@ export const gameUrls = [
   "/preview/:type",
   "/loot-box-cards-selection",
   "/manage",
+  "/map",
+  "/docs",
+  "/deck",
+  "/plays",
+  "/settings-game",
 ];
 
 export const getIcon = (state: GameStateEnum) => {
@@ -77,17 +82,17 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
         active: url === "/",
         key: "home",
       },
-      /*       {
+      {
         icon: Icons.DOCS,
         url: "/my-collection",
         active: url === "/my-collection",
         key: "collection",
-      }, */ {
+      } /*       {
         icon: Icons.LEADERBOARD,
         url: "/leaderboard",
         active: url === "/leaderboard",
         key: "leaderboard",
-      },
+      },*/,
       {
         icon: Icons.JOKER,
         url: "/my-games",
@@ -95,6 +100,18 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
         key: "games",
       },
       {
+        icon: Icons.SEASON,
+        url: "/season",
+        active: url === "/season",
+        key: "season",
+      },
+      {
+        icon: Icons.SHOP,
+        url: "/shop",
+        active: url === "/shop",
+        key: "shop",
+      },
+      /*{
         icon: Icons.PROFILE,
         url: "/profile",
         active: url === "/profile",
@@ -105,7 +122,7 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
         url: "/settings",
         active: url === "/settings",
         key: "settings",
-      },
+      },*/
     ],
     [url]
   );

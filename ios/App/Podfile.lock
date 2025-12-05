@@ -32,6 +32,12 @@ PODS:
     - FBSDKCoreKit (= 18.0.1)
   - FBSDKShareKit (18.0.1):
     - FBSDKCoreKit (= 18.0.1)
+  - PurchasesHybridCommon (17.13.0):
+    - RevenueCat (= 5.46.0)
+  - RevenueCat (5.46.0)
+  - RevenuecatPurchasesCapacitor (11.2.10):
+    - Capacitor
+    - PurchasesHybridCommon (= 17.13.0)
 
 DEPENDENCIES:
   - "Capacitor (from `../../node_modules/@capacitor/ios`)"
@@ -48,6 +54,7 @@ DEPENDENCIES:
   - FBSDKGamingServicesKit (~> 18.0)
   - FBSDKLoginKit (~> 18.0)
   - FBSDKShareKit (~> 18.0)
+  - "RevenuecatPurchasesCapacitor (from `../../node_modules/@revenuecat/purchases-capacitor`)"
 
 SPEC REPOS:
   trunk:
@@ -57,6 +64,8 @@ SPEC REPOS:
     - FBSDKGamingServicesKit
     - FBSDKLoginKit
     - FBSDKShareKit
+    - PurchasesHybridCommon
+    - RevenueCat
 
 EXTERNAL SOURCES:
   Capacitor:
@@ -79,6 +88,8 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capacitor/preferences"
   CordovaPlugins:
     :path: "../capacitor-cordova-ios-plugins"
+  RevenuecatPurchasesCapacitor:
+    :path: "../../node_modules/@revenuecat/purchases-capacitor"
 
 SPEC CHECKSUMS:
   Capacitor: b4741ca7affb32c1b70debd03df92cbf522d8a80
@@ -97,7 +108,10 @@ SPEC CHECKSUMS:
   FBSDKGamingServicesKit: acde62310212678446f81b0a14da88231b918feb
   FBSDKLoginKit: f48c06446995cd209332831f692cea28b26e51da
   FBSDKShareKit: d3fef7f6690e173369134beb5f43983d7338e933
+  PurchasesHybridCommon: f408c80577f9d1b7400acf7466846125496877b0
+  RevenueCat: 0423a85e1f2ef06f1002b18cae53fe856f60ea53
+  RevenuecatPurchasesCapacitor: 4baf123df27c556e366f937d8f763d5f09f5698b
 
-PODFILE CHECKSUM: 246756a35055f8371a516354a232616cf3a6f0d1
+PODFILE CHECKSUM: d498dfdf68aed3021a44cb9ecb71f1b2e20cbd0e
 
 COCOAPODS: 1.16.2
