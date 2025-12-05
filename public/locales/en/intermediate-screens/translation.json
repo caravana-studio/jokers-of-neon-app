@@ -1,4 +1,86 @@
 {
+  "daily-games": {
+    "next-live-in": "Next live in",
+    "out-of-lives": "You ran out of lives",
+    "get-more-lives": "Get more lives with",
+    "season-pass": "SEASON PASS",
+    "you-have-1-live-left": "You have 1 live left",
+    "you-have-x-lives-left": "You have {{lives}} lives left",
+    "new-game": "New game"
+  },
+  "shop": {
+    "title": "Shop",
+    "season-pass": {
+      "more-rewards-with": "More rewards with",
+      "buy": "BUY",
+      "unlocked": "UNLOCKED",
+      "more-jokers-with": "More Jokers with",
+      "season-pass": "SEASON PASS",
+      "season-pass-x": "SEASON {{season}} PASS",
+      "facts": {
+        "1-title": "Exclusive rewards",
+        "1-description-1": "Progressing through season 1 gives vou extra rewards.",
+        "1-description-2": "All your rewards are transferrable.",
+        "2-title": "More games per day",
+        "2-description-1": "You can play 4 games of Jokers per day instead of 2.",
+        "2-description-2": "Every game recovers every 4 hours intead of 12.",
+        "3-title": "Discounts on packs",
+        "3-description-1": "20% discount on every Season 1 pack you buy.",
+        "3-description-2": ""
+      }
+    },
+    "packs": {
+      "buy": "BUY",
+      "purchase-error-title": "Purchase failed",
+      "purchase-error-no-account": "We couldn't find your account. Please try logging out and back in.",
+      "purchase-error-description": "We couldn't complete your pack purchase. Please try again.",
+      "purchase-error-no-package": "We couldn't complete your pack purchase. Configuration problem.",
+      "player-pack": "Player pack",
+      "limited-edition": "Limited edition",
+      "size": "Size",
+      "offering-rates": "Offering rates",
+      "transferrable-legend": "All items in purchased packs are transferrable.",
+      "skins-legend": "Player packs do not contain skinned cards.",
+      "1": {
+        "name": "BASIC"
+      },
+      "2": {
+        "name": "ADVANCED",
+        "description": {
+          "1": "Upgrade your collection with higher odds of rare cards.",
+          "2": "Up to 50% chance to pull a Special card."
+        }
+      },
+      "3": {
+        "name": "EPIC",
+        "description": {
+          "1": "A premium pack with a strong chance of hitting Specials.",
+          "2": "Up to 75% chance to get a Special card, includes A and S tiers."
+        }
+      },
+      "4": {
+        "name": "LEGENDARY",
+        "description": {
+          "1": "Guaranteed Special card in every pack.",
+          "2": "Highest odds for A and S tier Specials, truly legendary rewards."
+        }
+      },
+      "5": {
+        "name": "COLLECTOR",
+        "description": {
+          "1": "Limited-edition pack featuring ultra-rare cards and skins.",
+          "2": "1 guaranteed skinned Special card with top-tier odds."
+        }
+      },
+      "6": {
+        "name": "COLLECTOR XL",
+        "description": {
+          "1": "Massive pack loaded with the rarest content of the season.",
+          "2": "2 guaranteed skinned Special cards with top-tier odds."
+        }
+      }
+    }
+  },
   "maintenance": {
     "title": "Maintenance in Progress",
     "description": "We're updating Jokers of Neon to bring you new features and improvements. The game will be back shortly, thanks for your patience!"
@@ -25,23 +107,21 @@
     "please-update": "Please update to continue",
     "update": "UPDATE"
   },
-  "season-pass": {
-    "more-rewards-with": "More rewards with",
-    "season-pass": "SEASON PASS",
-    "buy": "BUY",
-    "unlocked": "UNLOCKED"
-  },
   "season-progression": {
     "free-rewards": "FREE REWARDS",
     "season": "SEASON {{season}}",
     "my-xp": "My XP",
-    "claim": "CLAIM"
+    "claim": "CLAIM",
+    "tournament-entry": "Tournament entry",
+    "claiming-in-progress": "Claiming in progress..."
   },
   "map": {
     "level": "LEVEL"
   },
   "external-pack": {
-    "continue": "Continue"
+    "continue": "Continue",
+    "open": "Open",
+    "draw-line": "Draw a line to open"
   },
   "my-games": {
     "title": "Games",
@@ -51,6 +131,9 @@
     "continue-btn": "continue",
     "start-btn": "start",
     "tuto": "Tutorial",
+    "learn": "Do you want to learn how to play?",
+    "tournament-active": "There is an active tournament!",
+    "join": "Join now",
     "surrender": {
       "action": "Surrender",
       "confirmation-modal": {
@@ -120,7 +203,7 @@
     "title": "Special cards",
     "go-back": "Go back",
     "sell": "Sell",
-    "sell-for": "Sell for ¢ {{price}}",
+    "sell-for": "Sell for ¢{{price}}",
     "confirmation-modal": {
       "title": "Sell special card",
       "description": "Are you sure you want to sell this special card for ¢{{price}}? There is no way to undo this action."
@@ -145,7 +228,8 @@
   },
   "common": {
     "go-back-btn": "Go back",
-    "login": "Login"
+    "login": "Login",
+    "login-to-access": "Please, login to access this page"
   },
   "profile-menu": {
     "level": "Level",
@@ -166,6 +250,8 @@
     "no-collection": "Please login to see your collection",
     "login": "Login",
     "collections": {
+      "traditionals": "Traditional Cards",
+      "neons": "Neon Cards",
       "sx": "Season {{season}}",
       "c99": "GG Exclusive Collection - v1"
     }

@@ -4,12 +4,11 @@ import {
   Heading,
   Modal,
   ModalBody,
-  ModalCloseButton,
   ModalContent,
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Text,
+  Text
 } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { NEON_PINK } from "../theme/colors";
@@ -42,20 +41,22 @@ export const ConfirmationModal = ({
       <ModalOverlay bg="rgba(0, 0, 0, 0.6)" />
       <ModalContent p={3}>
         <ModalHeader>
-          <Heading size="m" variant="neonWhite">
+          <Heading size="m" textAlign={"center"} variant="neonWhite">
             {title}
           </Heading>
         </ModalHeader>
-        <ModalCloseButton sx={{ m: 5 }} />
         <ModalBody>
           <Flex gap={4} flexDirection="column">
-            <Text size="md">{description}</Text>
+            <Text size="md" textAlign={"center"}>
+              {description}
+            </Text>
           </Flex>
         </ModalBody>
-        <ModalFooter>
+        <ModalFooter justifyContent="center" mt={2}>
           <Button
             variant="defaultOutline"
             size="sm"
+            fontSize={[10, 12]}
             w={isSmallScreen ? "50%" : "auto"}
             onClick={close}
           >
@@ -67,6 +68,7 @@ export const ConfirmationModal = ({
             size="sm"
             onClick={onConfirm}
             ml={5}
+            fontSize={[10, 12]}
             w={isSmallScreen ? "50%" : "auto"}
           >
             {confirmText ?? t("confirmation-modal.confirm")}

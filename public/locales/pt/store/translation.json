@@ -42,7 +42,8 @@
       "loot-boxes": "Caixas",
       "utilities": "Utilidades",
       "no-coins": "Moedas insuficientes",
-      "manage": "Gerenciar items"
+      "manage": "Gerenciar items",
+      "no-powerup-slots": "Sem espaço"
     },
     "titles": {
       "level-game": "Aprimore seu jogo",

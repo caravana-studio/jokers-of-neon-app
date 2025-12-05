@@ -14,6 +14,8 @@ import { useResponsiveValues } from "../../../theme/responsiveSettings";
 import { TooltipContent } from "../TooltipContent";
 import { NodeType } from "../types";
 
+import { HereSign } from "./HereSign";
+
 const clickPulse = keyframes`
   0% {
     transform: scale(1);
@@ -21,6 +23,21 @@ const clickPulse = keyframes`
   }
   100% {
     transform: scale(2);
+    opacity: 0;
+  }
+`;
+
+
+const reachablePulse = keyframes`
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  70% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+  100% {
     opacity: 0;
   }
 `;
@@ -46,6 +63,7 @@ const getStoreItemsBasedOnShopId = (shopId: number) => {
 
 const StoreNode = ({ data }: any) => {
   const { t } = useTranslation("store", { keyPrefix: "config" });
+  const { t: tMap } = useTranslation("map");
   const { advanceNode } = useShopActions();
   const { id: gameId } = useGameStore();
   const navigate = useCustomNavigate();
@@ -54,13 +72,13 @@ const StoreNode = ({ data }: any) => {
   const { isSmallScreen } = useResponsiveValues();
 
   const { state, setShopId } = useGameStore();
-  const { refetch} = useStore()
+  const { refetch } = useStore();
 
   const stateInMap = state === GameStateEnum.Map;
   const isActiveNode = activeNodeId === data.id.toString();
   const reachable = reachableNodes.includes(data.id.toString()) && stateInMap && (!isNodeTransactionPending || isActiveNode);
 
-  const title = t(`${data.shopId}.name`);
+  const title = `${tMap('legend.nodes.shop.title')} ${t(`${data.shopId}.name`)}`;
   const content = t(
     `${data.shopId}.content`,
     getStoreItemsBasedOnShopId(data.shopId)
@@ -91,6 +109,7 @@ const StoreNode = ({ data }: any) => {
           color: "white",
           cursor: stateInMap && reachable ? "pointer" : "default",
           boxShadow: data.current ? `0px 0px 18px 6px ${BLUE}` : "none",
+          position: "relative",
         }}
         sx={{
           transition: "all 0.2s ease-in-out",
@@ -106,6 +125,22 @@ const StoreNode = ({ data }: any) => {
                 : "transparent",
             transform: "scale(1.2)",
           },
+          ...(reachable && !data.current
+            ? {
+                "&::after": {
+                  content: '""',
+                  position: "absolute",
+                  inset: "-8px",
+                  borderRadius: "100%",
+                  border: `2px solid ${VIOLET}`,
+                  animation: `${reachablePulse} 1.8s ease-out infinite`,
+                  pointerEvents: "none",
+                  opacity: 0.8,
+                  zIndex: -1,
+                  transformOrigin: "center",
+                },
+              }
+            : {}),
         }}
         onClick={() => {
           if (isNodeTransactionPending) return;
@@ -152,6 +187,8 @@ const StoreNode = ({ data }: any) => {
           }
         }}
       >
+        {data.current && <HereSign />}
+
         <CachedImage
           w="100%"
           src={`/map/icons/rewards/${data.shopId}${reachable || data.visited || data.current ? "" : "-off"}.png`}

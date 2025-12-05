@@ -6,6 +6,9 @@
       "Bash(findstr:*)",
       "Bash(taskkill:*)",
       "Bash(dir:*)"
+      "Bash(cat:*)",
+      "Bash(python -c:*)",
+      "Bash(mv:*)"
     ],
     "deny": [],
     "ask": []
