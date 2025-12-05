@@ -120,10 +120,10 @@
     "title": "Special cards",
     "go-back": "Go back",
     "sell": "Sell",
-    "sell-for": "Sell for ¢ {{price}}",
+    "sell-for": "Sell for \u00c2\u00a2 {{price}}",
     "confirmation-modal": {
       "title": "Sell special card",
-      "description": "Are you sure you want to sell this special card for ¢{{price}}? There is no way to undo this action."
+      "description": "Are you sure you want to sell this special card for \u00c2\u00a2{{price}}? There is no way to undo this action."
     },
     "locked-slot": "Unlock special card slot"
   },
@@ -136,7 +136,7 @@
     "title": "Power-ups",
     "confirmation-modal": {
       "title": "Sell powerup",
-      "description": "Are you sure you want to sell this Power-up for ¢{{price}}? There is no way to undo this action."
+      "description": "Are you sure you want to sell this Power-up for \u00c2\u00a2{{price}}? There is no way to undo this action."
     }
   },
   "open-lootbox": {
@@ -144,7 +144,8 @@
     "tap-open": "Tap to open"
   },
   "common": {
-    "login": "Login"
+    "login": "Login",
+    "go-back-btn": "volver"
   },
   "profile-menu": {
     "level": "Level",

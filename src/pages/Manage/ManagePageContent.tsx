@@ -57,7 +57,7 @@ export const ManagePageContent = ({
             discardedPowerups={discardedPowerups}
           />
         </Flex>
-        <Flex mt={[0, 0, 0, 4]}>{goBackButton}</Flex>
+        <Flex mt={[0, 0, 0, 4]} justifyContent="center">{goBackButton}</Flex>
       </Flex>
     </BackgroundDecoration>
   );
