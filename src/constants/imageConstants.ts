@@ -19,5 +19,6 @@ export const ALL_GLOBS = {
   }),
   backs: import.meta.glob("/public/Cards/Backs/**/*.png", { eager: true }),
   map: import.meta.glob("/public/map/**/*.png", { eager: true }),
+  rarity: import.meta.glob("/public/rarity/**/*.png", { eager: true }),
   assets: import.meta.glob("/src/assets/**/*.png", { eager: true }),
 };
