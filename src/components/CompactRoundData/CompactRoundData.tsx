@@ -80,6 +80,7 @@ export const CompactRoundData = () => {
         <ProgressBar
           progress={(currentScore / targetScore) * 100}
           playSound={play}
+          animated
         />
         <Flex w="100%" justify="space-between">
           <Coins rolling />
