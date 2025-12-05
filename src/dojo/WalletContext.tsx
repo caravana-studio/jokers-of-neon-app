@@ -221,15 +221,17 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
             src="logos/logo.png"
             alt="logo"
           />
-          <Heading
-            lineHeight={1}
-            variant={"italic"}
-            mb={isMobile ? 3 : "50px"}
-            letterSpacing={1}
-            fontSize={isMobile ? 20 : 30}
-          >
-            SHOP
-          </Heading>
+          {appType === AppType.SHOP && (
+            <Heading
+              lineHeight={1}
+              variant={"italic"}
+              mb={isMobile ? 3 : "50px"}
+              letterSpacing={1}
+              fontSize={isMobile ? 20 : 30}
+            >
+              SHOP
+            </Heading>
+          )}
         </Flex>
         <Flex flexDirection={"row"} gap={"30px"}>
           <button
