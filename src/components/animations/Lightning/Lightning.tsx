@@ -104,12 +104,12 @@ const Lightning: React.FC<LightningProps> = ({ hue = 230, xOffset = 0, speed = 1
           
           uv += 2.0 * fbm(uv * uSize + 0.8 * iTime * uSpeed) - 1.0;
           
-          float dist = max(abs(uv.x), 0.001);
+          float dist = abs(uv.x);
           vec3 baseColor = hsv2rgb(vec3(uHue / 360.0, 0.7, 0.8));
           float lightning = pow(mix(0.0, 0.07, hash11(iTime * uSpeed)) / dist, 1.0) * uIntensity;
           vec3 col = clamp(baseColor * lightning, 0.0, 1.0);
           float alpha = smoothstep(0.05, 0.25, lightning);
-          fragColor = vec4(col, alpha);
+          fragColor = vec4(col, 1.0);
       }
 
       void main() {

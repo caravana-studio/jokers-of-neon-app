@@ -8,12 +8,10 @@ import { TiltCard } from "../../components/TiltCard.tsx";
 import { PRESELECTED_CARD_SECTION_ID } from "../../constants/general.ts";
 import { CARD_HEIGHT, CARD_WIDTH } from "../../constants/visualProps.ts";
 import { useCardHighlight } from "../../providers/HighlightProvider/CardHighlightProvider.tsx";
-import { useLightningAnimation } from "../../providers/LightningAnimationProvider.tsx";
 import { useAnimationStore } from "../../state/useAnimationStore.ts";
 import { useCurrentHandStore } from "../../state/useCurrentHandStore.ts";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 import { Card } from "../../types/Card.ts";
-import { Intensity } from "../../types/intensity.ts";
 
 export const MobilePreselectedCardsSection = () => {
   const { discardAnimation, playAnimation } = useAnimationStore();
