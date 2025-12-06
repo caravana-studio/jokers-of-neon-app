@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { Box, Flex, Text, VStack, HStack, Image, Heading } from "@chakra-ui/react";
+import { useRef, useState, useEffect } from "react";
 import theme from "../../theme/theme";
 import { InformationIcon } from "./InformationIcon";
 
@@ -362,34 +363,36 @@ const ItemSectionComponent = ({ section }: { section: ItemSection }) => {
       border="1px solid"
       borderColor={neonGreen}
       overflow="hidden"
-      mb={3}
+      mb={1.5}
     >
       {/* Header */}
       <Flex
-        p={3}
+        py={1.5}
+        px={2}
         bg="rgba(30, 30, 40, 0.8)"
         alignItems="center"
         justifyContent="center"
       >
-        <Text fontSize="md" fontWeight="600" color="white">
+        <Text fontSize="xs" fontWeight="600" color="white">
           Cartas {section.itemNumber}
         </Text>
       </Flex>
 
       {/* Cards List */}
-      <VStack spacing={0} align="stretch" p={2}>
+      <VStack spacing={0} align="stretch" p={1}>
           {visibleCards.map((card, index) => (
             <HStack
               key={`${card.name}-${index}`}
-              p={2}
-              spacing={3}
+              py={1}
+              px={1.5}
+              spacing={2}
               bg={index % 2 === 0 ? "rgba(25, 25, 35, 0.5)" : "transparent"}
               borderRadius="sm"
             >
               {/* Card Image */}
               <Box
-                w="50px"
-                h="70px"
+                w="32px"
+                h="45px"
                 flexShrink={0}
                 bg="rgba(40, 40, 50, 0.8)"
                 borderRadius="sm"
@@ -407,7 +410,7 @@ const ItemSectionComponent = ({ section }: { section: ItemSection }) => {
                   h="100%"
                   objectFit={card.isSpecial ? "contain" : "cover"}
                   fallback={
-                    <Text fontSize="xs" color="gray.500">
+                    <Text fontSize="2xs" color="gray.500">
                       {card.name}
                     </Text>
                   }
@@ -417,7 +420,7 @@ const ItemSectionComponent = ({ section }: { section: ItemSection }) => {
               {/* Card Name */}
               <Text
                 flex={1}
-                fontSize="sm"
+                fontSize="xs"
                 color={card.isSpecial ? neonPink : "white"}
                 fontWeight="500"
               >
@@ -426,10 +429,10 @@ const ItemSectionComponent = ({ section }: { section: ItemSection }) => {
 
               {/* Percentage */}
               <Text
-                fontSize="sm"
+                fontSize="xs"
                 fontWeight="700"
                 color={neonGreen}
-                minW="60px"
+                minW="50px"
                 textAlign="right"
               >
                 {card.percentage}
@@ -447,7 +450,7 @@ export const LootBoxRateInfo: React.FC<LootBoxRateInfoProps> = ({
   packId,
 }) => {
   const { t } = useTranslation(["store"]);
-  const { neonGreen } = theme.colors;
+  const { neonGreen, neonPink } = theme.colors;
 
   // Detect which pack this is by ID (most reliable) or name (fallback)
   const nameLower = name.toLowerCase();
@@ -502,66 +505,201 @@ export const LootBoxRateInfo: React.FC<LootBoxRateInfoProps> = ({
   // Show new Pokemon TCG-style content for all packs on both mobile and desktop
   const shouldShowNewContent = true;
 
-  // New Pokemon TCG style content for mobile
+  // Refs for scrolling to sections
+  const sectionRefs = useRef<{ [key: number]: HTMLDivElement | null }>({});
+  const scrollContainerRef = useRef<HTMLDivElement | null>(null);
+  const [activeSection, setActiveSection] = useState<number | null>(1);
+
+  const scrollToSection = (sectionNumber: number) => {
+    const element = sectionRefs.current[sectionNumber];
+    const container = scrollContainerRef.current;
+
+    if (element && container) {
+      const containerRect = container.getBoundingClientRect();
+      const elementRect = element.getBoundingClientRect();
+      const scrollTop = container.scrollTop;
+      const offset = elementRect.top - containerRect.top + scrollTop - 10; // 10px offset for better visibility
+
+      container.scrollTo({
+        top: offset,
+        behavior: 'smooth'
+      });
+      setActiveSection(sectionNumber);
+    }
+  };
+
+  // Detect which section is currently visible
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    const handleScroll = () => {
+      const containerRect = container.getBoundingClientRect();
+      const scrollTop = container.scrollTop;
+
+      // Find which section is most visible
+      let currentSection = 1;
+      let maxVisibility = 0;
+
+      packData.forEach((section) => {
+        const element = sectionRefs.current[section.itemNumber];
+        if (element) {
+          const rect = element.getBoundingClientRect();
+          const visibleHeight = Math.min(rect.bottom, containerRect.bottom) - Math.max(rect.top, containerRect.top);
+
+          if (visibleHeight > maxVisibility) {
+            maxVisibility = visibleHeight;
+            currentSection = section.itemNumber;
+          }
+        }
+      });
+
+      setActiveSection(currentSection);
+    };
+
+    container.addEventListener('scroll', handleScroll);
+    // Initial check
+    handleScroll();
+
+    return () => {
+      container.removeEventListener('scroll', handleScroll);
+    };
+  }, [packData]);
+
+  // New Pokemon TCG style content
   const newInfoContent = (
-    <Box
-      width="calc(100% - 32px)"
-      maxWidth="600px"
-      maxHeight="calc(85vh - 32px)"
-      overflowY="auto"
-      borderRadius="lg"
-      m={4}
-      onClick={(e) => e.stopPropagation()}
-    >
-      {/* Header */}
-      <Box
-        bg="rgba(20, 20, 30, 0.98)"
-        border="2px solid"
-        borderColor={neonGreen}
-        borderRadius="lg lg 0 0"
-        py={4}
-        px={4}
-        position="sticky"
-        top={0}
-        zIndex={1}
-        boxShadow="0 4px 12px rgba(0, 0, 0, 0.6)"
+    <Flex position="relative" onClick={(e) => e.stopPropagation()}>
+      {/* Side Navigation Tabs - Card Shape */}
+      <Flex
+        flexDirection="column"
+        justifyContent="space-evenly"
+        position="absolute"
+        right="-28px"
+        top="0"
+        bottom="0"
+        height="75vh"
+        zIndex={2}
+        py={3}
       >
-        <Heading
-          size="lg"
-          textAlign="center"
-          color="white"
-          fontWeight="600"
-          letterSpacing="wider"
-        >
-          {t("store.packs.offering-rates")}
-        </Heading>
-      </Box>
+        {packData.map((section) => (
+          <Box
+            key={section.itemNumber}
+            position="relative"
+            w="22px"
+            h="32px"
+            bg={activeSection === section.itemNumber ? neonPink : "rgba(30, 30, 40, 0.95)"}
+            border="1.5px solid"
+            borderColor={activeSection === section.itemNumber ? neonPink : neonGreen}
+            borderRadius="2px"
+            cursor="pointer"
+            onClick={() => scrollToSection(section.itemNumber)}
+            transition="all 0.2s"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            boxShadow="0 2px 4px rgba(0, 0, 0, 0.3)"
+            _hover={{
+              bg: neonPink,
+              borderColor: neonPink,
+              transform: "translateX(-3px) scale(1.08)",
+              boxShadow: "0 3px 8px rgba(0, 0, 0, 0.5)"
+            }}
+            _before={{
+              content: '""',
+              position: "absolute",
+              top: "1.5px",
+              left: "1.5px",
+              right: "1.5px",
+              bottom: "1.5px",
+              border: "0.5px solid",
+              borderColor: activeSection === section.itemNumber ? "rgba(255, 255, 255, 0.3)" : "rgba(255, 255, 255, 0.1)",
+              borderRadius: "1px",
+              pointerEvents: "none"
+            }}
+          >
+            <Text
+              fontSize="10px"
+              fontWeight="700"
+              color="white"
+              textShadow="0 1px 2px rgba(0, 0, 0, 0.8)"
+            >
+              {section.itemNumber}
+            </Text>
+          </Box>
+        ))}
+      </Flex>
 
-      {/* Content */}
       <Box
-        bg="rgba(10, 10, 20, 0.98)"
-        borderRadius="0 0 lg lg"
-        px={4}
-        py={4}
+        ref={scrollContainerRef}
+        width="calc(100% - 32px)"
+        maxWidth="380px"
+        maxHeight="75vh"
+        overflowY="auto"
+        borderRadius="lg"
+        m={3}
+        sx={{
+          '&::-webkit-scrollbar': {
+            display: 'none'
+          },
+          '-ms-overflow-style': 'none',
+          'scrollbar-width': 'none'
+        }}
       >
-        <VStack spacing={0} align="stretch">
-          {packData.map((section) => (
-            <ItemSectionComponent key={section.itemNumber} section={section} />
-          ))}
-        </VStack>
-
-        {/* Close instruction */}
-        <Text
-          textAlign="center"
-          color="gray.500"
-          fontSize="sm"
-          mt={6}
-          mb={2}
+        {/* Header */}
+        <Box
+          bg="rgba(20, 20, 30, 0.98)"
+          border="2px solid"
+          borderColor={neonGreen}
+          borderRadius="lg lg 0 0"
+          py={2}
+          px={3}
+          position="sticky"
+          top={0}
+          zIndex={1}
+          boxShadow="0 4px 12px rgba(0, 0, 0, 0.6)"
         >
-          Tap anywhere to close
-        </Text>
+          <Heading
+            size="md"
+            textAlign="center"
+            color="white"
+            fontWeight="600"
+            letterSpacing="wider"
+          >
+            {t("store.packs.offering-rates")}
+          </Heading>
+        </Box>
+
+        {/* Content */}
+        <Box
+          bg="rgba(10, 10, 20, 0.98)"
+          borderRadius="0 0 lg lg"
+          px={2}
+          py={2}
+        >
+          <VStack spacing={0} align="stretch">
+            {packData.map((section) => (
+              <Box
+                key={section.itemNumber}
+                ref={(el) => (sectionRefs.current[section.itemNumber] = el)}
+              >
+                <ItemSectionComponent section={section} />
+              </Box>
+            ))}
+          </VStack>
+
+          {/* Close instruction */}
+          <Text
+            textAlign="center"
+            color="gray.500"
+            fontSize="xs"
+            mt={3}
+            mb={1}
+          >
+            Tap anywhere to close
+          </Text>
+        </Box>
       </Box>
-    </Box>
+    </Flex>
   );
 
   // Old simple content for desktop (fallback)
