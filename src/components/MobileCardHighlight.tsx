@@ -101,11 +101,23 @@ export const MobileCardHighlight = ({
 
   const [opacity, setOpacity] = useState(0);
   const [scale, setScale] = useState(0.8);
+  const [isOpening, setIsOpening] = useState(true);
 
   useEffect(() => {
     setOpacity(1);
     setScale(1);
   }, []);
+
+  const handleBackdropClick = () => {
+    // Solo permitir cerrar si la animación de apertura ya terminó
+    if (!isOpening) {
+      onClose();
+    }
+  };
+
+  const handleAnimationEnd = () => {
+    setIsOpening(false);
+  };
 
   return (
     <Flex
@@ -123,9 +135,8 @@ export const MobileCardHighlight = ({
       backdropFilter="blur(5px)"
       backgroundColor=" rgba(0, 0, 0, 0.5)"
       gap={temporaryPrice ? 4 : 6}
-      onClick={() => {
-        onClose();
-      }}
+      onClick={handleBackdropClick}
+      onTransitionEnd={handleAnimationEnd}
     >
       {confirmationModalOpen && (
         <ConfirmationModal

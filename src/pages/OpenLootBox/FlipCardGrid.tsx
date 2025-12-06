@@ -120,28 +120,28 @@ export const FlipCardGrid = ({
                     }
                   />
                 </FlipCard>
-                {isSmallScreen && (
-                  <Text
-                    position="absolute"
-                    bottom="-24px"
-                    left="50%"
-                    transform="translateX(-50%)"
-                    fontSize="xs"
-                    color="whiteAlpha.700"
-                    textAlign="center"
-                    opacity={animationRunning ? 0 : 1}
-                    transition="opacity 0.3s ease"
-                    pointerEvents="none"
-                    whiteSpace="nowrap"
-                  >
-                    {t("store.packs.press-for-detail")}
-                  </Text>
-                )}
               </Flex>
             </Flex>
           );
         })}
       </Flex>
+      {isSmallScreen && onCardLongPress && (
+        <Text
+          position="absolute"
+          bottom="100px"
+          left="50%"
+          transform="translateX(-50%)"
+          fontSize="sm"
+          color="whiteAlpha.700"
+          textAlign="center"
+          opacity={animationRunning ? 0 : 1}
+          transition="opacity 0.3s ease"
+          pointerEvents="none"
+          whiteSpace="nowrap"
+        >
+          {t("store.packs.press-for-detail")}
+        </Text>
+      )}
     </FullScreenCardContainer>
   );
 };
