@@ -106,6 +106,14 @@ export const MobileCardHighlight = ({
   useEffect(() => {
     setOpacity(1);
     setScale(1);
+
+    // Asegurar que no se pueda cerrar durante la animación
+    // La animación dura 0.2s, esperamos un poco más para estar seguros
+    const timer = setTimeout(() => {
+      setIsOpening(false);
+    }, 250);
+
+    return () => clearTimeout(timer);
   }, []);
 
   const handleBackdropClick = () => {
@@ -113,10 +121,6 @@ export const MobileCardHighlight = ({
     if (!isOpening) {
       onClose();
     }
-  };
-
-  const handleAnimationEnd = () => {
-    setIsOpening(false);
   };
 
   return (
@@ -136,7 +140,6 @@ export const MobileCardHighlight = ({
       backgroundColor=" rgba(0, 0, 0, 0.5)"
       gap={temporaryPrice ? 4 : 6}
       onClick={handleBackdropClick}
-      onTransitionEnd={handleAnimationEnd}
     >
       {confirmationModalOpen && (
         <ConfirmationModal
@@ -173,6 +176,7 @@ export const MobileCardHighlight = ({
         position={"relative"}
         transform={`scale(${scale})`}
         transition="all 0.2s ease"
+        onClick={(e) => e.stopPropagation()}
       >
         {!animation ? (
           <CardImage3D card={card} hideTooltip small={false} />
