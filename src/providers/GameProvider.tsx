@@ -27,9 +27,10 @@ import { useCurrentHandStore } from "../state/useCurrentHandStore.ts";
 import { useDeckStore } from "../state/useDeckStore.ts";
 import { useGameStore } from "../state/useGameStore.ts";
 import { Card } from "../types/Card";
+import { PlayEvents } from "../types/ScoreData";
 import { logEvent } from "../utils/analytics.ts";
 import { getPlayAnimationDuration } from "../utils/getPlayAnimationDuration.ts";
-import { animatePlay } from "../utils/playEvents/animatePlay.ts";
+import { animatePlayDiscard } from "../utils/playEvents/animatePlayDiscard.ts";
 import { useCardData } from "./CardDataProvider.tsx";
 import { gameProviderDefaults } from "./gameProviderDefaults.ts";
 import { useSettings } from "./SettingsProvider.tsx";
@@ -275,154 +276,104 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     doRefetchPowerUps(client, gameId);
   };
 
-  const onPlayClick = () => {
+  const handlePlaySuccess = (
+    response: PlayEvents,
+    setAnimation: (playing: boolean) => void
+  ) => {
+    animatePlayDiscard({
+      playEvents: response,
+      playAnimationDuration,
+      setPlayIsNeon,
+      setAnimatedCard,
+      setAnimatedPowerUp,
+      pointsSound,
+      multiSound,
+      acumSound,
+      negativeMultiSound,
+      cashSound,
+      setPoints,
+      setMulti,
+      changeCardsSuit,
+      changeCardsNeon,
+      setAnimation,
+      setPreSelectionLocked,
+      clearPreSelection,
+      refetchPowerUps,
+      preSelectedPowerUps,
+      navigate,
+      gameId,
+      setRoundRewards,
+      replaceCards,
+      remainingPlays,
+      setAnimateSecondChanceCard,
+      setCardTransformationLock,
+      specialCards,
+      setAnimateSpecialCardDefault: setanimateSpecialCardDefault,
+      addCash,
+      setCurrentScore,
+      addPoints,
+      addMulti,
+      resetRage,
+      unPreSelectAllPowerUps,
+      address: account.address,
+      clearRoundSound,
+      clearLevelSound,
+    });
+    fetchDeck(client, gameId, getCardData);
+    refetchSpecialCardsData(modId, gameId, specialCards);
+    if (response.levelPassed && response.detailEarned) {
+      response.levelPassed.level_passed > 0 && advanceLevel();
+      addCash(response.detailEarned.total);
+      response.detailEarned.rerolls &&
+        addRerolls(response.detailEarned.rerolls);
+    }
+  };
+
+  const handlePlayAction = ({
+    action,
+    setAnimation,
+    onStateChange,
+    rollback,
+  }: {
+    action: () => Promise<PlayEvents | undefined>;
+    setAnimation: (playing: boolean) => void;
+    onStateChange: () => void;
+    rollback: () => void;
+  }) => {
     setPreSelectionLocked(true);
-    statePlay();
-    play(gameId, preSelectedCards, preSelectedModifiers, preSelectedPowerUps)
+    onStateChange();
+    action()
       .then((response) => {
         if (response) {
-          animatePlay({
-            playEvents: response,
-            playAnimationDuration,
-            setPlayIsNeon,
-            setAnimatedCard,
-            setAnimatedPowerUp,
-            pointsSound,
-            multiSound,
-            acumSound,
-            negativeMultiSound,
-            cashSound,
-            setPoints,
-            setMulti,
-            changeCardsSuit,
-            changeCardsNeon,
-            setPlayAnimation,
-            setPreSelectionLocked,
-            clearPreSelection,
-            refetchPowerUps,
-            preSelectedPowerUps,
-            navigate,
-            gameId,
-            setRoundRewards,
-            replaceCards,
-            remainingPlays,
-            setAnimateSecondChanceCard,
-            setCardTransformationLock,
-            specialCards,
-            setAnimateSpecialCardDefault: setanimateSpecialCardDefault,
-            addCash,
-            setCurrentScore,
-            addPoints,
-            addMulti,
-            resetRage,
-            unPreSelectAllPowerUps,
-            address: account.address,
-            clearRoundSound,
-            clearLevelSound
-          });
-          fetchDeck(client, gameId, getCardData);
-          refetchSpecialCardsData(modId, gameId, specialCards);
-          if (response.levelPassed && response.detailEarned) {
-            response.levelPassed.level_passed > 0 && advanceLevel();
-            addCash(response.detailEarned.total);
-            response.detailEarned.rerolls &&
-              addRerolls(response.detailEarned.rerolls);
-          }
+          handlePlaySuccess(response, setAnimation);
         } else {
-          rollbackPlay();
+          rollback();
           setPreSelectionLocked(false);
           clearPreSelection();
         }
       })
       .catch(() => {
-        rollbackPlay();
+        rollback();
         setPreSelectionLocked(false);
       });
   };
 
+  const onPlayClick = () => {
+    handlePlayAction({
+      action: () => play(gameId, preSelectedCards, preSelectedModifiers, preSelectedPowerUps),
+      setAnimation: setPlayAnimation,
+      onStateChange: statePlay,
+      rollback: rollbackPlay,
+    });
+  };
+
   const onDiscardClick = () => {
-    setPreSelectionLocked(true);
-    stateDiscard();
-    discard(gameId, preSelectedCards, preSelectedModifiers)
-      .then((response) => {
-        if (response) {
-          const calculateDuration = (
-            events?: any[],
-            baseDuration = playAnimationDuration,
-            multiplier = 1
-          ) => (events?.length ?? 0) * baseDuration * multiplier;
-
-          const durations = {
-            cardPlayScore: calculateDuration(
-              response.cardPlayEvents?.map((item) => item.hand).flat() ??
-                []
-            ),
-            specialCardPlayScore: calculateDuration(
-              response.cardPlayEvents
-            ),
-          };
-
-          const ALL_CARDS_DURATION = Object.values(durations).reduce(
-            (a, b) => a + b,
-            0
-          );
-
-          //  if (response.levelUpHandEvent) {
-          //   state.setLevelUpHand(response.levelUpHandEvent);
-          // }
-
-          response.cardPlayEvents?.forEach((event, index) => {
-            const isCash = event.eventType === EventTypeEnum.Cash;
-            const special_idx = event.specials[0]?.idx;
-
-            setTimeout(() => {
-              event.hand.forEach((card, innerIndex) => {
-                const { idx, quantity } = card;
-                setTimeout(() => {
-                  if (isCash) {
-                    cashSound();
-                    addCash(quantity);
-                    setAnimatedCard({
-                      special_idx,
-                      idx: [idx],
-                      cash: quantity,
-                      animationIndex: 400 + index,
-                    });
-                  }
-                }, playAnimationDuration * innerIndex);
-              });
-            }, playAnimationDuration * index);
-          });
-
-          if (response.gameOver) {
-            setTimeout(() => {
-              navigate(`/gameover/${gameId}`);
-            }, 1000);
-          }
-
-          setTimeout(() => {
-            discardSound();
-            setDiscardAnimation(true);
-          }, ALL_CARDS_DURATION);
-
-          setTimeout(() => {
-            setPreSelectionLocked(false);
-            clearPreSelection();
-            setAnimatedCard(undefined);
-            setDiscardAnimation(false);
-            replaceCards(response.cards);
-            fetchDeck(client, gameId, getCardData);
-            refetchSpecialCardsData(modId, gameId, specialCards);
-          }, ALL_CARDS_DURATION + 300);
-        } else {
-          rollbackDiscard();
-          setPreSelectionLocked(false);
-        }
-      })
-      .catch(() => {
-        rollbackDiscard();
-        setPreSelectionLocked(false);
-      });
+    handlePlayAction({
+      action: () => discard(gameId, preSelectedCards, preSelectedModifiers),
+      setAnimation: setDiscardAnimation,
+      onStateChange: stateDiscard,
+      rollback: rollbackDiscard,
+    });
   };
 
   const onChangeModifierCard = (cardIdx: number) => {
