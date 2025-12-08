@@ -91,10 +91,10 @@ export const ExternalPack = ({
 
   const { isSmallScreen } = useResponsiveValues();
 
-  const packWidth = useMemo(() => (isSmallScreen ? 250 : 360), [isSmallScreen]);
+  const packWidth = useMemo(() => (isSmallScreen ? 250 : 292), [isSmallScreen]);
   const extraPackWidth = packWidth + 50;
   const packHeight = useMemo(
-    () => (isSmallScreen ? 405 : 583),
+    () => (isSmallScreen ? 405 : 472),
     [isSmallScreen]
   );
 
@@ -351,7 +351,7 @@ export const ExternalPack = ({
               onClick={() => {
                 setStep(1);
               }}
-              width="40%"
+              width={isSmallScreen ? "40%" : "200px"}
               variant={"secondarySolid"}
               fontFamily="Oxanium"
               fontSize={14}
