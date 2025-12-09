@@ -1490,8 +1490,8 @@
   },
   "contracts": [
     {
-      "address": "0x4b73fada8347c3d41034b143fa4f6ac2ebcff9aab03e8e2ca03241d5ca45fe8",
-      "class_hash": "0xa1cc489d1d620878efcd3d485ca65c435f1a27779634f17d7e30d65075d6d1",
+      "address": "0x1fac054b9ceb7520735c878e970b927580bf56b27debc75384eaf000d3f30fb",
+      "class_hash": "0x60ff979fec3902ffa9f6faa6e46c344d3836344750c4c8c9d673a6ed69867b9",
       "abi": [
         {
           "type": "impl",
@@ -10482,8 +10482,8 @@
       ]
     },
     {
-      "address": "0x249a6d136b591cb0180ec799e7a0d5e793c2c13e34f6d20f0ba56bc899de30f",
-      "class_hash": "0x787a9d3d204643a1371e3796b5dd1c1bfc93f033c61131fca74f630816ed3e3",
+      "address": "0x77f25b7280816a46d48913123912c5765a215ce3c8690c39c8b54fe44339124",
+      "class_hash": "0x42177a061b23a413f0d113662d329d1e484d65fe952d46c082e1404207da3d4",
       "abi": [
         {
           "type": "impl",
@@ -12490,8 +12490,8 @@
       ]
     },
     {
-      "address": "0x2e8827632a4e2dadc3bcb4abf1cab8b851df44d54a9913cfda02698f5eaa28e",
-      "class_hash": "0x21723267a5697c91d87bcd25b26e7afbb9351746fd72d30ce0921f70ee83ff4",
+      "address": "0x63794d8e83f2f158c9c7002edcca367c49b007254a31a7c0ad0d302357da889",
+      "class_hash": "0x299d2dc071d408738422283caf365178caf430d00ca8c7396d72f940ee58e77",
       "abi": [
         {
           "type": "impl",
@@ -15049,7 +15049,7 @@
     },
     {
       "members": [],
-      "class_hash": "0x6fb6398f3c1a822c486907f7559dcf8f4b964b84fab03295c9747a82b51262",
+      "class_hash": "0x23a9536ab7990e20cc68b2adb7ee9d69862745027b8f55bcf3fbc97f34cb993",
       "tag": "jokers_of_neon_core-DailyMissionCompletedEvent",
       "selector": "0x6223018c77e50e185cc64982d08ee9e47e8100be8220582f99ed1a2c18702aa"
     },
@@ -15070,6 +15070,12 @@
       "class_hash": "0x29342eb13cb7056d2a4ade5cb855dc0db2409375fb4a299ff30858975ed9554",
       "tag": "jokers_of_neon_core-GamePowerUpEvent",
       "selector": "0x3a8d4d88197b260ebdfbbbb3de2b8ab5e900209bcd208195fb85b9f8ebac613"
+    },
+    {
+      "members": [],
+      "class_hash": "0x7e2f3c53c4fbc9de2d8bbfd4aecd4d7219b5a77fb18beed600ff9391b7a5434",
+      "tag": "jokers_of_neon_core-LevelPassedEvent",
+      "selector": "0x1ea035cbb46c0bbd8edf2aca4039c443f64e3f9c317c21042563af8724e6171"
     },
     {
       "members": [],
