@@ -1,4 +1,5 @@
 import { Box, Tooltip } from "@chakra-ui/react";
+import { keyframes } from "@emotion/react";
 import { useTranslation } from "react-i18next";
 import { Handle, Position } from "reactflow";
 import CachedImage from "../../../components/CachedImage";

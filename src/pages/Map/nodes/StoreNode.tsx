@@ -1,4 +1,5 @@
 import { Box, Tooltip } from "@chakra-ui/react";
+import { keyframes } from "@emotion/react";
 import { useTranslation } from "react-i18next";
 import { Handle, Position } from "reactflow";
 import CachedImage from "../../../components/CachedImage";
@@ -11,11 +12,9 @@ import { BLUE, VIOLET } from "../../../theme/colors";
 import { useResponsiveValues } from "../../../theme/responsiveSettings";
 import { TooltipContent } from "../TooltipContent";
 import { NodeType } from "../types";
-
 import { HereSign } from "./HereSign";
 import { NodeClickPulse } from "./NodeClickPulse";
 import { useNodeNavigation } from "./useNodeNavigation";
-
 
 const reachablePulse = keyframes`
   0% {
