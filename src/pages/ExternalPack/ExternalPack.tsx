@@ -5,7 +5,7 @@ import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { GalaxyBackground } from "../../components/backgrounds/galaxy/GalaxyBackground";
-import { GalaxyBackgroundIntensity } from "../../components/backgrounds/galaxy/types";
+import { Intensity } from "../../types/intensity";
 import CachedImage from "../../components/CachedImage";
 import { DelayedLoading } from "../../components/DelayedLoading";
 import { MobileDecoration } from "../../components/MobileDecoration";
@@ -27,27 +27,27 @@ const getIntensity = (
 ) => {
   switch (type) {
     case CardTypes.JOKER:
-      return GalaxyBackgroundIntensity.MEDIUM;
+      return Intensity.MEDIUM;
     case CardTypes.NEON:
-      return GalaxyBackgroundIntensity.MEDIUM;
+      return Intensity.MEDIUM;
     case CardTypes.SPECIAL:
       if (highlightedCardSkin) {
-        return GalaxyBackgroundIntensity.MAX;
+        return Intensity.MAX;
       }
       switch (rarity) {
         case RARITY.C:
-          return GalaxyBackgroundIntensity.MEDIUM;
+          return Intensity.MEDIUM;
         case RARITY.B:
-          return GalaxyBackgroundIntensity.MEDIUM;
+          return Intensity.MEDIUM;
         case RARITY.A:
-          return GalaxyBackgroundIntensity.HIGH;
+          return Intensity.HIGH;
         case RARITY.S:
-          return GalaxyBackgroundIntensity.MAX;
+          return Intensity.MAX;
         default:
-          return GalaxyBackgroundIntensity.MEDIUM;
+          return Intensity.MEDIUM;
       }
     default:
-      return GalaxyBackgroundIntensity.LOW;
+      return Intensity.LOW;
   }
 };
 
@@ -91,10 +91,10 @@ export const ExternalPack = ({
 
   const { isSmallScreen } = useResponsiveValues();
 
-  const packWidth = useMemo(() => (isSmallScreen ? 250 : 360), [isSmallScreen]);
+  const packWidth = useMemo(() => (isSmallScreen ? 250 : 292), [isSmallScreen]);
   const extraPackWidth = packWidth + 50;
   const packHeight = useMemo(
-    () => (isSmallScreen ? 405 : 583),
+    () => (isSmallScreen ? 405 : 472),
     [isSmallScreen]
   );
 
@@ -351,7 +351,7 @@ export const ExternalPack = ({
               onClick={() => {
                 setStep(1);
               }}
-              width="40%"
+              width={isSmallScreen ? "40%" : "200px"}
               variant={"secondarySolid"}
               fontFamily="Oxanium"
               fontSize={14}

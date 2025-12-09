@@ -30,6 +30,8 @@ import { LoadingScreenHandle } from "../types/LoadingProgress.ts";
 import { preloadImages, preloadVideos } from "../utils/cacheUtils.ts";
 import { isNative } from "../utils/capacitorUtils.ts";
 import { registerServiceWorker } from "../utils/registerServiceWorker.ts";
+import { DatadogUserContext } from "../monitoring/DatadogUserContext.tsx";
+import { initDatadogRum } from "../monitoring/datadogRum.ts";
 
 const I18N_NAMESPACES = [
   "game",
@@ -45,6 +47,8 @@ const I18N_NAMESPACES = [
 ];
 
 const progressBarRef = createRef<LoadingScreenHandle>();
+
+initDatadogRum();
 
 async function init() {
   const rootElement = document.getElementById("root");
@@ -73,6 +77,7 @@ async function init() {
                     <WalletProvider value={setupResult}>
                       <DojoProvider value={setupResult}>
                         <BrowserRouter>
+                          <DatadogUserContext />
                           <Toaster />
                           <SettingsProvider>
                             <App />

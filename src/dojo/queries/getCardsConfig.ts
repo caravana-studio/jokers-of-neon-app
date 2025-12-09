@@ -8,7 +8,8 @@ export const fetchCardsConfig = async (client: any, modId: string) => {
 
     if (modSpecialCards) {
       const modCardsConfig: ModCardsConfig = {
-        specialCardsIds: modSpecialCards,
+        // exclude cards that belong to a season or a collection
+        specialCardsIds: modSpecialCards.filter((cardId: number) => cardId < 10100),
         rageCardsIds: modRageCards,
       };
       return modCardsConfig;
