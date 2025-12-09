@@ -11,9 +11,9 @@ import { MobileDecoration } from "../../components/MobileDecoration";
 import { useBackToGameButton } from "../../components/useBackToGameButton";
 import { GameStateEnum } from "../../dojo/typescript/custom";
 import { useDojo } from "../../dojo/useDojo";
-import { useShopActions } from "../../dojo/useShopActions";
 import { useCustomNavigate } from "../../hooks/useCustomNavigate";
 import { useMap } from "../../providers/MapProvider";
+import { useStore } from "../../providers/StoreProvider";
 import { useGameStore } from "../../state/useGameStore";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { MobileCoins } from "../store/Coins";
@@ -22,6 +22,7 @@ import { NodeDetailsMobileButton } from "./NodeDetailsMobileButton";
 import RageNode from "./nodes/RageNode";
 import RoundNode from "./nodes/RoundNode";
 import RewardNode from "./nodes/StoreNode";
+import { useNodeNavigation } from "./nodes/useNodeNavigation";
 import { NodeType } from "./types";
 
 export const Map = () => {
@@ -48,10 +49,11 @@ export const Map = () => {
   } = useDojo();
 
   const { isSmallScreen } = useResponsiveValues();
-  const { advanceNode } = useShopActions();
   const { state, id: gameId, setShopId, refetchGameStore } = useGameStore();
   const navigate = useCustomNavigate();
   const { backToGameButtonProps, backToGameButton } = useBackToGameButton();
+  const { handleNodeNavigation } = useNodeNavigation();
+  const { refetch: refetchStore } = useStore();
 
   useEffect(() => {
     if (layoutReady && nodes.length > 0) {
@@ -59,18 +61,14 @@ export const Map = () => {
         fitViewToFullMap();
       }, 400);
 
-      let timeout2: ReturnType<typeof setTimeout> | undefined;
-
-      // Solo hacer zoom al nodo actual en desktop
-      if (!isSmallScreen) {
-        timeout2 = setTimeout(() => {
-          fitViewToCurrentNode();
-        }, 1000);
-      }
+      // Zoom to current node on both desktop and mobile
+      const timeout2 = setTimeout(() => {
+        fitViewToCurrentNode();
+      }, 1000);
 
       return () => {
         clearTimeout(timeout1);
-        if (timeout2) clearTimeout(timeout2);
+        clearTimeout(timeout2);
       };
     }
   }, [layoutReady, nodes, isSmallScreen]);
@@ -84,47 +82,34 @@ export const Map = () => {
     navigate(state);
   };
 
-  const handleGoClick = () => {
+  const handleGoClick = async () => {
     if (!selectedNodeData) return;
 
-    setActiveNodeId(selectedNodeData.id.toString());
-    setNodeTransactionPending(true);
-    setPulsingNodeId(selectedNodeData.id.toString());
-    fitViewToNode(selectedNodeData.id.toString());
+    const navigateToNode = async () => {
+      switch (selectedNodeData?.nodeType) {
+        case NodeType.RAGE:
+          await refetchAndNavigate(GameStateEnum.Rage);
+          break;
+        case NodeType.ROUND:
+          await refetchAndNavigate(GameStateEnum.Round);
+          break;
+        case NodeType.STORE:
+          if (selectedNodeData.shopId) {
+            setShopId(selectedNodeData.shopId);
+            refetchStore();
+          }
+          navigate(GameStateEnum.Store);
+          break;
+        default:
+          break;
+      }
+    };
 
-    // Limpiar el pulso después de que termine la animación
-    setTimeout(() => {
-      setPulsingNodeId(null);
-    }, 800);
-
-    advanceNode(gameId, selectedNodeData.id)
-      .then((response) => {
-        if (response) {
-          setTimeout(() => {
-            switch (selectedNodeData?.nodeType) {
-              case NodeType.RAGE:
-                refetchAndNavigate(GameStateEnum.Rage);
-                break;
-              case NodeType.ROUND:
-                refetchAndNavigate(GameStateEnum.Round);
-                break;
-              case NodeType.STORE:
-                selectedNodeData.shopId && setShopId(selectedNodeData.shopId);
-                navigate(GameStateEnum.Store);
-                break;
-              default:
-                break;
-            }
-          }, 900);
-        } else {
-          setNodeTransactionPending(false);
-          setActiveNodeId(null);
-        }
-      })
-      .catch(() => {
-        setNodeTransactionPending(false);
-        setActiveNodeId(null);
-      });
+    handleNodeNavigation({
+      nodeId: selectedNodeData.id,
+      gameId,
+      onNavigate: navigateToNode,
+    });
   };
 
   return (

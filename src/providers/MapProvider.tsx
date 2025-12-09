@@ -189,7 +189,7 @@ export const MapProvider = ({ children }: MapProviderProps) => {
         })),
       ],
       padding: 0.1,
-      duration: 600,
+      duration: 750,
       maxZoom: isSmallScreen ? 0.7 : 1.2,
     });
   };
@@ -202,7 +202,7 @@ export const MapProvider = ({ children }: MapProviderProps) => {
     reactFlowInstance.fitView({
       nodes: [{ id: nodeId }],
       padding: 0.3,
-      duration: 1200,
+      duration: 1800,
       maxZoom: isSmallScreen ? 1.5 : 2,
     });
   };

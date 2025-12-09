@@ -1,10 +1,8 @@
 import { Box, Tooltip } from "@chakra-ui/react";
-import { keyframes } from "@emotion/react";
 import { useTranslation } from "react-i18next";
 import { Handle, Position } from "reactflow";
 import CachedImage from "../../../components/CachedImage";
 import { GameStateEnum } from "../../../dojo/typescript/custom";
-import { useShopActions } from "../../../dojo/useShopActions";
 import { useCustomNavigate } from "../../../hooks/useCustomNavigate";
 import { useMap } from "../../../providers/MapProvider";
 import { useStore } from "../../../providers/StoreProvider";
@@ -15,17 +13,8 @@ import { TooltipContent } from "../TooltipContent";
 import { NodeType } from "../types";
 
 import { HereSign } from "./HereSign";
-
-const clickPulse = keyframes`
-  0% {
-    transform: scale(1);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(2);
-    opacity: 0;
-  }
-`;
+import { NodeClickPulse } from "./NodeClickPulse";
+import { useNodeNavigation } from "./useNodeNavigation";
 
 
 const reachablePulse = keyframes`
@@ -64,11 +53,11 @@ const getStoreItemsBasedOnShopId = (shopId: number) => {
 const StoreNode = ({ data }: any) => {
   const { t } = useTranslation("store", { keyPrefix: "config" });
   const { t: tMap } = useTranslation("map");
-  const { advanceNode } = useShopActions();
   const { id: gameId } = useGameStore();
   const navigate = useCustomNavigate();
+  const { handleNodeNavigation } = useNodeNavigation();
 
-  const { reachableNodes, setSelectedNodeData, selectedNodeData, isNodeTransactionPending, setNodeTransactionPending, activeNodeId, setActiveNodeId, fitViewToNode, pulsingNodeId, setPulsingNodeId } = useMap();
+  const { reachableNodes, setSelectedNodeData, selectedNodeData, isNodeTransactionPending, activeNodeId, pulsingNodeId } = useMap();
   const { isSmallScreen } = useResponsiveValues();
 
   const { state, setShopId } = useGameStore();
@@ -83,6 +72,12 @@ const StoreNode = ({ data }: any) => {
     `${data.shopId}.content`,
     getStoreItemsBasedOnShopId(data.shopId)
   );
+
+  const refetchAndNavigate = async () => {
+    setShopId(data.shopId);
+    refetch();
+    navigate(GameStateEnum.Store);
+  };
   return (
     <Tooltip
       label={<TooltipContent title={title} content={content} />}
@@ -156,34 +151,12 @@ const StoreNode = ({ data }: any) => {
           } else if (data.current && !stateInMap) {
             navigate(GameStateEnum.Store);
           } else if (stateInMap && reachableNodes.includes(data.id.toString())) {
-            // Desktop: navegar con un solo click
-            setActiveNodeId(data.id.toString());
-            setNodeTransactionPending(true);
-            setPulsingNodeId(data.id.toString());
-            fitViewToNode(data.id.toString());
-
-            // Limpiar el pulso después de que termine la animación
-            setTimeout(() => {
-              setPulsingNodeId(null);
-            }, 800);
-
-            advanceNode(gameId, data.id)
-              .then((response) => {
-                if (response) {
-                  setTimeout(() => {
-                    setShopId(data.shopId);
-                    refetch();
-                    navigate(GameStateEnum.Store);
-                  }, 900);
-                } else {
-                  setNodeTransactionPending(false);
-                  setActiveNodeId(null);
-                }
-              })
-              .catch(() => {
-                setNodeTransactionPending(false);
-                setActiveNodeId(null);
-              });
+            // Desktop: navigate with a single click
+            handleNodeNavigation({
+              nodeId: data.id,
+              gameId,
+              onNavigate: refetchAndNavigate,
+            });
           }
         }}
       >
@@ -196,17 +169,7 @@ const StoreNode = ({ data }: any) => {
         />
 
         {pulsingNodeId === data.id.toString() && (
-          <Box
-            position="absolute"
-            width="100%"
-            height="100%"
-            borderRadius="100%"
-            border="3px solid white"
-            sx={{
-              animation: `${clickPulse} 0.8s ease-out forwards`,
-              pointerEvents: "none",
-            }}
-          />
+          <NodeClickPulse borderRadius="100%" />
         )}
 
         <Handle type="target" position={Position.Top} style={{ opacity: 0 }} />

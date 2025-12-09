@@ -1,12 +1,10 @@
 import { Box, Tooltip } from "@chakra-ui/react";
-import { keyframes } from "@emotion/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Handle, Position } from "reactflow";
 import CachedImage from "../../../components/CachedImage";
 import { GameStateEnum } from "../../../dojo/typescript/custom";
 import { useDojo } from "../../../dojo/useDojo";
-import { useShopActions } from "../../../dojo/useShopActions";
 import { useCustomNavigate } from "../../../hooks/useCustomNavigate";
 import { useMap } from "../../../providers/MapProvider";
 import { useGameStore } from "../../../state/useGameStore";
@@ -29,26 +27,16 @@ const reachablePulse = keyframes`
     opacity: 0;
   }
 `;
-
-const clickPulse = keyframes`
-  0% {
-    transform: scale(1);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(2);
-    opacity: 0;
-  }
-`;
+import { NodeClickPulse } from "./NodeClickPulse";
+import { useNodeNavigation } from "./useNodeNavigation";
 
 const RageNode = ({ data }: any) => {
   const { t } = useTranslation("map", { keyPrefix: "rage" });
-
-  const { advanceNode } = useShopActions();
   const { id: gameId, refetchGameStore } = useGameStore();
   const navigate = useCustomNavigate();
+  const { handleNodeNavigation } = useNodeNavigation();
 
-  const { reachableNodes, setSelectedNodeData, selectedNodeData, isNodeTransactionPending, setNodeTransactionPending, activeNodeId, setActiveNodeId, fitViewToNode, pulsingNodeId, setPulsingNodeId } = useMap();
+  const { reachableNodes, setSelectedNodeData, selectedNodeData, isNodeTransactionPending, activeNodeId, pulsingNodeId } = useMap();
   const { isSmallScreen } = useResponsiveValues();
 
   const {
@@ -127,32 +115,12 @@ const RageNode = ({ data }: any) => {
           } else if (data.current && !stateInMap) {
             navigate(GameStateEnum.Rage);
           } else if (stateInMap && reachableNodes.includes(data.id.toString())) {
-            // Desktop: navegar con un solo click
-            setActiveNodeId(data.id.toString());
-            setNodeTransactionPending(true);
-            setPulsingNodeId(data.id.toString());
-            fitViewToNode(data.id.toString());
-
-            // Limpiar el pulso después de que termine la animación
-            setTimeout(() => {
-              setPulsingNodeId(null);
-            }, 800);
-
-            advanceNode(gameId, data.id)
-              .then((response) => {
-                if (response) {
-                  setTimeout(() => {
-                    refetchAndNavigate();
-                  }, 900);
-                } else {
-                  setNodeTransactionPending(false);
-                  setActiveNodeId(null);
-                }
-              })
-              .catch(() => {
-                setNodeTransactionPending(false);
-                setActiveNodeId(null);
-              });
+            // Desktop: navigate with a single click
+            handleNodeNavigation({
+              nodeId: data.id,
+              gameId,
+              onNavigate: refetchAndNavigate,
+            });
           }
         }}
       >
@@ -177,17 +145,7 @@ const RageNode = ({ data }: any) => {
         </Box>
 
         {pulsingNodeId === data.id.toString() && (
-          <Box
-            position="absolute"
-            width="90%"
-            height="90%"
-            borderRadius="full"
-            border="3px solid white"
-            sx={{
-              animation: `${clickPulse} 0.8s ease-out forwards`,
-              pointerEvents: "none",
-            }}
-          />
+          <NodeClickPulse borderRadius="full" width="90%" height="90%" />
         )}
 
         <Handle type="target" position={Position.Top} style={{ opacity: 0 }} />
