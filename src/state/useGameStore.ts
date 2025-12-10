@@ -18,6 +18,7 @@ import { RoundRewards } from "../types/RoundRewards";
 import { getRageNodeData } from "../utils/getRageNodeData";
 import { m5, p25 } from "../utils/mocks/powerUpMocks";
 import { MultipliedClubs } from "../utils/mocks/specialCardMocks";
+import { rageCardIds } from "../constants/rageCardIds";
 
 type GameStore = {
   id: number;
@@ -53,6 +54,7 @@ type GameStore = {
   plays: LevelPokerHand[];
   nodeRound: number;
   shopId: number;
+  inBossRound: boolean;
 
   refetchGameStore: (client: any, gameId: number) => Promise<void>;
   setGameId: (gameId: number) => void;
@@ -100,6 +102,7 @@ type GameStore = {
   addRerolls: (rerolls: number) => void;
   advanceLevel: () => void;
   fetchGameStoreForTutorial: () => void;
+  setInBossRound: (inBossRound: boolean) => void;
 };
 
 const doRefetchGameStore = async (client: any, gameId: number, set: any) => {
@@ -154,6 +157,7 @@ const doRefetchGameStore = async (client: any, gameId: number, set: any) => {
     modCardsConfig,
     plays,
     shopId: nodeRoundData,
+    inBossRound: !!rageCards.find((card) => card.card_id === rageCardIds.BOSS_CARD)
   });
 };
 
@@ -191,6 +195,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   plays: [],
   nodeRound: 0,
   shopId: 0,
+  inBossRound: false,
 
   refetchGameStore: async (client, gameId) => {
     await doRefetchGameStore(client, gameId, set);
@@ -286,7 +291,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   resetRage: () => {
-    set({ isRageRound: false, rageCards: [] });
+    set({ isRageRound: false, rageCards: [], inBossRound: false });
   },
 
   resetSpecials: () => {
@@ -446,5 +451,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
         totalScore: 0,
       });
     }
+  },
+  setInBossRound: (inBossRound) => {
+    set({ inBossRound });
   },
 }));

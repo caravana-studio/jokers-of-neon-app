@@ -30,6 +30,12 @@ const reachablePulse = keyframes`
   }
 `;
 
+const bossPulse = keyframes`
+  0% { transform: scale(1); opacity: 0.9; }
+  50% { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(1); opacity: 0.9; }
+`;
+
 const RageNode = ({ data }: any) => {
   const { t } = useTranslation("map", { keyPrefix: "rage" });
 
@@ -50,7 +56,8 @@ const RageNode = ({ data }: any) => {
   const reachable = reachableNodes.includes(data.id.toString()) && stateInMap;
   const [isHovered, setIsHovered] = useState(false);
 
-  const title = `${t("name")} - ${t(data.last ? "final" : "intermediate")}`;
+  const isBossLevel = data.isBossLevel;
+  const title = `${t("name")} - ${t(data.last ? (isBossLevel ? "boss" : "final") : "intermediate")}`;
   const content = `${t("power", { power: data.rageData.power })}`;
 
   const refetchAndNavigate = async () => {
@@ -69,8 +76,20 @@ const RageNode = ({ data }: any) => {
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         style={{
-          width: data.last ? (!data.visited ? 120 : 50) : 70,
-          height: data.last ? (!data.visited ? 120 : 50) : 70,
+          width: data.last
+            ? !data.visited
+              ? isBossLevel
+                ? 180
+                : 120
+              : 50
+            : 70,
+          height: data.last
+            ? !data.visited
+              ? isBossLevel
+                ? 180
+                : 120
+              : 50
+            : 70,
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -136,8 +155,13 @@ const RageNode = ({ data }: any) => {
 
         <Box zIndex={1}>
           <CachedImage
-            src={`/map/icons/rage/${data.last ? "final" : "intermediate"}-${stateInMap && reachable ? "violet" : data.visited || data.current ? "blue" : "off"}${data.current || (isHovered && (data.visited || reachable)) ? "-bordered" : ""}.png`}
+            src={`/map/icons/rage/${data.last ? (isBossLevel ? "boss-s1" : "final") : "intermediate"}-${stateInMap && reachable ? "violet" : data.visited || data.current ? "blue" : "off"}${data.current || (isHovered && (data.visited || reachable)) ? "-bordered" : ""}.png`}
             alt="rage"
+            animation={
+              isBossLevel && data.last
+                ? `${bossPulse} 2s ease-in-out infinite`
+                : ""
+            }
           />
         </Box>
         <Handle type="target" position={Position.Top} style={{ opacity: 0 }} />
