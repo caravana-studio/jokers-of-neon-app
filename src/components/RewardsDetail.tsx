@@ -2,6 +2,7 @@ import { Box, Flex, Heading } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { BOSS_LEVEL } from "../constants/general.ts";
 import { GameStateEnum } from "../dojo/typescript/custom.ts";
 import { useCustomNavigate } from "../hooks/useCustomNavigate.tsx";
 import { RerollIndicators } from "../pages/DynamicStore/storeComponents/TopBar/RerollIndicators.tsx";
@@ -121,6 +122,8 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
   const [animationEnded, setAnimationEnded] = useState(false);
   const [skip, setSkip] = useState(false);
 
+  const playerWon = level_passed === BOSS_LEVEL;
+
   const title = (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -137,7 +140,9 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
         mb={1}
       >
         {level_passed
-          ? t("title-level", { level: level_passed })
+          ? playerWon
+            ? t("title-win")
+            : t("title-level", { level: level_passed })
           : t("title", { round: roundNumber })}
       </Heading>
     </motion.div>
@@ -159,12 +164,12 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
     >
       <PinkBox
         title={title}
-        button={t("continue-btn")}
+        button={playerWon ? t("endless-mode") :t("continue-btn")}
         onClick={() => {
           navigate(GameStateEnum.Map);
         }}
         actionHidden={!animationEnded}
-        glowIntensity={level_passed ? 1 : 0}
+        glowIntensity={level_passed ? (playerWon ? 1.5 : 1) : 0}
       >
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -222,9 +227,7 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
             w="100%"
             justifyContent="space-between"
           >
-            <Heading color="DIAMONDS">
-              {t("total")}
-            </Heading>
+            <Heading color="DIAMONDS">{t("total")}</Heading>
             <Flex gap={1} alignItems="center" justifyContent={"center"}>
               <CashSymbol />
               <Heading color="DIAMONDS" variant="italic">

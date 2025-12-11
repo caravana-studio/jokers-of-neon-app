@@ -1,3 +1,4 @@
+import { BOSS_LEVEL } from "../../constants/general";
 import { NodeData, NodeType } from "../../pages/Map/types";
 
 interface NodeTypeCairo {
@@ -43,13 +44,10 @@ const getNodeType = (nodeType: NodeTypeCairo) => {
 
 export const getMap = async (
   client: any,
-  gameId: number,
+  gameId: number
 ): Promise<NodeData[]> => {
   try {
-    let tx_result: MapTxResult = await client.map_system.getLevelMap(
-      gameId,
-    );
-
+    let tx_result: MapTxResult = await client.map_system.getLevelMap(gameId);
 
     const lastVisitedNode =
       tx_result.traveled_nodes[tx_result.traveled_nodes.length - 1];
@@ -73,5 +71,34 @@ export const getMap = async (
   } catch (e) {
     console.log(e);
     return [];
+  }
+};
+
+export const isBossRound = async (
+  client: any,
+  gameId: number,
+  level: number
+): Promise<boolean> => {
+  if (level !== BOSS_LEVEL) {
+    return false;
+  }
+
+  try {
+    let tx_result: MapTxResult = await client.map_system.getLevelMap(gameId);
+
+    const lastVisitedNode =
+      tx_result.traveled_nodes[tx_result.traveled_nodes.length - 1];
+    const flatNodes = tx_result.level_nodes.flatMap((subArray) => subArray);
+    const currentNode = flatNodes.find(
+      (node) => node[0].id === lastVisitedNode
+    );
+    const lastNode = flatNodes[flatNodes.length - 1]?.[0].id;
+    if (lastNode === currentNode?.[0].id) {
+      return true;
+    }
+    return false;
+  } catch (e) {
+    console.log(e);
+    return false;
   }
 };

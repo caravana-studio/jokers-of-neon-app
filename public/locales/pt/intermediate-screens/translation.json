@@ -188,6 +188,7 @@
     "labels": {
       "title": "Rodada {{round}} completada!",
       "title-level": "Nível {{level}} completado!",
+      "title-win": "Você ganhou!",
       "base": "base",
       "level-bonus": "Bônus de nível",
       "discards-left": "{{discards}} Descartes",
@@ -195,7 +196,8 @@
       "rage": "{{cards}} Rage vencidas",
       "total": "total",
       "final-score": "- Pontuação final: {{score}} -",
-      "continue-btn": "continuar"
+      "continue-btn": "continuar",
+      "endless-mode": "Modo sem fim"
     }
   },
   "special-cards": {

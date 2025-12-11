@@ -188,6 +188,7 @@
     "labels": {
       "title": "Round {{round}} completed!",
       "title-level": "Level {{level}} completed!",
+      "title-win": "You win!",
       "base": "base",
       "level-bonus": "Level bonus",
       "discards-left": "{{discards}} Discards left",
@@ -196,7 +197,8 @@
       "rerolls": "rerolls",
       "total": "total",
       "final-score": "- Final score: {{score}} -",
-      "continue-btn": "continue"
+      "continue-btn": "continue",
+      "endless-mode": "Endless mode"
     }
   },
   "special-cards": {

@@ -1,10 +1,12 @@
 import { create } from "zustand";
 import { CLASSIC_MOD_ID } from "../constants/general";
 import { GAME_ID } from "../constants/localStorage";
+import { rageCardIds } from "../constants/rageCardIds";
 import { getPlayerPokerHands } from "../dojo/getPlayerPokerHands";
 import { fetchCardsConfig } from "../dojo/queries/getCardsConfig";
 import { getGameConfig } from "../dojo/queries/getGameConfig";
 import { getGameView } from "../dojo/queries/getGameView";
+import { isBossRound } from "../dojo/queries/getMap";
 import { getNode } from "../dojo/queries/getNode";
 import { getPowerUps } from "../dojo/queries/getPowerUps";
 import { getRageCards } from "../dojo/queries/getRageCards";
@@ -18,7 +20,6 @@ import { RoundRewards } from "../types/RoundRewards";
 import { getRageNodeData } from "../utils/getRageNodeData";
 import { m5, p25 } from "../utils/mocks/powerUpMocks";
 import { MultipliedClubs } from "../utils/mocks/specialCardMocks";
-import { rageCardIds } from "../constants/rageCardIds";
 
 type GameStore = {
   id: number;
@@ -131,6 +132,9 @@ const doRefetchGameStore = async (client: any, gameId: number, set: any) => {
     set({ nodeRound: nodeRoundData });
   }
 
+  const inBossRound =
+    rageCards.length > 0 && (await isBossRound(client, gameId, game.level));
+
   set({
     id: gameId,
     totalDiscards: game.discards,
@@ -157,7 +161,7 @@ const doRefetchGameStore = async (client: any, gameId: number, set: any) => {
     modCardsConfig,
     plays,
     shopId: nodeRoundData,
-    inBossRound: !!rageCards.find((card) => card.card_id === rageCardIds.BOSS_CARD)
+    inBossRound,
   });
 };
 
