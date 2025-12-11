@@ -48,6 +48,17 @@ export const TestPage = () => {
         />
         {isSmallScreen && (
           <Divider borderColor="white" borderWidth="1px" my={2} />
+        )}        
+        <MenuBtn
+          icon={Icons.LIST}
+          description={"Shop"}
+          label={"Shop"}
+          onClick={() => navigate("/shop")}
+          arrowRight
+          width={"18px"}
+        />
+        {isSmallScreen && (
+          <Divider borderColor="white" borderWidth="1px" my={2} />
         )}
       </Flex>
     </DelayedLoading>

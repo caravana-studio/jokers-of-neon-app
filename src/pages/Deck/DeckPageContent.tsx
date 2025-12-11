@@ -85,8 +85,10 @@ export const DeckPageContent = ({ state }: DeckPageContentProps) => {
             }
           >
             {t("btns.burn").toUpperCase()}
+            <Flex ml={3} mr={1}>
+              <CashSymbol />
+            </Flex>
             {" " + effectiveCost}
-            <CashSymbol />
           </Button>
         )}
       </Flex>

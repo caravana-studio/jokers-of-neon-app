@@ -314,7 +314,7 @@ export const MobileGameContent = () => {
                 flexDirection: "row",
                 alignItems: "center",
                 justifyContent: "space-between",
-                backgroundColor: "rgba(0,0,0,0.7)",
+                backgroundColor: "rgba(0,0,0,0.2)",
               }}
             >
               <MobilePreselectedCardsSection />

@@ -16,6 +16,7 @@ import { DurationSwitcher } from "./DurationSwitcher";
 import { LootBoxRateInfo } from "./Info/LootBoxRateInfo";
 import { LootBox } from "./LootBox";
 import { PriceBox } from "./PriceBox";
+import { useResponsiveValues } from "../theme/responsiveSettings";
 
 interface MobileCardHighlightProps {
   card: Card;
@@ -49,6 +50,8 @@ export const MobileCardHighlight = ({
     temporaryPrice,
     details,
   } = getDataFn(card.card_id ?? 0);
+
+  const { isSmallScreen } = useResponsiveValues();
 
   const { changeModifierCard, sellSpecialCard } = useGameContext();
   const [loading, setLoading] = useState(false);
@@ -138,8 +141,10 @@ export const MobileCardHighlight = ({
       alignItems={"center"}
       backdropFilter="blur(5px)"
       backgroundColor=" rgba(0, 0, 0, 0.5)"
-      gap={temporaryPrice ? 4 : 6}
-      onClick={handleBackdropClick}
+      gap={temporaryPrice ? 2 : 4}
+      onClick={() => {
+        onClose();
+      }}
     >
       {confirmationModalOpen && (
         <ConfirmationModal
@@ -184,7 +189,7 @@ export const MobileCardHighlight = ({
           <LootBox boxId={card.card_id ?? 0} />
         )}
       </Flex>
-      <Text textAlign="center" size="xl" fontSize={"17px"} width={"65%"}>
+      <Text textAlign="center" size="xl" fontSize={isSmallScreen ? "14px" : "17px"} width={"65%"}>
         {colorizeText(description)}
       </Text>
       {showExtraInfo && (

@@ -21,8 +21,14 @@ import { FeatureFlagProvider } from "./featureManagement/FeatureFlagProvider.tsx
 import localI18n from "./i18n.ts";
 import "./index.css";
 import { LoadingScreen } from "./pages/LoadingScreen/LoadingScreen.tsx";
+import { Maintenance } from "./pages/Maintenance.tsx";
 import { MobileBrowserBlocker } from "./pages/MobileBrowserBlocker.tsx";
 import { VersionMismatch } from "./pages/VersionMismatch.tsx";
+import {
+  AppContextProvider,
+  AppType,
+} from "./providers/AppContextProvider.tsx";
+import { SettingsProvider } from "./providers/SettingsProvider.tsx";
 import { StarknetProvider } from "./providers/StarknetProvider.tsx";
 import { fetchVersion } from "./queries/fetchVersion.ts";
 import customTheme from "./theme/theme";
@@ -32,7 +38,8 @@ import { isNative } from "./utils/capacitorUtils.ts";
 import { preloadSpineAnimations } from "./utils/preloadAnimations.ts";
 import { registerServiceWorker } from "./utils/registerServiceWorker.ts";
 import { getMajor, getMinor } from "./utils/versionUtils.ts";
-import { Maintenance } from "./pages/Maintenance.tsx";
+import { DatadogUserContext } from "./monitoring/DatadogUserContext.tsx";
+import { initDatadogRum } from "./monitoring/datadogRum.ts";
 
 const I18N_NAMESPACES = [
   "game",
@@ -50,6 +57,8 @@ const I18N_NAMESPACES = [
 const progressBarRef = createRef<LoadingScreenHandle>();
 
 const BYPASS_MOBILE_BROWSER_RULE = import.meta.env.BYPASS_MOBILE_BROWSER_RULE;
+
+initDatadogRum();
 
 async function init() {
   const rootElement = document.getElementById("root");
@@ -109,24 +118,29 @@ async function init() {
     const queryClient = new QueryClient();
     root.render(
       <FadeInOut isVisible fadeInDelay={shouldSkipPresentation ? 0.5 : 1.5}>
-        <StarknetProvider>
-          <I18nextProvider i18n={localI18n} defaultNS={undefined}>
-            <QueryClientProvider client={queryClient}>
-              <ChakraBaseProvider theme={theme}>
-                <FeatureFlagProvider>
-                  <WalletProvider value={setupResult}>
-                    <DojoProvider value={setupResult}>
-                      <BrowserRouter>
-                        <Toaster />
-                        <App />
-                      </BrowserRouter>
-                    </DojoProvider>
-                  </WalletProvider>
-                </FeatureFlagProvider>
-              </ChakraBaseProvider>
-            </QueryClientProvider>
-          </I18nextProvider>
-        </StarknetProvider>
+        <AppContextProvider appType={AppType.FULL_GAME}>
+          <StarknetProvider>
+            <I18nextProvider i18n={localI18n} defaultNS={undefined}>
+              <QueryClientProvider client={queryClient}>
+                <ChakraBaseProvider theme={theme}>
+                  <FeatureFlagProvider>
+                    <WalletProvider value={setupResult}>
+                      <DojoProvider value={setupResult}>
+                        <BrowserRouter>
+                          <DatadogUserContext />
+                          <Toaster />
+                          <SettingsProvider>
+                            <App />
+                          </SettingsProvider>
+                        </BrowserRouter>
+                      </DojoProvider>
+                    </WalletProvider>
+                  </FeatureFlagProvider>
+                </ChakraBaseProvider>
+              </QueryClientProvider>
+            </I18nextProvider>
+          </StarknetProvider>
+        </AppContextProvider>
       </FadeInOut>
     );
   };

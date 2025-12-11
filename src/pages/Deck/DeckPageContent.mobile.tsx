@@ -107,11 +107,11 @@ export const DeckPageContentMobile = ({
                   if (cardToBurn) handleBurnCard(cardToBurn);
                 },
                 label: (
-                  <>
-                    {t("btns.burn").toUpperCase()}
-                    {" " + effectiveCost}
+                  <Flex gap={1}>
+                    {`${t("btns.burn").toUpperCase()} `}
                     <CashSymbol />
-                  </>
+                    {` ${effectiveCost}`}
+                  </Flex>
                 ),
                 disabled:
                   cardToBurn === undefined ||

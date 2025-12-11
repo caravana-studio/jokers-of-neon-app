@@ -1,5 +1,9 @@
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
+import { looseSfx } from "../../constants/sfx";
+import { useAudio } from "../../hooks/useAudio";
+import { Coins } from "../../pages/Game/Coins";
+import { useSettings } from "../../providers/SettingsProvider";
 import { useGameStore } from "../../state/useGameStore";
 import { BLUE_LIGHT, VIOLET } from "../../theme/colors";
 import { RollingNumber } from "../RollingNumber";
@@ -14,6 +18,9 @@ export const CompactRoundData = () => {
   });
 
   const { points, multi, currentScore, targetScore } = useGameStore();
+
+  const { sfxVolume } = useSettings();
+  const { play } = useAudio(looseSfx, sfxVolume);
 
   return (
     <Flex
@@ -70,8 +77,15 @@ export const CompactRoundData = () => {
             </Heading>
           </Box>
         </Flex>
-        <ProgressBar progress={(currentScore / targetScore) * 100} />
-        <ScoreTotal />
+        <ProgressBar
+          progress={(currentScore / targetScore) * 100}
+          playSound={play}
+          animated
+        />
+        <Flex w="100%" justify="space-between">
+          <Coins rolling />
+          <ScoreTotal />
+        </Flex>
       </Box>
     </Flex>
   );

@@ -1,6 +1,6 @@
 import { BackgroundDecoration } from "../components/Background";
 import { GalaxyBackground } from "../components/backgrounds/galaxy/GalaxyBackground";
-import { GalaxyBackgroundIntensity } from "../components/backgrounds/galaxy/types";
+import { Intensity } from "../types/intensity";
 import { DelayedLoading } from "../components/DelayedLoading";
 import { MobileDecoration } from "../components/MobileDecoration";
 import { RewardsDetail } from "../components/RewardsDetail";
@@ -24,8 +24,8 @@ export const RewardsPage = () => {
         <GalaxyBackground
           intensity={
             roundRewards?.level_passed
-              ? GalaxyBackgroundIntensity.HIGH
-              : GalaxyBackgroundIntensity.LOW
+              ? Intensity.HIGH
+              : Intensity.LOW
           }
         />
         {isSmallScreen && <MobileDecoration />}

@@ -2,19 +2,19 @@ import { Box, Button, Checkbox, Flex, Heading, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import AudioPlayer from "../../components/AudioPlayer.tsx";
+import { DailyGames } from "../../components/DailyGames/DailyGames.tsx";
 import { DelayedLoading } from "../../components/DelayedLoading.tsx";
 import { Loading } from "../../components/Loading.tsx";
-import { MobileBottomBar } from "../../components/MobileBottomBar.tsx";
 import { MobileDecoration } from "../../components/MobileDecoration.tsx";
 import { GameStateEnum } from "../../dojo/typescript/custom.ts";
 import { useGameContext } from "../../providers/GameProvider.tsx";
 import { useGetMyGames } from "../../queries/useGetMyGames.ts";
+import { useTournamentSettings } from "../../queries/useTournamentSettings.ts";
 import { useGameStore } from "../../state/useGameStore.ts";
 import { VIOLET } from "../../theme/colors.tsx";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
-import { GameBox } from "./GameBox.tsx";
 import { logEvent } from "../../utils/analytics.ts";
+import { GameBox } from "./GameBox.tsx";
 
 export interface GameSummary {
   id: number;
@@ -31,18 +31,16 @@ export const MyGames = () => {
   });
 
   useEffect(() => {
-    logEvent( "open_my_games_page")
-  }, [])
+    logEvent("open_my_games_page");
+  }, []);
 
   const { data: games, isLoading, error, refetch } = useGetMyGames();
-
-  const navigate = useNavigate();
 
   const { isSmallScreen } = useResponsiveValues();
 
   const [showFinishedGames, setShowFinishedGames] = useState(false);
 
-  const { prepareNewGame, executeCreateGame } = useGameContext();
+  const { tournament } = useTournamentSettings();
 
   const [surrenderedIds, setSurrenderedIds] = useState<number[]>([]);
 
@@ -78,11 +76,7 @@ export const MyGames = () => {
     removeGameId();
   }, []);
 
-  const handleCreateGame = async () => {
-    prepareNewGame();
-    executeCreateGame();
-    navigate("/entering-tournament");
-  };
+  const navigate = useNavigate();
 
   return (
     <DelayedLoading ms={100}>
@@ -98,25 +92,46 @@ export const MyGames = () => {
       >
         <Flex
           flexDirection={"column"}
-          height={isSmallScreen ? "80%" : "60%"}
+          height={isSmallScreen ? "75%" : "60%"}
           width={"100%"}
           justifyContent={"center"}
           alignItems={"center"}
         >
-          <Heading mb={8} zIndex={2} variant="italic" size={"md"}>
+          <Heading mb={3} zIndex={2} variant="italic" size={"md"}>
             {t("title")}
           </Heading>
+          <Flex
+            px={[2, 4]}
+            py={isSmallScreen ? 0 : 4}
+            width={{ base: "90%", sm: "70%", md: "900px" }}
+            justifyContent={isSmallScreen ? "space-between" : "center"}
+            gap={8}
+            alignItems={"center"}
+            zIndex={2}
+            mb={5}
+          >
+            <Text fontSize={isSmallScreen ? 12 : 20}>{t("learn")}</Text>
+            <Button
+              size={"sm"}
+              width={isSmallScreen ? "90px" : "110px"}
+              h={isSmallScreen ? "25px" : undefined}
+              onClick={() => navigate("/tutorial")}
+              disabled={isLoading}
+            >
+              {t("tuto")}
+            </Button>
+          </Flex>
           <Box
             border="2px solid #DAA1E8FF"
             boxShadow={`0px 0px 20px 15px ${VIOLET}`}
-            filter="blur(0.5px)"
             backgroundColor="rgba(0, 0, 0, 1)"
             borderRadius="20px"
             display="grid"
             px={[4, 8]}
             py={isSmallScreen ? 0 : 4}
             width={{ base: "90%", sm: "70%", md: "900px" }}
-            height="100%"
+            flexGrow={1}
+            minH={0}
             maxHeight="500px"
             overflowY="auto"
           >
@@ -157,9 +172,36 @@ export const MyGames = () => {
               </Flex>
             </Flex>
           </Box>
+          {tournament?.isActive && !tournament?.isFinished && (
+            <Flex
+              px={[2, 4]}
+              py={isSmallScreen ? 0 : 4}
+              width={{ base: "90%", sm: "70%", md: "900px" }}
+              justifyContent={isSmallScreen ? "space-between" : "center"}
+              gap={8}
+              alignItems={"center"}
+              zIndex={2}
+              mt={5}
+            >
+              <Text fontSize={isSmallScreen ? 12 : 20}>
+                {t("tournament-active")}
+              </Text>
+              <Button
+                size={"sm"}
+                width={isSmallScreen ? "90px" : "110px"}
+                h={isSmallScreen ? "25px" : undefined}
+                onClick={() => navigate("/tournament")}
+              >
+                {t("join")}
+              </Button>
+            </Flex>
+          )}
+        </Flex>
+        <Flex w="100%" h="25%" justifyContent={"center"} alignItems={"center"}>
+          <DailyGames />
         </Flex>
 
-        {isSmallScreen ? (
+        {/*  {isSmallScreen ? (
           <MobileBottomBar
             firstButton={{
               onClick: () => {
@@ -196,7 +238,7 @@ export const MyGames = () => {
               {t("start-game")}
             </Button>
           </Flex>
-        )}
+        )} */}
       </Flex>
     </DelayedLoading>
   );

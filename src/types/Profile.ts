@@ -1,9 +1,14 @@
 interface ProfileData {
-  levelXp: number;
   currentBadges: number;
   totalBadges: number;
   profile: Profile;
   playerStats: PlayerStats;
+  xpLine: XpLine;
+}
+
+interface XpLine {
+  prevLevelXp: number;
+  nextLevelXp: number;
 }
 
 interface Profile {

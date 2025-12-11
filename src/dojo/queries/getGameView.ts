@@ -88,44 +88,61 @@ const getState = (state: StateCairo): GameStateEnum => {
   }
 };
 
+const VITE_GAME_QUERY_MAX_ATTEMPTS =
+  import.meta.env.VITE_GAME_QUERY_MAX_ATTEMPTS || "5";
+const VITE_GAME_QUERY_RETRY_DELAY_MS =
+  import.meta.env.VITE_GAME_QUERY_RETRY_DELAY_MS || "500";
+const MAX_ATTEMPTS = Number(VITE_GAME_QUERY_MAX_ATTEMPTS);
+const RETRY_DELAY_MS = Number(VITE_GAME_QUERY_RETRY_DELAY_MS);
+
 export const getGameView = async (
   client: any,
   gameId: number
 ): Promise<GameView> => {
   try {
-    let tx_result: any = await client.game_views.getGameData(gameId);
+    for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt += 1) {
+      const tx_result: any = await client.game_views.getGameData(gameId);
 
-    return {
-      game: {
-        id: gameId,
-        mod_id: shortString.decodeShortString(tx_result["0"].mod_id),
-        owner: tx_result["0"].owner,
-        player_name: Number(tx_result["0"].player_name),
-        player_score: Number(tx_result["0"].player_score),
-        level: Number(tx_result["0"].level),
-        current_node_id: Number(tx_result["0"].current_node_id),
-        hand_len: Number(tx_result["0"].hand_len),
-        plays: Number(tx_result["0"].plays),
-        discards: Number(tx_result["0"].discards),
-        current_specials_len: Number(tx_result["0"].current_specials_len),
-        special_slots: Number(tx_result["0"].special_slots),
-        cash: Number(tx_result["0"].cash),
-        available_rerolls: Number(tx_result["0"].available_rerolls),
-        seed: Number(tx_result["0"].seed),
-        state: getState(tx_result["0"]?.state?.variant),
-        round: Number(tx_result["0"]?.round),
-      },
-      round: {
-        game_id: gameId,
-        current_score: Number(tx_result["1"].current_score),
-        target_score: Number(tx_result["1"].target_score),
-        remaining_plays: Number(tx_result["1"].remaining_plays),
-        remaining_discards: Number(tx_result["1"].remaining_discards),
-        rages: tx_result["1"].rages.map((id: BigInt) => Number(id)),
-      },
-    };
+      const gameView: GameView = {
+        game: {
+          id: gameId,
+          mod_id: shortString.decodeShortString(tx_result["0"].mod_id),
+          owner: tx_result["0"].owner,
+          player_name: Number(tx_result["0"].player_name),
+          player_score: Number(tx_result["0"].player_score),
+          level: Number(tx_result["0"].level),
+          current_node_id: Number(tx_result["0"].current_node_id),
+          hand_len: Number(tx_result["0"].hand_len),
+          plays: Number(tx_result["0"].plays),
+          discards: Number(tx_result["0"].discards),
+          current_specials_len: Number(tx_result["0"].current_specials_len),
+          special_slots: Number(tx_result["0"].special_slots),
+          cash: Number(tx_result["0"].cash),
+          available_rerolls: Number(tx_result["0"].available_rerolls),
+          seed: Number(tx_result["0"].seed),
+          state: getState(tx_result["0"]?.state?.variant),
+          round: Number(tx_result["0"]?.round),
+        },
+        round: {
+          game_id: gameId,
+          current_score: Number(tx_result["1"].current_score),
+          target_score: Number(tx_result["1"].target_score),
+          remaining_plays: Number(tx_result["1"].remaining_plays),
+          remaining_discards: Number(tx_result["1"].remaining_discards),
+          rages: tx_result["1"].rages.map((id: BigInt) => Number(id)),
+        },
+      };
+
+      if (gameView.game.round !== 0 || attempt === MAX_ATTEMPTS) {
+        return gameView;
+      }
+
+      await new Promise((resolve) => setTimeout(resolve, RETRY_DELAY_MS));
+    }
   } catch (e) {
     console.error("error getting game view", e);
     return DEFAULT_GAME_VIEW;
   }
+
+  return DEFAULT_GAME_VIEW;
 };
