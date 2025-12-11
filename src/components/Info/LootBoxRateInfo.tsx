@@ -352,12 +352,13 @@ const ItemSectionComponent = ({ section, sectionRef }: ItemSectionProps) => {
     }
 
     const isSkin = card.name.toLowerCase().includes("skin");
-    const tier = card.rarity.toLowerCase();
+    const tier = card.rarity.toUpperCase(); // Use uppercase for normal cards
+    const tierLower = card.rarity.toLowerCase(); // Use lowercase for skin cards
 
     if (isSkin) {
-      return `/rarity/skin-tier-${tier}.png`;
+      return `/rarity/${tierLower}_skin-tier.png`;
     } else {
-      return `/rarity/tier-${tier}.png`;
+      return `/rarity/${tier}-tier.png`;
     }
   };
 
