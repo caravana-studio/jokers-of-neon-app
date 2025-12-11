@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 import { mintPack } from "../../api/mintPack";
 import { GalaxyBackground } from "../../components/backgrounds/galaxy/GalaxyBackground";
-import { GalaxyBackgroundIntensity } from "../../components/backgrounds/galaxy/types";
+import { Intensity } from "../../types/intensity";
 import CachedImage from "../../components/CachedImage";
 import { DelayedLoading } from "../../components/DelayedLoading";
 import { LootBoxRateInfo } from "../../components/Info/LootBoxRateInfo";
@@ -24,24 +24,24 @@ import { SplitPackOnce } from "./SplitPackOnce";
 const getIntensity = (type: CardTypes, rarity: RARITY) => {
   switch (type) {
     case CardTypes.JOKER:
-      return GalaxyBackgroundIntensity.MEDIUM;
+      return Intensity.MEDIUM;
     case CardTypes.NEON:
-      return GalaxyBackgroundIntensity.MEDIUM;
+      return Intensity.MEDIUM;
     case CardTypes.SPECIAL:
       switch (rarity) {
         case RARITY.C:
-          return GalaxyBackgroundIntensity.MEDIUM;
+          return Intensity.MEDIUM;
         case RARITY.B:
-          return GalaxyBackgroundIntensity.MEDIUM;
+          return Intensity.MEDIUM;
         case RARITY.A:
-          return GalaxyBackgroundIntensity.HIGH;
+          return Intensity.HIGH;
         case RARITY.S:
-          return GalaxyBackgroundIntensity.MAX;
+          return Intensity.MAX;
         default:
-          return GalaxyBackgroundIntensity.MEDIUM;
+          return Intensity.MEDIUM;
       }
     default:
-      return GalaxyBackgroundIntensity.LOW;
+      return Intensity.LOW;
   }
 };
 
