@@ -332,7 +332,12 @@ const collectorXLPackData: ItemSection[] = [
   },
 ];
 
-const ItemSectionComponent = ({ section }: { section: ItemSection }) => {
+interface ItemSectionProps {
+  section: ItemSection;
+  sectionRef?: (el: HTMLDivElement | null) => void;
+}
+
+const ItemSectionComponent = ({ section, sectionRef }: ItemSectionProps) => {
   const { neonGreen, neonPink } = theme.colors;
 
   // Filter out cards with 0.0% probability
@@ -367,6 +372,7 @@ const ItemSectionComponent = ({ section }: { section: ItemSection }) => {
     >
       {/* Header */}
       <Flex
+        ref={sectionRef}
         py={1.5}
         px={2}
         bg="rgba(30, 30, 40, 0.8)"
@@ -518,7 +524,7 @@ export const LootBoxRateInfo: React.FC<LootBoxRateInfoProps> = ({
       const containerRect = container.getBoundingClientRect();
       const elementRect = element.getBoundingClientRect();
       const scrollTop = container.scrollTop;
-      const offset = elementRect.top - containerRect.top + scrollTop - 10; // 10px offset for better visibility
+      const offset = elementRect.top - containerRect.top + scrollTop - 75;
 
       container.scrollTo({
         top: offset,
@@ -572,9 +578,9 @@ export const LootBoxRateInfo: React.FC<LootBoxRateInfoProps> = ({
       {/* Side Navigation Tabs - Card Shape */}
       <Flex
         flexDirection="column"
-        justifyContent="space-evenly"
+        gap={1.5}
         position="absolute"
-        right="-28px"
+        right="-18px"
         top="0"
         bottom="0"
         height="75vh"
@@ -647,7 +653,7 @@ export const LootBoxRateInfo: React.FC<LootBoxRateInfoProps> = ({
       >
         {/* Header */}
         <Box
-          bg="rgba(20, 20, 30, 0.98)"
+          bg="rgba(20, 20, 30, 1)"
           border="2px solid"
           borderColor={neonGreen}
           borderRadius="lg lg 0 0"
@@ -678,12 +684,11 @@ export const LootBoxRateInfo: React.FC<LootBoxRateInfoProps> = ({
         >
           <VStack spacing={0} align="stretch">
             {packData.map((section) => (
-              <Box
+              <ItemSectionComponent
                 key={section.itemNumber}
-                ref={(el) => (sectionRefs.current[section.itemNumber] = el)}
-              >
-                <ItemSectionComponent section={section} />
-              </Box>
+                section={section}
+                sectionRef={(el) => (sectionRefs.current[section.itemNumber] = el)}
+              />
             ))}
           </VStack>
 
