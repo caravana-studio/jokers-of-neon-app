@@ -514,7 +514,12 @@ export const LootBoxRateInfo: React.FC<LootBoxRateInfoProps> = ({
   // Refs for scrolling to sections
   const sectionRefs = useRef<{ [key: number]: HTMLDivElement | null }>({});
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
-  const [activeSection, setActiveSection] = useState<number | null>(1);
+  const [activeSection, setActiveSection] = useState<number | null>(null);
+
+  // Reset active section when component mounts
+  useEffect(() => {
+    setActiveSection(null);
+  }, []);
 
   const scrollToSection = (sectionNumber: number) => {
     const element = sectionRefs.current[sectionNumber];
