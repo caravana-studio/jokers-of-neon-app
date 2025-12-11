@@ -1,26 +1,111 @@
-import { Button, Flex, Heading, Text } from "@chakra-ui/react";
-import { keyframes } from "@emotion/react";
+import {
+  Button,
+  Flex,
+  Heading,
+  Spinner,
+  Text,
+  useToast,
+} from "@chakra-ui/react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { mintPack } from "../../api/mintPack";
 import CachedImage from "../../components/CachedImage";
 import { LootBoxRateInfo } from "../../components/Info/LootBoxRateInfo";
+import { packAnimation } from "../../constants/animations";
+import { useDojo } from "../../dojo/DojoContext";
+import { useRevenueCat } from "../../providers/RevenueCatProvider";
+import { listenForPurchase } from "../../queries/listenForPurchase";
 import { BLUE } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
-import { packAnimation } from "../../constants/animations";
+import { useUsername } from "../../dojo/utils/useUsername";
 
 interface PackRowProps {
   packId: number;
+  packageId: string;
+  price?: string;
 }
 
 const PACK_SIZES = [0, 3, 3, 4, 4, 5, 10];
 
-export const PackRow = ({ packId }: PackRowProps) => {
+export const PackRow = ({ packId, packageId, price }: PackRowProps) => {
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "shop.packs",
   });
   const isLimitedEdition = packId > 4;
   const { isSmallScreen } = useResponsiveValues();
   const navigate = useNavigate();
+  const toast = useToast();
+  const {
+    account: { account },
+  } = useDojo();
+  const username = useUsername();
+  const { purchasePackageById, offerings } = useRevenueCat();
+  const [isPurchasing, setIsPurchasing] = useState(false);
+
+  const handlePurchase = async () => {
+    if (isPurchasing) {
+      return;
+    }
+
+    if (!account?.address) {
+      toast({
+        status: "error",
+        title: t("purchase-error-title"),
+        description: t("purchase-error-no-account"),
+      });
+      return;
+    }
+
+    try {
+      setIsPurchasing(true);
+      const availablePackageIds = Object.keys(
+        offerings?.packPackages ?? {}
+      ).map((key) => key.toLowerCase());
+      if (
+        availablePackageIds.length === 0 ||
+        !availablePackageIds.includes(packageId.toLowerCase())
+      ) {
+        toast({
+          status: "error",
+          title: t("purchase-error-title"),
+          description: t("purchase-error-no-package"),
+        });
+        return;
+      }
+
+      listenForPurchase(username ?? "", "pack_purchases", (payload) => {
+        const simplifiedCards = payload.new.minted_cards.map(
+          (card: { card_id: number; skin_id: number }) => ({
+            card_id: card.card_id,
+            skin_id: card.skin_id,
+          })
+        );
+
+        navigate(`/external-pack/${packId}`, {
+          state: {
+            initialCards: simplifiedCards,
+            packId,
+          },
+        });
+      });
+
+      await purchasePackageById(packageId);
+      
+    } catch (error) {
+      console.error("Failed to purchase pack", error);
+      navigate("/shop");
+
+      toast({
+        status: "error",
+        title: t("purchase-error-title"),
+        description: t("purchase-error-description"),
+      });
+    } finally {
+      setIsPurchasing(false);
+    }
+  };
+
   return (
     <>
       <Flex
@@ -105,11 +190,14 @@ export const PackRow = ({ packId }: PackRowProps) => {
               fontSize={isSmallScreen ? 13 : 16}
               mt={isSmallScreen ? 4 : 8}
               h={isSmallScreen ? "30px" : "40px"}
-              onClick={() => {
-                navigate(`/external-pack/${packId}`);
-              }}
+              isDisabled={isPurchasing || !price}
+              onClick={handlePurchase}
             >
-              {t("buy")} · $9.99
+              {isPurchasing || !price ? (
+                <Spinner size="xs" />
+              ) : (
+                `${t("buy")} · ${price}`
+              )}
             </Button>
           </Flex>
           <Flex
