@@ -1,17 +1,18 @@
-import { Button, Flex, Heading, Text } from "@chakra-ui/react";
+import { Button, Flex, Heading, Spinner, Text } from "@chakra-ui/react";
 import { faCaretRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { mintPack } from "../../api/mintPack";
 import { GalaxyBackground } from "../../components/backgrounds/galaxy/GalaxyBackground";
-import { Intensity } from "../../types/intensity";
+import { GalaxyBackgroundIntensity } from "../../components/backgrounds/galaxy/types";
 import CachedImage from "../../components/CachedImage";
 import { DelayedLoading } from "../../components/DelayedLoading";
+import { LootBoxRateInfo } from "../../components/Info/LootBoxRateInfo";
 import { MobileDecoration } from "../../components/MobileDecoration";
-import { packAnimation, packGlowAnimation } from "../../constants/animations";
 import { RARITY, RarityLabels } from "../../constants/rarity";
-import { SKINS_RARITY } from "../../data/specialCards";
+import { useDojo } from "../../dojo/useDojo";
 import { CardTypes } from "../../enums/cardTypes";
 import { useCardData } from "../../providers/CardDataProvider";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
@@ -20,34 +21,27 @@ import Stack from "./CardStack/Stack";
 import PackTear from "./PackTear";
 import { SplitPackOnce } from "./SplitPackOnce";
 
-const getIntensity = (
-  type: CardTypes,
-  rarity: RARITY,
-  highlightedCardSkin: RARITY
-) => {
+const getIntensity = (type: CardTypes, rarity: RARITY) => {
   switch (type) {
     case CardTypes.JOKER:
-      return Intensity.MEDIUM;
+      return GalaxyBackgroundIntensity.MEDIUM;
     case CardTypes.NEON:
-      return Intensity.MEDIUM;
+      return GalaxyBackgroundIntensity.MEDIUM;
     case CardTypes.SPECIAL:
-      if (highlightedCardSkin) {
-        return Intensity.MAX;
-      }
       switch (rarity) {
         case RARITY.C:
-          return Intensity.MEDIUM;
+          return GalaxyBackgroundIntensity.MEDIUM;
         case RARITY.B:
-          return Intensity.MEDIUM;
+          return GalaxyBackgroundIntensity.MEDIUM;
         case RARITY.A:
-          return Intensity.HIGH;
+          return GalaxyBackgroundIntensity.HIGH;
         case RARITY.S:
-          return Intensity.MAX;
+          return GalaxyBackgroundIntensity.MAX;
         default:
-          return Intensity.MEDIUM;
+          return GalaxyBackgroundIntensity.MEDIUM;
       }
     default:
-      return Intensity.LOW;
+      return GalaxyBackgroundIntensity.LOW;
   }
 };
 
@@ -67,34 +61,29 @@ export const ExternalPack = ({
   onContinue,
   packId: providedPackId,
 }: ExternalPackProps) => {
-  const { t } = useTranslation("intermediate-screens");
+  const { t } = useTranslation("intermediate-screens", {
+    keyPrefix: "external-pack",
+  });
 
   const params = useParams();
-  const location = useLocation();
-  const locationState = location.state as ExternalPackProps | null;
-  const packId =
-    providedPackId ?? locationState?.packId ?? Number(params.packId ?? 1);
+  const packId = providedPackId ?? Number(params.packId ?? 1);
 
   const { t: tDocs } = useTranslation("docs");
   const { t: tGame } = useTranslation("game");
   const { getCardData } = useCardData();
 
+  const { account } = useDojo();
+
   const [allCardsSeen, setAllCardsSeen] = useState(false);
 
-  const initialCardsSource =
-    (initialCards && initialCards.length > 0 ? initialCards : undefined) ??
-    (locationState?.initialCards && locationState.initialCards.length > 0
-      ? locationState.initialCards
-      : undefined);
-
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(initialCards ? 1 : 0);
 
   const { isSmallScreen } = useResponsiveValues();
 
-  const packWidth = useMemo(() => (isSmallScreen ? 250 : 292), [isSmallScreen]);
+  const packWidth = useMemo(() => (isSmallScreen ? 250 : 360), [isSmallScreen]);
   const extraPackWidth = packWidth + 50;
   const packHeight = useMemo(
-    () => (isSmallScreen ? 405 : 472),
+    () => (isSmallScreen ? 405 : 583),
     [isSmallScreen]
   );
 
@@ -112,21 +101,17 @@ export const ExternalPack = ({
 
   const navigate = useNavigate();
 
+  const [buying, setBuying] = useState(false);
+
   const [obtainedCards, setObtainedCards] = useState<SimplifiedCard[]>(
-    initialCardsSource ?? []
+    initialCards ?? []
   );
-  const highlightedCardSkin =
-    obtainedCards.find((card) => card.card_id === highlightedCard)?.skin_id ??
-    0;
+
   return (
     <DelayedLoading ms={100}>
       <GalaxyBackground
         opacity={step >= 3 ? 1 : 0}
-        intensity={getIntensity(
-          type ?? CardTypes.NONE,
-          rarity ?? RARITY.C,
-          SKINS_RARITY[highlightedCardSkin]
-        )}
+        intensity={getIntensity(type ?? CardTypes.NONE, rarity ?? RARITY.C)}
       />
 
       {allCardsSeen && (
@@ -142,7 +127,7 @@ export const ExternalPack = ({
           {isSmallScreen ? (
             <FontAwesomeIcon color="white" fontSize={13} icon={faCaretRight} />
           ) : (
-            t("external-pack.continue")
+            t("continue")
           )}
         </Button>
       )}
@@ -168,24 +153,14 @@ export const ExternalPack = ({
                   letterSpacing={1.3}
                   variant="italic"
                   textTransform="unset"
-                  textShadow={"0 0 10px white"}
                 >
-                  {t(`shop.packs.${packId}.name`)}
+                  LEGENDARY
                 </Heading>
-                <Text
-                  size="l"
-                  textTransform={"uppercase"}
-                  fontWeight={600}
-                  textShadow={"0 0 10px black"}
-                  color={packId > 4 ? "gold" : "white"}
-                >
-                  -{" "}
-                  {t(
-                    `shop.packs.${packId > 4 ? "limited-edition" : "player-pack"}`
-                  )}{" "}
-                  -
+                <Text size="l" fontWeight={600}>
+                  - PLAYER PACK -
                 </Text>
               </Flex>
+              <LootBoxRateInfo name="LEGENDARY" details="Player Pack" packId={packId} />
             </>
           )}
 
@@ -223,11 +198,7 @@ export const ExternalPack = ({
                 {name}
               </Heading>
               <Text size="l" textTransform="lowercase" fontWeight={600}>
-                -{" "}
-                {tGame(
-                  `game.card-types.${highlightedCardSkin > 1 ? "skin-special" : type}`
-                )}{" "}
-                -
+                - {tGame(`game.card-types.${type}`)} -
               </Text>
             </Flex>
           )}
@@ -245,7 +216,7 @@ export const ExternalPack = ({
                 animation: "fadeIn 1s ease 3s forwards",
               }}
             >
-              <Text size="lg">{t("external-pack.draw-line")}</Text>
+              <Text size="lg">Draw a line to open</Text>
             </Flex>
           )}
 
@@ -273,28 +244,23 @@ export const ExternalPack = ({
                 position: "relative",
               }}
             >
-              {/* Step < 2 → normal pack + overlay cutout */}
+              {/* Step < 2 → pack normal + overlay de corte */}
               {step < 2 && (
                 <>
                   <PackTear
                     onOpened={() => setStep(2)}
                     width={extraPackWidth}
                     step={step}
-                    color={packId > 3 ? "white" : "black"}
                   />
                   <CachedImage
                     src={`/packs/${packId}.png`}
                     h="100%"
-                    animation={
-                      step === 0
-                        ? `${packGlowAnimation} 1s ease-in-out infinite, ${packAnimation} 3s ease-in-out infinite`
-                        : "none"
-                    }
+                    // boxShadow={"0 0 20px 0px white, inset 0 0 10px 0px white"}
                   />
                 </>
               )}
 
-              {/* Step 2 → pack split in 2 with animation */}
+              {/* Step 2 → pack partido en dos con animación */}
               {step >= 2 && (
                 <SplitPackOnce
                   width={packWidth}
@@ -321,7 +287,6 @@ export const ExternalPack = ({
             opacity={step >= 3 ? 1 : 0}
             zIndex={2}
             pointerEvents={step >= 3 ? "all" : "none"}
-            animation={`${packAnimation} 2s ease-in-out infinite`}
           >
             {obtainedCards?.length > 0 && (
               <Stack
@@ -349,14 +314,33 @@ export const ExternalPack = ({
             <Button
               mt={6}
               onClick={() => {
-                setStep(1);
+                setBuying(true);
+                mintPack({
+                  packId,
+                  recipient: account.account?.address,
+                })
+                  .then((response) => {
+                    setBuying(false);
+                    setObtainedCards(
+                      response.map((card: any) => ({
+                        card_id: card.card_id,
+                        skin_id: card.skin_id,
+                      }))
+                    );
+                    setStep(1);
+                  })
+                  .catch((error) => {
+                    setBuying(false);
+                    console.log(error);
+                  });
               }}
-              width={isSmallScreen ? "40%" : "200px"}
+              width="40%"
               variant={"secondarySolid"}
               fontFamily="Oxanium"
               fontSize={14}
+              isDisabled={buying}
             >
-              {t("external-pack.open")}
+              {buying ? <Spinner size="sm" /> : "BUY · $9.99"}
             </Button>
           )}
           {step === 4 && (
@@ -403,8 +387,6 @@ export const ExternalPack = ({
                   opacity={rarity ? 1 : 0}
                 >
                   {tDocs(`rarity.${RarityLabels[rarity as RARITY]}`)}
-                  {highlightedCardSkin > 1 &&
-                    ` - ${tGame("game.skin")} ${tDocs(`rarity.${RarityLabels[SKINS_RARITY[highlightedCardSkin]]}`)}`}
                 </Text>
               }
             </Flex>

@@ -16,7 +16,6 @@ import { DurationSwitcher } from "./DurationSwitcher";
 import { LootBoxRateInfo } from "./Info/LootBoxRateInfo";
 import { LootBox } from "./LootBox";
 import { PriceBox } from "./PriceBox";
-import { useResponsiveValues } from "../theme/responsiveSettings";
 
 interface MobileCardHighlightProps {
   card: Card;
@@ -50,8 +49,6 @@ export const MobileCardHighlight = ({
     temporaryPrice,
     details,
   } = getDataFn(card.card_id ?? 0);
-
-  const { isSmallScreen } = useResponsiveValues();
 
   const { changeModifierCard, sellSpecialCard } = useGameContext();
   const [loading, setLoading] = useState(false);
@@ -125,7 +122,7 @@ export const MobileCardHighlight = ({
       alignItems={"center"}
       backdropFilter="blur(5px)"
       backgroundColor=" rgba(0, 0, 0, 0.5)"
-      gap={temporaryPrice ? 2 : 4}
+      gap={temporaryPrice ? 4 : 6}
       onClick={() => {
         onClose();
       }}
@@ -172,7 +169,7 @@ export const MobileCardHighlight = ({
           <LootBox boxId={card.card_id ?? 0} />
         )}
       </Flex>
-      <Text textAlign="center" size="xl" fontSize={isSmallScreen ? "14px" : "17px"} width={"65%"}>
+      <Text textAlign="center" size="xl" fontSize={"17px"} width={"65%"}>
         {colorizeText(description)}
       </Text>
       {showExtraInfo && (
@@ -182,7 +179,7 @@ export const MobileCardHighlight = ({
               {t(`rarity.${RarityLabels[rarity as RARITY]}`, { ns: "docs" })}
             </Text>
           )}
-          {isPack && <LootBoxRateInfo name={name} details={details} />}
+          {isPack && <LootBoxRateInfo name={name} details={details} packId={card.card_id} />}
           {(price && !hidePrice) &&
             (temporaryPrice ? (
               <DurationSwitcher
