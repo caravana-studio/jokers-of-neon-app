@@ -66,18 +66,18 @@ async function init() {
   const theme = extendTheme(customTheme);
 
   // Block mobile browsers
- // if (
- //    isMobileOnly &&
- //    !isNative &&
- //    window.location.hostname !== "localhost" &&
- //    !BYPASS_MOBILE_BROWSER_RULE
- //  ) {
- //    return root.render(
- //      <I18nextProvider i18n={localI18n} defaultNS={undefined}>
- //        <MobileBrowserBlocker />
- //      </I18nextProvider>
- //    );
- //  }
+  if (
+    isMobileOnly &&
+    !isNative &&
+    window.location.hostname !== "localhost" &&
+    !BYPASS_MOBILE_BROWSER_RULE
+  ) {
+    return root.render(
+      <I18nextProvider i18n={localI18n} defaultNS={undefined}>
+        <MobileBrowserBlocker />
+      </I18nextProvider>
+    );
+  }
 
   fetchVersion().then((data) => {
     const version = data.version;
