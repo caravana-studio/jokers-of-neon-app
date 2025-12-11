@@ -17,21 +17,23 @@ import { RollingNumber } from "./RollingNumber.tsx";
 
 interface RewardItemProps {
   label: string;
-  value: number;
+  value: number | string;
   reroll?: boolean;
   rollingDelay?: number;
   skip?: boolean;
+  showCashSymbol?: boolean;
 }
 
 const DELAY_START = 1.25;
 const STAGGER = 0.5;
 
-const RewardItem = ({
+export const RewardItem = ({
   label,
   value,
   reroll = false,
   rollingDelay = 0,
   skip = false,
+  showCashSymbol = true,
 }: RewardItemProps) => {
   return (
     <Box color="white" px={[2, 4, 8]} w="100%">
@@ -58,12 +60,14 @@ const RewardItem = ({
       >
         <Heading size="s">{label.toUpperCase()}</Heading>
         {reroll ? (
-          <RerollIndicators rerolls={value} justifyContent="flex-end" />
+          typeof value === "number" && (
+            <RerollIndicators rerolls={value} justifyContent="flex-end" />
+          )
         ) : (
           <Flex gap={1} alignItems="center" justifyContent={"center"}>
-            <CashSymbol />
+            {showCashSymbol && <CashSymbol />}
             <Heading size="s">
-              {skip ? (
+              {skip || typeof value === "string" ? (
                 value
               ) : (
                 <RollingNumber n={value} delay={rollingDelay} sound />
@@ -164,7 +168,7 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
     >
       <PinkBox
         title={title}
-        button={playerWon ? t("endless-mode") :t("continue-btn")}
+        button={playerWon ? t("endless-mode") : t("continue-btn")}
         onClick={() => {
           navigate(GameStateEnum.Map);
         }}
