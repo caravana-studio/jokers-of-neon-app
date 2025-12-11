@@ -1,13 +1,15 @@
+import { Flex } from "@chakra-ui/react";
 import { BackgroundDecoration } from "../components/Background";
 import { GalaxyBackground } from "../components/backgrounds/galaxy/GalaxyBackground";
-import { Intensity } from "../types/intensity";
 import { DelayedLoading } from "../components/DelayedLoading";
 import { MobileDecoration } from "../components/MobileDecoration";
 import { RewardsDetail } from "../components/RewardsDetail";
+import { BOSS_LEVEL } from "../constants/general";
 import { GameStateEnum } from "../dojo/typescript/custom";
 import { useCustomNavigate } from "../hooks/useCustomNavigate";
 import { useGameStore } from "../state/useGameStore";
 import { useResponsiveValues } from "../theme/responsiveSettings";
+import { Intensity } from "../types/intensity";
 
 export const RewardsPage = () => {
   const { roundRewards } = useGameStore();
@@ -24,7 +26,9 @@ export const RewardsPage = () => {
         <GalaxyBackground
           intensity={
             roundRewards?.level_passed
-              ? Intensity.HIGH
+              ? roundRewards.level_passed === BOSS_LEVEL
+                ? Intensity.MAX
+                : Intensity.HIGH
               : Intensity.LOW
           }
         />

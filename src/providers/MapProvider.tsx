@@ -16,6 +16,7 @@ import { useGameStore } from "../state/useGameStore";
 import { BLUE, VIOLET_LIGHT } from "../theme/colors";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import { getRageNodeData } from "../utils/getRageNodeData";
+import { BOSS_LEVEL } from "../constants/general";
 
 export interface SelectedNodeData {
   id: number;
@@ -73,6 +74,7 @@ export const MapProvider = ({ children }: MapProviderProps) => {
   const reactFlowInstance = useReactFlow();
 
   const { state, level, id } = useGameStore();
+  const isBossLevel = level === BOSS_LEVEL;
 
   const stateInMap = state === GameStateEnum.Map;
 
@@ -101,6 +103,7 @@ export const MapProvider = ({ children }: MapProviderProps) => {
               nodeType === NodeType.RAGE
                 ? getRageNodeData(node.data)
                 : undefined,
+            isBossLevel,
           },
         };
       });

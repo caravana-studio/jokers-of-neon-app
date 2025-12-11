@@ -36,6 +36,7 @@ export enum BackgroundType {
   Game = "game",
   Store = "store",
   Rage = "rage",
+  RageBoss = "rageboss",
   Map = "map",
 }
 
@@ -118,7 +119,8 @@ export const Background = ({ children }: PropsWithChildren) => {
   const { isSmallScreen } = useResponsiveValues();
   const [backgroundImageUrl, setBackgroundImageUrl] = useState<string>("none");
 
-  const { isRageRound, modId, isClassic } = useGameStore();
+  const { isRageRound, modId, isClassic, inBossRound } = useGameStore();
+  
   const baseUrl = import.meta.env.VITE_MOD_URL + modId + "/resources";
 
   const location = useLocation();
@@ -126,7 +128,7 @@ export const Background = ({ children }: PropsWithChildren) => {
   const page = pathname === "" ? "home" : pathname;
   const type =
     isRageRound && bgConfig[page]?.bg === BackgroundType.Game
-      ? BackgroundType.Rage
+      ? inBossRound ? BackgroundType.RageBoss : BackgroundType.Rage
       : bgConfig[page]?.bg;
 
   const [src, setSrc] = useState("");
@@ -139,7 +141,7 @@ export const Background = ({ children }: PropsWithChildren) => {
       setSrc(`/bg/${type}-bg.jpg`);
       setVideoType(type);
     }
-  }, [type, isRageRound]);
+  }, [type, isRageRound, inBossRound]);
 
   const modAwareSrc = !isClassic ? baseUrl + src : src;
 
