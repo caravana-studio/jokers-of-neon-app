@@ -74,9 +74,11 @@ export const FeatureFlagProvider = ({ children }: PropsWithChildren) => {
     }
   }, [apiKey, initFM]);
 
-  return (
+  return isFMReady ? (
     <FeatureFlagContext.Provider value={namespaceFlags}>
       {children}
     </FeatureFlagContext.Provider>
-  )
+  ) : (
+    <LoadingScreen />
+  );
 };

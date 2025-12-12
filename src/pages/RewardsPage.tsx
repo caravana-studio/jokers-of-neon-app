@@ -10,30 +10,48 @@ import { useCustomNavigate } from "../hooks/useCustomNavigate";
 import { useGameStore } from "../state/useGameStore";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import { Intensity } from "../types/intensity";
+import { RoundRewards } from "../types/RoundRewards";
 
 export const RewardsPage = () => {
   const { roundRewards } = useGameStore();
   const navigate = useCustomNavigate();
   const { isSmallScreen } = useResponsiveValues();
 
-  if (!roundRewards) {
+  const fakeRoundRewards: RoundRewards = {
+    roundNumber: 5,
+    round_defeat: 1200,
+    level_bonus: 300,
+    hands_left: 2,
+    hands_left_cash: 200,
+    discard_left: 1,
+    discard_left_cash: 100,
+    rage_card_defeated: 1,
+    rage_card_defeated_cash: 250,
+    rerolls: 2,
+    total: 2050,
+    level_passed: 3,
+  };
+
+  const rewardsToShow = roundRewards ?? fakeRoundRewards;
+
+/*   if (!roundRewards) {
     navigate(GameStateEnum.Map);
-  }
+  } */
 
   return (
     <DelayedLoading ms={0}>
       <BackgroundDecoration>
         <GalaxyBackground
           intensity={
-            roundRewards?.level_passed
-              ? roundRewards.level_passed === BOSS_LEVEL
+            rewardsToShow?.level_passed
+              ? rewardsToShow.level_passed === BOSS_LEVEL
                 ? Intensity.MAX
                 : Intensity.HIGH
               : Intensity.LOW
           }
         />
         {isSmallScreen && <MobileDecoration />}
-        <RewardsDetail roundRewards={roundRewards} />
+        <RewardsDetail roundRewards={rewardsToShow} />
       </BackgroundDecoration>
     </DelayedLoading>
   );

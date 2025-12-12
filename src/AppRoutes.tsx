@@ -33,6 +33,7 @@ import { RewardsPage } from "./pages/RewardsPage";
 import { SeasonProgressionPage } from "./pages/SeasonProgression/SeasonProgressionPage";
 import { SettingsPage } from "./pages/SettingsPage";
 import { ShopPage } from "./pages/Shop/ShopPage";
+import { SummaryPage } from "./pages/SummaryPage";
 import { TestPage } from "./pages/TestPage";
 import { VibrationPage } from "./pages/VibrationPage";
 import { CardHighlightProvider } from "./providers/HighlightProvider/CardHighlightProvider";
@@ -156,6 +157,16 @@ export const AppRoutes = () => {
           <AnimatedPage>
             <GameStoreLoader>
               <RewardsPage />
+            </GameStoreLoader>
+          </AnimatedPage>
+        }
+      />
+      <Route
+        path="/summary/:win?"
+        element={
+          <AnimatedPage>
+            <GameStoreLoader>
+              <SummaryPage />
             </GameStoreLoader>
           </AnimatedPage>
         }

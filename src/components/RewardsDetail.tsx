@@ -7,7 +7,7 @@ import { GameStateEnum } from "../dojo/typescript/custom.ts";
 import { useCustomNavigate } from "../hooks/useCustomNavigate.tsx";
 import { RerollIndicators } from "../pages/DynamicStore/storeComponents/TopBar/RerollIndicators.tsx";
 import { useGameStore } from "../state/useGameStore.ts";
-import { VIOLET_LIGHT } from "../theme/colors";
+import { BLUE_LIGHT, VIOLET_LIGHT } from "../theme/colors";
 import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
 import { RoundRewards } from "../types/RoundRewards.ts";
 import { StaggeredList } from "./animations/StaggeredList.tsx";
@@ -17,21 +17,25 @@ import { RollingNumber } from "./RollingNumber.tsx";
 
 interface RewardItemProps {
   label: string;
-  value: number;
+  value: number | string;
   reroll?: boolean;
   rollingDelay?: number;
   skip?: boolean;
+  showCashSymbol?: boolean;
+  coloredValue?: boolean;
 }
 
 const DELAY_START = 1.25;
 const STAGGER = 0.5;
 
-const RewardItem = ({
+export const RewardItem = ({
   label,
   value,
   reroll = false,
   rollingDelay = 0,
   skip = false,
+  showCashSymbol = true,
+  coloredValue = false,
 }: RewardItemProps) => {
   return (
     <Box color="white" px={[2, 4, 8]} w="100%">
@@ -56,14 +60,23 @@ const RewardItem = ({
           },
         }}
       >
-        <Heading size="s">{label.toUpperCase()}</Heading>
+        <Heading size="s" textAlign={"left"}>
+          {label.toUpperCase()}
+        </Heading>
         {reroll ? (
-          <RerollIndicators rerolls={value} justifyContent="flex-end" />
+          typeof value === "number" && (
+            <RerollIndicators rerolls={value} justifyContent="flex-end" />
+          )
         ) : (
-          <Flex gap={1} alignItems="center" justifyContent={"center"}>
-            <CashSymbol />
-            <Heading size="s">
-              {skip ? (
+          <Flex gap={1} alignItems="flex-end" justifyContent={"center"}>
+            {showCashSymbol && <CashSymbol />}
+            <Heading
+              size="s"
+              textAlign={"right"}
+              color={coloredValue ? "blueLight" : "white"}
+              textShadow={coloredValue ? `0 0 10px ${BLUE_LIGHT}` : "none"}
+            >
+              {skip || typeof value === "string" ? (
                 value
               ) : (
                 <RollingNumber n={value} delay={rollingDelay} sound />
@@ -164,7 +177,7 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
     >
       <PinkBox
         title={title}
-        button={playerWon ? t("endless-mode") :t("continue-btn")}
+        button={playerWon ? t("endless-mode") : t("continue-btn")}
         onClick={() => {
           navigate(GameStateEnum.Map);
         }}
