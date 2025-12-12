@@ -8,6 +8,7 @@ import { GalaxyBackground } from "../../components/backgrounds/galaxy/GalaxyBack
 import { Intensity } from "../../types/intensity";
 import CachedImage from "../../components/CachedImage";
 import { DelayedLoading } from "../../components/DelayedLoading";
+import { LootBoxRateInfo } from "../../components/Info/LootBoxRateInfo";
 import { MobileDecoration } from "../../components/MobileDecoration";
 import { packAnimation, packGlowAnimation } from "../../constants/animations";
 import { RARITY, RarityLabels } from "../../constants/rarity";
@@ -186,6 +187,7 @@ export const ExternalPack = ({
                   -
                 </Text>
               </Flex>
+              <LootBoxRateInfo name="LEGENDARY" details="Player Pack" packId={packId} />
             </>
           )}
 

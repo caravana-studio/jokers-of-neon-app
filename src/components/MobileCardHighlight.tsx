@@ -182,7 +182,7 @@ export const MobileCardHighlight = ({
               {t(`rarity.${RarityLabels[rarity as RARITY]}`, { ns: "docs" })}
             </Text>
           )}
-          {isPack && <LootBoxRateInfo name={name} details={details} />}
+          {isPack && <LootBoxRateInfo name={name} details={details} packId={card.card_id} />}
           {(price && !hidePrice) &&
             (temporaryPrice ? (
               <DurationSwitcher

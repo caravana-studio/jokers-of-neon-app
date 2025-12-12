@@ -72,6 +72,13 @@ const PackView = ({ pack }: { pack: BlisterPackItem }) => {
     card.card_id ?? 0
   );
 
+  console.log('Pack data in LootBoxesMobile:', {
+    blister_pack_id: pack.blister_pack_id,
+    card_id: card.card_id,
+    name,
+    pack
+  });
+
   const handleBuyClick = useMemo(
     () => () => {
       setBuyDisabled(true);
@@ -146,7 +153,11 @@ const PackView = ({ pack }: { pack: BlisterPackItem }) => {
           </Flex>
 
           <Flex mb={4} gap={2}>
-            <LootBoxRateInfo name={name} details={details} />
+            <LootBoxRateInfo
+              name={name}
+              details={details}
+              packId={pack.blister_pack_id}
+            />
           </Flex>
 
           <Flex alignItems={"baseline"} justifyContent={"space-between"}>

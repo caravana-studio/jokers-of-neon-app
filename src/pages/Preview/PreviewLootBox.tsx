@@ -121,7 +121,7 @@ export const PreviewLootBox = () => {
             </Text>
             {details && (
               <Flex zIndex={2} mt={2} gap={2}>
-                <LootBoxRateInfo name={name} details={details} />
+                <LootBoxRateInfo name={name} details={details} packId={card.card_id} />
               </Flex>
             )}
           </Flex>

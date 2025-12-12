@@ -182,7 +182,7 @@ export const PackRow = ({ packId, packageId, price }: PackRowProps) => {
                 </Text>
               )}
             </Flex>
-            <LootBoxRateInfo name={"test"} details={"details"} />
+            <LootBoxRateInfo name={t(`${packId}.name`)} details={t(`${packId}.description.1`)} packId={packId} />
             <Button
               variant={"secondarySolid"}
               w={isSmallScreen ? "70%" : "300px"}
