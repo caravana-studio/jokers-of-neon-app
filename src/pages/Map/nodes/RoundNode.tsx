@@ -5,7 +5,6 @@ import { Handle, Position } from "reactflow";
 import CachedImage from "../../../components/CachedImage";
 import { GameStateEnum } from "../../../dojo/typescript/custom";
 import { useDojo } from "../../../dojo/useDojo";
-import { useShopActions } from "../../../dojo/useShopActions";
 import { useCustomNavigate } from "../../../hooks/useCustomNavigate";
 import { useMap } from "../../../providers/MapProvider";
 import { useGameStore } from "../../../state/useGameStore";
@@ -28,23 +27,26 @@ const reachablePulse = keyframes`
     opacity: 0;
   }
 `;
+import { NodeClickPulse } from "./NodeClickPulse";
+import { useNodeNavigation } from "./useNodeNavigation";
 
 const RoundNode = ({ data }: any) => {
   const { t } = useTranslation("map", { keyPrefix: "round" });
-  const { advanceNode } = useShopActions();
   const { id: gameId } = useGameStore();
   const navigate = useCustomNavigate();
+  const { handleNodeNavigation } = useNodeNavigation();
 
   const {
     setup: { client },
   } = useDojo();
 
-  const { reachableNodes, setSelectedNodeData, selectedNodeData } = useMap();
+  const { reachableNodes, setSelectedNodeData, selectedNodeData, isNodeTransactionPending, activeNodeId, pulsingNodeId } = useMap();
   const { isSmallScreen } = useResponsiveValues();
   const { state, refetchGameStore } = useGameStore();
 
   const stateInMap = state === GameStateEnum.Map;
-  const reachable = reachableNodes.includes(data.id.toString()) && stateInMap;
+  const isActiveNode = activeNodeId === data.id.toString();
+  const reachable = reachableNodes.includes(data.id.toString()) && stateInMap && (!isNodeTransactionPending || isActiveNode);
 
   const title = t("name");
 
@@ -117,19 +119,22 @@ const RoundNode = ({ data }: any) => {
             : {}),
         }}
         onClick={() => {
-          isSmallScreen &&
+          if (isNodeTransactionPending) return;
+
+          if (isSmallScreen) {
             setSelectedNodeData({
               id: data.id,
               title: title,
               nodeType: NodeType.ROUND,
             });
-          if (data.current && !stateInMap) {
+          } else if (data.current && !stateInMap) {
             navigate(GameStateEnum.Round);
-          } else if (stateInMap && reachable && !isSmallScreen) {
-            advanceNode(gameId, data.id).then((response) => {
-              if (response) {
-                refetchAndNavigate();
-              }
+          } else if (stateInMap && reachableNodes.includes(data.id.toString())) {
+            // Desktop: navigate with a single click
+            handleNodeNavigation({
+              nodeId: data.id,
+              gameId,
+              onNavigate: refetchAndNavigate,
             });
           }
         }}
@@ -139,6 +144,9 @@ const RoundNode = ({ data }: any) => {
           alt="round"
         />
 
+        {pulsingNodeId === data.id.toString() && (
+          <NodeClickPulse borderRadius={10} />
+        )}
         {data.current && <HereSign />}
 
         <Handle type="target" position={Position.Top} style={{ opacity: 0 }} />

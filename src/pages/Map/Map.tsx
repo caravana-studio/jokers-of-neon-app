@@ -11,9 +11,9 @@ import { MobileDecoration } from "../../components/MobileDecoration";
 import { useBackToGameButton } from "../../components/useBackToGameButton";
 import { GameStateEnum } from "../../dojo/typescript/custom";
 import { useDojo } from "../../dojo/useDojo";
-import { useShopActions } from "../../dojo/useShopActions";
 import { useCustomNavigate } from "../../hooks/useCustomNavigate";
 import { useMap } from "../../providers/MapProvider";
+import { useStore } from "../../providers/StoreProvider";
 import { useGameStore } from "../../state/useGameStore";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { MobileCoins } from "../store/Coins";
@@ -22,6 +22,7 @@ import { NodeDetailsMobileButton } from "./NodeDetailsMobileButton";
 import RageNode from "./nodes/RageNode";
 import RoundNode from "./nodes/RoundNode";
 import RewardNode from "./nodes/StoreNode";
+import { useNodeNavigation } from "./nodes/useNodeNavigation";
 import { NodeType } from "./types";
 
 export const Map = () => {
@@ -31,9 +32,16 @@ export const Map = () => {
     edges,
     fitViewToCurrentNode,
     fitViewToFullMap,
+    fitViewToNode,
     layoutReady,
     selectedNodeData,
     reachableNodes,
+    isNodeTransactionPending,
+    setNodeTransactionPending,
+    activeNodeId,
+    setActiveNodeId,
+    pulsingNodeId,
+    setPulsingNodeId,
   } = useMap();
 
   const {
@@ -41,10 +49,11 @@ export const Map = () => {
   } = useDojo();
 
   const { isSmallScreen } = useResponsiveValues();
-  const { advanceNode } = useShopActions();
   const { state, id: gameId, setShopId, refetchGameStore } = useGameStore();
   const navigate = useCustomNavigate();
   const { backToGameButtonProps, backToGameButton } = useBackToGameButton();
+  const { handleNodeNavigation } = useNodeNavigation();
+  const { refetch: refetchStore } = useStore();
 
   useEffect(() => {
     if (layoutReady && nodes.length > 0) {
@@ -52,6 +61,7 @@ export const Map = () => {
         fitViewToFullMap();
       }, 400);
 
+      // Zoom to current node on both desktop and mobile
       const timeout2 = setTimeout(() => {
         fitViewToCurrentNode();
       }, 1000);
@@ -61,7 +71,7 @@ export const Map = () => {
         clearTimeout(timeout2);
       };
     }
-  }, [layoutReady, nodes]);
+  }, [layoutReady, nodes, isSmallScreen]);
 
   const isReachable = reachableNodes.includes(
     selectedNodeData?.id?.toString() ?? ""
@@ -72,26 +82,34 @@ export const Map = () => {
     navigate(state);
   };
 
-  const handleGoClick = () => {
-    selectedNodeData &&
-      advanceNode(gameId, selectedNodeData.id).then((response) => {
-        if (response) {
-          switch (selectedNodeData?.nodeType) {
-            case NodeType.RAGE:
-              refetchAndNavigate(GameStateEnum.Rage);
-              break;
-            case NodeType.ROUND:
-              refetchAndNavigate(GameStateEnum.Round);
-              break;
-            case NodeType.STORE:
-              navigate(GameStateEnum.Store);
-              selectedNodeData.shopId && setShopId(selectedNodeData.shopId);
-              break;
-            default:
-              break;
+  const handleGoClick = async () => {
+    if (!selectedNodeData) return;
+
+    const navigateToNode = async () => {
+      switch (selectedNodeData?.nodeType) {
+        case NodeType.RAGE:
+          await refetchAndNavigate(GameStateEnum.Rage);
+          break;
+        case NodeType.ROUND:
+          await refetchAndNavigate(GameStateEnum.Round);
+          break;
+        case NodeType.STORE:
+          if (selectedNodeData.shopId) {
+            setShopId(selectedNodeData.shopId);
+            refetchStore();
           }
-        }
-      });
+          navigate(GameStateEnum.Store);
+          break;
+        default:
+          break;
+      }
+    };
+
+    handleNodeNavigation({
+      nodeId: selectedNodeData.id,
+      gameId,
+      onNavigate: navigateToNode,
+    });
   };
 
   return (
