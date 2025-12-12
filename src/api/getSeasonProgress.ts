@@ -5,7 +5,7 @@ import { IReward, IStep } from "../pages/SeasonProgression/types";
 
 const DEFAULT_API_BASE_URL = "http://localhost:3001";
 const DEFAULT_SEASON_ID = SEASON_NUMBER;
-const TOURNAMENT_ENTRY_PACK_ID = 100;
+const TOURNAMENT_ENTRY_PACK_ID = 99;
 
 export type GetSeasonLineParams = {
   userAddress: string;
