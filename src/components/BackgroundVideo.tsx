@@ -22,6 +22,7 @@ const BackgroundVideo = ({ type }: BackgroundVideoProps) => {
     rage: "/bg/rage-bg.mp4",
     rageboss: "/bg/rageboss-bg.mp4",
     map: "/bg/map-bg.mp4",
+    summary: "/bg/summary-bg.mp4",
   };
 
   useEffect(() => {

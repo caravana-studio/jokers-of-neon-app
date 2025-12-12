@@ -1,26 +1,31 @@
 import { Box, Flex, Heading } from "@chakra-ui/react";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { StaggeredList } from "../components/animations/StaggeredList";
 import { BackgroundDecoration } from "../components/Background";
-import { GalaxyBackground } from "../components/backgrounds/galaxy/GalaxyBackground";
 import { DelayedLoading } from "../components/DelayedLoading";
 import { MobileDecoration } from "../components/MobileDecoration";
 import { PinkBox } from "../components/PinkBox";
 import { RewardItem } from "../components/RewardsDetail";
 import { PLAYS_DATA } from "../constants/plays";
+import {
+  DEFAULT_TRACKER_VIEW,
+  getGameTracker,
+} from "../dojo/queries/getGameTracker";
 import { GameStateEnum } from "../dojo/typescript/custom";
+import { useDojo } from "../dojo/useDojo";
 import { Plays } from "../enums/plays";
 import { useCustomNavigate } from "../hooks/useCustomNavigate";
 import { useGameStore } from "../state/useGameStore";
 import { BLUE_LIGHT, VIOLET_LIGHT } from "../theme/colors";
 import { useResponsiveValues } from "../theme/responsiveSettings";
-import { Intensity } from "../types/intensity";
+import { formatNumber } from "../utils/formatNumber";
 
 const DELAY_START = 1.25;
 const STAGGER = 0.5;
+
 export const SummaryPage = () => {
   const { isSmallScreen } = useResponsiveValues();
 
@@ -29,7 +34,7 @@ export const SummaryPage = () => {
   return (
     <DelayedLoading ms={0}>
       <BackgroundDecoration>
-        {win && <GalaxyBackground intensity={Intensity.MAX} />}
+        {/* {win && <GalaxyBackground intensity={Intensity.MAX} />} */}
         {isSmallScreen && <MobileDecoration />}
         <SummaryDetail />
       </BackgroundDecoration>
@@ -43,13 +48,37 @@ const SummaryDetail = () => {
   });
   const { t: tGame } = useTranslation("game");
   const { t: tPlays } = useTranslation("plays", { keyPrefix: "playsData" });
+  const {
+    setup: { client },
+  } = useDojo();
 
-  const navigate = useCustomNavigate();
+  const customNavigate = useCustomNavigate();
+  const navigate = useNavigate();
   const { isSmallScreen } = useResponsiveValues();
   const [skip, setSkip] = useState(false);
   const [animationEnded, setAnimationEnded] = useState(false);
   const { win } = useParams();
-  const { totalScore, level, round } = useGameStore();
+  const { totalScore, level, round, id: gameId } = useGameStore();
+  const [gameTracker, setGameTracker] = useState(DEFAULT_TRACKER_VIEW);
+
+  useEffect(() => {
+    let active = true;
+
+    const fetchTracker = async () => {
+      if (!client || !gameId) return;
+
+      const tracker = await getGameTracker(client, gameId);
+      if (active) {
+        setGameTracker(tracker);
+      }
+    };
+
+    fetchTracker();
+
+    return () => {
+      active = false;
+    };
+  }, [client, gameId]);
 
   const title = (
     <motion.div
@@ -70,23 +99,10 @@ const SummaryDetail = () => {
       </Heading>
     </motion.div>
   );
-  const fakeSummary: any = {
-    game_id: 3,
-    highest_hand: 145697,
-    most_played_hand: {
-      hand: Plays.FIVE_OF_A_KIND,
-      count: 35,
-    },
-    highest_cash: 20000,
-    cards_played_count: 35,
-    cards_discarded_count: 135,
-    rage_wins: 27,
-  };
   const compactRound = `${tGame("game.round-points.level", { level: level })} R${round}`;
 
-  if (!fakeSummary) {
-    navigate(GameStateEnum.Map);
-  }
+  const mostPlayedHandName =
+    PLAYS_DATA[gameTracker.mostPlayedHand]?.name ?? PLAYS_DATA[Plays.NONE].name;
 
   const labels = [
     t("round"),
@@ -112,7 +128,9 @@ const SummaryDetail = () => {
         title={title}
         button={win ? t("endless-mode") : t("continue-btn")}
         onClick={() => {
-          win ? navigate(GameStateEnum.Map) : navigate(GameStateEnum.GameOver);
+          win
+            ? customNavigate(GameStateEnum.Map)
+            : navigate(`/gameover/${gameId}`);
         }}
         actionHidden={!animationEnded}
         glowIntensity={win ? 1.5 : 0}
@@ -124,8 +142,7 @@ const SummaryDetail = () => {
           transition={{ delay: 0.75, duration: 0.5, ease: "easeOut" }}
         >
           <Heading color={win ? "lightViolet" : "blueLight"} size="s">
-            {" "}
-            {t("final-score", { score: totalScore })}{" "}
+            {t("final-score", { score: formatNumber(totalScore) })}{" "}
           </Heading>
         </motion.div>
 
@@ -141,40 +158,46 @@ const SummaryDetail = () => {
             label={labels[0]}
             value={compactRound}
             showCashSymbol={false}
+            coloredValue
           />
           <RewardItem
             skip={skip}
             label={labels[1]}
-            value={fakeSummary.highest_hand}
+            value={gameTracker.highestHand}
             showCashSymbol={false}
+            coloredValue
           />
           <RewardItem
             skip={skip}
             label={labels[2]}
             showCashSymbol={false}
-            value={`${tPlays(`${PLAYS_DATA[fakeSummary.most_played_hand.hand]?.name}.name`)} (${fakeSummary.most_played_hand.count})`}
+            value={`${tPlays(`${mostPlayedHandName}.name`)} (${gameTracker.mostPlayedHandCount})`}
+            coloredValue
           />
 
           <RewardItem
             skip={skip}
             label={labels[3]}
             showCashSymbol={false}
-            value={fakeSummary.cards_played_count}
+            value={gameTracker.cardsPlayedCount}
             rollingDelay={(DELAY_START + STAGGER) * 1000}
+            coloredValue
           />
           <RewardItem
             skip={skip}
             label={labels[4]}
             showCashSymbol={false}
-            value={fakeSummary.cards_discarded_count}
+            value={gameTracker.cardsDiscardedCount}
             rollingDelay={(DELAY_START + STAGGER) * 1000}
+            coloredValue
           />
           <RewardItem
             skip={skip}
             label={labels[5]}
             showCashSymbol={false}
-            value={fakeSummary.rage_wins}
+            value={gameTracker.rageWins}
             rollingDelay={(DELAY_START + STAGGER) * 1000}
+            coloredValue
           />
           <Box h="20px" />
         </StaggeredList>

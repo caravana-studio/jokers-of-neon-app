@@ -7,7 +7,7 @@ import { GameStateEnum } from "../dojo/typescript/custom.ts";
 import { useCustomNavigate } from "../hooks/useCustomNavigate.tsx";
 import { RerollIndicators } from "../pages/DynamicStore/storeComponents/TopBar/RerollIndicators.tsx";
 import { useGameStore } from "../state/useGameStore.ts";
-import { VIOLET_LIGHT } from "../theme/colors";
+import { BLUE_LIGHT, VIOLET_LIGHT } from "../theme/colors";
 import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
 import { RoundRewards } from "../types/RoundRewards.ts";
 import { StaggeredList } from "./animations/StaggeredList.tsx";
@@ -22,6 +22,7 @@ interface RewardItemProps {
   rollingDelay?: number;
   skip?: boolean;
   showCashSymbol?: boolean;
+  coloredValue?: boolean;
 }
 
 const DELAY_START = 1.25;
@@ -34,6 +35,7 @@ export const RewardItem = ({
   rollingDelay = 0,
   skip = false,
   showCashSymbol = true,
+  coloredValue = false,
 }: RewardItemProps) => {
   return (
     <Box color="white" px={[2, 4, 8]} w="100%">
@@ -58,15 +60,22 @@ export const RewardItem = ({
           },
         }}
       >
-        <Heading size="s">{label.toUpperCase()}</Heading>
+        <Heading size="s" textAlign={"left"}>
+          {label.toUpperCase()}
+        </Heading>
         {reroll ? (
           typeof value === "number" && (
             <RerollIndicators rerolls={value} justifyContent="flex-end" />
           )
         ) : (
-          <Flex gap={1} alignItems="center" justifyContent={"center"}>
+          <Flex gap={1} alignItems="flex-end" justifyContent={"center"}>
             {showCashSymbol && <CashSymbol />}
-            <Heading size="s">
+            <Heading
+              size="s"
+              textAlign={"right"}
+              color={coloredValue ? "blueLight" : "white"}
+              textShadow={coloredValue ? `0 0 10px ${BLUE_LIGHT}` : "none"}
+            >
               {skip || typeof value === "string" ? (
                 value
               ) : (
