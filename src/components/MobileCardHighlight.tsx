@@ -110,8 +110,6 @@ export const MobileCardHighlight = ({
     setOpacity(1);
     setScale(1);
 
-    // Asegurar que no se pueda cerrar durante la animación
-    // La animación dura 0.2s, esperamos un poco más para estar seguros
     const timer = setTimeout(() => {
       setIsOpening(false);
     }, 250);
