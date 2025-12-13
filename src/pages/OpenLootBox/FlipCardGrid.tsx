@@ -89,12 +89,6 @@ export const FlipCardGrid = ({
                     scale={adjustedCardScale}
                     card={card}
                     onClick={() => {
-                      console.log('[FlipCardGrid] onClick triggered', {
-                        cardId: card.card_id,
-                        cardType: card.type,
-                        animationRunning,
-                        wasLongPress: wasLongPressRef.current,
-                      });
                       if (!animationRunning && !wasLongPressRef.current) {
                         console.log('[FlipCardGrid] Toggling card');
                         onCardToggle(card);
