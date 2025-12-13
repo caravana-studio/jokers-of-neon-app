@@ -1,4 +1,6 @@
-import { Flex } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
+import React from "react";
+import { useTranslation } from "react-i18next";
 import { FlipCard } from "../../components/animations/FlipCardAnimation";
 import { TiltCard } from "../../components/TiltCard";
 import { FullScreenCardContainer } from "../FullScreenCardContainer";
@@ -8,6 +10,7 @@ import { Card } from "../../types/Card";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { getFlipSpeed } from "../../constants/flipCardAnimation";
 import { useSettings } from "../../providers/SettingsProvider";
+import { CardTypes } from "../../enums/cardTypes";
 
 interface FlipCardGridProps {
   cards: Card[];
@@ -16,6 +19,7 @@ interface FlipCardGridProps {
   animationRunning: boolean;
   onCardToggle: (card: Card) => void;
   onGridClick: () => void;
+  onCardLongPress?: (card: Card) => void;
 }
 
 export const FlipCardGrid = ({
@@ -25,11 +29,17 @@ export const FlipCardGrid = ({
   animationRunning,
   onCardToggle,
   onGridClick,
+  onCardLongPress,
 }: FlipCardGridProps) => {
-  const { cardScale } = useResponsiveValues();
+  const { cardScale, isSmallScreen } = useResponsiveValues();
   const adjustedCardScale = cardScale * 1.2;
   const { animationSpeed } = useSettings();
   const flipSpeed = getFlipSpeed(animationSpeed) / 1000;
+  const { t } = useTranslation(["store"]);
+
+  // Track touch start time to differentiate between tap and long press
+  const touchStartTimeRef = React.useRef<number>(0);
+  const wasLongPressRef = React.useRef<boolean>(false);
 
   return (
     <FullScreenCardContainer>
@@ -66,6 +76,7 @@ export const FlipCardGrid = ({
                     : "2px solid transparent"
                 }
                 cursor="pointer"
+                position="relative"
               >
                 <FlipCard
                   flipped={flippedStates[index]}
@@ -78,10 +89,21 @@ export const FlipCardGrid = ({
                     scale={adjustedCardScale}
                     card={card}
                     onClick={() => {
-                      if (!animationRunning) {
+                      if (!animationRunning && !wasLongPressRef.current) {
                         onCardToggle(card);
+                      } else {
                       }
+                      // Reset flag after onClick
+                      wasLongPressRef.current = false;
                     }}
+                    onHold={
+                      onCardLongPress
+                        ? () => {
+                            wasLongPressRef.current = true;
+                            onCardLongPress(card);
+                          }
+                        : undefined
+                    }
                   />
                 </FlipCard>
               </Flex>
@@ -89,6 +111,23 @@ export const FlipCardGrid = ({
           );
         })}
       </Flex>
+      {isSmallScreen && onCardLongPress && (
+        <Text
+          position="absolute"
+          bottom="100px"
+          left="50%"
+          transform="translateX(-50%)"
+          fontSize="sm"
+          color="whiteAlpha.700"
+          textAlign="center"
+          opacity={animationRunning ? 0 : 1}
+          transition="opacity 0.3s ease"
+          pointerEvents="none"
+          whiteSpace="nowrap"
+        >
+          {t("store.packs.press-for-detail")}
+        </Text>
+      )}
     </FullScreenCardContainer>
   );
 };

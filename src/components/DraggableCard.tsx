@@ -15,7 +15,8 @@ export const DraggableCard = ({
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id,
   });
-  const holdTimeout = useRef<ReturnType<typeof setTimeout> | null>(null); // Explicitly type ref
+  const holdTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const holdActivated = useRef<boolean>(false); // Track if hold was activated
 
   const style = transform
     ? {
@@ -24,22 +25,27 @@ export const DraggableCard = ({
     : undefined;
 
   const handleTouchStart = (event: any) => {
+    holdActivated.current = false; // Reset on new touch
     holdTimeout.current = setTimeout(() => {
+      holdActivated.current = true; // Mark as activated
       onCardHold?.();
-      holdTimeout.current = null; 
-    }, 200); 
+      holdTimeout.current = null;
+    }, 200);
   };
 
   const handleTouchMove = () => {
-    if (holdTimeout.current) {
-      clearTimeout(holdTimeout.current); // Cancel hold if movement detected
+    // Only cancel if hold hasn't been activated yet
+    if (holdTimeout.current && !holdActivated.current) {
+      clearTimeout(holdTimeout.current);
       holdTimeout.current = null;
     }
   };
 
   const handleTouchEnd = () => {
-    if (holdTimeout.current) {
-      clearTimeout(holdTimeout.current); // Clear timeout on touch end
+    // Only cancel if hold hasn't been activated yet
+    if (holdTimeout.current && !holdActivated.current) {
+      clearTimeout(holdTimeout.current);
+      holdTimeout.current = null;
     }
   };
 

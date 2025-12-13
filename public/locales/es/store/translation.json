@@ -102,6 +102,7 @@
       "cards-select-lbl": "Selecciona las cartas que deseas conservar",
       "select-all-lbl": "Seleccionar todo",
       "special-cards-btn": "Ver items",
+      "press-for-detail": "mantén presionada una carta para ver más detalles",
       "error-lbl": "No puedes continuar porque tienes más cartas especiales que el máximo permitido",
       "confirmation-modal": {
         "head": "No hay cartas seleccionadas",

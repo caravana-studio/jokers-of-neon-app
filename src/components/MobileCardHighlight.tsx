@@ -104,11 +104,24 @@ export const MobileCardHighlight = ({
 
   const [opacity, setOpacity] = useState(0);
   const [scale, setScale] = useState(0.8);
+  const [isOpening, setIsOpening] = useState(true);
 
   useEffect(() => {
     setOpacity(1);
     setScale(1);
+
+    const timer = setTimeout(() => {
+      setIsOpening(false);
+    }, 250);
+
+    return () => clearTimeout(timer);
   }, []);
+
+  const handleBackdropClick = () => {
+    if (!isOpening) {
+      onClose();
+    }
+  };
 
   return (
     <Flex
@@ -165,6 +178,7 @@ export const MobileCardHighlight = ({
         position={"relative"}
         transform={`scale(${scale})`}
         transition="all 0.5s ease"
+        onClick={(e) => e.stopPropagation()}
       >
         {!animation ? (
           <CardImage3D card={card} hideTooltip small={false} />

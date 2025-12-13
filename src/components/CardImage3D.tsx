@@ -15,6 +15,7 @@ interface ICardImage3DProps {
   height?: string;
   width?: string;
   layerCount?: number;
+  disableTilt?: boolean;
 }
 
 const checkImageExists = (src: string): Promise<boolean> => {
@@ -33,6 +34,7 @@ export const CardImage3D = ({
   height,
   width = "100%",
   layerCount = 4,
+  disableTilt = false,
 }: ICardImage3DProps) => {
   const cid = card.card_id ?? 0;
 
@@ -102,7 +104,7 @@ export const CardImage3D = ({
   };
 
   return (
-    <ConditionalTilt cardId={cid} small={small}>
+    <ConditionalTilt cardId={cid} small={small} disableTilt={disableTilt}>
       {hideTooltip ? (
         availableLayers[0] && !showPlain ? (
           layer0Img
@@ -141,13 +143,15 @@ const ConditionalTilt = ({
   children,
   cardId,
   small,
+  disableTilt = false,
 }: {
   children: ReactNode;
   cardId: number;
   small: boolean;
+  disableTilt?: boolean;
 }) => {
   const { isSmallScreen } = useResponsiveValues();
-  return isSmallScreen && small ? (
+  return (isSmallScreen && small) || disableTilt ? (
     <>{children}</>
   ) : (
     <Tilt
