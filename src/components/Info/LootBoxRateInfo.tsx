@@ -1,8 +1,10 @@
 import { useTranslation } from "react-i18next";
 import { Box, Flex, Text, VStack, HStack, Image, Heading } from "@chakra-ui/react";
 import { useRef, useState, useEffect } from "react";
+import { isMobile } from "react-device-detect";
 import theme from "../../theme/theme";
 import { InformationIcon } from "./InformationIcon";
+import { useInformationPopUp } from "../../providers/InformationPopUpProvider";
 
 interface LootBoxRateInfoProps {
   name: string;
@@ -458,6 +460,7 @@ export const LootBoxRateInfo: React.FC<LootBoxRateInfoProps> = ({
 }) => {
   const { t } = useTranslation(["store"]);
   const { neonGreen, neonPink } = theme.colors;
+  const { information } = useInformationPopUp();
 
   // Detect which pack this is by ID (most reliable) or name (fallback)
   const nameLower = name.toLowerCase();
@@ -516,11 +519,20 @@ export const LootBoxRateInfo: React.FC<LootBoxRateInfoProps> = ({
   const sectionRefs = useRef<{ [key: number]: HTMLDivElement | null }>({});
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
   const [activeSection, setActiveSection] = useState<number | null>(null);
+  const isManualScrolling = useRef(false);
 
   // Reset active section when component mounts
   useEffect(() => {
     setActiveSection(null);
   }, []);
+
+  // Reset active section when popup closes (information becomes undefined)
+  useEffect(() => {
+    if (!information) {
+      setActiveSection(null);
+      isManualScrolling.current = false;
+    }
+  }, [information]);
 
   const scrollToSection = (sectionNumber: number) => {
     const element = sectionRefs.current[sectionNumber];
@@ -532,11 +544,27 @@ export const LootBoxRateInfo: React.FC<LootBoxRateInfoProps> = ({
       const scrollTop = container.scrollTop;
       const offset = elementRect.top - containerRect.top + scrollTop - 75;
 
-      container.scrollTo({
-        top: offset,
-        behavior: 'smooth'
-      });
-      setActiveSection(sectionNumber);
+      // On mobile, mark as manual scroll and prevent auto-detect temporarily
+      if (isMobile) {
+        isManualScrolling.current = true;
+        setActiveSection(sectionNumber);
+
+        container.scrollTo({
+          top: offset,
+          behavior: 'smooth'
+        });
+
+        // After 800ms (after smooth scroll), allow auto-detect again
+        setTimeout(() => {
+          isManualScrolling.current = false;
+        }, 800);
+      } else {
+        container.scrollTo({
+          top: offset,
+          behavior: 'smooth'
+        });
+        setActiveSection(sectionNumber);
+      }
     }
   };
 
@@ -546,6 +574,11 @@ export const LootBoxRateInfo: React.FC<LootBoxRateInfoProps> = ({
     if (!container) return;
 
     const handleScroll = () => {
+      // On mobile, if we're in a manual scroll, don't update activeSection
+      if (isMobile && isManualScrolling.current) {
+        return;
+      }
+
       const containerRect = container.getBoundingClientRect();
       const scrollTop = container.scrollTop;
 
@@ -570,8 +603,10 @@ export const LootBoxRateInfo: React.FC<LootBoxRateInfoProps> = ({
     };
 
     container.addEventListener('scroll', handleScroll);
-    // Initial check
-    handleScroll();
+    // Initial check - only on desktop, on mobile we don't want to pre-select anything
+    if (!isMobile) {
+      handleScroll();
+    }
 
     return () => {
       container.removeEventListener('scroll', handleScroll);
