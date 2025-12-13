@@ -177,7 +177,7 @@ export const MobileCardHighlight = ({
         justifyContent={"center"}
         position={"relative"}
         transform={`scale(${scale})`}
-        transition="all 0.2s ease"
+        transition="all 0.5s ease"
         onClick={(e) => e.stopPropagation()}
       >
         {!animation ? (
