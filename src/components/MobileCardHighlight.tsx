@@ -118,7 +118,6 @@ export const MobileCardHighlight = ({
   }, []);
 
   const handleBackdropClick = () => {
-    // Solo permitir cerrar si la animación de apertura ya terminó
     if (!isOpening) {
       onClose();
     }
