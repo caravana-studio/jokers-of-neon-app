@@ -27,7 +27,6 @@ export const DraggableCard = ({
   const handleTouchStart = (event: any) => {
     holdActivated.current = false; // Reset on new touch
     holdTimeout.current = setTimeout(() => {
-      console.log('[DraggableCard] Hold timeout triggered', { id });
       holdActivated.current = true; // Mark as activated
       onCardHold?.();
       holdTimeout.current = null;
