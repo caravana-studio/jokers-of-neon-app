@@ -92,9 +92,6 @@ export const FlipCardGrid = ({
                       if (!animationRunning && !wasLongPressRef.current) {
                         onCardToggle(card);
                       } else {
-                        console.log('[FlipCardGrid] onClick blocked', {
-                          reason: animationRunning ? 'animation running' : 'was long press'
-                        });
                       }
                       // Reset flag after onClick
                       wasLongPressRef.current = false;
