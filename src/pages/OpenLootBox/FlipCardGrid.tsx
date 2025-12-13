@@ -99,10 +99,6 @@ export const FlipCardGrid = ({
                     onHold={
                       onCardLongPress
                         ? () => {
-                            console.log('[FlipCardGrid] onHold triggered', {
-                              cardId: card.card_id,
-                              cardType: card.type,
-                            });
                             wasLongPressRef.current = true;
                             onCardLongPress(card);
                           }
