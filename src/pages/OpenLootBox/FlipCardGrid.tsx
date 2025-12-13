@@ -90,7 +90,6 @@ export const FlipCardGrid = ({
                     card={card}
                     onClick={() => {
                       if (!animationRunning && !wasLongPressRef.current) {
-                        console.log('[FlipCardGrid] Toggling card');
                         onCardToggle(card);
                       } else {
                         console.log('[FlipCardGrid] onClick blocked', {
