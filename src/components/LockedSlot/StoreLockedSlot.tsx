@@ -1,6 +1,5 @@
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { useGameStore } from "../../state/useGameStore.ts";
 import { useShopStore } from "../../state/useShopStore.ts";
 import { BaseLockedSlot } from "./BaseLockedSlot.tsx";
 import { LockedSlotProps } from "./LockedSlot.tsx";
@@ -11,18 +10,9 @@ export const StoreLockedSlot = (props: LockedSlotProps) => {
   });
 
   const navigate = useNavigate();
-  const { specialSlotItem, locked } = useShopStore();
-  const price = specialSlotItem?.cost ?? 0;
+  const { locked } = useShopStore();
 
-  const { cash } = useGameStore();
-
-  const notEnoughCash =
-    !price ||
-    (specialSlotItem?.discount_cost
-      ? cash < Number(specialSlotItem?.discount_cost ?? 0)
-      : cash < Number(price));
-
-  const canBuy = !notEnoughCash && !locked;
+  const canBuy = !locked;
 
   return (
     <BaseLockedSlot
