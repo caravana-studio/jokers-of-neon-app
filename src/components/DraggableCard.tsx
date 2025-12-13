@@ -42,7 +42,6 @@ export const DraggableCard = ({
   };
 
   const handleTouchEnd = () => {
-    console.log('[DraggableCard] Touch end', { id, hadTimeout: !!holdTimeout.current, holdActivated: holdActivated.current });
     // Only cancel if hold hasn't been activated yet
     if (holdTimeout.current && !holdActivated.current) {
       console.log('[DraggableCard] Cancelling hold on touch end');
