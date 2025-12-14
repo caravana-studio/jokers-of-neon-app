@@ -148,5 +148,21 @@
       "name": "Mix",
       "content": "{{lootboxes}} loot boxes, {{powerups}} power-ups, {{levelups}} level ups"
     }
+  },
+  "loot-box-rates": {
+    "cards": {
+      "traditional": "Traditional",
+      "joker": "Joker",
+      "neon": "Neon",
+      "neon-joker": "Neon Joker",
+      "special-c": "Special C",
+      "special-b": "Special B",
+      "special-a": "Special A",
+      "special-s": "Special S",
+      "skin-special-c": "Skin Special C",
+      "skin-special-b": "Skin Special B",
+      "skin-special-a": "Skin Special A",
+      "skin-special-s": "Skin Special S"
+    }
   }
 }

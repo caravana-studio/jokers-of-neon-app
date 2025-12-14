@@ -5,6 +5,7 @@ import { isMobile } from "react-device-detect";
 import theme from "../../theme/theme";
 import { InformationIcon } from "./InformationIcon";
 import { useInformationPopUp } from "../../providers/InformationPopUpProvider";
+import { PACK_RATES, CARD_TYPE_METADATA } from "../../data/lootBoxRates";
 
 interface LootBoxRateInfoProps {
   name: string;
@@ -24,315 +25,6 @@ interface ItemSection {
   itemNumber: number;
   cards: CardRate[];
 }
-
-// Data structure for Advanced Pack (pack ID 2)
-const advancedPackData: ItemSection[] = [
-  {
-    itemNumber: 1,
-    cards: [
-      { name: "Tradicional", imageId: 1, percentage: "96.0%" },
-      { name: "Joker", imageId: 52, percentage: "2.0%" },
-      { name: "Neon", imageId: 200, percentage: "2.0%" },
-      { name: "Neon Joker", imageId: 252, percentage: "0.0%" },
-    ],
-  },
-  {
-    itemNumber: 2,
-    cards: [
-      { name: "Tradicional", imageId: 1, percentage: "0.0%" },
-      { name: "Joker", imageId: 52, percentage: "5.0%" },
-      { name: "Neon", imageId: 200, percentage: "83.0%" },
-      { name: "Neon Joker", imageId: 252, percentage: "2.0%" },
-      { name: "Special C", imageId: 200, percentage: "8.0%", isSpecial: true, rarity: "C" },
-      { name: "Special B", imageId: 201, percentage: "1.9%", isSpecial: true, rarity: "B" },
-      { name: "Special A", imageId: 202, percentage: "0.1%", isSpecial: true, rarity: "A" },
-      { name: "Special S", imageId: 203, percentage: "0.0%", isSpecial: true, rarity: "S" },
-    ],
-  },
-  {
-    itemNumber: 3,
-    cards: [
-      { name: "Tradicional", imageId: 1, percentage: "0.0%" },
-      { name: "Joker", imageId: 52, percentage: "0.0%" },
-      { name: "Neon", imageId: 200, percentage: "48.0%" },
-      { name: "Neon Joker", imageId: 252, percentage: "2.0%" },
-      { name: "Special C", imageId: 200, percentage: "40.0%", isSpecial: true, rarity: "C" },
-      { name: "Special B", imageId: 201, percentage: "7.0%", isSpecial: true, rarity: "B" },
-      { name: "Special A", imageId: 202, percentage: "2.9%", isSpecial: true, rarity: "A" },
-      { name: "Special S", imageId: 203, percentage: "0.1%", isSpecial: true, rarity: "S" },
-    ],
-  },
-];
-
-// Data structure for Epic Pack (pack ID 3 - $2.99)
-const epicPackData: ItemSection[] = [
-  {
-    itemNumber: 1,
-    cards: [
-      { name: "Tradicional", imageId: 1, percentage: "96.0%" },
-      { name: "Joker", imageId: 52, percentage: "2.0%" },
-      { name: "Neon", imageId: 200, percentage: "2.0%" },
-      { name: "Neon Joker", imageId: 252, percentage: "0.0%" },
-      { name: "Special C", imageId: 200, percentage: "0.0%", isSpecial: true, rarity: "C" },
-      { name: "Special B", imageId: 201, percentage: "0.0%", isSpecial: true, rarity: "B" },
-      { name: "Special A", imageId: 202, percentage: "0.0%", isSpecial: true, rarity: "A" },
-      { name: "Special S", imageId: 203, percentage: "0.0%", isSpecial: true, rarity: "S" },
-    ],
-  },
-  {
-    itemNumber: 2,
-    cards: [
-      { name: "Tradicional", imageId: 1, percentage: "60.0%" },
-      { name: "Joker", imageId: 52, percentage: "2.0%" },
-      { name: "Neon", imageId: 200, percentage: "37.9%" },
-      { name: "Neon Joker", imageId: 252, percentage: "0.1%" },
-      { name: "Special C", imageId: 200, percentage: "0.0%", isSpecial: true, rarity: "C" },
-      { name: "Special B", imageId: 201, percentage: "0.0%", isSpecial: true, rarity: "B" },
-      { name: "Special A", imageId: 202, percentage: "0.0%", isSpecial: true, rarity: "A" },
-      { name: "Special S", imageId: 203, percentage: "0.0%", isSpecial: true, rarity: "S" },
-    ],
-  },
-  {
-    itemNumber: 3,
-    cards: [
-      { name: "Tradicional", imageId: 1, percentage: "0.0%" },
-      { name: "Joker", imageId: 52, percentage: "0.0%" },
-      { name: "Neon", imageId: 200, percentage: "76.9%" },
-      { name: "Neon Joker", imageId: 252, percentage: "2.0%" },
-      { name: "Special C", imageId: 200, percentage: "15.0%", isSpecial: true, rarity: "C" },
-      { name: "Special B", imageId: 201, percentage: "5.0%", isSpecial: true, rarity: "B" },
-      { name: "Special A", imageId: 202, percentage: "1.0%", isSpecial: true, rarity: "A" },
-      { name: "Special S", imageId: 203, percentage: "0.1%", isSpecial: true, rarity: "S" },
-    ],
-  },
-  {
-    itemNumber: 4,
-    cards: [
-      { name: "Tradicional", imageId: 1, percentage: "0.0%" },
-      { name: "Joker", imageId: 52, percentage: "0.0%" },
-      { name: "Neon", imageId: 200, percentage: "21.0%" },
-      { name: "Neon Joker", imageId: 252, percentage: "4.0%" },
-      { name: "Special C", imageId: 200, percentage: "47.0%", isSpecial: true, rarity: "C" },
-      { name: "Special B", imageId: 201, percentage: "15.0%", isSpecial: true, rarity: "B" },
-      { name: "Special A", imageId: 202, percentage: "10.0%", isSpecial: true, rarity: "A" },
-      { name: "Special S", imageId: 203, percentage: "3.0%", isSpecial: true, rarity: "S" },
-    ],
-  },
-];
-
-// Data structure for Legendary Pack (pack ID 4 - $4.99)
-const legendaryPackData: ItemSection[] = [
-  {
-    itemNumber: 1,
-    cards: [
-      { name: "Tradicional", imageId: 1, percentage: "96.0%" },
-      { name: "Joker", imageId: 52, percentage: "2.0%" },
-      { name: "Neon", imageId: 200, percentage: "2.0%" },
-      { name: "Neon Joker", imageId: 252, percentage: "0.0%" },
-    ],
-  },
-  {
-    itemNumber: 2,
-    cards: [
-      { name: "Tradicional", imageId: 1, percentage: "55.0%" },
-      { name: "Joker", imageId: 52, percentage: "2.0%" },
-      { name: "Neon", imageId: 200, percentage: "42.9%" },
-      { name: "Neon Joker", imageId: 252, percentage: "0.1%" },
-    ],
-  },
-  {
-    itemNumber: 3,
-    cards: [
-      { name: "Tradicional", imageId: 1, percentage: "0.0%" },
-      { name: "Joker", imageId: 52, percentage: "0.0%" },
-      { name: "Neon", imageId: 200, percentage: "48.0%" },
-      { name: "Neon Joker", imageId: 252, percentage: "2.0%" },
-      { name: "Special C", imageId: 200, percentage: "40.0%", isSpecial: true, rarity: "C" },
-      { name: "Special B", imageId: 201, percentage: "7.0%", isSpecial: true, rarity: "B" },
-      { name: "Special A", imageId: 202, percentage: "2.9%", isSpecial: true, rarity: "A" },
-      { name: "Special S", imageId: 203, percentage: "0.1%", isSpecial: true, rarity: "S" },
-    ],
-  },
-  {
-    itemNumber: 4,
-    cards: [
-      { name: "Special C", imageId: 200, percentage: "60.0%", isSpecial: true, rarity: "C" },
-      { name: "Special B", imageId: 201, percentage: "30.0%", isSpecial: true, rarity: "B" },
-      { name: "Special A", imageId: 202, percentage: "10.0%", isSpecial: true, rarity: "A" },
-      { name: "Special S", imageId: 203, percentage: "0.0%", isSpecial: true, rarity: "S" },
-    ],
-  },
-];
-
-// Data structure for Collector Pack (pack ID 5 - $9.99)
-const collectorPackData: ItemSection[] = [
-  {
-    itemNumber: 1,
-    cards: [
-      { name: "Tradicional", imageId: 1, percentage: "50.0%" },
-      { name: "Joker", imageId: 52, percentage: "20.0%" },
-      { name: "Neon", imageId: 200, percentage: "10.0%" },
-      { name: "Neon Joker", imageId: 252, percentage: "10.0%" },
-      { name: "Special C", imageId: 200, percentage: "5.0%", isSpecial: true, rarity: "C" },
-      { name: "Special B", imageId: 201, percentage: "5.0%", isSpecial: true, rarity: "B" },
-      { name: "Special A", imageId: 202, percentage: "0.0%", isSpecial: true, rarity: "A" },
-      { name: "Special S", imageId: 203, percentage: "0.0%", isSpecial: true, rarity: "S" },
-    ],
-  },
-  {
-    itemNumber: 2,
-    cards: [
-      { name: "Joker", imageId: 52, percentage: "30.0%" },
-      { name: "Neon", imageId: 200, percentage: "20.0%" },
-      { name: "Neon Joker", imageId: 252, percentage: "20.0%" },
-      { name: "Special C", imageId: 200, percentage: "10.0%", isSpecial: true, rarity: "C" },
-      { name: "Special B", imageId: 201, percentage: "10.0%", isSpecial: true, rarity: "B" },
-      { name: "Special A", imageId: 202, percentage: "5.0%", isSpecial: true, rarity: "A" },
-      { name: "Special S", imageId: 203, percentage: "5.0%", isSpecial: true, rarity: "S" },
-    ],
-  },
-  {
-    itemNumber: 3,
-    cards: [
-      { name: "Neon", imageId: 200, percentage: "20.0%" },
-      { name: "Neon Joker", imageId: 252, percentage: "30.0%" },
-      { name: "Special C", imageId: 200, percentage: "10.0%", isSpecial: true, rarity: "C" },
-      { name: "Special B", imageId: 201, percentage: "20.0%", isSpecial: true, rarity: "B" },
-      { name: "Special A", imageId: 202, percentage: "10.0%", isSpecial: true, rarity: "A" },
-      { name: "Special S", imageId: 203, percentage: "10.0%", isSpecial: true, rarity: "S" },
-    ],
-  },
-  {
-    itemNumber: 4,
-    cards: [
-      { name: "Special A", imageId: 202, percentage: "30.0%", isSpecial: true, rarity: "A" },
-      { name: "Special S", imageId: 203, percentage: "10.0%", isSpecial: true, rarity: "S" },
-      { name: "Skin Special C", imageId: 200, percentage: "39.9%", isSpecial: true, rarity: "C" },
-      { name: "Skin Special B", imageId: 201, percentage: "17.0%", isSpecial: true, rarity: "B" },
-      { name: "Skin Special A", imageId: 202, percentage: "3.0%", isSpecial: true, rarity: "A" },
-      { name: "Skin Special S", imageId: 203, percentage: "0.1%", isSpecial: true, rarity: "S" },
-    ],
-  },
-  {
-    itemNumber: 5,
-    cards: [
-      { name: "Skin Special C", imageId: 200, percentage: "30.0%", isSpecial: true, rarity: "C" },
-      { name: "Skin Special B", imageId: 201, percentage: "30.0%", isSpecial: true, rarity: "B" },
-      { name: "Skin Special A", imageId: 202, percentage: "30.0%", isSpecial: true, rarity: "A" },
-      { name: "Skin Special S", imageId: 203, percentage: "10.0%", isSpecial: true, rarity: "S" },
-    ],
-  },
-];
-
-// Data structure for Collector XL Pack (pack ID 6)
-const collectorXLPackData: ItemSection[] = [
-  {
-    itemNumber: 1,
-    cards: [
-      { name: "Tradicional", imageId: 1, percentage: "50.0%" },
-      { name: "Joker", imageId: 52, percentage: "20.0%" },
-      { name: "Neon", imageId: 200, percentage: "10.0%" },
-      { name: "Neon Joker", imageId: 252, percentage: "10.0%" },
-      { name: "Special C", imageId: 200, percentage: "5.0%", isSpecial: true, rarity: "C" },
-      { name: "Special B", imageId: 201, percentage: "5.0%", isSpecial: true, rarity: "B" },
-      { name: "Special A", imageId: 202, percentage: "0.0%", isSpecial: true, rarity: "A" },
-      { name: "Special S", imageId: 203, percentage: "0.0%", isSpecial: true, rarity: "S" },
-    ],
-  },
-  {
-    itemNumber: 2,
-    cards: [
-      { name: "Joker", imageId: 52, percentage: "30.0%" },
-      { name: "Neon", imageId: 200, percentage: "20.0%" },
-      { name: "Neon Joker", imageId: 252, percentage: "20.0%" },
-      { name: "Special C", imageId: 200, percentage: "10.0%", isSpecial: true, rarity: "C" },
-      { name: "Special B", imageId: 201, percentage: "10.0%", isSpecial: true, rarity: "B" },
-      { name: "Special A", imageId: 202, percentage: "5.0%", isSpecial: true, rarity: "A" },
-      { name: "Special S", imageId: 203, percentage: "5.0%", isSpecial: true, rarity: "S" },
-    ],
-  },
-  {
-    itemNumber: 3,
-    cards: [
-      { name: "Joker", imageId: 52, percentage: "30.0%" },
-      { name: "Neon", imageId: 200, percentage: "20.0%" },
-      { name: "Neon Joker", imageId: 252, percentage: "20.0%" },
-      { name: "Special C", imageId: 200, percentage: "10.0%", isSpecial: true, rarity: "C" },
-      { name: "Special B", imageId: 201, percentage: "10.0%", isSpecial: true, rarity: "B" },
-      { name: "Special A", imageId: 202, percentage: "5.0%", isSpecial: true, rarity: "A" },
-      { name: "Special S", imageId: 203, percentage: "5.0%", isSpecial: true, rarity: "S" },
-    ],
-  },
-  {
-    itemNumber: 4,
-    cards: [
-      { name: "Neon", imageId: 200, percentage: "20.0%" },
-      { name: "Neon Joker", imageId: 252, percentage: "30.0%" },
-      { name: "Special C", imageId: 200, percentage: "10.0%", isSpecial: true, rarity: "C" },
-      { name: "Special B", imageId: 201, percentage: "20.0%", isSpecial: true, rarity: "B" },
-      { name: "Special A", imageId: 202, percentage: "10.0%", isSpecial: true, rarity: "A" },
-      { name: "Special S", imageId: 203, percentage: "10.0%", isSpecial: true, rarity: "S" },
-    ],
-  },
-  {
-    itemNumber: 5,
-    cards: [
-      { name: "Neon", imageId: 200, percentage: "20.0%" },
-      { name: "Neon Joker", imageId: 252, percentage: "30.0%" },
-      { name: "Special C", imageId: 200, percentage: "10.0%", isSpecial: true, rarity: "C" },
-      { name: "Special B", imageId: 201, percentage: "20.0%", isSpecial: true, rarity: "B" },
-      { name: "Special A", imageId: 202, percentage: "10.0%", isSpecial: true, rarity: "A" },
-      { name: "Special S", imageId: 203, percentage: "10.0%", isSpecial: true, rarity: "S" },
-    ],
-  },
-  {
-    itemNumber: 6,
-    cards: [
-      { name: "Neon", imageId: 200, percentage: "20.0%" },
-      { name: "Neon Joker", imageId: 252, percentage: "30.0%" },
-      { name: "Special C", imageId: 200, percentage: "10.0%", isSpecial: true, rarity: "C" },
-      { name: "Special B", imageId: 201, percentage: "20.0%", isSpecial: true, rarity: "B" },
-      { name: "Special A", imageId: 202, percentage: "10.0%", isSpecial: true, rarity: "A" },
-      { name: "Special S", imageId: 203, percentage: "10.0%", isSpecial: true, rarity: "S" },
-    ],
-  },
-  {
-    itemNumber: 7,
-    cards: [
-      { name: "Skin Special C", imageId: 200, percentage: "39.9%", isSpecial: true, rarity: "C" },
-      { name: "Skin Special B", imageId: 201, percentage: "17.0%", isSpecial: true, rarity: "B" },
-      { name: "Skin Special A", imageId: 202, percentage: "3.0%", isSpecial: true, rarity: "A" },
-      { name: "Skin Special S", imageId: 203, percentage: "0.1%", isSpecial: true, rarity: "S" },
-    ],
-  },
-  {
-    itemNumber: 8,
-    cards: [
-      { name: "Skin Special C", imageId: 200, percentage: "39.9%", isSpecial: true, rarity: "C" },
-      { name: "Skin Special B", imageId: 201, percentage: "17.0%", isSpecial: true, rarity: "B" },
-      { name: "Skin Special A", imageId: 202, percentage: "3.0%", isSpecial: true, rarity: "A" },
-      { name: "Skin Special S", imageId: 203, percentage: "0.1%", isSpecial: true, rarity: "S" },
-    ],
-  },
-  {
-    itemNumber: 9,
-    cards: [
-      { name: "Skin Special C", imageId: 200, percentage: "30.0%", isSpecial: true, rarity: "C" },
-      { name: "Skin Special B", imageId: 201, percentage: "30.0%", isSpecial: true, rarity: "B" },
-      { name: "Skin Special A", imageId: 202, percentage: "30.0%", isSpecial: true, rarity: "A" },
-      { name: "Skin Special S", imageId: 203, percentage: "10.0%", isSpecial: true, rarity: "S" },
-    ],
-  },
-  {
-    itemNumber: 10,
-    cards: [
-      { name: "Skin Special C", imageId: 200, percentage: "30.0%", isSpecial: true, rarity: "C" },
-      { name: "Skin Special B", imageId: 201, percentage: "30.0%", isSpecial: true, rarity: "B" },
-      { name: "Skin Special A", imageId: 202, percentage: "30.0%", isSpecial: true, rarity: "A" },
-      { name: "Skin Special S", imageId: 203, percentage: "10.0%", isSpecial: true, rarity: "S" },
-    ],
-  },
-];
 
 interface ItemSectionProps {
   section: ItemSection;
@@ -383,7 +75,7 @@ const ItemSectionComponent = ({ section, sectionRef }: ItemSectionProps) => {
         justifyContent="center"
       >
         <Text fontSize="xs" fontWeight="600" color="white">
-          Cartas {section.itemNumber}
+          Item {section.itemNumber}
         </Text>
       </Flex>
 
@@ -453,6 +145,26 @@ const ItemSectionComponent = ({ section, sectionRef }: ItemSectionProps) => {
   );
 };
 
+// Helper function to convert pack rates data to ItemSection format
+const convertPackRatesToSections = (packId: number, t: any): ItemSection[] => {
+  const packRates = PACK_RATES[packId];
+  if (!packRates) return [];
+
+  return packRates.map((section) => ({
+    itemNumber: section.itemNumber,
+    cards: section.rates.map((rate) => {
+      const metadata = CARD_TYPE_METADATA[rate.itemType];
+      return {
+        name: t(metadata.nameKey),
+        imageId: metadata.imageId,
+        percentage: rate.percentage,
+        isSpecial: metadata.isSpecial,
+        rarity: metadata.rarity,
+      };
+    }),
+  }));
+};
+
 export const LootBoxRateInfo: React.FC<LootBoxRateInfoProps> = ({
   name,
   details,
@@ -462,58 +174,8 @@ export const LootBoxRateInfo: React.FC<LootBoxRateInfoProps> = ({
   const { neonGreen, neonPink } = theme.colors;
   const { information } = useInformationPopUp();
 
-  // Detect which pack this is by ID (most reliable) or name (fallback)
-  const nameLower = name.toLowerCase();
-
-  // Select pack data based on pack ID
-  let packData = advancedPackData;
-  let packType = 'advanced (default)';
-
-  // Check by pack ID first (most reliable)
-  if (packId === 2) {
-    packData = advancedPackData;
-    packType = 'advanced';
-  } else if (packId === 3) {
-    packData = epicPackData;
-    packType = 'epic';
-  } else if (packId === 4) {
-    packData = legendaryPackData;
-    packType = 'legendary';
-  } else if (packId === 5) {
-    packData = collectorPackData;
-    packType = 'collector';
-  } else if (packId === 6) {
-    packData = collectorXLPackData;
-    packType = 'collector-xl';
-  } else {
-    // Fallback to name-based detection for test/dev environments
-    if (nameLower.includes("advanced") || nameLower.includes("avanzado")) {
-      packData = advancedPackData;
-      packType = 'advanced (by name)';
-    } else if (nameLower.includes("legendary") || nameLower.includes("legendario")) {
-      packData = legendaryPackData;
-      packType = 'legendary (by name)';
-    } else if (nameLower.includes("epic") || nameLower.includes("épico")) {
-      packData = epicPackData;
-      packType = 'epic (by name)';
-    } else if (nameLower.includes("collector xl")) {
-      packData = collectorXLPackData;
-      packType = 'collector-xl (by name)';
-    } else if (nameLower.includes("collector") || nameLower.includes("coleccionista")) {
-      packData = collectorPackData;
-      packType = 'collector (by name)';
-    }
-  }
-
-  console.log('Pack Detection:', {
-    packId,
-    name,
-    packType,
-    itemsCount: packData.length
-  });
-
-  // Show new Pokemon TCG-style content for all packs on both mobile and desktop
-  const shouldShowNewContent = true;
+  // Get pack data by ID only - no fallback to name
+  const packData = packId ? convertPackRatesToSections(packId, t) : [];
 
   // Refs for scrolling to sections
   const sectionRefs = useRef<{ [key: number]: HTMLDivElement | null }>({});
@@ -748,32 +410,12 @@ export const LootBoxRateInfo: React.FC<LootBoxRateInfoProps> = ({
     </Flex>
   );
 
-  // Old simple content for desktop (fallback)
-  const oldInfoContent = (
-    <Box>
-      <Heading mb={4} fontWeight={"400"} fontSize={"sm"}>
-        {name}
-      </Heading>
-      <Text color={neonGreen} fontSize={"sm"}>
-        {t("store.packs.offering-rates")}: <br />
-        {details?.split("\n").map((line, index) => (
-          <span key={index}>
-            {line}
-            <br />
-          </span>
-        ))}
-      </Text>
-    </Box>
-  );
-
-  const infoContent = shouldShowNewContent ? newInfoContent : oldInfoContent;
-
   return (
     <Flex gap={2} alignItems={"center"}>
       <Text>{t("store.packs.offering-rates")}</Text>
       <InformationIcon
         title="Offering rates"
-        informationContent={infoContent}
+        informationContent={newInfoContent}
       />
     </Flex>
   );
