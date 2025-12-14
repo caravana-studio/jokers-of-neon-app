@@ -98,10 +98,6 @@ export const OpenLootBoxCardSelection = () => {
   } = useCardHighlight();
 
   const highlightSpecialCard = (card: Card) => {
-    console.log('[OpenLootBoxCardSelection] highlightSpecialCard called', {
-      cardId: card.card_id,
-      cardType: card.type,
-    });
     // Cancel error tooltip when opening MobileCardHighlight
     setShowErrorTooltip(false);
     setIsButtonBlocked(false);
