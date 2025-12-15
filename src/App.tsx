@@ -5,18 +5,33 @@ import { SpeedInsights } from "@vercel/speed-insights/react";
 import { AppTrackingTransparency } from "capacitor-plugin-app-tracking-transparency";
 import { AnimatePresence } from "framer-motion";
 import { useEffect } from "react";
+import { createProfile, fetchProfile } from "./api/profile";
 import { AppRoutes } from "./AppRoutes";
 import { Background } from "./components/Background";
 import { Layout } from "./components/Layout";
+import { useDojo } from "./dojo/DojoContext";
+import { useGameActions } from "./dojo/useGameActions";
+import { useUsername } from "./dojo/utils/useUsername";
+import { BackgroundAnimationProvider } from "./providers/BackgroundAnimationProvider";
 import { CardAnimationsProvider } from "./providers/CardAnimationsProvider";
 import { CardDataProvider } from "./providers/CardDataProvider";
 import { GameProvider } from "./providers/GameProvider";
 import { InformationPopUpProvider } from "./providers/InformationPopUpProvider";
 import { PageTransitionsProvider } from "./providers/PageTransitionsProvider";
+import { RevenueCatProvider } from "./providers/RevenueCatProvider";
+import { SeasonPassProvider } from "./providers/SeasonPassProvider";
 import { SettingsProvider } from "./providers/SettingsProvider";
 import ZoomPrevention from "./utils/ZoomPrevention";
 
 function App() {
+  const {
+    account: { account },
+  } = useDojo();
+
+  const username = useUsername();
+
+  const { claimLives } = useGameActions();
+
   useEffect(() => {
     const askForTracking = async () => {
       try {
@@ -32,37 +47,51 @@ function App() {
       }
     };
 
+    claimLives().catch(() => {});
+
+    fetchProfile(account.address).then((profile) => {
+      if (profile.username === "" && username) {
+        createProfile(account.address, username, 1);
+      }
+    });
+
     askForTracking();
   }, []);
 
   return (
-    <SettingsProvider
-      introSongPath={"music/intro-track.mp3"}
-      baseSongPath={"music/game-track.mp3"}
-      rageSongPath={"music/rage_soundtrack.mp3"}
-    >
-      <ZoomPrevention>
-        <CardAnimationsProvider>
-          <CardDataProvider>
-            <GameProvider>
-              <PageTransitionsProvider>
-                <InformationPopUpProvider>
-                  <Background>
-                    <Layout>
-                      <AnimatePresence mode="wait">
-                        <AppRoutes />
-                      </AnimatePresence>
-                    </Layout>
-                  </Background>
-                </InformationPopUpProvider>
-              </PageTransitionsProvider>
-            </GameProvider>
-          </CardDataProvider>
-        </CardAnimationsProvider>
-        <Analytics />
-        <SpeedInsights />
-      </ZoomPrevention>
-    </SettingsProvider>
+    <RevenueCatProvider>
+      <SeasonPassProvider>
+        <SettingsProvider
+          introSongPath={"music/intro-track.mp3"}
+          baseSongPath={"music/game-track.mp3"}
+          rageSongPath={"music/rage_soundtrack.mp3"}
+        >
+          <ZoomPrevention>
+            <CardAnimationsProvider>
+              <CardDataProvider>
+                <GameProvider>
+                  <PageTransitionsProvider>
+                    <InformationPopUpProvider>
+                      <Background>
+                        <BackgroundAnimationProvider>
+                          <Layout>
+                            <AnimatePresence mode="wait">
+                              <AppRoutes />
+                            </AnimatePresence>
+                          </Layout>
+                        </BackgroundAnimationProvider>
+                      </Background>
+                    </InformationPopUpProvider>
+                  </PageTransitionsProvider>
+                </GameProvider>
+              </CardDataProvider>
+            </CardAnimationsProvider>
+            <Analytics />
+            <SpeedInsights />
+          </ZoomPrevention>
+        </SettingsProvider>
+      </SeasonPassProvider>
+    </RevenueCatProvider>
   );
 }
 

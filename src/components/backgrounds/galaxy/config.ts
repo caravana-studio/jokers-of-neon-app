@@ -1,4 +1,4 @@
-import { GalaxyBackgroundIntensity } from "./types";
+import { Intensity } from "../../../types/intensity";
 
 interface GalaxyIntensityConfig {
   density: number;
@@ -12,8 +12,8 @@ interface GalaxyIntensityConfig {
   starSpeed: number;
 }
 
-export const galaxyIntensityConfigs: Record<GalaxyBackgroundIntensity, GalaxyIntensityConfig> = {
-  [GalaxyBackgroundIntensity.LOW]: {
+export const galaxyIntensityConfigs: Record<Intensity, GalaxyIntensityConfig> = {
+  [Intensity.LOW]: {
     density: 0.5,
     glowIntensity: 0.3,
     saturation: 0.3,
@@ -24,7 +24,7 @@ export const galaxyIntensityConfigs: Record<GalaxyBackgroundIntensity, GalaxyInt
     autoCenterRepulsion: 0,
     starSpeed: 0.6
   },
-  [GalaxyBackgroundIntensity.MEDIUM]: {
+  [Intensity.MEDIUM]: {
     density: 1,
     glowIntensity: 0.4,
     saturation: 0.6,
@@ -35,7 +35,7 @@ export const galaxyIntensityConfigs: Record<GalaxyBackgroundIntensity, GalaxyInt
     autoCenterRepulsion: 0,
     starSpeed: 0.8
   },
-  [GalaxyBackgroundIntensity.HIGH]: {
+  [Intensity.HIGH]: {
     density: 1.2,
     glowIntensity: 0.8,
     saturation: 0.8,
@@ -46,7 +46,7 @@ export const galaxyIntensityConfigs: Record<GalaxyBackgroundIntensity, GalaxyInt
     autoCenterRepulsion: 0,
     starSpeed: 1
   },
-  [GalaxyBackgroundIntensity.MAX]: {
+  [Intensity.MAX]: {
     density: 1.8,
     glowIntensity: 1.2,
     saturation: 1,

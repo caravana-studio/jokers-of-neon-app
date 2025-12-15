@@ -36,7 +36,9 @@ export enum BackgroundType {
   Game = "game",
   Store = "store",
   Rage = "rage",
+  RageBoss = "rageboss",
   Map = "map",
+  Summary = "summary",
 }
 
 const bgConfig: Record<string, { bg: BackgroundType; decoration?: boolean }> = {
@@ -103,13 +105,26 @@ const bgConfig: Record<string, { bg: BackgroundType; decoration?: boolean }> = {
   profile: {
     bg: BackgroundType.Game,
   },
+  shop: {
+    bg: BackgroundType.Game,
+  },
+  "external-pack": {
+    bg: BackgroundType.Store,
+  },
+  "purchasing-pack": {
+    bg: BackgroundType.Store,
+  },
+  summary: {
+    bg: BackgroundType.Summary,
+  },
 };
 
 export const Background = ({ children }: PropsWithChildren) => {
   const { isSmallScreen } = useResponsiveValues();
   const [backgroundImageUrl, setBackgroundImageUrl] = useState<string>("none");
 
-  const { isRageRound, modId, isClassic } = useGameStore();
+  const { isRageRound, modId, isClassic, inBossRound } = useGameStore();
+
   const baseUrl = import.meta.env.VITE_MOD_URL + modId + "/resources";
 
   const location = useLocation();
@@ -117,7 +132,9 @@ export const Background = ({ children }: PropsWithChildren) => {
   const page = pathname === "" ? "home" : pathname;
   const type =
     isRageRound && bgConfig[page]?.bg === BackgroundType.Game
-      ? BackgroundType.Rage
+      ? inBossRound
+        ? BackgroundType.RageBoss
+        : BackgroundType.Rage
       : bgConfig[page]?.bg;
 
   const [src, setSrc] = useState("");
@@ -130,7 +147,7 @@ export const Background = ({ children }: PropsWithChildren) => {
       setSrc(`/bg/${type}-bg.jpg`);
       setVideoType(type);
     }
-  }, [type, isRageRound]);
+  }, [type, isRageRound, inBossRound]);
 
   const modAwareSrc = !isClassic ? baseUrl + src : src;
 
@@ -224,7 +241,7 @@ export const BackgroundDecoration = ({
             width={"65%"}
             maxW={"300px"}
             ml={4}
-              zIndex={10}
+            zIndex={10}
           />
         </Box>
       )}
@@ -248,11 +265,11 @@ export const BackgroundDecoration = ({
             maxHeight="70px"
             position="fixed"
             bottom={0}
-          zIndex={10}
+            zIndex={10}
           />
 
           <Box
-              zIndex={10}
+            zIndex={10}
             sx={{
               position: "fixed",
               bottom: 16,

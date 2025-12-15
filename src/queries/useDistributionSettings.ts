@@ -3,7 +3,9 @@ import defaultDistribution from "./defaultDistribution.json";
 export enum BannerType {
   DAILY_MISSIONS = "DAILY_MISSIONS",
   LEADERBOARD = "LEADERBOARD",
+  PACKS = "PACKS",
   IMAGE = "image",
+  TOURNAMENT = "TOURNAMENT",
 }
 
 export interface Banner {
@@ -12,6 +14,7 @@ export interface Banner {
   type: BannerType;
   url?: string;
   navigateTo?: string;
+  packs?: number[];
 }
 
 interface DistributionSettings {

@@ -1,3 +1,5 @@
+import { postLevelXP } from "../../api/postLevelXP";
+import { BOSS_LEVEL } from "../../constants/general";
 import { EventTypeEnum } from "../../dojo/typescript/custom";
 import { Suits } from "../../enums/suits";
 import { Card } from "../../types/Card";
@@ -39,6 +41,9 @@ interface AnimatePlayConfig {
   setCurrentScore: (score: number) => void;
   resetRage: () => void;
   unPreSelectAllPowerUps: () => void;
+  address: string;
+  clearRoundSound: () => void;
+  clearLevelSound: () => void;
 }
 
 export const animatePlay = (config: AnimatePlayConfig) => {
@@ -76,6 +81,9 @@ export const animatePlay = (config: AnimatePlayConfig) => {
     addPoints,
     resetRage,
     unPreSelectAllPowerUps,
+    address,
+    clearRoundSound,
+    clearLevelSound,
   } = config;
 
   if (!playEvents) return;
@@ -318,7 +326,7 @@ export const animatePlay = (config: AnimatePlayConfig) => {
       }
     } else if (playEvents.gameOver) {
       setTimeout(() => {
-        navigate(`/gameover/${gameId}`);
+        navigate(`/summary`);
       }, 1000);
     } else if (playEvents.levelPassed && playEvents.detailEarned) {
       resetRage();
@@ -330,8 +338,20 @@ export const animatePlay = (config: AnimatePlayConfig) => {
             ? playEvents.levelPassed?.level
             : 0,
         });
-        navigate("/rewards");
+        playEvents.levelPassed?.level_passed
+          ? clearLevelSound()
+          : clearRoundSound();
+        navigate(
+          playEvents.levelPassed?.level_passed === BOSS_LEVEL
+            ? "/summary/win"
+            : "/rewards"
+        );
       }, 1000);
+      playEvents.levelPassed?.level_passed &&
+        playEvents.levelPassed?.level &&
+        postLevelXP({ address, level: playEvents.levelPassed?.level }).catch(
+          (e) => console.error("Error posting level XP", e)
+        );
       setPreSelectionLocked(true);
     } else {
       playEvents.cards && replaceCards(playEvents.cards);
@@ -353,7 +373,6 @@ export const animatePlay = (config: AnimatePlayConfig) => {
     () => handleCardPlayEvents(),
     durations.neonPlay + durations.cardPlayChange
   );
-
 
   setTimeout(
     () => {

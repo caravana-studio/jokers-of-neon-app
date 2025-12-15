@@ -1,14 +1,16 @@
 import { Flex, Heading, Spinner, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { getUserCards } from "../../api/getUserCards";
 import { DelayedLoading } from "../../components/DelayedLoading";
+import { MobileCardHighlight } from "../../components/MobileCardHighlight";
 import { MODIFIERS_RARITY } from "../../data/modifiers";
-import { getUserSpecialCards } from "../../dojo/queries/getUserSpecialCards";
 import { useDojo } from "../../dojo/useDojo";
-import { useUsername } from "../../dojo/utils/useUsername";
 import { Tab, TabPattern } from "../../patterns/tabs/TabPattern";
+import { useCardHighlight } from "../../providers/HighlightProvider/CardHighlightProvider";
 import { useGameStore } from "../../state/useGameStore";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
+import { Card } from "../../types/Card";
 import CollectionGrid from "../MyCollection/Collection";
 import { Collection } from "../MyCollection/types";
 import { DocsBoxesRow } from "./DocsBoxesRow";
@@ -27,9 +29,11 @@ export const DocsPage: React.FC<DocsProps> = ({ lastIndexTab = 0 }) => {
 
   const { isSmallScreen } = useResponsiveValues();
 
-  const loggedInUser = useUsername();
+  const { highlightedItem: highlightedCard } = useCardHighlight();
+
   const {
-    setup: { client, useBurnerAcc },
+    account: { account },
+    setup: { useBurnerAcc },
   } = useDojo();
 
   useEffect(() => {
@@ -37,17 +41,22 @@ export const DocsPage: React.FC<DocsProps> = ({ lastIndexTab = 0 }) => {
       setIsLoading(false);
       setMyCollection([]);
     } else {
-      if (loggedInUser) {
-        getUserSpecialCards(client, loggedInUser).then((collections) => {
-          setIsLoading(false);
-          setMyCollection(collections);
-        });
-      }
+      getUserCards(account.address).then((data) => {
+        setIsLoading(false);
+        setMyCollection(data.specials);
+      });
     }
-  }, [loggedInUser, useBurnerAcc]);
+  }, [account.address, useBurnerAcc]);
 
   return (
     <DelayedLoading>
+      {highlightedCard && (
+        <MobileCardHighlight
+          card={highlightedCard as Card}
+          showExtraInfo
+          isPack={!highlightedCard.img}
+        />
+      )}
       <TabPattern lastIndexTab={lastIndexTab}>
         <Tab title={t("labels.special-cards")}>
           <Flex

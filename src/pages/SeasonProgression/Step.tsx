@@ -9,14 +9,15 @@ export const STEP_HEIGHT = isMobile ? 130 : 200;
 
 export interface StepProps {
   step: IStep;
+  refetch: () => void;
 }
 
-export const Step = ({ step }: StepProps) => {
+export const Step = ({ step, refetch }: StepProps) => {
   return (
     <Flex h={`${STEP_HEIGHT}px`} w="100%" borderBottom={`1px solid ${BLUE}`}>
       <StepIcons step={step} />
-      <StepReward reward={step.free} />
-      <StepReward reward={step.premium} />
+      <StepReward reward={step.free} type="free" level={step.level} refetch={refetch} />
+      <StepReward reward={step.premium} type="premium" level={step.level}   refetch={refetch} />
     </Flex>
   );
 };

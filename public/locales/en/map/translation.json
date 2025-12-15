@@ -1,11 +1,13 @@
 {
   "round": {
-    "name": "Normal round {{round}}"
+    "name": "Normal round"
   },
+  "here": "You are here",
   "rage": {
-    "name": "Rage round {{round}}",
+    "name": "Rage round",
     "power": "Power: {{power}}",
     "intermediate": "Intermediate",
+    "boss": "Final Boss",
     "final": "Final"
   },
   "go": "Go",

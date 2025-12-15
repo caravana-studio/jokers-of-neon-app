@@ -1,4 +1,90 @@
 {
+  "daily-games": {
+    "next-live-in": "Próxima vida en",
+    "out-of-lives": "No te quedan vidas",
+    "get-more-lives": "Obtén más vidas con",
+    "season-pass": "PASE DE TEMPORADA",
+    "you-have-1-live-left": "Te queda 1 vida",
+    "you-have-x-lives-left": "Te quedan {{lives}} vidas",
+    "new-game": "Nuevo juego"
+  },
+  "shop": {
+    "title": "Tienda",
+    "season-pass": {
+      "more-rewards-with": "Más recompensas con",
+      "season-pass": "PASE DE TEMPORADA",
+      "season-pass-x": "PASE DE TEMPORADA {{season}}",
+      "buy": "COMPRAR",
+      "unlocked": "DESBLOQUEADO",
+      "more-jokers-with": "Más Jokers con",
+      "facts": {
+        "1-title": "Recompensas exclusivas",
+        "1-description-1": "Progresar a través de la temporada 1 te da más recompensas.",
+        "1-description-2": "Todas tus recompensas son transferibles.",
+        "2-title": "Más juegos por día",
+        "2-description-1": "Puedes jugar 4 juegos de Jokers por día en lugar de 2.",
+        "2-description-2": "Cada juego recupera cada 4 horas en lugar de 12.",
+        "3-title": "Descuentos en packs",
+        "3-description-1": "20% de descuento en cada pack de temporada 1 que compras.",
+        "3-description-2": ""
+      },
+      "packs": {
+        "buy": "COMPRAR",
+        "purchase-error-title": "Compra fallida",
+        "purchase-error-no-account": "No pudimos encontrar tu cuenta. Por favor, intenta cerrar sesión y volver a iniciarla.",
+        "purchase-error-description": "No pudimos completar tu compra de pack. Por favor, inténtalo de nuevo.",
+        "purchase-error-no-package": "No pudimos completar tu compra de pack. Problema de configuración.",
+        "player-pack": "Pack de jugador",
+        "limited-edition": "Editión limitada",
+        "size": "Tamaño",
+        "offering-rates": "Tarifas de oferta",
+        "transferrable-legend": "Todos los items en las tiendas pueden ser transferidos.",
+        "skins-legend": "Los packs no contienen cartas con skin.",
+        "1": {
+          "name": "BÁSICO"
+        },
+        "2": {
+          "name": "AVANZADO",
+          "description": {
+            "1": "Mejora tu colección con mayores probabilidades de obtener cartas raras.",
+            "2": "Hasta un 50% de probabilidad de conseguir una carta Especial."
+          }
+        },
+        "3": {
+          "name": "ÉPICO",
+          "description": {
+            "1": "Un paquete premium con altas probabilidades de obtener cartas Especiales.",
+            "2": "Hasta un 75% de probabilidad de conseguir una carta Especial, incluye rangos A y S."
+          }
+        },
+        "4": {
+          "name": "LEGENDARIO",
+          "description": {
+            "1": "Garantiza una carta Especial en cada paquete.",
+            "2": "Las mayores probabilidades de obtener cartas Especiales de rango A y S."
+          }
+        },
+        "5": {
+          "name": "COLECCIONISTA",
+          "description": {
+            "1": "Paquete de edición limitada con cartas y skins ultra raras.",
+            "2": "1 carta Especial con skin garantizada y las mejores probabilidades."
+          }
+        },
+        "6": {
+          "name": "COLECCIONISTA XL",
+          "description": {
+            "1": "Paquete masivo con el contenido más raro de la temporada.",
+            "2": "2 cartas Especiales con skin garantizadas y las mejores probabilidades."
+          }
+        }
+      }
+    }
+  },
+  "maintenance": {
+    "title": "Mantenimiento en progreso",
+    "description": "Estamos actualizando Jokers of Neon para brindarle nuevas mejoras. El juego estará disponible pronto, ¡gracias por su paciencia!"
+  },
   "loading-screen": {
     "error": "Error al cargar el juego",
     "skip": "Saltar",
@@ -21,23 +107,21 @@
     "please-update": "Por favor, actualice para continuar",
     "update": "ACTUALIZAR"
   },
-  "season-pass": {
-    "more-rewards-with": "Más recompensas con",
-    "season-pass": "PASE DE TEMPORADA",
-    "buy": "COMPRAR",
-    "unlocked": "DESBLOQUEADO"
-  },
   "season-progression": {
     "free-rewards": "RECOMPENSAS GRATIS",
     "season": "TEMPORADA {{season}}",
     "my-xp": "Mi XP",
-    "claim": "RECLAMAR"
+    "claim": "RECLAMAR",
+    "tournament-entry": "Entrada de torneo",
+    "claiming-in-progress": "Reclamando..."
   },
   "map": {
     "level": "NIVEL"
   },
   "external-pack": {
-    "continue": "Continuar"
+    "continue": "Continuar",
+    "open": "Abrir",
+    "draw-line": "Traza una línea para abrir"
   },
   "my-games": {
     "title": "Juegos",
@@ -47,6 +131,9 @@
     "continue-btn": "Continuar",
     "start-btn": "Iniciar",
     "tuto": "Tutorial",
+    "learn": "¿Quieres aprender a jugar?",
+    "tournament-active": "¡Hay un torneo activo!",
+    "join": "Únete ahora",
     "surrender": {
       "action": "Rendirse",
       "confirmation-modal": {
@@ -101,6 +188,14 @@
     "labels": {
       "title": "¡Ronda {{round}} superada!",
       "title-level": "Nivel {{level}} completado!",
+      "title-win": "¡Ganaste!",
+      "title-loose": "¡Perdiste!",
+      "round": "Ronda",
+      "best-hand": "Mejor mano",
+      "most-played-hand": "Mano más jugada",
+      "played-cards": "Cartas jugadas",
+      "discarded-cards": "Cartas descartadas",
+      "defeated-rages": "Rage derrotadas",
       "base": "Base",
       "level-bonus": "Bonus del nivel",
       "discards-left": "{{discards}} descartes",
@@ -108,7 +203,8 @@
       "rage": "{{cards}} Rage vencida(s)",
       "total": "Total",
       "final-score": "- Puntuación final: {{score}} -",
-      "continue-btn": "Continuar"
+      "continue-btn": "Continuar",
+      "endless-mode": "Modo infinito"
     }
   },
   "special-cards": {
@@ -140,7 +236,8 @@
   },
   "common": {
     "go-back-btn": "Atrás",
-    "login": "Iniciar sesión"
+    "login": "Iniciar sesión",
+    "login-to-access": "Por favor, inicia sesión para acceder a esta página"
   },
   "profile-menu": {
     "level": "Nivel",
@@ -161,6 +258,8 @@
     "no-collection": "Por favor, inicia sesión para ver tu colección",
     "login": "Iniciar sesión",
     "collections": {
+      "traditionals": "Cartas tradicionales",
+      "neons": "Cartas de Neón",
       "sx": "Temporada {{season}}",
       "c99": "Colección exclusiva GG - v1"
     }

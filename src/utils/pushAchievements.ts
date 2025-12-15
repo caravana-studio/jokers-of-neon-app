@@ -1,14 +1,14 @@
-import { AchievementCompleted } from "../types/ScoreData";
+import { DailyMissionCompleted } from "../types/ScoreData";
 import { PushActionsPayload, pushActions } from "./pushActions";
 
 export const handleAchievementPush = async (
-  achievementEvents: AchievementCompleted[],
+  achievementEvents: DailyMissionCompleted[],
   achievementSound: () => void
 ) => {
   const payloads: PushActionsPayload[] = [
     {
       actions: achievementEvents.map(
-        (achievement) => achievement.achievementId
+        (achievement) => achievement.dailyMissionId
       ),
       address: achievementEvents[0].player,
     },

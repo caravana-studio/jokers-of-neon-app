@@ -42,7 +42,8 @@
       "loot-boxes": "Loot Boxes",
       "utilities": "Utilities",
       "no-coins": "Not enough coins",
-      "manage": "Manage items"
+      "manage": "Manage items",
+      "no-powerup-slots": "No space"
     },
     "titles": {
       "level-game": "Level up your game",
@@ -101,6 +102,7 @@
       "cards-select-lbl": "Select the cards you want to keep",
       "select-all-lbl": "Select all",
       "special-cards-btn": "Manage items",
+      "press-for-detail": "press and hold a card for more details",
       "error-lbl": "You can't continue because you have more special cards than the maximum allowed",
       "confirmation-modal": {
         "head": "No cards selected",
@@ -136,7 +138,7 @@
       "content": "{{specials}} special cards, {{lootboxes}} loot boxes"
     },
     "4": {
-      "name": "Level ups",
+      "name": "LevelUps",
       "content": "{{levelups}} level ups, {{specials}} special cards"
     },
     "5": {

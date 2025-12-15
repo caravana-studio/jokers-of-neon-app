@@ -1,8 +1,8 @@
 import { Flex } from "@chakra-ui/react";
 import { useResponsiveValues } from "../../../../theme/responsiveSettings";
+import { MobileCoins } from "../../../store/Coins";
 import { MenuSection } from "./MenuSection";
 import { RerollSection } from "./RerollSection";
-import { MobileCoins } from "../../../store/Coins";
 
 interface StoreTopBarProps {
   hideReroll?: boolean;
@@ -15,10 +15,15 @@ export const StoreTopBar: React.FC<StoreTopBarProps> = ({ hideReroll }) => {
     <Flex
       flexDirection="column"
       p={1}
-      px={"16px"}
+      px={isSmallScreen ? "16px" : "20px"}
       width={"100%"}
       backgroundColor={"black"}
       justifyContent={"center"}
+      py={isSmallScreen ? 0 : 4}
+      borderRadius={isSmallScreen ? 0 : "25px"}
+      boxShadow={
+        isSmallScreen ? "none" : "0 0 10px 3px rgba(255, 255, 255, 0.2)"
+      }
     >
       <Flex gap={4}>
         <Flex flexDirection={"column"} flexGrow={1} justifyContent={"center"}>
@@ -27,10 +32,7 @@ export const StoreTopBar: React.FC<StoreTopBarProps> = ({ hideReroll }) => {
         </Flex>
         <Flex>
           <Flex>
-            <MobileCoins
-              fontSize={isSmallScreen ? ["18px", "24px"] : undefined}
-              iconSize={isSmallScreen ? 26 : undefined}
-            />
+            <MobileCoins />
           </Flex>
         </Flex>
       </Flex>

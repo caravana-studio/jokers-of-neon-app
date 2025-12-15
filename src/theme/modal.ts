@@ -1,19 +1,27 @@
 import { modalAnatomy as parts } from "@chakra-ui/anatomy";
 import { createMultiStyleConfigHelpers } from "@chakra-ui/styled-system";
-import { isMobile } from "react-device-detect";
 
 const { definePartsStyle, defineMultiStyleConfig } =
   createMultiStyleConfigHelpers(parts.keys);
 
 const baseStyle = definePartsStyle({
   overlay: {
-    bg: "blackAlpha.500",
+    bg: "rgba(0, 0, 0, 0.7)",
+    backdropFilter: "blur(6px)",
+    WebkitBackdropFilter: "blur(6px)",
+  },
+  dialogContainer: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    overflow: "auto",
   },
   dialog: {
-    borderRadius: "0",
+    borderRadius: "15px",
+    boxShadow:
+      "0px 0px 20px rgba(255, 255, 255, 0.5), inset 0 0 10px rgba(255, 255, 255, 0.5) ",
     color: "white",
-    bg: `#031c24`,
-    marginTop: isMobile ? "5vh" : "20vh",
+    bg: `black`,
     width: "70%",
     maxWidth: "1100px",
   },
@@ -21,7 +29,7 @@ const baseStyle = definePartsStyle({
 
 const fullscreen = definePartsStyle({
   overlay: {
-    bg: "rgba(0, 0, 0, .5)",
+    bg: "rgba(0, 0, 0, .8)",
     backdropFilter: "blur(5px)",
     WebkitBackdropFilter: "blur(5px)",
   },
@@ -45,14 +53,13 @@ const fullscreen = definePartsStyle({
     },
     _active: {
       border: "none",
-    }
-  }
+    },
+  },
 });
-
 
 export const modalTheme = defineMultiStyleConfig({
   baseStyle,
   variants: {
-    fullscreen
-  }
+    fullscreen,
+  },
 });

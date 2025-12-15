@@ -12,6 +12,7 @@
   },
   "game": {
     "tutorial": "Tutorial",
+    "skin": "Skin",
     "compact-round-data": {
       "my-score": "Pontuação",
       "target": "Objetivo",
@@ -24,7 +25,8 @@
       "Rage": "Rage",
       "Neon": "Neon",
       "Pack": "Pacote",
-      "Joker": "Curinga"
+      "Joker": "Curinga",
+      "skin-special": "Especial com SKIN"
     },
     "card-highlight": {
       "buttons": {
@@ -108,7 +110,9 @@
         "my-games": "Jogos",
         "profile": "Perfil",
         "settings": "Configuração",
-        "my-collection": "Coleção",
+        "collection": "Coleção",
+        "season": "Temporada",
+        "shop": "Loja",
         "home": "Início",
         "docs": "Lista de cartas",
         "deck": "Baralha",

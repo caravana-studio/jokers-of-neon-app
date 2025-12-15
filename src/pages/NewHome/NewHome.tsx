@@ -7,12 +7,15 @@ import { useNavigate } from "react-router-dom";
 import { BannerRenderer } from "../../components/BannerRenderer/BannerRenderer";
 import { ConfirmationModal } from "../../components/ConfirmationModal";
 import { DelayedLoading } from "../../components/DelayedLoading";
+import { PositionedDiscordLink } from "../../components/DiscordLink";
+import { FreePack } from "../../components/FreePack";
 import { MobileBottomBar } from "../../components/MobileBottomBar";
 import { MobileDecoration } from "../../components/MobileDecoration";
 import { ProfileTile } from "../../components/ProfileTile";
 import SpineAnimation from "../../components/SpineAnimation";
 import { SKIPPED_VERSION } from "../../constants/localStorage";
 import { APP_VERSION } from "../../constants/version";
+import { useDojo } from "../../dojo/DojoContext";
 import { useGameContext } from "../../providers/GameProvider";
 import { fetchVersion } from "../../queries/fetchVersion";
 import { useDistributionSettings } from "../../queries/useDistributionSettings";
@@ -21,7 +24,6 @@ import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { logEvent } from "../../utils/analytics";
 import { APP_URL, isNative } from "../../utils/capacitorUtils";
 import { getMajor, getMinor, getPatch } from "../../utils/versionUtils";
-import { PositionedDiscordLink } from "../../components/DiscordLink";
 
 export const NewHome = () => {
   const { t } = useTranslation(["home"]);
@@ -36,11 +38,14 @@ export const NewHome = () => {
   const [version, setVersion] = useState<string | null>(null);
 
   const banners = settings?.home?.banners || [];
-
+  const {
+    setup: { useBurnerAcc },
+  } = useDojo();
   useEffect(() => {
     logEvent("open_home_page");
     if (isNative) {
-      fetchVersion().then(async (version) => {
+      fetchVersion().then(async (data) => {
+        const version = data.version;
         setVersion(version);
         try {
           const res = await Preferences.get({ key: SKIPPED_VERSION });
@@ -101,6 +106,7 @@ export const NewHome = () => {
 
   return (
     <DelayedLoading ms={100}>
+      {!useBurnerAcc && <FreePack />}
       <PositionedDiscordLink />
       <MobileDecoration />
       {/*       <RemoveScroll>
@@ -161,8 +167,18 @@ export const NewHome = () => {
                 <ProfileTile />
               </Flex>
             </Flex>
-            <Flex flexDir={"column"} gap={3} alignItems={"center"} w="100%">
-              <Flex flexDir={isSmallScreen ? "column" : "row"} gap={3} w="100%">
+            <Flex
+              flexDir={"column"}
+              gap={1.5}
+              alignItems={"center"}
+              w="100%"
+              mt={isSmallScreen ? "-25px" : 0}
+            >
+              <Flex
+                flexDir={isSmallScreen ? "column" : "row"}
+                gap={1.5}
+                w="100%"
+              >
                 {banners[0] && <BannerRenderer banner={banners[0]} />}
                 {banners[1] && <BannerRenderer banner={banners[1]} />}
               </Flex>

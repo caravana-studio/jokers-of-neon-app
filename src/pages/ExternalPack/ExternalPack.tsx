@@ -3,14 +3,15 @@ import { faCaretRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { GalaxyBackground } from "../../components/backgrounds/galaxy/GalaxyBackground";
-import { GalaxyBackgroundIntensity } from "../../components/backgrounds/galaxy/types";
+import { Intensity } from "../../types/intensity";
 import CachedImage from "../../components/CachedImage";
 import { DelayedLoading } from "../../components/DelayedLoading";
-import { LootBoxRateInfo } from "../../components/Info/LootBoxRateInfo";
 import { MobileDecoration } from "../../components/MobileDecoration";
+import { packAnimation, packGlowAnimation } from "../../constants/animations";
 import { RARITY, RarityLabels } from "../../constants/rarity";
+import { SKINS_RARITY } from "../../data/specialCards";
 import { CardTypes } from "../../enums/cardTypes";
 import { useCardData } from "../../providers/CardDataProvider";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
@@ -19,44 +20,60 @@ import Stack from "./CardStack/Stack";
 import PackTear from "./PackTear";
 import { SplitPackOnce } from "./SplitPackOnce";
 
-const POSSIBLE_CARD_IDS = [
-  [7, 52, 10022, 10023],
-  [2, 8, 10001, 100025],
-  [3, 43, 52, 10040],
-  [4, 20, 28, 10011],
-];
-
-const CARD_IDS =
-  POSSIBLE_CARD_IDS[Math.floor(Math.random() * POSSIBLE_CARD_IDS.length)];
-
-const getIntensity = (type: CardTypes, rarity: RARITY) => {
+const getIntensity = (
+  type: CardTypes,
+  rarity: RARITY,
+  highlightedCardSkin: RARITY
+) => {
   switch (type) {
     case CardTypes.JOKER:
-      return GalaxyBackgroundIntensity.MEDIUM;
+      return Intensity.MEDIUM;
     case CardTypes.NEON:
-      return GalaxyBackgroundIntensity.MEDIUM;
+      return Intensity.MEDIUM;
     case CardTypes.SPECIAL:
+      if (highlightedCardSkin) {
+        return Intensity.MAX;
+      }
       switch (rarity) {
         case RARITY.C:
-          return GalaxyBackgroundIntensity.LOW;
+          return Intensity.MEDIUM;
         case RARITY.B:
-          return GalaxyBackgroundIntensity.MEDIUM;
+          return Intensity.MEDIUM;
         case RARITY.A:
-          return GalaxyBackgroundIntensity.HIGH;
+          return Intensity.HIGH;
         case RARITY.S:
-          return GalaxyBackgroundIntensity.MAX;
+          return Intensity.MAX;
         default:
-          return GalaxyBackgroundIntensity.MEDIUM;
+          return Intensity.MEDIUM;
       }
     default:
-      return GalaxyBackgroundIntensity.LOW;
+      return Intensity.LOW;
   }
 };
 
-export const ExternalPack = () => {
-  const { t } = useTranslation("intermediate-screens", {
-    keyPrefix: "external-pack",
-  });
+export interface SimplifiedCard {
+  card_id: number;
+  skin_id: number;
+}
+
+interface ExternalPackProps {
+  initialCards?: SimplifiedCard[];
+  onContinue?: () => void;
+  packId?: number;
+}
+
+export const ExternalPack = ({
+  initialCards,
+  onContinue,
+  packId: providedPackId,
+}: ExternalPackProps) => {
+  const { t } = useTranslation("intermediate-screens");
+
+  const params = useParams();
+  const location = useLocation();
+  const locationState = location.state as ExternalPackProps | null;
+  const packId =
+    providedPackId ?? locationState?.packId ?? Number(params.packId ?? 1);
 
   const { t: tDocs } = useTranslation("docs");
   const { t: tGame } = useTranslation("game");
@@ -64,14 +81,20 @@ export const ExternalPack = () => {
 
   const [allCardsSeen, setAllCardsSeen] = useState(false);
 
+  const initialCardsSource =
+    (initialCards && initialCards.length > 0 ? initialCards : undefined) ??
+    (locationState?.initialCards && locationState.initialCards.length > 0
+      ? locationState.initialCards
+      : undefined);
+
   const [step, setStep] = useState(0);
 
   const { isSmallScreen } = useResponsiveValues();
 
-  const packWidth = useMemo(() => (isSmallScreen ? 250 : 360), [isSmallScreen]);
+  const packWidth = useMemo(() => (isSmallScreen ? 250 : 292), [isSmallScreen]);
   const extraPackWidth = packWidth + 50;
   const packHeight = useMemo(
-    () => (isSmallScreen ? 405 : 583),
+    () => (isSmallScreen ? 405 : 472),
     [isSmallScreen]
   );
 
@@ -89,11 +112,21 @@ export const ExternalPack = () => {
 
   const navigate = useNavigate();
 
+  const [obtainedCards, setObtainedCards] = useState<SimplifiedCard[]>(
+    initialCardsSource ?? []
+  );
+  const highlightedCardSkin =
+    obtainedCards.find((card) => card.card_id === highlightedCard)?.skin_id ??
+    0;
   return (
     <DelayedLoading ms={100}>
       <GalaxyBackground
         opacity={step >= 3 ? 1 : 0}
-        intensity={getIntensity(type ?? CardTypes.NONE, rarity ?? RARITY.C)}
+        intensity={getIntensity(
+          type ?? CardTypes.NONE,
+          rarity ?? RARITY.C,
+          SKINS_RARITY[highlightedCardSkin]
+        )}
       />
 
       {allCardsSeen && (
@@ -101,13 +134,15 @@ export const ExternalPack = () => {
           position="absolute"
           bottom={isSmallScreen ? "30px" : "80px"}
           right={isSmallScreen ? "15px" : "30px"}
-          onClick={() => navigate("/")}
+          onClick={() => {
+            onContinue ? onContinue() : navigate("/");
+          }}
           zIndex={20}
         >
           {isSmallScreen ? (
             <FontAwesomeIcon color="white" fontSize={13} icon={faCaretRight} />
           ) : (
-            t("continue")
+            t("external-pack.continue")
           )}
         </Button>
       )}
@@ -133,14 +168,24 @@ export const ExternalPack = () => {
                   letterSpacing={1.3}
                   variant="italic"
                   textTransform="unset"
+                  textShadow={"0 0 10px white"}
                 >
-                  LEGENDARY
+                  {t(`shop.packs.${packId}.name`)}
                 </Heading>
-                <Text size="l" fontWeight={600}>
-                  - PLAYER PACK -
+                <Text
+                  size="l"
+                  textTransform={"uppercase"}
+                  fontWeight={600}
+                  textShadow={"0 0 10px black"}
+                  color={packId > 4 ? "gold" : "white"}
+                >
+                  -{" "}
+                  {t(
+                    `shop.packs.${packId > 4 ? "limited-edition" : "player-pack"}`
+                  )}{" "}
+                  -
                 </Text>
               </Flex>
-              <LootBoxRateInfo name={"test"} details={"details"} />
             </>
           )}
 
@@ -178,7 +223,11 @@ export const ExternalPack = () => {
                 {name}
               </Heading>
               <Text size="l" textTransform="lowercase" fontWeight={600}>
-                - {tGame(`game.card-types.${type}`)} -
+                -{" "}
+                {tGame(
+                  `game.card-types.${highlightedCardSkin > 1 ? "skin-special" : type}`
+                )}{" "}
+                -
               </Text>
             </Flex>
           )}
@@ -196,7 +245,7 @@ export const ExternalPack = () => {
                 animation: "fadeIn 1s ease 3s forwards",
               }}
             >
-              <Text size="lg">Draw a line to open</Text>
+              <Text size="lg">{t("external-pack.draw-line")}</Text>
             </Flex>
           )}
 
@@ -224,28 +273,33 @@ export const ExternalPack = () => {
                 position: "relative",
               }}
             >
-              {/* Step < 2 → pack normal + overlay de corte */}
+              {/* Step < 2 → normal pack + overlay cutout */}
               {step < 2 && (
                 <>
                   <PackTear
                     onOpened={() => setStep(2)}
                     width={extraPackWidth}
                     step={step}
+                    color={packId > 3 ? "white" : "black"}
                   />
                   <CachedImage
-                    src="/packs/4.png"
+                    src={`/packs/${packId}.png`}
                     h="100%"
-                    // boxShadow={"0 0 20px 0px white, inset 0 0 10px 0px white"}
+                    animation={
+                      step === 0
+                        ? `${packGlowAnimation} 1s ease-in-out infinite, ${packAnimation} 3s ease-in-out infinite`
+                        : "none"
+                    }
                   />
                 </>
               )}
 
-              {/* Step 2 → pack partido en dos con animación */}
+              {/* Step 2 → pack split in 2 with animation */}
               {step >= 2 && (
                 <SplitPackOnce
                   width={packWidth}
                   height={packHeight}
-                  src="/packs/4.png"
+                  src={`/packs/${packId}.png`}
                   onDone={() => {
                     setStep(3);
 
@@ -267,37 +321,42 @@ export const ExternalPack = () => {
             opacity={step >= 3 ? 1 : 0}
             zIndex={2}
             pointerEvents={step >= 3 ? "all" : "none"}
+            animation={`${packAnimation} 2s ease-in-out infinite`}
           >
-            <Stack
-              randomRotation={true}
-              sensitivity={180}
-              sendToBackOnClick={true}
-              cardDimensions={{
-                width: packWidth - 10,
-                height: packHeight - 40,
-              }}
-              cardsData={CARD_IDS.map((cid, index) => ({
-                id: index,
-                cardId: cid,
-                img: `/Cards/${cid}.png`,
-              })).reverse()}
-              onCardChange={(cardId) => {
-                setHighlightedCard(cardId);
-              }}
-              onAllSeen={() => setAllCardsSeen(true)}
-            />
+            {obtainedCards?.length > 0 && (
+              <Stack
+                randomRotation={true}
+                sensitivity={180}
+                sendToBackOnClick={true}
+                cardDimensions={{
+                  width: packWidth - 10,
+                  height: packHeight - 40,
+                }}
+                cardsData={obtainedCards.map((card, index) => ({
+                  id: index,
+                  cardId: card.card_id,
+                  img: `/Cards/${card.card_id}${card.skin_id !== 1 ? `_sk${card.skin_id}` : ""}.png`,
+                }))}
+                onCardChange={(cardId) => {
+                  setHighlightedCard(cardId);
+                }}
+                onAllSeen={() => setAllCardsSeen(true)}
+              />
+            )}
           </Flex>
 
           {step === 0 && (
             <Button
               mt={6}
-              onClick={() => setStep(1)}
-              width="40%"
+              onClick={() => {
+                setStep(1);
+              }}
+              width={isSmallScreen ? "40%" : "200px"}
               variant={"secondarySolid"}
               fontFamily="Oxanium"
               fontSize={14}
             >
-              BUY · $9.99
+              {t("external-pack.open")}
             </Button>
           )}
           {step === 4 && (
@@ -344,6 +403,8 @@ export const ExternalPack = () => {
                   opacity={rarity ? 1 : 0}
                 >
                   {tDocs(`rarity.${RarityLabels[rarity as RARITY]}`)}
+                  {highlightedCardSkin > 1 &&
+                    ` - ${tGame("game.skin")} ${tDocs(`rarity.${RarityLabels[SKINS_RARITY[highlightedCardSkin]]}`)}`}
                 </Text>
               }
             </Flex>

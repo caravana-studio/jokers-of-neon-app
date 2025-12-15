@@ -2,11 +2,12 @@ import { Box, Flex, Heading } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { BOSS_LEVEL } from "../constants/general.ts";
 import { GameStateEnum } from "../dojo/typescript/custom.ts";
 import { useCustomNavigate } from "../hooks/useCustomNavigate.tsx";
 import { RerollIndicators } from "../pages/DynamicStore/storeComponents/TopBar/RerollIndicators.tsx";
 import { useGameStore } from "../state/useGameStore.ts";
-import { VIOLET_LIGHT } from "../theme/colors";
+import { BLUE_LIGHT, VIOLET_LIGHT } from "../theme/colors";
 import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
 import { RoundRewards } from "../types/RoundRewards.ts";
 import { StaggeredList } from "./animations/StaggeredList.tsx";
@@ -16,21 +17,25 @@ import { RollingNumber } from "./RollingNumber.tsx";
 
 interface RewardItemProps {
   label: string;
-  value: number;
+  value: number | string;
   reroll?: boolean;
   rollingDelay?: number;
   skip?: boolean;
+  showCashSymbol?: boolean;
+  coloredValue?: boolean;
 }
 
 const DELAY_START = 1.25;
 const STAGGER = 0.5;
 
-const RewardItem = ({
+export const RewardItem = ({
   label,
   value,
   reroll = false,
   rollingDelay = 0,
   skip = false,
+  showCashSymbol = true,
+  coloredValue = false,
 }: RewardItemProps) => {
   return (
     <Box color="white" px={[2, 4, 8]} w="100%">
@@ -55,13 +60,29 @@ const RewardItem = ({
           },
         }}
       >
-        <Heading size="s">{label.toUpperCase()}</Heading>
+        <Heading size="s" textAlign={"left"}>
+          {label.toUpperCase()}
+        </Heading>
         {reroll ? (
-          <RerollIndicators rerolls={value} justifyContent="flex-end" />
+          typeof value === "number" && (
+            <RerollIndicators rerolls={value} justifyContent="flex-end" />
+          )
         ) : (
-          <Heading size="s">
-            {skip ? value : <RollingNumber n={value} delay={rollingDelay} />}
-          </Heading>
+          <Flex gap={1} alignItems="flex-end" justifyContent={"center"}>
+            {showCashSymbol && <CashSymbol />}
+            <Heading
+              size="s"
+              textAlign={"right"}
+              color={coloredValue ? "blueLight" : "white"}
+              textShadow={coloredValue ? `0 0 10px ${BLUE_LIGHT}` : "none"}
+            >
+              {skip || typeof value === "string" ? (
+                value
+              ) : (
+                <RollingNumber n={value} delay={rollingDelay} sound />
+              )}
+            </Heading>
+          </Flex>
         )}
       </Flex>
     </Box>
@@ -114,6 +135,8 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
   const [animationEnded, setAnimationEnded] = useState(false);
   const [skip, setSkip] = useState(false);
 
+  const playerWon = level_passed === BOSS_LEVEL;
+
   const title = (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -130,7 +153,9 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
         mb={1}
       >
         {level_passed
-          ? t("title-level", { level: level_passed })
+          ? playerWon
+            ? t("title-win")
+            : t("title-level", { level: level_passed })
           : t("title", { round: roundNumber })}
       </Heading>
     </motion.div>
@@ -152,12 +177,12 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
     >
       <PinkBox
         title={title}
-        button={t("continue-btn")}
+        button={playerWon ? t("endless-mode") : t("continue-btn")}
         onClick={() => {
           navigate(GameStateEnum.Map);
         }}
         actionHidden={!animationEnded}
-        glowIntensity={level_passed ? 1 : 0}
+        glowIntensity={level_passed ? (playerWon ? 1.5 : 1) : 0}
       >
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -178,26 +203,26 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
           w="100%"
         >
           <RewardItem
-           skip={skip}
+            skip={skip}
             label={labels[0]}
             value={round_defeat}
             rollingDelay={DELAY_START * 1000 + 500}
           />
           <RewardItem
-           skip={skip}
+            skip={skip}
             label={labels[2]}
             value={hands_left_cash}
             rollingDelay={(DELAY_START + STAGGER) * 1000}
           />
           <RewardItem
-           skip={skip}
+            skip={skip}
             label={labels[3]}
             value={discard_left_cash}
             rollingDelay={(DELAY_START + STAGGER) * 1000}
           />
           {rage_card_defeated_cash > 0 && (
             <RewardItem
-             skip={skip}
+              skip={skip}
               label={labels[5]}
               value={rage_card_defeated_cash}
               rollingDelay={(DELAY_START + STAGGER) * 1000}
@@ -215,16 +240,21 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
             w="100%"
             justifyContent="space-between"
           >
-            <Heading color="lightViolet" variant="italic">
-              {t("total")}
-            </Heading>
-            <Heading color="lightViolet" variant="italic">
-              {skip ? total : <RollingNumber
-                delay={(DELAY_START + rewardLines * STAGGER) * 1000}
-                n={total}
-              />}
+            <Heading color="DIAMONDS">{t("total")}</Heading>
+            <Flex gap={1} alignItems="center" justifyContent={"center"}>
               <CashSymbol />
-            </Heading>
+              <Heading color="DIAMONDS" variant="italic">
+                {skip ? (
+                  total
+                ) : (
+                  <RollingNumber
+                    delay={(DELAY_START + rewardLines * STAGGER) * 1000}
+                    n={total}
+                    sound
+                  />
+                )}
+              </Heading>
+            </Flex>
           </Flex>
         </StaggeredList>
       </PinkBox>

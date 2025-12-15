@@ -1,13 +1,7 @@
-import {
-  AccountInterface,
-  CairoOption,
-  CairoOptionVariant,
-  shortString,
-} from "starknet";
+import { AccountInterface } from "starknet";
 import { DojoEvents } from "../enums/dojoEvents";
 import { getCardsFromEvents } from "../utils/getCardsFromEvents";
 import { getEventKey } from "../utils/getEventKey";
-import { getNumberValueFromEvents } from "../utils/getNumberValueFromEvent";
 import { getPlayEvents } from "../utils/playEvents/getPlayEvents";
 import {
   failedTransactionToast,
@@ -19,8 +13,9 @@ import { useDojo } from "./useDojo";
 import { achievementSfx } from "../constants/sfx";
 import { useAudio } from "../hooks/useAudio";
 import { useSettings } from "../providers/SettingsProvider";
-import { handleAchievements } from "../utils/handleAchievements";
+import { handleXPEvents } from "../utils/handleXPEvents";
 import { getModifiersForContract } from "./utils/getModifiersForContract";
+import { SEASON_NUMBER } from "../constants/season";
 
 const createGameEmptyResponse = {
   gameId: 0,
@@ -41,53 +36,6 @@ export const useGameActions = () => {
 
   const { sfxVolume } = useSettings();
   const { play: achievementSound } = useAudio(achievementSfx, sfxVolume);
-
-  const createGame = async (gameId: number, username: string) => {
-    try {
-      showTransactionToast();
-      const response = await client.game_system.startGame(
-        account,
-        BigInt(gameId),
-        BigInt(shortString.encodeShortString(username)),
-        new CairoOption(CairoOptionVariant.None)
-      );
-      const transaction_hash = response?.transaction_hash ?? "";
-      showTransactionToast(transaction_hash, "Creating game...");
-
-      const tx = await account.waitForTransaction(transaction_hash, {
-        retryInterval: 100,
-      });
-
-      updateTransactionToast(transaction_hash, tx.isSuccess());
-      if (tx.isSuccess()) {
-        const events = tx.value.events;
-        console.log(
-          "events",
-          events.filter((event) => event.keys[1] === CREATE_GAME_EVENT_KEY)
-        );
-        const gameId = getNumberValueFromEvents(
-          events,
-          CREATE_GAME_EVENT_KEY,
-          3
-        );
-        console.log("Game " + gameId + " created");
-
-        await handleAchievements(tx.value.events, achievementSound);
-
-        return {
-          gameId,
-          hand: getCardsFromEvents(events),
-        };
-      } else {
-        console.error("Error creating game:", tx);
-        return createGameEmptyResponse;
-      }
-    } catch (e) {
-      failedTransactionToast();
-      console.log(e);
-      return createGameEmptyResponse;
-    }
-  };
 
   const surrenderGame = async (gameId: number) => {
     try {
@@ -158,37 +106,6 @@ export const useGameActions = () => {
     }
   };
 
-  const approve = async (gameId: number) => {
-    try {
-      showTransactionToast();
-      const gameSystem =
-        "0x58b99b49cc26fcfe3ef65dffdb75f5c31f1e281567ed98618b815363bd203b6";
-
-      const response = await client.game_system.approve(
-        account,
-        gameSystem,
-        gameId
-      );
-      const transaction_hash = response?.transaction_hash ?? "";
-      showTransactionToast(transaction_hash, "Approving...");
-
-      const tx = await account.waitForTransaction(transaction_hash, {
-        retryInterval: 100,
-      });
-
-      if (tx.isSuccess()) {
-        console.log("Success in approve " + gameId);
-      } else {
-        console.error("Error approve game:", tx);
-      }
-
-      updateTransactionToast(transaction_hash, tx.isSuccess());
-    } catch (e) {
-      failedTransactionToast();
-      console.log(e);
-    }
-  };
-
   const discard = async (
     gameId: number,
     cards: number[],
@@ -213,7 +130,11 @@ export const useGameActions = () => {
 
       updateTransactionToast(transaction_hash, tx.isSuccess());
       if (tx.isSuccess()) {
-        await handleAchievements(tx.value.events, achievementSound);
+        await handleXPEvents(
+          tx.value.events,
+          achievementSound,
+          account.address
+        );
         return getPlayEvents(tx.value.events);
       }
       return;
@@ -242,7 +163,11 @@ export const useGameActions = () => {
 
       updateTransactionToast(transaction_hash, tx.isSuccess());
       if (tx.isSuccess()) {
-        await handleAchievements(tx.value.events, achievementSound);
+        await handleXPEvents(
+          tx.value.events,
+          achievementSound,
+          account.address
+        );
         return {
           success: true,
           cards: getCardsFromEvents(tx.value.events),
@@ -279,7 +204,11 @@ export const useGameActions = () => {
       const success = updateTransactionToast(transaction_hash, tx.isSuccess());
 
       if (tx.isSuccess()) {
-        await handleAchievements(tx.value.events, achievementSound);
+        await handleXPEvents(
+          tx.value.events,
+          achievementSound,
+          account.address
+        );
       }
 
       return { success };
@@ -306,13 +235,35 @@ export const useGameActions = () => {
       const success = updateTransactionToast(transaction_hash, tx.isSuccess());
 
       if (tx.isSuccess()) {
-        await handleAchievements(tx.value.events, achievementSound);
+        await handleXPEvents(
+          tx.value.events,
+          achievementSound,
+          account.address
+        );
       }
 
       return { success };
     } catch (e) {
       console.log(e);
       failedTransactionToast();
+      return { success: false };
+    }
+  };
+
+  const claimLives = async (seasonId = SEASON_NUMBER) => {
+    try {
+      const response = await client.lives_system.claim(account, seasonId);
+      const transaction_hash = response?.transaction_hash ?? "";
+
+      const tx = await account.waitForTransaction(transaction_hash, {
+        retryInterval: 100,
+      });
+
+      const success = updateTransactionToast(transaction_hash, tx.isSuccess());
+
+      return { success };
+    } catch (e) {
+      console.log(e);
       return { success: false };
     }
   };
@@ -346,7 +297,11 @@ export const useGameActions = () => {
       if (tx.isSuccess()) {
         const events = tx.value.events;
 
-        await handleAchievements(tx.value.events, achievementSound);
+        await handleXPEvents(
+          tx.value.events,
+          achievementSound,
+          account.address
+        );
         return getPlayEvents(events);
       }
       return;
@@ -357,56 +312,14 @@ export const useGameActions = () => {
     }
   };
 
-  const mintGame = async (username: string) => {
-    try {
-      showTransactionToast();
-      const response = await client.game_system.mint(
-        account,
-        BigInt(shortString.encodeShortString(username)),
-        BigInt(0),
-        new CairoOption(CairoOptionVariant.None),
-        new CairoOption(CairoOptionVariant.None),
-        account.address
-      );
-      const transaction_hash = response?.transaction_hash ?? "";
-      showTransactionToast(transaction_hash, "Minting game...");
-
-      const tx = await account.waitForTransaction(transaction_hash, {
-        retryInterval: 100,
-      });
-
-      updateTransactionToast(transaction_hash, tx.isSuccess());
-      if (tx.isSuccess()) {
-        const events = tx.value.events;
-        const gameId =
-          getNumberValueFromEvents(events, MINT_GAME_EVENT_KEY, 3) ||
-          getNumberValueFromEvents(events, MINT_GAME_EVENT_KEY, 2, 0);
-        console.log("Game " + gameId + " minted");
-
-        await handleAchievements(tx.value.events, achievementSound);
-
-        return gameId;
-      } else {
-        console.error("Error minting game:", tx);
-        return 0;
-      }
-    } catch (e) {
-      failedTransactionToast();
-      console.log(e);
-      return 0;
-    }
-  };
-
   return {
-    createGame,
     discard,
     changeModifierCard,
     sellSpecialCard,
     sellPowerup,
     play,
-    mintGame,
     surrenderGame,
     transferGame,
-    approve,
+    claimLives
   };
 };

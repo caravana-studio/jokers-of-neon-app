@@ -1,20 +1,10 @@
-import {
-  Box,
-  Button,
-  Divider,
-  Flex,
-  Heading,
-  Spinner,
-  Text,
-} from "@chakra-ui/react";
+import { Box, Divider, Flex, Heading, Spinner } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { getUserCards } from "../../api/getUserCards";
 import { DelayedLoading } from "../../components/DelayedLoading";
 import { MobileDecoration } from "../../components/MobileDecoration";
-import { Icons } from "../../constants/icons";
-import { getUserSpecialCards } from "../../dojo/queries/getUserSpecialCards";
 import { useDojo } from "../../dojo/useDojo";
-import { useUsername } from "../../dojo/utils/useUsername";
 import { BLUE } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import CollectionGrid from "./Collection";
@@ -22,27 +12,35 @@ import { Collection } from "./types";
 export const MyCollectionPage = () => {
   const { isSmallScreen } = useResponsiveValues();
   const {
-    setup: { client, useBurnerAcc },
-    switchToController,
+    account: { account },
   } = useDojo();
 
   const [isLoading, setIsLoading] = useState(true);
   const [myCollection, setMyCollection] = useState<Collection[]>([]);
+  const [traditionalCollection, setTraditionalCollection] =
+    useState<Collection>({
+      id: -1,
+      cards: [],
+    });
+  const [neonCollection, setNeonCollection] = useState<Collection>({
+    id: -2,
+    cards: [],
+  });
 
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "my-collection",
   });
 
-  const loggedInUser = useUsername();
-
   useEffect(() => {
-    if (loggedInUser) {
-      getUserSpecialCards(client, loggedInUser).then((collections) => {
+    if (account?.address) {
+      getUserCards(account.address).then((data) => {
         setIsLoading(false);
-        setMyCollection(collections);
+        setMyCollection(data.specials);
+        setTraditionalCollection(data.traditionals);
+        setNeonCollection(data.neons);
       });
     }
-  }, [loggedInUser]);
+  }, [account?.address]);
 
   return (
     <DelayedLoading ms={0}>
@@ -69,26 +67,7 @@ export const MyCollectionPage = () => {
           gap={4}
           overflowY="auto"
         >
-          {useBurnerAcc ? (
-            <Flex
-              w="100%"
-              h="100%"
-              flexDir="column"
-              gap={5}
-              justifyContent="center"
-              alignItems="center"
-            >
-              <Text size="lg">{t("no-collection")}</Text>
-              <Button size={["md", "sm"]} onClick={() => switchToController()}>
-                {t("login")}
-                <img
-                  src={Icons.CARTRIDGE}
-                  width={"16px"}
-                  style={{ marginLeft: "8px" }}
-                />
-              </Button>
-            </Flex>
-          ) : isLoading ? (
+          {isLoading ? (
             <Flex w="100%" h="100%" justifyContent="center" alignItems="center">
               <Spinner color="white" />
             </Flex>
@@ -97,6 +76,11 @@ export const MyCollectionPage = () => {
               <CollectionGrid key={collection.id} collection={collection} />
             ))
           )}
+          <CollectionGrid
+            collection={traditionalCollection}
+            defaultOpen={false}
+          />
+          <CollectionGrid collection={neonCollection} defaultOpen={false} />
         </Flex>
         <Box h="50px" />
       </Flex>

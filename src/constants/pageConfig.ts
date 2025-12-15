@@ -109,9 +109,33 @@ export const getPageConfig = (
       }),
     },
     {
+      path: "/settings-game",
+      getPageInfo: ({ tGame, match }) => ({
+        name: tGame("game-menu.pages.settings"),
+        icon: Icons.SETTINGS,
+        url: match.pathname,
+      }),
+    },
+    {
       path: "/my-collection",
       getPageInfo: ({ tGame, match }) => ({
-        name: tGame("game-menu.pages.my-collection"),
+        name: tGame("game-menu.pages.collection"),
+        icon: Icons.DOCS,
+        url: match.pathname,
+      }),
+    },
+    {
+      path: "/shop",
+      getPageInfo: ({ tGame, match }) => ({
+        name: tGame("game-menu.pages.shop"),
+        icon: Icons.DOCS,
+        url: match.pathname,
+      }),
+    },
+    {
+      path: "/season",
+      getPageInfo: ({ tGame, match }) => ({
+        name: tGame("game-menu.pages.season"),
         icon: Icons.DOCS,
         url: match.pathname,
       }),

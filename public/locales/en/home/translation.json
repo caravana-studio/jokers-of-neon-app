@@ -8,11 +8,32 @@
     },
     "join-discord": "Join our Discord!",
     "leaderboard-banner": {
-      "title": "Tournament active",
+      "title": "Leaderboard",
       "button": "Full leaderboard"
+    },    
+    "tournament-banner": {
+      "title": "Tournament active",
+      "button": "Tournament",
+      "no-entries": "You have no entries to play the tournament",
+      "unlock": "Unlock entries by progressing in the season",
+      "entry": "You have 1 entry to play the tournament",
+      "entries": "You have {{entries}} entries to play the tournament",
+      "play-tournament": "Play tournament"
     },
     "level": "level",
     "dailyMissions": "Daily Missions"
+  },
+  "packs": {
+    "title": "Packs",
+    "free-pack-in": "free pack in",
+    "free-pack-ready": "free pack ready!",
+    "claim-now": "Open",
+    "open-pack-stages": {
+      "stage-0": "Processing payment",
+      "stage-1": "Rolling the odds",
+      "stage-2": "Pack is ready",
+      "stage-3": "Let's open it"
+    }
   },
   "leaderboard": {
     "title": "Leaderboard",
@@ -64,6 +85,7 @@
     "map": "Map",
     "deck": "Deck",
     "plays": "Plays",
+    "season": "Season",
     "more": "More",
     "round": "Round",
     "rage": "Rage round",

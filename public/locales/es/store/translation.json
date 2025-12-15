@@ -42,7 +42,8 @@
       "loot-boxes": "Cajas",
       "utilities": "Utilidades",
       "no-coins": "Monedas insuficientes",
-      "manage": "Administrar items"
+      "manage": "Administrar items",
+      "no-powerup-slots": "Sin espacios"
     },
     "titles": {
       "level-game": "Sube de nivel tu juego",
@@ -101,6 +102,7 @@
       "cards-select-lbl": "Selecciona las cartas que deseas conservar",
       "select-all-lbl": "Seleccionar todo",
       "special-cards-btn": "Ver items",
+      "press-for-detail": "mantén presionada una carta para ver más detalles",
       "error-lbl": "No puedes continuar porque tienes más cartas especiales que el máximo permitido",
       "confirmation-modal": {
         "head": "No hay cartas seleccionadas",

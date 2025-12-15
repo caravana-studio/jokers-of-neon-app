@@ -43,7 +43,7 @@ const signupOptions: AuthOptions = isNativeAndroid ? ["google", "discord", "pass
 const controllerOptions = {
   chains: [{ rpcUrl: RPC_URL }],
   defaultChainId,
-  preset: "jokers-of-neon",
+  preset: import.meta.env.VITE_CONTROLLER_PRESET,
   namespace: DOJO_NAMESPACE,
   policies,
   slot: undefined,
