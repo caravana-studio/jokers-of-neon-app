@@ -12,12 +12,11 @@ import { Layout } from "./components/Layout";
 import { useDojo } from "./dojo/DojoContext";
 import { useGameActions } from "./dojo/useGameActions";
 import { useUsername } from "./dojo/utils/useUsername";
-import { AudioPlayerProvider } from "./providers/AudioPlayerProvider";
+import { BackgroundAnimationProvider } from "./providers/BackgroundAnimationProvider";
 import { CardAnimationsProvider } from "./providers/CardAnimationsProvider";
 import { CardDataProvider } from "./providers/CardDataProvider";
 import { GameProvider } from "./providers/GameProvider";
 import { InformationPopUpProvider } from "./providers/InformationPopUpProvider";
-import { BackgroundAnimationProvider } from "./providers/BackgroundAnimationProvider";
 import { PageTransitionsProvider } from "./providers/PageTransitionsProvider";
 import { RevenueCatProvider } from "./providers/RevenueCatProvider";
 import { SeasonPassProvider } from "./providers/SeasonPassProvider";
@@ -62,28 +61,26 @@ function App() {
   return (
     <RevenueCatProvider>
       <SeasonPassProvider>
-        <SettingsProvider>
+        <SettingsProvider
+          introSongPath={"music/intro-track.mp3"}
+          baseSongPath={"music/game-track.mp3"}
+          rageSongPath={"music/rage_soundtrack.mp3"}
+        >
           <ZoomPrevention>
             <CardAnimationsProvider>
               <CardDataProvider>
                 <GameProvider>
                   <PageTransitionsProvider>
                     <InformationPopUpProvider>
-                      <AudioPlayerProvider
-                        introSongPath={"/music/intro-track.mp3"}
-                        baseSongPath={"/music/game-track.mp3"}
-                        rageSongPath={"/music/rage_soundtrack.mp3"}
-                      >
-                        <Background>
-                          <BackgroundAnimationProvider>
-                            <Layout>
-                              <AnimatePresence mode="wait">
-                                <AppRoutes />
-                              </AnimatePresence>
-                            </Layout>
-                          </BackgroundAnimationProvider>
-                        </Background>
-                      </AudioPlayerProvider>
+                      <Background>
+                        <BackgroundAnimationProvider>
+                          <Layout>
+                            <AnimatePresence mode="wait">
+                              <AppRoutes />
+                            </AnimatePresence>
+                          </Layout>
+                        </BackgroundAnimationProvider>
+                      </Background>
                     </InformationPopUpProvider>
                   </PageTransitionsProvider>
                 </GameProvider>

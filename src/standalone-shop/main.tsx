@@ -18,20 +18,19 @@ import { WalletProvider } from "../dojo/WalletContext.tsx";
 import { FeatureFlagProvider } from "../featureManagement/FeatureFlagProvider.tsx";
 import localI18n from "../i18n.ts";
 import "../index.css";
+import { initDatadogRum } from "../monitoring/datadogRum.ts";
+import { DatadogUserContext } from "../monitoring/DatadogUserContext.tsx";
 import { LoadingScreen } from "../pages/LoadingScreen/LoadingScreen.tsx";
 import {
   AppContextProvider,
   AppType,
 } from "../providers/AppContextProvider.tsx";
-import { SettingsProvider } from "../providers/SettingsProvider.tsx";
 import { StarknetProvider } from "../providers/StarknetProvider.tsx";
 import customTheme from "../theme/theme";
 import { LoadingScreenHandle } from "../types/LoadingProgress.ts";
 import { preloadImages, preloadVideos } from "../utils/cacheUtils.ts";
 import { isNative } from "../utils/capacitorUtils.ts";
 import { registerServiceWorker } from "../utils/registerServiceWorker.ts";
-import { DatadogUserContext } from "../monitoring/DatadogUserContext.tsx";
-import { initDatadogRum } from "../monitoring/datadogRum.ts";
 
 const I18N_NAMESPACES = [
   "game",
@@ -79,9 +78,7 @@ async function init() {
                         <BrowserRouter>
                           <DatadogUserContext />
                           <Toaster />
-                          <SettingsProvider>
-                            <App />
-                          </SettingsProvider>
+                          <App />
                         </BrowserRouter>
                       </DojoProvider>
                     </WalletProvider>
