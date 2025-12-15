@@ -252,7 +252,9 @@
     "coming-soon": "Coming soon",
     "select-profile-picture": "Select profile picture",
     "connect": "Connect",
-    "no-profile": "Please login to see your profile"
+    "no-profile": "Please login to see your profile",
+    "apply-changes": "Apply changes",
+    "cancel": "Cancel"
   },
   "my-collection": {
     "title": "Collection",
