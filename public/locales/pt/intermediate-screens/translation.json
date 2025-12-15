@@ -188,6 +188,14 @@
     "labels": {
       "title": "Rodada {{round}} completada!",
       "title-level": "Nível {{level}} completado!",
+      "title-win": "Você ganhou!",
+      "title-loose": "Você perdeu!",
+      "round": "Rodada",
+      "best-hand": "Melhor mão",
+      "most-played-hand": "Mão mais jogada",
+      "played-cards": "Cartas jogadas",
+      "discarded-cards": "Cartas descartadas",
+      "defeated-rages": "Rage derrotadas",
       "base": "base",
       "level-bonus": "Bônus de nível",
       "discards-left": "{{discards}} Descartes",
@@ -195,7 +203,8 @@
       "rage": "{{cards}} Rage vencidas",
       "total": "total",
       "final-score": "- Pontuação final: {{score}} -",
-      "continue-btn": "continuar"
+      "continue-btn": "continuar",
+      "endless-mode": "Modo infinito"
     }
   },
   "special-cards": {

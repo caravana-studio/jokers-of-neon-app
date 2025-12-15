@@ -17,6 +17,7 @@ type RawMintedCard = {
   card_id: number;
   marketable: boolean;
   skin_id: number;
+  pack_number: number;
 };
 
 type ClaimSeasonRewardApiResponse = {
@@ -27,6 +28,7 @@ type ClaimSeasonRewardApiResponse = {
 
 export type SeasonRewardPack = {
   packId: number;
+  packNumber: number;
   mintedCards: SimplifiedCard[];
 };
 
@@ -100,9 +102,15 @@ export async function claimSeasonReward({
     throw new Error("claimSeasonReward: No minted cards returned by API");
   }
 
-  const packsMap = json.mintedCards.reduce<Map<number, SimplifiedCard[]>>(
+  const packsMap = json.mintedCards.reduce<Map<number, SeasonRewardPack>>(
     (acc, card) => {
-      if (!Number.isFinite(card.pack_id)) {
+      const packNumber = Number.isFinite(card.pack_number)
+        ? card.pack_number
+        : undefined;
+      const packId = Number.isFinite(card.pack_id) ? card.pack_id : undefined;
+      const resolvedPackNumber = packNumber ?? packId;
+
+      if (resolvedPackNumber === undefined) {
         return acc;
       }
 
@@ -115,11 +123,18 @@ export async function claimSeasonReward({
         skin_id: card.skin_id,
       };
 
-      const existing = acc.get(card.pack_id);
+      const existing = acc.get(resolvedPackNumber);
       if (existing) {
-        existing.push(simplifiedCard);
+        existing.mintedCards.push(simplifiedCard);
+        if (packId !== undefined) {
+          existing.packId = packId;
+        }
       } else {
-        acc.set(card.pack_id, [simplifiedCard]);
+        acc.set(resolvedPackNumber, {
+          packId: packId ?? resolvedPackNumber,
+          packNumber: resolvedPackNumber,
+          mintedCards: [simplifiedCard],
+        });
       }
 
       return acc;
@@ -131,17 +146,17 @@ export async function claimSeasonReward({
     throw new Error("claimSeasonReward: No valid packs returned by API");
   }
 
-  const packs: SeasonRewardPack[] = Array.from(packsMap.entries())
-    .map(([packId, cards]) => ({
-      packId,
-      mintedCards: cards.sort((a, b) => {
+  const packs: SeasonRewardPack[] = Array.from(packsMap.values())
+    .map((pack) => ({
+      ...pack,
+      mintedCards: [...pack.mintedCards].sort((a, b) => {
         if (a.skin_id !== b.skin_id) {
           return b.skin_id - a.skin_id;
         }
         return b.card_id - a.card_id;
       }),
     }))
-    .sort((a, b) => a.packId - b.packId);
+    .sort((a, b) => a.packNumber - b.packNumber);
 
   return packs;
 }

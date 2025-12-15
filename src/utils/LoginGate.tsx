@@ -24,7 +24,9 @@ export const LoginGate = ({ children }: { children: React.ReactNode }) => {
       justifyContent="center"
       alignItems="center"
     >
-      <Text size="lg">{t("login-to-access")}</Text>
+      <Text textAlign="center" size="lg">
+        {t("login-to-access")}
+      </Text>
       <Button
         size={["md", "sm"]}
         onClick={() =>

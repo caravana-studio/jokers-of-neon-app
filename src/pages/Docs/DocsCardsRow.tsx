@@ -28,9 +28,6 @@ export const DocCardsContent = ({ cardIds }: { cardIds: number[] }) => {
 
   return (
     <>
-      {highlightedCard && (
-        <MobileCardHighlight card={highlightedCard as Card} showExtraInfo />
-      )}
       {docCards.map((docCardData, index) => (
         <Flex key={index} justifyContent={"center"} alignItems={"center"}>
           <TiltCard

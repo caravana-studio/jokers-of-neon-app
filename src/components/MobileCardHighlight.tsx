@@ -16,6 +16,7 @@ import { DurationSwitcher } from "./DurationSwitcher";
 import { LootBoxRateInfo } from "./Info/LootBoxRateInfo";
 import { LootBox } from "./LootBox";
 import { PriceBox } from "./PriceBox";
+import { useResponsiveValues } from "../theme/responsiveSettings";
 
 interface MobileCardHighlightProps {
   card: Card;
@@ -49,6 +50,8 @@ export const MobileCardHighlight = ({
     temporaryPrice,
     details,
   } = getDataFn(card.card_id ?? 0);
+
+  const { isSmallScreen } = useResponsiveValues();
 
   const { changeModifierCard, sellSpecialCard } = useGameContext();
   const [loading, setLoading] = useState(false);
@@ -101,11 +104,24 @@ export const MobileCardHighlight = ({
 
   const [opacity, setOpacity] = useState(0);
   const [scale, setScale] = useState(0.8);
+  const [isOpening, setIsOpening] = useState(true);
 
   useEffect(() => {
     setOpacity(1);
     setScale(1);
+
+    const timer = setTimeout(() => {
+      setIsOpening(false);
+    }, 250);
+
+    return () => clearTimeout(timer);
   }, []);
+
+  const handleBackdropClick = () => {
+    if (!isOpening) {
+      onClose();
+    }
+  };
 
   return (
     <Flex
@@ -122,7 +138,7 @@ export const MobileCardHighlight = ({
       alignItems={"center"}
       backdropFilter="blur(5px)"
       backgroundColor=" rgba(0, 0, 0, 0.5)"
-      gap={temporaryPrice ? 4 : 6}
+      gap={temporaryPrice ? 2 : 4}
       onClick={() => {
         onClose();
       }}
@@ -162,6 +178,7 @@ export const MobileCardHighlight = ({
         position={"relative"}
         transform={`scale(${scale})`}
         transition="all 0.5s ease"
+        onClick={(e) => e.stopPropagation()}
       >
         {!animation ? (
           <CardImage3D card={card} hideTooltip small={false} />
@@ -169,7 +186,7 @@ export const MobileCardHighlight = ({
           <LootBox boxId={card.card_id ?? 0} />
         )}
       </Flex>
-      <Text textAlign="center" size="xl" fontSize={"17px"} width={"65%"}>
+      <Text textAlign="center" size="xl" fontSize={isSmallScreen ? "14px" : "17px"} width={"65%"}>
         {colorizeText(description)}
       </Text>
       {showExtraInfo && (

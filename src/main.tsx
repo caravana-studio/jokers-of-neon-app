@@ -38,6 +38,8 @@ import { isNative } from "./utils/capacitorUtils.ts";
 import { preloadSpineAnimations } from "./utils/preloadAnimations.ts";
 import { registerServiceWorker } from "./utils/registerServiceWorker.ts";
 import { getMajor, getMinor } from "./utils/versionUtils.ts";
+import { DatadogUserContext } from "./monitoring/DatadogUserContext.tsx";
+import { initDatadogRum } from "./monitoring/datadogRum.ts";
 
 const I18N_NAMESPACES = [
   "game",
@@ -55,6 +57,8 @@ const I18N_NAMESPACES = [
 const progressBarRef = createRef<LoadingScreenHandle>();
 
 const BYPASS_MOBILE_BROWSER_RULE = import.meta.env.BYPASS_MOBILE_BROWSER_RULE;
+
+initDatadogRum();
 
 async function init() {
   const rootElement = document.getElementById("root");
@@ -123,6 +127,7 @@ async function init() {
                     <WalletProvider value={setupResult}>
                       <DojoProvider value={setupResult}>
                         <BrowserRouter>
+                          <DatadogUserContext />
                           <Toaster />
                           <SettingsProvider>
                             <App />

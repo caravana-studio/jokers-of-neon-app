@@ -31,7 +31,6 @@ export const DurationSwitcher = ({
   const discountPriceLineHeight = isSmallScreen ? 0.5 : 0.7;
   const priceLineHeight = isSmallScreen ? 1 : 1.2;
   const computedFlexDir = flexDir || (isSmallScreen ? "column" : "row-reverse");
-
   return (
     <Flex
       gap={isSmallScreen ? 0 : 4}

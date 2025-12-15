@@ -188,6 +188,14 @@
     "labels": {
       "title": "Round {{round}} completed!",
       "title-level": "Level {{level}} completed!",
+      "title-win": "You win!",
+      "title-loose": "You lost!",
+      "round": "Round",
+      "best-hand": "Best hand",
+      "most-played-hand": "Most played hand",
+      "played-cards": "Cards played",
+      "discarded-cards": "Cards discarded",
+      "defeated-rages": "Rages defeated",
       "base": "base",
       "level-bonus": "Level bonus",
       "discards-left": "{{discards}} Discards left",
@@ -196,7 +204,8 @@
       "rerolls": "rerolls",
       "total": "total",
       "final-score": "- Final score: {{score}} -",
-      "continue-btn": "continue"
+      "continue-btn": "continue",
+      "endless-mode": "Endless mode"
     }
   },
   "special-cards": {

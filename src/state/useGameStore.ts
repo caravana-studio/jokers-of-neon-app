@@ -1,10 +1,12 @@
 import { create } from "zustand";
 import { CLASSIC_MOD_ID } from "../constants/general";
 import { GAME_ID } from "../constants/localStorage";
+import { rageCardIds } from "../constants/rageCardIds";
 import { getPlayerPokerHands } from "../dojo/getPlayerPokerHands";
 import { fetchCardsConfig } from "../dojo/queries/getCardsConfig";
 import { getGameConfig } from "../dojo/queries/getGameConfig";
 import { getGameView } from "../dojo/queries/getGameView";
+import { isBossRound } from "../dojo/queries/getMap";
 import { getNode } from "../dojo/queries/getNode";
 import { getPowerUps } from "../dojo/queries/getPowerUps";
 import { getRageCards } from "../dojo/queries/getRageCards";
@@ -53,6 +55,7 @@ type GameStore = {
   plays: LevelPokerHand[];
   nodeRound: number;
   shopId: number;
+  inBossRound: boolean;
 
   refetchGameStore: (client: any, gameId: number) => Promise<void>;
   setGameId: (gameId: number) => void;
@@ -100,6 +103,7 @@ type GameStore = {
   addRerolls: (rerolls: number) => void;
   advanceLevel: () => void;
   fetchGameStoreForTutorial: () => void;
+  setInBossRound: (inBossRound: boolean) => void;
 };
 
 const doRefetchGameStore = async (client: any, gameId: number, set: any) => {
@@ -128,6 +132,9 @@ const doRefetchGameStore = async (client: any, gameId: number, set: any) => {
     set({ nodeRound: nodeRoundData });
   }
 
+  const inBossRound =
+    rageCards.length > 0 && (await isBossRound(client, gameId, game.level));
+
   set({
     id: gameId,
     totalDiscards: game.discards,
@@ -154,6 +161,7 @@ const doRefetchGameStore = async (client: any, gameId: number, set: any) => {
     modCardsConfig,
     plays,
     shopId: nodeRoundData,
+    inBossRound,
   });
 };
 
@@ -191,6 +199,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   plays: [],
   nodeRound: 0,
   shopId: 0,
+  inBossRound: false,
 
   refetchGameStore: async (client, gameId) => {
     await doRefetchGameStore(client, gameId, set);
@@ -286,7 +295,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   resetRage: () => {
-    set({ isRageRound: false, rageCards: [] });
+    set({ isRageRound: false, rageCards: [], inBossRound: false });
   },
 
   resetSpecials: () => {
@@ -446,5 +455,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
         totalScore: 0,
       });
     }
+  },
+  setInBossRound: (inBossRound) => {
+    set({ inBossRound });
   },
 }));

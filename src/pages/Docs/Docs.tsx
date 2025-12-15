@@ -3,11 +3,14 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { getUserCards } from "../../api/getUserCards";
 import { DelayedLoading } from "../../components/DelayedLoading";
+import { MobileCardHighlight } from "../../components/MobileCardHighlight";
 import { MODIFIERS_RARITY } from "../../data/modifiers";
 import { useDojo } from "../../dojo/useDojo";
 import { Tab, TabPattern } from "../../patterns/tabs/TabPattern";
+import { useCardHighlight } from "../../providers/HighlightProvider/CardHighlightProvider";
 import { useGameStore } from "../../state/useGameStore";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
+import { Card } from "../../types/Card";
 import CollectionGrid from "../MyCollection/Collection";
 import { Collection } from "../MyCollection/types";
 import { DocsBoxesRow } from "./DocsBoxesRow";
@@ -25,6 +28,8 @@ export const DocsPage: React.FC<DocsProps> = ({ lastIndexTab = 0 }) => {
   const { modCardsConfig } = useGameStore();
 
   const { isSmallScreen } = useResponsiveValues();
+
+  const { highlightedItem: highlightedCard } = useCardHighlight();
 
   const {
     account: { account },
@@ -45,6 +50,13 @@ export const DocsPage: React.FC<DocsProps> = ({ lastIndexTab = 0 }) => {
 
   return (
     <DelayedLoading>
+      {highlightedCard && (
+        <MobileCardHighlight
+          card={highlightedCard as Card}
+          showExtraInfo
+          isPack={!highlightedCard.img}
+        />
+      )}
       <TabPattern lastIndexTab={lastIndexTab}>
         <Tab title={t("labels.special-cards")}>
           <Flex

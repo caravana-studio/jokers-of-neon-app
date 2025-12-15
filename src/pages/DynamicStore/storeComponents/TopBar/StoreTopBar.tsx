@@ -15,10 +15,15 @@ export const StoreTopBar: React.FC<StoreTopBarProps> = ({ hideReroll }) => {
     <Flex
       flexDirection="column"
       p={1}
-      px={"16px"}
+      px={isSmallScreen ? "16px" : "20px"}
       width={"100%"}
       backgroundColor={"black"}
       justifyContent={"center"}
+      py={isSmallScreen ? 0 : 4}
+      borderRadius={isSmallScreen ? 0 : "25px"}
+      boxShadow={
+        isSmallScreen ? "none" : "0 0 10px 3px rgba(255, 255, 255, 0.2)"
+      }
     >
       <Flex gap={4}>
         <Flex flexDirection={"column"} flexGrow={1} justifyContent={"center"}>

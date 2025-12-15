@@ -12,6 +12,7 @@ import theme from "../theme/theme";
 import { colorizeText } from "../utils/getTooltip.tsx";
 import { CashSymbol } from "./CashSymbol.tsx";
 import { DurationSwitcher } from "./DurationSwitcher.tsx";
+import { useNavigate } from "react-router-dom";
 
 const SIZE_MULTIPLIER = isMobile ? 1.3 : 2;
 const { white, neonGreen } = theme.colors;
@@ -57,7 +58,7 @@ export const StorePreviewComponent = ({
   duration,
   onDurationChange,
 }: IStorePreviewComponentDesktop) => {
-  const navigate = useCustomNavigate();
+  const navigate = useNavigate();
   const { t } = useTranslation(["store"]);
 
   return (
@@ -293,7 +294,7 @@ export const StorePreviewComponent = ({
             {buyButton}
             <Button
               variant="outlineSecondaryGlow"
-              onClick={() => navigate(GameStateEnum.Store)}
+              onClick={() => navigate("/store")}
               height={{ base: "40px", sm: "100%" }}
               width={{ base: "50%", sm: "unset" }}
             >
