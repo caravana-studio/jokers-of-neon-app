@@ -72,7 +72,7 @@ export const ClaimSeasonPackPage = () => {
       onContinue={
         packs[currentPackIndex + 1]
           ? () => transitionTo(currentPackIndex + 1)
-          : undefined
+          : () => navigate("/season")
       }
     />
   ) : (

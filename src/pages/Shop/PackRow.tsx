@@ -86,6 +86,7 @@ export const PackRow = ({ packId, packageId, price }: PackRowProps) => {
           state: {
             initialCards: simplifiedCards,
             packId,
+            returnTo: "/shop",
           },
         });
       });
