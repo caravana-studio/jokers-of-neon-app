@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Handle, Position } from "reactflow";
 import CachedImage from "../../../components/CachedImage";
+import { BOSS_LEVEL } from "../../../constants/general";
 import { GameStateEnum } from "../../../dojo/typescript/custom";
 import { useDojo } from "../../../dojo/useDojo";
 import { useShopActions } from "../../../dojo/useShopActions";
@@ -50,7 +51,7 @@ const RageNode = ({ data }: any) => {
     setup: { client },
   } = useDojo();
 
-  const { state } = useGameStore();
+  const { state, level } = useGameStore();
 
   const stateInMap = state === GameStateEnum.Map;
   const reachable = reachableNodes.includes(data.id.toString()) && stateInMap;
@@ -155,7 +156,7 @@ const RageNode = ({ data }: any) => {
 
         <Box zIndex={1}>
           <CachedImage
-            src={`/map/icons/rage/${data.last ? (isBossLevel ? "boss-s1" : "final") : "intermediate"}-${stateInMap && reachable ? "violet" : data.visited || data.current ? "blue" : "off"}${data.current || (isHovered && (data.visited || reachable)) ? "-bordered" : ""}.png`}
+            src={`/map/icons/rage/${data.last ? ((isBossLevel && !data.isFirstNode) || (data.isFirstNode && level === BOSS_LEVEL + 1) ? "boss-s1" : "final") : "intermediate"}-${stateInMap && reachable ? "violet" : data.visited || data.current ? "blue" : "off"}${data.current || (isHovered && (data.visited || reachable)) ? "-bordered" : ""}.png`}
             alt="rage"
             animation={
               isBossLevel && data.last

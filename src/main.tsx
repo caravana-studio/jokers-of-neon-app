@@ -30,6 +30,7 @@ import {
   AppContextProvider,
   AppType,
 } from "./providers/AppContextProvider.tsx";
+import { SettingsProvider } from "./providers/SettingsProvider.tsx";
 import { StarknetProvider } from "./providers/StarknetProvider.tsx";
 import { fetchVersion } from "./queries/fetchVersion.ts";
 import customTheme from "./theme/theme";
@@ -128,7 +129,13 @@ async function init() {
                         <BrowserRouter>
                           <DatadogUserContext />
                           <Toaster />
-                          <App />
+                          <SettingsProvider
+                            introSongPath={"music/intro-track.mp3"}
+                            baseSongPath={"music/game-track.mp3"}
+                            rageSongPath={"music/rage_soundtrack.mp3"}
+                          >
+                            <App />
+                          </SettingsProvider>
                         </BrowserRouter>
                       </DojoProvider>
                     </WalletProvider>

@@ -13,7 +13,7 @@ import {
   negativeMultiSfx,
   pointsSfx,
 } from "../constants/sfx.ts";
-import { EventTypeEnum, GameStateEnum } from "../dojo/typescript/custom.ts";
+import { GameStateEnum } from "../dojo/typescript/custom.ts";
 import { useDojo } from "../dojo/useDojo.tsx";
 import { useGameActions } from "../dojo/useGameActions.tsx";
 import { useUsername } from "../dojo/utils/useUsername.tsx";
@@ -105,6 +105,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setState,
     addRerolls,
     advanceLevel,
+    refetchDebuffedPlayerHands,
   } = useGameStore();
 
   const {
@@ -233,7 +234,11 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     if (usernameLS) {
       try {
         console.log("Creating game...");
-        createGame({ userAddress: account.address, playerName: usernameLS, isTournament })
+        createGame({
+          userAddress: account.address,
+          playerName: usernameLS,
+          isTournament,
+        })
           .then(async (response) => {
             const newGameId = response?.data?.slot?.game_id;
             console.log(`game ${newGameId} created`);
@@ -280,6 +285,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     response: PlayEvents,
     setAnimation: (playing: boolean) => void
   ) => {
+    console.log("events", response);
     animatePlayDiscard({
       playEvents: response,
       playAnimationDuration,
@@ -320,6 +326,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       clearLevelSound,
     });
     fetchDeck(client, gameId, getCardData);
+    refetchDebuffedPlayerHands(client, gameId);
     refetchSpecialCardsData(modId, gameId, specialCards);
     if (response.levelPassed && response.detailEarned) {
       response.levelPassed.level_passed > 0 && advanceLevel();
@@ -360,7 +367,13 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const onPlayClick = () => {
     handlePlayAction({
-      action: () => play(gameId, preSelectedCards, preSelectedModifiers, preSelectedPowerUps),
+      action: () =>
+        play(
+          gameId,
+          preSelectedCards,
+          preSelectedModifiers,
+          preSelectedPowerUps
+        ),
       setAnimation: setPlayAnimation,
       onStateChange: statePlay,
       rollback: rollbackPlay,

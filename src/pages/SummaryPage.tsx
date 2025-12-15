@@ -9,6 +9,7 @@ import { DelayedLoading } from "../components/DelayedLoading";
 import { MobileDecoration } from "../components/MobileDecoration";
 import { PinkBox } from "../components/PinkBox";
 import { RewardItem } from "../components/RewardsDetail";
+import { BOSS_LEVEL } from "../constants/general";
 import { PLAYS_DATA } from "../constants/plays";
 import {
   DEFAULT_TRACKER_VIEW,
@@ -28,13 +29,9 @@ const STAGGER = 0.5;
 
 export const SummaryPage = () => {
   const { isSmallScreen } = useResponsiveValues();
-
-  const { win } = useParams();
-
   return (
     <DelayedLoading ms={0}>
       <BackgroundDecoration>
-        {/* {win && <GalaxyBackground intensity={Intensity.MAX} />} */}
         {isSmallScreen && <MobileDecoration />}
         <SummaryDetail />
       </BackgroundDecoration>
@@ -99,7 +96,7 @@ const SummaryDetail = () => {
       </Heading>
     </motion.div>
   );
-  const compactRound = `${tGame("game.round-points.level", { level: level })} R${round}`;
+  const compactRound = `${tGame("game.round-points.level", { level: win ? BOSS_LEVEL : level })} R${round}`;
 
   const mostPlayedHandName =
     PLAYS_DATA[gameTracker.mostPlayedHand]?.name ?? PLAYS_DATA[Plays.NONE].name;
