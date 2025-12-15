@@ -104,6 +104,7 @@ export const MapProvider = ({ children }: MapProviderProps) => {
                 ? getRageNodeData(node.data)
                 : undefined,
             isBossLevel,
+            isFirstNode
           },
         };
       });

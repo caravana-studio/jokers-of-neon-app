@@ -5,7 +5,6 @@ import { SpeedInsights } from "@vercel/speed-insights/react";
 import { AnimatePresence } from "framer-motion";
 import { Background } from "../components/Background";
 import LanguageSwitcher from "../components/LanguageSwitcher";
-import { AudioPlayerProvider } from "../providers/AudioPlayerProvider";
 import { CardAnimationsProvider } from "../providers/CardAnimationsProvider";
 import { CardDataProvider } from "../providers/CardDataProvider";
 import { GameProvider } from "../providers/GameProvider";
@@ -27,19 +26,13 @@ function App() {
               <GameProvider>
                 <PageTransitionsProvider>
                   <InformationPopUpProvider>
-                    <AudioPlayerProvider
-                      introSongPath={"/music/intro-track.mp3"}
-                      baseSongPath={"/music/game-track.mp3"}
-                      rageSongPath={"/music/rage_soundtrack.mp3"}
-                    >
-                      <Background>
-                        <AnimatePresence mode="wait">
-                          <ControllerButton />
-                          <LanguageSwitcher />
-                          <AppRoutes />
-                        </AnimatePresence>
-                      </Background>
-                    </AudioPlayerProvider>
+                    <Background>
+                      <AnimatePresence mode="wait">
+                        <ControllerButton />
+                        <LanguageSwitcher />
+                        <AppRoutes />
+                      </AnimatePresence>
+                    </Background>
                   </InformationPopUpProvider>
                 </PageTransitionsProvider>
               </GameProvider>

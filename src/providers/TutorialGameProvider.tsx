@@ -24,7 +24,7 @@ import {
   HAND_2,
   MOCKED_PLAYS,
 } from "../utils/mocks/tutorialMocks.ts";
-import { animatePlay } from "../utils/playEvents/animatePlay.ts";
+import { animatePlayDiscard } from "../utils/playEvents/animatePlayDiscard.ts";
 import { useCardAnimations } from "./CardAnimationsProvider";
 import { IGameContext } from "./GameProvider";
 import { gameProviderDefaults } from "./gameProviderDefaults.ts";
@@ -121,7 +121,7 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
     setIndexEvent((index) => index + 1);
     useGameStore.getState().play();
 
-    animatePlay({
+    animatePlayDiscard({
       playEvents: event,
       playAnimationDuration: 400,
       setPlayIsNeon,
@@ -140,7 +140,7 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
       addCash: emptyFn,
       changeCardsSuit: emptyFn,
       changeCardsNeon: emptyFn,
-      setPlayAnimation,
+      setAnimation: setPlayAnimation,
       setPreSelectionLocked:
         useCurrentHandStore.getState().setPreSelectionLocked,
       clearPreSelection: () => {

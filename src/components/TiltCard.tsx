@@ -12,9 +12,13 @@ import {
 import { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { GameStateEnum } from "../dojo/typescript/custom.ts";
-import { isModifierSilent, useIsSilent } from "../hooks/useIsSilent.tsx";
+import {
+  isModifierSilent,
+  useIsDebuffed,
+  useIsSilent,
+} from "../hooks/useIsSilent.tsx";
 import { useGameStore } from "../state/useGameStore.ts";
-import { VIOLET } from "../theme/colors.tsx";
+import { HEARTS, VIOLET } from "../theme/colors.tsx";
 import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
 import { Card } from "../types/Card";
 import { useTransformedCard } from "../utils/cardTransformation/cardTransformation.ts";
@@ -67,6 +71,7 @@ export const TiltCard = ({
 
   const modifiedCard = useTransformedCard(card);
   const isSilent = useIsSilent(modifiedCard);
+  const isDebuffed = useIsDebuffed(modifiedCard);
 
   const { t } = useTranslation(["store"]);
   const { state, isClassic } = useGameStore();
@@ -117,7 +122,11 @@ export const TiltCard = ({
             >
               <CachedImage
                 borderRadius={{ base: "5px", sm: "8px" }}
-                boxShadow={"0px 0px 5px 0px rgba(0,0,0,0.5)"}
+                boxShadow={
+                  isDebuffed
+                    ? `0 0 10px 2px ${HEARTS}`
+                    : "0px 0px 5px 0px rgba(0,0,0,0.5)"
+                }
                 sx={{ maxWidth: "unset", opacity: purchased ? 0.3 : 1 }}
                 src={`/Cards/${(modifiedCard.card_id ?? 0) < 300 && isMobile && isClassic ? "mobile/" : ""}${modifiedCard.img}`}
                 alt={modifiedCard.img}
@@ -126,9 +135,10 @@ export const TiltCard = ({
                 className={className}
               />
 
-              {isSilent && state === GameStateEnum.Rage && (
+              {(isSilent || isDebuffed) && state === GameStateEnum.Rage && (
                 <BrokenCard onDeck={onDeck} isPack={isPack} />
               )}
+
               {used && (
                 <>
                   <Box

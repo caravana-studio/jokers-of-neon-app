@@ -4535,7 +4535,7 @@
     },
     {
       "address": "0x60b49d4fce3200f7c9c2e2e1dc3191d4478ac25be9c378639c845d4b8f612cf",
-      "class_hash": "0x36d39f8d3079f4c6b6cac8c90e1406454676089afb55416d1a1d8eaf3c46b4",
+      "class_hash": "0x44dabb5aefbadaa022c4d623f35c877185fd536c6a2ae32dd897e22fa624d9e",
       "abi": [
         {
           "type": "impl",
@@ -4905,6 +4905,114 @@
           ]
         },
         {
+          "type": "struct",
+          "name": "core::array::Span::<jokers_of_neon_lib::models::data::poker_hand::PokerHand>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<jokers_of_neon_lib::models::data::poker_hand::PokerHand>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "jokers_of_neon_lib::models::external::profile::PlayerStats",
+          "members": [
+            {
+              "name": "address",
+              "type": "core::starknet::contract_address::ContractAddress"
+            },
+            {
+              "name": "games_played",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "games_won",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "high_card_played",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "pair_played",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "two_pair_played",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "three_of_a_kind_played",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "four_of_a_kind_played",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "five_of_a_kind_played",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "full_house_played",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "flush_played",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "straight_played",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "straight_flush_played",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "royal_flush_played",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "loot_boxes_purchased",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "cards_purchased",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "specials_purchased",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "specials_sold",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "power_ups_purchased",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "level_ups_purchased",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "modifiers_purchased",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "rerolls_purchased",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "burn_purchased",
+              "type": "core::integer::u32"
+            }
+          ]
+        },
+        {
           "type": "interface",
           "name": "jokers_of_neon_core::systems::views::game_views::IGameViews",
           "items": [
@@ -5000,6 +5108,42 @@
               "outputs": [
                 {
                   "type": "jokers_of_neon_lib::models::tracker::GameTracker"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "get_debuff_poker_hands",
+              "inputs": [
+                {
+                  "name": "game_id",
+                  "type": "core::integer::u64"
+                },
+                {
+                  "name": "rage_id",
+                  "type": "core::integer::u32"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::array::Span::<jokers_of_neon_lib::models::data::poker_hand::PokerHand>"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "get_player_stats",
+              "inputs": [
+                {
+                  "name": "game_id",
+                  "type": "core::integer::u64"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "jokers_of_neon_lib::models::external::profile::PlayerStats"
                 }
               ],
               "state_mutability": "view"
@@ -7825,7 +7969,7 @@
     },
     {
       "address": "0x7d2632e1cfe1256d27e71b7acad56949d9cdd14647541d535c29581be80e23e",
-      "class_hash": "0xb04586f4daa2f1ad69d71e3db360e37fee40a2f86a23ba63ac8692d9c24ace",
+      "class_hash": "0x6cac7bb90dc0044554f259a13fb2f2e7f7585beae29eab8e0c687f72d36ceb1",
       "abi": [
         {
           "type": "impl",
@@ -8883,7 +9027,7 @@
     },
     {
       "address": "0x308c6a3e60d21ece8a2833cf83cc369abb4f69418753a19be242531ac82a897",
-      "class_hash": "0x115363add44b52e3518c2b6defda370b7ac79b9676a8a16ed9565ad93535286",
+      "class_hash": "0x37cab2f24233918a95af74ed049e94f3292a5f01b24460f9cb5693dfe131257",
       "abi": [
         {
           "type": "impl",
@@ -9136,6 +9280,10 @@
               "type": "function",
               "name": "open",
               "inputs": [
+                {
+                  "name": "seed",
+                  "type": "core::felt252"
+                },
                 {
                   "name": "pack_id",
                   "type": "core::integer::u32"
