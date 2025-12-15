@@ -1,4 +1,4 @@
-import { Flex, Heading } from "@chakra-ui/react";
+import { Box, Flex, Heading } from "@chakra-ui/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -9,8 +9,10 @@ import { MobileDecoration } from "../../components/MobileDecoration";
 import { useStore } from "../../providers/StoreProvider";
 import { useGameStore } from "../../state/useGameStore";
 import { useShopStore } from "../../state/useShopStore";
+import { useDeckStore } from "../../state/useDeckStore";
 import { Card } from "../../types/Card";
 import { Deck } from "./Deck";
+import { BLUE_LIGHT, VIOLET } from "../../theme/colors";
 
 interface DeckPageContentMobileProps {
   state: {
@@ -29,6 +31,7 @@ export const DeckPageContentMobile = ({
   const { burnCard } = useStore();
   const { burnItem } = useShopStore();
   const { cash } = useGameStore();
+  const { currentLength, size } = useDeckStore();
 
   const handleCardSelect = (card: Card) => {
     if (!burnItem?.purchased) {
@@ -62,7 +65,7 @@ export const DeckPageContentMobile = ({
       minH={0}
     >
       <Heading mb={1} size="sm" textAlign={"center"} variant="italic">
-        {t("title")}
+        {t("title")} ({currentLength}/{size})
       </Heading>
       <MobileDecoration />
       {!state.inStore ? (
