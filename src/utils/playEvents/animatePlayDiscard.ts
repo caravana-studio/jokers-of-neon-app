@@ -23,7 +23,7 @@ interface AnimatePlayConfig {
   addMulti: (multi: number) => void;
   changeCardsSuit: (cardIndexes: number[], suit: Suits) => void;
   changeCardsNeon: (cardIndexes: number[]) => void;
-  setPlayAnimation: (playing: boolean) => void;
+  setAnimation: (playing: boolean) => void;
   setPreSelectionLocked: (locked: boolean) => void;
   clearPreSelection: () => void;
   refetchPowerUps: () => void;
@@ -46,7 +46,7 @@ interface AnimatePlayConfig {
   clearLevelSound: () => void;
 }
 
-export const animatePlay = (config: AnimatePlayConfig) => {
+export const animatePlayDiscard = (config: AnimatePlayConfig) => {
   const {
     playEvents,
     playAnimationDuration,
@@ -62,7 +62,7 @@ export const animatePlay = (config: AnimatePlayConfig) => {
     setMulti,
     changeCardsNeon,
     changeCardsSuit,
-    setPlayAnimation,
+    setAnimation,
     setPreSelectionLocked,
     clearPreSelection,
     refetchPowerUps,
@@ -382,7 +382,7 @@ export const animatePlay = (config: AnimatePlayConfig) => {
   );
 
   setTimeout(() => {
-    setPlayAnimation(true);
+    setAnimation(true);
     setAnimatedCard(undefined);
   }, ALL_CARDS_DURATION - durations.accumDuration);
 
@@ -399,7 +399,7 @@ export const animatePlay = (config: AnimatePlayConfig) => {
     unPreSelectAllPowerUps();
     refetchPowerUps();
 
-    setPlayAnimation(false);
+    setAnimation(false);
     clearPreSelection();
     remainingPlays > 0 && setPreSelectionLocked(false);
     setPlayIsNeon(false);
