@@ -927,6 +927,10 @@
     "20023": {
       "name": "Boleto Marcado",
       "description": "No puedes jugar la misma mano dos veces en esta ronda"
+    },
+    "20025": {
+      "name": "Aguafiestas",
+      "description": "Tu mano más jugada no cuenta en esta ronda."
     }
   },
   "lootBoxes": {
