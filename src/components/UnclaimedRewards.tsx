@@ -2,7 +2,7 @@ import { Button, Flex, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { getSeasonProgress } from "../api/getSeasonProgress";
+import { fetchProfile } from "../api/profile";
 import { Icons } from "../constants/icons";
 import { useDojo } from "../dojo/DojoContext";
 import { BLUE, VIOLET } from "../theme/colors";
@@ -24,9 +24,13 @@ export const UnclaimedRewards = () => {
 
   useEffect(() => {
     if (account?.address) {
-      getSeasonProgress({ userAddress: account?.address }).then((data) => {
-        setRewardsLeftToClaim(data.rewardsLeftToClaim);
-      });
+      fetchProfile(account.address)
+        .then((profile) => {
+          setRewardsLeftToClaim(profile.claimablePacks ?? []);
+        })
+        .catch(() => {
+          setRewardsLeftToClaim([]);
+        });
     }
   }, [account?.address]);
 

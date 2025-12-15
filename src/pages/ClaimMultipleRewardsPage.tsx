@@ -2,7 +2,11 @@ import { Flex } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
-import { claimSeasonReward, SeasonRewardPack } from "../api/claimSeasonReward";
+import {
+  claimSeasonReward,
+  claimUnclaimedRewards,
+  SeasonRewardPack,
+} from "../api/claimSeasonReward";
 import { DelayedLoading } from "../components/DelayedLoading";
 import { SimulatedLoadingBar } from "../components/LoadingProgressBar/SimulatedLoadingProgressBar";
 import { MobileDecoration } from "../components/MobileDecoration";
@@ -28,11 +32,16 @@ export const ClaimMultipleRewardsPage = () => {
   const [currentPackIndex, setCurrentPackIndex] = useState<number>(0);
   const [transitioning, setTransitioning] = useState<boolean>(false);
 
-  const claimFn = claimSeasonReward({ address: account.address, level, isPremium })
+  const claimFn = params.premium
+    ? claimSeasonReward({ address: account.address, level, isPremium })
+    : claimUnclaimedRewards({
+        address: account.address,
+      });
 
   useEffect(() => {
     if (account?.address) {
-        claimFn.then((packs) => {
+      claimFn
+        .then((packs) => {
           setPacks(packs);
           setCurrentPackIndex(0);
         })
