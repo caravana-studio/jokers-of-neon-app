@@ -148,5 +148,21 @@
       "name": "Mix",
       "content": "{{lootboxes}} cajas, {{powerups}} power-ups, {{levelups}} mejoras de nivel"
     }
+  },
+  "loot-box-rates": {
+    "cards": {
+      "traditional": "Tradicional",
+      "joker": "Comodín",
+      "neon": "Neón",
+      "neon-joker": "Comodín Neón",
+      "special-c": "Especial C",
+      "special-b": "Especial B",
+      "special-a": "Especial A",
+      "special-s": "Especial S",
+      "skin-special-c": "Skin Especial C",
+      "skin-special-b": "Skin Especial B",
+      "skin-special-a": "Skin Especial A",
+      "skin-special-s": "Skin Especial S"
+    }
   }
 }

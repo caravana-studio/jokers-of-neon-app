@@ -72,13 +72,6 @@ const PackView = ({ pack }: { pack: BlisterPackItem }) => {
     card.card_id ?? 0
   );
 
-  console.log('Pack data in LootBoxesMobile:', {
-    blister_pack_id: pack.blister_pack_id,
-    card_id: card.card_id,
-    name,
-    pack
-  });
-
   const handleBuyClick = useMemo(
     () => () => {
       setBuyDisabled(true);

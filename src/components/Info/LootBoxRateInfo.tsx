@@ -3,6 +3,7 @@ import { Box, Flex, Text, VStack, HStack, Image, Heading } from "@chakra-ui/reac
 import { useRef, useState, useEffect } from "react";
 import { isMobile } from "react-device-detect";
 import theme from "../../theme/theme";
+import { VIOLET, VIOLET_LIGHT } from "../../theme/colors";
 import { InformationIcon } from "./InformationIcon";
 import { useInformationPopUp } from "../../providers/InformationPopUpProvider";
 import { PACK_RATES, CARD_TYPE_METADATA } from "../../data/lootBoxRates";
@@ -16,7 +17,7 @@ interface LootBoxRateInfoProps {
 interface CardRate {
   name: string;
   imageId: number;
-  percentage: string;
+  percentage: number;
   isSpecial?: boolean;
   rarity?: string;
 }
@@ -36,7 +37,7 @@ const ItemSectionComponent = ({ section, sectionRef }: ItemSectionProps) => {
 
   // Filter out cards with 0.0% probability
   const visibleCards = section.cards.filter(
-    (card) => card.percentage !== "0.0%"
+    (card) => card.percentage !== 0.0
   );
 
   // Helper function to get the correct image path for special cards
@@ -58,21 +59,18 @@ const ItemSectionComponent = ({ section, sectionRef }: ItemSectionProps) => {
 
   return (
     <Box
-      bg="rgba(20, 20, 30, 0.95)"
-      borderRadius="md"
-      border="1px solid"
-      borderColor={neonGreen}
-      overflow="hidden"
-      mb={1.5}
+      bg="transparent"
+      mb={2}
     >
       {/* Header */}
       <Flex
         ref={sectionRef}
         py={1.5}
         px={2}
-        bg="rgba(30, 30, 40, 0.8)"
+        bg="transparent"
         alignItems="center"
         justifyContent="center"
+        mb={2}
       >
         <Text fontSize="xs" fontWeight="600" color="white">
           Item {section.itemNumber}
@@ -80,15 +78,16 @@ const ItemSectionComponent = ({ section, sectionRef }: ItemSectionProps) => {
       </Flex>
 
       {/* Cards List */}
-      <VStack spacing={0} align="stretch" p={1}>
+      <VStack spacing={1} align="stretch">
           {visibleCards.map((card, index) => (
             <HStack
               key={`${card.name}-${index}`}
-              py={1}
-              px={1.5}
+              py={1.5}
+              px={2}
               spacing={2}
-              bg={index % 2 === 0 ? "rgba(25, 25, 35, 0.5)" : "transparent"}
-              borderRadius="sm"
+              bg="transparent"
+              border="1px solid white"
+              borderRadius="md"
             >
               {/* Card Image */}
               <Box
@@ -98,7 +97,7 @@ const ItemSectionComponent = ({ section, sectionRef }: ItemSectionProps) => {
                 bg="rgba(40, 40, 50, 0.8)"
                 borderRadius="sm"
                 border="1px solid"
-                borderColor={card.isSpecial ? neonPink : neonGreen}
+                borderColor={card.isSpecial ? VIOLET_LIGHT : neonGreen}
                 overflow="hidden"
                 display="flex"
                 alignItems="center"
@@ -122,7 +121,7 @@ const ItemSectionComponent = ({ section, sectionRef }: ItemSectionProps) => {
               <Text
                 flex={1}
                 fontSize="xs"
-                color={card.isSpecial ? neonPink : "white"}
+                color={card.isSpecial ? VIOLET_LIGHT : "white"}
                 fontWeight="500"
               >
                 {card.name}
@@ -136,7 +135,7 @@ const ItemSectionComponent = ({ section, sectionRef }: ItemSectionProps) => {
                 minW="50px"
                 textAlign="right"
               >
-                {card.percentage}
+                {card.percentage}%
               </Text>
             </HStack>
           ))}
@@ -296,9 +295,8 @@ export const LootBoxRateInfo: React.FC<LootBoxRateInfoProps> = ({
             position="relative"
             w="22px"
             h="32px"
-            bg={activeSection === section.itemNumber ? neonPink : "rgba(30, 30, 40, 0.95)"}
-            border="1.5px solid"
-            borderColor={activeSection === section.itemNumber ? neonPink : neonGreen}
+            bg={activeSection === section.itemNumber ? neonPink : "rgba(0, 0, 0, 1)"}
+            border="1px solid #DAA1E8FF"
             borderRadius="2px"
             cursor="pointer"
             onClick={() => scrollToSection(section.itemNumber)}
@@ -306,24 +304,11 @@ export const LootBoxRateInfo: React.FC<LootBoxRateInfoProps> = ({
             display="flex"
             alignItems="center"
             justifyContent="center"
-            boxShadow="0 2px 4px rgba(0, 0, 0, 0.3)"
+            boxShadow={`0px 0px 8px 3px ${VIOLET}`}
             _hover={{
               bg: neonPink,
-              borderColor: neonPink,
               transform: "translateX(-3px) scale(1.08)",
-              boxShadow: "0 3px 8px rgba(0, 0, 0, 0.5)"
-            }}
-            _before={{
-              content: '""',
-              position: "absolute",
-              top: "1.5px",
-              left: "1.5px",
-              right: "1.5px",
-              bottom: "1.5px",
-              border: "0.5px solid",
-              borderColor: activeSection === section.itemNumber ? "rgba(255, 255, 255, 0.3)" : "rgba(255, 255, 255, 0.1)",
-              borderRadius: "1px",
-              pointerEvents: "none"
+              boxShadow: `0px 0px 12px 5px ${VIOLET}`
             }}
           >
             <Text
@@ -344,8 +329,11 @@ export const LootBoxRateInfo: React.FC<LootBoxRateInfoProps> = ({
         maxWidth="380px"
         maxHeight="75vh"
         overflowY="auto"
-        borderRadius="lg"
+        borderRadius="10px"
         m={3}
+        border="2px solid #DAA1E8FF"
+        boxShadow={`0px 0px 15px 7px ${VIOLET}`}
+        backgroundColor="rgba(0, 0, 0, 1)"
         sx={{
           '&::-webkit-scrollbar': {
             display: 'none'
@@ -356,16 +344,14 @@ export const LootBoxRateInfo: React.FC<LootBoxRateInfoProps> = ({
       >
         {/* Header */}
         <Box
-          bg="rgba(20, 20, 30, 1)"
-          border="2px solid"
-          borderColor={neonGreen}
-          borderRadius="lg lg 0 0"
+          bg="transparent"
+          borderBottom="1px solid white"
           py={2}
           px={3}
           position="sticky"
           top={0}
           zIndex={1}
-          boxShadow="0 4px 12px rgba(0, 0, 0, 0.6)"
+          backgroundColor="rgba(0, 0, 0, 1)"
         >
           <Heading
             size="md"
@@ -380,8 +366,7 @@ export const LootBoxRateInfo: React.FC<LootBoxRateInfoProps> = ({
 
         {/* Content */}
         <Box
-          bg="rgba(10, 10, 20, 0.98)"
-          borderRadius="0 0 lg lg"
+          bg="transparent"
           px={2}
           py={2}
         >
