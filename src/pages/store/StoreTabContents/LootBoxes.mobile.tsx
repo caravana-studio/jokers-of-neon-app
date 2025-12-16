@@ -149,7 +149,6 @@ const PackView = ({ pack }: { pack: BlisterPackItem }) => {
             <LootBoxRateInfo
               name={name}
               details={details}
-              packId={pack.blister_pack_id}
             />
           </Flex>
 
