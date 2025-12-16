@@ -60,12 +60,14 @@ interface ExternalPackProps {
   initialCards?: SimplifiedCard[];
   onContinue?: () => void;
   packId?: number;
+  returnTo?: string;
 }
 
 export const ExternalPack = ({
   initialCards,
   onContinue,
   packId: providedPackId,
+  returnTo,
 }: ExternalPackProps) => {
   const { t } = useTranslation("intermediate-screens");
 
@@ -74,6 +76,7 @@ export const ExternalPack = ({
   const locationState = location.state as ExternalPackProps | null;
   const packId =
     providedPackId ?? locationState?.packId ?? Number(params.packId ?? 1);
+  const returnPath = returnTo ?? locationState?.returnTo ?? "/";
 
   const { t: tDocs } = useTranslation("docs");
   const { t: tGame } = useTranslation("game");
@@ -135,7 +138,7 @@ export const ExternalPack = ({
           bottom={isSmallScreen ? "30px" : "80px"}
           right={isSmallScreen ? "15px" : "30px"}
           onClick={() => {
-            onContinue ? onContinue() : navigate("/");
+            onContinue ? onContinue() : navigate(returnPath);
           }}
           zIndex={20}
         >
