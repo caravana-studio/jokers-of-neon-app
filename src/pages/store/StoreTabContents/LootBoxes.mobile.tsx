@@ -146,7 +146,10 @@ const PackView = ({ pack }: { pack: BlisterPackItem }) => {
           </Flex>
 
           <Flex mb={4} gap={2}>
-            <LootBoxRateInfo name={name} details={details} />
+            <LootBoxRateInfo
+              name={name}
+              details={details}
+            />
           </Flex>
 
           <Flex alignItems={"baseline"} justifyContent={"space-between"}>
