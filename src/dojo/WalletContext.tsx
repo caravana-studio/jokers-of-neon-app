@@ -1,4 +1,4 @@
-import { Flex, Heading, Link, Text } from "@chakra-ui/react";
+import { Flex, Heading, Link, Spinner, Text } from "@chakra-ui/react";
 import { useBurnerManager } from "@dojoengine/create-burner";
 import { useAccount, useConnect, useDisconnect } from "@starknet-react/core";
 import {
@@ -12,6 +12,7 @@ import {
 import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { Account, AccountInterface } from "starknet";
+import { checkEarlyAccess } from "../api/earlyAccess";
 import LanguageSwitcher from "../components/LanguageSwitcher";
 import { MobileDecoration } from "../components/MobileDecoration";
 import { PositionedVersion } from "../components/version/PositionedVersion";
@@ -25,6 +26,7 @@ import { controller } from "./controller/controller";
 import { SetupResult } from "./setup";
 
 const CHAIN = import.meta.env.VITE_CHAIN;
+const EARLY_ACCESS_VERSION = !!import.meta.env.VITE_EARLY_ACCESS_VERSION;
 
 type ConnectionStatus =
   | "selecting"
@@ -72,10 +74,18 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     keyPrefix: "wallet-provider",
   });
 
+  const [isUserAllowed, setIsUserAllowed] =
+    useState<boolean>(!EARLY_ACCESS_VERSION);
+  const [allowedLoading, setAllowedLoading] = useState<boolean>(false);
+  const [showNotAllowed, setShowNotAllowed] = useState<boolean>(false);
+
   const appType = useAppContext();
 
   const allowGuest =
-    CHAIN !== "mainnet" && CHAIN !== "sepolia" && appType !== AppType.SHOP;
+    CHAIN !== "mainnet" &&
+    CHAIN !== "sepolia" &&
+    appType !== AppType.SHOP &&
+    !EARLY_ACCESS_VERSION;
 
   const { disconnect } = useDisconnect();
 
@@ -153,6 +163,30 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     }
   }, [accountType, finalAccount, burnerAccount, controllerAccount]);
 
+  useEffect(() => {
+    if (EARLY_ACCESS_VERSION && finalAccount) {
+      setAllowedLoading(true);
+      checkEarlyAccess(finalAccount.address)
+        .then((registered) => {
+          setIsUserAllowed(registered);
+          setAllowedLoading(false);
+          if (!registered) {
+            setShowNotAllowed(true);
+            setAccountType(null);
+            setFinalAccount(null);
+            disconnect();
+          }
+        })
+        .catch(() => {
+          setIsUserAllowed(false);
+          setAllowedLoading(false);
+          setAccountType(null);
+          setFinalAccount(null);
+          disconnect();
+        });
+    }
+  }, [finalAccount]);
+
   const logout = () => {
     disconnect();
     setAccountType(null);
@@ -201,7 +235,10 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
         : "300px",
   };
 
-  if (!finalAccount) {
+  if (
+    !finalAccount ||
+    (EARLY_ACCESS_VERSION && (!isUserAllowed || allowedLoading))
+  ) {
     return (
       <PreThemeLoadingPage>
         <PositionedVersion />
@@ -232,33 +269,71 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
               SHOP
             </Heading>
           )}
+          {EARLY_ACCESS_VERSION && (
+            <Flex flexDir="column" mb={isMobile ? 3 : "50px"}>
+              {showNotAllowed ? (
+                <Heading
+                  textAlign={"center"}
+                  lineHeight={1}
+                  letterSpacing={1}
+                  fontSize={isMobile ? 17 : 25}
+                >
+                  {t("not-allowed")}
+                </Heading>
+              ) : (
+                <>
+                  <Heading
+                    textAlign={"center"}
+                    lineHeight={1}
+                    variant={"italic"}
+                    letterSpacing={1}
+                    fontSize={isMobile ? 20 : 30}
+                  >
+                    {t("season-1")}
+                  </Heading>
+                  <Heading
+                    textAlign={"center"}
+                    lineHeight={1}
+                    letterSpacing={1}
+                    fontSize={15}
+                  >
+                    {t("early-access")}
+                  </Heading>
+                </>
+              )}
+            </Flex>
+          )}
         </Flex>
         <Flex flexDirection={"row"} gap={"30px"}>
-          <button
-            style={buttonStyles}
-            className="login-button"
-            onClick={() => {
-              logEvent("connect_controller_click");
-              setConnectionStatus("connecting_controller");
-              if (
-                isControllerConnected === false &&
-                isControllerConnecting === false
-              ) {
-                connectWallet();
-              }
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
+          {allowedLoading ? (
+            <Spinner color="white" size="sm" />
+          ) : (
+            <button
+              style={buttonStyles}
+              className="login-button"
+              onClick={() => {
+                logEvent("connect_controller_click");
+                setConnectionStatus("connecting_controller");
+                if (
+                  isControllerConnected === false &&
+                  isControllerConnecting === false
+                ) {
+                  connectWallet();
+                }
               }}
             >
-              {t("login")}
-              {/* <img src={Icons.CARTRIDGE} width={isMobile ? "16px" : "22px"} /> */}
-            </div>
-          </button>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                {t("login")}
+                {/* <img src={Icons.CARTRIDGE} width={isMobile ? "16px" : "22px"} /> */}
+              </div>
+            </button>
+          )}
           {allowGuest && (
             <button
               style={buttonStyles}
