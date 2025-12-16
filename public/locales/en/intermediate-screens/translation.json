@@ -266,6 +266,9 @@
     }
   },
   "wallet-provider": {
+    "not-allowed": "You are not allowed to access.",
+    "season-1": "SEASON 1",
+    "early-access": "EARLY ACCESS",
     "login": "LOGIN",
     "guest": "PLAY AS GUEST",
     "terms": {
