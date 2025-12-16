@@ -3,4 +3,13 @@ export const rageCardIds = {
   BROKEN_FIGURES: 20012,
   BETRAYING_THE_WEAK: 20021,
   BROKEN_MODIFIERS: 20013,
+  LOCKED_PLAYS: 20022,
+  PUNCHED_TICKET: 20023,
+  BUZZKILLER: 20025
 };
+
+export const debuffPokerHandCardIds = [
+  rageCardIds.LOCKED_PLAYS,
+  rageCardIds.PUNCHED_TICKET,
+  rageCardIds.BUZZKILLER
+]

@@ -11,6 +11,7 @@ import {
   MobileBottomBar,
 } from "../../../components/MobileBottomBar";
 import { MobileDecoration } from "../../../components/MobileDecoration";
+import { MobileCardHighlight } from "../../../components/MobileCardHighlight";
 import { useDojo } from "../../../dojo/DojoContext";
 import { GameStateEnum } from "../../../dojo/typescript/custom";
 import { useCardsFlipAnimation } from "../../../hooks/useCardsFlipAnimation";
@@ -24,6 +25,8 @@ import { FlipCardGrid } from "../FlipCardGrid";
 import { ManageSpecialCardsButton } from "../ManageSpecialCardsButton";
 import { CardTypes } from "../../../enums/cardTypes";
 import { useCardData } from "../../../providers/CardDataProvider";
+import { useCardHighlight } from "../../../providers/HighlightProvider/CardHighlightProvider";
+import { Card } from "../../../types/Card";
 
 export const OpenLootBoxCardSelection = () => {
   const {
@@ -32,6 +35,8 @@ export const OpenLootBoxCardSelection = () => {
   const customNavigate = useCustomNavigate();
   const navigate = useNavigate();
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
+  const [showErrorTooltip, setShowErrorTooltip] = useState(false);
+  const [isButtonBlocked, setIsButtonBlocked] = useState(false);
 
   const {
     fetchLootBoxResult,
@@ -87,11 +92,39 @@ export const OpenLootBoxCardSelection = () => {
   const { t } = useTranslation(["store"]);
   const { isSmallScreen } = useResponsiveValues();
 
+  const {
+    highlightItem: highlightSpecialCardOriginal,
+    highlightedItem: highlightedSpecialCard,
+  } = useCardHighlight();
+
+  const highlightSpecialCard = (card: Card) => {
+    // Cancel error tooltip when opening MobileCardHighlight
+    setShowErrorTooltip(false);
+    setIsButtonBlocked(false);
+    highlightSpecialCardOriginal(card);
+  };
+
   const chooseDisabled =
     specialCardsToKeep > maxSpecialCards - currentSpecialCardsLength;
   const allSelected = cardsToKeep.length === cards.length;
 
   const onContinueClick = () => {
+    // Si el botón está bloqueado, no hacer nada
+    if (isButtonBlocked) {
+      return;
+    }
+
+    // Si hay error de cartas especiales en móvil, mostrar tooltip por 3 segundos
+    if (chooseDisabled && isSmallScreen) {
+      setShowErrorTooltip(true);
+      setIsButtonBlocked(true);
+      setTimeout(() => {
+        setShowErrorTooltip(false);
+        setIsButtonBlocked(false);
+      }, 3000);
+      return;
+    }
+
     if (cardsToKeep.length === 0) {
       setConfirmationModalOpen(true);
     } else {
@@ -114,17 +147,7 @@ export const OpenLootBoxCardSelection = () => {
   );
 
   const renderContinueButton = () => {
-    if (chooseDisabled) {
-      if (isSmallScreen) {
-        return (
-          <Flex w="100%" justifyContent="center" alignItems="center">
-            <Text textAlign="center" w="60%" size="lg" zIndex={2}>
-              {t("store.packs.error-lbl")}
-            </Text>
-          </Flex>
-        );
-      }
-
+    if (chooseDisabled && !isSmallScreen) {
       return (
         <Tooltip label={t("store.packs.error-lbl")} zIndex={10}>
           <Box display="inline-block">{continueButton}</Box>
@@ -137,6 +160,9 @@ export const OpenLootBoxCardSelection = () => {
 
   return (
     <DelayedLoading ms={50}>
+      {highlightedSpecialCard && (
+        <MobileCardHighlight card={highlightedSpecialCard as Card} />
+      )}
       {isSmallScreen && <MobileDecoration />}
       <BackgroundDecoration contentHeight={isSmallScreen ? "85%" : "60%"}>
         {cards.length > 0 ? (
@@ -180,6 +206,7 @@ export const OpenLootBoxCardSelection = () => {
                 animationRunning={animationRunning}
                 onCardToggle={toggleCard}
                 onGridClick={skipFlipping}
+                onCardLongPress={highlightSpecialCard}
               />
             </Flex>
             <Flex
@@ -208,14 +235,23 @@ export const OpenLootBoxCardSelection = () => {
                       }
                     : undefined
                 }
-                secondButton={
-                  !animationRunning
-                    ? {
-                        onClick: onContinueClick,
-                        disabled: chooseDisabled,
-                        label: t("store.packs.continue-btn"),
-                      }
-                    : undefined
+                secondButtonReactNode={
+                  !animationRunning ? (
+                    <Tooltip
+                      label={t("store.packs.error-lbl")}
+                      isOpen={showErrorTooltip}
+                      placement="top"
+                    >
+                      <Box w="100%">
+                        <BarButton
+                          onClick={onContinueClick}
+                          disabled={isButtonBlocked}
+                          variant={isButtonBlocked ? "defaultOutline" : "secondarySolid"}
+                          label={t("store.packs.continue-btn")}
+                        />
+                      </Box>
+                    </Tooltip>
+                  ) : undefined
                 }
               />
             )}

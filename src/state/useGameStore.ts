@@ -1,13 +1,16 @@
 import { create } from "zustand";
 import { CLASSIC_MOD_ID } from "../constants/general";
 import { GAME_ID } from "../constants/localStorage";
+import { debuffPokerHandCardIds } from "../constants/rageCardIds";
 import { getPlayerPokerHands } from "../dojo/getPlayerPokerHands";
 import { fetchCardsConfig } from "../dojo/queries/getCardsConfig";
 import { getGameConfig } from "../dojo/queries/getGameConfig";
 import { getGameView } from "../dojo/queries/getGameView";
+import { isBossRound } from "../dojo/queries/getMap";
 import { getNode } from "../dojo/queries/getNode";
 import { getPowerUps } from "../dojo/queries/getPowerUps";
 import { getRageCards } from "../dojo/queries/getRageCards";
+import { getDebuffedPokerHands } from "../dojo/queries/getDebuffedPokerHands";
 import { getSpecialCardsView } from "../dojo/queries/getSpecialCardsView";
 import { GameStateEnum } from "../dojo/typescript/custom";
 import { Card } from "../types/Card";
@@ -15,6 +18,7 @@ import { LevelPokerHand } from "../types/LevelPokerHand";
 import { ModCardsConfig } from "../types/ModConfig";
 import { PowerUp } from "../types/Powerup/PowerUp";
 import { RoundRewards } from "../types/RoundRewards";
+import { Plays } from "../enums/plays";
 import { getRageNodeData } from "../utils/getRageNodeData";
 import { m5, p25 } from "../utils/mocks/powerUpMocks";
 import { MultipliedClubs } from "../utils/mocks/specialCardMocks";
@@ -36,6 +40,7 @@ type GameStore = {
   state: GameStateEnum;
   specialSlots: number;
   rageCards: Card[];
+  debuffedPlayerHands: Plays[];
   specialCards: Card[];
   availableRerolls: number;
   modId: string;
@@ -53,6 +58,7 @@ type GameStore = {
   plays: LevelPokerHand[];
   nodeRound: number;
   shopId: number;
+  inBossRound: boolean;
 
   refetchGameStore: (client: any, gameId: number) => Promise<void>;
   setGameId: (gameId: number) => void;
@@ -93,6 +99,7 @@ type GameStore = {
   showRages: () => void;
   showSpecials: () => void;
   refetchPlays: (client: any, gameId: number) => Promise<void>;
+  refetchDebuffedPlayerHands: (client: any, gameId: number) => Promise<void>;
   setRound: (round: number) => void;
   addSpecialSlot: () => void;
   removeSpecialSlot: () => void;
@@ -100,6 +107,7 @@ type GameStore = {
   addRerolls: (rerolls: number) => void;
   advanceLevel: () => void;
   fetchGameStoreForTutorial: () => void;
+  setInBossRound: (inBossRound: boolean) => void;
 };
 
 const doRefetchGameStore = async (client: any, gameId: number, set: any) => {
@@ -128,6 +136,20 @@ const doRefetchGameStore = async (client: any, gameId: number, set: any) => {
     set({ nodeRound: nodeRoundData });
   }
 
+  const inBossRound =
+    rageCards.length > 0 && (await isBossRound(client, gameId, game.level));
+
+  const debuffableRageCard = rageCards.find((card) =>
+    debuffPokerHandCardIds.includes(card.card_id ?? -1)
+  );
+
+  const debuffableRageCardId = debuffableRageCard?.card_id;
+
+  const debuffedPlayerHands =
+    debuffableRageCardId !== undefined
+      ? await getDebuffedPokerHands(client, gameId, debuffableRageCardId)
+      : [];
+
   set({
     id: gameId,
     totalDiscards: game.discards,
@@ -148,12 +170,14 @@ const doRefetchGameStore = async (client: any, gameId: number, set: any) => {
     totalScore: game.player_score,
     currentScore: round.current_score,
     specialCards,
+    debuffedPlayerHands,
     maxSpecialCards,
     maxPowerUpSlots,
     powerUps,
     modCardsConfig,
     plays,
     shopId: nodeRoundData,
+    inBossRound,
   });
 };
 
@@ -174,6 +198,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   state: GameStateEnum.NotSet,
   specialSlots: 1,
   rageCards: [],
+  debuffedPlayerHands: [],
   specialCards: [],
   isRageRound: false,
   availableRerolls: 0,
@@ -191,6 +216,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   plays: [],
   nodeRound: 0,
   shopId: 0,
+  inBossRound: false,
 
   refetchGameStore: async (client, gameId) => {
     await doRefetchGameStore(client, gameId, set);
@@ -286,7 +312,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   resetRage: () => {
-    set({ isRageRound: false, rageCards: [] });
+    set({
+      isRageRound: false,
+      rageCards: [],
+      inBossRound: false,
+      debuffedPlayerHands: [],
+    });
   },
 
   resetSpecials: () => {
@@ -402,6 +433,27 @@ export const useGameStore = create<GameStore>((set, get) => ({
     plays && set({ plays: plays as LevelPokerHand[] });
   },
 
+  refetchDebuffedPlayerHands: async (client, gameId) => {
+    const { rageCards } = get();
+    const debuffableRageCard = rageCards.find((card) =>
+      debuffPokerHandCardIds.includes(card.card_id ?? -1)
+    );
+
+    const debuffableRageCardId = debuffableRageCard?.card_id;
+
+    if (debuffableRageCardId === undefined) {
+      set({ debuffedPlayerHands: [] });
+      return;
+    }
+
+    const debuffedPlayerHands = await getDebuffedPokerHands(
+      client,
+      gameId,
+      debuffableRageCardId
+    );
+    set({ debuffedPlayerHands });
+  },
+
   setRound: (round: number) => {
     set({ round });
   },
@@ -446,5 +498,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
         totalScore: 0,
       });
     }
+  },
+  setInBossRound: (inBossRound) => {
+    set({ inBossRound });
   },
 }));

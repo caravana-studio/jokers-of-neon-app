@@ -1,7 +1,8 @@
-import { Flex, Heading } from "@chakra-ui/react";
+import { Box, Flex, Heading } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { DelayedLoading } from "../../components/DelayedLoading";
 import { MobileDecoration } from "../../components/MobileDecoration";
+import { DiscountSign } from "../../components/DiscountSign";
 import { AppType, useAppContext } from "../../providers/AppContextProvider";
 import { useRevenueCat } from "../../providers/RevenueCatProvider";
 import { useSeasonPass } from "../../providers/SeasonPassProvider";
@@ -18,6 +19,8 @@ const PACK_PACKAGE_IDS: Record<number, string> = {
   3: "pack_epic",
   2: "pack_advanced",
 };
+
+const EARLY_ACCESS_VERSION = !!import.meta.env.VITE_EARLY_ACCESS_VERSION;
 
 export const ShopPage = () => {
   const { isSmallScreen } = useResponsiveValues();
@@ -44,6 +47,7 @@ export const ShopPage = () => {
   return (
     <DelayedLoading loading={loading || loadingSeasonPass}>
       <MobileDecoration fadeToBlack />
+      {EARLY_ACCESS_VERSION && <DiscountSign percentage={30} />}
       <Flex
         flexDir={"column"}
         w="100%"
@@ -79,15 +83,17 @@ export const ShopPage = () => {
             id={distribution?.season_pass ?? "season_pass"}
             unlocked={seasonPassUnlocked}
           />
-          {distribution?.packs?.map((pack) => {
-            return (
-              <PackRow
-                packId={pack.packId}
-                packageId={pack.shopId}
-                price={getPackPrice(pack.packId)}
-              />
-            );
-          })}
+          <Box>
+            {distribution?.packs?.map((pack) => {
+              return (
+                <PackRow
+                  packId={pack.packId}
+                  packageId={pack.shopId}
+                  price={getPackPrice(pack.packId)}
+                />
+              );
+            })}
+          </Box>
         </Flex>
       </Flex>
     </DelayedLoading>

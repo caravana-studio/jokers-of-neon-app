@@ -1,11 +1,11 @@
 import { Box, Collapse, Flex, Heading, Text } from "@chakra-ui/react";
-import { ProfileStat } from "./ProfileStat";
+import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { ProgressBar } from "../../components/CompactRoundData/ProgressBar";
 import { VIOLET } from "../../theme/colors";
-import { useTranslation } from "react-i18next";
 import { ProfilePicture } from "./ProfilePicture";
 import { ProfilePicturePicker } from "./ProfilePicturePicker";
-import { useState, useEffect } from "react";
+import { ProfileStat } from "./ProfileStat";
 
 export interface ProfileStatsProps {
   profilePicture: string | number;
@@ -40,9 +40,14 @@ export const ProfileStats: React.FC<
   const [profilePictureId, setProfilePictureId] = useState<number | string>(
     profilePicture
   );
+  const [tempProfilePictureId, setTempProfilePictureId] = useState<number | string>(
+    profilePicture
+  );
+  const [hasChanges, setHasChanges] = useState(false);
 
   useEffect(() => {
     setProfilePictureId(profilePicture);
+    setTempProfilePictureId(profilePicture);
   }, [profilePicture]);
 
   const { t } = useTranslation("intermediate-screens", {
@@ -60,6 +65,21 @@ export const ProfileStats: React.FC<
         100
       : 0;
 
+  const handleApplyChanges = () => {
+    if (hasChanges) {
+      setProfilePictureId(tempProfilePictureId);
+      onUpdateAvatar?.(Number(tempProfilePictureId));
+      setHasChanges(false);
+    }
+    setProfilePickerVisible(false);
+  };
+
+  const handleCancelChanges = () => {
+    setTempProfilePictureId(profilePictureId);
+    setHasChanges(false);
+    setProfilePickerVisible(false);
+  };
+
   return (
     <Flex
       flexDirection={"column"}
@@ -69,18 +89,20 @@ export const ProfileStats: React.FC<
       alignItems={"center"}
       justifyContent={"center"}
     >
-      <ProfilePicture
-        profilePictureId={profilePictureId}
-        onClick={() => setProfilePickerVisible(true)}
-        editMode={profilePickerVisible}
-        border={profilePickerVisible}
-        hover={{
-          border: `1px solid rgba(255, 255, 255, 0.6)`,
-          boxShadow: `0px 0px 14px 1px rgba(255, 255, 255, 0.6)`,
-          transform: "scale(1.05)",
-          transition: "all 0.2s ease-in-out",
-        }}
-      />
+      <Box padding={4}>
+        <ProfilePicture
+          profilePictureId={profilePickerVisible ? tempProfilePictureId : profilePictureId}
+          onClick={() => setProfilePickerVisible(true)}
+          editMode={profilePickerVisible}
+          border={profilePickerVisible}
+          hover={{
+            border: `1px solid rgba(255, 255, 255, 0.6)`,
+            boxShadow: `0px 0px 14px 1px rgba(255, 255, 255, 0.6)`,
+            transform: "scale(1.05)",
+            transition: "all 0.2s ease-in-out",
+          }}
+        />
+      </Box>
       <Heading fontSize={"sm"}>{username}</Heading>
       <Flex
         border={"1px"}
@@ -98,11 +120,13 @@ export const ProfileStats: React.FC<
         style={{ padding: 12 }}
       >
         <ProfilePicturePicker
-          onClose={() => setProfilePickerVisible(false)}
+          onClose={handleCancelChanges}
           onSelect={(id) => {
-            setProfilePictureId(id);
-            onUpdateAvatar?.(Number(id));
+            setTempProfilePictureId(id);
+            setHasChanges(true);
           }}
+          onApply={handleApplyChanges}
+          hasChanges={hasChanges}
         />
       </Collapse>
       <Flex
@@ -113,7 +137,7 @@ export const ProfileStats: React.FC<
       >
         {/* <ProfileStat title={t("streaks")} value={streak} suffix={t("days")} /> */}
         <ProfileStat title={t("games")} value={games} />
-        {/* <ProfileStat title={t("victories")} value={victories} /> */}
+        <ProfileStat title={t("victories")} value={victories} />
       </Flex>
       <Box my={2} borderRadius="md" width="100%" maxW="600px">
         <Flex justify="space-between" gap={1} align="center">

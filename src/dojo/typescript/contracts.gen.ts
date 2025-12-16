@@ -2108,6 +2108,54 @@ export function setupWorld(provider: DojoProvider) {
     }
   };
 
+  const build_game_views_getGameTracker_calldata = (
+    gameId: BigNumberish
+  ): DojoCall => {
+    return {
+      contractName: "game_views",
+      entrypoint: "get_game_tracker",
+      calldata: [gameId],
+    };
+  };
+
+  const game_views_getGameTracker = async (gameId: BigNumberish) => {
+    try {
+      return await provider.call(
+        DOJO_NAMESPACE,
+        build_game_views_getGameTracker_calldata(gameId)
+      );
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+
+  const build_game_views_getDebuffPokerHands_calldata = (
+    gameId: BigNumberish,
+    rageId: BigNumberish
+  ): DojoCall => {
+    return {
+      contractName: "game_views",
+      entrypoint: "get_debuff_poker_hands",
+      calldata: [gameId, rageId],
+    };
+  };
+
+  const game_views_getDebuffPokerHands = async (
+    gameId: BigNumberish,
+    rageId: BigNumberish
+  ) => {
+    try {
+      return await provider.call(
+        DOJO_NAMESPACE,
+        build_game_views_getDebuffPokerHands_calldata(gameId, rageId)
+      );
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+
   return {
     action_system: {
       changeModifierCard: action_system_changeModifierCard,
@@ -2158,6 +2206,11 @@ export function setupWorld(provider: DojoProvider) {
       getPowerUps: game_views_getPowerUps,
       buildGetPowerUpsCalldata: build_game_views_getPowerUps_calldata,
       getSpecialCards: game_views_getSpecialCards,
+      getGameTracker: game_views_getGameTracker,
+      buildGetGameTrackerCalldata: build_game_views_getGameTracker_calldata,
+      getDebuffPokerHands: game_views_getDebuffPokerHands,
+      buildGetDebuffPokerHandsCalldata:
+        build_game_views_getDebuffPokerHands_calldata,
       buildGetSpecialCardsCalldata: build_game_views_getSpecialCards_calldata,
     },
     gg_sync_system: {

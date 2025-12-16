@@ -10,6 +10,9 @@
   },
   "shop": {
     "title": "Tienda",
+    "discount-sign": {
+      "all-products": "EN TODOS LOS PRODUCTOS"
+    },
     "season-pass": {
       "more-rewards-with": "Más recompensas con",
       "season-pass": "PASE DE TEMPORADA",
@@ -188,6 +191,14 @@
     "labels": {
       "title": "¡Ronda {{round}} superada!",
       "title-level": "Nivel {{level}} completado!",
+      "title-win": "¡Ganaste!",
+      "title-loose": "¡Perdiste!",
+      "round": "Ronda",
+      "best-hand": "Mejor mano",
+      "most-played-hand": "Mano más jugada",
+      "played-cards": "Cartas jugadas",
+      "discarded-cards": "Cartas descartadas",
+      "defeated-rages": "Rage derrotadas",
       "base": "Base",
       "level-bonus": "Bonus del nivel",
       "discards-left": "{{discards}} descartes",
@@ -195,7 +206,8 @@
       "rage": "{{cards}} Rage vencida(s)",
       "total": "Total",
       "final-score": "- Puntuación final: {{score}} -",
-      "continue-btn": "Continuar"
+      "continue-btn": "Continuar",
+      "endless-mode": "Modo infinito"
     }
   },
   "special-cards": {
@@ -242,7 +254,9 @@
     "coming-soon": "Muy pronto",
     "select-profile-picture": "Seleccionar foto de perfil",
     "connect": "Conectar",
-    "no-profile": "Por favor, inicia sesión para ver tu perfil"
+    "no-profile": "Por favor, inicia sesión para ver tu perfil",
+    "apply-changes": "Aplicar cambios",
+    "cancel": "Cancelar"
   },
   "my-collection": {
     "title": "Colección",
@@ -256,6 +270,9 @@
     }
   },
   "wallet-provider": {
+    "not-allowed": "No tienes permiso para acceder.",
+    "season-1": "TEMPORADA 1",
+    "early-access": "ACCESO ANTICIPADO",
     "login": "INICIAR SESIÓN",
     "guest": "INVITADO",
     "terms": {

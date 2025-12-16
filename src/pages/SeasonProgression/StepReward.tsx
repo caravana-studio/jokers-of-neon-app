@@ -17,7 +17,12 @@ interface StepRewardProps {
   refetch: () => void;
 }
 
-export const StepReward = ({ reward, type, level, refetch }: StepRewardProps) => {
+export const StepReward = ({
+  reward,
+  type,
+  level,
+  refetch,
+}: StepRewardProps) => {
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "season-progression",
   });
@@ -28,7 +33,7 @@ export const StepReward = ({ reward, type, level, refetch }: StepRewardProps) =>
   const pack = reward?.packs?.[0];
   const navigate = useNavigate();
   const [claiming, setClaiming] = useState(false);
-
+  
   return (
     <Flex
       w="50%"
@@ -37,7 +42,7 @@ export const StepReward = ({ reward, type, level, refetch }: StepRewardProps) =>
       position="relative"
       opacity={reward?.status === RewardStatus.UNCLAIMED ? 1 : 0.5}
     >
-      {pack && reward && (
+      {(pack || reward?.tournamentEntries) && reward && (
         <>
           <Packs reward={reward} claiming={claiming} />
 
@@ -58,7 +63,7 @@ export const StepReward = ({ reward, type, level, refetch }: StepRewardProps) =>
                       isPremium: type === "premium",
                     }).then(() => {
                       setClaiming(false);
-                      refetch()
+                      refetch();
                     });
                   } else {
                     navigate(`/claim-season-pack/${level}/${type}`);

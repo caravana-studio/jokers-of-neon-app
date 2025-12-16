@@ -10,6 +10,9 @@
   },
   "shop": {
     "title": "Loja",
+    "discount-sign": {
+      "all-products": "EM TODOS OS PRODUTOS"
+    },
     "season-pass": {
       "more-jokers-with": "Mais Jokers com",
       "season-pass-x": "PASSO DE TEMPORADA {{season}}",
@@ -188,6 +191,14 @@
     "labels": {
       "title": "Rodada {{round}} completada!",
       "title-level": "Nível {{level}} completado!",
+      "title-win": "Você ganhou!",
+      "title-loose": "Você perdeu!",
+      "round": "Rodada",
+      "best-hand": "Melhor mão",
+      "most-played-hand": "Mão mais jogada",
+      "played-cards": "Cartas jogadas",
+      "discarded-cards": "Cartas descartadas",
+      "defeated-rages": "Rage derrotadas",
       "base": "base",
       "level-bonus": "Bônus de nível",
       "discards-left": "{{discards}} Descartes",
@@ -195,7 +206,8 @@
       "rage": "{{cards}} Rage vencidas",
       "total": "total",
       "final-score": "- Pontuação final: {{score}} -",
-      "continue-btn": "continuar"
+      "continue-btn": "continuar",
+      "endless-mode": "Modo infinito"
     }
   },
   "special-cards": {
@@ -242,7 +254,9 @@
     "coming-soon": "Em breve",
     "select-profile-picture": "Selecionar foto de perfil",
     "connect": "Conectar",
-    "no-profile": "Faça login para ver seu perfil"
+    "no-profile": "Faça login para ver seu perfil",
+    "apply-changes": "Aplicar alterações",
+    "cancel": "Cancelar"
   },
   "my-collection": {
     "title": "Coleção",
@@ -256,6 +270,9 @@
     }
   },
   "wallet-provider": {
+    "not-allowed": "Você não tem permissão para acessar.",
+    "season-1": "TEMPORADA 1",
+    "early-access": "ACESSO ANTECIPADO",
     "login": "ENTRAR",
     "guest": "CONVIDADO",
     "terms": {
