@@ -56,7 +56,7 @@ const I18N_NAMESPACES = [
 
 const progressBarRef = createRef<LoadingScreenHandle>();
 
-const BYPASS_MOBILE_BROWSER_RULE = import.meta.env.BYPASS_MOBILE_BROWSER_RULE;
+const BYPASS_MOBILE_BROWSER_RULE = import.meta.env.VITE_BYPASS_MOBILE_BROWSER_RULE;
 
 initDatadogRum();
 
