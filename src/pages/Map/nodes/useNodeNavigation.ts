@@ -1,10 +1,9 @@
-import { GameStateEnum } from "../../../dojo/typescript/custom";
 import { useShopActions } from "../../../dojo/useShopActions";
 import { useMap } from "../../../providers/MapProvider";
 
 interface NodeNavigationParams {
   nodeId: number;
-  gameId: string;
+  gameId: number;
   onNavigate: () => Promise<void>;
 }
 

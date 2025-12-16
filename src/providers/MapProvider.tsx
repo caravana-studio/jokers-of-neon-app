@@ -7,6 +7,7 @@ import {
   useState,
 } from "react";
 import { Edge, Node, useReactFlow } from "reactflow";
+import { BOSS_LEVEL } from "../constants/general";
 import { getMap } from "../dojo/queries/getMap";
 import { GameStateEnum } from "../dojo/typescript/custom";
 import { useDojo } from "../dojo/useDojo";
@@ -16,7 +17,6 @@ import { useGameStore } from "../state/useGameStore";
 import { BLUE, VIOLET_LIGHT } from "../theme/colors";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import { getRageNodeData } from "../utils/getRageNodeData";
-import { BOSS_LEVEL } from "../constants/general";
 
 export interface SelectedNodeData {
   id: number;
@@ -114,7 +114,7 @@ export const MapProvider = ({ children }: MapProviderProps) => {
                 ? getRageNodeData(node.data)
                 : undefined,
             isBossLevel,
-            isFirstNode
+            isFirstNode,
           },
         };
       });
@@ -206,8 +206,8 @@ export const MapProvider = ({ children }: MapProviderProps) => {
     reactFlowInstance.fitView({
       nodes: [{ id: nodeId }],
       padding: 0.3,
-      duration: 1800,
-      maxZoom: isSmallScreen ? 1.5 : 2,
+      duration: 3500,
+      maxZoom: 3,
     });
   };
 
