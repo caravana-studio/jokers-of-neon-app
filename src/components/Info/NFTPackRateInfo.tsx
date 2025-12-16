@@ -388,7 +388,7 @@ export const NFTPackRateInfo: React.FC<NFTPackRateInfoProps> = ({
             mt={3}
             mb={1}
           >
-            Tap anywhere to close
+            {t("store.packs.tap-anywhere-to-close")}
           </Text>
         </Box>
       </Box>

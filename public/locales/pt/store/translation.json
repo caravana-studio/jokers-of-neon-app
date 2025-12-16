@@ -97,6 +97,7 @@
     },
     "packs": {
       "offering-rates": "Probabilidades de aparição",
+      "tap-anywhere-to-close": "Toque em qualquer lugar para fechar",
       "size": "Tamanho: {{size}}",
       "continue-btn": "Continuar",
       "cards-select-lbl": "Selecione as cartas que deseja manter",

@@ -97,6 +97,7 @@
     },
     "packs": {
       "offering-rates": "Tasas de aparición",
+      "tap-anywhere-to-close": "Toca en cualquier lugar para cerrar",
       "size": "Tamaño: {{size}}",
       "continue-btn": "Continuar",
       "cards-select-lbl": "Selecciona las cartas que deseas conservar",

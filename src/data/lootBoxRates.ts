@@ -216,9 +216,9 @@ export const PACK_RATES: Record<number, PackRatesData> = {
     {
       itemNumber: 4,
       rates: [
-        { itemType: CardItemType.SPECIAL_C, percentage: 60.0 },
-        { itemType: CardItemType.SPECIAL_B, percentage: 30.0 },
-        { itemType: CardItemType.SPECIAL_A, percentage: 10.0 },
+        { itemType: CardItemType.SPECIAL_B, percentage: 60.0 },
+        { itemType: CardItemType.SPECIAL_A, percentage: 30.0 },
+        { itemType: CardItemType.SPECIAL_S, percentage: 10.0 },
       ],
     },
   ],

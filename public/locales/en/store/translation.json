@@ -97,6 +97,7 @@
     },
     "packs": {
       "offering-rates": "Offering rates",
+      "tap-anywhere-to-close": "Tap anywhere to close",
       "size": "Size: {{size}}",
       "continue-btn": "Continue",
       "cards-select-lbl": "Select the cards you want to keep",
