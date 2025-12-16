@@ -61,7 +61,7 @@ export const TabPattern = ({
     <Flex
       width="100%"
       height="100%"
-      pt={[2, "80px"]}
+      pt={[8, "80px"]}
       alignItems="center"
       justifyContent="space-between"
       gap={2}
