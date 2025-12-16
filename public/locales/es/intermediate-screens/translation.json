@@ -265,6 +265,9 @@
     }
   },
   "wallet-provider": {
+    "not-allowed": "No tienes permiso para acceder.",
+    "season-1": "TEMPORADA 1",
+    "early-access": "ACCESO ANTICIPADO",
     "login": "INICIAR SESIÓN",
     "guest": "INVITADO",
     "terms": {

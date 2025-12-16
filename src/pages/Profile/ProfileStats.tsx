@@ -1,11 +1,11 @@
 import { Box, Collapse, Flex, Heading, Text } from "@chakra-ui/react";
-import { ProfileStat } from "./ProfileStat";
+import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { ProgressBar } from "../../components/CompactRoundData/ProgressBar";
 import { VIOLET } from "../../theme/colors";
-import { useTranslation } from "react-i18next";
 import { ProfilePicture } from "./ProfilePicture";
 import { ProfilePicturePicker } from "./ProfilePicturePicker";
-import { useState, useEffect } from "react";
+import { ProfileStat } from "./ProfileStat";
 
 export interface ProfileStatsProps {
   profilePicture: string | number;
@@ -113,7 +113,7 @@ export const ProfileStats: React.FC<
       >
         {/* <ProfileStat title={t("streaks")} value={streak} suffix={t("days")} /> */}
         <ProfileStat title={t("games")} value={games} />
-        {/* <ProfileStat title={t("victories")} value={victories} /> */}
+        <ProfileStat title={t("victories")} value={victories} />
       </Flex>
       <Box my={2} borderRadius="md" width="100%" maxW="600px">
         <Flex justify="space-between" gap={1} align="center">

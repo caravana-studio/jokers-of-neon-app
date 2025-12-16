@@ -14,6 +14,7 @@ type GetProfileApiResponse = {
     banned?: boolean | null;
     badges_ids?: Array<string | number>;
     avatar_id?: string | number | null;
+    claimable_packs?: Array<number>;
   };
 };
 
@@ -76,6 +77,7 @@ export type ProfileApiData = {
   banned: boolean;
   badgesIds: number[];
   avatarId: number;
+  claimablePacks: number[];
 };
 
 export type ProfileStatsApiData = {
@@ -167,6 +169,7 @@ export async function fetchProfile(address: string): Promise<ProfileApiData> {
     banned,
     badges_ids,
     avatar_id,
+    claimable_packs,
   } = json.data;
 
   return {
@@ -183,6 +186,11 @@ export async function fetchProfile(address: string): Promise<ProfileApiData> {
       ? badges_ids.map((id) => Number(id)).filter((id) => !Number.isNaN(id))
       : [],
     avatarId: Number(avatar_id ?? 0),
+    claimablePacks: Array.isArray(claimable_packs)
+      ? claimable_packs
+          .map((packId) => Number(packId))
+          .filter((packId) => !Number.isNaN(packId))
+      : [],
   };
 }
 
