@@ -5,11 +5,11 @@ export const rageCardIds = {
   BROKEN_MODIFIERS: 20013,
   LOCKED_PLAYS: 20022,
   PUNCHED_TICKET: 20023,
-  BOSS_CARD: 20025
+  BUZZKILLER: 20025
 };
 
 export const debuffPokerHandCardIds = [
   rageCardIds.LOCKED_PLAYS,
   rageCardIds.PUNCHED_TICKET,
-  rageCardIds.BOSS_CARD
+  rageCardIds.BUZZKILLER
 ]

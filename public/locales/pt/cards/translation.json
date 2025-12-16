@@ -927,6 +927,10 @@
     "20023": {
       "name": "Bilhete Carimbado",
       "description": "Você não pode jogar a mesma mão duas vezes nesta rodada"
+    },
+    "20025": {
+      "name": "Estraga-prazer",
+      "description": "Sua mão mais jogada não conta nesta rodada."
     }
   },
   "lootBoxes": {
