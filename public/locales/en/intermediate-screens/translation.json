@@ -10,6 +10,9 @@
   },
   "shop": {
     "title": "Shop",
+    "discount-sign": {
+      "all-products": "IN ALL PRODUCTS"
+    },
     "season-pass": {
       "more-rewards-with": "More rewards with",
       "buy": "BUY",

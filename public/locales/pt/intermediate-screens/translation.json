@@ -10,6 +10,9 @@
   },
   "shop": {
     "title": "Loja",
+    "discount-sign": {
+      "all-products": "EM TODOS OS PRODUTOS"
+    },
     "season-pass": {
       "more-jokers-with": "Mais Jokers com",
       "season-pass-x": "PASSO DE TEMPORADA {{season}}",

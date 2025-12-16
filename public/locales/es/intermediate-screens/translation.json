@@ -10,6 +10,9 @@
   },
   "shop": {
     "title": "Tienda",
+    "discount-sign": {
+      "all-products": "EN TODOS LOS PRODUCTOS"
+    },
     "season-pass": {
       "more-rewards-with": "Más recompensas con",
       "season-pass": "PASE DE TEMPORADA",
