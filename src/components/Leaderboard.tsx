@@ -90,16 +90,12 @@ export const Leaderboard = ({
   const { t } = useTranslation("home", { keyPrefix: "leaderboard" });
   const { isSmallScreen } = useResponsiveValues();
   const { tournament } = useTournamentSettings();
-  const { startCountingAtGameId, stopCountingAtGameId } = tournament || {
-    startCountingAtGameId: 0,
-    stopCountingAtGameId: 1000000,
-  };
+  const isTournament = Boolean(tournament?.isActive);
 
   const { data: fullLeaderboard, isLoading } = useGetLeaderboard(
     gameId,
     filterLoggedInPlayers,
-    startCountingAtGameId,
-    stopCountingAtGameId
+    isTournament
   );
 
   const actualPlayer = fullLeaderboard?.find(
