@@ -48,6 +48,13 @@ export const ProfileContent = ({
           height={"auto"}
           overflowY={"auto"}
           overflowX={"hidden"}
+          sx={{
+            '&::-webkit-scrollbar': {
+              display: 'none',
+            },
+            scrollbarWidth: 'none',
+            msOverflowStyle: 'none',
+          }}
         >
           <ProfileStats
             username={profile.username}
