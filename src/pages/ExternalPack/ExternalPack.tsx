@@ -338,7 +338,7 @@ export const ExternalPack = ({
                 cardsData={obtainedCards.map((card, index) => ({
                   id: index,
                   cardId: card.card_id,
-                  img: `/Cards/${card.card_id}${card.skin_id !== 1 ? `_sk${card.skin_id}` : ""}.png`,
+                  img: `/Cards/${card.card_id}${card.skin_id !== 0 ? `_sk${card.skin_id}` : ""}.png`,
                 }))}
                 onCardChange={(cardId) => {
                   setHighlightedCard(cardId);
