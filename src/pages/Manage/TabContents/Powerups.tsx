@@ -46,10 +46,11 @@ export const Powerups: React.FC<PowerupsProps> = ({
     <>
       <Flex
         height={"100%"}
-        justifyContent="center"
+        justifyContent="flex-start"
         flexDirection="column"
         gap={4}
         px={6}
+        pt={0}
       >
         <Flex gap={4} flexDirection="column">
           {!isSmallScreen && (
