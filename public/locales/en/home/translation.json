@@ -28,6 +28,7 @@
     "free-pack-in": "free pack in",
     "free-pack-ready": "free pack ready!",
     "claim-now": "Open",
+    "rewards-left-to-claim": "You have new rewards!",
     "open-pack-stages": {
       "stage-0": "Processing payment",
       "stage-1": "Rolling the odds",

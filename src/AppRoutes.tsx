@@ -4,7 +4,7 @@ import "./App.scss";
 import { AnimatedPage } from "./components/AnimatedPage";
 import { GameStoreLoader } from "./components/GameStoreLoader";
 import { ShopStoreLoader } from "./components/ShopStoreLoader";
-import { ClaimSeasonPackPage } from "./pages/ClaimSeasonPackPage";
+import { ClaimMultipleRewardsPage } from "./pages/ClaimMultipleRewardsPage";
 import { DeckPage } from "./pages/Deck/DeckPage";
 import { DocsPage } from "./pages/Docs/Docs";
 import { DynamicStorePage } from "./pages/DynamicStore/DynamicStorePage";
@@ -33,6 +33,7 @@ import { RewardsPage } from "./pages/RewardsPage";
 import { SeasonProgressionPage } from "./pages/SeasonProgression/SeasonProgressionPage";
 import { SettingsPage } from "./pages/SettingsPage";
 import { ShopPage } from "./pages/Shop/ShopPage";
+import { SummaryPage } from "./pages/SummaryPage";
 import { TestPage } from "./pages/TestPage";
 import { VibrationPage } from "./pages/VibrationPage";
 import { CardHighlightProvider } from "./providers/HighlightProvider/CardHighlightProvider";
@@ -161,6 +162,16 @@ export const AppRoutes = () => {
         }
       />
       <Route
+        path="/summary/:win?"
+        element={
+          <AnimatedPage>
+            <GameStoreLoader>
+              <SummaryPage />
+            </GameStoreLoader>
+          </AnimatedPage>
+        }
+      />
+      <Route
         path="/leaderboard"
         element={
           <AnimatedPage>
@@ -239,11 +250,13 @@ export const AppRoutes = () => {
         path="/loot-box-cards-selection"
         element={
           <StoreProvider>
-            <AnimatedPage>
-              <GameStoreLoader>
-                <OpenLootBoxCardSelection />
-              </GameStoreLoader>
-            </AnimatedPage>
+            <CardHighlightProvider>
+              <AnimatedPage>
+                <GameStoreLoader>
+                  <OpenLootBoxCardSelection />
+                </GameStoreLoader>
+              </AnimatedPage>
+            </CardHighlightProvider>
           </StoreProvider>
         }
       />
@@ -288,7 +301,15 @@ export const AppRoutes = () => {
         path="/claim-season-pack/:level/:premium"
         element={
           <AnimatedPage>
-            <ClaimSeasonPackPage />
+            <ClaimMultipleRewardsPage />
+          </AnimatedPage>
+        }
+      />
+      <Route
+        path="/unclaimed-rewards"
+        element={
+          <AnimatedPage>
+            <ClaimMultipleRewardsPage />
           </AnimatedPage>
         }
       />

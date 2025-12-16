@@ -2,6 +2,7 @@ import { rageCardIds } from "../constants/rageCardIds";
 import { Cards } from "../enums/cards";
 import { Suits } from "../enums/suits";
 import { useCardData } from "../providers/CardDataProvider";
+import { useCurrentHandStore } from "../state/useCurrentHandStore";
 import { useGameStore } from "../state/useGameStore";
 import { Card } from "../types/Card";
 
@@ -60,6 +61,15 @@ export const useIsSilent = (card: Card) => {
     );
   });
   return isRageRound && isSilent;
+};
+
+export const useIsDebuffed = (card: Card) => {
+  const { isRageRound, debuffedPlayerHands } = useGameStore();
+  const { preSelectedPlay, cardIsPreselected } = useCurrentHandStore();
+  const isDebuffedPlay = debuffedPlayerHands.includes(preSelectedPlay);
+  const isDebuffed =
+    (cardIsPreselected(card.idx) && isDebuffedPlay) 
+  return isRageRound && isDebuffed;
 };
 
 export const isModifierSilent = (card: Card, rageCards: Card[]) => {

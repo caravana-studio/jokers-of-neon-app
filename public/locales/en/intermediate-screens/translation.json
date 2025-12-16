@@ -10,6 +10,9 @@
   },
   "shop": {
     "title": "Shop",
+    "discount-sign": {
+      "all-products": "IN ALL PRODUCTS"
+    },
     "season-pass": {
       "more-rewards-with": "More rewards with",
       "buy": "BUY",
@@ -188,6 +191,14 @@
     "labels": {
       "title": "Round {{round}} completed!",
       "title-level": "Level {{level}} completed!",
+      "title-win": "You win!",
+      "title-loose": "You lost!",
+      "round": "Round",
+      "best-hand": "Best hand",
+      "most-played-hand": "Most played hand",
+      "played-cards": "Cards played",
+      "discarded-cards": "Cards discarded",
+      "defeated-rages": "Rages defeated",
       "base": "base",
       "level-bonus": "Level bonus",
       "discards-left": "{{discards}} Discards left",
@@ -196,7 +207,8 @@
       "rerolls": "rerolls",
       "total": "total",
       "final-score": "- Final score: {{score}} -",
-      "continue-btn": "continue"
+      "continue-btn": "continue",
+      "endless-mode": "Endless mode"
     }
   },
   "special-cards": {
@@ -243,7 +255,9 @@
     "coming-soon": "Coming soon",
     "select-profile-picture": "Select profile picture",
     "connect": "Connect",
-    "no-profile": "Please login to see your profile"
+    "no-profile": "Please login to see your profile",
+    "apply-changes": "Apply changes",
+    "cancel": "Cancel"
   },
   "my-collection": {
     "title": "Collection",
@@ -257,6 +271,9 @@
     }
   },
   "wallet-provider": {
+    "not-allowed": "You are not allowed to access.",
+    "season-1": "SEASON 1",
+    "early-access": "EARLY ACCESS",
     "login": "LOGIN",
     "guest": "PLAY AS GUEST",
     "terms": {

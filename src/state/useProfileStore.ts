@@ -12,7 +12,7 @@ import {
 export type ProfileStore = {
   profileData: ProfileData | null;
   loading: boolean;
-  
+  pendingAvatarId: number | null;
 
   fetchProfileData: (
     client: any,
@@ -35,6 +35,7 @@ export type ProfileStore = {
 export const useProfileStore = create<ProfileStore>((set, get) => ({
   profileData: null,
   loading: false,
+  pendingAvatarId: null,
 
   fetchProfileData: async (_client, userAddress, _snAccount, username) => {
     set({ loading: true });
@@ -78,6 +79,9 @@ export const useProfileStore = create<ProfileStore>((set, get) => ({
 
       const prevLevelXpValue = 0;
 
+      const pendingAvatarId = get().pendingAvatarId;
+      const finalAvatarId = pendingAvatarId !== null ? pendingAvatarId : toInt(profile.avatarId);
+
       const profileData: ProfileData = {
         currentBadges: badgesCount,
         totalBadges: badgesCount,
@@ -86,7 +90,7 @@ export const useProfileStore = create<ProfileStore>((set, get) => ({
           currentXp: sanitizedCurrentXp,
           level: toInt(profile.level),
           streak: toInt(profile.dailyStreak),
-          avatarId: toInt(profile.avatarId),
+          avatarId: finalAvatarId,
         },
         playerStats: {
           games: statsResult
@@ -100,7 +104,11 @@ export const useProfileStore = create<ProfileStore>((set, get) => ({
         },
       };
 
-      set({ profileData, loading: false });
+      if (pendingAvatarId !== null && toInt(profile.avatarId) === pendingAvatarId) {
+        set({ profileData, loading: false, pendingAvatarId: null });
+      } else {
+        set({ profileData, loading: false });
+      }
     } catch (e) {
       console.log("Error fetching profile data", e);
       set({ profileData: null, loading: false });
@@ -109,10 +117,11 @@ export const useProfileStore = create<ProfileStore>((set, get) => ({
 
   updateAvatar: async (_client, _snAccount, address, avatarId) => {
     try {
-      await updateProfileAvatar(address, avatarId);
       const normalizedAvatarId = Number.isFinite(Number(avatarId))
         ? Math.trunc(Number(avatarId))
         : avatarId;
+
+      set({ pendingAvatarId: normalizedAvatarId });
 
       const current = get().profileData;
       if (current) {
@@ -123,10 +132,13 @@ export const useProfileStore = create<ProfileStore>((set, get) => ({
           },
         });
       }
+
+      await updateProfileAvatar(address, avatarId);
     } catch (e) {
       console.log("Error updating avatar", e);
+      set({ pendingAvatarId: null });
     }
   },
 
-  reset: () => set({ profileData: null }),
+  reset: () => set({ profileData: null, pendingAvatarId: null }),
 }));

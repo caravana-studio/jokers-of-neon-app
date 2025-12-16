@@ -7,6 +7,7 @@
     "name": "Rage round",
     "power": "Power: {{power}}",
     "intermediate": "Intermediate",
+    "boss": "Final Boss",
     "final": "Final"
   },
   "go": "Go",

@@ -4,7 +4,6 @@ import { Step, STEP_HEIGHT } from "./Step";
 import { IStep } from "./types";
 import { VerticalProgressBar } from "./VerticalProgressBar";
 
-
 const getPxForStepNumber = (stepNumber: number): number => {
   return stepNumber * STEP_HEIGHT - STEP_HEIGHT / 2;
 };
@@ -19,7 +18,8 @@ function calculateProgress(steps: IStep[], playerProgress: number): number {
       const previousXp = steps[i - 1]?.xp ?? 0;
       const currentXp = steps[i].xp;
       const difference =
-        ((playerProgress - previousXp) / (currentXp - previousXp)) * STEP_HEIGHT;
+        ((playerProgress - previousXp) / (currentXp - previousXp)) *
+        STEP_HEIGHT;
       return getPxForStepNumber(i) + difference;
     }
   }
@@ -38,8 +38,13 @@ export const SeasonProgressionContent = ({
   refetch,
 }: SeasonProgressionContentProps) => {
   return (
-    <Flex w="100%" marginTop={`${STEP_HEIGHT}px`} position="relative" overflowY="auto">
-      <Flex position="absolute" w="100%" flexDir={"column"}  pb="100px">
+    <Flex
+      w="100%"
+      marginTop={`${STEP_HEIGHT}px`}
+      position="relative"
+      overflowY="auto"
+    >
+      <Flex position="absolute" w="100%" flexDir={"column"} pb="100px">
         {steps.map((step, index) => {
           return <Step key={index} step={step} refetch={refetch} />;
         })}

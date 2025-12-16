@@ -1,5 +1,5 @@
 import { CloseIcon } from "@chakra-ui/icons";
-import { Box, Flex, Heading, IconButton } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, IconButton } from "@chakra-ui/react";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { BLUE_LIGHT } from "../../theme/colors";
@@ -8,11 +8,15 @@ import { ProfilePicture } from "./ProfilePicture";
 interface ProfilePicturePickerProps {
   onClose?: () => void;
   onSelect?: (id: number | string) => void;
+  onApply?: () => void;
+  hasChanges?: boolean;
 }
 
 export const ProfilePicturePicker: React.FC<ProfilePicturePickerProps> = ({
   onClose,
   onSelect,
+  onApply,
+  hasChanges = false,
 }) => {
   const ids = useMemo(() => [1, 2, 3, 4, 5, 6, 7], []);
   const iconsSize = "96px";
@@ -46,6 +50,11 @@ export const ProfilePicturePicker: React.FC<ProfilePicturePickerProps> = ({
           boxShadow: `0px 0px 14px 1px rgba(255, 255, 255, 0.6)`,
           backgroundColor: "rgba(0, 0, 0, 0.23)",
           borderRadius: "25px",
+          '&::-webkit-scrollbar': {
+            display: 'none',
+          },
+          scrollbarWidth: 'none',
+          msOverflowStyle: 'none',
         }}
       >
         <IconButton
@@ -81,17 +90,26 @@ export const ProfilePicturePicker: React.FC<ProfilePicturePickerProps> = ({
           height={"40vh"}
           overflowY={"auto"}
           overflowX={"hidden"}
-          paddingY={4}
+          paddingY={6}
+          paddingX={4}
+          sx={{
+            '&::-webkit-scrollbar': {
+              display: 'none',
+            },
+            scrollbarWidth: 'none',
+            msOverflowStyle: 'none',
+          }}
         >
           {ids.map((id) => (
-            <ProfilePicture
-              key={id}
-              profilePictureId={id}
-              border
-              size={iconsSize}
-              onClick={() => onSelect?.(id)}
-              hover={hoverStyle}
-            />
+            <Box key={id} padding={3}>
+              <ProfilePicture
+                profilePictureId={id}
+                border
+                size={iconsSize}
+                onClick={() => onSelect?.(id)}
+                hover={hoverStyle}
+              />
+            </Box>
           ))}
 {/*           <Flex
             rounded="full"
@@ -118,6 +136,18 @@ export const ProfilePicturePicker: React.FC<ProfilePicturePickerProps> = ({
             </Box>
           </Flex> */}
         </Flex>
+
+        {hasChanges && (
+          <Flex justifyContent="center" mt={4} mb={2}>
+            <Button
+              variant="secondarySolid"
+              onClick={onApply}
+              size="md"
+            >
+              {t("apply-changes")}
+            </Button>
+          </Flex>
+        )}
       </Box>
     </Box>
   );

@@ -7,6 +7,7 @@
     "name": "Rodada de rage",
     "power": "Poder: {{power}}",
     "intermediate": "Intermediário",
+    "boss": "Chefe Final",
     "final": "Final"
   },
   "go": "Ir",

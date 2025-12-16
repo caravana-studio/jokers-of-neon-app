@@ -102,6 +102,7 @@
       "cards-select-lbl": "Select the cards you want to keep",
       "select-all-lbl": "Select all",
       "special-cards-btn": "Manage items",
+      "press-for-detail": "press and hold a card for more details",
       "error-lbl": "You can't continue because you have more special cards than the maximum allowed",
       "confirmation-modal": {
         "head": "No cards selected",

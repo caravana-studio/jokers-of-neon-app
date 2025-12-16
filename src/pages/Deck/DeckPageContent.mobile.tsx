@@ -1,4 +1,4 @@
-import { Flex, Heading } from "@chakra-ui/react";
+import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -9,8 +9,10 @@ import { MobileDecoration } from "../../components/MobileDecoration";
 import { useStore } from "../../providers/StoreProvider";
 import { useGameStore } from "../../state/useGameStore";
 import { useShopStore } from "../../state/useShopStore";
+import { useDeckStore } from "../../state/useDeckStore";
 import { Card } from "../../types/Card";
 import { Deck } from "./Deck";
+import { BLUE_LIGHT, VIOLET } from "../../theme/colors";
 
 interface DeckPageContentMobileProps {
   state: {
@@ -29,6 +31,7 @@ export const DeckPageContentMobile = ({
   const { burnCard } = useStore();
   const { burnItem } = useShopStore();
   const { cash } = useGameStore();
+  const { currentLength, size } = useDeckStore();
 
   const handleCardSelect = (card: Card) => {
     if (!burnItem?.purchased) {
@@ -61,9 +64,17 @@ export const DeckPageContentMobile = ({
       flexShrink={1}
       minH={0}
     >
-      <Heading mb={1} size="sm" textAlign={"center"} variant="italic">
-        {t("title")}
-      </Heading>
+      <Flex gap={2} alignItems="center" justifyContent="center" mb={1}>
+        <Heading size="sm">{t("title")}</Heading>
+        <Text
+          size="lg"
+          color="blueLight"
+          fontWeight={500}
+          whiteSpace="nowrap"
+        >
+          ({currentLength}/{size})
+        </Text>
+      </Flex>
       <MobileDecoration />
       {!state.inStore ? (
         <Flex flexDirection={"column"} gap={2} height={"100%"}>
