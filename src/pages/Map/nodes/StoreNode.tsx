@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 import { Handle, Position } from "reactflow";
 import CachedImage from "../../../components/CachedImage";
 import { GameStateEnum } from "../../../dojo/typescript/custom";
-import { useShopActions } from "../../../dojo/useShopActions";
 import { useCustomNavigate } from "../../../hooks/useCustomNavigate";
 import { useMap } from "../../../providers/MapProvider";
 import { useStore } from "../../../providers/StoreProvider";
@@ -14,6 +13,8 @@ import { useResponsiveValues } from "../../../theme/responsiveSettings";
 import { TooltipContent } from "../TooltipContent";
 import { NodeType } from "../types";
 import { HereSign } from "./HereSign";
+import { NodeClickPulse } from "./NodeClickPulse";
+import { useNodeNavigation } from "./useNodeNavigation";
 
 const reachablePulse = keyframes`
   0% {
@@ -51,24 +52,31 @@ const getStoreItemsBasedOnShopId = (shopId: number) => {
 const StoreNode = ({ data }: any) => {
   const { t } = useTranslation("store", { keyPrefix: "config" });
   const { t: tMap } = useTranslation("map");
-  const { advanceNode } = useShopActions();
   const { id: gameId } = useGameStore();
   const navigate = useCustomNavigate();
+  const { handleNodeNavigation } = useNodeNavigation();
 
-  const { reachableNodes, setSelectedNodeData, selectedNodeData } = useMap();
+  const { reachableNodes, setSelectedNodeData, selectedNodeData, isNodeTransactionPending, activeNodeId, pulsingNodeId } = useMap();
   const { isSmallScreen } = useResponsiveValues();
 
   const { state, setShopId } = useGameStore();
   const { refetch } = useStore();
 
   const stateInMap = state === GameStateEnum.Map;
-  const reachable = reachableNodes.includes(data.id.toString()) && stateInMap;
+  const isActiveNode = activeNodeId === data.id.toString();
+  const reachable = reachableNodes.includes(data.id.toString()) && stateInMap && (!isNodeTransactionPending || isActiveNode);
 
   const title = `${tMap('legend.nodes.shop.title')} ${t(`${data.shopId}.name`)}`;
   const content = t(
     `${data.shopId}.content`,
     getStoreItemsBasedOnShopId(data.shopId)
   );
+
+  const refetchAndNavigate = async () => {
+    setShopId(data.shopId);
+    refetch();
+    navigate(GameStateEnum.Store);
+  };
   return (
     <Tooltip
       label={<TooltipContent title={title} content={content} />}
@@ -129,7 +137,9 @@ const StoreNode = ({ data }: any) => {
             : {}),
         }}
         onClick={() => {
-          isSmallScreen &&
+          if (isNodeTransactionPending) return;
+
+          if (isSmallScreen) {
             setSelectedNodeData({
               id: data.id,
               title: title,
@@ -137,16 +147,14 @@ const StoreNode = ({ data }: any) => {
               nodeType: NodeType.STORE,
               shopId: data.shopId,
             });
-
-          if (data.current && !stateInMap) {
+          } else if (data.current && !stateInMap) {
             navigate(GameStateEnum.Store);
-          } else if (stateInMap && reachable && !isSmallScreen) {
-            advanceNode(gameId, data.id).then((response) => {
-              if (response) {
-                setShopId(data.shopId);
-                refetch();
-                navigate(GameStateEnum.Store);
-              }
+          } else if (stateInMap && reachableNodes.includes(data.id.toString())) {
+            // Desktop: navigate with a single click
+            handleNodeNavigation({
+              nodeId: data.id,
+              gameId,
+              onNavigate: refetchAndNavigate,
             });
           }
         }}
@@ -158,6 +166,10 @@ const StoreNode = ({ data }: any) => {
           src={`/map/icons/rewards/${data.shopId}${reachable || data.visited || data.current ? "" : "-off"}.png`}
           alt="shop"
         />
+
+        {pulsingNodeId === data.id.toString() && (
+          <NodeClickPulse borderRadius="100%" />
+        )}
 
         <Handle type="target" position={Position.Top} style={{ opacity: 0 }} />
         <Handle

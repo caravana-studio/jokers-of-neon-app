@@ -1,6 +1,11 @@
 {
   "permissions": {
     "allow": [
+      "Bash(npm run dev:*)",
+      "Bash(netstat:*)",
+      "Bash(findstr:*)",
+      "Bash(taskkill:*)",
+      "Bash(dir:*)"
       "Bash(cat:*)",
       "Bash(python -c:*)",
       "Bash(mv:*)",
