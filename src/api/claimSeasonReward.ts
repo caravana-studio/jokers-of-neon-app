@@ -37,72 +37,25 @@ export type ClaimSeasonRewardResult = {
   packs: SeasonRewardPack[];
 };
 
-export async function claimSeasonReward({
-  address,
-  level,
-  isPremium,
-  seasonId = DEFAULT_SEASON_ID,
-}: ClaimSeasonRewardParams): Promise<SeasonRewardPack[]> {
-  if (!address) {
-    throw new Error("claimSeasonReward: address is required");
-  }
-
-  if (!Number.isFinite(level)) {
-    throw new Error("claimSeasonReward: level must be a finite number");
-  }
-
-  if (!Number.isFinite(seasonId)) {
-    throw new Error("claimSeasonReward: seasonId must be a finite number");
-  }
-
+function getApiKey(): string {
   const apiKey = import.meta.env.VITE_GAME_API_KEY;
   if (!apiKey) {
     throw new Error(
-      "claimSeasonReward: Missing VITE_GAME_API_KEY environment variable"
+      "claim rewards: Missing VITE_GAME_API_KEY environment variable"
     );
   }
+  return apiKey;
+}
 
-  const baseUrl =
-    import.meta.env.VITE_GAME_API_URL?.replace(/\/$/, "") ||
-    DEFAULT_API_BASE_URL;
-  const requestUrl = `${baseUrl}/api/season/claim-rewards`;
-
-  const response = await fetch(requestUrl, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "X-API-Key": apiKey,
-    },
-    body: JSON.stringify({
-      address,
-      season_id: seasonId,
-      level,
-      is_premium: isPremium,
-    }),
-  });
-
-  if (!response.ok) {
-    const errorDetails = await response.text().catch(() => "");
-    throw new Error(
-      `claimSeasonReward: ${response.status} ${response.statusText}${
-        errorDetails ? ` - ${errorDetails}` : ""
-      }`
-    );
+function parseMintedCards(
+  mintedCards: RawMintedCard[] | undefined,
+  context: string
+): SeasonRewardPack[] {
+  if (!Array.isArray(mintedCards) || mintedCards.length === 0) {
+    throw new Error(`${context}: No minted cards returned by API`);
   }
 
-  const json: ClaimSeasonRewardApiResponse = await response.json();
-
-  if (!json.success) {
-    throw new Error(
-      "claimSeasonReward: API responded without success flag set to true"
-    );
-  }
-
-  if (!Array.isArray(json.mintedCards) || json.mintedCards.length === 0) {
-    throw new Error("claimSeasonReward: No minted cards returned by API");
-  }
-
-  const packsMap = json.mintedCards.reduce<Map<number, SeasonRewardPack>>(
+  const packsMap = mintedCards.reduce<Map<number, SeasonRewardPack>>(
     (acc, card) => {
       const packNumber = Number.isFinite(card.pack_number)
         ? card.pack_number
@@ -143,10 +96,10 @@ export async function claimSeasonReward({
   );
 
   if (packsMap.size === 0) {
-    throw new Error("claimSeasonReward: No valid packs returned by API");
+    throw new Error(`${context}: No valid packs returned by API`);
   }
 
-  const packs: SeasonRewardPack[] = Array.from(packsMap.values())
+  return Array.from(packsMap.values())
     .map((pack) => ({
       ...pack,
       mintedCards: [...pack.mintedCards].sort((a, b) => {
@@ -157,6 +110,110 @@ export async function claimSeasonReward({
       }),
     }))
     .sort((a, b) => a.packNumber - b.packNumber);
+}
 
-  return packs;
+export async function claimSeasonReward({
+  address,
+  level,
+  isPremium,
+  seasonId = DEFAULT_SEASON_ID,
+}: ClaimSeasonRewardParams): Promise<SeasonRewardPack[]> {
+  if (!address) {
+    throw new Error("claimSeasonReward: address is required");
+  }
+
+  if (!Number.isFinite(level)) {
+    throw new Error("claimSeasonReward: level must be a finite number");
+  }
+
+  if (!Number.isFinite(seasonId)) {
+    throw new Error("claimSeasonReward: seasonId must be a finite number");
+  }
+
+  const baseUrl =
+    import.meta.env.VITE_GAME_API_URL?.replace(/\/$/, "") ||
+    DEFAULT_API_BASE_URL;
+  const requestUrl = `${baseUrl}/api/season/claim-rewards`;
+  const apiKey = getApiKey();
+
+  const response = await fetch(requestUrl, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-API-Key": apiKey,
+    },
+    body: JSON.stringify({
+      address,
+      season_id: seasonId,
+      level,
+      is_premium: isPremium,
+    }),
+  });
+
+  if (!response.ok) {
+    const errorDetails = await response.text().catch(() => "");
+    throw new Error(
+      `claimSeasonReward: ${response.status} ${response.statusText}${
+        errorDetails ? ` - ${errorDetails}` : ""
+      }`
+    );
+  }
+
+  const json: ClaimSeasonRewardApiResponse = await response.json();
+
+  if (!json.success) {
+    throw new Error(
+      "claimSeasonReward: API responded without success flag set to true"
+    );
+  }
+
+  return parseMintedCards(json.mintedCards, "claimSeasonReward");
+}
+
+export type ClaimUnclaimedRewardsParams = {
+  address: string;
+};
+
+export async function claimUnclaimedRewards({
+  address,
+}: ClaimUnclaimedRewardsParams): Promise<SeasonRewardPack[]> {
+  if (!address) {
+    throw new Error("claimUnclaimedRewards: address is required");
+  }
+
+  const baseUrl =
+    import.meta.env.VITE_GAME_API_URL?.replace(/\/$/, "") ||
+    DEFAULT_API_BASE_URL;
+  const requestUrl = `${baseUrl}/api/profile/claim-packs`;
+  const apiKey = getApiKey();
+
+  const response = await fetch(requestUrl, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-API-Key": apiKey,
+    },
+    body: JSON.stringify({
+      address,
+    }),
+  });
+
+  if (!response.ok) {
+    const errorDetails = await response.text().catch(() => "");
+    throw new Error(
+      `claimUnclaimedRewards: ${response.status} ${response.statusText}${
+        errorDetails ? ` - ${errorDetails}` : ""
+      }`
+    );
+  }
+
+  const json: ClaimSeasonRewardApiResponse = await response.json();
+
+  if (!json.success) {
+    throw new Error(
+      "claimUnclaimedRewards: API responded without success flag set to true"
+    );
+  }
+
+  return parseMintedCards(json.mintedCards, "claimUnclaimedRewards");
 }

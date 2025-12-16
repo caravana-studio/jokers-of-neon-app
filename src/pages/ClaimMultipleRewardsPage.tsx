@@ -2,7 +2,11 @@ import { Flex } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
-import { claimSeasonReward, SeasonRewardPack } from "../api/claimSeasonReward";
+import {
+  claimSeasonReward,
+  claimUnclaimedRewards,
+  SeasonRewardPack,
+} from "../api/claimSeasonReward";
 import { DelayedLoading } from "../components/DelayedLoading";
 import { SimulatedLoadingBar } from "../components/LoadingProgressBar/SimulatedLoadingProgressBar";
 import { MobileDecoration } from "../components/MobileDecoration";
@@ -10,7 +14,7 @@ import { useDojo } from "../dojo/useDojo";
 import { LoadingProgress } from "../types/LoadingProgress";
 import { ExternalPack } from "./ExternalPack/ExternalPack";
 
-export const ClaimSeasonPackPage = () => {
+export const ClaimMultipleRewardsPage = () => {
   const {
     account: { account },
   } = useDojo();
@@ -21,16 +25,22 @@ export const ClaimSeasonPackPage = () => {
   const navigate = useNavigate();
 
   const params = useParams();
-  const level = Number(params.level);
+  const level = Number(params.level ?? 0);
   const isPremium = params.premium === "premium";
 
   const [packs, setPacks] = useState<SeasonRewardPack[]>([]);
   const [currentPackIndex, setCurrentPackIndex] = useState<number>(0);
   const [transitioning, setTransitioning] = useState<boolean>(false);
 
+  const claimFn = params.premium
+    ? claimSeasonReward({ address: account.address, level, isPremium })
+    : claimUnclaimedRewards({
+        address: account.address,
+      });
+
   useEffect(() => {
     if (account?.address) {
-      claimSeasonReward({ address: account.address, level, isPremium })
+      claimFn
         .then((packs) => {
           setPacks(packs);
           setCurrentPackIndex(0);

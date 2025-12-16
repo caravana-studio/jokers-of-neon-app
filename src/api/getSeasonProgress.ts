@@ -146,6 +146,7 @@ export async function getSeasonProgress({
   seasonPassUnlocked: boolean;
   playerProgress: number;
   tournamentEntries: number;
+  rewardsLeftToClaim: number[];
 }> {
   if (!userAddress) {
     throw new Error("getSeasonLine: userAddress is required");
@@ -182,6 +183,7 @@ export async function getSeasonProgress({
     : 0;
 
   const tournamentEntries = Number(progressJson?.data?.tournament_ticket ?? 0);
+  const rewardsLeftToClaim = progressJson?.data?.claimable_rewards_id ??  [];
 
   const seasonLineRequestUrl = `${baseUrl}/api/season/line/${encodeURIComponent(
     userAddress
@@ -222,6 +224,7 @@ export async function getSeasonProgress({
     seasonPassUnlocked,
     playerProgress,
     tournamentEntries,
+    rewardsLeftToClaim,
     steps: transformSeasonLine(
       json.data,
       seasonPassUnlocked,
