@@ -11,7 +11,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { mintPack } from "../../api/mintPack";
 import CachedImage from "../../components/CachedImage";
-import { LootBoxRateInfo } from "../../components/Info/LootBoxRateInfo";
+import { NFTPackRateInfo } from "../../components/Info/NFTPackRateInfo";
 import { packAnimation } from "../../constants/animations";
 import { useDojo } from "../../dojo/DojoContext";
 import { useRevenueCat } from "../../providers/RevenueCatProvider";
@@ -182,7 +182,7 @@ export const PackRow = ({ packId, packageId, price }: PackRowProps) => {
                 </Text>
               )}
             </Flex>
-            <LootBoxRateInfo name={t(`${packId}.name`)} details={t(`${packId}.description.1`)} packId={packId} />
+            <NFTPackRateInfo name={t(`${packId}.name`)} details={t(`${packId}.description.1`)} packId={packId} />
             <Button
               variant={"secondarySolid"}
               w={isSmallScreen ? "70%" : "300px"}
