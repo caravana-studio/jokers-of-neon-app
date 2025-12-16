@@ -1,4 +1,4 @@
-import { Box, Flex, Heading } from "@chakra-ui/react";
+import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -64,9 +64,17 @@ export const DeckPageContentMobile = ({
       flexShrink={1}
       minH={0}
     >
-      <Heading mb={1} size="sm" textAlign={"center"} variant="italic">
-        {t("title")} ({currentLength}/{size})
-      </Heading>
+      <Flex gap={2} alignItems="center" justifyContent="center" mb={1}>
+        <Heading size="sm">{t("title")}</Heading>
+        <Text
+          size="lg"
+          color="blueLight"
+          fontWeight={500}
+          whiteSpace="nowrap"
+        >
+          ({currentLength}/{size})
+        </Text>
+      </Flex>
       <MobileDecoration />
       {!state.inStore ? (
         <Flex flexDirection={"column"} gap={2} height={"100%"}>
