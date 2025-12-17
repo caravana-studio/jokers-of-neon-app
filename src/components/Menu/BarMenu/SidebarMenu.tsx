@@ -1,19 +1,30 @@
-import { Divider, Flex, Heading } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-import { matchPath, useNavigate } from "react-router-dom";
+import { Box, Divider, Flex, Heading, useDisclosure } from "@chakra-ui/react";
+import { AnimatePresence } from "framer-motion";
+import { useEffect, useState, useRef } from "react";
+import { matchPath, useNavigate, useLocation } from "react-router-dom";
 import { useCurrentPageInfo } from "../../../hooks/useCurrentPageInfo";
 import { AnimatedText } from "../../AnimatedText";
 import { LogoutMenuListBtn } from "../Buttons/Logout/LogoutMenuListBtn";
 import { ContextMenuItem } from "../ContextMenuItem";
-import { gameUrls, mainMenuUrls, useContextMenuItems } from "../useContextMenuItems";
+import { gameUrls, useContextMenuItems } from "../useContextMenuItems";
+import { MotionBox } from "../../MotionBox";
+import { DailyMissions } from "../../DailyMissions/DailyMissions";
+import { VIOLET } from "../../../theme/colors";
 
 export const SidebarMenu = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const page = useCurrentPageInfo();
+  const { isOpen, onToggle, onClose } = useDisclosure();
+  const menuRef = useRef<HTMLDivElement>(null);
 
   const iconWidth = "20px";
 
   const [animatedText, setAnimatedText] = useState(page?.name ?? "");
+
+  const handleDailyMissionsClick = () => {
+    onToggle();
+  };
 
   const { mainMenuItems, inGameMenuItems, extraMenuItems } =
     useContextMenuItems({
@@ -30,20 +41,49 @@ export const SidebarMenu = () => {
     }, 500);
   }, [page?.name]);
 
+  // Close daily missions menu when route changes
+  useEffect(() => {
+    if (isOpen) {
+      onClose();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.pathname]);
+
+  // Close menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        onClose();
+      }
+    };
+
+    if (isOpen) {
+      // Add a small delay to prevent closing immediately after opening
+      setTimeout(() => {
+        document.addEventListener('mousedown', handleClickOutside);
+      }, 100);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isOpen, onClose]);
+
   return (
-    <Flex
-      width="48px"
-      py={12}
-      height="100%"
-      flexDirection={"column"}
-      justifyContent={"space-around"}
-      alignItems={"center"}
-      alignContent={"center"}
-      zIndex={1000}
-      left={0}
-      top={0}
-      backgroundColor={"black"}
-    >
+    <Box position="relative">
+      <Flex
+        width="48px"
+        py={12}
+        height="100%"
+        flexDirection={"column"}
+        justifyContent={"space-around"}
+        alignItems={"center"}
+        alignContent={"center"}
+        zIndex={1000}
+        left={0}
+        top={0}
+        backgroundColor={"black"}
+      >
       <Flex
         flexDirection={"column"}
         gap={0}
@@ -59,7 +99,10 @@ export const SidebarMenu = () => {
           <>
             <Divider my={3} />
             {extraMenuItems.map((item) => (
-              <ContextMenuItem {...item} />
+              <ContextMenuItem
+                {...item}
+                onClick={item.key === "daily-missions" ? handleDailyMissionsClick : item.onClick}
+              />
             ))}
           </>
         )}
@@ -113,6 +156,41 @@ export const SidebarMenu = () => {
         </Flex>
         <LogoutMenuListBtn width={iconWidth} />
       </Flex>
-    </Flex>
+      </Flex>
+
+      {/* Daily Missions Dropdown */}
+      <AnimatePresence>
+        {isOpen && (
+          <MotionBox
+            ref={menuRef}
+            position="fixed"
+            left="48px"
+            bottom="180px"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.2 }}
+            zIndex={1100}
+            width="290px"
+            maxHeight="400px"
+            overflowY="auto"
+            borderRadius="10px"
+            border="2px solid #DAA1E8FF"
+            boxShadow={`0px 0px 15px 7px ${VIOLET}`}
+            backgroundColor="rgba(0, 0, 0, 0.95)"
+            p={4}
+            sx={{
+              '&::-webkit-scrollbar': {
+                display: 'none'
+              },
+              '-ms-overflow-style': 'none',
+              'scrollbar-width': 'none'
+            }}
+          >
+            <DailyMissions showTitle={true} fontSize="13px" />
+          </MotionBox>
+        )}
+      </AnimatePresence>
+    </Box>
   );
 };

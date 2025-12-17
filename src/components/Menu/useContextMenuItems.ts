@@ -194,6 +194,12 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
       active: url === "/settings-game",
       key: "settings",
     },
+    {
+      icon: Icons.CHECK,
+      url: "#",
+      active: false,
+      key: "daily-missions",
+    },
   ];
 
   return { mainMenuItems, inGameMenuItems: allInGameMenuItems, extraMenuItems };
