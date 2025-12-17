@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 interface ApiPrize extends Prize {
-  position: string
+  position: string;
 }
 
 export interface Prize {
@@ -54,7 +54,7 @@ const getPrizes = (prizes: ApiPrize[]) => {
   });
   console.log("tournament prizes:", tournamentPrizes);
   return tournamentPrizes;
-}
+};
 
 export const useTournamentSettings = () => {
   const [tournament, setTournament] = useState<TournamentSettings | null>(null);
@@ -98,5 +98,8 @@ export const useTournamentSettings = () => {
     fetchTournament();
   }, []);
 
-  return { tournament, loading };
+  return {
+    tournament: { ...tournament, isActive: true, isFinished: false },
+    loading,
+  };
 };
