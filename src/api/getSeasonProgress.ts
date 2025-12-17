@@ -182,7 +182,7 @@ export async function getSeasonProgress({
     ? Number(progressJson?.data?.season_pass_unlocked_at_level ?? 0)
     : 0;
 
-  const tournamentEntries = Number(progressJson?.data?.tournament_ticket ?? 0);
+  const tournamentEntries = Number(progressJson?.data?.ticket_amount ?? 0);
   const rewardsLeftToClaim = progressJson?.data?.claimable_rewards_id ??  [];
 
   const seasonLineRequestUrl = `${baseUrl}/api/season/line/${encodeURIComponent(

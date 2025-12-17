@@ -15,7 +15,7 @@ interface GameOverContentProps {
   actualPlayerPosition?: number;
   t: (key: string, options?: Record<string, any>) => string;
   onShareClick: () => void;
-  onStartGameClick: () => void;
+  onSecondButtonClick: () => void;
   isLoading: boolean;
   leaderboardFilterLoggedInPlayers?: boolean;
   firstButton?: BarButtonProps;
@@ -55,7 +55,7 @@ export const GameOverContent: React.FC<GameOverContentProps> = ({
         my={'15px'}
       >
         {isSmallScreen && <Box h="70px" />}
-        <Flex flexDirection="column" alignItems={"center"} width={{ base: "80%", sm: "50%" }}>
+        <Flex flexDirection="column" alignItems={"center"} width={{ base: "80%", sm: "100%" }}>
           <Heading
             size={{ base: "sm", sm: "md" }}
             variant="italic"
