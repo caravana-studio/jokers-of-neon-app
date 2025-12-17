@@ -1,23 +1,22 @@
 import { gql } from "graphql-tag";
 import { useQuery } from "react-query";
-import { decodeString, encodeString } from "../dojo/utils/decodeString";
-import { useGameStore } from "../state/useGameStore";
+import { decodeString } from "../dojo/utils/decodeString";
+import mainnetGraphQLClient from "../mainnetGraphQLClient";
 import { signedHexToNumber } from "../utils/signedHexToNumber";
 import { snakeToCamel } from "../utils/snakeToCamel";
-import mainnetGraphQLClient from "../mainnetGraphQLClient";
 
 export const LEADERBOARD_QUERY_KEY = "leaderboard";
 const guestNamePattern = /^joker_guest_\d+$/;
 
 const DOJO_NAMESPACE =
-  import.meta.env.VITE_DOJO_NAMESPACE || "jokers_of_neon_core";
+  import.meta.env.VITE_MAINNET_NAMESPACE || "jokers_of_neon_core";
 const CAMEL_CASE_NAMESPACE = snakeToCamel(DOJO_NAMESPACE);
-const QUERY_FIELD_NAME = `${CAMEL_CASE_NAMESPACE}GameModels`;
+const QUERY_FIELD_NAME = `${CAMEL_CASE_NAMESPACE}GameDataModels`;
 
 export const LEADERBOARD_QUERY = gql`
-  query ($modId: String!, $isTournament: Boolean!) {
+  query ($isTournament: Boolean!) {
     ${QUERY_FIELD_NAME}(
-      where: { mod_idEQ: $modId, is_tournamentEQ: $isTournament }
+      where: { is_tournament: $isTournament }
       first: 10000
       order: { field: "LEVEL", direction: "DESC" }
     ) {
@@ -27,8 +26,8 @@ export const LEADERBOARD_QUERY = gql`
           level
           player_name
           id
-          current_node_id
           round
+          is_tournament
         }
       }
     }
@@ -41,15 +40,14 @@ interface GameEdge {
     level: number;
     player_name: string;
     id: number;
-    current_node_id: number;
     round: number;
+    is_tournament: boolean;
   };
 }
 
 type LeaderboardResponse = Record<string, { edges: GameEdge[] }>;
 
 const fetchGraphQLData = async (
-  modId: string,
   filterLoggedInPlayers: boolean,
   gameId?: number,
   isTournament: boolean = false
@@ -57,7 +55,6 @@ const fetchGraphQLData = async (
   const rawData: LeaderboardResponse = await mainnetGraphQLClient.request(
     LEADERBOARD_QUERY,
     {
-      modId: encodeString(modId),
       isTournament,
     }
   );
@@ -151,11 +148,9 @@ export const useGetLeaderboard = (
   filterLoggedInPlayers = true,
   isTournament = false,
 ) => {
-  const { modId } = useGameStore();
-
   const queryResponse = useQuery(
-    [LEADERBOARD_QUERY_KEY, modId, gameId, isTournament],
-    () => fetchGraphQLData(modId, filterLoggedInPlayers, gameId, isTournament),
+    [LEADERBOARD_QUERY_KEY, gameId, isTournament],
+    () => fetchGraphQLData(filterLoggedInPlayers, gameId, isTournament),
     {
       refetchOnWindowFocus: false,
     }
