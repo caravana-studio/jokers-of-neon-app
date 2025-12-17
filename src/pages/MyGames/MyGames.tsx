@@ -23,6 +23,7 @@ export interface GameSummary {
   points?: number;
   currentNodeId?: number;
   round?: number;
+  isTournament?: boolean;
 }
 
 export const MyGames = () => {
@@ -35,7 +36,6 @@ export const MyGames = () => {
   }, []);
 
   const { data: games, isLoading, error, refetch } = useGetMyGames();
-
   const { isSmallScreen } = useResponsiveValues();
 
   const [showFinishedGames, setShowFinishedGames] = useState(false);
