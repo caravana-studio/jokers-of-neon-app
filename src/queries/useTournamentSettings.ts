@@ -99,7 +99,7 @@ export const useTournamentSettings = () => {
   }, []);
 
   return {
-    tournament: { ...tournament, isActive: true, isFinished: false },
+    tournament,
     loading,
   };
 };

@@ -31,14 +31,15 @@ export const BarButton = ({
   variant = "solid",
   ...buttonProps
 }: BarButtonProps) => {
+  const { isSmallScreen } = useResponsiveValues();
   return disabled && disabledText ? (
     <Text fontSize={10}>{disabledText}</Text>
   ) : (
     <Button
       variant={variant}
       w={"100%"}
-      h={"28px"}
-      fontSize={"10px"}
+      h={isSmallScreen ? "28px" : "40px"}
+      fontSize={isSmallScreen ? "10px" : "15px"}
       onClick={onClick}
       disabled={disabled}
       {...buttonProps}

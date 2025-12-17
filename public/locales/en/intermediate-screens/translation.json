@@ -168,7 +168,7 @@
     },
     "btn": {
       "gameOver-share-btn": "SHARE ON",
-      "gameOver-newGame-btn": "START NEW GAME"
+      "gameOver-mygames-btn": "MY GAMES"
     }
   },
   "login": {

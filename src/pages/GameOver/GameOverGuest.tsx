@@ -12,7 +12,7 @@ export const GameOverGuest = () => {
     actualPlayer,
     t,
     onShareClick,
-    onStartGameClick,
+    onSecondButtonClick,
     isLoading,
   } = useGameOver();
   const { initiateTransferFlow } = useGameContext();
@@ -25,7 +25,7 @@ export const GameOverGuest = () => {
       actualPlayerPosition={actualPlayer?.position}
       t={t}
       onShareClick={onShareClick}
-      onStartGameClick={onStartGameClick}
+      onSecondButtonClick={onSecondButtonClick}
       isLoading={isLoading}
       firstButton={{
         onClick: () => {
