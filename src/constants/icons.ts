@@ -35,6 +35,7 @@ import DeckIcon from "../assets/MenuIcons/deck.png";
 import ListIcon from "../assets/MenuIcons/list.png";
 import MoreIcon from "../assets/MenuIcons/more.png";
 import FreepackIcon from "../assets/free-pack.png";
+import GiftIcon from "../assets/gift.png";
 
 export const Icons = {
   HEART: HeartIcon,
@@ -74,6 +75,7 @@ export const Icons = {
   FREEPACK: FreepackIcon,
   SHOP: ShopIcon,
   SEASON: SeasonIcon,
+  GIFT: GiftIcon,
 } as const;
 
 export type IconType = keyof typeof Icons;
