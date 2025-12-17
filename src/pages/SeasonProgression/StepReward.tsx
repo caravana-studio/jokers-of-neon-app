@@ -1,5 +1,5 @@
 import { Button, Flex } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { claimSeasonReward } from "../../api/claimSeasonReward";
@@ -33,20 +33,27 @@ export const StepReward = ({
   const pack = reward?.packs?.[0];
   const navigate = useNavigate();
   const [claiming, setClaiming] = useState(false);
-  
+  const [claimed, setClaimed] = useState(false);
+
+  useEffect(() => {
+    if (claimed && reward) {
+      reward.status = RewardStatus.CLAIMED;
+    }
+  }, [claimed]);
+
   return (
     <Flex
       w="50%"
       justifyContent="center"
       alignItems="center"
       position="relative"
-      opacity={reward?.status === RewardStatus.UNCLAIMED ? 1 : 0.5}
+      opacity={reward?.status === RewardStatus.UNCLAIMED && !claimed ? 1 : 0.5}
     >
       {(pack || reward?.tournamentEntries) && reward && (
         <>
           <Packs reward={reward} claiming={claiming} />
 
-          {reward.status === RewardStatus.UNCLAIMED && (
+          {reward.status === RewardStatus.UNCLAIMED && !claimed && (
             <Flex position={"absolute"} bottom={2.5} zIndex={4}>
               <Button
                 size="xs"
@@ -54,6 +61,8 @@ export const StepReward = ({
                 fontSize={isSmallScreen ? 10 : 12}
                 boxShadow={`0 0 5px 2px ${VIOLET}`}
                 variant="secondarySolid"
+                disabled={claiming || claimed}
+                isLoading={claiming}
                 onClick={() => {
                   if (reward.tournamentEntries > 0) {
                     setClaiming(true);
@@ -63,7 +72,7 @@ export const StepReward = ({
                       isPremium: type === "premium",
                     }).then(() => {
                       setClaiming(false);
-                      refetch();
+                      setClaimed(true);
                     });
                   } else {
                     navigate(`/claim-season-pack/${level}/${type}`);

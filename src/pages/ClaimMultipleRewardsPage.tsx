@@ -32,25 +32,31 @@ export const ClaimMultipleRewardsPage = () => {
   const [currentPackIndex, setCurrentPackIndex] = useState<number>(0);
   const [transitioning, setTransitioning] = useState<boolean>(false);
 
-  const claimFn = params.premium
-    ? claimSeasonReward({ address: account.address, level, isPremium })
-    : claimUnclaimedRewards({
-        address: account.address,
-      });
-
   useEffect(() => {
     if (account?.address) {
-      claimFn
-        .then((packs) => {
-          setPacks(packs);
+      const claim = async () => {
+        try {
+          const result = params.premium
+            ? await claimSeasonReward({ address: account.address, level, isPremium })
+            : await claimUnclaimedRewards({
+                address: account.address,
+              });
+
+          if (!Array.isArray(result)) {
+            throw new Error("Unexpected claim response");
+          }
+
+          setPacks(result);
           setCurrentPackIndex(0);
-        })
-        .catch((error) => {
+        } catch (error) {
           console.error("Error claiming season reward:", error);
           navigate("/");
-        });
+        }
+      };
+
+      claim();
     }
-  }, [account?.address]);
+  }, [account?.address, isPremium, level, navigate, params.premium]);
 
   const headingStages: LoadingProgress[] = [
     {

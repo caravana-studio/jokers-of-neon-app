@@ -162,11 +162,21 @@ export const AppRoutes = () => {
         }
       />
       <Route
-        path="/summary/:win?"
+        path="/win"
         element={
           <AnimatedPage>
             <GameStoreLoader>
-              <SummaryPage />
+              <SummaryPage win />
+            </GameStoreLoader>
+          </AnimatedPage>
+        }
+      />      
+      <Route
+        path="/loose"
+        element={
+          <AnimatedPage>
+            <GameStoreLoader>
+              <SummaryPage win={false} />
             </GameStoreLoader>
           </AnimatedPage>
         }

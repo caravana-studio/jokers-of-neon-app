@@ -30,56 +30,56 @@
         "3-title": "Descuentos en packs",
         "3-description-1": "20% de descuento en cada pack de temporada 1 que compras.",
         "3-description-2": ""
+      }
+    },
+    "packs": {
+      "buy": "COMPRAR",
+      "purchase-error-title": "Compra fallida",
+      "purchase-error-no-account": "No pudimos encontrar tu cuenta. Por favor, intenta cerrar sesión y volver a iniciarla.",
+      "purchase-error-description": "No pudimos completar tu compra de pack. Por favor, inténtalo de nuevo.",
+      "purchase-error-no-package": "No pudimos completar tu compra de pack. Problema de configuración.",
+      "player-pack": "Pack de jugador",
+      "limited-edition": "Edición limitada",
+      "size": "Tamaño",
+      "offering-rates": "Tarifas de oferta",
+      "transferrable-legend": "Todos los ítems de los packs comprados son transferibles.",
+      "skins-legend": "Los packs no contienen cartas con skin.",
+      "1": {
+        "name": "BÁSICO"
       },
-      "packs": {
-        "buy": "COMPRAR",
-        "purchase-error-title": "Compra fallida",
-        "purchase-error-no-account": "No pudimos encontrar tu cuenta. Por favor, intenta cerrar sesión y volver a iniciarla.",
-        "purchase-error-description": "No pudimos completar tu compra de pack. Por favor, inténtalo de nuevo.",
-        "purchase-error-no-package": "No pudimos completar tu compra de pack. Problema de configuración.",
-        "player-pack": "Pack de jugador",
-        "limited-edition": "Editión limitada",
-        "size": "Tamaño",
-        "offering-rates": "Tarifas de oferta",
-        "transferrable-legend": "Todos los items en las tiendas pueden ser transferidos.",
-        "skins-legend": "Los packs no contienen cartas con skin.",
-        "1": {
-          "name": "BÁSICO"
-        },
-        "2": {
-          "name": "AVANZADO",
-          "description": {
-            "1": "Mejora tu colección con mayores probabilidades de obtener cartas raras.",
-            "2": "Hasta un 50% de probabilidad de conseguir una carta Especial."
-          }
-        },
-        "3": {
-          "name": "ÉPICO",
-          "description": {
-            "1": "Un paquete premium con altas probabilidades de obtener cartas Especiales.",
-            "2": "Hasta un 75% de probabilidad de conseguir una carta Especial, incluye rangos A y S."
-          }
-        },
-        "4": {
-          "name": "LEGENDARIO",
-          "description": {
-            "1": "Garantiza una carta Especial en cada paquete.",
-            "2": "Las mayores probabilidades de obtener cartas Especiales de rango A y S."
-          }
-        },
-        "5": {
-          "name": "COLECCIONISTA",
-          "description": {
-            "1": "Paquete de edición limitada con cartas y skins ultra raras.",
-            "2": "1 carta Especial con skin garantizada y las mejores probabilidades."
-          }
-        },
-        "6": {
-          "name": "COLECCIONISTA XL",
-          "description": {
-            "1": "Paquete masivo con el contenido más raro de la temporada.",
-            "2": "2 cartas Especiales con skin garantizadas y las mejores probabilidades."
-          }
+      "2": {
+        "name": "AVANZADO",
+        "description": {
+          "1": "Mejora tu colección con mayores probabilidades de obtener cartas raras.",
+          "2": "Hasta un 50% de probabilidad de conseguir una carta Especial."
+        }
+      },
+      "3": {
+        "name": "ÉPICO",
+        "description": {
+          "1": "Un paquete premium con altas probabilidades de obtener cartas Especiales.",
+          "2": "Hasta un 75% de probabilidad de conseguir una carta Especial, incluye rangos A y S."
+        }
+      },
+      "4": {
+        "name": "LEGENDARIO",
+        "description": {
+          "1": "Garantiza una carta Especial en cada paquete.",
+          "2": "Las mayores probabilidades de obtener cartas Especiales de rango A y S."
+        }
+      },
+      "5": {
+        "name": "COLECCIONISTA",
+        "description": {
+          "1": "Paquete de edición limitada con cartas y skins ultra raras.",
+          "2": "1 carta Especial con skin garantizada y las mejores probabilidades."
+        }
+      },
+      "6": {
+        "name": "COLECCIONISTA XL",
+        "description": {
+          "1": "Paquete masivo con el contenido más raro de la temporada.",
+          "2": "2 cartas Especiales con skin garantizadas y las mejores probabilidades."
         }
       }
     }

@@ -27,19 +27,25 @@ import { formatNumber } from "../utils/formatNumber";
 const DELAY_START = 1.25;
 const STAGGER = 0.5;
 
-export const SummaryPage = () => {
+interface SummaryPageProps {
+  win?: boolean;
+}
+
+export const SummaryPage = ({
+  win = true,
+}: SummaryPageProps) => {
   const { isSmallScreen } = useResponsiveValues();
   return (
     <DelayedLoading ms={0}>
       <BackgroundDecoration>
         {isSmallScreen && <MobileDecoration />}
-        <SummaryDetail />
+        <SummaryDetail win={win} />
       </BackgroundDecoration>
     </DelayedLoading>
   );
 };
 
-const SummaryDetail = () => {
+const SummaryDetail = ({ win }: SummaryPageProps) => {
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "rewards-details.labels",
   });
@@ -54,7 +60,6 @@ const SummaryDetail = () => {
   const { isSmallScreen } = useResponsiveValues();
   const [skip, setSkip] = useState(false);
   const [animationEnded, setAnimationEnded] = useState(false);
-  const { win } = useParams();
   const { totalScore, level, round, id: gameId } = useGameStore();
   const [gameTracker, setGameTracker] = useState(DEFAULT_TRACKER_VIEW);
 

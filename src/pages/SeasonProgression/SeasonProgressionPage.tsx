@@ -15,9 +15,12 @@ export const SeasonProgressionPage = () => {
     account: { account },
   } = useDojo();
 
-  const fetchSeasonProgress = () => {
+  const fetchSeasonProgress = (forceSeasonPassUnlocked = false) => {
     setIsLoading(true);
-    getSeasonProgress({ userAddress: account?.address }).then((data) => {
+    getSeasonProgress({
+      userAddress: account?.address,
+      forceSeasonPassUnlocked,
+    }).then((data) => {
       setIsLoading(false);
       setSteps(data.steps);
       setPlayerProgress(data.playerProgress);
@@ -35,7 +38,7 @@ export const SeasonProgressionPage = () => {
       <MobileDecoration fadeToBlack />
       <SeasonProgressionHeader
         onSeasonPassPurchased={() => {
-          fetchSeasonProgress();
+          fetchSeasonProgress(true);
         }}
       />
       <SeasonProgressionContent

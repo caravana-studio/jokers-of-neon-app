@@ -74,8 +74,8 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
   const { state } = useGameStore();
   const { isSmallScreen } = useResponsiveValues();
 
-  const mainMenuItems: MenuItem[] = useMemo(
-    () => [
+  const mainMenuItems: MenuItem[] = useMemo(() => {
+    const items: MenuItem[] = [
       {
         icon: Icons.HOME,
         url: "/",
@@ -116,16 +116,20 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
         url: "/profile",
         active: url === "/profile",
         key: "profile",
-      },
-      {
+      },*/
+    ];
+
+    if (!isSmallScreen) {
+      items.push({
         icon: Icons.SETTINGS,
         url: "/settings",
         active: url === "/settings",
         key: "settings",
-      },*/
-    ],
-    [url]
-  );
+      });
+    }
+
+    return items;
+  }, [isSmallScreen, url]);
 
   const inGameMenuItems: MenuItem[] = [
     {
