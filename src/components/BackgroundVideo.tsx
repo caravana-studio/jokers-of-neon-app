@@ -22,8 +22,11 @@ const BackgroundVideo = ({ type }: BackgroundVideoProps) => {
     rage: "/bg/rage-bg.mp4",
     rageboss: "/bg/rageboss-bg.mp4",
     map: "/bg/map-bg.mp4",
-    summary: "/bg/summary-bg.mp4",
+    win: "/bg/summary-bg.mp4",
+    loose: "/bg/summary-bg.mp4",
   };
+
+  const isLooseVideo = type === BackgroundType.Loose;
 
   useEffect(() => {
     const loadVideo = async () => {
@@ -77,6 +80,7 @@ const BackgroundVideo = ({ type }: BackgroundVideoProps) => {
           height: "100%",
           objectFit: "cover",
           transition: "opacity 1s ease-in-out",
+          filter: isLooseVideo ? "grayscale(1)" : "none",
           opacity: activeVideo === 1 ? 1 : isFading ? 0 : 0, // Fade out if inactive
         }}
       />
@@ -97,6 +101,7 @@ const BackgroundVideo = ({ type }: BackgroundVideoProps) => {
             height: "100%",
             objectFit: "cover",
             transition: "opacity 1s ease-in-out",
+            filter: isLooseVideo ? "grayscale(1)" : "none",
             opacity: activeVideo === 2 ? 1 : isFading ? 0 : 0, // Fade out if inactive
           }}
         />

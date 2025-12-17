@@ -479,7 +479,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   useEffect(() => {
     if (gameState === GameStateEnum.GameOver) {
-      navigate(`/summary`);
+      navigate(`/loose`);
     } else if (
       gameState === GameStateEnum.Store &&
       location.pathname === "/demo"
