@@ -1,5 +1,5 @@
 import { Flex } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 import {
@@ -31,32 +31,35 @@ export const ClaimMultipleRewardsPage = () => {
   const [packs, setPacks] = useState<SeasonRewardPack[]>([]);
   const [currentPackIndex, setCurrentPackIndex] = useState<number>(0);
   const [transitioning, setTransitioning] = useState<boolean>(false);
+  const hasClaimedRef = useRef<boolean>(false);
 
   useEffect(() => {
-    if (account?.address) {
-      const claim = async () => {
-        try {
-          const result = params.premium
-            ? await claimSeasonReward({ address: account.address, level, isPremium })
-            : await claimUnclaimedRewards({
-                address: account.address,
-              });
+    if (!account?.address || hasClaimedRef.current) return;
+    hasClaimedRef.current = true;
 
-          if (!Array.isArray(result)) {
-            throw new Error("Unexpected claim response");
-          }
+    const claim = async () => {
+      try {
+        const result = params.premium
+          ? await claimSeasonReward({ address: account.address, level, isPremium })
+          : await claimUnclaimedRewards({
+              address: account.address,
+            });
 
-          setPacks(result);
-          setCurrentPackIndex(0);
-        } catch (error) {
-          console.error("Error claiming season reward:", error);
-          navigate("/");
+        if (!Array.isArray(result)) {
+          throw new Error("Unexpected claim response");
         }
-      };
 
-      claim();
-    }
-  }, [account?.address, isPremium, level, navigate, params.premium]);
+        setPacks(result);
+        setCurrentPackIndex(0);
+      } catch (error) {
+        console.error("Error claiming season reward:", error);
+        navigate("/");
+      }
+    };
+
+    claim();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [account?.address]);
 
   const headingStages: LoadingProgress[] = [
     {
