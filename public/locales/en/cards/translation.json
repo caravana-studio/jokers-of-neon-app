@@ -802,7 +802,7 @@
     },
     "19903": {
       "name": "Swamp Redemption",
-      "description": "Gains between ^blue(+1)^ and ^blue(+5 points)^ (stacking) each time you discard."
+      "description": "Gains between ^blue(+1)^ and ^blue(+5 points)^ (stacking) each time you discard. Currently ^blue(+{{points}} points)^."
     }
   },
   "power-ups": {

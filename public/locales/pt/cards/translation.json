@@ -366,7 +366,7 @@
     },
     "19903": {
       "name": "Redenção do Pântano",
-      "description": "Ganha entre ^blue(+1)^ e ^blue(+5 pontos)^ (acumulativos) cada vez que descarta."
+      "description": "Ganha entre ^blue(+1)^ e ^blue(+5 pontos)^ (acumulativos) cada vez que descarta. Actualmente ^blue(+{{points}} pontos)^."
     }
   },
   "power-ups": {
