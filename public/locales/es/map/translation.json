@@ -4,7 +4,7 @@
   },
   "here": "Estás aquí",
   "rage": {
-    "name": "Ronda rage",
+    "name": "Ronda de Furia",
     "power": "Poder: {{power}}",
     "intermediate": "Intermedia",
     "boss": "Jefe Final",
@@ -20,7 +20,7 @@
       "rage": {
         "intermediate": "Intermedia",
         "final": "Final",
-        "title": "Ronda de furia"
+        "title": "Ronda de Furia"
       },
       "shop": {
         "title": "Tienda",
