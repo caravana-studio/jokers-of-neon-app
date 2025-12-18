@@ -1,3 +1,5 @@
+import { sortPackCardsByRates } from "../utils/sortPackCardsByRates";
+
 const DEFAULT_API_BASE_URL = "http://localhost:3001";
 
 export type MintPackParams = {
@@ -49,10 +51,8 @@ export async function mintPack({ packId, recipient }: MintPackParams) {
     throw new Error("mintPack: No cards minted");
   }
 
-  return json.mintedCards.sort((a: any, b: any) => {
-    if (a.skin_id !== b.skin_id) {
-      return b.skin_id - a.skin_id;
-    }
-    return b.card_id - a.card_id;
-  });
+  // Sort cards according to pack rates structure
+  const sortedCards = sortPackCardsByRates(json.mintedCards, packId);
+
+  return sortedCards;
 }

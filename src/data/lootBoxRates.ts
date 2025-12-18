@@ -106,6 +106,37 @@ type PackRatesData = PackItemSection[];
 
 // Pack rates by pack ID
 export const PACK_RATES: Record<number, PackRatesData> = {
+  // Daily/Basic Pack (ID: 1)
+  1: [
+    {
+      itemNumber: 1,
+      rates: [
+        { itemType: CardItemType.TRADITIONAL, percentage: 98.0 },
+        { itemType: CardItemType.JOKER, percentage: 1.5 },
+        { itemType: CardItemType.NEON, percentage: 0.5 },
+      ],
+    },
+    {
+      itemNumber: 2,
+      rates: [
+        { itemType: CardItemType.TRADITIONAL, percentage: 90.0 },
+        { itemType: CardItemType.JOKER, percentage: 4.0 },
+        { itemType: CardItemType.NEON, percentage: 5.9 },
+        { itemType: CardItemType.NEON_JOKER, percentage: 0.1 },
+      ],
+    },
+    {
+      itemNumber: 3,
+      rates: [
+        { itemType: CardItemType.TRADITIONAL, percentage: 60.0 },
+        { itemType: CardItemType.NEON, percentage: 30.0 },
+        { itemType: CardItemType.SPECIAL_C, percentage: 8.0 },
+        { itemType: CardItemType.SPECIAL_B, percentage: 1.9 },
+        { itemType: CardItemType.SPECIAL_A, percentage: 0.1 },
+      ],
+    },
+  ],
+
   // Advanced Pack (ID: 2)
   2: [
     {

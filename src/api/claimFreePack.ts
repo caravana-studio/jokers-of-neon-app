@@ -1,3 +1,5 @@
+import { sortPackCardsByRates } from "../utils/sortPackCardsByRates";
+
 const DEFAULT_API_BASE_URL = "http://localhost:3001";
 
 type MintedCard = {
@@ -63,12 +65,11 @@ export async function claimFreePack(recipient: string): Promise<MintedCard[]> {
     throw new Error("claimFreePack: No minted cards returned by API");
   }
 
-  const sortedCards = json.mintedCards.sort((a, b) => {
-    if (a.skin_id !== b.skin_id) {
-      return b.skin_id - a.skin_id;
-    }
-    return b.card_id - a.card_id;
-  });
+  // Daily Pack has pack_id = 1
+  const packId = 1;
+
+  // Sort cards according to pack rates structure
+  const sortedCards = sortPackCardsByRates(json.mintedCards, packId);
 
   return sortedCards;
 }
