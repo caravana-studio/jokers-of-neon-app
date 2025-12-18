@@ -271,6 +271,7 @@
   },
   "wallet-provider": {
     "not-allowed": "Você não tem permissão para acessar.",
+    "register-at": "Por favor, registre-se em ",
     "season-1": "TEMPORADA 1",
     "early-access": "ACESSO ANTECIPADO",
     "login": "ENTRAR",

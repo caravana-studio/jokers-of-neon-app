@@ -272,14 +272,32 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
           {EARLY_ACCESS_VERSION && (
             <Flex flexDir="column" mb={isMobile ? 3 : "50px"}>
               {showNotAllowed ? (
-                <Heading
-                  textAlign={"center"}
-                  lineHeight={1}
-                  letterSpacing={1}
-                  fontSize={isMobile ? 17 : 25}
-                >
-                  {t("not-allowed")}
-                </Heading>
+                <Flex flexDir="column" gap={1}>
+                  <Heading
+                    textAlign={"center"}
+                    lineHeight={1}
+                    letterSpacing={1}
+                    fontSize={isMobile ? 17 : 25}
+                  >
+                    {t("not-allowed")}
+                  </Heading>
+                  <Heading
+                    textAlign={"center"}
+                    lineHeight={1}
+                    letterSpacing={1}
+                    fontSize={isMobile ? 12 : 17}
+                    textTransform={"lowercase"}
+                  >
+                    {t("register-at")}{" "}
+                    <a
+                      href="https://register.caravana.studio"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      https://register.caravana.studio
+                    </a>
+                  </Heading>
+                </Flex>
               ) : (
                 <>
                   <Heading
