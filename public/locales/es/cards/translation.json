@@ -366,7 +366,7 @@
     },
     "19903": {
       "name": "Redención del Pantano",
-      "description": "Gana entre ^blue(+1)^ y ^blue(+5 puntos)^ (acumulativos) cada vez que descartas."
+      "description": "Gana entre ^blue(+1)^ y ^blue(+5 puntos)^ (acumulativos) cada vez que descartas. Actualmente ^blue(+{{points}} puntos)^."
     }
   },
   "power-ups": {
