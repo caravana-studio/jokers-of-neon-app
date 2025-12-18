@@ -9,21 +9,39 @@ import { ContextMenuItem } from "../ContextMenuItem";
 import { gameUrls, useContextMenuItems } from "../useContextMenuItems";
 import { MotionBox } from "../../MotionBox";
 import { DailyMissions } from "../../DailyMissions/DailyMissions";
+import { DailyMissionsPopup } from "../../DailyMissions/DailyMissionsPopup";
+import { useInformationPopUp } from "../../../providers/InformationPopUpProvider";
 import { VIOLET } from "../../../theme/colors";
+import { useGameStore } from "../../../state/useGameStore";
+import { GameStateEnum } from "../../../dojo/typescript/custom";
 
 export const SidebarMenu = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const page = useCurrentPageInfo();
   const { isOpen, onToggle, onClose } = useDisclosure();
+  const { setInformation } = useInformationPopUp();
   const menuRef = useRef<HTMLDivElement>(null);
+  const { state } = useGameStore();
 
   const iconWidth = "20px";
 
   const [animatedText, setAnimatedText] = useState(page?.name ?? "");
 
+  // Route detection for Daily Missions behavior
+  const isGameplayPage = location.pathname === "/demo" && (state === GameStateEnum.Round || state === GameStateEnum.Rage);
+  const isPopupPage = ["/deck", "/docs", "/map"].includes(location.pathname);
+  const isHiddenPage = ["/settings-game", "/plays"].includes(location.pathname);
+
   const handleDailyMissionsClick = () => {
-    onToggle();
+    if (isPopupPage) {
+      // On deck, docs, or map pages, open large popup
+      setInformation(<DailyMissionsPopup />);
+    } else if (isGameplayPage) {
+      // On gameplay screen, open dropdown menu
+      onToggle();
+    }
+    // On hidden pages, button won't be rendered so this won't be called
   };
 
   const { mainMenuItems, inGameMenuItems, extraMenuItems } =
@@ -98,12 +116,14 @@ export const SidebarMenu = () => {
         {inGame && (
           <>
             <Divider my={3} />
-            {extraMenuItems.map((item) => (
-              <ContextMenuItem
-                {...item}
-                onClick={item.key === "daily-missions" ? handleDailyMissionsClick : item.onClick}
-              />
-            ))}
+            {extraMenuItems
+              .filter((item) => item.key !== "daily-missions" || !isHiddenPage)
+              .map((item) => (
+                <ContextMenuItem
+                  {...item}
+                  onClick={item.key === "daily-missions" ? handleDailyMissionsClick : item.onClick}
+                />
+              ))}
           </>
         )}
       </Flex>
