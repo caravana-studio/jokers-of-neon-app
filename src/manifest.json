@@ -4817,202 +4817,6 @@
           ]
         },
         {
-          "type": "enum",
-          "name": "jokers_of_neon_lib::models::data::poker_hand::PokerHand",
-          "variants": [
-            {
-              "name": "None",
-              "type": "()"
-            },
-            {
-              "name": "RoyalFlush",
-              "type": "()"
-            },
-            {
-              "name": "StraightFlush",
-              "type": "()"
-            },
-            {
-              "name": "FiveOfAKind",
-              "type": "()"
-            },
-            {
-              "name": "FourOfAKind",
-              "type": "()"
-            },
-            {
-              "name": "FullHouse",
-              "type": "()"
-            },
-            {
-              "name": "Straight",
-              "type": "()"
-            },
-            {
-              "name": "Flush",
-              "type": "()"
-            },
-            {
-              "name": "ThreeOfAKind",
-              "type": "()"
-            },
-            {
-              "name": "TwoPair",
-              "type": "()"
-            },
-            {
-              "name": "OnePair",
-              "type": "()"
-            },
-            {
-              "name": "HighCard",
-              "type": "()"
-            }
-          ]
-        },
-        {
-          "type": "struct",
-          "name": "jokers_of_neon_lib::models::tracker::GameTracker",
-          "members": [
-            {
-              "name": "game_id",
-              "type": "core::integer::u64"
-            },
-            {
-              "name": "highest_hand",
-              "type": "core::integer::u32"
-            },
-            {
-              "name": "most_played_hand",
-              "type": "(jokers_of_neon_lib::models::data::poker_hand::PokerHand, core::integer::u32)"
-            },
-            {
-              "name": "highest_cash",
-              "type": "core::integer::u32"
-            },
-            {
-              "name": "cards_played_count",
-              "type": "core::integer::u32"
-            },
-            {
-              "name": "cards_discarded_count",
-              "type": "core::integer::u32"
-            },
-            {
-              "name": "rage_wins",
-              "type": "core::integer::u32"
-            }
-          ]
-        },
-        {
-          "type": "struct",
-          "name": "core::array::Span::<jokers_of_neon_lib::models::data::poker_hand::PokerHand>",
-          "members": [
-            {
-              "name": "snapshot",
-              "type": "@core::array::Array::<jokers_of_neon_lib::models::data::poker_hand::PokerHand>"
-            }
-          ]
-        },
-        {
-          "type": "struct",
-          "name": "jokers_of_neon_lib::models::external::profile::PlayerStats",
-          "members": [
-            {
-              "name": "address",
-              "type": "core::starknet::contract_address::ContractAddress"
-            },
-            {
-              "name": "games_played",
-              "type": "core::integer::u32"
-            },
-            {
-              "name": "games_won",
-              "type": "core::integer::u32"
-            },
-            {
-              "name": "high_card_played",
-              "type": "core::integer::u32"
-            },
-            {
-              "name": "pair_played",
-              "type": "core::integer::u32"
-            },
-            {
-              "name": "two_pair_played",
-              "type": "core::integer::u32"
-            },
-            {
-              "name": "three_of_a_kind_played",
-              "type": "core::integer::u32"
-            },
-            {
-              "name": "four_of_a_kind_played",
-              "type": "core::integer::u32"
-            },
-            {
-              "name": "five_of_a_kind_played",
-              "type": "core::integer::u32"
-            },
-            {
-              "name": "full_house_played",
-              "type": "core::integer::u32"
-            },
-            {
-              "name": "flush_played",
-              "type": "core::integer::u32"
-            },
-            {
-              "name": "straight_played",
-              "type": "core::integer::u32"
-            },
-            {
-              "name": "straight_flush_played",
-              "type": "core::integer::u32"
-            },
-            {
-              "name": "royal_flush_played",
-              "type": "core::integer::u32"
-            },
-            {
-              "name": "loot_boxes_purchased",
-              "type": "core::integer::u32"
-            },
-            {
-              "name": "cards_purchased",
-              "type": "core::integer::u32"
-            },
-            {
-              "name": "specials_purchased",
-              "type": "core::integer::u32"
-            },
-            {
-              "name": "specials_sold",
-              "type": "core::integer::u32"
-            },
-            {
-              "name": "power_ups_purchased",
-              "type": "core::integer::u32"
-            },
-            {
-              "name": "level_ups_purchased",
-              "type": "core::integer::u32"
-            },
-            {
-              "name": "modifiers_purchased",
-              "type": "core::integer::u32"
-            },
-            {
-              "name": "rerolls_purchased",
-              "type": "core::integer::u32"
-            },
-            {
-              "name": "burn_purchased",
-              "type": "core::integer::u32"
-            }
-          ]
-        },
-        {
           "type": "interface",
           "name": "jokers_of_neon_core::systems::views::game_views::IGameViews",
           "items": [
@@ -6388,8 +6192,8 @@
       ]
     },
     {
-      "address": "0x20ffba7239fba383fc1dc7d6573182c3739da59c746001f319386ab648672c5",
-      "class_hash": "0x642f7da7b286e691000aacf195bbb26baa669a40071cdf32b2490202593b3ab",
+      "address": "0x61e9a987d56b6b499280c6d9d7aa68f0c95eab5f82d11849ab4c3b1746d53bd",
+      "class_hash": "0x6ac04eebcff65da4747c4582e61cc942ea2aec5fb0844f7078f618c0d378b9b",
       "abi": [
         {
           "type": "impl",
@@ -9019,8 +8823,8 @@
       ]
     },
     {
-      "address": "0xce3894085a41af6bde785232f9b0ab6536415aa42ad977b182238df0d780cb",
-      "class_hash": "0x5a882618d4815dd244da5df7a3b6948f5893c09d98031c8539daef7a5876b26",
+      "address": "0x3677d21d11119af9061d8e8491a2afa886890a49aa3168ecfae7ffc5af88d18",
+      "class_hash": "0x6d709b9ee5e0d1d42bcfa2131779b420c9eff7bddc980e50a1a842a22b572da",
       "abi": [
         {
           "type": "impl",
@@ -9273,10 +9077,6 @@
               "type": "function",
               "name": "open",
               "inputs": [
-                {
-                  "name": "seed",
-                  "type": "core::felt252"
-                },
                 {
                   "name": "pack_id",
                   "type": "core::integer::u32"
@@ -15152,7 +14952,7 @@
     },
     {
       "members": [],
-      "class_hash": "0x58e6ff2ae87f750bbbc679b46f01f815abc9ce1ac91b8b278bbc38d2de5b651",
+      "class_hash": "0x70dfe5b495dff73d02ceb6fddfb0001d638b5af3370b1c21e20a7fffba823da",
       "tag": "jokers_of_neon_core-SpecialData",
       "selector": "0x883c5361a9cb8a078a21b56fd5ec503405cf9a1eb1a414ed2398f25060cfba"
     },
