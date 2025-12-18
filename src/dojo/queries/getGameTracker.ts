@@ -79,7 +79,6 @@ export const getGameTracker = async (
   try {
     const txResult: any = await client.game_views.getGameTracker(gameId);
     const tracker = txResult?.game_tracker ?? txResult?.[0] ?? txResult;
-
     const mostPlayedHandRaw = tracker?.most_played_hand ?? [];
     const hand =
       Array.isArray(mostPlayedHandRaw) && mostPlayedHandRaw.length > 0

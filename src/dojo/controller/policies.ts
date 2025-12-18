@@ -1,5 +1,5 @@
 import { getContractByName } from "@dojoengine/core";
-import manifest from "../../manifest.json";
+import { getManifest } from "../getManifest";
 import { setupWorld } from "../typescript/contracts.gen";
 import { VRF_PROVIDER_ADDRESS } from "./constants";
 
@@ -19,6 +19,8 @@ const VRF_POLICY = {
     ],
   },
 };
+
+const manifest = getManifest();
 
 interface Method {
   name: string;
