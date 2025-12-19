@@ -929,7 +929,7 @@
       "description": "You can't play the same hand twice in this round"
     },
     "20025": {
-      "  name": "Buzzkiller",
+      "name": "Buzzkiller",
       "description": "Your most-played hand does not count this round."
     }
   },
