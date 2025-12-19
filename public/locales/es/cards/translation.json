@@ -302,7 +302,7 @@
     },
     "10101": {
       "name": "Póster Desgastado",
-      "description": "Comienza con ^blue(+100 puntos)^, pierde ^blue(10 puntos)^ por cada jugada hasta llegar a ^blue(10 puntos)^."
+      "description": "Comienza con ^blue(+100 puntos)^, pierde ^blue(10 puntos)^ por cada jugada hasta llegar a ^blue(10 puntos)^. ^blue(Actualmente +{{points}} puntos)^."
     },
     "10102": {
       "name": "Domador de Oportunidades",

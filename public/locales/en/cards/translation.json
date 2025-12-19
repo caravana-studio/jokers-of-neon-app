@@ -738,7 +738,7 @@
     },
     "10101": {
       "name": "Faded Poster",
-      "description": "Starts at ^blue(+100 points)^, loses ^blue(10 points)^ per play until it reaches ^blue(10 points)^."
+      "description": "Starts at ^blue(+100 points)^, loses ^blue(10 points)^ per play until it reaches ^blue(10 points)^. Currently ^blue(+{{points}} points)^."
     },
     "10102": {
       "name": "Tamer of Chances",

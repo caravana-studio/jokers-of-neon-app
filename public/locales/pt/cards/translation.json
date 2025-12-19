@@ -302,7 +302,7 @@
     },
     "10101": {
       "name": "Pôster Desbotado",
-      "description": "Começa com ^blue(+100 pontos)^, perde ^blue(10 pontos)^ por jogada até chegar em ^blue(10 pontos)^."
+      "description": "Começa com ^blue(+100 pontos)^, perde ^blue(10 pontos)^ por jogada até chegar em ^blue(10 pontos)^. ^blue(Atualmente com +{{points}} pontos)^."
     },
     "10102": {
       "name": "Domador da Sorte",
