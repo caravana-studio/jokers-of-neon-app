@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 import { GAME_ID } from "../constants/localStorage";
 import { looseSfx } from "../constants/sfx";
+import { useSettings } from "../providers/SettingsProvider";
 import { useGetLeaderboard } from "../queries/useGetLeaderboard";
 import { isNative } from "../utils/capacitorUtils";
 import { signedHexToNumber } from "../utils/signedHexToNumber";
@@ -14,8 +15,12 @@ export const useGameOver = () => {
   const params = useParams();
   const gameId = Number(params.gameId);
   const navigate = useNavigate();
+  const { sfxVolume } = useSettings();
 
-  const { play: looseSound, stop: stopLooseSound } = useAudio(looseSfx);
+  const { play: looseSound, stop: stopLooseSound } = useAudio(
+    looseSfx,
+    sfxVolume
+  );
   const { data: fullLeaderboard } = useGetLeaderboard(gameId);
 
   const actualPlayer = fullLeaderboard?.find(

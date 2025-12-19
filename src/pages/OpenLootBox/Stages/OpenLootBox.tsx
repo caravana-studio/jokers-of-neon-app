@@ -10,6 +10,7 @@ import { GameStateEnum } from "../../../dojo/typescript/custom";
 import { useAudio } from "../../../hooks/useAudio";
 import { useCustomNavigate } from "../../../hooks/useCustomNavigate";
 import { usePageTransitions } from "../../../providers/PageTransitionsProvider";
+import { useSettings } from "../../../providers/SettingsProvider";
 import { useStore } from "../../../providers/StoreProvider";
 import { useGameStore } from "../../../state/useGameStore";
 
@@ -20,7 +21,8 @@ export const OpenLootBox = () => {
   const [openTextVisible, setOpenTextVisible] = useState(false);
   const [isBuying, setIsBuying] = useState(false);
   const lootBoxRef = useRef<LootBoxRef>(null);
-  const { play: openPackSound } = useAudio(openPackSfx, 0.5);
+  const { sfxVolume } = useSettings();
+  const { play: openPackSound } = useAudio(openPackSfx, sfxVolume);
   const { state } = useGameStore();
   const { transitionTo } = usePageTransitions();
   const { buyPack } = useStore();
