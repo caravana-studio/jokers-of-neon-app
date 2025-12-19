@@ -51,9 +51,6 @@ const SummaryDetail = ({ win }: SummaryPageProps) => {
   });
   const { t: tGame } = useTranslation("game");
   const { t: tPlays } = useTranslation("plays", { keyPrefix: "playsData" });
-  const {
-    setup: { client },
-  } = useDojo();
 
   const customNavigate = useCustomNavigate();
   const navigate = useNavigate();
@@ -67,9 +64,9 @@ const SummaryDetail = ({ win }: SummaryPageProps) => {
     let active = true;
 
     const fetchTracker = async () => {
-      if (!client || !gameId) return;
+      if (!gameId) return;
 
-      const tracker = await getGameTracker(client, gameId);
+      const tracker = await getGameTracker(gameId);
       if (active) {
         setGameTracker(tracker);
       }
@@ -80,7 +77,7 @@ const SummaryDetail = ({ win }: SummaryPageProps) => {
     return () => {
       active = false;
     };
-  }, [client, gameId]);
+  }, [gameId]);
 
   const title = (
     <motion.div
