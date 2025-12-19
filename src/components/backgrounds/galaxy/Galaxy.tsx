@@ -213,6 +213,36 @@ export default function Galaxy({
   const smoothMousePos = useRef({ x: 0.5, y: 0.5 });
   const targetMouseActive = useRef(0.0);
   const smoothMouseActive = useRef(0.0);
+  const programRef = useRef<Program | null>(null);
+  const rendererRef = useRef<Renderer | null>(null);
+  const animateIdRef = useRef<number>();
+  const initialUniformsRef = useRef({
+    focal,
+    rotation,
+    density,
+    hueShift,
+    glowIntensity,
+    saturation,
+    mouseRepulsion,
+    twinkleIntensity,
+    rotationSpeed,
+    repulsionStrength,
+    autoCenterRepulsion
+  });
+  const propsRef = useRef({
+    starSpeed,
+    disableAnimation,
+    speed
+  });
+
+  useEffect(() => {
+    propsRef.current = {
+      ...propsRef.current,
+      starSpeed,
+      disableAnimation,
+      speed
+    };
+  }, [disableAnimation, speed, starSpeed]);
 
   useEffect(() => {
     if (!ctnDom.current) return;
@@ -222,6 +252,7 @@ export default function Galaxy({
       premultipliedAlpha: false
     });
     const gl = renderer.gl;
+    rendererRef.current = renderer;
 
     if (transparent) {
       gl.enable(gl.BLEND);
@@ -256,36 +287,37 @@ export default function Galaxy({
         uResolution: {
           value: new Color(gl.canvas.width, gl.canvas.height, gl.canvas.width / gl.canvas.height)
         },
-        uFocal: { value: new Float32Array(focal) },
-        uRotation: { value: new Float32Array(rotation) },
-        uStarSpeed: { value: starSpeed },
-        uDensity: { value: density },
-        uHueShift: { value: hueShift },
-        uSpeed: { value: speed },
+        uFocal: { value: new Float32Array(initialUniformsRef.current.focal) },
+        uRotation: { value: new Float32Array(initialUniformsRef.current.rotation) },
+        uStarSpeed: { value: propsRef.current.starSpeed },
+        uDensity: { value: initialUniformsRef.current.density },
+        uHueShift: { value: initialUniformsRef.current.hueShift },
+        uSpeed: { value: propsRef.current.speed },
         uMouse: {
           value: new Float32Array([smoothMousePos.current.x, smoothMousePos.current.y])
         },
-        uGlowIntensity: { value: glowIntensity },
-        uSaturation: { value: saturation },
-        uMouseRepulsion: { value: mouseRepulsion },
-        uTwinkleIntensity: { value: twinkleIntensity },
-        uRotationSpeed: { value: rotationSpeed },
-        uRepulsionStrength: { value: repulsionStrength },
+        uGlowIntensity: { value: initialUniformsRef.current.glowIntensity },
+        uSaturation: { value: initialUniformsRef.current.saturation },
+        uMouseRepulsion: { value: initialUniformsRef.current.mouseRepulsion },
+        uTwinkleIntensity: { value: initialUniformsRef.current.twinkleIntensity },
+        uRotationSpeed: { value: initialUniformsRef.current.rotationSpeed },
+        uRepulsionStrength: { value: initialUniformsRef.current.repulsionStrength },
         uMouseActiveFactor: { value: 0.0 },
-        uAutoCenterRepulsion: { value: autoCenterRepulsion },
+        uAutoCenterRepulsion: { value: initialUniformsRef.current.autoCenterRepulsion },
         uTransparent: { value: transparent }
       }
     });
+    programRef.current = program;
 
     const mesh = new Mesh(gl, { geometry, program });
-    let animateId: number;
 
     function update(t: number) {
-      animateId = requestAnimationFrame(update);
-      if (!disableAnimation) {
+      animateIdRef.current = requestAnimationFrame(update);
+      if (!propsRef.current.disableAnimation) {
         program.uniforms.uTime.value = t * 0.001;
-        program.uniforms.uStarSpeed.value = (t * 0.001 * starSpeed) / 10.0;
+        program.uniforms.uStarSpeed.value = (t * 0.001 * propsRef.current.starSpeed) / 10.0;
       }
+      program.uniforms.uSpeed.value = propsRef.current.speed;
 
       const lerpFactor = 0.05;
       smoothMousePos.current.x += (targetMousePos.current.x - smoothMousePos.current.x) * lerpFactor;
@@ -299,7 +331,7 @@ export default function Galaxy({
 
       renderer.render({ scene: mesh });
     }
-    animateId = requestAnimationFrame(update);
+    animateIdRef.current = requestAnimationFrame(update);
     ctn.appendChild(gl.canvas);
 
     function handleMouseMove(e: MouseEvent) {
@@ -320,7 +352,7 @@ export default function Galaxy({
     }
 
     return () => {
-      cancelAnimationFrame(animateId);
+      if (animateIdRef.current) cancelAnimationFrame(animateIdRef.current);
       window.removeEventListener('resize', resize);
       if (mouseInteraction) {
         ctn.removeEventListener('mousemove', handleMouseMove);
@@ -328,24 +360,43 @@ export default function Galaxy({
       }
       ctn.removeChild(gl.canvas);
       gl.getExtension('WEBGL_lose_context')?.loseContext();
+      programRef.current = null;
+      rendererRef.current = null;
     };
   }, [
-    focal,
-    rotation,
-    starSpeed,
-    density,
-    hueShift,
-    disableAnimation,
-    speed,
     mouseInteraction,
-    glowIntensity,
-    saturation,
-    mouseRepulsion,
-    twinkleIntensity,
-    rotationSpeed,
-    repulsionStrength,
-    autoCenterRepulsion,
     transparent
+  ]);
+
+  useEffect(() => {
+    const program = programRef.current;
+    if (!program) return;
+
+    program.uniforms.uFocal.value[0] = focal[0];
+    program.uniforms.uFocal.value[1] = focal[1];
+    program.uniforms.uRotation.value[0] = rotation[0];
+    program.uniforms.uRotation.value[1] = rotation[1];
+    program.uniforms.uDensity.value = density;
+    program.uniforms.uHueShift.value = hueShift;
+    program.uniforms.uGlowIntensity.value = glowIntensity;
+    program.uniforms.uSaturation.value = saturation;
+    program.uniforms.uMouseRepulsion.value = mouseRepulsion;
+    program.uniforms.uTwinkleIntensity.value = twinkleIntensity;
+    program.uniforms.uRotationSpeed.value = rotationSpeed;
+    program.uniforms.uRepulsionStrength.value = repulsionStrength;
+    program.uniforms.uAutoCenterRepulsion.value = autoCenterRepulsion;
+  }, [
+    autoCenterRepulsion,
+    density,
+    focal,
+    glowIntensity,
+    hueShift,
+    mouseRepulsion,
+    repulsionStrength,
+    rotation,
+    rotationSpeed,
+    saturation,
+    twinkleIntensity
   ]);
 
   return <div ref={ctnDom} className="galaxy-container" {...rest} />;

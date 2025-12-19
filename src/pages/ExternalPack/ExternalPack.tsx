@@ -330,28 +330,29 @@ export const ExternalPack = ({
             opacity={step >= 3 ? 1 : 0}
             zIndex={2}
             pointerEvents={step >= 3 ? "all" : "none"}
-            animation={`${packAnimation} 2s ease-in-out infinite`}
           >
-            {obtainedCards?.length > 0 && (
-              <Stack
-                randomRotation={true}
-                sensitivity={180}
-                sendToBackOnClick={true}
-                cardDimensions={{
-                  width: packWidth - 10,
-                  height: packHeight - 40,
-                }}
-                cardsData={obtainedCards.map((card, index) => ({
-                  id: index,
-                  cardId: card.card_id,
-                  img: `/Cards/${card.card_id}${card.skin_id !== 0 ? `_sk${card.skin_id}` : ""}.png`,
-                }))}
-                onCardChange={(cardId) => {
-                  setHighlightedCard(cardId);
-                }}
-                onAllSeen={() => setAllCardsSeen(true)}
-              />
-            )}
+            <Flex animation={`${packAnimation} 2s ease-in-out infinite`}>
+              {obtainedCards?.length > 0 && (
+                <Stack
+                  randomRotation={true}
+                  sensitivity={180}
+                  sendToBackOnClick={true}
+                  cardDimensions={{
+                    width: packWidth - 10,
+                    height: packHeight - 40,
+                  }}
+                  cardsData={obtainedCards.map((card, index) => ({
+                    id: index,
+                    cardId: card.card_id,
+                    img: `/Cards/${card.card_id}${card.skin_id !== 0 ? `_sk${card.skin_id}` : ""}.png`,
+                  }))}
+                  onCardChange={(cardId) => {
+                    setHighlightedCard(cardId);
+                  }}
+                  onAllSeen={() => setAllCardsSeen(true)}
+                />
+              )}
+            </Flex>
           </Flex>
 
           {step === 0 && (

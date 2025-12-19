@@ -24,6 +24,7 @@ export const GalaxyBackground = ({
       bottom={0}
       zIndex={1}
       pointerEvents="none"
+      backgroundColor="black"
     >
       <Galaxy
         mouseRepulsion={false}
