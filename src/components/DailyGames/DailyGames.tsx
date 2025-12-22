@@ -55,7 +55,7 @@ export const DailyGames = () => {
       .catch(() => {});
   }, []);
 
-  const RECHARGE_TIME = seasonPassUnlocked ? 4 : 12;
+  const RECHARGE_TIME = seasonPassUnlocked ? 4 : 8;
 
   const { isSmallScreen } = useResponsiveValues();
 
@@ -75,7 +75,6 @@ export const DailyGames = () => {
       const timeUntilNext = (nextLiveIn?.getTime() ?? 0) - Date.now();
       const progress = 1 - timeUntilNext / rechargeMs;
       const clampedProgress = Math.min(Math.max(progress, 0), 1);
-
       return clampedProgress * 100;
     }
 
