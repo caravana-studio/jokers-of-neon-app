@@ -9,8 +9,6 @@ import { ContextMenuItem } from "../ContextMenuItem";
 import { gameUrls, useContextMenuItems } from "../useContextMenuItems";
 import { MotionBox } from "../../MotionBox";
 import { DailyMissions } from "../../DailyMissions/DailyMissions";
-import { DailyMissionsPopup } from "../../DailyMissions/DailyMissionsPopup";
-import { useInformationPopUp } from "../../../providers/InformationPopUpProvider";
 import { VIOLET } from "../../../theme/colors";
 import { useGameStore } from "../../../state/useGameStore";
 import { GameStateEnum } from "../../../dojo/typescript/custom";
@@ -20,29 +18,38 @@ export const SidebarMenu = () => {
   const location = useLocation();
   const page = useCurrentPageInfo();
   const { isOpen, onToggle, onClose } = useDisclosure();
-  const { setInformation } = useInformationPopUp();
   const menuRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLDivElement>(null);
   const { state } = useGameStore();
 
   const iconWidth = "20px";
 
   const [animatedText, setAnimatedText] = useState(page?.name ?? "");
+  const [dropdownPosition, setDropdownPosition] = useState({ left: 48, bottom: 180 });
 
   // Route detection for Daily Missions behavior
   const isGameplayPage = location.pathname === "/demo" && (state === GameStateEnum.Round || state === GameStateEnum.Rage);
-  const isPopupPage = ["/deck", "/docs", "/map"].includes(location.pathname);
+  const isDropdownPage = isGameplayPage || ["/deck", "/docs", "/map"].includes(location.pathname);
   const isHiddenPage = ["/settings-game", "/plays"].includes(location.pathname);
 
   const handleDailyMissionsClick = () => {
-    if (isPopupPage) {
-      // On deck, docs, or map pages, open large popup
-      setInformation(<DailyMissionsPopup />);
-    } else if (isGameplayPage) {
-      // On gameplay screen, open dropdown menu
+    if (isDropdownPage) {
+      // Open dropdown menu on gameplay, deck, docs, and map pages
       onToggle();
     }
     // On hidden pages, button won't be rendered so this won't be called
   };
+
+  // Calculate dropdown position based on button position
+  useEffect(() => {
+    if (isOpen && buttonRef.current) {
+      const rect = buttonRef.current.getBoundingClientRect();
+      setDropdownPosition({
+        left: rect.right + 10, // 10px spacing from button
+        bottom: window.innerHeight - rect.bottom,
+      });
+    }
+  }, [isOpen]);
 
   const { mainMenuItems, inGameMenuItems, extraMenuItems } =
     useContextMenuItems({
@@ -67,10 +74,13 @@ export const SidebarMenu = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname]);
 
-  // Close menu when clicking outside
+  // Close menu when clicking outside (but not on the button itself)
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+      const clickedInsideMenu = menuRef.current && menuRef.current.contains(event.target as Node);
+      const clickedOnButton = buttonRef.current && buttonRef.current.contains(event.target as Node);
+
+      if (!clickedInsideMenu && !clickedOnButton) {
         onClose();
       }
     };
@@ -119,10 +129,16 @@ export const SidebarMenu = () => {
             {extraMenuItems
               .filter((item) => item.key !== "daily-missions" || !isHiddenPage)
               .map((item) => (
-                <ContextMenuItem
-                  {...item}
-                  onClick={item.key === "daily-missions" ? handleDailyMissionsClick : item.onClick}
-                />
+                <Box
+                  key={item.key}
+                  ref={item.key === "daily-missions" ? buttonRef : undefined}
+                  w="100%"
+                >
+                  <ContextMenuItem
+                    {...item}
+                    onClick={item.key === "daily-missions" ? handleDailyMissionsClick : item.onClick}
+                  />
+                </Box>
               ))}
           </>
         )}
@@ -184,8 +200,8 @@ export const SidebarMenu = () => {
           <MotionBox
             ref={menuRef}
             position="fixed"
-            left="48px"
-            bottom="180px"
+            left={`${dropdownPosition.left}px`}
+            bottom={`${dropdownPosition.bottom}px`}
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
