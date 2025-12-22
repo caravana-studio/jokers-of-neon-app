@@ -617,7 +617,7 @@
       "description": "Sustituye cualquier carta tradicional. ^blue(+200 puntos)^ y ^violet(+2 multi)^"
     },
     "253": {
-      "name": "Comodín de Neón",
+      "name": "Carta Camaleón de Neón",
       "description": "Sustituye cualquier carta de neón"
     }
   },
@@ -835,7 +835,7 @@
       "description": "Comodín que sustituye cualquier carta tradicional. ^blue(+100 puntos)^ y ^violet(+1 multi)^"
     },
     "53": {
-      "name": "Comodín",
+      "name": "Carta Camaleón",
       "description": "Sustituye cualquier carta tradicional"
     }
   },
