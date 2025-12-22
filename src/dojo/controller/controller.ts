@@ -1,9 +1,9 @@
+import { SessionConnector } from "@cartridge/connector";
 import ControllerConnector from "@cartridge/connector/controller";
 import { AuthOptions } from "@cartridge/controller";
-import SessionConnectorWrapper from "./connectorWrapper";
 import { constants, shortString } from "starknet";
-import { policies } from "./policies";
 import { isNative, isNativeAndroid } from "../../utils/capacitorUtils";
+import { policies } from "./policies";
 
 const CHAIN =
   import.meta.env.VITE_SLOT_INSTANCE ||
@@ -38,7 +38,9 @@ const isDev = import.meta.env.VITE_DEV === "true";
 
 const RPC_URL = import.meta.env.VITE_RPC_URL || "http://localhost:5050";
 
-const signupOptions: AuthOptions = isNativeAndroid ? ["google", "discord", "password"] : ["google", "discord", "webauthn", "password"]
+const signupOptions: AuthOptions = isNativeAndroid
+  ? ["google", "discord", "password"]
+  : ["google", "discord", "webauthn", "password"];
 
 const controllerOptions = {
   chains: [{ rpcUrl: RPC_URL }],
@@ -47,7 +49,7 @@ const controllerOptions = {
   namespace: DOJO_NAMESPACE,
   policies,
   slot: undefined,
-  signupOptions
+  signupOptions,
 };
 
 if (CHAIN !== "mainnet" && CHAIN !== "sepolia") {
@@ -58,11 +60,11 @@ export const controller =
   !isDev &&
   (!isNative
     ? new ControllerConnector(controllerOptions)
-    : new SessionConnectorWrapper({
+    : new SessionConnector({
         policies,
         rpc: RPC_URL,
         chainId: defaultChainId,
         redirectUrl: "jokers://open",
         disconnectRedirectUrl: "jokers://open",
-        signupOptions
+        signupOptions,
       }));
