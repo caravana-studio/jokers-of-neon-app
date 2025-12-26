@@ -1,13 +1,13 @@
-import { Divider, Flex, Heading } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import { ReactNode, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Clock } from "../../components/Clock";
 import { DelayedLoading } from "../../components/DelayedLoading";
 import { PositionedDiscordLink } from "../../components/DiscordLink";
 import { Leaderboard } from "../../components/Leaderboard";
-import { MobileDecoration } from "../../components/MobileDecoration";
+import { XpLeaderboard } from "../../components/XpLeaderboard";
+import { Tab, TabPattern } from "../../patterns/tabs/TabPattern";
 import { useTournamentSettings } from "../../queries/useTournamentSettings";
-import { BLUE } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { Podium } from "./Podium";
 import { SeePrizesSwitcher } from "./SeePrizesSwitcher";
@@ -23,100 +23,137 @@ export const LeaderboardPageLayout = ({
   const { t } = useTranslation("home", { keyPrefix: "leaderboard" });
   const { isSmallScreen } = useResponsiveValues();
   const [seePrizes, setSeePrizes] = useState(false);
+  const isTournamentActive = Boolean(tournament?.isActive);
 
-  return (
-    <DelayedLoading ms={200}>
-      <PositionedDiscordLink />
-      <MobileDecoration fadeToBlack />
-      <Flex
-        w="100%"
-        h="100%"
-        flexDir="column"
-        justifyContent="flex-start"
-        alignItems="center"
-      >
-        <Flex
-          w="100%"
-          flexDir="column"
-          h="50px"
-          mt={isSmallScreen ? 6 : "70px"}
-          minHeight={0}
-        >
-          <Flex
-            w="100%"
-            h="30px"
-            justifyContent="space-between"
-            alignItems="center"
-            px={4}
-          >
-            <Heading
-              zIndex={10}
-              variant="italic"
-              fontSize={isSmallScreen ? "sm" : "md"}
-            >
-              {tournament?.isActive
-                ? tournament.isFinished
-                  ? t("finished")
-                  : t("tournament")
-                : t("title")}
-            </Heading>
-            {tournament?.endDate &&
-              tournament.isActive &&
-              !tournament.isFinished && <Clock date={tournament.endDate} />}
-            {tournament?.isActive && (
-              <Flex
-                position="absolute"
-                right={isSmallScreen ? 4 : 5}
-                top={isSmallScreen ? "65px" : "130px"}
-              >
-                <SeePrizesSwitcher onChange={(value) => setSeePrizes(value)} />
-              </Flex>
-            )}
-          </Flex>
-          <Divider borderColor={BLUE} mt={3} />
-        </Flex>
+  const tabs = [
+    <Tab key="game" title={t("tabs.game-leaderboard")}>
+      <Flex w="100%" h="100%" flexDir="column" alignItems="center">
         <Flex
           flexDir="column"
           w="70%"
           h="100%"
           alignItems={"center"}
-          mt={tournament?.isActive ? 4 : 8}
+          mt={isTournamentActive ? 4 : 8}
         >
-          {entriesSection}
           <Flex
             minH={0}
             flexGrow={1}
-            flexDir={isSmallScreen ? "column" : "row"}
+            flexDir="column"
             w="100%"
             alignItems={"center"}
             justifyContent={"center"}
           >
-            {tournament?.isActive && (
-              <Flex
-                w={isSmallScreen ? "100%" : "50%"}
-                zIndex={10}
-                flexDir={"column"}
-                alignItems={"center"}
-                h={isSmallScreen ? "unset" : "100%"}
-              >
-                <Podium seePrizes={seePrizes} />
-              </Flex>
-            )}
-            <Flex
-              w={isSmallScreen || !tournament?.isActive ? "100%" : "50%"}
-              overflowY="auto"
-              h="100%"
-            >
-              <Leaderboard
-                hidePodium={tournament?.isActive}
-                lines={100}
-                mb={isSmallScreen ? "100px" : "200px"}
-                seePrizes={seePrizes}
-              />
-            </Flex>
+            <Leaderboard
+              lines={100}
+              mb={isSmallScreen ? "100px" : "200px"}
+              isTournamentLeaderboard={false}
+            />
           </Flex>
         </Flex>
       </Flex>
+    </Tab>,
+    ...(isTournamentActive
+      ? [
+          <Tab key="tournament" title={t("tabs.tournament-leaderboard")}>
+            <Flex w="100%" h="100%" flexDir="column" alignItems="center">
+              <Flex
+                flexDir="column"
+                w="70%"
+                h="100%"
+                alignItems={"center"}
+                mt={4}
+              >
+                <Flex
+                  w="100%"
+                  justifyContent="space-between"
+                  alignItems="center"
+                  px={isSmallScreen ? 2 : 6}
+                  mb={isSmallScreen ? 2 : 4}
+                >
+                  <Flex>
+                    {tournament?.endDate &&
+                      tournament.isActive &&
+                      !tournament.isFinished && (
+                        <Clock date={tournament.endDate} />
+                      )}
+                  </Flex>
+                  <SeePrizesSwitcher
+                    onChange={(value) => setSeePrizes(value)}
+                  />
+                </Flex>
+                {entriesSection}
+                <Flex
+                  minH={0}
+                  flexGrow={1}
+                  flexDir={isSmallScreen ? "column" : "row"}
+                  w="100%"
+                  alignItems={"center"}
+                  justifyContent={"center"}
+                >
+                  <Flex
+                    w={isSmallScreen ? "100%" : "50%"}
+                    zIndex={10}
+                    flexDir={"column"}
+                    alignItems={"center"}
+                    h={isSmallScreen ? "unset" : "100%"}
+                  >
+                    <Podium seePrizes={seePrizes} />
+                  </Flex>
+                  <Flex
+                    w={isSmallScreen ? "100%" : "50%"}
+                    overflowY="auto"
+                    h="100%"
+                  >
+                    <Leaderboard
+                      hidePodium
+                      lines={100}
+                      mb={isSmallScreen ? "100px" : "200px"}
+                      seePrizes={seePrizes}
+                      isTournamentLeaderboard
+                    />
+                  </Flex>
+                </Flex>
+              </Flex>
+            </Flex>
+          </Tab>,
+        ]
+      : []),
+    <Tab key="xp" title={t("tabs.xp-leaderboard")}>
+      <Flex
+        w="100%"
+        h="100%"
+        flexDir="column"
+        alignItems="center"
+        justifyContent="center"
+      >
+        <Flex
+          flexDir="column"
+          w="70%"
+          h="100%"
+          alignItems={"center"}
+          mt={isTournamentActive ? 4 : 8}
+        >
+          <Flex
+            minH={0}
+            flexGrow={1}
+            flexDir="column"
+            w="100%"
+            alignItems={"center"}
+            justifyContent={"center"}
+          >
+            <XpLeaderboard lines={100} mb={isSmallScreen ? "100px" : "200px"} />
+          </Flex>
+        </Flex>
+      </Flex>
+    </Tab>,
+  ];
+
+  return (
+    <DelayedLoading ms={200}>
+      <PositionedDiscordLink />
+      <TabPattern mobileDecorationProps={{ fadeToBlack: true }}>
+        {tabs}
+      </TabPattern>
     </DelayedLoading>
   );
 };
