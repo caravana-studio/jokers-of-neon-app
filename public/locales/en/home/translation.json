@@ -40,8 +40,15 @@
     "title": "Leaderboard",
     "tournament": "Tournament active",
     "finished": "Tournament finished",
+    "tabs": {
+      "game-leaderboard": "Game leaderboard",
+      "xp-leaderboard": "XP Leaderboard",
+      "tournament-leaderboard": "Tournament leaderboard"
+    },
     "level": "Level ",
     "round": "R ",
+    "xp": "XP",
+    "address": "Address",
     "points": "Points",
     "see-prizes": "See prizes",
     "prizes": {

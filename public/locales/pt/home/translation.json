@@ -40,8 +40,15 @@
     "title": "Classificação",
     "tournament": "Torneio ativo",
     "finished": "Torneio finalizado",
+    "tabs": {
+      "game-leaderboard": "Classificação do jogos",
+      "xp-leaderboard": "Classificação de XP",
+      "tournament-leaderboard": "Classificação do torneio"
+    },
     "level": "Nível ",
     "round": "R ",
+    "xp": "XP",
+    "address": "Endereço",
     "points": "Pontos",
     "see-prizes": "Ver prêmios",
     "prizes": {
