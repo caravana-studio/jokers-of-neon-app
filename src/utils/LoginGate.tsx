@@ -4,7 +4,12 @@ import { Icons } from "../constants/icons";
 import { useDojo } from "../dojo/useDojo";
 import { useProfileStore } from "../state/useProfileStore";
 
-export const LoginGate = ({ children }: { children: React.ReactNode }) => {
+interface LoginGateProps {
+  children: React.ReactNode;
+  translationKey?: string;
+}
+
+export const LoginGate = ({ children, translationKey }: LoginGateProps) => {
   const {
     setup: { useBurnerAcc, client },
     switchToController,
@@ -24,8 +29,8 @@ export const LoginGate = ({ children }: { children: React.ReactNode }) => {
       justifyContent="center"
       alignItems="center"
     >
-      <Text textAlign="center" size="lg">
-        {t("login-to-access")}
+      <Text textAlign="center" size="lg" maxW="80%">
+        {t(translationKey ?? "login-to-access")}
       </Text>
       <Button
         size={["md", "sm"]}

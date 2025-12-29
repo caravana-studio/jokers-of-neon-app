@@ -241,7 +241,8 @@
   "common": {
     "go-back-btn": "Go back",
     "login": "Login",
-    "login-to-access": "Please, login to access this page"
+    "login-to-access": "Please, login to access this page",
+    "login-purchases": "An account is required to purchase items. Your purchases are securely linked to your account and can be accessed across devices."
   },
   "profile-menu": {
     "level": "Level",

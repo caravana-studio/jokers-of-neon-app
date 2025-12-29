@@ -240,7 +240,8 @@
   "common": {
     "go-back-btn": "Atrás",
     "login": "Iniciar sesión",
-    "login-to-access": "Por favor, inicia sesión para acceder a esta página"
+    "login-to-access": "Por favor, inicia sesión para acceder a esta página",
+    "login-purchases": "Se requiere una cuenta para comprar artículos. Tus compras están vinculadas de forma segura a tu cuenta y se pueden acceder desde cualquier dispositivo."
   },
   "profile-menu": {
     "level": "Nivel",
