@@ -240,7 +240,8 @@
   "common": {
     "go-back-btn": "Voltar",
     "login": "Login",
-    "login-to-access": "Por favor, faça login para acessar esta página"
+    "login-to-access": "Por favor, faça login para acessar esta página",
+    "login-purchases": "É necessário uma conta para comprar itens. Suas compras estão vinculadas de forma segura à sua conta e podem ser acessadas em qualquer dispositivo."
   },
   "profile-menu": {
     "level": "Nível",

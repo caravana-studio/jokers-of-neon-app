@@ -327,7 +327,7 @@ export const AppRoutes = () => {
         path="/shop"
         element={
           <AnimatedPage>
-            <LoginGate>
+            <LoginGate translationKey="login-purchases">
               <ShopPage />
             </LoginGate>
           </AnimatedPage>
