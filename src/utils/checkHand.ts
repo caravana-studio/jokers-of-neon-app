@@ -316,7 +316,15 @@ export const checkHand = (
     if (card.suit === Suits.JOKER || card.suit === Suits.WILDCARD) {
       return true;
     }
-    return card.isNeon === true;
+
+    // Check if card has neon modifier applied
+    const modifiers = preSelectedModifiers[card.idx] ?? [];
+    const hasNeonModifier = modifiers.some(modifierIdx => {
+      const modifierCard = hand.find(c => c.idx === modifierIdx);
+      return modifierCard?.card_id === ModifiersId.NEON_MODIFIER;
+    });
+
+    return card.isNeon === true || hasNeonModifier;
   });
 
   return {
