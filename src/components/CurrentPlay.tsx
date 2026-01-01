@@ -6,7 +6,7 @@ import { Plays } from "../enums/plays";
 import { useCurrentHandStore } from "../state/useCurrentHandStore";
 import { useGameStore } from "../state/useGameStore";
 import { useResponsiveValues } from "../theme/responsiveSettings";
-import { calcularMano } from "../utils/checkHand";
+import { checkHand } from "../utils/checkHand";
 
 export const CurrentPlay = () => {
   const {
@@ -45,7 +45,7 @@ export const CurrentPlay = () => {
 
   useEffect(() => {
     if (preSelectedCards.length > 0) {
-      const result = calcularMano(
+      const result = checkHand(
         hand,
         preSelectedCards,
         specialCards,

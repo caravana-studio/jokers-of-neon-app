@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
 import { Plays } from "../../../enums/plays";
-import { calcularMano } from "../../checkHand";
+import { checkHand } from "../../checkHand";
 import {
   H7,
   D7,
@@ -30,67 +30,67 @@ const DQN: Card = { ...DQ, isNeon: true, card_id: 250, img: "250.png" };
 const DKN: Card = { ...DK, isNeon: true, card_id: 251, img: "251.png" };
 const DAN: Card = { ...DA, isNeon: true, card_id: 252, img: "252.png" };
 
-test("calcularMano should return non-neon for regular flush", () => {
+test("checkHand should return non-neon for regular flush", () => {
   const hand = [D10, DJ, DQ, DK, DA, H7, H9];
   const preSelectedCards = [0, 1, 2, 3, 4];
 
-  const result = calcularMano(hand, preSelectedCards, [], {});
+  const result = checkHand(hand, preSelectedCards, [], {});
 
   expect(result.play).toBe(Plays.ROYAL_FLUSH);
   expect(result.isNeon).toBe(false);
 });
 
-test("calcularMano should return neon for all-neon royal flush", () => {
+test("checkHand should return neon for all-neon royal flush", () => {
   const hand = [D10N, DJN, DQN, DKN, DAN, H7, H9];
   const preSelectedCards = [0, 1, 2, 3, 4];
 
-  const result = calcularMano(hand, preSelectedCards, [], {});
+  const result = checkHand(hand, preSelectedCards, [], {});
 
   expect(result.play).toBe(Plays.ROYAL_FLUSH);
   expect(result.isNeon).toBe(true);
 });
 
-test("calcularMano should return non-neon for mixed neon/regular four of a kind", () => {
+test("checkHand should return non-neon for mixed neon/regular four of a kind", () => {
   const hand = [H7N, D7N, C7, S7, H9];
   const preSelectedCards = [0, 1, 2, 3, 4];
 
-  const result = calcularMano(hand, preSelectedCards, [], {});
+  const result = checkHand(hand, preSelectedCards, [], {});
 
   expect(result.play).toBe(Plays.FOUR_OF_A_KIND);
   expect(result.isNeon).toBe(false);
 });
 
-test("calcularMano should return neon for all-neon four of a kind", () => {
+test("checkHand should return neon for all-neon four of a kind", () => {
   const hand = [H7N, D7N, C7N, S7N, H9N];
   const preSelectedCards = [0, 1, 2, 3, 4];
 
-  const result = calcularMano(hand, preSelectedCards, [], {});
+  const result = checkHand(hand, preSelectedCards, [], {});
 
   expect(result.play).toBe(Plays.FOUR_OF_A_KIND);
   expect(result.isNeon).toBe(true);
 });
 
-test("calcularMano should return non-neon for regular pair", () => {
+test("checkHand should return non-neon for regular pair", () => {
   const hand = [H7, D7, H9];
   const preSelectedCards = [0, 1, 2];
 
-  const result = calcularMano(hand, preSelectedCards, [], {});
+  const result = checkHand(hand, preSelectedCards, [], {});
 
   expect(result.play).toBe(Plays.PAIR);
   expect(result.isNeon).toBe(false);
 });
 
-test("calcularMano should return neon for all-neon pair", () => {
+test("checkHand should return neon for all-neon pair", () => {
   const hand = [H7N, D7N, H9N];
   const preSelectedCards = [0, 1, 2];
 
-  const result = calcularMano(hand, preSelectedCards, [], {});
+  const result = checkHand(hand, preSelectedCards, [], {});
 
   expect(result.play).toBe(Plays.PAIR);
   expect(result.isNeon).toBe(true);
 });
 
-test("calcularMano should handle jokers correctly - neon with jokers", () => {
+test("checkHand should handle jokers correctly - neon with jokers", () => {
   const JOKER: Card = {
     value: Cards.JOKER,
     suit: Suits.JOKER,
@@ -103,13 +103,13 @@ test("calcularMano should handle jokers correctly - neon with jokers", () => {
   const hand = [H7N, D7N, C7N, JOKER, H9];
   const preSelectedCards = [0, 1, 2, 3, 4];
 
-  const result = calcularMano(hand, preSelectedCards, [], {});
+  const result = checkHand(hand, preSelectedCards, [], {});
 
   expect(result.play).toBe(Plays.FOUR_OF_A_KIND);
   expect(result.isNeon).toBe(true); // Jokers don't break neon status
 });
 
-test("calcularMano should handle jokers correctly - non-neon with jokers", () => {
+test("checkHand should handle jokers correctly - non-neon with jokers", () => {
   const JOKER: Card = {
     value: Cards.JOKER,
     suit: Suits.JOKER,
@@ -122,17 +122,17 @@ test("calcularMano should handle jokers correctly - non-neon with jokers", () =>
   const hand = [H7N, D7, C7, JOKER, H9];
   const preSelectedCards = [0, 1, 2, 3, 4];
 
-  const result = calcularMano(hand, preSelectedCards, [], {});
+  const result = checkHand(hand, preSelectedCards, [], {});
 
   expect(result.play).toBe(Plays.FOUR_OF_A_KIND);
   expect(result.isNeon).toBe(false); // Mixed regular and neon cards
 });
 
-test("calcularMano should return false isNeon for empty selection", () => {
+test("checkHand should return false isNeon for empty selection", () => {
   const hand = [H7N, D7N, C7N];
   const preSelectedCards: number[] = [];
 
-  const result = calcularMano(hand, preSelectedCards, [], {});
+  const result = checkHand(hand, preSelectedCards, [], {});
 
   expect(result.play).toBe(Plays.HIGH_CARD);
   expect(result.isNeon).toBe(false);

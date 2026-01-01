@@ -5,13 +5,14 @@
       "Bash(netstat:*)",
       "Bash(findstr:*)",
       "Bash(taskkill:*)",
-      "Bash(dir:*)"
+      "Bash(dir:*)",
       "Bash(cat:*)",
       "Bash(python -c:*)",
       "Bash(mv:*)",
       "Bash(grep:*)",
       "Bash(find:*)",
-      "Bash(git log:*)"
+      "Bash(git log:*)",
+      "Bash(wc:*)"
     ],
     "deny": [],
     "ask": []

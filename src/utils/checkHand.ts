@@ -6,7 +6,7 @@ import { Plays } from "../enums/plays";
 import { Suits } from "../enums/suits";
 import { Card } from "../types/Card";
 
-export const checkHand = (
+const evaluateHand = (
   hand: Card[],
   preSelectedCards: number[],
   specialCards: Card[],
@@ -297,13 +297,13 @@ export interface HandResult {
   isNeon: boolean;
 }
 
-export const calcularMano = (
+export const checkHand = (
   hand: Card[],
   preSelectedCards: number[],
   specialCards: Card[],
   preSelectedModifiers: { [key: number]: number[] }
 ): HandResult => {
-  const play = checkHand(hand, preSelectedCards, specialCards, preSelectedModifiers);
+  const play = evaluateHand(hand, preSelectedCards, specialCards, preSelectedModifiers);
 
   // Check if all preselected cards are neon
   const selectedCards = preSelectedCards.map(cardIdx =>
