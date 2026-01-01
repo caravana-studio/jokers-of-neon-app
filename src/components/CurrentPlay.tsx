@@ -6,13 +6,14 @@ import { Plays } from "../enums/plays";
 import { useCurrentHandStore } from "../state/useCurrentHandStore";
 import { useGameStore } from "../state/useGameStore";
 import { useResponsiveValues } from "../theme/responsiveSettings";
-import { checkHand } from "../utils/checkHand";
+import { calcularMano } from "../utils/checkHand";
 
 export const CurrentPlay = () => {
   const {
     preSelectedPlay,
     setPreSelectedPlay,
     playIsNeon,
+    setPlayIsNeon,
     preSelectedCards,
     hand,
     preSelectedModifiers,
@@ -44,18 +45,20 @@ export const CurrentPlay = () => {
 
   useEffect(() => {
     if (preSelectedCards.length > 0) {
-      let play = checkHand(
+      const result = calcularMano(
         hand,
         preSelectedCards,
         specialCards,
         preSelectedModifiers
       );
-      setPreSelectedPlay(play);
+      setPreSelectedPlay(result.play);
+      setPlayIsNeon(result.isNeon);
       if (plays?.length != 0) {
-        isDebuffedPlay ? resetMultiPoints() : setMultiAndPoints(play);
+        isDebuffedPlay ? resetMultiPoints() : setMultiAndPoints(result.play);
       }
     } else {
       setPreSelectedPlay(Plays.NONE);
+      setPlayIsNeon(false);
       resetMultiPoints();
     }
   }, [preSelectedCards, preSelectedModifiers, isDebuffedPlay]);

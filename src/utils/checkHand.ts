@@ -291,3 +291,36 @@ export const checkHand = (
 
   return Plays.HIGH_CARD;
 };
+
+export interface HandResult {
+  play: Plays;
+  isNeon: boolean;
+}
+
+export const calcularMano = (
+  hand: Card[],
+  preSelectedCards: number[],
+  specialCards: Card[],
+  preSelectedModifiers: { [key: number]: number[] }
+): HandResult => {
+  const play = checkHand(hand, preSelectedCards, specialCards, preSelectedModifiers);
+
+  // Check if all preselected cards are neon
+  const selectedCards = preSelectedCards.map(cardIdx =>
+    hand.find(c => c.idx === cardIdx)
+  ).filter((card): card is Card => card !== undefined);
+
+  // A play is neon if all selected cards (excluding jokers/wildcards) are neon cards
+  const isNeon = selectedCards.length > 0 && selectedCards.every(card => {
+    // Jokers and wildcards don't affect neon status
+    if (card.suit === Suits.JOKER || card.suit === Suits.WILDCARD) {
+      return true;
+    }
+    return card.isNeon === true;
+  });
+
+  return {
+    play,
+    isNeon
+  };
+};
