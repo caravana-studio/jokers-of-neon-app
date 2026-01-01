@@ -12,7 +12,10 @@
       "Bash(grep:*)",
       "Bash(find:*)",
       "Bash(git log:*)",
-      "Bash(wc:*)"
+      "Bash(wc:*)",
+      "Bash(npm run test)",
+      "Bash(npm i:*)",
+      "Bash(npm run test:*)"
     ],
     "deny": [],
     "ask": []
