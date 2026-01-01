@@ -13,5 +13,5 @@ export const testCheckHand = (
     preselectedCardsIdx ?? newCards.map((c) => c.idx),
     specialCards ?? [],
     preSelectedModifiers ?? []
-  );
+  ).play;
 };

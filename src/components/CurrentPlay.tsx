@@ -13,6 +13,7 @@ export const CurrentPlay = () => {
     preSelectedPlay,
     setPreSelectedPlay,
     playIsNeon,
+    setPlayIsNeon,
     preSelectedCards,
     hand,
     preSelectedModifiers,
@@ -44,18 +45,20 @@ export const CurrentPlay = () => {
 
   useEffect(() => {
     if (preSelectedCards.length > 0) {
-      let play = checkHand(
+      const result = checkHand(
         hand,
         preSelectedCards,
         specialCards,
         preSelectedModifiers
       );
-      setPreSelectedPlay(play);
+      setPreSelectedPlay(result.play);
+      setPlayIsNeon(result.isNeon);
       if (plays?.length != 0) {
-        isDebuffedPlay ? resetMultiPoints() : setMultiAndPoints(play);
+        isDebuffedPlay ? resetMultiPoints() : setMultiAndPoints(result.play);
       }
     } else {
       setPreSelectedPlay(Plays.NONE);
+      setPlayIsNeon(false);
       resetMultiPoints();
     }
   }, [preSelectedCards, preSelectedModifiers, isDebuffedPlay]);

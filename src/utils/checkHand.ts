@@ -6,7 +6,7 @@ import { Plays } from "../enums/plays";
 import { Suits } from "../enums/suits";
 import { Card } from "../types/Card";
 
-export const checkHand = (
+const evaluateHand = (
   hand: Card[],
   preSelectedCards: number[],
   specialCards: Card[],
@@ -290,4 +290,45 @@ export const checkHand = (
   }
 
   return Plays.HIGH_CARD;
+};
+
+export interface HandResult {
+  play: Plays;
+  isNeon: boolean;
+}
+
+export const checkHand = (
+  hand: Card[],
+  preSelectedCards: number[],
+  specialCards: Card[],
+  preSelectedModifiers: { [key: number]: number[] }
+): HandResult => {
+  const play = evaluateHand(hand, preSelectedCards, specialCards, preSelectedModifiers);
+
+  // Check if all preselected cards are neon
+  const selectedCards = preSelectedCards.map(cardIdx =>
+    hand.find(c => c.idx === cardIdx)
+  ).filter((card): card is Card => card !== undefined);
+
+  // A play is neon if all selected cards (excluding jokers/wildcards) are neon cards
+  const isNeon = selectedCards.length > 0 && selectedCards.every(card => {
+    // Jokers and wildcards don't affect neon status
+    if (card.suit === Suits.JOKER || card.suit === Suits.WILDCARD) {
+      return true;
+    }
+
+    // Check if card has neon modifier applied
+    const modifiers = preSelectedModifiers[card.idx] ?? [];
+    const hasNeonModifier = modifiers.some(modifierIdx => {
+      const modifierCard = hand.find(c => c.idx === modifierIdx);
+      return modifierCard?.card_id === ModifiersId.NEON_MODIFIER;
+    });
+
+    return card.isNeon === true || hasNeonModifier;
+  });
+
+  return {
+    play,
+    isNeon
+  };
 };
