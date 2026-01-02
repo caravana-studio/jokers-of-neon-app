@@ -7,6 +7,7 @@ import {
   ModalContent,
   ModalOverlay,
   Text,
+  Button,
 } from "@chakra-ui/react";
 import { keyframes } from "@emotion/react";
 import { useEffect, useState } from "react";
@@ -15,6 +16,8 @@ import { Trans, useTranslation } from "react-i18next";
 import { useSeason } from "../queries/useSeason";
 import { VIOLET_LIGHT } from "../theme/colors";
 import { Clock } from "./Clock";
+
+const XP_BOOSTER_DISMISS_KEY = "xpBoosterDismissedFinishDate";
 
 const coinPulse = keyframes`
   0% {
@@ -46,12 +49,17 @@ interface XpBoosterProps {
 
 export const XpBoosterModal = () => {
   const [open, setOpen] = useState(true);
+  const [dismissedFinishDate, setDismissedFinishDate] = useState<
+    string | null
+  >(null);
   const [now, setNow] = useState(() => Date.now());
   const { season } = useSeason();
+  const { t } = useTranslation(["home"]);
 
   const xpEvent = season?.xpEvent;
   const eventStart = xpEvent?.startDate;
   const eventFinish = xpEvent?.finishDate;
+  const eventFinishIso = eventFinish?.toISOString();
 
   const isWithinWindow =
     !!eventStart &&
@@ -59,7 +67,8 @@ export const XpBoosterModal = () => {
     now >= eventStart.getTime() &&
     now < eventFinish.getTime();
 
-  const isOpen = open && isWithinWindow;
+  const isDismissed = !!eventFinishIso && dismissedFinishDate === eventFinishIso;
+  const isOpen = open && isWithinWindow && !isDismissed;
 
   useEffect(() => {
     if (!eventStart || !eventFinish) return;
@@ -67,6 +76,28 @@ export const XpBoosterModal = () => {
     const interval = window.setInterval(() => setNow(Date.now()), 30_000);
     return () => window.clearInterval(interval);
   }, [eventFinish, eventStart]);
+
+  useEffect(() => {
+    if (!eventFinishIso) return;
+    setOpen(true);
+    try {
+      const stored = window.localStorage.getItem(XP_BOOSTER_DISMISS_KEY);
+      setDismissedFinishDate(stored);
+    } catch (error) {
+      console.warn("Failed to read xp booster dismissal preference", error);
+    }
+  }, [eventFinishIso]);
+
+  const handleDontShowAgain = () => {
+    if (!eventFinishIso) return;
+    try {
+      window.localStorage.setItem(XP_BOOSTER_DISMISS_KEY, eventFinishIso);
+      setDismissedFinishDate(eventFinishIso);
+    } catch (error) {
+      console.warn("Failed to persist xp booster dismissal preference", error);
+    }
+    setOpen(false);
+  };
 
   if (!eventFinish || !eventStart) {
     return null;
@@ -81,9 +112,14 @@ export const XpBoosterModal = () => {
       autoFocus={false}
     >
       <ModalOverlay bg="rgba(0, 0, 0, 0.6)" />
-      <ModalContent p={3} overflow="visible">
+      <ModalContent p={3} overflow="visible" position="relative">
         <ModalCloseButton m={4} />
         <XpBooster finishDate={eventFinish} />
+        <Flex justifyContent="center" mt={4}>
+          <Button variant="ghost" size="sm" onClick={handleDontShowAgain}>
+            {t("home.xpBooster.dontShowAgain")}
+          </Button>
+        </Flex>
       </ModalContent>
     </Modal>
   );

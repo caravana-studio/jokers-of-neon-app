@@ -11,7 +11,8 @@
       "title": "DOBLE XP",
       "subtitle": "EVENTO POR TIEMPO LIMITADO",
       "headline": "Todas tus ganancias de <xp>XP</xp> se <double>duplican</double> mientras este evento esté activo",
-      "countdownLabel": "Termina en:"
+      "countdownLabel": "Termina en:",
+      "dontShowAgain": "No mostrar de nuevo"
     },
     "leaderboard-banner": {
       "title": "Clasificación",
