@@ -7,6 +7,12 @@
       "start": "Empezar"
     },
     "join-discord": "¡Únete a nuestro Discord!",
+    "xpBooster": {
+      "title": "DOBLE XP",
+      "subtitle": "EVENTO POR TIEMPO LIMITADO",
+      "headline": "Todas tus ganancias de <xp>XP</xp> se <double>duplican</double> mientras este evento esté activo",
+      "countdownLabel": "Termina en:"
+    },
     "leaderboard-banner": {
       "title": "Clasificación",
       "button": "Clasificación completa"

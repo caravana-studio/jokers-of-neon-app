@@ -7,6 +7,12 @@
       "start": "Começar"
     },
     "join-discord": "Junte-se ao nosso Discord!",
+    "xpBooster": {
+      "title": "XP EM DOBRO",
+      "subtitle": "EVENTO POR TEMPO LIMITADO",
+      "headline": "Todo o seu ganho de <xp>XP</xp> fica <double>duplicado</double> enquanto este evento estiver ativo",
+      "countdownLabel": "Termina em:"
+    },
     "leaderboard-banner": {
       "title": "Classificação",
       "button": "Classificação completa"

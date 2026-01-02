@@ -7,6 +7,12 @@
       "start": "Start"
     },
     "join-discord": "Join our Discord!",
+    "xpBooster": {
+      "title": "DOUBLE XP",
+      "subtitle": "LIMITED TIME EVENT",
+      "headline": "All your <xp>XP</xp> gains are <double>DOUBLED</double> while this event is live",
+      "countdownLabel": "Ends in:"
+    },
     "leaderboard-banner": {
       "title": "Leaderboard",
       "button": "Full leaderboard"
