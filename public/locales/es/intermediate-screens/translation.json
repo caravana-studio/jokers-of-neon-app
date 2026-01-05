@@ -227,10 +227,10 @@
     "community-mods": "Mods de la comunidad"
   },
   "power-ups": {
-    "title": "Power-ups",
+    "title": "Potenciadores",
     "confirmation-modal": {
-      "title": "Vender power-up",
-      "description": "¿Estás seguro de que quieres vender este power-up a cambio de ¢{{price}}? No hay forma de deshacer esta acción."
+      "title": "Vender potenciador",
+      "description": "¿Estás seguro de que quieres vender este potenciador a cambio de ¢{{price}}? No hay forma de deshacer esta acción."
     }
   },
   "open-lootbox": {
