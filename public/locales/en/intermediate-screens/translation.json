@@ -264,6 +264,17 @@
     "title": "Collection",
     "no-collection": "Please login to see your collection",
     "login": "Login",
+    "intro": {
+      "summary": "Each season brings a new set of exclusive special cards. Unlock them from packs to use them in game and track them here.",
+      "learn-more": "Learn more",
+      "popup-title": "How collection works",
+      "points": {
+        "1": "Each season adds new special cards that are only available for that season.",
+        "2": "You unlock cards by obtaining them from packs.",
+        "3": "Packs unlock as you earn XP by completing daily missions and passing levels each day.",
+        "4": "Once a special card is in your collection, it is unlocked inside the game."
+      }
+    },
     "collections": {
       "traditionals": "Traditional Cards",
       "neons": "Neon Cards",
