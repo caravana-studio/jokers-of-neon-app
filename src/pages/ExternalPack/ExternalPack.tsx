@@ -1,7 +1,7 @@
 import { Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { faCaretRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { GalaxyBackground } from "../../components/backgrounds/galaxy/GalaxyBackground";
@@ -102,7 +102,13 @@ export const ExternalPack = ({
     [isSmallScreen]
   );
 
+  const [obtainedCards, setObtainedCards] = useState<SimplifiedCard[]>(
+    initialCardsSource ?? []
+  );
   const [highlightedCard, setHighlightedCard] = useState<number | null>(null);
+  const resolvedHighlightedCard =
+    highlightedCard ?? obtainedCards?.[0]?.card_id ?? null;
+
   const {
     name,
     description,
@@ -112,16 +118,42 @@ export const ExternalPack = ({
     rarity,
     temporaryPrice,
     details,
-  } = getCardData(highlightedCard ?? 0);
+  } =
+    resolvedHighlightedCard !== null
+      ? getCardData(resolvedHighlightedCard)
+      : {
+          name: "",
+          description: "",
+          type: CardTypes.NONE,
+        };
 
   const navigate = useNavigate();
-
-  const [obtainedCards, setObtainedCards] = useState<SimplifiedCard[]>(
-    initialCardsSource ?? []
-  );
   const highlightedCardSkin =
-    obtainedCards.find((card) => card.card_id === highlightedCard)?.skin_id ??
-    0;
+    obtainedCards.find((card) => card.card_id === resolvedHighlightedCard)
+      ?.skin_id ?? 0;
+
+  const cardsData = useMemo(
+    () =>
+      obtainedCards.map((card, index) => ({
+        id: index,
+        cardId: card.card_id,
+        img: `/Cards/${card.card_id}${card.skin_id !== 0 ? `_sk${card.skin_id}` : ""}.png`,
+      })),
+    [obtainedCards]
+  );
+
+  // Ensure the first render highlights the first real card instead of the fallback (ID 0 / 2 de trébol).
+  useEffect(() => {
+    if (resolvedHighlightedCard === null && obtainedCards.length > 0) {
+      setHighlightedCard(obtainedCards[0].card_id);
+    }
+  }, [obtainedCards, resolvedHighlightedCard]);
+
+  useEffect(() => {
+    if (obtainedCards.length > 0) {
+      console.info("[ExternalPack] cards received:", obtainedCards.map((c) => c.card_id), "highlighted:", resolvedHighlightedCard);
+    }
+  }, [obtainedCards, resolvedHighlightedCard]);
   return (
     <DelayedLoading ms={100}>
       <GalaxyBackground
@@ -341,11 +373,7 @@ export const ExternalPack = ({
                     width: packWidth - 10,
                     height: packHeight - 40,
                   }}
-                  cardsData={obtainedCards.map((card, index) => ({
-                    id: index,
-                    cardId: card.card_id,
-                    img: `/Cards/${card.card_id}${card.skin_id !== 0 ? `_sk${card.skin_id}` : ""}.png`,
-                  }))}
+                  cardsData={cardsData}
                   onCardChange={(cardId) => {
                     setHighlightedCard(cardId);
                   }}
