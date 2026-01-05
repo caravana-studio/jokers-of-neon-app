@@ -97,7 +97,11 @@ export const MyCollectionPage = () => {
           overflowY="auto"
         >
           <Flex px={6} justifyContent="center">
-            <Text fontSize="sm" color="gray.200" textAlign="center">
+            <Text
+              fontSize={{ base: "sm", md: "md" }}
+              color="gray.200"
+              textAlign="center"
+            >
               {t("intro.summary")}{" "}
               <Button
                 variant="ghost"
