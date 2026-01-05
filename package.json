@@ -27,6 +27,7 @@
     "@capacitor/browser": "^7.0.2",
     "@capacitor/cli": "^7.4.1",
     "@capacitor/core": "^7.4.1",
+    "@capacitor/device": "^7.0.3",
     "@capacitor/haptics": "^7.0.2",
     "@capacitor/ios": "^7.4.1",
     "@capacitor/preferences": "^7.0.2",
