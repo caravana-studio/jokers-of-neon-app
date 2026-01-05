@@ -350,7 +350,7 @@
     },
     "10113": {
       "name": "Rompedor de Rages",
-      "description": "Gana ^violet(+2 multi)^ (acumulativos) por cada Rage derrotada. ^violet(Actualmente +{{multi}} multi)^."
+      "description": "Gana ^violet(+3 multi)^ (acumulativos) por cada Rage derrotada. ^violet(Actualmente +{{multi}} multi)^."
     },
     "10114": {
       "name": "Recompensas Quemadas",
