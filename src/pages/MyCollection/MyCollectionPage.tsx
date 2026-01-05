@@ -50,10 +50,10 @@ export const MyCollectionPage = () => {
         </Heading>
         <Divider borderColor={BLUE} />
         <VStack align="start" spacing={3}>
-          <Text fontSize="sm">{t("intro.points.1")}</Text>
-          <Text fontSize="sm">{t("intro.points.2")}</Text>
-          <Text fontSize="sm">{t("intro.points.3")}</Text>
-          <Text fontSize="sm">{t("intro.points.4")}</Text>
+          <Text fontSize={{ base: "sm", md: "md" }}>{t("intro.points.1")}</Text>
+          <Text fontSize={{ base: "sm", md: "md" }}>{t("intro.points.2")}</Text>
+          <Text fontSize={{ base: "sm", md: "md" }}>{t("intro.points.3")}</Text>
+          <Text fontSize={{ base: "sm", md: "md" }}>{t("intro.points.4")}</Text>
         </VStack>
       </VStack>
     ),
