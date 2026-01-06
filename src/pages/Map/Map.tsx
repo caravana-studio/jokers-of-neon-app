@@ -83,7 +83,7 @@ export const Map = () => {
   };
 
   const handleGoClick = async () => {
-    if (!selectedNodeData) return;
+    if (!selectedNodeData || isNodeTransactionPending) return;
 
     const navigateToNode = async () => {
       switch (selectedNodeData?.nodeType) {
@@ -163,6 +163,7 @@ export const Map = () => {
                 ? {
                     onClick: handleGoClick,
                     label: t("go"),
+                    disabled: isNodeTransactionPending,
                   }
                 : undefined
             }
