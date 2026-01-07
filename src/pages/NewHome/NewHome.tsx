@@ -25,6 +25,8 @@ import { useGetMyGames } from "../../queries/useGetMyGames";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { logEvent } from "../../utils/analytics";
 import { APP_URL, isNative } from "../../utils/capacitorUtils";
+import { getFirebasePushToken } from "../../utils/firebasePush";
+import { registerPushNotifications } from "../../utils/registerPushNotifications";
 import { getMajor, getMinor, getPatch } from "../../utils/versionUtils";
 
 export const NewHome = () => {
@@ -65,6 +67,13 @@ export const NewHome = () => {
           console.warn("Preferences.get failed for SKIPPED_VERSION", e);
         }
       });
+
+      const t = setTimeout(async () => {
+        await registerPushNotifications();
+        await getFirebasePushToken();
+      }, 3000);
+
+      return () => clearTimeout(t);
     }
   }, []);
 
