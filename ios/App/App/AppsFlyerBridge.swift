@@ -70,7 +70,7 @@ public class AppsFlyerBridge: CAPPlugin {
     }
     
     @objc func getAppsFlyerUID(_ call: CAPPluginCall) {
-        let uid = AppsFlyerLib.shared().appsFlyerUID ?? ""
+        let uid = AppsFlyerLib.shared().getAppsFlyerUID()
         call.resolve(["uid": uid])
     }
 }
