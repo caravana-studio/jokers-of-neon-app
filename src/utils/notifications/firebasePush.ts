@@ -1,5 +1,5 @@
 import { Capacitor } from "@capacitor/core";
-import { logEvent } from "./analytics";
+import { logEvent } from "../analytics";
 
 export const getFirebasePushToken = async (): Promise<string | null> => {
   if (!Capacitor.isNativePlatform()) return null;

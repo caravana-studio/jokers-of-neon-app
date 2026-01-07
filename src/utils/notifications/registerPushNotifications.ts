@@ -6,7 +6,7 @@ import {
   Token,
   PermissionStatus,
 } from "@capacitor/push-notifications";
-import { logEvent } from "./analytics";
+import { logEvent } from "../analytics";
 
 let registrationPromise: Promise<void> | null = null;
 
