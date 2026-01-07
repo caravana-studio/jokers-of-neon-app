@@ -51,10 +51,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         open url: URL,
         options: [UIApplication.OpenURLOptionsKey : Any] = [:]
     ) -> Bool {
+        // Handle AppsFlyer deep links (URI schemes)
+        AppsFlyerLib.shared().handleOpen(url, options: options)
+        
         let handledByFB = ApplicationDelegate.shared.application(app, open: url, options: options)
         let handledByCap = ApplicationDelegateProxy.shared.application(app, open: url, options: options)
-        // Note: Deep linking with AppsFlyer will be handled via UDL (Unified Deep Linking)
-        // For now, we follow the basic integration from official docs
         return handledByFB || handledByCap
     }
 
@@ -63,6 +64,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         continue userActivity: NSUserActivity,
         restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void
     ) -> Bool {
+        // Handle AppsFlyer Universal Links
+        AppsFlyerLib.shared().continue(userActivity, restorationHandler: nil)
+        
         return ApplicationDelegateProxy.shared.application(application, continue: userActivity, restorationHandler: restorationHandler)
     }
 }
@@ -70,22 +74,44 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 extension AppDelegate: AppsFlyerLibDelegate {
 
     func onConversionDataSuccess(_ installData: [AnyHashable: Any]) {
+        print("[AppsFlyer] Conversion data received")
+        
+        // Convert install data to JSON string for JavaScript
+        guard let jsonData = try? JSONSerialization.data(withJSONObject: installData),
+              let jsonString = String(data: jsonData, encoding: .utf8) else {
+            print("[AppsFlyer] Failed to serialize conversion data")
+            return
+        }
+        
+        // Send to JavaScript via NotificationCenter (will be picked up by Capacitor)
+        NotificationCenter.default.post(
+            name: NSNotification.Name("AppsFlyerConversionData"),
+            object: nil,
+            userInfo: ["data": jsonString, "type": "conversion"]
+        )
+        
+        // Log for debugging
         if let status = installData["af_status"] as? String {
-            if (status == "Non-organic") {
-                // Business logic for Non-organic install scenario is invoked
+            if status == "Non-organic" {
                 if let sourceID = installData["media_source"],
-                let campaign = installData["campaign"] {
-                    print("This is a Non-organic install. Media source: \(sourceID)  Campaign: \(campaign)")
+                   let campaign = installData["campaign"] {
+                    print("[AppsFlyer] Non-organic install. Media source: \(sourceID) Campaign: \(campaign)")
                 }
-            }
-            else {
-                // Business logic for organic install scenario is invoked
+            } else {
+                print("[AppsFlyer] Organic install")
             }
         }
     }
 
     func onConversionDataFail(_ error: Error) {
-        print(error)
+        print("[AppsFlyer] Conversion data error: \(error.localizedDescription)")
+        
+        // Send error to JavaScript
+        NotificationCenter.default.post(
+            name: NSNotification.Name("AppsFlyerConversionData"),
+            object: nil,
+            userInfo: ["error": error.localizedDescription, "type": "conversion_error"]
+        )
     }
 }
 
@@ -93,51 +119,101 @@ extension AppDelegate: AppsFlyerLibDelegate {
 extension AppDelegate: DeepLinkDelegate {
      
     func didResolveDeepLink(_ result: DeepLinkResult) {
-        var fruitNameStr: String?
         switch result.status {
         case .notFound:
-            NSLog("[AFSDK] Deep link not found")
+            NSLog("[AppsFlyer] Deep link not found")
             return
         case .failure:
-            print("Error %@", result.error!)
+            if let error = result.error {
+                print("[AppsFlyer] Deep link error: \(error.localizedDescription)")
+            }
             return
         case .found:
-            NSLog("[AFSDK] Deep link found")
+            NSLog("[AppsFlyer] Deep link found")
         }
         
-        guard let deepLinkObj:DeepLink = result.deepLink else {
-            NSLog("[AFSDK] Could not extract deep link object")
+        guard let deepLinkObj = result.deepLink else {
+            NSLog("[AppsFlyer] Could not extract deep link object")
             return
         }
         
-        if deepLinkObj.clickEvent.keys.contains("deep_link_sub2") {
-            let ReferrerId:String = deepLinkObj.clickEvent["deep_link_sub2"] as! String
-            NSLog("[AFSDK] AppsFlyer: Referrer ID: \(ReferrerId)")
-        } else {
-            NSLog("[AFSDK] Could not extract referrerId")
-        }
+        // Extract referral data for Jokers of Neon
+        // Expected parameters:
+        // - deep_link_value: "referral" (indicates this is a referral link)
+        // - deep_link_sub1: referral_code (the referral code)
+        // - deep_link_sub2: referrer_address (Starknet address of the referrer)
         
-        let deepLinkStr:String = deepLinkObj.toString()
-        NSLog("[AFSDK] DeepLink data is: \(deepLinkStr)")
+        let deepLinkValue = deepLinkObj.deeplinkValue ?? ""
+        let isDeferred = deepLinkObj.isDeferred
+        
+        NSLog("[AppsFlyer] Deep link value: \(deepLinkValue)")
+        NSLog("[AppsFlyer] Is deferred: \(isDeferred)")
+        
+        // Check if this is a referral link
+        if deepLinkValue == "referral" || deepLinkValue == "ref" {
+            var referralData: [String: Any] = [
+                "type": "referral",
+                "isDeferred": isDeferred,
+                "deepLinkValue": deepLinkValue
+            ]
             
-        if( deepLinkObj.isDeferred == true) {
-            NSLog("[AFSDK] This is a deferred deep link")
-        }
-        else {
-            NSLog("[AFSDK] This is a direct deep link")
-        }
-        
-        fruitNameStr = deepLinkObj.deeplinkValue
-        
-        //If deep_link_value doesn't exist
-        if fruitNameStr == nil || fruitNameStr == "" {
-            //check if fruit_name exists
-            switch deepLinkObj.clickEvent["fruit_name"] {
-                case let s as String:
-                    fruitNameStr = s
-                default:
-                    print("[AFSDK] Could not extract deep_link_value or fruit_name from deep link object with unified deep linking")
-                    return
+            // Extract referral code (deep_link_sub1)
+            if let referralCode = deepLinkObj.clickEvent["deep_link_sub1"] as? String {
+                referralData["referralCode"] = referralCode
+                NSLog("[AppsFlyer] Referral code: \(referralCode)")
+            }
+            
+            // Extract referrer address (deep_link_sub2)
+            if let referrerAddress = deepLinkObj.clickEvent["deep_link_sub2"] as? String {
+                referralData["referrerAddress"] = referrerAddress
+                NSLog("[AppsFlyer] Referrer address: \(referrerAddress)")
+            }
+            
+            // Extract media source if available (only for direct deep links, not deferred)
+            if !isDeferred, let mediaSource = deepLinkObj.clickEvent["media_source"] as? String {
+                referralData["mediaSource"] = mediaSource
+            }
+            
+            // Extract campaign if available
+            if let campaign = deepLinkObj.clickEvent["campaign"] as? String {
+                referralData["campaign"] = campaign
+            }
+            
+            // Convert to JSON and send to JavaScript
+            if let jsonData = try? JSONSerialization.data(withJSONObject: referralData),
+               let jsonString = String(data: jsonData, encoding: .utf8) {
+                NotificationCenter.default.post(
+                    name: NSNotification.Name("AppsFlyerDeepLink"),
+                    object: nil,
+                    userInfo: ["data": jsonString, "type": "referral"]
+                )
+                NSLog("[AppsFlyer] Referral data sent to JavaScript")
+            }
+        } else {
+            // Handle other deep link types if needed
+            NSLog("[AppsFlyer] Deep link value '\(deepLinkValue)' is not a referral link")
+            
+            // Still send the data to JavaScript for potential other use cases
+            var deepLinkData: [String: Any] = [
+                "type": "deep_link",
+                "deepLinkValue": deepLinkValue,
+                "isDeferred": isDeferred
+            ]
+            
+            // Include all click event data
+            for (key, value) in deepLinkObj.clickEvent {
+                if let keyStr = key as? String {
+                    deepLinkData[keyStr] = value
+                }
+            }
+            
+            if let jsonData = try? JSONSerialization.data(withJSONObject: deepLinkData),
+               let jsonString = String(data: jsonData, encoding: .utf8) {
+                NotificationCenter.default.post(
+                    name: NSNotification.Name("AppsFlyerDeepLink"),
+                    object: nil,
+                    userInfo: ["data": jsonString, "type": "deep_link"]
+                )
             }
         }
     }

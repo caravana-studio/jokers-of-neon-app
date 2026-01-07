@@ -12,6 +12,8 @@ import { Layout } from "./components/Layout";
 import { useDojo } from "./dojo/DojoContext";
 import { useGameActions } from "./dojo/useGameActions";
 import { useUsername } from "./dojo/utils/useUsername";
+import { useAppsFlyerReferral } from "./hooks/useAppsFlyerReferral";
+import { initAppsFlyerReferralListener } from "./utils/appsflyerReferral";
 import { BackgroundAnimationProvider } from "./providers/BackgroundAnimationProvider";
 import { CardAnimationsProvider } from "./providers/CardAnimationsProvider";
 import { CardDataProvider } from "./providers/CardDataProvider";
@@ -30,6 +32,12 @@ function App() {
   const username = useUsername();
 
   const { claimLives } = useGameActions();
+  
+  // Handle AppsFlyer referral data
+  useAppsFlyerReferral();
+  
+  // Handle AppsFlyer referral data
+  useAppsFlyerReferral();
 
   useEffect(() => {
     const askForTracking = async () => {
@@ -55,6 +63,11 @@ function App() {
     });
 
     askForTracking();
+    
+    // Initialize AppsFlyer referral listener
+    initAppsFlyerReferralListener().catch((err) => {
+      console.warn("Failed to initialize AppsFlyer listener:", err);
+    });
   }, []);
 
   return (
