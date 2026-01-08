@@ -10,12 +10,19 @@ import {
 import { CircleFlagLanguage } from "react-circle-flags";
 import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
+import { useOptionalSettings } from "../providers/SettingsProvider";
 import { isNative } from "../utils/capacitorUtils";
 
 const LanguageSwitcher = () => {
   const { i18n } = useTranslation(["home"]);
+  const settings = useOptionalSettings();
+  const currentLanguage = settings?.language ?? i18n.language.substring(0, 2);
 
   const changeLanguage = (lng: string) => {
+    if (settings?.setLanguage) {
+      settings.setLanguage(lng);
+      return;
+    }
     i18n.changeLanguage(lng);
   };
 
@@ -37,7 +44,7 @@ const LanguageSwitcher = () => {
           <CircleFlagLanguage
             style={{ paddingTop: "10px" }}
             width={"25px"}
-            languageCode={i18n.language.substring(0, 2)}
+            languageCode={currentLanguage.substring(0, 2)}
           />
         </MenuButton>
         <MenuList>

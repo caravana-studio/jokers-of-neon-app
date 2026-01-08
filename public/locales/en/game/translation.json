@@ -184,7 +184,14 @@
     "loot-box-transition-colors": {
       "white": "White",
       "black": "Black"
-    }
+    },
+    "push-notifications": "Push notifications",
+    "push-daily-missions": "Daily missions",
+    "push-reminders": "Reminders",
+    "push-events": "Events",
+    "push-daily-packs": "Daily packs",
+    "timezone": "Timezone",
+    "enable-notifications": "Enable notifications"
   },
   "animations": {
     "labels": {
