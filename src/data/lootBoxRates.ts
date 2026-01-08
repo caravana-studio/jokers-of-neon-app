@@ -106,6 +106,49 @@ type PackRatesData = PackItemSection[];
 
 // Pack rates by pack ID
 export const PACK_RATES: Record<number, PackRatesData> = {
+  // Daily Pack (NOT SOLD) (ID: 1)
+  1: [
+    {
+      itemNumber: 1,
+      rates: [
+        { itemType: CardItemType.TRADITIONAL, percentage: 96.0 },
+        { itemType: CardItemType.JOKER, percentage: 2.0 },
+        { itemType: CardItemType.NEON, percentage: 2.0 },
+        { itemType: CardItemType.NEON_JOKER, percentage: 0.0 },
+        { itemType: CardItemType.SPECIAL_C, percentage: 0.0 },
+        { itemType: CardItemType.SPECIAL_B, percentage: 0.0 },
+        { itemType: CardItemType.SPECIAL_A, percentage: 0.0 },
+        { itemType: CardItemType.SPECIAL_S, percentage: 0.0 },
+      ],
+    },
+    {
+      itemNumber: 2,
+      rates: [
+        { itemType: CardItemType.TRADITIONAL, percentage: 55.0 },
+        { itemType: CardItemType.JOKER, percentage: 2.0 },
+        { itemType: CardItemType.NEON, percentage: 42.9 },
+        { itemType: CardItemType.NEON_JOKER, percentage: 0.1 },
+        { itemType: CardItemType.SPECIAL_C, percentage: 0.0 },
+        { itemType: CardItemType.SPECIAL_B, percentage: 0.0 },
+        { itemType: CardItemType.SPECIAL_A, percentage: 0.0 },
+        { itemType: CardItemType.SPECIAL_S, percentage: 0.0 },
+      ],
+    },
+    {
+      itemNumber: 3,
+      rates: [
+        { itemType: CardItemType.TRADITIONAL, percentage: 0.0 },
+        { itemType: CardItemType.JOKER, percentage: 5.0 },
+        { itemType: CardItemType.NEON, percentage: 83.0 },
+        { itemType: CardItemType.NEON_JOKER, percentage: 2.0 },
+        { itemType: CardItemType.SPECIAL_C, percentage: 8.0 },
+        { itemType: CardItemType.SPECIAL_B, percentage: 1.9 },
+        { itemType: CardItemType.SPECIAL_A, percentage: 0.1 },
+        { itemType: CardItemType.SPECIAL_S, percentage: 0.0 },
+      ],
+    },
+  ],
+
   // Advanced Pack (ID: 2)
   2: [
     {
