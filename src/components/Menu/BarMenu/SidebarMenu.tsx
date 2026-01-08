@@ -1,14 +1,4 @@
-import {
-  Box,
-  Divider,
-  Flex,
-  Heading,
-  Popover,
-  PopoverBody,
-  PopoverContent,
-  PopoverTrigger,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { Box, Divider, Flex, Heading, useDisclosure } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { matchPath, useNavigate } from "react-router-dom";
 import { useCurrentPageInfo } from "../../../hooks/useCurrentPageInfo";
@@ -16,9 +6,7 @@ import { AnimatedText } from "../../AnimatedText";
 import { LogoutMenuListBtn } from "../Buttons/Logout/LogoutMenuListBtn";
 import { ContextMenuItem } from "../ContextMenuItem";
 import { gameUrls, useContextMenuItems } from "../useContextMenuItems";
-import { MotionBox } from "../../MotionBox";
-import { DailyMissions } from "../../DailyMissions/DailyMissions";
-import { VIOLET } from "../../../theme/colors";
+import { DailyMissionsPopover } from "./DailyMissionsPopover";
 
 export const SidebarMenu = () => {
   const navigate = useNavigate();
@@ -30,6 +18,10 @@ export const SidebarMenu = () => {
   const [animatedText, setAnimatedText] = useState(page?.name ?? "");
 
   const handleDailyMissionsClick = () => {
+    if (isOpen) {
+      onClose();
+      return;
+    }
     onOpen();
   };
 
@@ -80,48 +72,20 @@ export const SidebarMenu = () => {
             {extraMenuItems.map((item) => {
               if (item.key === "daily-missions") {
                 return (
-                  <Popover
+                  <DailyMissionsPopover
                     key={item.key}
                     isOpen={isOpen}
                     onOpen={onOpen}
                     onClose={onClose}
-                    placement="right-start"
-                    closeOnBlur
-                    isLazy
-                  >
-                    <PopoverTrigger>
+                    trigger={
                       <Box w="100%">
                         <ContextMenuItem
                           {...item}
                           onClick={handleDailyMissionsClick}
                         />
                       </Box>
-                    </PopoverTrigger>
-                    <PopoverContent
-                      as={MotionBox}
-                      initial={{ opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: -10 }}
-                      transition={{ duration: 0.15 }}
-                      w="290px"
-                      maxH="400px"
-                      overflowY="auto"
-                      borderRadius="10px"
-                      border="2px solid #DAA1E8FF"
-                      boxShadow={`0px 0px 15px 7px ${VIOLET}`}
-                      bg="rgba(0, 0, 0, 0.95)"
-                      p={0}
-                      sx={{
-                        "&::-webkit-scrollbar": { display: "none" },
-                        "-ms-overflow-style": "none",
-                        "scrollbar-width": "none",
-                      }}
-                    >
-                      <PopoverBody p={4}>
-                        <DailyMissions showTitle fontSize="13px" />
-                      </PopoverBody>
-                    </PopoverContent>
-                  </Popover>
+                    }
+                  />
                 );
               }
 
