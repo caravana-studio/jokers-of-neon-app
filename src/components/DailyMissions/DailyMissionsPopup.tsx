@@ -58,7 +58,6 @@ export const DailyMissionsPopup = () => {
             cursor="pointer"
             onClick={(e) => {
               e.stopPropagation();
-              // El popup se cerrará automáticamente por el provider
             }}
             style={{
               position: "absolute",
