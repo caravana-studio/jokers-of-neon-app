@@ -87,10 +87,7 @@ export const registerPushNotifications = (): Promise<void> => {
           tokenLength: token.value?.length ?? 0,
         });
 
-        // Debug helper: show token on screen even if you don't have logs
-        // Remove this alert when you're done testing.
-
-        // TODO: send the token to your backend if needed.
+        // Token registration is handled in getFirebasePushToken (FirebaseMessaging).
       })
     );
 

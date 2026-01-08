@@ -44,6 +44,7 @@ export const NewHome = () => {
   const banners = settings?.home?.banners || [];
   const {
     setup: { useBurnerAcc },
+    account,
   } = useDojo();
 
   useEffect(() => {
@@ -70,7 +71,7 @@ export const NewHome = () => {
 
       const t = setTimeout(async () => {
         await registerPushNotifications();
-        await getFirebasePushToken();
+        await getFirebasePushToken(account?.account?.address);
       }, 3000);
 
       return () => clearTimeout(t);
