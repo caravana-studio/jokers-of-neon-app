@@ -13,6 +13,8 @@ import { MobileBottomBar } from "../../components/MobileBottomBar";
 import { MobileDecoration } from "../../components/MobileDecoration";
 import { ProfileTile } from "../../components/ProfileTile";
 import SpineAnimation from "../../components/SpineAnimation";
+import { UnclaimedRewards } from "../../components/UnclaimedRewards";
+import { XpBoosterModal } from "../../components/XpBoosterModal";
 import { SKIPPED_VERSION } from "../../constants/localStorage";
 import { APP_VERSION } from "../../constants/version";
 import { useDojo } from "../../dojo/DojoContext";
@@ -24,7 +26,6 @@ import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { logEvent } from "../../utils/analytics";
 import { APP_URL, isNative } from "../../utils/capacitorUtils";
 import { getMajor, getMinor, getPatch } from "../../utils/versionUtils";
-import { UnclaimedRewards } from "../../components/UnclaimedRewards";
 
 export const NewHome = () => {
   const { t } = useTranslation(["home"]);
@@ -108,6 +109,7 @@ export const NewHome = () => {
 
   return (
     <DelayedLoading ms={100}>
+      <XpBoosterModal />
       {!useBurnerAcc && <FreePack />}
       {!useBurnerAcc && <UnclaimedRewards />}
       <PositionedDiscordLink />

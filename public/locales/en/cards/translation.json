@@ -786,7 +786,7 @@
     },
     "10113": {
       "name": "Rage Breaker",
-      "description": "Gain ^violet(+2 multi)^ (stacking) for each Rage defeated. Currently ^violet(+{{multi}} multi)^."
+      "description": "Gain ^violet(+3 multi)^ (stacking) for each Rage defeated. Currently ^violet(+{{multi}} multi)^."
     },
     "10114": {
       "name": "Burning Rewards",
@@ -794,7 +794,7 @@
     },
     "19901": {
       "name": "Lucky Cashback",
-      "description": "50% chance to add ^yellow(+150 cash)^ when player use a play or discard."
+      "description": "50% chance to add ^yellow(+150 cash)^ when playing or discarding."
     },
     "19902": {
       "name": "Resonant Multiplier",

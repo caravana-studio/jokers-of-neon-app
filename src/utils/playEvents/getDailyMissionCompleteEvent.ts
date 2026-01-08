@@ -11,14 +11,17 @@ const DAILY_MISSION_COMPLETE_EVENT_KEY = getEventKey(
 export const getDailyMissionCompleteEvent = (
   events: DojoEvent[]
 ): DailyMissionCompleted[] | undefined => {
+  console.log('events', events);
   return events
     .filter((event) => event.keys[1] === DAILY_MISSION_COMPLETE_EVENT_KEY)
     .map((event) => {
       const player = event.data.at(1) ?? "";
 
-      const txValue = event.data.at(3);
+      const txValue = event.data.at(2);
       const dailyMissionId = decodeString(txValue ?? "");
-
+console.log('dailyMissionId', dailyMissionId);
+console.log('event', event);
+console.log('txValue', txValue);
       return { player, dailyMissionId };
     });
 };

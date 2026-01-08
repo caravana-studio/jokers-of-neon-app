@@ -401,6 +401,7 @@ export const NFTPackRateInfo: React.FC<NFTPackRateInfoProps> = ({
       <InformationIcon
         title="Offering rates"
         informationContent={newInfoContent}
+        unstyledPopup
       />
     </Flex>
   );

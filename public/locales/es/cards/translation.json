@@ -350,7 +350,7 @@
     },
     "10113": {
       "name": "Rompedor de Rages",
-      "description": "Gana ^violet(+2 multi)^ (acumulativos) por cada Rage derrotada. ^violet(Actualmente +{{multi}} multi)^."
+      "description": "Gana ^violet(+3 multi)^ (acumulativos) por cada Rage derrotada. ^violet(Actualmente +{{multi}} multi)^."
     },
     "10114": {
       "name": "Recompensas Quemadas",
@@ -358,7 +358,7 @@
     },
     "19901": {
       "name": "Reembolso Afortunado",
-      "description": "50% de probabilidad de sumar ^yellow(+150 monedas)^ al jugar o descartar una carta."
+      "description": "50% de probabilidad de sumar ^yellow(+150 monedas)^ al jugar o descartar"
     },
     "19902": {
       "name": "Multiplicador Resonante",

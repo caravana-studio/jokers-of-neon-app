@@ -23,7 +23,6 @@ interface TournamentSettings {
   endDate?: Date;
   justFinished?: boolean;
   startCountingAtGameId: number;
-  stopCountingAtGameId: number;
   prizes: Record<number, Prize>;
 }
 
@@ -31,7 +30,6 @@ const defaultTournamentSettings: TournamentSettings = {
   isActive: false,
   isFinished: false,
   startCountingAtGameId: 0,
-  stopCountingAtGameId: 1000000,
   prizes: {},
 };
 
@@ -81,7 +79,6 @@ export const useTournamentSettings = () => {
           startDate: data["startDate"] && new Date(data["startDate"]),
           endDate: data["finishDate"] && new Date(data["finishDate"]),
           startCountingAtGameId: data["start-counting-at-game-id"] || 0,
-          stopCountingAtGameId: data["stop-counting-at-game-id"] || 1000000,
           prizes: getPrizes(data["prizes"]),
         });
       } catch (err) {

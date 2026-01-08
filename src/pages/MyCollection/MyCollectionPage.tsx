@@ -1,10 +1,20 @@
-import { Box, Divider, Flex, Heading, Spinner } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import {
+  Box,
+  Button,
+  Divider,
+  Flex,
+  Heading,
+  Spinner,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { getUserCards } from "../../api/getUserCards";
 import { DelayedLoading } from "../../components/DelayedLoading";
 import { MobileDecoration } from "../../components/MobileDecoration";
 import { useDojo } from "../../dojo/useDojo";
+import { useInformationPopUp } from "../../providers/InformationPopUpProvider";
 import { BLUE } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import CollectionGrid from "./Collection";
@@ -14,6 +24,7 @@ export const MyCollectionPage = () => {
   const {
     account: { account },
   } = useDojo();
+  const { setInformation } = useInformationPopUp();
 
   const [isLoading, setIsLoading] = useState(true);
   const [myCollection, setMyCollection] = useState<Collection[]>([]);
@@ -30,6 +41,24 @@ export const MyCollectionPage = () => {
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "my-collection",
   });
+
+  const infoContent = useMemo(
+    () => (
+      <VStack align="start" spacing={4}>
+        <Heading size="sm" variant="italic">
+          {t("intro.popup-title")}
+        </Heading>
+        <Divider borderColor={BLUE} />
+        <VStack align="start" spacing={3}>
+          <Text fontSize={{ base: "sm", md: "md" }}>{t("intro.points.1")}</Text>
+          <Text fontSize={{ base: "sm", md: "md" }}>{t("intro.points.2")}</Text>
+          <Text fontSize={{ base: "sm", md: "md" }}>{t("intro.points.3")}</Text>
+          <Text fontSize={{ base: "sm", md: "md" }}>{t("intro.points.4")}</Text>
+        </VStack>
+      </VStack>
+    ),
+    [t]
+  );
 
   useEffect(() => {
     if (account?.address) {
@@ -67,6 +96,29 @@ export const MyCollectionPage = () => {
           gap={4}
           overflowY="auto"
         >
+          <Flex px={6} justifyContent="center">
+            <Text
+              fontSize={{ base: "sm", md: "md" }}
+              color="gray.200"
+              textAlign="center"
+            >
+              {t("intro.summary")}{" "}
+              <Button
+                variant="ghost"
+                size="sm"
+                display="inline-flex"
+                verticalAlign="baseline"
+                height="auto"
+                minH="unset"
+                py={0}
+                px={2}
+                lineHeight="inherit"
+                onClick={() => setInformation(infoContent)}
+              >
+                {t("intro.learn-more")}
+              </Button>
+            </Text>
+          </Flex>
           {isLoading ? (
             <Flex w="100%" h="100%" justifyContent="center" alignItems="center">
               <Spinner color="white" />

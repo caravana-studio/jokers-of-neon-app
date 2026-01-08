@@ -227,10 +227,10 @@
     "community-mods": "Mods de la comunidad"
   },
   "power-ups": {
-    "title": "Power-ups",
+    "title": "Potenciadores",
     "confirmation-modal": {
-      "title": "Vender power-up",
-      "description": "¿Estás seguro de que quieres vender este power-up a cambio de ¢{{price}}? No hay forma de deshacer esta acción."
+      "title": "Vender potenciador",
+      "description": "¿Estás seguro de que quieres vender este potenciador a cambio de ¢{{price}}? No hay forma de deshacer esta acción."
     }
   },
   "open-lootbox": {
@@ -263,6 +263,17 @@
     "title": "Colección",
     "no-collection": "Por favor, inicia sesión para ver tu colección",
     "login": "Iniciar sesión",
+    "intro": {
+      "summary": "Cada temporada trae un nuevo set de cartas especiales exclusivas. Desbloquéalas abriendo packs para usarlas en el juego y míralas aquí.",
+      "learn-more": "Aprende más",
+      "popup-title": "Cómo funciona la colección",
+      "points": {
+        "1": "Cada temporada suma nuevas cartas especiales disponibles solo en esa temporada.",
+        "2": "Las cartas se desbloquean cuando las obtienes al abrir packs.",
+        "3": "Los packs se desbloquean al ganar XP completando misiones diarias y pasando niveles cada día.",
+        "4": "Cuando tienes la carta especial en tu colección, queda desbloqueada dentro del juego."
+      }
+    },
     "collections": {
       "traditionals": "Cartas tradicionales",
       "neons": "Cartas de Neón",

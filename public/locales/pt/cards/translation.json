@@ -350,7 +350,7 @@
     },
     "10113": {
       "name": "Quebrador de Rage",
-      "description": "Ganhe ^violet(+2 multi)^ (acumulativo) para cada Rage derrotada. ^violet(Actualmente +{{multi}} multi)^."
+      "description": "Ganhe ^violet(+3 multi)^ (acumulativo) para cada Rage derrotada. ^violet(Actualmente +{{multi}} multi)^."
     },
     "10114": {
       "name": "Recompensas em Chamas",
