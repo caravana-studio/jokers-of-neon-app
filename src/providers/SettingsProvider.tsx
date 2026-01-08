@@ -27,6 +27,18 @@ import { runNativeAudioTask } from "../utils/nativeAudioQueue";
 const delay = (ms: number) =>
   new Promise<void>((resolve) => setTimeout(resolve, ms));
 
+const toWebAssetPath = (path: string) => {
+  const sanitized = path.replace(/^\/+/, "");
+  return `${import.meta.env.BASE_URL}${sanitized}`;
+};
+
+const getHowlSource = (sound?: Howl) => {
+  if (!sound) return null;
+  const src = (sound as any)._src;
+  if (!src) return null;
+  return Array.isArray(src) ? src[0] : src;
+};
+
 interface SettingsContextType {
   sfxOn: boolean;
   setSfxOn: (sfxOn: boolean) => void;
@@ -156,11 +168,14 @@ export const SettingsProvider = ({
         return;
       }
 
-      const currentHowlSource = sound ? (sound as any)._src[0] : null;
+      const resolvedSongPath = currentActiveSongPath
+        ? toWebAssetPath(currentActiveSongPath)
+        : null;
+      const currentHowlSource = getHowlSource(sound);
 
       if (
-        currentActiveSongPath === null ||
-        currentActiveSongPath !== currentHowlSource ||
+        resolvedSongPath === null ||
+        resolvedSongPath !== currentHowlSource ||
         !sound
       ) {
         if (sound) {
@@ -171,9 +186,9 @@ export const SettingsProvider = ({
           }, 1000);
         }
 
-        if (currentActiveSongPath && musicOn) {
+        if (resolvedSongPath && musicOn) {
           const newSound = new Howl({
-            src: [currentActiveSongPath],
+            src: [resolvedSongPath],
             loop: true,
             volume: 0,
           });
@@ -212,7 +227,14 @@ export const SettingsProvider = ({
       }
       clearTimeout(fadeTimeout);
     };
-  }, [currentActiveSongPath, musicOn, musicVolume, isNative, nativePlaybackKey]);
+  }, [
+    currentActiveSongPath,
+    musicOn,
+    musicVolume,
+    isNative,
+    nativePlaybackKey,
+    sound,
+  ]);
 
   useEffect(() => {
     if (isNative) {
