@@ -15,7 +15,7 @@ type RegisterPushDeviceApiResponse = {
   success?: boolean;
 };
 
-const baseUrl = import.meta.env.VITE_GAME_API_URL || DEFAULT_API_BASE_URL;
+const baseUrl = import.meta.env.VITE_GAME_API_URL?.replace(/\/$/, "") || DEFAULT_API_BASE_URL;
 
 function getApiKey(): string {
   const apiKey = import.meta.env.VITE_GAME_API_KEY;

@@ -191,7 +191,8 @@
     "push-events": "Eventos",
     "push-daily-packs": "Pacotes diários",
     "timezone": "Fuso horário",
-    "enable-notifications": "Ativar notificações"
+    "enable-notifications": "Ativar notificações",
+    "android-notifications-help": "Ative as notificações para Jokers of Neon nas configurações do sistema."
   },
   "animations": {
     "labels": {

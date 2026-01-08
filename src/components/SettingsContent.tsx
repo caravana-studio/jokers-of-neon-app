@@ -73,6 +73,7 @@ export const SettingsContent = () => {
   const pushDailyPacksLbl = t("push-daily-packs");
   const timezoneLbl = t("timezone");
   const enableNotificationsLbl = t("enable-notifications");
+  const androidNotificationsHelpLbl = t("android-notifications-help");
 
   const changeLanguage = (lng: string) => {
     setLanguage(lng);
@@ -84,6 +85,9 @@ export const SettingsContent = () => {
   const isPushSupported =
     Capacitor.isNativePlatform() &&
     Capacitor.isPluginAvailable("PushNotifications");
+  const platform = Capacitor.getPlatform();
+  const isIOS = platform === "ios";
+  const isAndroid = platform === "android";
 
   const timezoneOptions = useMemo(() => {
     const hasIntl =
@@ -114,17 +118,23 @@ export const SettingsContent = () => {
     refreshPushPermission();
   }, [refreshPushPermission]);
 
+  const openAppSettings = useCallback(async () => {
+    try {
+      const result = await AppLauncher.openUrl({ url: "app-settings:" });
+      return result.completed;
+    } catch {
+      return false;
+    }
+  }, []);
+
   const handleEnableNotifications = useCallback(async () => {
     if (!isPushSupported) return;
     setPushPermissionLoading(true);
     try {
       const status = await PushNotifications.checkPermissions();
       if (status.receive === "denied") {
-        const settingsUrl = "app-settings:";
-        const canOpen = await AppLauncher.canOpenUrl({ url: settingsUrl });
-        if (canOpen.value) {
-          await AppLauncher.openUrl({ url: settingsUrl });
-        } else {
+        const didOpen = await openAppSettings();
+        if (!didOpen) {
           await PushNotifications.requestPermissions();
         }
       } else {
@@ -134,10 +144,12 @@ export const SettingsContent = () => {
       setPushPermissionLoading(false);
       refreshPushPermission();
     }
-  }, [isPushSupported, refreshPushPermission]);
+  }, [isPushSupported, openAppSettings, refreshPushPermission]);
 
-  const shouldShowEnableNotifications = 
-    isPushSupported && pushPermission !== "granted";
+  const shouldShowEnableNotifications =
+    isPushSupported && isIOS && pushPermission !== "granted";
+  const shouldShowAndroidNotice =
+    isPushSupported && isAndroid && pushPermission !== "granted";
 
   return (
     <Flex gap={4} flexDirection="column" w="85%" alignSelf="center">
@@ -306,7 +318,12 @@ export const SettingsContent = () => {
               </Button>
             </Flex>
           )}
-          {!shouldShowEnableNotifications && (
+          {shouldShowAndroidNotice && (
+            <Text size="sm" textAlign="center">
+              {androidNotificationsHelpLbl}
+            </Text>
+          )}
+          {!shouldShowEnableNotifications && !shouldShowAndroidNotice && (
             <>
               <Flex gap={2} alignItems={"center"}>
                 <Text size="md" width={"50%"}>
