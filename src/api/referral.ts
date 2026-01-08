@@ -2,8 +2,13 @@ const DEFAULT_API_BASE_URL = "http://localhost:3001";
 
 /**
  * Creates or gets a referral code for a user
+ * @param userAddress - User's Starknet address
+ * @param username - Optional username. If not provided, will be fetched from profile
  */
-export async function createReferralCode(userAddress: string): Promise<string> {
+export async function createReferralCode(
+  userAddress: string,
+  username?: string
+): Promise<string> {
   const apiKey = import.meta.env.VITE_GAME_API_KEY;
   if (!apiKey) {
     throw new Error("Missing VITE_GAME_API_KEY environment variable");
@@ -22,6 +27,7 @@ export async function createReferralCode(userAddress: string): Promise<string> {
     },
     body: JSON.stringify({
       user_address: userAddress,
+      username: username,
     }),
   });
 
@@ -41,6 +47,63 @@ export async function createReferralCode(userAddress: string): Promise<string> {
   }
 
   return json.referral_code;
+}
+
+/**
+ * Generates a referral link using the username
+ * Format: jokersofneon.com?ref=username
+ * 
+ * This link should redirect to AppsFlyer OneLink which will:
+ * 1. Redirect to App Store if app not installed
+ * 2. Open app with deep link if app is installed
+ * 
+ * @param referralCode - The referral code (username)
+ * @param referrerAddress - Optional referrer address for AppsFlyer deep link
+ * @returns The referral link
+ */
+export function generateReferralLink(
+  referralCode: string,
+  referrerAddress?: string
+): string {
+  // Base URL - this should be your domain
+  const baseUrl = "https://jokersofneon.com";
+  
+  // Simple referral link format
+  const referralLink = `${baseUrl}?ref=${encodeURIComponent(referralCode)}`;
+  
+  return referralLink;
+}
+
+/**
+ * Generates an AppsFlyer OneLink for referral
+ * This is the actual deep link that AppsFlyer will process
+ * 
+ * @param referralCode - The referral code (username)
+ * @param referrerAddress - Referrer's Starknet address
+ * @param oneLinkId - Your AppsFlyer OneLink ID (from dashboard)
+ * @returns The AppsFlyer OneLink URL
+ */
+export function generateAppsFlyerOneLink(
+  referralCode: string,
+  referrerAddress: string,
+  oneLinkId?: string
+): string {
+  // Get OneLink ID from env or use default
+  const linkId = oneLinkId || import.meta.env.VITE_APPSFLYER_ONELINK_ID || "YOUR_ONELINK_ID";
+  
+  // AppsFlyer OneLink format
+  const baseUrl = `https://app.appsflyer.com/${linkId}`;
+  
+  // Parameters for deep linking
+  const params = new URLSearchParams({
+    deep_link_value: "referral",
+    deep_link_sub1: referralCode, // username
+    deep_link_sub2: referrerAddress, // referrer address
+    campaign: "referral",
+    media_source: "user_invite"
+  });
+  
+  return `${baseUrl}?${params.toString()}`;
 }
 
 /**
