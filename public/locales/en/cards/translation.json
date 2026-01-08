@@ -794,7 +794,7 @@
     },
     "19901": {
       "name": "Lucky Cashback",
-      "description": "50% chance to add ^yellow(+150 cash)^ when player use a play or discard."
+      "description": "50% chance to add ^yellow(+150 cash)^ when playing or discarding."
     },
     "19902": {
       "name": "Resonant Multiplier",
