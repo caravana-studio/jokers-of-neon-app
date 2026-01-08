@@ -358,7 +358,7 @@
     },
     "19901": {
       "name": "Reembolso Afortunado",
-      "description": "50% de probabilidad de sumar ^yellow(+150 monedas)^ al jugar o descartar una carta."
+      "description": "50% de probabilidad de sumar ^yellow(+150 monedas)^ al jugar o descartar"
     },
     "19902": {
       "name": "Multiplicador Resonante",
