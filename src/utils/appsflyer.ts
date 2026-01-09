@@ -1,241 +1,201 @@
-import { Capacitor } from "@capacitor/core";
-import { Plugin } from "@capacitor/core";
+import { Capacitor, registerPlugin } from "@capacitor/core";
 
-// AppsFlyer event names for Jokers of Neon
+// =============================================================================
+// APPSFLYER EVENTS
+// =============================================================================
+
 export const AppsFlyerEvents = {
-  // Account events
+  // Account
   ACCOUNT_CREATED: "jn_account_created",
   LOGIN: "jn_login",
-  
-  // Game events
+
+  // Game lifecycle
   GAME_STARTED: "jn_game_started",
   GAME_COMPLETED: "jn_game_completed",
   GAME_WON: "jn_game_won",
   GAME_LOST: "jn_game_lost",
   LEVEL_ACHIEVED: "jn_level_achieved",
   ROUND_COMPLETED: "jn_round_completed",
-  
-  // Progression events
+
+  // Progression
   PROFILE_LEVEL_UP: "jn_profile_level_up",
   DAILY_MISSION_COMPLETED: "jn_daily_mission_completed",
   ACHIEVEMENT_UNLOCKED: "jn_achievement_unlocked",
-  
-  // Store events
+
+  // Store/Purchases
   PACK_OPENED: "jn_pack_opened",
   PACK_PURCHASED: "jn_pack_purchased",
   CARD_PURCHASED: "jn_card_purchased",
   SEASON_PASS_PURCHASED: "jn_season_pass_purchased",
   POWERUP_PURCHASED: "jn_powerup_purchased",
-  
-  // Social events
+
+  // Social/Referral
   REFERRAL_CODE_SHARED: "jn_referral_code_shared",
   REFERRAL_CODE_USED: "jn_referral_code_used",
-  
-  // Tutorial events
+
+  // Tutorial
   TUTORIAL_STARTED: "jn_tutorial_started",
   TUTORIAL_COMPLETED: "jn_tutorial_completed",
 } as const;
 
-interface AppsFlyerPlugin {
+// =============================================================================
+// PLUGIN INTERFACE & REGISTRATION
+// =============================================================================
+
+interface AppsFlyerBridgePlugin {
   setCustomerUserId(options: { customerUserId: string }): Promise<void>;
-  logEvent(options: { eventName: string; eventValues?: Record<string, any> }): Promise<void>;
-  generateInviteLink(options: { userAddress: string }): Promise<{ inviteLink?: string; deepLinkValue?: string; conversionData?: any }>;
+  logEvent(options: { eventName: string; eventValues?: Record<string, unknown> }): Promise<void>;
   getAppsFlyerUID(): Promise<{ uid: string }>;
+  getDeviceId(): Promise<{ deviceId: string }>;
+  addListener(
+    eventName: "conversionData" | "deepLink",
+    listenerFunc: (data: { data: string }) => void
+  ): Promise<{ remove: () => void }>;
 }
 
-// Get the plugin instance
-const getAppsFlyerPlugin = async (): Promise<AppsFlyerPlugin | null> => {
-  if (!Capacitor.isNativePlatform()) {
-    return null;
+// Web stub for non-native platforms
+class AppsFlyerBridgeWeb implements Partial<AppsFlyerBridgePlugin> {
+  async setCustomerUserId(): Promise<void> {}
+  async logEvent(): Promise<void> {}
+  async getAppsFlyerUID(): Promise<{ uid: string }> {
+    return { uid: "" };
   }
-  
-  try {
-    // @ts-ignore - Plugin may not be registered yet
-    const { AppsFlyerPlugin } = await import("@capacitor/core");
-    return AppsFlyerPlugin as AppsFlyerPlugin;
-  } catch (error) {
-    console.warn("[AppsFlyer] Plugin not available:", error);
-    return null;
+  async getDeviceId(): Promise<{ deviceId: string }> {
+    return { deviceId: "" };
   }
-};
+  async addListener(): Promise<{ remove: () => void }> {
+    return { remove: () => {} };
+  }
+}
+
+const AppsFlyerBridge = registerPlugin<AppsFlyerBridgePlugin>("AppsFlyerBridge", {
+  web: () => Promise.resolve(new AppsFlyerBridgeWeb() as AppsFlyerBridgePlugin),
+});
+
+// =============================================================================
+// CORE SDK FUNCTIONS
+// =============================================================================
+
+const isNative = () => Capacitor.isNativePlatform();
 
 /**
- * Set customer user ID (CUID) for AppsFlyer
- * This should be called when user logs in or creates account
+ * Set Customer User ID (CUID) - links AppsFlyer data to your user
+ * Call this when user logs in or creates account
  */
-export const setAppsFlyerCustomerUserId = async (userAddress: string): Promise<void> => {
-  if (!Capacitor.isNativePlatform()) {
-    console.log("[AppsFlyer] Web platform - skipping setCustomerUserId");
+export async function setAppsFlyerCustomerUserId(userAddress: string): Promise<void> {
+  if (!isNative()) {
+    console.log("[AppsFlyer] Web - skipping setCustomerUserId");
     return;
   }
-  
+
   try {
-    const plugin = await getAppsFlyerPlugin();
-    if (plugin) {
-      await plugin.setCustomerUserId({ customerUserId: userAddress });
-      console.log("[AppsFlyer] Customer User ID set:", userAddress);
-    } else {
-      console.warn("[AppsFlyer] Plugin not available");
-    }
+    await AppsFlyerBridge.setCustomerUserId({ customerUserId: userAddress });
+    console.log("[AppsFlyer] CUID set:", userAddress);
   } catch (error) {
-    console.error("[AppsFlyer] Error setting customer user ID:", error);
+    console.error("[AppsFlyer] Failed to set CUID:", error);
   }
-};
+}
 
 /**
  * Log a custom event to AppsFlyer
  */
-export const logAppsFlyerEvent = async (
+export async function logAppsFlyerEvent(
   eventName: string,
-  eventValues?: Record<string, any>
-): Promise<void> => {
-  if (!Capacitor.isNativePlatform()) {
-    console.log(`[AppsFlyer] Web platform - would log event: ${eventName}`, eventValues);
+  eventValues?: Record<string, unknown>
+): Promise<void> {
+  if (!isNative()) {
+    console.log(`[AppsFlyer] Web - event: ${eventName}`, eventValues);
     return;
   }
-  
+
   try {
-    const plugin = await getAppsFlyerPlugin();
-    if (plugin) {
-      await plugin.logEvent({
-        eventName,
-        eventValues: eventValues || {},
-      });
-      console.log(`[AppsFlyer] Event logged: ${eventName}`, eventValues);
-    } else {
-      console.warn("[AppsFlyer] Plugin not available");
-    }
+    await AppsFlyerBridge.logEvent({ eventName, eventValues: eventValues ?? {} });
+    console.log(`[AppsFlyer] Event: ${eventName}`, eventValues);
   } catch (error) {
-    console.error(`[AppsFlyer] Error logging event ${eventName}:`, error);
+    console.error(`[AppsFlyer] Event failed (${eventName}):`, error);
   }
-};
+}
 
 /**
- * Generate an invite link for referrals
+ * Get AppsFlyer UID - unique device identifier
  */
-export const generateAppsFlyerInviteLink = async (
-  userAddress: string
-): Promise<string | null> => {
-  if (!Capacitor.isNativePlatform()) {
-    console.log("[AppsFlyer] Web platform - cannot generate invite link");
-    return null;
-  }
-  
+export async function getAppsFlyerUID(): Promise<string | null> {
+  if (!isNative()) return null;
+
   try {
-    const plugin = await getAppsFlyerPlugin();
-    if (plugin) {
-      const result = await plugin.generateInviteLink({ userAddress });
-      return result.inviteLink || null;
-    } else {
-      console.warn("[AppsFlyer] Plugin not available");
-      return null;
-    }
+    const result = await AppsFlyerBridge.getAppsFlyerUID();
+    return result.uid || null;
   } catch (error) {
-    console.error("[AppsFlyer] Error generating invite link:", error);
+    console.error("[AppsFlyer] Failed to get UID:", error);
     return null;
   }
-};
+}
 
 /**
- * Get AppsFlyer UID
+ * Get Device ID (IDFV on iOS, Android ID on Android)
  */
-export const getAppsFlyerUID = async (): Promise<string | null> => {
-  if (!Capacitor.isNativePlatform()) {
-    return null;
-  }
-  
-  try {
-    const plugin = await getAppsFlyerPlugin();
-    if (plugin) {
-      const result = await plugin.getAppsFlyerUID();
-      return result.uid || null;
-    } else {
-      console.warn("[AppsFlyer] Plugin not available");
-      return null;
-    }
-  } catch (error) {
-    console.error("[AppsFlyer] Error getting UID:", error);
-    return null;
-  }
-};
+export async function getDeviceId(): Promise<string | null> {
+  if (!isNative()) return null;
 
-/**
- * Helper functions for common events
- */
+  try {
+    const result = await AppsFlyerBridge.getDeviceId();
+    return result.deviceId || null;
+  } catch (error) {
+    console.error("[AppsFlyer] Failed to get Device ID:", error);
+    return null;
+  }
+}
+
+// =============================================================================
+// EVENT HELPERS - Typed helpers for common events
+// =============================================================================
+
 export const AppsFlyerHelpers = {
-  // Account events
+  // Account
   logAccountCreated: (userAddress: string, username: string) =>
-    logAppsFlyerEvent(AppsFlyerEvents.ACCOUNT_CREATED, {
-      user_address: userAddress,
-      username: username,
-    }),
+    logAppsFlyerEvent(AppsFlyerEvents.ACCOUNT_CREATED, { user_address: userAddress, username }),
 
   logLogin: (userAddress: string, loginMethod: string) =>
-    logAppsFlyerEvent(AppsFlyerEvents.LOGIN, {
-      user_address: userAddress,
-      login_method: loginMethod,
-    }),
+    logAppsFlyerEvent(AppsFlyerEvents.LOGIN, { user_address: userAddress, login_method: loginMethod }),
 
-  // Game events
+  // Game lifecycle
   logGameStarted: (gameId: number, gameMode: string) =>
-    logAppsFlyerEvent(AppsFlyerEvents.GAME_STARTED, {
-      game_id: gameId,
-      game_mode: gameMode,
-    }),
+    logAppsFlyerEvent(AppsFlyerEvents.GAME_STARTED, { game_id: gameId, game_mode: gameMode }),
 
   logGameCompleted: (gameId: number, score: number, level: number, won: boolean) =>
     logAppsFlyerEvent(AppsFlyerEvents.GAME_COMPLETED, {
       game_id: gameId,
-      score: score,
-      level: level,
+      score,
+      level,
       won: won ? 1 : 0,
     }),
 
   logGameWon: (gameId: number, score: number, level: number) =>
-    logAppsFlyerEvent(AppsFlyerEvents.GAME_WON, {
-      game_id: gameId,
-      score: score,
-      level: level,
-    }),
+    logAppsFlyerEvent(AppsFlyerEvents.GAME_WON, { game_id: gameId, score, level }),
 
   logGameLost: (gameId: number, score: number, level: number) =>
-    logAppsFlyerEvent(AppsFlyerEvents.GAME_LOST, {
-      game_id: gameId,
-      score: score,
-      level: level,
-    }),
+    logAppsFlyerEvent(AppsFlyerEvents.GAME_LOST, { game_id: gameId, score, level }),
 
   logLevelAchieved: (level: number, score: number) =>
-    logAppsFlyerEvent(AppsFlyerEvents.LEVEL_ACHIEVED, {
-      level: level,
-      score: score,
-    }),
+    logAppsFlyerEvent(AppsFlyerEvents.LEVEL_ACHIEVED, { level, score }),
 
   logRoundCompleted: (round: number, score: number) =>
-    logAppsFlyerEvent(AppsFlyerEvents.ROUND_COMPLETED, {
-      round: round,
-      score: score,
-    }),
+    logAppsFlyerEvent(AppsFlyerEvents.ROUND_COMPLETED, { round, score }),
 
-  // Progression events
+  // Progression
   logProfileLevelUp: (level: number, totalXp: number) =>
-    logAppsFlyerEvent(AppsFlyerEvents.PROFILE_LEVEL_UP, {
-      level: level,
-      total_xp: totalXp,
-    }),
+    logAppsFlyerEvent(AppsFlyerEvents.PROFILE_LEVEL_UP, { level, total_xp: totalXp }),
 
-  logDailyMissionCompleted: (missionId: string, missionDifficulty: string) =>
+  logDailyMissionCompleted: (missionId: string, difficulty: string) =>
     logAppsFlyerEvent(AppsFlyerEvents.DAILY_MISSION_COMPLETED, {
       mission_id: missionId,
-      mission_difficulty: missionDifficulty,
+      mission_difficulty: difficulty,
     }),
 
   logAchievementUnlocked: (achievementId: string) =>
-    logAppsFlyerEvent(AppsFlyerEvents.ACHIEVEMENT_UNLOCKED, {
-      achievement_id: achievementId,
-    }),
+    logAppsFlyerEvent(AppsFlyerEvents.ACHIEVEMENT_UNLOCKED, { achievement_id: achievementId }),
 
-  // Store events
+  // Store/Purchases
   logPackOpened: (packId: number, packType: string, cardsReceived: number) =>
     logAppsFlyerEvent(AppsFlyerEvents.PACK_OPENED, {
       pack_id: packId,
@@ -247,35 +207,22 @@ export const AppsFlyerHelpers = {
     logAppsFlyerEvent(AppsFlyerEvents.PACK_PURCHASED, {
       pack_id: packId,
       pack_type: packType,
-      price: price,
-      currency: currency,
+      price,
+      currency,
     }),
 
   logCardPurchased: (cardId: number, rarity: string, price: number) =>
-    logAppsFlyerEvent(AppsFlyerEvents.CARD_PURCHASED, {
-      card_id: cardId,
-      rarity: rarity,
-      price: price,
-    }),
+    logAppsFlyerEvent(AppsFlyerEvents.CARD_PURCHASED, { card_id: cardId, rarity, price }),
 
   logSeasonPassPurchased: (seasonId: number, price: number, currency: string) =>
-    logAppsFlyerEvent(AppsFlyerEvents.SEASON_PASS_PURCHASED, {
-      season_id: seasonId,
-      price: price,
-      currency: currency,
-    }),
+    logAppsFlyerEvent(AppsFlyerEvents.SEASON_PASS_PURCHASED, { season_id: seasonId, price, currency }),
 
   logPowerupPurchased: (powerupId: number, price: number) =>
-    logAppsFlyerEvent(AppsFlyerEvents.POWERUP_PURCHASED, {
-      powerup_id: powerupId,
-      price: price,
-    }),
+    logAppsFlyerEvent(AppsFlyerEvents.POWERUP_PURCHASED, { powerup_id: powerupId, price }),
 
-  // Social events
+  // Social/Referral
   logReferralCodeShared: (referralCode: string) =>
-    logAppsFlyerEvent(AppsFlyerEvents.REFERRAL_CODE_SHARED, {
-      referral_code: referralCode,
-    }),
+    logAppsFlyerEvent(AppsFlyerEvents.REFERRAL_CODE_SHARED, { referral_code: referralCode }),
 
   logReferralCodeUsed: (referralCode: string, referrerAddress: string) =>
     logAppsFlyerEvent(AppsFlyerEvents.REFERRAL_CODE_USED, {
@@ -283,11 +230,9 @@ export const AppsFlyerHelpers = {
       referrer_address: referrerAddress,
     }),
 
-  // Tutorial events
+  // Tutorial
   logTutorialStarted: (tutorialId: string) =>
-    logAppsFlyerEvent(AppsFlyerEvents.TUTORIAL_STARTED, {
-      tutorial_id: tutorialId,
-    }),
+    logAppsFlyerEvent(AppsFlyerEvents.TUTORIAL_STARTED, { tutorial_id: tutorialId }),
 
   logTutorialCompleted: (tutorialId: string, success: boolean) =>
     logAppsFlyerEvent(AppsFlyerEvents.TUTORIAL_COMPLETED, {
@@ -295,3 +240,6 @@ export const AppsFlyerHelpers = {
       success: success ? 1 : 0,
     }),
 };
+
+// Re-export the bridge for referral listener
+export { AppsFlyerBridge };

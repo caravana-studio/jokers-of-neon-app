@@ -1,111 +1,150 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useDojo } from "../dojo/DojoContext";
-import {
-  getPendingReferralData,
-  getPendingConversionData,
-  processReferralData,
-  processConversionData,
-  clearPendingReferralData,
-  clearPendingConversionData,
-  AppsFlyerReferralData,
-  AppsFlyerConversionData,
-} from "../utils/appsflyerReferral";
 import { setAppsFlyerCustomerUserId } from "../utils/appsflyer";
+import {
+  AppsFlyerConversionData,
+  AppsFlyerReferralData,
+  clearPendingConversionData,
+  clearPendingReferralData,
+  getPendingConversionData,
+  getPendingReferralData,
+  isReferralAlreadyProcessed,
+  processConversionData,
+  processReferralData,
+  registerMilestone,
+} from "../utils/appsflyerReferral";
+
+type ProcessingState = "idle" | "processing" | "success" | "error";
+
+interface UseAppsFlyerReferralResult {
+  referralData: AppsFlyerReferralData | null;
+  conversionData: AppsFlyerConversionData | null;
+  state: ProcessingState;
+  retryReferral: () => Promise<void>;
+  registerAccountCreatedMilestone: () => Promise<void>;
+}
 
 /**
- * Hook to handle AppsFlyer referral data
- * Processes referral links and install attribution when user is ready
+ * Hook to handle AppsFlyer referral processing
+ * Automatically processes pending referral/conversion data when user is logged in
  */
-export const useAppsFlyerReferral = () => {
+export function useAppsFlyerReferral(): UseAppsFlyerReferralResult {
   const {
     account: { account },
   } = useDojo();
+
   const [referralData, setReferralData] = useState<AppsFlyerReferralData | null>(null);
   const [conversionData, setConversionData] = useState<AppsFlyerConversionData | null>(null);
-  const [isProcessing, setIsProcessing] = useState(false);
+  const [state, setState] = useState<ProcessingState>("idle");
 
-  useEffect(() => {
-    if (!account?.address) {
+  // Use ref to track if we've already processed for this address
+  const processedAddressRef = useRef<string | null>(null);
+
+  // Process referral data
+  const processReferral = useCallback(async (userAddress: string) => {
+    const pending = getPendingReferralData();
+    if (!pending) return;
+
+    // Skip if already processed for this user
+    if (isReferralAlreadyProcessed(userAddress)) {
+      clearPendingReferralData();
       return;
     }
 
-    // Set customer user ID in AppsFlyer
-    setAppsFlyerCustomerUserId(account.address).catch((err) => {
-      console.warn("[AppsFlyer] Failed to set customer user ID:", err);
-    });
+    setState("processing");
+    try {
+      const success = await processReferralData(pending, userAddress);
+      if (success) {
+        setReferralData(pending);
+        clearPendingReferralData();
+        setState("success");
 
-    // Process pending referral data
-    const processReferral = async () => {
-      const pendingReferral = getPendingReferralData();
-      if (pendingReferral && !isProcessing) {
-        setIsProcessing(true);
-        try {
-          const success = await processReferralData(pendingReferral, account.address);
-          if (success) {
-            setReferralData(pendingReferral);
-            clearPendingReferralData();
-            console.log("[AppsFlyer] Referral processed successfully");
-          } else {
-            // Keep the data for retry later
-            setReferralData(pendingReferral);
-          }
-        } catch (error) {
-          console.error("[AppsFlyer] Error processing referral:", error);
-          setReferralData(pendingReferral);
-        } finally {
-          setIsProcessing(false);
-        }
+        // Auto-register account_created milestone for new referrals
+        await registerMilestone(userAddress, "account_created");
+      } else {
+        setReferralData(pending); // Keep for retry
+        setState("error");
       }
-    };
+    } catch (error) {
+      console.error("[useAppsFlyerReferral] Process error:", error);
+      setReferralData(pending);
+      setState("error");
+    }
+  }, []);
 
-    // Process pending conversion data (install attribution)
-    const processConversion = async () => {
-      const pendingConversion = getPendingConversionData();
-      if (pendingConversion && !isProcessing) {
-        setIsProcessing(true);
-        try {
-          const success = await processConversionData(pendingConversion, account.address);
-          if (success) {
-            setConversionData(pendingConversion);
-            clearPendingConversionData();
-            console.log("[AppsFlyer] Conversion data processed successfully");
-          }
-        } catch (error) {
-          console.error("[AppsFlyer] Error processing conversion:", error);
-        } finally {
-          setIsProcessing(false);
-        }
+  // Process conversion data
+  const processConversion = useCallback(async (userAddress: string) => {
+    const pending = getPendingConversionData();
+    if (!pending) return;
+
+    try {
+      const success = await processConversionData(pending, userAddress);
+      if (success) {
+        setConversionData(pending);
+        clearPendingConversionData();
       }
-    };
+    } catch (error) {
+      console.error("[useAppsFlyerReferral] Conversion error:", error);
+    }
+  }, []);
 
-    // Small delay to ensure API is ready
-    const timer = setTimeout(() => {
-      processReferral();
-      processConversion();
-    }, 1000);
+  // Main effect - runs when user logs in
+  useEffect(() => {
+    const userAddress = account?.address;
+    if (!userAddress) return;
+
+    // Skip if we already processed for this address
+    if (processedAddressRef.current === userAddress) return;
+    processedAddressRef.current = userAddress;
+
+    // Set customer user ID in AppsFlyer SDK
+    setAppsFlyerCustomerUserId(userAddress);
+
+    // Small delay to ensure everything is ready
+    const timer = setTimeout(async () => {
+      await processReferral(userAddress);
+      await processConversion(userAddress);
+    }, 500);
 
     return () => clearTimeout(timer);
-  }, [account?.address, isProcessing]);
+  }, [account?.address, processReferral, processConversion]);
+
+  // Retry failed referral
+  const retryReferral = useCallback(async () => {
+    const userAddress = account?.address;
+    if (!userAddress || !referralData) return;
+
+    setState("processing");
+    try {
+      const success = await processReferralData(referralData, userAddress);
+      if (success) {
+        clearPendingReferralData();
+        setState("success");
+      } else {
+        setState("error");
+      }
+    } catch (error) {
+      console.error("[useAppsFlyerReferral] Retry failed:", error);
+      setState("error");
+    }
+  }, [account?.address, referralData]);
+
+  // Register account created milestone (call after profile creation)
+  const registerAccountCreatedMilestone = useCallback(async () => {
+    const userAddress = account?.address;
+    if (!userAddress) return;
+
+    await registerMilestone(userAddress, "account_created");
+  }, [account?.address]);
 
   return {
     referralData,
     conversionData,
-    isProcessing,
-    retryProcessing: async () => {
-      if (referralData && account?.address) {
-        setIsProcessing(true);
-        try {
-          const success = await processReferralData(referralData, account.address);
-          if (success) {
-            clearPendingReferralData();
-            setReferralData(null);
-          }
-        } catch (error) {
-          console.error("[AppsFlyer] Retry failed:", error);
-        } finally {
-          setIsProcessing(false);
-        }
-      }
-    },
+    state,
+    retryReferral,
+    registerAccountCreatedMilestone,
   };
-};
+}
+
+// Keep the old export name for backwards compatibility
+export { useAppsFlyerReferral as default };

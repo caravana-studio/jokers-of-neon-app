@@ -8,54 +8,51 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        
-        ApplicationDelegate.shared.application(
-            application,
-            didFinishLaunchingWithOptions: launchOptions
-        )
-        
-        // Configure AppsFlyer
-        AppsFlyerLib.shared().appsFlyerDevKey = "GXf8msjiYkKjdxMjgsb6LU"
-        AppsFlyerLib.shared().appleAppID = "6749147020"
-        AppsFlyerLib.shared().deepLinkDelegate = self
-        
-        // Override point for customization after application launch.
+    // MARK: - Application Lifecycle
+
+    func application(
+        _ application: UIApplication,
+        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
+    ) -> Bool {
+        // Initialize Facebook SDK
+        ApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
+
+        // Configure AppsFlyer SDK
+        configureAppsFlyer()
+
         return true
     }
 
-    func applicationWillResignActive(_ application: UIApplication) {
-        // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-        // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
-    }
+    func applicationDidBecomeActive(_ application: UIApplication) {
+        // Activate Facebook events
+        AppEvents.shared.activateApp()
 
-    func applicationDidEnterBackground(_ application: UIApplication) {
-        // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
-        // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+        // Start AppsFlyer SDK - must be called every time app becomes active
+        AppsFlyerLib.shared().start()
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         AppEvents.shared.activateApp()
-        // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
     }
 
-    func applicationDidBecomeActive(_ application: UIApplication) {
-        AppEvents.shared.activateApp()
-        AppsFlyerLib.shared().start()
-    }
+    func applicationWillResignActive(_ application: UIApplication) {}
+    func applicationDidEnterBackground(_ application: UIApplication) {}
+    func applicationWillTerminate(_ application: UIApplication) {}
 
-    func applicationWillTerminate(_ application: UIApplication) { }
+    // MARK: - URL Handling
 
     func application(
         _ app: UIApplication,
         open url: URL,
-        options: [UIApplication.OpenURLOptionsKey : Any] = [:]
+        options: [UIApplication.OpenURLOptionsKey: Any] = [:]
     ) -> Bool {
         // Handle AppsFlyer deep links (URI schemes)
         AppsFlyerLib.shared().handleOpen(url, options: options)
-        
+
+        // Handle Facebook and Capacitor
         let handledByFB = ApplicationDelegate.shared.application(app, open: url, options: options)
         let handledByCap = ApplicationDelegateProxy.shared.application(app, open: url, options: options)
+
         return handledByFB || handledByCap
     }
 
@@ -66,155 +63,168 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     ) -> Bool {
         // Handle AppsFlyer Universal Links
         AppsFlyerLib.shared().continue(userActivity, restorationHandler: nil)
-        
-        return ApplicationDelegateProxy.shared.application(application, continue: userActivity, restorationHandler: restorationHandler)
+
+        return ApplicationDelegateProxy.shared.application(
+            application,
+            continue: userActivity,
+            restorationHandler: restorationHandler
+        )
+    }
+
+    // MARK: - AppsFlyer Configuration
+
+    private func configureAppsFlyer() {
+        let appsFlyer = AppsFlyerLib.shared()
+
+        // Set credentials
+        appsFlyer.appsFlyerDevKey = "GXf8msjiYkKjdxMjgsb6LU"
+        appsFlyer.appleAppID = "6749147020"
+
+        // Set delegates for callbacks
+        appsFlyer.delegate = self
+        appsFlyer.deepLinkDelegate = self
+
+        // Debug mode (disable in production)
+        #if DEBUG
+        appsFlyer.isDebug = true
+        #endif
+
+        NSLog("[AppsFlyer] SDK configured - DevKey: %@, AppID: %@",
+              appsFlyer.appsFlyerDevKey ?? "nil",
+              appsFlyer.appleAppID ?? "nil")
     }
 }
+
+// MARK: - AppsFlyerLibDelegate (Install Attribution)
 
 extension AppDelegate: AppsFlyerLibDelegate {
 
     func onConversionDataSuccess(_ installData: [AnyHashable: Any]) {
-        print("[AppsFlyer] Conversion data received")
-        
-        // Convert install data to JSON string for JavaScript
+        NSLog("[AppsFlyer] Conversion data received")
+
+        // Serialize to JSON for JavaScript
         guard let jsonData = try? JSONSerialization.data(withJSONObject: installData),
               let jsonString = String(data: jsonData, encoding: .utf8) else {
-            print("[AppsFlyer] Failed to serialize conversion data")
+            NSLog("[AppsFlyer] Failed to serialize conversion data")
             return
         }
-        
-        // Send to JavaScript via NotificationCenter (will be picked up by Capacitor)
+
+        // Send to JavaScript via NotificationCenter → AppsFlyerBridge
         NotificationCenter.default.post(
             name: NSNotification.Name("AppsFlyerConversionData"),
             object: nil,
-            userInfo: ["data": jsonString, "type": "conversion"]
+            userInfo: ["data": jsonString]
         )
-        
-        // Log for debugging
+
+        // Log attribution info
         if let status = installData["af_status"] as? String {
             if status == "Non-organic" {
-                if let sourceID = installData["media_source"],
-                   let campaign = installData["campaign"] {
-                    print("[AppsFlyer] Non-organic install. Media source: \(sourceID) Campaign: \(campaign)")
-                }
+                let source = installData["media_source"] as? String ?? "unknown"
+                let campaign = installData["campaign"] as? String ?? "unknown"
+                NSLog("[AppsFlyer] Non-organic install - Source: %@, Campaign: %@", source, campaign)
             } else {
-                print("[AppsFlyer] Organic install")
+                NSLog("[AppsFlyer] Organic install")
             }
         }
     }
 
     func onConversionDataFail(_ error: Error) {
-        print("[AppsFlyer] Conversion data error: \(error.localizedDescription)")
-        
-        // Send error to JavaScript
+        NSLog("[AppsFlyer] Conversion data error: %@", error.localizedDescription)
+
+        // Notify JavaScript of error
         NotificationCenter.default.post(
             name: NSNotification.Name("AppsFlyerConversionData"),
             object: nil,
-            userInfo: ["error": error.localizedDescription, "type": "conversion_error"]
+            userInfo: ["error": error.localizedDescription]
         )
     }
 }
 
+// MARK: - DeepLinkDelegate (Deep Links & Deferred Deep Links)
 
 extension AppDelegate: DeepLinkDelegate {
-     
+
     func didResolveDeepLink(_ result: DeepLinkResult) {
+        // Handle result status
         switch result.status {
         case .notFound:
             NSLog("[AppsFlyer] Deep link not found")
             return
         case .failure:
             if let error = result.error {
-                print("[AppsFlyer] Deep link error: \(error.localizedDescription)")
+                NSLog("[AppsFlyer] Deep link error: %@", error.localizedDescription)
             }
             return
         case .found:
             NSLog("[AppsFlyer] Deep link found")
+        @unknown default:
+            NSLog("[AppsFlyer] Unknown deep link status")
+            return
         }
-        
-        guard let deepLinkObj = result.deepLink else {
+
+        guard let deepLink = result.deepLink else {
             NSLog("[AppsFlyer] Could not extract deep link object")
             return
         }
-        
-        // Extract referral data for Jokers of Neon
-        // Expected parameters:
-        // - deep_link_value: "referral" (indicates this is a referral link)
-        // - deep_link_sub1: referral_code (the referral code)
-        // - deep_link_sub2: referrer_address (Starknet address of the referrer)
-        
-        let deepLinkValue = deepLinkObj.deeplinkValue ?? ""
-        let isDeferred = deepLinkObj.isDeferred
-        
-        NSLog("[AppsFlyer] Deep link value: \(deepLinkValue)")
-        NSLog("[AppsFlyer] Is deferred: \(isDeferred)")
-        
+
+        // Extract deep link data
+        let deepLinkValue = deepLink.deeplinkValue ?? ""
+        let isDeferred = deepLink.isDeferred
+
+        NSLog("[AppsFlyer] Deep link value: %@, isDeferred: %@",
+              deepLinkValue, isDeferred ? "true" : "false")
+
+        // Build data object to send to JavaScript
+        var data: [String: Any] = [
+            "deepLinkValue": deepLinkValue,
+            "isDeferred": isDeferred
+        ]
+
         // Check if this is a referral link
+        // Expected format: deep_link_value = "referral" or "ref"
+        // deep_link_sub1 = referral code (username)
+        // deep_link_sub2 = referrer address
         if deepLinkValue == "referral" || deepLinkValue == "ref" {
-            var referralData: [String: Any] = [
-                "type": "referral",
-                "isDeferred": isDeferred,
-                "deepLinkValue": deepLinkValue
-            ]
-            
+            data["type"] = "referral"
+
             // Extract referral code (deep_link_sub1)
-            if let referralCode = deepLinkObj.clickEvent["deep_link_sub1"] as? String {
-                referralData["referralCode"] = referralCode
-                NSLog("[AppsFlyer] Referral code: \(referralCode)")
+            if let referralCode = deepLink.clickEvent["deep_link_sub1"] as? String {
+                data["referralCode"] = referralCode
+                NSLog("[AppsFlyer] Referral code: %@", referralCode)
             }
-            
+
             // Extract referrer address (deep_link_sub2)
-            if let referrerAddress = deepLinkObj.clickEvent["deep_link_sub2"] as? String {
-                referralData["referrerAddress"] = referrerAddress
-                NSLog("[AppsFlyer] Referrer address: \(referrerAddress)")
+            if let referrerAddress = deepLink.clickEvent["deep_link_sub2"] as? String {
+                data["referrerAddress"] = referrerAddress
+                NSLog("[AppsFlyer] Referrer address: %@", referrerAddress)
             }
-            
-            // Extract media source if available (only for direct deep links, not deferred)
-            if !isDeferred, let mediaSource = deepLinkObj.clickEvent["media_source"] as? String {
-                referralData["mediaSource"] = mediaSource
+
+            // Extract optional attribution data
+            if let mediaSource = deepLink.clickEvent["media_source"] as? String {
+                data["mediaSource"] = mediaSource
             }
-            
-            // Extract campaign if available
-            if let campaign = deepLinkObj.clickEvent["campaign"] as? String {
-                referralData["campaign"] = campaign
-            }
-            
-            // Convert to JSON and send to JavaScript
-            if let jsonData = try? JSONSerialization.data(withJSONObject: referralData),
-               let jsonString = String(data: jsonData, encoding: .utf8) {
-                NotificationCenter.default.post(
-                    name: NSNotification.Name("AppsFlyerDeepLink"),
-                    object: nil,
-                    userInfo: ["data": jsonString, "type": "referral"]
-                )
-                NSLog("[AppsFlyer] Referral data sent to JavaScript")
+            if let campaign = deepLink.clickEvent["campaign"] as? String {
+                data["campaign"] = campaign
             }
         } else {
-            // Handle other deep link types if needed
-            NSLog("[AppsFlyer] Deep link value '\(deepLinkValue)' is not a referral link")
-            
-            // Still send the data to JavaScript for potential other use cases
-            var deepLinkData: [String: Any] = [
-                "type": "deep_link",
-                "deepLinkValue": deepLinkValue,
-                "isDeferred": isDeferred
-            ]
-            
-            // Include all click event data
-            for (key, value) in deepLinkObj.clickEvent {
+            // Non-referral deep link - include all click event data
+            data["type"] = "deep_link"
+            for (key, value) in deepLink.clickEvent {
                 if let keyStr = key as? String {
-                    deepLinkData[keyStr] = value
+                    data[keyStr] = value
                 }
             }
-            
-            if let jsonData = try? JSONSerialization.data(withJSONObject: deepLinkData),
-               let jsonString = String(data: jsonData, encoding: .utf8) {
-                NotificationCenter.default.post(
-                    name: NSNotification.Name("AppsFlyerDeepLink"),
-                    object: nil,
-                    userInfo: ["data": jsonString, "type": "deep_link"]
-                )
-            }
+        }
+
+        // Serialize and send to JavaScript
+        if let jsonData = try? JSONSerialization.data(withJSONObject: data),
+           let jsonString = String(data: jsonData, encoding: .utf8) {
+            NotificationCenter.default.post(
+                name: NSNotification.Name("AppsFlyerDeepLink"),
+                object: nil,
+                userInfo: ["data": jsonString]
+            )
+            NSLog("[AppsFlyer] Deep link data sent to JavaScript")
         }
     }
 }
