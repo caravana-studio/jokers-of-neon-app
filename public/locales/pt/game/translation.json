@@ -184,7 +184,15 @@
     "loot-box-transition-colors": {
       "white": "Branco",
       "black": "Preto"
-    }
+    },
+    "push-notifications": "Notificações push",
+    "push-daily-missions": "Missões diárias",
+    "push-reminders": "Lembretes",
+    "push-events": "Eventos",
+    "push-daily-packs": "Pacotes diários",
+    "timezone": "Fuso horário",
+    "enable-notifications": "Ativar notificações",
+    "android-notifications-help": "Ative as notificações para Jokers of Neon nas configurações do sistema."
   },
   "animations": {
     "labels": {

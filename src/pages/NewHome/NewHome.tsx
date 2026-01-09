@@ -25,6 +25,8 @@ import { useGetMyGames } from "../../queries/useGetMyGames";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { logEvent } from "../../utils/analytics";
 import { APP_URL, isNative } from "../../utils/capacitorUtils";
+import { getFirebasePushToken } from "../../utils/notifications/firebasePush";
+import { registerPushNotifications } from "../../utils/notifications/registerPushNotifications";
 import { getMajor, getMinor, getPatch } from "../../utils/versionUtils";
 
 export const NewHome = () => {
@@ -42,6 +44,7 @@ export const NewHome = () => {
   const banners = settings?.home?.banners || [];
   const {
     setup: { useBurnerAcc },
+    account,
   } = useDojo();
 
   useEffect(() => {
@@ -65,6 +68,13 @@ export const NewHome = () => {
           console.warn("Preferences.get failed for SKIPPED_VERSION", e);
         }
       });
+
+      const t = setTimeout(async () => {
+        await registerPushNotifications();
+        await getFirebasePushToken(account?.account?.address);
+      }, 3000);
+
+      return () => clearTimeout(t);
     }
   }, []);
 
