@@ -12,7 +12,8 @@
       "Bash(grep:*)",
       "Bash(find:*)",
       "Bash(git log:*)",
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "WebFetch(domain:dev.appsflyer.com)"
     ],
     "deny": [],
     "ask": []

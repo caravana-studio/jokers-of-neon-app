@@ -15,6 +15,8 @@ public class AppsFlyerBridge: CAPPlugin, CAPBridgedPlugin {
         CAPPluginMethod(name: "logEvent", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "getAppsFlyerUID", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "getDeviceId", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "generateInviteUrl", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "logInvite", returnType: CAPPluginReturnPromise),
     ]
 
     // MARK: - Lifecycle
@@ -106,5 +108,72 @@ public class AppsFlyerBridge: CAPPlugin, CAPBridgedPlugin {
         let deviceId = UIDevice.current.identifierForVendor?.uuidString ?? ""
         NSLog("[AppsFlyerBridge] Device ID (IDFV): %@", deviceId)
         call.resolve(["deviceId": deviceId])
+    }
+
+    // MARK: - User Invite Methods
+
+    /// Generate a referral invite URL using AppsFlyer SDK
+    /// This creates a OneLink with proper attribution parameters
+    @objc func generateInviteUrl(_ call: CAPPluginCall) {
+        let referralCode = call.getString("referralCode") ?? ""
+        let referrerAddress = call.getString("referrerAddress") ?? ""
+        let channel = call.getString("channel") ?? "mobile_share"
+        let campaign = call.getString("campaign") ?? "referral"
+
+        NSLog("[AppsFlyerBridge] Generating invite URL - code: %@, address: %@", referralCode, referrerAddress)
+
+        AppsFlyerShareInviteHelper.generateInviteUrl(
+            linkGenerator: { generator in
+                // Set deep link value for identifying referral links
+                generator.addParameterValue("referral", forKey: "deep_link_value")
+
+                // Set referral code (username) in sub1
+                generator.addParameterValue(referralCode, forKey: "deep_link_sub1")
+
+                // Set referrer address in sub2
+                generator.addParameterValue(referrerAddress, forKey: "deep_link_sub2")
+
+                // Set attribution parameters
+                generator.setCampaign(campaign)
+                generator.setChannel(channel)
+
+                // Add media source for tracking
+                generator.addParameterValue("user_invite", forKey: "media_source")
+
+                // Add referrer ID for rewards attribution
+                generator.addParameterValue(referrerAddress, forKey: "af_sub1")
+
+                return generator
+            },
+            completionHandler: { [weak self] url in
+                if let url = url {
+                    NSLog("[AppsFlyerBridge] Invite URL generated: %@", url.absoluteString)
+                    call.resolve(["url": url.absoluteString])
+                } else {
+                    NSLog("[AppsFlyerBridge] Failed to generate invite URL")
+                    call.reject("Failed to generate invite URL")
+                }
+            }
+        )
+    }
+
+    /// Log an invite event when user shares their referral link
+    /// This helps track sharing behavior and attribution
+    @objc func logInvite(_ call: CAPPluginCall) {
+        let channel = call.getString("channel") ?? "mobile_share"
+        let referralCode = call.getString("referralCode") ?? ""
+        let referrerAddress = call.getString("referrerAddress") ?? ""
+
+        NSLog("[AppsFlyerBridge] Logging invite - channel: %@, code: %@", channel, referralCode)
+
+        // Log the invite event with parameters
+        AppsFlyerShareInviteHelper.logInvite(channel, parameters: [
+            "campaign": "referral",
+            "referral_code": referralCode,
+            "referrer_address": referrerAddress
+        ])
+
+        NSLog("[AppsFlyerBridge] Invite logged successfully")
+        call.resolve()
     }
 }

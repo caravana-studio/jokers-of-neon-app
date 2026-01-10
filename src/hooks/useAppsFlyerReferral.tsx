@@ -42,26 +42,46 @@ export function useAppsFlyerReferral(): UseAppsFlyerReferralResult {
 
   // Process referral data
   const processReferral = useCallback(async (userAddress: string) => {
+    console.log("[useAppsFlyerReferral] Checking for pending referral data...");
     const pending = getPendingReferralData();
-    if (!pending) return;
+
+    if (!pending) {
+      console.log("[useAppsFlyerReferral] No pending referral data found");
+      return;
+    }
+
+    console.log("[useAppsFlyerReferral] Found pending referral:", {
+      type: pending.type,
+      referralCode: pending.referralCode,
+      referrerAddress: pending.referrerAddress,
+      isDeferred: pending.isDeferred,
+    });
 
     // Skip if already processed for this user
     if (isReferralAlreadyProcessed(userAddress)) {
+      console.log("[useAppsFlyerReferral] Already processed for this user, clearing data");
       clearPendingReferralData();
       return;
     }
 
+    console.log("[useAppsFlyerReferral] Processing referral for user:", userAddress);
     setState("processing");
+
     try {
       const success = await processReferralData(pending, userAddress);
+      console.log("[useAppsFlyerReferral] Process result:", success);
+
       if (success) {
         setReferralData(pending);
         clearPendingReferralData();
         setState("success");
 
         // Auto-register account_created milestone for new referrals
+        console.log("[useAppsFlyerReferral] Registering account_created milestone...");
         await registerMilestone(userAddress, "account_created");
+        console.log("[useAppsFlyerReferral] Milestone registered successfully");
       } else {
+        console.warn("[useAppsFlyerReferral] Processing failed, keeping data for retry");
         setReferralData(pending); // Keep for retry
         setState("error");
       }
@@ -74,14 +94,29 @@ export function useAppsFlyerReferral(): UseAppsFlyerReferralResult {
 
   // Process conversion data
   const processConversion = useCallback(async (userAddress: string) => {
+    console.log("[useAppsFlyerReferral] Checking for pending conversion data...");
     const pending = getPendingConversionData();
-    if (!pending) return;
+
+    if (!pending) {
+      console.log("[useAppsFlyerReferral] No pending conversion data found");
+      return;
+    }
+
+    console.log("[useAppsFlyerReferral] Found pending conversion:", {
+      af_status: pending.af_status,
+      media_source: pending.media_source,
+      campaign: pending.campaign,
+      is_first_launch: pending.is_first_launch,
+    });
 
     try {
       const success = await processConversionData(pending, userAddress);
+      console.log("[useAppsFlyerReferral] Conversion process result:", success);
+
       if (success) {
         setConversionData(pending);
         clearPendingConversionData();
+        console.log("[useAppsFlyerReferral] Conversion data processed and cleared");
       }
     } catch (error) {
       console.error("[useAppsFlyerReferral] Conversion error:", error);
@@ -91,19 +126,30 @@ export function useAppsFlyerReferral(): UseAppsFlyerReferralResult {
   // Main effect - runs when user logs in
   useEffect(() => {
     const userAddress = account?.address;
-    if (!userAddress) return;
+    if (!userAddress) {
+      console.log("[useAppsFlyerReferral] No user address, skipping processing");
+      return;
+    }
 
     // Skip if we already processed for this address
-    if (processedAddressRef.current === userAddress) return;
+    if (processedAddressRef.current === userAddress) {
+      console.log("[useAppsFlyerReferral] Already processed for address:", userAddress);
+      return;
+    }
+
+    console.log("[useAppsFlyerReferral] New user address detected:", userAddress);
     processedAddressRef.current = userAddress;
 
     // Set customer user ID in AppsFlyer SDK
+    console.log("[useAppsFlyerReferral] Setting AppsFlyer CUID...");
     setAppsFlyerCustomerUserId(userAddress);
 
     // Small delay to ensure everything is ready
     const timer = setTimeout(async () => {
+      console.log("[useAppsFlyerReferral] Starting referral/conversion processing...");
       await processReferral(userAddress);
       await processConversion(userAddress);
+      console.log("[useAppsFlyerReferral] Processing complete");
     }, 500);
 
     return () => clearTimeout(timer);

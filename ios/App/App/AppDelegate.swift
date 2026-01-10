@@ -80,6 +80,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         appsFlyer.appsFlyerDevKey = "GXf8msjiYkKjdxMjgsb6LU"
         appsFlyer.appleAppID = "6749147020"
 
+        // Set OneLink ID for User Invite feature (MUST be set before start())
+        // This enables generating referral links via the SDK
+        appsFlyer.appInviteOneLinkID = "H5hv"
+
         // Set delegates for callbacks
         appsFlyer.delegate = self
         appsFlyer.deepLinkDelegate = self
@@ -89,9 +93,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         appsFlyer.isDebug = true
         #endif
 
-        NSLog("[AppsFlyer] SDK configured - DevKey: %@, AppID: %@",
+        NSLog("[AppsFlyer] SDK configured - DevKey: %@, AppID: %@, OneLinkID: %@",
               appsFlyer.appsFlyerDevKey ?? "nil",
-              appsFlyer.appleAppID ?? "nil")
+              appsFlyer.appleAppID ?? "nil",
+              appsFlyer.appInviteOneLinkID ?? "nil")
     }
 }
 
