@@ -40,20 +40,26 @@ Este documento describe cómo probar el flujo completo del sistema de referidos 
 
 ### 1. Configuración de AppsFlyer Dashboard
 
-- [ ] OneLink template configurado con ID: `H5hv`
+- [ ] OneLink template configurado con ID: `2BD9`
+- [ ] Short URL: `https://jokersofneon.onelink.me/2BD9/H5hv`
 - [ ] Deep linking habilitado
 - [ ] Parámetros de deep link configurados:
-  - `deep_link_value`: identificador del tipo de deep link
-  - `deep_link_sub1`: código de referido (username)
-  - `deep_link_sub2`: dirección del referidor
+  - `deep_link_value`: `ref` (identificador del tipo de deep link)
+  - `deep_link_sub1`: (dinámico) código de referido (username)
+  - `deep_link_sub2`: (dinámico) dirección del referidor
+  - `af_sub1`: (dinámico) código de referido (backup)
+  - `af_sub2`: (dinámico) dirección del referidor (backup)
+
+**Nota**: Los parámetros `deep_link_sub1`, `deep_link_sub2`, `af_sub1`, `af_sub2` se pasan dinámicamente cuando se genera el link desde el SDK, NO se configuran con valor fijo en el template.
 
 ### 2. Configuración de iOS
 
-- [ ] `appInviteOneLinkID` configurado en `AppDelegate.swift`
+- [ ] `appInviteOneLinkID = "2BD9"` configurado en `AppDelegate.swift`
 - [ ] Associated Domains configurados en `App.entitlements`:
-  - `applinks:jokersofneon.onelink.me`
-  - `applinks:onelink.me`
-- [ ] Universal Links funcionando
+  - `applinks:jokersofneon.onelink.me` (tu dominio branded)
+  - `applinks:onelink.me` (dominio genérico)
+  - `applinks:app.appsflyer.com`
+- [ ] Universal Links funcionando (verificar en dispositivo real, no simulador)
 
 ### 3. Configuración del Backend
 
@@ -359,33 +365,55 @@ WHERE referrer_address = '0xREFERRER_ADDRESS';
 
 ```
 # iOS Console (Usuario A - Referidor)
-[AppsFlyer] SDK configured - DevKey: GXf..., AppID: 6749..., OneLinkID: H5hv
+[AppsFlyer] SDK configured - DevKey: GXf..., AppID: 6749..., OneLinkID: 2BD9
 [AppsFlyerBridge] Generating invite URL - code: player_one, address: 0xAAA...
-[AppsFlyerBridge] Invite URL generated: https://jokersofneon.onelink.me/H5hv?...
+[AppsFlyerBridge] Invite URL generated: https://jokersofneon.onelink.me/2BD9?deep_link_value=ref&deep_link_sub1=player_one&deep_link_sub2=0xAAA...
 [AppsFlyerBridge] Logging invite - channel: whatsapp, code: player_one
 
 # iOS Console (Usuario B - Referido, después de instalar)
-[AppsFlyer] SDK configured - DevKey: GXf..., AppID: 6749..., OneLinkID: H5hv
+[AppsFlyer] SDK configured - DevKey: GXf..., AppID: 6749..., OneLinkID: 2BD9
 [AppsFlyer] Conversion data received
-[AppsFlyer] Non-organic install - Source: user_invite, Campaign: referral
+[AppsFlyer] Non-organic install - Source: User_invite, Campaign: refferals
 [AppsFlyer] Deep link found
-[AppsFlyer] Deep link value: referral, isDeferred: true
-[AppsFlyer] Referral code: player_one
-[AppsFlyer] Referrer address: 0xAAA...
+[AppsFlyer] Deep link value: ref, isDeferred: true
+[AppsFlyer] Detected referral deep link
+[AppsFlyer] Referral code (deep_link_sub1): player_one
+[AppsFlyer] Referrer address (deep_link_sub2): 0xAAA...
+[AppsFlyer] Click event keys: deep_link_value, deep_link_sub1, deep_link_sub2, af_sub1, af_sub2, ...
 [AppsFlyerBridge] Sending deep link to JavaScript
 
 # JavaScript Console (Usuario B)
 [AppsFlyer Referral] Deep link received: referral, player_one
+[useAppsFlyerReferral] New user address detected: 0xBBB...
+[useAppsFlyerReferral] Setting AppsFlyer CUID...
 [AppsFlyer] CUID set: 0xBBB...
+[useAppsFlyerReferral] Starting referral/conversion processing...
+[useAppsFlyerReferral] Found pending referral: { type: "referral", referralCode: "player_one", ... }
+[useAppsFlyerReferral] Processing referral for user: 0xBBB...
 [AppsFlyer Referral] Claim result: { success: true, referrer_address: "0xAAA..." }
-[AppsFlyer Referral] Milestone registered: account_created
+[useAppsFlyerReferral] Registering account_created milestone...
+[useAppsFlyerReferral] Milestone registered successfully
+[useAppsFlyerReferral] Processing complete
 
 # Backend Logs
-[Referral] Claim request - referee: 0xBBB..., code: player_one
-[Referral] Claim created - referrer: 0xAAA..., referee: 0xBBB...
-[Referral] Milestone - user: 0xBBB..., type: account_created
-[Referral] Milestone created - referrer: 0xAAA..., type: account_created
-[Referral] Distributing rewards for: 0xAAA...
-[Referral] Pack 1 queued for 0xAAA...
-[Referral] Distributed 1 rewards to 0xAAA...
+[Referral] ========================================
+[Referral] CLAIM REQUEST RECEIVED
+[Referral] - Referee address: 0xBBB...
+[Referral] - Referral code: player_one
+[Referral] - Referrer address (provided): 0xAAA...
+[Referral] - Is deferred: true
+[Referral] ========================================
+[Referral] CLAIM CREATED SUCCESSFULLY
+[Referral] - Referrer: 0xAAA...
+[Referral] - Referee: 0xBBB...
+[Referral] ========================================
+[Referral] MILESTONE REGISTRATION
+[Referral] - User address: 0xBBB...
+[Referral] - Milestone type: account_created
+[Referral] Found valid claim - referrer: 0xAAA...
+[Referral] ========================================
+[Referral] MILESTONE CREATED SUCCESSFULLY
+[Referral] - Referrer (will receive reward): 0xAAA...
+[Referral] - Pending reward: pack (amount: 1)
+[Referral] ========================================
 ```

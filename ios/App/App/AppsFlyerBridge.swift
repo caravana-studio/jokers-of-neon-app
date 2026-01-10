@@ -125,7 +125,8 @@ public class AppsFlyerBridge: CAPPlugin, CAPBridgedPlugin {
         AppsFlyerShareInviteHelper.generateInviteUrl(
             linkGenerator: { generator in
                 // Set deep link value for identifying referral links
-                generator.addParameterValue("referral", forKey: "deep_link_value")
+                // Use "ref" to match the OneLink template configuration
+                generator.addParameterValue("ref", forKey: "deep_link_value")
 
                 // Set referral code (username) in sub1
                 generator.addParameterValue(referralCode, forKey: "deep_link_sub1")
@@ -137,11 +138,9 @@ public class AppsFlyerBridge: CAPPlugin, CAPBridgedPlugin {
                 generator.setCampaign(campaign)
                 generator.setChannel(channel)
 
-                // Add media source for tracking
-                generator.addParameterValue("user_invite", forKey: "media_source")
-
-                // Add referrer ID for rewards attribution
-                generator.addParameterValue(referrerAddress, forKey: "af_sub1")
+                // Add referrer info in af_sub parameters for additional tracking
+                generator.addParameterValue(referralCode, forKey: "af_sub1")
+                generator.addParameterValue(referrerAddress, forKey: "af_sub2")
 
                 return generator
             },
