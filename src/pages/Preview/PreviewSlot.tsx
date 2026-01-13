@@ -24,7 +24,7 @@ export const PreviewSlot = () => {
   const { buySpecialSlot } = useStore();
   const { cash } = useGameStore();
 
-  const imgSize = isSmallScreen ? "120px" : "auto";
+  const imgSize = isSmallScreen ? "200px" : "auto";
 
   const notEnoughCash =
     !price ||
