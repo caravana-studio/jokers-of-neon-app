@@ -148,10 +148,10 @@ const toApiMusicVolume = (value: number): number =>
   );
 
 const buildDefaultPreferences = (): UserPreferences => ({
-  push_daily_missions_enabled: true,
+  push_daily_missions_enabled: false,
   push_reminders_enabled: true,
   push_events_enabled: true,
-  push_daily_packs_enabled: true,
+  push_daily_packs_enabled: false,
   push_extra1_enabled: true,
   push_extra2_enabled: true,
   timezone: getDefaultTimezone(),
