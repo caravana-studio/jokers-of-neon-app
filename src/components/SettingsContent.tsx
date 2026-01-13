@@ -15,8 +15,8 @@ import {
 } from "@chakra-ui/react";
 
 import { AppLauncher } from "@capacitor/app-launcher";
-import { PushNotifications } from "@capacitor/push-notifications";
 import { Capacitor } from "@capacitor/core";
+import { PushNotifications } from "@capacitor/push-notifications";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { MdArrowDropDown, MdGraphicEq } from "react-icons/md";
@@ -25,6 +25,7 @@ import {
   animationSpeedLabels,
   lootboxTransitionLabels,
 } from "../constants/settingsLabels";
+import { useDojo } from "../dojo/DojoContext";
 import { Speed } from "../enums/settings";
 import { useSettings } from "../providers/SettingsProvider";
 import { NEON_PINK } from "../theme/colors";
@@ -79,10 +80,13 @@ export const SettingsContent = () => {
     setLanguage(lng);
   };
 
+  const { setup } = useDojo();
+
   const selectedLanguage = languageMap[language] ? language : "en";
   const [pushPermission, setPushPermission] = useState<string | null>(null);
   const [pushPermissionLoading, setPushPermissionLoading] = useState(false);
   const isPushSupported =
+    !setup.useBurnerAcc &&
     Capacitor.isNativePlatform() &&
     Capacitor.isPluginAvailable("PushNotifications");
   const platform = Capacitor.getPlatform();
@@ -344,9 +348,7 @@ export const SettingsContent = () => {
                 <Switch
                   ml="auto"
                   isChecked={pushRemindersEnabled}
-                  onChange={(e) =>
-                    setPushRemindersEnabled(e.target.checked)
-                  }
+                  onChange={(e) => setPushRemindersEnabled(e.target.checked)}
                 />
               </Flex>
               <Flex gap={2} alignItems={"center"}>
@@ -366,9 +368,7 @@ export const SettingsContent = () => {
                 <Switch
                   ml="auto"
                   isChecked={pushDailyPacksEnabled}
-                  onChange={(e) =>
-                    setPushDailyPacksEnabled(e.target.checked)
-                  }
+                  onChange={(e) => setPushDailyPacksEnabled(e.target.checked)}
                 />
               </Flex>
             </>

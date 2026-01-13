@@ -1,4 +1,4 @@
-import { Button, Flex } from "@chakra-ui/react";
+import { Button, Flex, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -9,12 +9,14 @@ import { ConfirmationModal } from "../../components/ConfirmationModal";
 import { DelayedLoading } from "../../components/DelayedLoading";
 import { PositionedDiscordLink } from "../../components/DiscordLink";
 import { FreePack } from "../../components/FreePack";
+import { IconComponent } from "../../components/IconComponent";
 import { MobileBottomBar } from "../../components/MobileBottomBar";
 import { MobileDecoration } from "../../components/MobileDecoration";
 import { ProfileTile } from "../../components/ProfileTile";
 import SpineAnimation from "../../components/SpineAnimation";
 import { UnclaimedRewards } from "../../components/UnclaimedRewards";
 import { XpBoosterModal } from "../../components/XpBoosterModal";
+import { Icons } from "../../constants/icons";
 import { SKIPPED_VERSION } from "../../constants/localStorage";
 import { APP_VERSION } from "../../constants/version";
 import { useDojo } from "../../dojo/DojoContext";
@@ -69,12 +71,19 @@ export const NewHome = () => {
         }
       });
 
-      const t = setTimeout(async () => {
-        await registerPushNotifications();
-        await getFirebasePushToken(account?.account?.address);
-      }, 3000);
+      let timeoutId: ReturnType<typeof setTimeout> | undefined;
+      if (!useBurnerAcc) {
+        timeoutId = setTimeout(async () => {
+          await registerPushNotifications();
+          await getFirebasePushToken(account?.account?.address);
+        }, 3000);
+      }
 
-      return () => clearTimeout(t);
+      return () => {
+        if (timeoutId) {
+          clearTimeout(timeoutId);
+        }
+      };
     }
   }, []);
 
@@ -95,6 +104,10 @@ export const NewHome = () => {
   const handleConfirmTutorial = () => {
     navigate("/tutorial");
     setTutorialModalOpen(false);
+  };
+
+  const handleSettingsClick = () => {
+    navigate("/settings");
   };
 
   const handleConfirmUpdate = () => {
@@ -172,15 +185,33 @@ export const NewHome = () => {
                   yOffset={-800}
                 />
               </Flex>
-              <Flex
-                w={isSmallScreen ? "90px" : "200px"}
-                justifyContent={"flex-end"}
-                mr={isSmallScreen ? 2 : 8}
-                mt={isSmallScreen ? 2 : 8}
-                alignItems="start"
-              >
-                <ProfileTile />
-              </Flex>
+              {(!useBurnerAcc || isSmallScreen) && (
+                <Flex
+                  w={isSmallScreen ? "auto" : "200px"}
+                  flexDir={isSmallScreen ? "column" : "row"}
+                  justifyContent={isSmallScreen ? "flex-start" : "flex-end"}
+                  mr={isSmallScreen ? 2 : 8}
+                  mt={isSmallScreen ? 2 : 8}
+                  alignItems={isSmallScreen ? "flex-end" : "start"}
+                  gap={isSmallScreen ? 1.5 : 0}
+                >
+                  {!useBurnerAcc && <ProfileTile />}
+                  {isSmallScreen && (
+                    <Flex
+                      alignItems="center"
+                      gap={1}
+                      cursor="pointer"
+                      onClick={handleSettingsClick}
+                    >
+                      <IconComponent
+                        icon={Icons.SETTINGS}
+                        width="22px"
+                        height="22px"
+                      />
+                    </Flex>
+                  )}
+                </Flex>
+              )}
             </Flex>
             <Flex
               flexDir={"column"}

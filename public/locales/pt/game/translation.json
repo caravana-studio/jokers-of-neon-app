@@ -186,10 +186,10 @@
       "black": "Preto"
     },
     "push-notifications": "Notificações push",
-    "push-daily-missions": "Missões diárias",
-    "push-reminders": "Lembretes",
-    "push-events": "Eventos",
-    "push-daily-packs": "Pacotes diários",
+    "push-daily-missions": "Novas missões diárias",
+    "push-reminders": "As missões diárias estão prestes a expirar",
+    "push-events": "Eventos especiais",
+    "push-daily-packs": "Novo pacote diário disponível",
     "timezone": "Fuso horário",
     "enable-notifications": "Ativar notificações",
     "android-notifications-help": "Ative as notificações para Jokers of Neon nas configurações do sistema."
