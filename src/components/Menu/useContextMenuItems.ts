@@ -16,6 +16,7 @@ export const mainMenuUrls = [
 ];
 
 export const gameUrls = [
+  "/map",
   "/demo",
   "/store",
   "/rewards",
@@ -26,7 +27,6 @@ export const gameUrls = [
   "/preview/:type",
   "/loot-box-cards-selection",
   "/manage",
-  "/map",
   "/docs",
   "/deck",
   "/plays",
@@ -136,7 +136,7 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
       icon: getIcon(state),
       url: "/redirect",
       disabled: state === GameStateEnum.Map,
-      active: gameUrls.some((gameUrl) => {
+      active: gameUrls.slice(1).some((gameUrl) => {
         if (gameUrl.includes(":")) {
           const base = gameUrl.split(":")[0];
           return url.startsWith(base);
