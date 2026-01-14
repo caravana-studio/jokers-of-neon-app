@@ -96,18 +96,16 @@ const isNative = () => Capacitor.isNativePlatform();
 /**
  * Set Customer User ID (CUID) - links AppsFlyer data to your user
  * Call this when user logs in or creates account
+ * Note: This is optional and may not work on all devices
  */
 export async function setAppsFlyerCustomerUserId(userAddress: string): Promise<void> {
-  if (!isNative()) {
-    console.log("[AppsFlyer] Web - skipping setCustomerUserId");
-    return;
-  }
+  if (!isNative()) return;
 
   try {
     await AppsFlyerBridge.setCustomerUserId({ customerUserId: userAddress });
     console.log("[AppsFlyer] CUID set:", userAddress);
-  } catch (error) {
-    console.error("[AppsFlyer] Failed to set CUID:", error);
+  } catch {
+    // Silent fail - CUID is optional for analytics
   }
 }
 
@@ -140,8 +138,7 @@ export async function getAppsFlyerUID(): Promise<string | null> {
   try {
     const result = await AppsFlyerBridge.getAppsFlyerUID();
     return result.uid || null;
-  } catch (error) {
-    console.error("[AppsFlyer] Failed to get UID:", error);
+  } catch {
     return null;
   }
 }
@@ -155,8 +152,7 @@ export async function getDeviceId(): Promise<string | null> {
   try {
     const result = await AppsFlyerBridge.getDeviceId();
     return result.deviceId || null;
-  } catch (error) {
-    console.error("[AppsFlyer] Failed to get Device ID:", error);
+  } catch {
     return null;
   }
 }
@@ -272,18 +268,18 @@ export const AppsFlyerHelpers = {
  */
 export async function generateNativeInviteUrl(referralCode: string): Promise<string | null> {
   if (!isNative()) {
-    console.log("[AppsFlyer] Web - using fallback link generation");
     return generateFallbackReferralLink(referralCode, "");
   }
 
   try {
-    console.log("[AppsFlyer] Generating native invite URL for:", referralCode);
     const result = await AppsFlyerBridge.generateInviteUrl({ referralCode });
-
-    console.log("[AppsFlyer] Invite URL generated:", result.url);
-    return result.url || null;
-  } catch (error) {
-    console.error("[AppsFlyer] Failed to generate invite URL:", error);
+    if (result.url) {
+      console.log("[AppsFlyer] Invite URL generated:", result.url);
+      return result.url;
+    }
+    return generateFallbackReferralLink(referralCode, "");
+  } catch {
+    // Fallback to manual link generation
     return generateFallbackReferralLink(referralCode, "");
   }
 }
@@ -313,19 +309,18 @@ export async function logReferralInvite(
   referralCode: string,
   channel: string = "mobile_share"
 ): Promise<void> {
-  await logAppsFlyerEvent(AppsFlyerEvents.REFERRAL_CODE_SHARED, {
+  // Log event (non-critical, silent fail)
+  logAppsFlyerEvent(AppsFlyerEvents.REFERRAL_CODE_SHARED, {
     referral_code: referralCode,
     channel,
-  });
+  }).catch(() => {});
 
-  if (!isNative()) {
-    return;
-  }
+  if (!isNative()) return;
 
   try {
     await AppsFlyerBridge.logInvite({ referralCode, channel });
-  } catch (error) {
-    console.error("[AppsFlyer] Failed to log invite:", error);
+  } catch {
+    // Silent fail - analytics only
   }
 }
 

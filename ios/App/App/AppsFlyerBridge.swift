@@ -6,18 +6,13 @@ import UIKit
 /// AppsFlyer Bridge Plugin for Capacitor
 /// Provides communication between Swift and JavaScript for AppsFlyer SDK
 @objc(AppsFlyerBridge)
-public class AppsFlyerBridge: CAPPlugin, CAPBridgedPlugin {
+@objcMembers
+public class AppsFlyerBridge: CAPPlugin {
 
-    public let identifier = "AppsFlyerBridge"
-    public let jsName = "AppsFlyerBridge"
-    public let pluginMethods: [CAPPluginMethod] = [
-        CAPPluginMethod(name: "setCustomerUserId", returnType: CAPPluginReturnPromise),
-        CAPPluginMethod(name: "logEvent", returnType: CAPPluginReturnPromise),
-        CAPPluginMethod(name: "getAppsFlyerUID", returnType: CAPPluginReturnPromise),
-        CAPPluginMethod(name: "getDeviceId", returnType: CAPPluginReturnPromise),
-        CAPPluginMethod(name: "generateInviteUrl", returnType: CAPPluginReturnPromise),
-        CAPPluginMethod(name: "logInvite", returnType: CAPPluginReturnPromise),
-    ]
+    // Plugin identifier for Capacitor
+    @objc override public func getId() -> String {
+        return "AppsFlyerBridge"
+    }
 
     // MARK: - Lifecycle
 
