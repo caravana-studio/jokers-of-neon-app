@@ -14,6 +14,7 @@ interface XpLine {
 interface Profile {
   username: string,
   currentXp: number;
+  totalXp: number;
   level: number;
   streak: number;
   avatarId: number;
