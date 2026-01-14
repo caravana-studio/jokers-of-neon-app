@@ -5,6 +5,7 @@ import { SpeedInsights } from "@vercel/speed-insights/react";
 import { AppTrackingTransparency } from "capacitor-plugin-app-tracking-transparency";
 import { AnimatePresence } from "framer-motion";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { createProfile, fetchProfile } from "./api/profile";
 import { AppRoutes } from "./AppRoutes";
 import { Background } from "./components/Background";
@@ -23,12 +24,14 @@ import { PageTransitionsProvider } from "./providers/PageTransitionsProvider";
 import { RevenueCatProvider } from "./providers/RevenueCatProvider";
 import { SeasonPassProvider } from "./providers/SeasonPassProvider";
 import ZoomPrevention from "./utils/ZoomPrevention";
+import { registerPushListeners } from "./utils/notifications/registerPushListeners";
 
 function App() {
   const {
     account: { account },
   } = useDojo();
 
+  const navigate = useNavigate();
   const username = useUsername();
 
   const { claimLives } = useGameActions();
@@ -68,6 +71,8 @@ function App() {
     initAppsFlyerReferralListener().catch((err) => {
       console.warn("Failed to initialize AppsFlyer listener:", err);
     });
+
+    registerPushListeners(navigate);
   }, []);
 
   return (

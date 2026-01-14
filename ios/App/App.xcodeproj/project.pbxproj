@@ -14,6 +14,7 @@
 		504EC30F1FED79650016851F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 504EC30E1FED79650016851F /* Assets.xcassets */; };
 		504EC3121FED79650016851F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 504EC3101FED79650016851F /* LaunchScreen.storyboard */; };
 		50B271D11FEDC1A000F3C39B /* public in Resources */ = {isa = PBXBuildFile; fileRef = 50B271D01FEDC1A000F3C39B /* public */; };
+		605BA5C72F0DA1EF00A09D23 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 605BA5C62F0DA1EF00A09D23 /* GoogleService-Info.plist */; };
 		606AB61B2EBA0CFE00403320 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 606AB61A2EBA0CFE00403320 /* StoreKit.framework */; };
 		85BE7F232F17555C007EF6BF /* AppsFlyerBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 85BE7F222F17555C007EF6BF /* AppsFlyerBridge.m */; };
 		85BE7F252F1756D3007EF6BF /* AppsFlyerBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85BE7F242F1756D3007EF6BF /* AppsFlyerBridge.swift */; };
@@ -30,6 +31,7 @@
 		504EC3111FED79650016851F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		504EC3131FED79650016851F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		50B271D01FEDC1A000F3C39B /* public */ = {isa = PBXFileReference; lastKnownFileType = folder; path = public; sourceTree = "<group>"; };
+		605BA5C62F0DA1EF00A09D23 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		606601C42E327EC90017A4B6 /* App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = App.entitlements; sourceTree = "<group>"; };
 		606AB61A2EBA0CFE00403320 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		85B005DC2F0E2DFE007F4437 /* AppsFlyerLib_Privacy.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = AppsFlyerLib_Privacy.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -67,6 +69,7 @@
 		504EC2FB1FED79650016851F = {
 			isa = PBXGroup;
 			children = (
+				605BA5C62F0DA1EF00A09D23 /* GoogleService-Info.plist */,
 				504EC3061FED79650016851F /* App */,
 				504EC3051FED79650016851F /* Products */,
 				7F8756D8B27F46E3366F6CEA /* Pods */,
@@ -181,6 +184,7 @@
 				50379B232058CBB4000EE86E /* capacitor.config.json in Resources */,
 				504EC30D1FED79650016851F /* Main.storyboard in Resources */,
 				2FAD9763203C412B000D30F8 /* config.xml in Resources */,
+				605BA5C72F0DA1EF00A09D23 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -386,7 +390,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = App/App.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 68;
+				CURRENT_PROJECT_VERSION = 71;
 				DEVELOPMENT_TEAM = YD6K99SL94;
 				INFOPLIST_FILE = App/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Jokers of Neon";
@@ -396,7 +400,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.0.18;
+				MARKETING_VERSION = 3.0.21;
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" \"-DDEBUG\"";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jokersofneon.play;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -420,7 +424,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = App/App.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 68;
+				CURRENT_PROJECT_VERSION = 71;
 				DEVELOPMENT_TEAM = YD6K99SL94;
 				INFOPLIST_FILE = App/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Jokers of Neon";
@@ -430,7 +434,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.0.18;
+				MARKETING_VERSION = 3.0.21;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jokersofneon.play;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

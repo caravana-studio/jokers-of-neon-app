@@ -1,4 +1,5 @@
 import { Divider, Flex } from "@chakra-ui/react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { Icons } from "../../constants/icons";
 import { TESTERS } from "../../constants/testers";
@@ -28,6 +29,7 @@ export const ProfileContent = ({
   const { isSmallScreen } = useResponsiveValues();
   const username = useUsername();
   const navigate = useNavigate();
+  const { t } = useTranslation("game");
 
   return (
     <DelayedLoading ms={100}>
@@ -93,6 +95,17 @@ export const ProfileContent = ({
                 />
               </>
             )}
+            {isSmallScreen && (
+              <Divider borderColor="white" borderWidth="1px" my={2} />
+            )}
+            <MenuBtn
+              icon={Icons.SETTINGS}
+              description={t("game.game-menu.settings-btn")}
+              label={t("game.game-menu.settings-btn")}
+              onClick={() => navigate("/settings")}
+              arrowRight
+              width={btnWidth}
+            />
             {isSmallScreen && (
               <Divider borderColor="white" borderWidth="1px" my={2} />
             )}

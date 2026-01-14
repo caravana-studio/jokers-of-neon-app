@@ -2,23 +2,35 @@ import UIKit
 import Capacitor
 import FBSDKCoreKit
 import AppsFlyerLib
+import FirebaseCore
+import FirebaseMessaging
+import UserNotifications
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
 
     var window: UIWindow?
-
-    // MARK: - Application Lifecycle
 
     func application(
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
-        // Initialize Facebook SDK
-        ApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
-
+        // Facebook SDK
+        ApplicationDelegate.shared.application(
+            application,
+            didFinishLaunchingWithOptions: launchOptions
+        )
         // Configure AppsFlyer SDK
         configureAppsFlyer()
+
+        // Firebase
+        FirebaseApp.configure()
+
+        // Notifications delegate (helps foreground presentation)
+        UNUserNotificationCenter.current().delegate = self
+
+        // Force linker to include AppsFlyerBridge plugin
+        _ = AppsFlyerBridge.self
 
         return true
     }
@@ -38,8 +50,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillResignActive(_ application: UIApplication) {}
     func applicationDidEnterBackground(_ application: UIApplication) {}
     func applicationWillTerminate(_ application: UIApplication) {}
-
-    // MARK: - URL Handling
 
     func application(
         _ app: UIApplication,
@@ -72,7 +82,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     // MARK: - AppsFlyer Configuration
-
     private func configureAppsFlyer() {
         let appsFlyer = AppsFlyerLib.shared()
 
@@ -102,7 +111,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 }
 
 // MARK: - AppsFlyerLibDelegate (Install Attribution)
-
 extension AppDelegate: AppsFlyerLibDelegate {
 
     func onConversionDataSuccess(_ installData: [AnyHashable: Any]) {
@@ -237,5 +245,39 @@ extension AppDelegate: DeepLinkDelegate {
             )
             NSLog("[AppsFlyer] Deep link data sent to JavaScript")
         }
+    }
+
+    // MARK: - Push Notifications (APNs -> Firebase + Capacitor)
+    func application(
+        _ application: UIApplication,
+        didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data
+    ) {
+        // ✅ This is the missing piece for FCM -> APNs routing
+        Messaging.messaging().apnsToken = deviceToken
+
+        // Keep Capacitor bridge working too
+        NotificationCenter.default.post(
+            name: .capacitorDidRegisterForRemoteNotifications,
+            object: deviceToken
+        )
+    }
+
+    func application(
+        _ application: UIApplication,
+        didFailToRegisterForRemoteNotificationsWithError error: Error
+    ) {
+        NotificationCenter.default.post(
+            name: .capacitorDidFailToRegisterForRemoteNotifications,
+            object: error
+        )
+    }
+
+    // Optional: show notifications while app is in foreground
+    func userNotificationCenter(
+        _ center: UNUserNotificationCenter,
+        willPresent notification: UNNotification,
+        withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void
+    ) {
+        completionHandler([.banner, .sound, .badge])
     }
 }

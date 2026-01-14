@@ -105,6 +105,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     addRerolls,
     advanceLevel,
     refetchDebuffedPlayerHands,
+    refetchSpecialCards
   } = useGameStore();
 
   const {
@@ -437,6 +438,9 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     card.card_id && removeSpecialCard(card.card_id);
     const promise = sellSpecialCard(gameId, card.idx)
       .then(async ({ success }) => {
+        if (success) {
+          await refetchSpecialCards(client, gameId);
+        }
         return success;
       })
       .catch(() => {
