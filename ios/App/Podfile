@@ -33,6 +33,7 @@ target 'App' do
   pod 'FBSDKLoginKit',           '~> 18.0'
   pod 'FBSDKShareKit',           '~> 18.0'
   pod 'FBSDKGamingServicesKit',  '~> 18.0'
+  pod 'AppsFlyerFramework'
 end
 
 post_install do |installer|
