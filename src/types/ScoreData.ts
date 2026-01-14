@@ -109,3 +109,9 @@ export interface DailyMissionCompleted {
   player: string;
   dailyMissionId: string;
 }
+
+export interface LevelCompleteEvent {
+  level: number;
+  completion_count: number;
+  base_xp: number;
+}

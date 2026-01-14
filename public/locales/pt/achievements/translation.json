@@ -32,6 +32,14 @@
     "straight-flush-1": "Jogue uma Straight Flush",
     "neon-play-1": "Jogue uma mão que contenha apenas cartas Neon"
   },
+  "levelComplete": {
+    "title": "Nível {{level}} concluído +{{xp}}XP",
+    "description": "{{ordinalLabel}} vez completando o nível {{level}} hoje",
+    "ordinal_one": "{{count}}ª",
+    "ordinal_two": "{{count}}ª",
+    "ordinal_few": "{{count}}ª",
+    "ordinal_other": "{{count}}ª"
+  },
   "purchases": {
     "success": {
       "title": "Compra concluída",
