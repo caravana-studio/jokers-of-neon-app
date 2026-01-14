@@ -32,7 +32,7 @@
     "@capacitor/haptics": "^7.0.2",
     "@capacitor/ios": "^7.4.1",
     "@capacitor/preferences": "^7.0.2",
-    "@capacitor/push-notifications": "^7.0.0",
+    "@capacitor/push-notifications": "^7.0.4",
     "@cartridge/connector": "0.11.2",
     "@chakra-ui/anatomy": "^2.1.1",
     "@chakra-ui/icons": "^2.1.1",
