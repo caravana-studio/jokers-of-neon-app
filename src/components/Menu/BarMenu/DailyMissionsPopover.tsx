@@ -33,11 +33,6 @@ export const DailyMissionsPopover = ({
     >
       <PopoverTrigger>{trigger}</PopoverTrigger>
       <PopoverContent
-        as={MotionBox}
-        initial={{ opacity: 0, x: -10 }}
-        animate={{ opacity: 1, x: 0 }}
-        exit={{ opacity: 0, x: -10 }}
-        transition={{ duration: 0.15 }}
         w="290px"
         maxH="400px"
         overflowY="auto"
@@ -52,9 +47,16 @@ export const DailyMissionsPopover = ({
           "scrollbar-width": "none",
         }}
       >
-        <PopoverBody p={4}>
-          <DailyMissions showTitle fontSize="13px" />
-        </PopoverBody>
+        <MotionBox
+          initial={{ opacity: 0, x: -10 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -10 }}
+          transition={{ duration: 0.15 }}
+        >
+          <PopoverBody p={4}>
+            <DailyMissions showTitle fontSize="13px" />
+          </PopoverBody>
+        </MotionBox>
       </PopoverContent>
     </Popover>
   );
