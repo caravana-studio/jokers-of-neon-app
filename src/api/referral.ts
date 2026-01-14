@@ -50,60 +50,17 @@ export async function createReferralCode(
 }
 
 /**
- * Generates a referral link using the username
- * Format: jokersofneon.com?ref=username
- * 
- * This link should redirect to AppsFlyer OneLink which will:
+ * Generates an AppsFlyer OneLink for referral
+ * This link will:
  * 1. Redirect to App Store if app not installed
  * 2. Open app with deep link if app is installed
- * 
+ *
  * @param referralCode - The referral code (username)
- * @param referrerAddress - Optional referrer address for AppsFlyer deep link
- * @returns The referral link
- */
-export function generateReferralLink(
-  referralCode: string,
-  referrerAddress?: string
-): string {
-  // Base URL - this should be your domain
-  const baseUrl = "https://jokersofneon.com";
-  
-  // Simple referral link format
-  const referralLink = `${baseUrl}?ref=${encodeURIComponent(referralCode)}`;
-  
-  return referralLink;
-}
-
-/**
- * Generates an AppsFlyer OneLink for referral
- * This is the actual deep link that AppsFlyer will process
- * 
- * @param referralCode - The referral code (username)
- * @param referrerAddress - Referrer's Starknet address
- * @param oneLinkId - Your AppsFlyer OneLink ID (from dashboard)
  * @returns The AppsFlyer OneLink URL
  */
-export function generateAppsFlyerOneLink(
-  referralCode: string,
-  referrerAddress: string,
-  oneLinkId?: string
-): string {
-  // Get OneLink ID from env or use default
-  const linkId = oneLinkId || import.meta.env.VITE_APPSFLYER_ONELINK_ID || "YOUR_ONELINK_ID";
-  
-  // AppsFlyer OneLink format
-  const baseUrl = `https://app.appsflyer.com/${linkId}`;
-  
-  // Parameters for deep linking
-  const params = new URLSearchParams({
-    deep_link_value: "referral",
-    deep_link_sub1: referralCode, // username
-    deep_link_sub2: referrerAddress, // referrer address
-    campaign: "referral",
-    media_source: "user_invite"
-  });
-  
-  return `${baseUrl}?${params.toString()}`;
+export function generateReferralLink(referralCode: string): string {
+  const oneLinkBaseUrl = "https://jokersofneon.onelink.me/2BD9";
+  return `${oneLinkBaseUrl}?ref=${encodeURIComponent(referralCode)}`;
 }
 
 /**

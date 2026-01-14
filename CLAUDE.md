@@ -97,33 +97,28 @@ Translations in `public/locales/{en,es,pt}/` with namespaces: game, home, store,
 ### AppsFlyer Integration (Mobile Attribution & Referrals)
 The app uses AppsFlyer for install attribution, deferred deep linking, and referral tracking.
 
-**Frontend (TypeScript):**
-- `src/utils/appsflyer.ts` - Core SDK wrapper: event logging, CUID, device ID
-- `src/utils/appsflyerReferral.ts` - Deep link/referral handling, API calls to backend
-- `src/hooks/useAppsFlyerReferral.tsx` - React hook for processing referral data on login
+**Key Files:**
+- `src/utils/appsflyer.ts` - SDK wrapper, link generation (`generateNativeInviteUrl`)
+- `src/utils/appsflyerReferral.ts` - Deep link handling, localStorage
+- `src/hooks/useAppsFlyerReferral.tsx` - Hook for processing referral on login
+- `ios/App/App/AppsFlyerBridge.swift` - Capacitor bridge
+- `ios/App/App/AppDelegate.swift` - SDK initialization
 
-**iOS Native (Swift):**
-- `ios/App/App/AppsFlyerBridge.swift` - Capacitor plugin bridge for SDK communication
-- `ios/App/App/AppDelegate.swift` - SDK initialization, delegates for attribution/deep links
-- `ios/App/Podfile` - Contains `AppsFlyerFramework` dependency
+**Referral Link Format:**
+```
+https://jokersofneon.onelink.me/2BD9?ref=username
+```
+- OneLink template `2BD9` must have `deep_link_value=ref` as default
+- The `ref` parameter contains the username (referral code)
+- Backend looks up referrer wallet from username in `referral_codes` table
 
-**Data Flow:**
-1. App launch → AppDelegate configures AppsFlyer SDK
-2. SDK calls `onConversionDataSuccess` (install attribution) or `didResolveDeepLink` (referral links)
-3. Native code posts NotificationCenter events → AppsFlyerBridge picks up → sends to JavaScript
-4. `appsflyerReferral.ts` listeners receive data, store in localStorage
-5. `useAppsFlyerReferral` hook processes on user login → calls backend API
+**Backend API (jokers-of-neon-api):**
+- `POST /api/referral/claim` - Claim referral (anti-fraud checks)
+- `POST /api/referral/create-code` - Create code from username
+- `GET /api/referral/stats/:user_address` - Get statistics
+- `POST /api/referral/milestone` - Register milestones
 
-**Deep Link Parameters:**
-- `deep_link_value`: "referral" identifies referral links
-- `deep_link_sub1`: referral code (username)
-- `deep_link_sub2`: referrer's Starknet address
-
-**Backend API Endpoints (jokers-of-neon-api):**
-- `POST /api/referral/claim` - Claim referral code (with anti-fraud checks)
-- `POST /api/referral/attribution` - Register install attribution
-- `POST /api/referral/milestone` - Register user milestones for rewards
-- `POST /api/referral/check-rewards` - Distribute pending rewards
+**Test Page:** `/referral-test`
 
 ## Environment Configuration
 
@@ -142,3 +137,27 @@ Run a single test file:
 ```bash
 npm run test -- src/utils/versionUtils.test.ts
 ```
+
+## Related Repository
+
+The backend API is in a sibling directory: `../jokers-of-neon-api`
+- Referral controller: `src/controllers/referral.controller.ts`
+- Uses Supabase for database (tables: `referral_codes`, `referral_claims`, `referral_milestones`, `device_registrations`)
+- Uses Starknet for on-chain rewards distribution
+
+## Debugging Tips
+
+### iOS Native Logs (Xcode)
+Filter by prefixes:
+- `[AppsFlyer]` - SDK events and configuration
+- `[AppsFlyerBridge]` - Capacitor bridge communication
+
+### JavaScript Logs
+- `[AppsFlyer]` - SDK wrapper events
+- `[AppsFlyer Referral]` - Deep link and referral processing
+- `[useAppsFlyerReferral]` - Hook state changes
+
+### LocalStorage Keys (Referrals)
+- `appsflyer_referral_data` - Pending referral deep link data
+- `appsflyer_conversion_data` - Install attribution data
+- `appsflyer_referral_processed` - Addresses that have been processed

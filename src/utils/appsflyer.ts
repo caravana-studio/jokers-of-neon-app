@@ -44,15 +44,11 @@ export const AppsFlyerEvents = {
 
 interface GenerateInviteUrlOptions {
   referralCode: string;
-  referrerAddress: string;
-  channel?: string;
-  campaign?: string;
 }
 
 interface LogInviteOptions {
   channel?: string;
   referralCode: string;
-  referrerAddress: string;
 }
 
 interface AppsFlyerBridgePlugin {
@@ -266,91 +262,68 @@ export const AppsFlyerHelpers = {
 
 /**
  * Generate a referral invite URL using the AppsFlyer SDK
- * This creates a OneLink with proper attribution for tracking referrals
+ * Creates a simple OneLink with just the referral code (username)
  *
  * On native platforms, uses AppsFlyer SDK to generate the link
  * On web, falls back to manual URL generation
  *
- * @param referralCode - The referral code (typically the username)
- * @param referrerAddress - The referrer's Starknet address
- * @param channel - Distribution channel (default: "mobile_share")
- * @param campaign - Campaign name (default: "referral")
+ * @param referralCode - The referral code (username)
  * @returns The generated referral URL or null if generation fails
  */
-export async function generateNativeInviteUrl(
-  referralCode: string,
-  referrerAddress: string,
-  channel: string = "mobile_share",
-  campaign: string = "referral"
-): Promise<string | null> {
+export async function generateNativeInviteUrl(referralCode: string): Promise<string | null> {
   if (!isNative()) {
     console.log("[AppsFlyer] Web - using fallback link generation");
-    return generateFallbackReferralLink(referralCode, referrerAddress);
+    return generateFallbackReferralLink(referralCode, "");
   }
 
   try {
-    console.log("[AppsFlyer] Generating native invite URL...", { referralCode, referrerAddress });
-    const result = await AppsFlyerBridge.generateInviteUrl({
-      referralCode,
-      referrerAddress,
-      channel,
-      campaign,
-    });
+    console.log("[AppsFlyer] Generating native invite URL for:", referralCode);
+    const result = await AppsFlyerBridge.generateInviteUrl({ referralCode });
 
     console.log("[AppsFlyer] Invite URL generated:", result.url);
     return result.url || null;
   } catch (error) {
     console.error("[AppsFlyer] Failed to generate invite URL:", error);
-    // Fall back to manual generation
-    return generateFallbackReferralLink(referralCode, referrerAddress);
+    return generateFallbackReferralLink(referralCode, "");
   }
 }
 
 /**
  * Fallback URL generation for web or when SDK fails
- * Creates a simple referral link that redirects through the website
+ * Creates an AppsFlyer OneLink with minimal referral parameter
+ * This link will redirect to App Store if app not installed, or open the app with deep link
+ *
+ * The OneLink template should have default values configured for:
+ * - deep_link_value = "ref"
+ * - pid = "user_invite"
+ * - c = "referral"
  */
-function generateFallbackReferralLink(referralCode: string, referrerAddress: string): string {
-  const baseUrl = "https://jokersofneon.com";
-  const params = new URLSearchParams({
-    ref: referralCode,
-    referrer: referrerAddress,
-  });
-  return `${baseUrl}?${params.toString()}`;
+function generateFallbackReferralLink(referralCode: string, _referrerAddress: string): string {
+  const oneLinkBaseUrl = "https://jokersofneon.onelink.me/2BD9";
+  return `${oneLinkBaseUrl}?ref=${encodeURIComponent(referralCode)}`;
 }
 
 /**
  * Log an invite event when user shares their referral link
- * This helps track sharing behavior and measure referral program effectiveness
  *
  * @param referralCode - The referral code being shared
- * @param referrerAddress - The referrer's address
  * @param channel - Where the link was shared (e.g., "whatsapp", "twitter", "copy")
  */
 export async function logReferralInvite(
   referralCode: string,
-  referrerAddress: string,
   channel: string = "mobile_share"
 ): Promise<void> {
-  // Log the event regardless of platform
   await logAppsFlyerEvent(AppsFlyerEvents.REFERRAL_CODE_SHARED, {
     referral_code: referralCode,
-    referrer_address: referrerAddress,
     channel,
   });
 
   if (!isNative()) {
-    console.log("[AppsFlyer] Web - logged referral share event");
     return;
   }
 
   try {
-    await AppsFlyerBridge.logInvite({
-      referralCode,
-      referrerAddress,
-      channel,
-    });
-    console.log("[AppsFlyer] Invite logged successfully");
+    await AppsFlyerBridge.logInvite({ referralCode, channel });
   } catch (error) {
     console.error("[AppsFlyer] Failed to log invite:", error);
   }
@@ -358,24 +331,19 @@ export async function logReferralInvite(
 
 /**
  * Combined function to generate a referral link and log the share event
- * Use this when the user initiates sharing their referral link
  *
  * @param referralCode - The referral code (username)
- * @param referrerAddress - The referrer's Starknet address
  * @param channel - Where the link will be shared
  * @returns The referral URL to share
  */
 export async function createAndLogReferralLink(
   referralCode: string,
-  referrerAddress: string,
   channel: string = "mobile_share"
 ): Promise<string | null> {
-  // Generate the link
-  const url = await generateNativeInviteUrl(referralCode, referrerAddress, channel);
+  const url = await generateNativeInviteUrl(referralCode);
 
-  // Log the invite event
   if (url) {
-    await logReferralInvite(referralCode, referrerAddress, channel);
+    await logReferralInvite(referralCode, channel);
   }
 
   return url;

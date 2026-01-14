@@ -187,16 +187,17 @@ extension AppDelegate: DeepLinkDelegate {
         ]
 
         // Check if this is a referral link
-        // Expected format: deep_link_value = "referral" or "ref"
-        // deep_link_sub1 = referral code (username)
-        // deep_link_sub2 = referrer address
-        // Also check for af_sub parameters as fallback
+        // Expected format: deep_link_value = "ref" with ?ref=username parameter
+        // Or legacy format with deep_link_sub1/deep_link_sub2
         if deepLinkValue == "referral" || deepLinkValue == "ref" {
             NSLog("[AppsFlyer] Detected referral deep link")
             data["type"] = "referral"
 
-            // Extract referral code - try deep_link_sub1 first, then af_sub1
-            if let referralCode = deepLink.clickEvent["deep_link_sub1"] as? String, !referralCode.isEmpty {
+            // Extract referral code - try 'ref' param first (new short format), then fallbacks
+            if let referralCode = deepLink.clickEvent["ref"] as? String, !referralCode.isEmpty {
+                data["referralCode"] = referralCode
+                NSLog("[AppsFlyer] Referral code (ref): %@", referralCode)
+            } else if let referralCode = deepLink.clickEvent["deep_link_sub1"] as? String, !referralCode.isEmpty {
                 data["referralCode"] = referralCode
                 NSLog("[AppsFlyer] Referral code (deep_link_sub1): %@", referralCode)
             } else if let referralCode = deepLink.clickEvent["af_sub1"] as? String, !referralCode.isEmpty {
@@ -204,7 +205,8 @@ extension AppDelegate: DeepLinkDelegate {
                 NSLog("[AppsFlyer] Referral code (af_sub1): %@", referralCode)
             }
 
-            // Extract referrer address - try deep_link_sub2 first, then af_sub2
+            // Referrer address is no longer needed in the link - backend looks it up from username
+            // But still support legacy links that include it
             if let referrerAddress = deepLink.clickEvent["deep_link_sub2"] as? String, !referrerAddress.isEmpty {
                 data["referrerAddress"] = referrerAddress
                 NSLog("[AppsFlyer] Referrer address (deep_link_sub2): %@", referrerAddress)
@@ -213,15 +215,7 @@ extension AppDelegate: DeepLinkDelegate {
                 NSLog("[AppsFlyer] Referrer address (af_sub2): %@", referrerAddress)
             }
 
-            // Extract optional attribution data
-            if let mediaSource = deepLink.clickEvent["media_source"] as? String {
-                data["mediaSource"] = mediaSource
-            }
-            if let campaign = deepLink.clickEvent["campaign"] as? String {
-                data["campaign"] = campaign
-            }
-
-            // Log all click event keys for debugging
+            // Log click event keys for debugging
             NSLog("[AppsFlyer] Click event keys: %@", deepLink.clickEvent.keys.map { String(describing: $0) }.joined(separator: ", "))
         } else {
             // Non-referral deep link - include all click event data
