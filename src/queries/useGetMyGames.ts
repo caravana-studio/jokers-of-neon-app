@@ -92,8 +92,12 @@ export const useGetMyGames = () => {
       isTournament: node.is_tournament,
     })) || [];
 
+  const sortedGames = gameSummaries
+    .filter((game) => game.status !== GameStateEnum.NotStarted)
+    .sort((a, b) => b.id - a.id);
+
   return {
-    data: gameSummaries.filter(game => game.status !== GameStateEnum.NotStarted),
+    data: sortedGames,
     isLoading,
     error,
     refetch,

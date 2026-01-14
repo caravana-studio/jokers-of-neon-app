@@ -1,7 +1,7 @@
 import { Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { faCaretRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { GalaxyBackground } from "../../components/backgrounds/galaxy/GalaxyBackground";
@@ -17,7 +17,7 @@ import { CardTypes } from "../../enums/cardTypes";
 import { useCardData } from "../../providers/CardDataProvider";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { colorizeText } from "../../utils/getTooltip";
-import { isLegacyAndroid } from "../../utils/capacitorUtils";
+import { isNativeAndroid } from "../../utils/capacitorUtils";
 import Stack from "./CardStack/Stack";
 import PackTear from "./PackTear";
 import { SplitPackOnce } from "./SplitPackOnce";
@@ -85,8 +85,6 @@ export const ExternalPack = ({
   const { getCardData } = useCardData();
 
   const [allCardsSeen, setAllCardsSeen] = useState(false);
-  const [isLegacyAndroidDevice, setIsLegacyAndroidDevice] = useState(false);
-
   const initialCardsSource =
     (initialCards && initialCards.length > 0 ? initialCards : undefined) ??
     (locationState?.initialCards && locationState.initialCards.length > 0
@@ -125,26 +123,7 @@ export const ExternalPack = ({
     obtainedCards.find((card) => card.card_id === highlightedCard)?.skin_id ??
     0;
 
-  useEffect(() => {
-    let cancelled = false;
-    isLegacyAndroid()
-      .then((result) => {
-        if (!cancelled) {
-          setIsLegacyAndroidDevice(result);
-        }
-      })
-      .catch(() => {
-        if (!cancelled) {
-          setIsLegacyAndroidDevice(false);
-        }
-      });
-
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  const shouldDisableHeavyBackground = isLegacyAndroidDevice;
+  const shouldDisableHeavyBackground = isNativeAndroid;
   return (
     <DelayedLoading ms={100}>
       {!shouldDisableHeavyBackground && (

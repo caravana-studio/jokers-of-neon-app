@@ -1,4 +1,4 @@
-import { Button, Flex } from "@chakra-ui/react";
+import { Button, Flex, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -9,12 +9,14 @@ import { ConfirmationModal } from "../../components/ConfirmationModal";
 import { DelayedLoading } from "../../components/DelayedLoading";
 import { PositionedDiscordLink } from "../../components/DiscordLink";
 import { FreePack } from "../../components/FreePack";
+import { IconComponent } from "../../components/IconComponent";
 import { MobileBottomBar } from "../../components/MobileBottomBar";
 import { MobileDecoration } from "../../components/MobileDecoration";
 import { ProfileTile } from "../../components/ProfileTile";
 import SpineAnimation from "../../components/SpineAnimation";
 import { UnclaimedRewards } from "../../components/UnclaimedRewards";
 import { XpBoosterModal } from "../../components/XpBoosterModal";
+import { Icons } from "../../constants/icons";
 import { SKIPPED_VERSION } from "../../constants/localStorage";
 import { APP_VERSION } from "../../constants/version";
 import { useDojo } from "../../dojo/DojoContext";
@@ -25,6 +27,8 @@ import { useGetMyGames } from "../../queries/useGetMyGames";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { logEvent } from "../../utils/analytics";
 import { APP_URL, isNative } from "../../utils/capacitorUtils";
+import { getFirebasePushToken } from "../../utils/notifications/firebasePush";
+import { registerPushNotifications } from "../../utils/notifications/registerPushNotifications";
 import { getMajor, getMinor, getPatch } from "../../utils/versionUtils";
 
 export const NewHome = () => {
@@ -42,6 +46,7 @@ export const NewHome = () => {
   const banners = settings?.home?.banners || [];
   const {
     setup: { useBurnerAcc },
+    account,
   } = useDojo();
 
   useEffect(() => {
@@ -65,6 +70,20 @@ export const NewHome = () => {
           console.warn("Preferences.get failed for SKIPPED_VERSION", e);
         }
       });
+
+      let timeoutId: ReturnType<typeof setTimeout> | undefined;
+      if (!useBurnerAcc) {
+        timeoutId = setTimeout(async () => {
+          await registerPushNotifications();
+          await getFirebasePushToken(account?.account?.address);
+        }, 3000);
+      }
+
+      return () => {
+        if (timeoutId) {
+          clearTimeout(timeoutId);
+        }
+      };
     }
   }, []);
 
@@ -85,6 +104,10 @@ export const NewHome = () => {
   const handleConfirmTutorial = () => {
     navigate("/tutorial");
     setTutorialModalOpen(false);
+  };
+
+  const handleSettingsClick = () => {
+    navigate("/settings");
   };
 
   const handleConfirmUpdate = () => {
@@ -162,15 +185,33 @@ export const NewHome = () => {
                   yOffset={-800}
                 />
               </Flex>
-              <Flex
-                w={isSmallScreen ? "90px" : "200px"}
-                justifyContent={"flex-end"}
-                mr={isSmallScreen ? 2 : 8}
-                mt={isSmallScreen ? 2 : 8}
-                alignItems="start"
-              >
-                <ProfileTile />
-              </Flex>
+              {(!useBurnerAcc || isSmallScreen) && (
+                <Flex
+                  w={isSmallScreen ? "auto" : "200px"}
+                  flexDir={isSmallScreen ? "column" : "row"}
+                  justifyContent={isSmallScreen ? "flex-start" : "flex-end"}
+                  mr={isSmallScreen ? 2 : 8}
+                  mt={isSmallScreen ? 2 : 8}
+                  alignItems={isSmallScreen ? "flex-end" : "start"}
+                  gap={isSmallScreen ? 1.5 : 0}
+                >
+                  {!useBurnerAcc && <ProfileTile />}
+                  {isSmallScreen && (
+                    <Flex
+                      alignItems="center"
+                      gap={1}
+                      cursor="pointer"
+                      onClick={handleSettingsClick}
+                    >
+                      <IconComponent
+                        icon={Icons.SETTINGS}
+                        width="22px"
+                        height="22px"
+                      />
+                    </Flex>
+                  )}
+                </Flex>
+              )}
             </Flex>
             <Flex
               flexDir={"column"}
