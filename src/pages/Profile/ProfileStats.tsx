@@ -139,7 +139,7 @@ export const ProfileStats: React.FC<
         {/* <ProfileStat title={t("streaks")} value={streak} suffix={t("days")} /> */}
         <ProfileStat title={t("games")} value={games} />
         <ProfileStat title={t("victories")} value={victories} />
-        <ProfileStat title={t("xp")} value={totalXp} />
+        <ProfileStat title={t("total-xp")} value={totalXp} />
       </Flex>
       <Box my={2} borderRadius="md" width="100%" maxW="600px">
         <Flex justify="space-between" gap={1} align="center">

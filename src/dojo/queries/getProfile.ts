@@ -1,5 +1,4 @@
 import { Account, AccountInterface } from "starknet";
-import { decodeString } from "../utils/decodeString";
 
 export const getProfile = async (
   client: any,
@@ -13,6 +12,7 @@ export const getProfile = async (
 
     return {
         username: tx_result.username,
+        totalXp: Number(tx_result.total_xp ?? 0),
         currentXp: Number(tx_result.xp),
         level: Number(tx_result.level),
         streak: Number(tx_result.daily_streak),

@@ -25,7 +25,9 @@ export const ProfileStat: React.FC<ProfileStatProps> = ({
       flex={1}
       width={"80px"}
     >
-      <Heading fontSize={"10px"}>{title}</Heading>
+      <Heading fontSize={"10px"} whiteSpace="nowrap">
+        {title}
+      </Heading>
       <Heading fontSize={"10px"}>
         {value}{" "}
         <Text as="span" ml={1} fontSize={"6px"}>
