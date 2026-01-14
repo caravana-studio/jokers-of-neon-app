@@ -21,5 +21,6 @@ export const getLevelCompleteEvent = (
         completion_count,
         base_xp,
       };
-    });
+    })
+    .filter((event) => event.base_xp > 0);
 };
