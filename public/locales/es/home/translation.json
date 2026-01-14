@@ -28,7 +28,8 @@
       "play-tournament": "Jugar torneo"
     },
     "level": "Nivel",
-    "dailyMissions": "Misiones diarias"
+    "dailyMissions": "Misiones diarias",
+    "noMissionsAvailable": "No hay misiones disponibles"
   },
   "packs": {
     "title": "Paquetes",

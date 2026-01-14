@@ -1,19 +1,29 @@
-import { Divider, Flex, Heading } from "@chakra-ui/react";
+import { Box, Divider, Flex, Heading, useDisclosure } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { matchPath, useNavigate } from "react-router-dom";
 import { useCurrentPageInfo } from "../../../hooks/useCurrentPageInfo";
 import { AnimatedText } from "../../AnimatedText";
 import { LogoutMenuListBtn } from "../Buttons/Logout/LogoutMenuListBtn";
 import { ContextMenuItem } from "../ContextMenuItem";
-import { gameUrls, mainMenuUrls, useContextMenuItems } from "../useContextMenuItems";
+import { gameUrls, useContextMenuItems } from "../useContextMenuItems";
+import { DailyMissionsPopover } from "./DailyMissionsPopover";
 
 export const SidebarMenu = () => {
   const navigate = useNavigate();
   const page = useCurrentPageInfo();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const iconWidth = "20px";
 
   const [animatedText, setAnimatedText] = useState(page?.name ?? "");
+
+  const handleDailyMissionsClick = () => {
+    if (isOpen) {
+      onClose();
+      return;
+    }
+    onOpen();
+  };
 
   const { mainMenuItems, inGameMenuItems, extraMenuItems } =
     useContextMenuItems({
@@ -31,19 +41,20 @@ export const SidebarMenu = () => {
   }, [page?.name]);
 
   return (
-    <Flex
-      width="48px"
-      py={12}
-      height="100%"
-      flexDirection={"column"}
-      justifyContent={"space-around"}
-      alignItems={"center"}
-      alignContent={"center"}
-      zIndex={1000}
-      left={0}
-      top={0}
-      backgroundColor={"black"}
-    >
+    <Box position="relative">
+      <Flex
+        width="48px"
+        py={12}
+        height="100%"
+        flexDirection={"column"}
+        justifyContent={"space-around"}
+        alignItems={"center"}
+        alignContent={"center"}
+        zIndex={1000}
+        left={0}
+        top={0}
+        backgroundColor={"black"}
+      >
       <Flex
         flexDirection={"column"}
         gap={0}
@@ -58,9 +69,32 @@ export const SidebarMenu = () => {
         {inGame && (
           <>
             <Divider my={3} />
-            {extraMenuItems.map((item) => (
-              <ContextMenuItem {...item} />
-            ))}
+            {extraMenuItems.map((item) => {
+              if (item.key === "daily-missions") {
+                return (
+                  <DailyMissionsPopover
+                    key={item.key}
+                    isOpen={isOpen}
+                    onOpen={onOpen}
+                    onClose={onClose}
+                    trigger={
+                      <Box w="100%">
+                        <ContextMenuItem
+                          {...item}
+                          onClick={handleDailyMissionsClick}
+                        />
+                      </Box>
+                    }
+                  />
+                );
+              }
+
+              return (
+                <Box key={item.key} w="100%">
+                  <ContextMenuItem {...item} onClick={item.onClick} />
+                </Box>
+              );
+            })}
           </>
         )}
       </Flex>
@@ -113,6 +147,8 @@ export const SidebarMenu = () => {
         </Flex>
         <LogoutMenuListBtn width={iconWidth} />
       </Flex>
-    </Flex>
+      </Flex>
+
+    </Box>
   );
 };
