@@ -3,16 +3,16 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { CARD_HEIGHT, CARD_WIDTH } from "../constants/visualProps.ts";
 import { useGameContext } from "../providers/GameProvider.tsx";
+import { useCardHighlight } from "../providers/HighlightProvider/CardHighlightProvider.tsx";
 import { useGameStore } from "../state/useGameStore.ts";
 import { BACKGROUND_BLUE } from "../theme/colors.tsx";
 import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
+import { AnimatedParticleCard } from "./AnimatedParticleCard.tsx";
 import { CardImage3D } from "./CardImage3D.tsx";
 import { CashSymbol } from "./CashSymbol.tsx";
 import { ConfirmationModal } from "./ConfirmationModal.tsx";
 import { LockedSlot } from "./LockedSlot/LockedSlot.tsx";
 import { UnlockedSlot } from "./UnlockedSlot.tsx";
-import { AnimatedParticleCard } from "./AnimatedParticleCard.tsx";
-import { useCardHighlight } from "../providers/HighlightProvider/CardHighlightProvider.tsx";
 
 export const SpecialCardsRow = () => {
   const { sellSpecialCard } = useGameContext();
@@ -22,7 +22,7 @@ export const SpecialCardsRow = () => {
     specialCards: cards,
     maxSpecialCards,
   } = useGameStore();
-  
+
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const [hoveredButton, setHoveredButton] = useState<number | null>(null);
   const [cardToDiscardIdx, setCardToDiscardIdx] = useState<number | null>(null);
@@ -118,14 +118,15 @@ export const SpecialCardsRow = () => {
                       >
                         <Text fontSize="10px">X</Text>
                         {hoveredButton === card.idx && (
-                          <>
+                          <Flex alignItems="center" gap={1}>
                             <Text fontSize="10px">
                               {t(
                                 "game.special-cards.remove-special-cards-label"
                               )}
-                              <CashSymbol /> {card.selling_price}
                             </Text>
-                          </>
+                            <CashSymbol size="10px" />
+                            <Text fontSize="10px">{card.selling_price}</Text>
+                          </Flex>
                         )}
                       </Button>
                     )}
