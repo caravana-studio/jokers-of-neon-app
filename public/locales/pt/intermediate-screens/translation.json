@@ -98,6 +98,19 @@
       "4": "Carregando o ranking",
       "5": "Quase pronto, vamos jogar!"
     },
+    "hints": {
+      "1": "Jogadas neon aumentam sua mão em 4 níveis",
+      "2": "Completar níveis dá XP para a temporada",
+      "3": "Você pode queimar cartas do seu baralho nas lojas",
+      "4": "As lojas oferecem slots extras para mais cartas especiais",
+      "5": "Usar menos jogadas e descartes te dá mais moedas por rodada",
+      "6": "Cartas especiais potencializam suas jogadas - compre nas lojas do mapa",
+      "7": "O Season Pass dobra suas vidas e reduz pela metade o tempo de recarga",
+      "8": "Existem mais de 70 cartas especiais para descobrir",
+      "9": "Suba de nível suas jogadas nas lojas do mapa",
+      "10": "Veja todas as cartas especiais, packs, modificadores e rages na Lista de Cartas",
+      "11": "O Season Pass permite trocar suas cartas especiais"
+    },
     "presents": "APRESENTA",
     "powered-by": "Impulsionado por"
   },

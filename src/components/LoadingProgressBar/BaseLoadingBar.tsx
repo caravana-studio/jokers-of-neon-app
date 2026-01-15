@@ -1,6 +1,7 @@
-import { Flex, Heading } from "@chakra-ui/react";
+import { Flex, Heading, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { isMobile } from "react-device-detect";
+import { useLoadingHints } from "../../hooks/useLoadingHints";
 import { ProgressBar } from "../CompactRoundData/ProgressBar";
 
 export interface BaseLoadingBarProps {
@@ -13,6 +14,7 @@ export const BaseLoadingBar = ({
   currentStageText,
 }: BaseLoadingBarProps) => {
   const [dots, setDots] = useState("...");
+  const hint = useLoadingHints();
 
   useEffect(() => {
     const dotsInterval = setInterval(() => {
@@ -48,6 +50,16 @@ export const BaseLoadingBar = ({
         </Heading>
       </Flex>
       <ProgressBar progress={Math.round(progress)} />
+      <Text
+        fontSize={isMobile ? "xs" : "sm"}
+        textAlign="center"
+        color="gray.400"
+        mt={4}
+        px={4}
+        minH="40px"
+      >
+        {hint}
+      </Text>
     </Flex>
   );
 };
