@@ -68,6 +68,8 @@ Uses Zustand stores in `src/state/`:
 - `useCurrentHandStore.ts` - Current hand being played
 - `useDeckStore.ts` - Deck management
 - `useProfileStore.ts` - Player profile data
+- `useAnimationStore.ts` - Animation state
+- `useLootBoxStore.ts` - Loot box/pack opening state
 
 ### Providers
 Key providers in `src/providers/`:
@@ -77,6 +79,8 @@ Key providers in `src/providers/`:
 - `StarknetProvider.tsx` - Starknet wallet connection
 - `RevenueCatProvider.tsx` - In-app purchases
 - `TutorialGameProvider.tsx` - Tutorial mode state
+- `MapProvider.tsx` - Game map/progression state
+- `SeasonPassProvider.tsx` - Season pass functionality
 
 ### API Layer
 - `src/api/` - Backend API calls (profile, season rewards, referrals)
