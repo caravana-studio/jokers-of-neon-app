@@ -98,6 +98,21 @@
       "4": "Loading the leaderboard",
       "5": "Almost ready, let's play!"
     },
+    "hints": {
+      "1": "Playing a Neon hand boosts it by 4 levels",
+      "2": "If your hand is made of Neon cards, you'll make a Neon play",
+      "3": "Completing levels earns XP for the season",
+      "4": "You can burn cards from your deck at the shops",
+      "5": "All shops offer extra slots for more special cards",
+      "6": "Using fewer plays and discards earns you more coins per round",
+      "7": "You can buy special cards at the shops that boost your plays",
+      "8": "Drag modifier cards onto any card to apply their effect",
+      "9": "Season Pass doubles your lives and halves the recharge time",
+      "10": "There are over 70 special cards to discover",
+      "11": "Level up your plays at the shops to increase their power",
+      "12": "Browse all special cards, loot boxes, modifiers and rages in Card List",
+      "13": "With Season Pass, all special cards you obtain are tradeable"
+    },
     "presents": "PRESENTS",
     "powered-by": "Powered by"
   },
