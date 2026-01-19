@@ -11,6 +11,11 @@ const toNativeAssetPath = (path: string) => {
   return sanitized.startsWith("public/") ? sanitized : `public/${sanitized}`;
 };
 
+const toWebAssetPath = (path: string) => {
+  const sanitized = path.replace(/^\/+/, "");
+  return `${import.meta.env.BASE_URL}${sanitized}`;
+};
+
 const toNativeAssetId = (path: string) =>
   `sfx_${path.replace(/^\/+/, "").replace(/[^\w-]/g, "_")}`;
 
@@ -56,7 +61,7 @@ export const useAudio = (audioPath: string, volume: number = 1) => {
         }
       } else {
         soundRef.current = new Howl({
-          src: [audioPath],
+          src: [toWebAssetPath(audioPath)],
           preload: true,
           volume,
         });
