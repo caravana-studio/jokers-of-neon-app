@@ -7,6 +7,13 @@
       "start": "Começar"
     },
     "join-discord": "Junte-se ao nosso Discord!",
+    "xpBooster": {
+      "title": "XP EM DOBRO",
+      "subtitle": "EVENTO POR TEMPO LIMITADO",
+      "headline": "Todo o seu ganho de <xp>XP</xp> fica <double>duplicado</double> enquanto este evento estiver ativo",
+      "countdownLabel": "Termina em:",
+      "dontShowAgain": "Não mostrar novamente"
+    },
     "leaderboard-banner": {
       "title": "Classificação",
       "button": "Classificação completa"
@@ -40,8 +47,15 @@
     "title": "Classificação",
     "tournament": "Torneio ativo",
     "finished": "Torneio finalizado",
+    "tabs": {
+      "game-leaderboard": "Classificação do jogos",
+      "xp-leaderboard": "Classificação de XP",
+      "tournament-leaderboard": "Classificação do torneio"
+    },
     "level": "Nível ",
     "round": "R ",
+    "xp": "XP",
+    "address": "Endereço",
     "points": "Pontos",
     "see-prizes": "Ver prêmios",
     "prizes": {

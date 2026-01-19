@@ -25,61 +25,61 @@
         "1-description-1": "Progresar a través de la temporada 1 te da más recompensas.",
         "1-description-2": "Todas tus recompensas son transferibles.",
         "2-title": "Más juegos por día",
-        "2-description-1": "Puedes jugar 4 juegos de Comodines por día en lugar de 2.",
-        "2-description-2": "Cada juego recupera cada 4 horas en lugar de 12.",
+        "2-description-1": "Puedes jugar 6 juegos por día en lugar de 3.",
+        "2-description-2": "Cada juego se recarga cada 4 horas en lugar de 8.",
         "3-title": "Descuentos en packs",
         "3-description-1": "20% de descuento en cada pack de temporada 1 que compras.",
         "3-description-2": ""
+      }
+    },
+    "packs": {
+      "buy": "COMPRAR",
+      "purchase-error-title": "Compra fallida",
+      "purchase-error-no-account": "No pudimos encontrar tu cuenta. Por favor, intenta cerrar sesión y volver a iniciarla.",
+      "purchase-error-description": "No pudimos completar tu compra de pack. Por favor, inténtalo de nuevo.",
+      "purchase-error-no-package": "No pudimos completar tu compra de pack. Problema de configuración.",
+      "player-pack": "Pack de jugador",
+      "limited-edition": "Edición limitada",
+      "size": "Tamaño",
+      "offering-rates": "Tarifas de oferta",
+      "transferrable-legend": "Todos los ítems de los packs comprados son transferibles.",
+      "skins-legend": "Los packs no contienen cartas con skin.",
+      "1": {
+        "name": "BÁSICO"
       },
-      "packs": {
-        "buy": "COMPRAR",
-        "purchase-error-title": "Compra fallida",
-        "purchase-error-no-account": "No pudimos encontrar tu cuenta. Por favor, intenta cerrar sesión y volver a iniciarla.",
-        "purchase-error-description": "No pudimos completar tu compra de pack. Por favor, inténtalo de nuevo.",
-        "purchase-error-no-package": "No pudimos completar tu compra de pack. Problema de configuración.",
-        "player-pack": "Pack de jugador",
-        "limited-edition": "Editión limitada",
-        "size": "Tamaño",
-        "offering-rates": "Tarifas de oferta",
-        "transferrable-legend": "Todos los items en las tiendas pueden ser transferidos.",
-        "skins-legend": "Los packs no contienen cartas con skin.",
-        "1": {
-          "name": "BÁSICO"
-        },
-        "2": {
-          "name": "AVANZADO",
-          "description": {
-            "1": "Mejora tu colección con mayores probabilidades de obtener cartas raras.",
-            "2": "Hasta un 50% de probabilidad de conseguir una carta Especial."
-          }
-        },
-        "3": {
-          "name": "ÉPICO",
-          "description": {
-            "1": "Un paquete premium con altas probabilidades de obtener cartas Especiales.",
-            "2": "Hasta un 75% de probabilidad de conseguir una carta Especial, incluye rangos A y S."
-          }
-        },
-        "4": {
-          "name": "LEGENDARIO",
-          "description": {
-            "1": "Garantiza una carta Especial en cada paquete.",
-            "2": "Las mayores probabilidades de obtener cartas Especiales de rango A y S."
-          }
-        },
-        "5": {
-          "name": "COLECCIONISTA",
-          "description": {
-            "1": "Paquete de edición limitada con cartas y skins ultra raras.",
-            "2": "1 carta Especial con skin garantizada y las mejores probabilidades."
-          }
-        },
-        "6": {
-          "name": "COLECCIONISTA XL",
-          "description": {
-            "1": "Paquete masivo con el contenido más raro de la temporada.",
-            "2": "2 cartas Especiales con skin garantizadas y las mejores probabilidades."
-          }
+      "2": {
+        "name": "AVANZADO",
+        "description": {
+          "1": "Mejora tu colección con mayores probabilidades de obtener cartas raras.",
+          "2": "Hasta un 50% de probabilidad de conseguir una carta Especial."
+        }
+      },
+      "3": {
+        "name": "ÉPICO",
+        "description": {
+          "1": "Un paquete premium con altas probabilidades de obtener cartas Especiales.",
+          "2": "Hasta un 75% de probabilidad de conseguir una carta Especial, incluye rangos A y S."
+        }
+      },
+      "4": {
+        "name": "LEGENDARIO",
+        "description": {
+          "1": "Garantiza una carta Especial en cada paquete.",
+          "2": "Las mayores probabilidades de obtener cartas Especiales de rango A y S."
+        }
+      },
+      "5": {
+        "name": "COLECCIONISTA",
+        "description": {
+          "1": "Paquete de edición limitada con cartas y skins ultra raras.",
+          "2": "1 carta Especial con skin garantizada y las mejores probabilidades."
+        }
+      },
+      "6": {
+        "name": "COLECCIONISTA XL",
+        "description": {
+          "1": "Paquete masivo con el contenido más raro de la temporada.",
+          "2": "2 cartas Especiales con skin garantizadas y las mejores probabilidades."
         }
       }
     }
@@ -168,7 +168,7 @@
     },
     "btn": {
       "gameOver-share-btn": "COMPARTIR EN",
-      "gameOver-newGame-btn": "VOLVER A JUGAR"
+      "gameOver-mygames-btn": "IR A MIS JUEGOS"
     }
   },
   "login": {
@@ -227,10 +227,10 @@
     "community-mods": "Mods de la comunidad"
   },
   "power-ups": {
-    "title": "Power-ups",
+    "title": "Potenciadores",
     "confirmation-modal": {
-      "title": "Vender power-up",
-      "description": "¿Estás seguro de que quieres vender este power-up a cambio de ¢{{price}}? No hay forma de deshacer esta acción."
+      "title": "Vender potenciador",
+      "description": "¿Estás seguro de que quieres vender este potenciador a cambio de ¢{{price}}? No hay forma de deshacer esta acción."
     }
   },
   "open-lootbox": {
@@ -240,7 +240,8 @@
   "common": {
     "go-back-btn": "Atrás",
     "login": "Iniciar sesión",
-    "login-to-access": "Por favor, inicia sesión para acceder a esta página"
+    "login-to-access": "Por favor, inicia sesión para acceder a esta página",
+    "login-purchases": "Se requiere una cuenta para comprar artículos. Tus compras están vinculadas de forma segura a tu cuenta y se pueden acceder desde cualquier dispositivo."
   },
   "profile-menu": {
     "level": "Nivel",
@@ -262,6 +263,17 @@
     "title": "Colección",
     "no-collection": "Por favor, inicia sesión para ver tu colección",
     "login": "Iniciar sesión",
+    "intro": {
+      "summary": "Cada temporada trae un nuevo set de cartas especiales exclusivas. Desbloquéalas abriendo packs para usarlas en el juego y míralas aquí.",
+      "learn-more": "Aprende más",
+      "popup-title": "Cómo funciona la colección",
+      "points": {
+        "1": "Cada temporada suma nuevas cartas especiales disponibles solo en esa temporada.",
+        "2": "Las cartas se desbloquean cuando las obtienes al abrir packs.",
+        "3": "Los packs se desbloquean al ganar XP completando misiones diarias y pasando niveles cada día.",
+        "4": "Cuando tienes la carta especial en tu colección, queda desbloqueada dentro del juego."
+      }
+    },
     "collections": {
       "traditionals": "Cartas tradicionales",
       "neons": "Cartas de Neón",
@@ -271,6 +283,7 @@
   },
   "wallet-provider": {
     "not-allowed": "No tienes permiso para acceder.",
+    "register-at": "Por favor, regístrate en ",
     "season-1": "TEMPORADA 1",
     "early-access": "ACCESO ANTICIPADO",
     "login": "INICIAR SESIÓN",

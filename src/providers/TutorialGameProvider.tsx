@@ -28,6 +28,7 @@ import { animatePlayDiscard } from "../utils/playEvents/animatePlayDiscard.ts";
 import { useCardAnimations } from "./CardAnimationsProvider";
 import { IGameContext } from "./GameProvider";
 import { gameProviderDefaults } from "./gameProviderDefaults.ts";
+import { useSettings } from "./SettingsProvider";
 
 export const TutorialGameContext =
   createContext<IGameContext>(gameProviderDefaults);
@@ -65,11 +66,12 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
   } = useGameStore();
   const { setPlayAnimation, setDiscardAnimation } = useAnimationStore();
   const { setAnimatedCard, setAnimatedPowerUp } = useCardAnimations();
-  const { play: preselectCardSound } = useAudio(preselectedCardSfx);
-  const { play: discardSound } = useAudio(discardSfx, 4);
-  const { play: pointsSound } = useAudio(pointsSfx);
-  const { play: multiSound } = useAudio(multiSfx);
-  const { play: acumSound } = useAudio(acumSfx);
+  const { sfxVolume } = useSettings();
+  const { play: preselectCardSound } = useAudio(preselectedCardSfx, sfxVolume);
+  const { play: discardSound } = useAudio(discardSfx, sfxVolume);
+  const { play: pointsSound } = useAudio(pointsSfx, sfxVolume);
+  const { play: multiSound } = useAudio(multiSfx, sfxVolume);
+  const { play: acumSound } = useAudio(acumSfx, sfxVolume);
 
   const {
     setup: { client },

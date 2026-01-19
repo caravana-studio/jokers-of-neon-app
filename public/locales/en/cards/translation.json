@@ -654,7 +654,7 @@
     },
     "10051": {
       "name": "Special Multiplier",
-      "description": "Gain ^violet(+3 multi)^ for each active special card"
+      "description": "Adds ^violet(+3 multi)^ for each active special card"
     },
     "10053": {
       "name": "Fury Reset",
@@ -674,15 +674,15 @@
     },
     "10060": {
       "name": "Spade Trio",
-      "description": "If your hand contains at least 3 Spade cards, gain ^blue(+100 points)^ and ^violet(+3 multi)^."
+      "description": "If your hand contains at least 3 Spade cards, adds ^blue(+100 points)^ and ^violet(+3 multi)^."
     },
     "10061": {
       "name": "Twos Matter",
-      "description": "Gain ^blue(+30 points)^ for every 2 held in your hand."
+      "description": "Adds ^blue(+30 points)^ for every 2 held in your hand."
     },
     "10062": {
       "name": "Hand of modifiers",
-      "description": "Gain ^violet(+5 multi)^ for each modifier card held in your hand."
+      "description": "Adds ^violet(+5 multi)^ for each modifier card held in your hand."
     },
     "10064": {
       "name": "Quad Multiplier",
@@ -690,7 +690,7 @@
     },
     "10065": {
       "name": "Jackpot",
-      "description": "Gain ^blue(+30 points)^ for every Jack held in your hand."
+      "description": "Adds ^blue(+30 points)^ for every Jack held in your hand."
     },
     "10066": {
       "name": "Cash loop",
@@ -706,7 +706,7 @@
     },
     "10069": {
       "name": "Arithmomania",
-      "description": "If the sum of the cards you played is even, gain ^violet(+7 multi)^. If it's odd, gain ^blue(+100 points)^."
+      "description": "If the sum of the cards you played is even, adds ^violet(+7 multi)^. If it's odd, adds ^blue(+100 points)^."
     },
     "10070": {
       "name": "Black and Red",
@@ -718,7 +718,7 @@
     },
     "10072": {
       "name": "Rising Ladder",
-      "description": "Gain ^blue(+10)^ cumulative ^blue(points)^ for every straight played. Currently at ^blue(+{{points}} points)^."
+      "description": "Gain ^blue(+10 points)^ (stacking) for every straight played. Currently at ^blue(+{{points}} points)^."
     },
     "10073": {
       "name": "Relativity",
@@ -730,7 +730,7 @@
     },
     "10079": {
       "name": "Rainbow",
-      "description": "Gain ^blue(+200 points)^ and ^violet(+5 multi)^ if your play includes all four suits."
+      "description": "Adds ^blue(+200 points)^ and ^violet(+5 multi)^ if your play includes all four suits."
     },
     "10080": {
       "name": "Queens Fortune",
@@ -738,7 +738,7 @@
     },
     "10101": {
       "name": "Faded Poster",
-      "description": "Starts at ^blue(+100 points)^, loses ^blue(10 points)^ per play until it reaches ^blue(10 points)^."
+      "description": "Starts at ^blue(+100 points)^, loses ^blue(10 points)^ per play until it reaches ^blue(10 points)^. Currently ^blue(+{{points}} points)^."
     },
     "10102": {
       "name": "Tamer of Chances",
@@ -746,7 +746,7 @@
     },
     "10103": {
       "name": "Blackjack",
-      "description": "If card values sum under 21, gain ^blue(+21 points)^; if exactly 21, gain ^violet(+21 multi)^."
+      "description": "If card values sum under 21, adds ^blue(+21 points)^; if exactly 21, adds ^violet(+21 multi)^."
     },
     "10104": {
       "name": "Point Juggler",
@@ -766,7 +766,7 @@
     },
     "10108": {
       "name": "Suit Roulette",
-      "description": "Choose a random suit each play; gain ^violet(+5 multi)^ for each card of that suit played."
+      "description": "Choose a random suit each play; adds ^violet(+5 multi)^ for each card of that suit played."
     },
     "10109": {
       "name": "Hanged Joker",
@@ -786,7 +786,7 @@
     },
     "10113": {
       "name": "Rage Breaker",
-      "description": "Gain ^violet(+2 multi)^ (stacking) for each Rage defeated. Currently ^violet(+{{multi}} multi)^."
+      "description": "Gain ^violet(+3 multi)^ (stacking) for each Rage defeated. Currently ^violet(+{{multi}} multi)^."
     },
     "10114": {
       "name": "Burning Rewards",
@@ -794,15 +794,15 @@
     },
     "19901": {
       "name": "Lucky Cashback",
-      "description": "50% chance to gain ^yellow(+150 cash)^ when player use a play or discard."
+      "description": "50% chance to add ^yellow(+150 cash)^ when playing or discarding."
     },
     "19902": {
       "name": "Resonant Multiplier",
-      "description": "For every card with a value under 5, gain ^violet(multi equal to its value)^."
+      "description": "For every card with a value under 5, adds ^violet(multi)^ equal to its value."
     },
     "19903": {
       "name": "Swamp Redemption",
-      "description": "Gains between ^blue(+1)^ and ^blue(+5 points)^ (cumulative) each time you discard."
+      "description": "Gains between ^blue(+1)^ and ^blue(+5 points)^ (stacking) each time you discard. Currently ^blue(+{{points}} points)^."
     }
   },
   "power-ups": {
@@ -929,7 +929,7 @@
       "description": "You can't play the same hand twice in this round"
     },
     "20025": {
-      "  name": "Buzzkiller",
+      "name": "Buzzkiller",
       "description": "Your most-played hand does not count this round."
     }
   },

@@ -8,17 +8,20 @@
           "https://play.google.com",
           "https://x.com",
           "https://twitter.com",
-        ]
+        ];
 
         var isNative = !!(
           window.Capacitor &&
           window.Capacitor.isNativePlatform &&
           window.Capacitor.isNativePlatform()
         );
+
         if (!isNative) return;
 
         var Browser = window.Capacitor.Plugins?.Browser;
+
         var AppLauncher = window.Capacitor.Plugins?.AppLauncher;
+
         if (!Browser) return;
 
         var _open = window.open;
@@ -26,37 +29,54 @@
         function openExternal(url) {
           try {
             var s = String(url || "");
+
             // Prefer opening App Store links in the device's external browser
+
             try {
               // normalize protocol-relative URLs before matching
+
               var ns = s;
-              if (ns.startsWith('//')) ns = 'https:' + ns;
+
+              if (ns.startsWith("//")) ns = "https:" + ns;
+
               var low = ns.toLowerCase();
 
               for (var i = 0; i < domainsToOpenExternally.length; i++) {
-                var domain = String(domainsToOpenExternally[i] || '').toLowerCase();
+                var domain = String(
+                  domainsToOpenExternally[i] || ""
+                ).toLowerCase();
+
                 if (!domain) continue;
+
                 if (low.indexOf(domain) === 0) {
                   // open these domains in the device's external browser (prefer AppLauncher)
+
                   if (AppLauncher && AppLauncher.openUrl) {
                     return AppLauncher.openUrl({ url: ns });
                   }
+
                   if (Browser && Browser.open) return Browser.open({ url: ns });
+
                   break;
                 }
               }
             } catch (eApp) {}
 
             // http(s) → in-app Browser
+
             if (/^https?:\/\//i.test(s) || s.startsWith("//")) {
               if (s.startsWith("//")) s = "https:" + s;
+
               return Browser.open({ url: s });
             }
 
             // mailto:, tel:, whatsapp:, etc. → AppLauncher (if exists)
-            if (AppLauncher && AppLauncher.openUrl) return AppLauncher.openUrl({ url: s });
+
+            if (AppLauncher && AppLauncher.openUrl)
+              return AppLauncher.openUrl({ url: s });
 
             // Fallback
+
             return Browser.open({ url: s });
           } catch (e) {
             try {
@@ -65,30 +85,39 @@
           }
         }
 
-        // 1) patch window.open 
+        // 1) patch window.open
+
         window.open = function (url, target, features) {
           openExternal(url);
 
           // returns "WindowProxy" fake for libs that try to use .focus() / .close()
+
           var proxy = {
             closed: false,
+
             close: function () {
               try {
                 Browser.close && Browser.close();
               } catch {}
             },
+
             focus: function () {},
+
             location: { href: String(url || "") },
           };
+
           return /** @type {any} */ (proxy);
         };
 
         // 2) capture clicks on <a target="_blank">
+
         function findAnchorInPath(path) {
           for (var i = 0; i < path.length; i++) {
             var el = path[i];
+
             if (el && el.tagName === "A" && el.href) return el;
           }
+
           return null;
         }
 
@@ -99,32 +128,39 @@
               : (function (n, acc) {
                   while (n) {
                     acc.push(n);
+
                     n = n.parentNode;
                   }
+
                   return acc;
                 })(e.target, []);
+
             var a =
               findAnchorInPath(path) ||
               (e.target.closest && e.target.closest("a[href]"));
+
             if (!a) return;
 
             var href = a.href;
+
             var target = a.target;
 
             var isExternal =
               /^https?:\/\//i.test(href) && !href.includes(location.host);
+
             if (target === "_blank" || isExternal) {
               e.preventDefault();
+
               openExternal(href);
             }
           } catch {}
         }
 
         document.addEventListener("click", handleClick, true);
+
         document.addEventListener("auxclick", handleClick, true);
       })();
     </script>
-
     <meta charset="UTF-8" />
     <meta
       name="viewport"

@@ -29,12 +29,6 @@ const CURRENT_LEADER_STYLES = {
   borderBottom: "1px solid white",
   backgroundColor: "black",
   color: "white !important",
-  boxShadow: `
-    0 -2px 10px 1px rgba(255, 255, 255, 0.5),
-    0 2px 10px 1px rgba(255, 255, 255, 0.5),
-    inset 0 -15px 5px -10px rgba(255, 255, 255, 0.5),
-    inset 0 15px 5px -10px rgba(255, 255, 255, 0.5)
-  `,
 };
 
 export const getPrizeText = (t: TFunction, prize: Prize | undefined) => {
@@ -78,6 +72,7 @@ interface LeaderboardProps {
   filterLoggedInPlayers?: boolean;
   hidePodium?: boolean;
   mb?: string;
+  isTournamentLeaderboard?: boolean;
 }
 export const Leaderboard = ({
   gameId,
@@ -86,20 +81,17 @@ export const Leaderboard = ({
   hidePodium = false,
   mb = "",
   seePrizes = false,
+  isTournamentLeaderboard,
 }: LeaderboardProps) => {
   const { t } = useTranslation("home", { keyPrefix: "leaderboard" });
   const { isSmallScreen } = useResponsiveValues();
   const { tournament } = useTournamentSettings();
-  const { startCountingAtGameId, stopCountingAtGameId } = tournament || {
-    startCountingAtGameId: 0,
-    stopCountingAtGameId: 1000000,
-  };
+  const isTournament = isTournamentLeaderboard ?? Boolean(tournament?.isActive);
 
   const { data: fullLeaderboard, isLoading } = useGetLeaderboard(
     gameId,
     filterLoggedInPlayers,
-    startCountingAtGameId,
-    stopCountingAtGameId
+    isTournament
   );
 
   const actualPlayer = fullLeaderboard?.find(
@@ -152,6 +144,7 @@ export const Leaderboard = ({
                   return (
                     <CustomTr
                       key={leader.id}
+                      highlighted={gameId === leader.id || isCurrentPlayer}
                       sx={gameId === leader.id ? CURRENT_LEADER_STYLES : {}}
                     >
                       <Td
@@ -160,9 +153,7 @@ export const Leaderboard = ({
                       >
                         #{leader.position}
                       </Td>
-                      <Td color={isCurrentPlayer ? "white !important" : ""}>
-                        {leader.player_name}
-                      </Td>
+                      <Td color={"white !important"}>{leader.player_name}</Td>
                       {seePrizes ? (
                         <Td maxW="150px" p="12px 20px" whiteSpace="normal">
                           <Text
@@ -219,23 +210,35 @@ export const Leaderboard = ({
                     <Td>...</Td>
                     <Td>...</Td>
                     <Td>...</Td>
-                    <Td>...</Td>
                   </Tr>
-                  <Tr sx={CURRENT_LEADER_STYLES}>
+                  <CustomTr
+                    highlighted
+                    key={actualPlayer.position}
+                  >
                     <Td>#{actualPlayer.position}</Td>
                     <Td>{actualPlayer.player_name}</Td>
                     {/*                     <Td isNumeric>
                       <RollingNumber n={actualPlayer.player_score} />
                     </Td> */}
-                    <Td>
-                      {t("level")}
-                      <RollingNumber n={actualPlayer.level} />
+                    <Td maxW="150px" p="12px 20px" whiteSpace="normal">
+                      <Text
+                        color={"white !important"}
+                        fontSize={isSmallScreen ? 10 : 14}
+                        overflowWrap="break-word"
+                        wordBreak="normal"
+                        whiteSpace="normal"
+                        lineHeight="1.2"
+                      >
+                        {t("level")}
+                        {actualPlayer.level}
+                        {" - "}
+                        {t("round")}
+                        {actualPlayer.round}
+                        <br />
+                        {formatNumber(actualPlayer.player_score)} {t("points")}
+                      </Text>
                     </Td>
-                    <Td>
-                      {t("round")}
-                      <RollingNumber n={actualPlayer.round} />
-                    </Td>
-                  </Tr>
+                  </CustomTr>
                 </>
               )}
             </Tbody>
@@ -246,14 +249,16 @@ export const Leaderboard = ({
   );
 };
 
-const CustomTr = ({
+export const CustomTr = ({
   children,
   key,
   sx,
+  highlighted = false,
 }: {
   children: React.ReactNode;
   key: number | string;
-  sx: SystemStyleObject;
+  sx?: SystemStyleObject;
+  highlighted?: boolean;
 }) => {
   return (
     <Tr
@@ -261,6 +266,7 @@ const CustomTr = ({
       sx={{
         ...sx,
         td: {
+          color: highlighted ? "white !important" : "",
           position: "relative",
           padding: "12px 20px",
           "&::before": {
@@ -270,7 +276,7 @@ const CustomTr = ({
             left: 0,
             right: 0,
             bottom: 0,
-            background: "black",
+            background: highlighted ? "violet" : "black",
             zIndex: -1,
           },
           "&:first-of-type::before": {

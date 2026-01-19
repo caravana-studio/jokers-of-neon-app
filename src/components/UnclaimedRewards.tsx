@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { fetchProfile } from "../api/profile";
 import { Icons } from "../constants/icons";
 import { useDojo } from "../dojo/DojoContext";
-import { BLUE, VIOLET } from "../theme/colors";
+import { VIOLET } from "../theme/colors";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import { IconComponent } from "./IconComponent";
 
@@ -49,10 +49,10 @@ export const UnclaimedRewards = () => {
         alignItems="center"
         boxShadow={`0 0 10px 5px ${VIOLET}`}
       >
-        <Flex gap={3}>
+        <Flex gap={3} alignItems="center">
           <IconComponent
-            icon={Icons.FREEPACK}
-            height={isSmallScreen ? "40px" : "80px"}
+            icon={Icons.GIFT}
+            height={isSmallScreen ? "40px" : "60px"}
             width="auto"
           />
           <Flex

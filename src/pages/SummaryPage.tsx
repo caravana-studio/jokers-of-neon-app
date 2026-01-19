@@ -27,34 +27,36 @@ import { formatNumber } from "../utils/formatNumber";
 const DELAY_START = 1.25;
 const STAGGER = 0.5;
 
-export const SummaryPage = () => {
+interface SummaryPageProps {
+  win?: boolean;
+}
+
+export const SummaryPage = ({
+  win = true,
+}: SummaryPageProps) => {
   const { isSmallScreen } = useResponsiveValues();
   return (
     <DelayedLoading ms={0}>
       <BackgroundDecoration>
         {isSmallScreen && <MobileDecoration />}
-        <SummaryDetail />
+        <SummaryDetail win={win} />
       </BackgroundDecoration>
     </DelayedLoading>
   );
 };
 
-const SummaryDetail = () => {
+const SummaryDetail = ({ win }: SummaryPageProps) => {
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "rewards-details.labels",
   });
   const { t: tGame } = useTranslation("game");
   const { t: tPlays } = useTranslation("plays", { keyPrefix: "playsData" });
-  const {
-    setup: { client },
-  } = useDojo();
 
   const customNavigate = useCustomNavigate();
   const navigate = useNavigate();
   const { isSmallScreen } = useResponsiveValues();
   const [skip, setSkip] = useState(false);
   const [animationEnded, setAnimationEnded] = useState(false);
-  const { win } = useParams();
   const { totalScore, level, round, id: gameId } = useGameStore();
   const [gameTracker, setGameTracker] = useState(DEFAULT_TRACKER_VIEW);
 
@@ -62,9 +64,9 @@ const SummaryDetail = () => {
     let active = true;
 
     const fetchTracker = async () => {
-      if (!client || !gameId) return;
+      if (!gameId) return;
 
-      const tracker = await getGameTracker(client, gameId);
+      const tracker = await getGameTracker(gameId);
       if (active) {
         setGameTracker(tracker);
       }
@@ -75,7 +77,7 @@ const SummaryDetail = () => {
     return () => {
       active = false;
     };
-  }, [client, gameId]);
+  }, [gameId]);
 
   const title = (
     <motion.div

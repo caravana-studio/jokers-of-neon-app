@@ -1,6 +1,6 @@
 import { Tab as ChakraTab, Flex, TabList, Tabs } from "@chakra-ui/react";
 import { AnimatePresence, motion } from "framer-motion";
-import { ReactNode, useState } from "react";
+import { ComponentProps, ReactNode, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSwipeable } from "react-swipeable";
 import { MobileDecoration } from "../../components/MobileDecoration";
@@ -18,6 +18,7 @@ interface TabPatternProps {
   lastIndexTab?: number;
   disableGoBack?: boolean;
   onTabChange?: (index: number) => void;
+  mobileDecorationProps?: ComponentProps<typeof MobileDecoration>;
 }
 
 export const TabPattern = ({
@@ -27,6 +28,7 @@ export const TabPattern = ({
   lastIndexTab = 0,
   disableGoBack = false,
   onTabChange,
+  mobileDecorationProps = {},
 }: TabPatternProps) => {
   const [tabIndex, setTabIndex] = useState(lastIndexTab);
   const navigate = useNavigate();
@@ -70,7 +72,7 @@ export const TabPattern = ({
       {...handlers}
     >
       {topBar}
-      <MobileDecoration />
+      <MobileDecoration {...mobileDecorationProps} />
       <Tabs
         index={tabIndex}
         onChange={(index) => {
@@ -88,6 +90,7 @@ export const TabPattern = ({
               key={index}
               px={children.length > 3 ? 1 : 3}
               fontSize={children.length > 3 ? [10, 14] : [11, 14]}
+              zIndex={10}
             >
               {child.props.title}
             </ChakraTab>

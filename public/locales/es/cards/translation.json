@@ -114,7 +114,7 @@
     },
     "10021": {
       "name": "Mano de la suerte",
-      "description": "Obtén ^yellow(+50 monedas)^ por cada carta de diamantes que juegues"
+      "description": "Suma ^yellow(+50 monedas)^ por cada carta de diamantes que juegues"
     },
     "10022": {
       "name": "Maestría en descartes",
@@ -142,7 +142,7 @@
     },
     "10032": {
       "name": "Día de suerte",
-      "description": "Obtén ^yellow(+500 monedas)^ extra por cada Comodín que tengas en la mano, sin usar, al final de la ronda"
+      "description": "Suma ^yellow(+500 monedas)^ extra por cada Comodín que tengas en la mano, sin usar, al final de la ronda"
     },
     "10033": {
       "name": "Efecto espejo",
@@ -157,8 +157,8 @@
       "description": "2 opciones de carta especial adicionales en la tienda"
     },
     "10036": {
-      "name": "Caída del Comodín",
-      "description": "Obtén ^yellow(+500 monedas)^ cada vez que descartes un Comodín"
+      "name": "Caída del Joker",
+      "description": "Suma ^yellow(+500 monedas)^ cada vez que descartes un Comodín"
     },
     "10037": {
       "name": "Descartes extra",
@@ -218,7 +218,7 @@
     },
     "10051": {
       "name": "Multiplicador Especial",
-      "description": "Obtén ^violet(+3 multi)^ por cada carta especial que poseas."
+      "description": "Suma ^violet(+3 multi)^ por cada carta especial que poseas."
     },
     "10053": {
       "name": "Reinicio de Furia",
@@ -230,23 +230,23 @@
     },
     "10056": {
       "name": "Guardián de Slots",
-      "description": "Gana ^blue(+100 puntos)^ por cada Slot desbloqueado pero vacío."
+      "description": "Suma ^blue(+100 puntos)^ por cada Slot desbloqueado pero vacío."
     },
     "10059": {
       "name": "Guardián de Tréboles",
-      "description": "Gana ^blue(+10 puntos)^ por cada carta de Trébol en tu mazo."
+      "description": "Suma ^blue(+10 puntos)^ por cada carta de Trébol en tu mazo."
     },
     "10060": {
       "name": "Trío de Picas",
-      "description": "Si tu mano tiene al menos 3 cartas de Picas, gana ^blue(+100 puntos)^ y ^violet(+3 multi)^."
+      "description": "Si tu mano tiene al menos 3 cartas de Picas, suma ^blue(+100 puntos)^ y ^violet(+3 multi)^."
     },
     "10061": {
       "name": "Los Dos Importan",
-      "description": "Obtén ^blue(+30 puntos)^ por cada 2 que tengas en tu mano."
+      "description": "Suma ^blue(+30 puntos)^ por cada 2 que tengas en tu mano."
     },
     "10062": {
       "name": "Mano de modificadores",
-      "description": "Obtén ^violet(+5 de multi)^ por cada carta modificadora que tengas en tu mano."
+      "description": "Suma ^violet(+5 de multi)^ por cada carta modificadora que tengas en tu mano."
     },
     "10064": {
       "name": "Multiplicador de Cuadrados",
@@ -254,7 +254,7 @@
     },
     "10065": {
       "name": "Jackpot",
-      "description": "Obtén ^blue(+30 puntos)^ por cada Jota que tengas en tu mano."
+      "description": "Suma ^blue(+30 puntos)^ por cada Jota que tengas en tu mano."
     },
     "10066": {
       "name": "Ciclo del dinero",
@@ -278,7 +278,7 @@
     },
     "10071": {
       "name": "Comodín sin valor",
-      "description": "Los Comodines no otorgan puntos ni multiplicador. Todas las demás cartas obtienen ^violet(+1 multi)^."
+      "description": "Los Comodines no otorgan puntos ni multiplicador. Todas las demás cartas suman ^violet(+1 multi)^."
     },
     "10072": {
       "name": "Escalera Ascendente",
@@ -294,7 +294,7 @@
     },
     "10079": {
       "name": "Arcoíris",
-      "description": "Obtén ^blue(+200 puntos)^ y ^violet(+5 multi)^ si tu jugada incluye los cuatro palos."
+      "description": "Suma ^blue(+200 puntos)^ y ^violet(+5 multi)^ si tu jugada incluye los cuatro palos."
     },
     "10080": {
       "name": "Fortuna de la Reina",
@@ -302,7 +302,7 @@
     },
     "10101": {
       "name": "Póster Desgastado",
-      "description": "Comienza con ^blue(+100 puntos)^, pierde ^blue(10 puntos)^ por cada jugada hasta llegar a ^blue(10 puntos)^."
+      "description": "Comienza con ^blue(+100 puntos)^, pierde ^blue(10 puntos)^ por cada jugada hasta llegar a ^blue(10 puntos)^. ^blue(Actualmente +{{points}} puntos)^."
     },
     "10102": {
       "name": "Domador de Oportunidades",
@@ -310,7 +310,7 @@
     },
     "10103": {
       "name": "Blackjack",
-      "description": "Si el valor total de las cartas es menor que 21, gana ^blue(+21 puntos)^; si es exactamente 21, gana ^violet(+21 multi)^."
+      "description": "Si el valor total de las cartas es menor que 21, suma ^blue(+21 puntos)^; si es exactamente 21, suma ^violet(+21 multi)^."
     },
     "10104": {
       "name": "Malabarista de Puntos",
@@ -318,11 +318,11 @@
     },
     "10105": {
       "name": "Coleccionista",
-      "description": "Gana ^blue(+1 puntos)^ por cada carta en tu mazo."
+      "description": "Suma ^blue(+1 puntos)^ por cada carta en tu mazo."
     },
     "10106": {
       "name": "Círculo de la Fortuna",
-      "description": "Lanza un número aleatorio entre 0 y 36; si es par, el resultado en ^blue(puntos x2)^; si es impar, el resultado en ^yellow(monedas x2)^; si es 0, gana ^blue(+300 puntos)^."
+      "description": "Lanza un número aleatorio entre 0 y 36; si es par, el resultado en ^blue(puntos x2)^; si es impar, el resultado en ^yellow(monedas x2)^; si es 0, suma ^blue(+300 puntos)^."
     },
     "10107": {
       "name": "Bendición de Hestia",
@@ -330,7 +330,7 @@
     },
     "10108": {
       "name": "Ruleta de Palos",
-      "description": "Elige un palo aleatorio en cada jugada; gana ^violet(+5 multi)^ por cada carta de ese palo jugada."
+      "description": "Elige un palo aleatorio en cada jugada; suma ^violet(+5 multi)^ por cada carta de ese palo jugada."
     },
     "10109": {
       "name": "Comodín Colgado",
@@ -338,7 +338,7 @@
     },
     "10110": {
       "name": "Sacrifio Especial",
-      "description": "Obtén ^violet(+1 multi)^ (acumulativos) por cada carta especial vendida. ^violet(Actualmente +{{multi}} multi)^."
+      "description": "Gana ^violet(+1 multi)^ (acumulativos) por cada carta especial vendida. ^violet(Actualmente +{{multi}} multi)^."
     },
     "10111": {
       "name": "High Roller",
@@ -346,27 +346,27 @@
     },
     "10112": {
       "name": "Juego Eficiente",
-      "description": "Obtén ^violet(+10 multi)^ y ^blue(+50 puntos)^ al jugar 3 o menos cartas."
+      "description": "Suma ^violet(+10 multi)^ y ^blue(+50 puntos)^ al jugar 3 o menos cartas."
     },
     "10113": {
-      "name": "Rompedor de Furias",
-      "description": "Obtén ^violet(+2 multi)^ (acumulativos) por cada Ronda de Furia derrotada. ^violet(Actualmente +{{multi}} multi)^."
+      "name": "Rompedor de Rondas furia",
+      "description": "Gana ^violet(+3 multi)^ (acumulativos) por cada Ronda de Furia derrotada. ^violet(Actualmente +{{multi}} multi)^."
     },
     "10114": {
       "name": "Recompensas Quemadas",
-      "description": "Obtén ^blue(+15 puntos)^ (acumulativos) por cada carta quemada de tu mazo. ^blue(Actualmente +{{points}} puntos)^."
+      "description": "Gana ^blue(+15 puntos)^ (acumulativos) por cada carta quemada de tu mazo. ^blue(Actualmente +{{points}} puntos)^."
     },
     "19901": {
       "name": "Reembolso Afortunado",
-      "description": "50% de probabilidad de obtener ^yellow(+150 monedas)^ al jugar o descartar una carta."
+      "description": "50% de probabilidad de sumar ^yellow(+150 monedas)^ al jugar o descartar"
     },
     "19902": {
       "name": "Multiplicador Resonante",
-      "description": "Por cada carta con un valor menor a 5, obtén un ^violet(multiplicador igual a su valor)^."
+      "description": "Por cada carta con un valor menor a 5, suma un ^violet(multiplicador igual a su valor)^."
     },
     "19903": {
       "name": "Redención del Pantano",
-      "description": "Ganas entre ^blue(+1)^ y ^blue(+5 puntos)^ (acumulativos) cada vez que descartas."
+      "description": "Gana entre ^blue(+1)^ y ^blue(+5 puntos)^ (acumulativos) cada vez que descartas. Actualmente ^blue(+{{points}} puntos)^."
     }
   },
   "power-ups": {

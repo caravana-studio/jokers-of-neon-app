@@ -38,7 +38,8 @@ export enum BackgroundType {
   Rage = "rage",
   RageBoss = "rageboss",
   Map = "map",
-  Summary = "summary",
+  Win = "win",
+  Loose = "loose",
 }
 
 const bgConfig: Record<string, { bg: BackgroundType; decoration?: boolean }> = {
@@ -114,8 +115,11 @@ const bgConfig: Record<string, { bg: BackgroundType; decoration?: boolean }> = {
   "purchasing-pack": {
     bg: BackgroundType.Store,
   },
-  summary: {
-    bg: BackgroundType.Summary,
+  win: {
+    bg: BackgroundType.Win,
+  },
+  loose: {
+    bg: BackgroundType.Loose,
   },
 };
 

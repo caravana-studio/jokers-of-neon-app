@@ -20,7 +20,6 @@ import { useUsername } from "../dojo/utils/useUsername.tsx";
 import { useFeatureFlagEnabled } from "../featureManagement/useFeatureFlagEnabled.ts";
 import { useAudio } from "../hooks/useAudio.tsx";
 import { useCustomToast } from "../hooks/useCustomToast.tsx";
-import { useTournaments } from "../hooks/useTournaments.tsx";
 import { useCardAnimations } from "../providers/CardAnimationsProvider";
 import { useAnimationStore } from "../state/useAnimationStore.ts";
 import { useCurrentHandStore } from "../state/useCurrentHandStore.ts";
@@ -106,6 +105,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     addRerolls,
     advanceLevel,
     refetchDebuffedPlayerHands,
+    refetchSpecialCards
   } = useGameStore();
 
   const {
@@ -192,8 +192,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   };
 
   const usernameLS = useUsername();
-
-  const { enterTournament } = useTournaments();
 
   const initiateTransferFlow = () => {
     console.log("GameProvider: Initiating transfer flow...");
@@ -440,6 +438,9 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     card.card_id && removeSpecialCard(card.card_id);
     const promise = sellSpecialCard(gameId, card.idx)
       .then(async ({ success }) => {
+        if (success) {
+          await refetchSpecialCards(client, gameId);
+        }
         return success;
       })
       .catch(() => {
@@ -479,7 +480,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   useEffect(() => {
     if (gameState === GameStateEnum.GameOver) {
-      navigate(`/summary`);
+      navigate(`/loose`);
     } else if (
       gameState === GameStateEnum.Store &&
       location.pathname === "/demo"

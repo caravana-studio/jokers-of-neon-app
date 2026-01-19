@@ -1,5 +1,5 @@
 import { Flex } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { claimFreePack } from "../api/claimFreePack";
@@ -21,17 +21,20 @@ export const FreePackPage = () => {
   const navigate = useNavigate();
 
   const [mintedCards, setMintedCards] = useState<SimplifiedCard[]>([]);
+  const hasClaimedRef = useRef<boolean>(false);
+
   useEffect(() => {
-    if (account?.address) {
-      claimFreePack(account.address)
-        .then((mintedCards) => {
-          setMintedCards(mintedCards);
-        })
-        .catch((e) => {
-          console.error("Error claiming free pack:", e);
-          navigate("/");
-        });
-    }
+    if (!account?.address || hasClaimedRef.current) return;
+    hasClaimedRef.current = true;
+
+    claimFreePack(account.address)
+      .then((mintedCards) => {
+        setMintedCards(mintedCards);
+      })
+      .catch((e) => {
+        console.error("Error claiming free pack:", e);
+        navigate("/");
+      });
   }, [account?.address]);
 
   const headingStages: LoadingProgress[] = [

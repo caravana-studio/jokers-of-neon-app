@@ -2,23 +2,25 @@ import { AppLauncher } from "@capacitor/app-launcher";
 import { Browser } from "@capacitor/browser";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { GAME_ID } from "../constants/localStorage";
 import { looseSfx } from "../constants/sfx";
-import { useGameContext } from "../providers/GameProvider";
+import { useSettings } from "../providers/SettingsProvider";
 import { useGetLeaderboard } from "../queries/useGetLeaderboard";
+import { isNative } from "../utils/capacitorUtils";
 import { signedHexToNumber } from "../utils/signedHexToNumber";
 import { useAudio } from "./useAudio";
-import { isNative } from "../utils/capacitorUtils";
-
-const GAME_URL = "https://jokersofneon.com";
 
 export const useGameOver = () => {
   const params = useParams();
   const gameId = Number(params.gameId);
+  const navigate = useNavigate();
+  const { sfxVolume } = useSettings();
 
-  const { executeCreateGame } = useGameContext();
-  const { play: looseSound, stop: stopLooseSound } = useAudio(looseSfx);
+  const { play: looseSound, stop: stopLooseSound } = useAudio(
+    looseSfx,
+    sfxVolume
+  );
   const { data: fullLeaderboard } = useGetLeaderboard(gameId);
 
   const actualPlayer = fullLeaderboard?.find(
@@ -48,11 +50,8 @@ export const useGameOver = () => {
     };
   }, [looseSound, stopLooseSound]);
 
-  const onStartGameClick = () => {
-    setIsLoading(true);
-    localStorage.removeItem(GAME_ID);
-    stopLooseSound();
-    executeCreateGame();
+  const onSecondButtonClick = () => {
+    navigate("/my-games");
   };
 
   const onShareClick = async () => {
@@ -92,7 +91,7 @@ export const useGameOver = () => {
     position,
     isLoading,
     t,
-    onStartGameClick,
+    onSecondButtonClick,
     onShareClick,
     setIsLoading,
   };

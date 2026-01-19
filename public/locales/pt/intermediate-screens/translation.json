@@ -25,8 +25,8 @@
         "1-description-1": "Progressando através da temporada 1 dá mais recompensas.",
         "1-description-2": "Todas as suas recompensas são transferíveis.",
         "2-title": "Mais jogos por dia",
-        "2-description-1": "Você pode jogar 4 jogos de Jokers por dia em vez de 2.",
-        "2-description-2": "Cada jogo recupera cada 4 horas em vez de 12.",
+        "2-description-1": "Você pode jogar 6 jogos de Jokers por dia em vez de 3.",
+        "2-description-2": "Cada jogo se recarga cada 4 horas em vez de 8.",
         "3-title": "Descontos em packs",
         "3-description-1": "20% de desconto em cada pack de temporada 1 que compras.",
         "3-description-2": ""
@@ -168,7 +168,7 @@
     },
     "btn": {
       "gameOver-share-btn": "COMPARTILHAR NO",
-      "gameOver-newGame-btn": "INICIAR NOVO JOGO"
+      "gameOver-mygames-btn": "MINHAS JOGOS"
     }
   },
   "login": {
@@ -240,7 +240,8 @@
   "common": {
     "go-back-btn": "Voltar",
     "login": "Login",
-    "login-to-access": "Por favor, faça login para acessar esta página"
+    "login-to-access": "Por favor, faça login para acessar esta página",
+    "login-purchases": "É necessário uma conta para comprar itens. Suas compras estão vinculadas de forma segura à sua conta e podem ser acessadas em qualquer dispositivo."
   },
   "profile-menu": {
     "level": "Nível",
@@ -262,6 +263,17 @@
     "title": "Coleção",
     "no-collection": "Por favor, inicie sessão para ver sua coleção",
     "login": "Iniciar sessão",
+    "intro": {
+      "summary": "Cada temporada traz um novo set de cartas especiais exclusivas. Desbloqueie-as abrindo packs para usá-las no jogo e acompanhe-as aqui.",
+      "learn-more": "Saiba mais",
+      "popup-title": "Como a coleção funciona",
+      "points": {
+        "1": "Cada temporada adiciona novas cartas especiais disponíveis apenas naquela temporada.",
+        "2": "As cartas são desbloqueadas quando você as consegue abrindo packs.",
+        "3": "Os packs são desbloqueados ao ganhar XP completando missões diárias e passando níveis diariamente.",
+        "4": "Quando você tem a carta especial na coleção, ela fica liberada dentro do jogo."
+      }
+    },
     "collections": {
       "traditionals": "Cartas tradicionais",
       "neons": "Cartas de Neon",
@@ -271,6 +283,7 @@
   },
   "wallet-provider": {
     "not-allowed": "Você não tem permissão para acessar.",
+    "register-at": "Por favor, registre-se em ",
     "season-1": "TEMPORADA 1",
     "early-access": "ACESSO ANTECIPADO",
     "login": "ENTRAR",

@@ -35,6 +35,7 @@ const GAMES_QUERY = gql`
           state
           current_node_id
           round
+          is_tournament
         }
       }
     }
@@ -50,6 +51,7 @@ interface GameDataNode {
   state?: string;
   current_node_id?: number;
   round?: number;
+  is_tournament?: boolean;
 }
 
 interface GamesQueryResponse {
@@ -87,10 +89,15 @@ export const useGetMyGames = () => {
       points: node.player_score,
       currentNodeId: node.current_node_id,
       round: node.round,
+      isTournament: node.is_tournament,
     })) || [];
 
+  const sortedGames = gameSummaries
+    .filter((game) => game.status !== GameStateEnum.NotStarted)
+    .sort((a, b) => b.id - a.id);
+
   return {
-    data: gameSummaries.filter(game => game.status !== GameStateEnum.NotStarted),
+    data: sortedGames,
     isLoading,
     error,
     refetch,

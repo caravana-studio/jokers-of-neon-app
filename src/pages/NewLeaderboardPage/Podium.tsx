@@ -17,16 +17,12 @@ export const Podium = ({ seePrizes = false }: PodiumProps) => {
   const { isSmallScreen } = useResponsiveValues();
   const { id: gameId } = useGameStore();
   const { tournament } = useTournamentSettings();
-  const { startCountingAtGameId, stopCountingAtGameId } = tournament || {
-    startCountingAtGameId: 0,
-    stopCountingAtGameId: 1000000,
-  };
+  const isTournament = Boolean(tournament?.isActive);
 
   const { data: fullLeaderboard } = useGetLeaderboard(
     gameId,
     true,
-    startCountingAtGameId,
-    stopCountingAtGameId
+    isTournament
   );
   const leaders = fullLeaderboard?.slice(0, 3);
 

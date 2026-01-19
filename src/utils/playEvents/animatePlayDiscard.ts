@@ -326,7 +326,7 @@ export const animatePlayDiscard = (config: AnimatePlayConfig) => {
       }
     } else if (playEvents.gameOver) {
       setTimeout(() => {
-        navigate(`/summary`);
+        navigate(`/loose`);
       }, 1000);
     } else if (playEvents.levelPassed && playEvents.detailEarned) {
       resetRage();
@@ -343,7 +343,7 @@ export const animatePlayDiscard = (config: AnimatePlayConfig) => {
           : clearRoundSound();
         navigate(
           playEvents.levelPassed?.level_passed === BOSS_LEVEL
-            ? "/summary/win"
+            ? "/win"
             : "/rewards"
         );
       }, 1000);

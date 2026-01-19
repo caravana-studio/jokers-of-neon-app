@@ -10,7 +10,7 @@ export const GameOverLoggedIn = () => {
     actualPlayer,
     t,
     onShareClick,
-    onStartGameClick,
+    onSecondButtonClick,
     isLoading,
   } = useGameOver();
 
@@ -21,7 +21,7 @@ export const GameOverLoggedIn = () => {
       actualPlayerPosition={actualPlayer?.position}
       t={t}
       onShareClick={onShareClick}
-      onStartGameClick={onStartGameClick}
+      onSecondButtonClick={onSecondButtonClick}
       isLoading={isLoading}
       leaderboardFilterLoggedInPlayers={true}
       loggedIn
@@ -34,9 +34,9 @@ export const GameOverLoggedIn = () => {
       }}
       secondButton={{
         onClick: () => {
-          onStartGameClick();
+          onSecondButtonClick();
         },
-        label: t("game-over.btn.gameOver-newGame-btn").toUpperCase(),
+        label: t("game-over.btn.gameOver-mygames-btn").toUpperCase(),
       }}
     />
   );

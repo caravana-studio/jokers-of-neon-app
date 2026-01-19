@@ -1,5 +1,5 @@
 import { Flex } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 import {
@@ -31,25 +31,34 @@ export const ClaimMultipleRewardsPage = () => {
   const [packs, setPacks] = useState<SeasonRewardPack[]>([]);
   const [currentPackIndex, setCurrentPackIndex] = useState<number>(0);
   const [transitioning, setTransitioning] = useState<boolean>(false);
-
-  const claimFn = params.premium
-    ? claimSeasonReward({ address: account.address, level, isPremium })
-    : claimUnclaimedRewards({
-        address: account.address,
-      });
+  const hasClaimedRef = useRef<boolean>(false);
 
   useEffect(() => {
-    if (account?.address) {
-      claimFn
-        .then((packs) => {
-          setPacks(packs);
-          setCurrentPackIndex(0);
-        })
-        .catch((error) => {
-          console.error("Error claiming season reward:", error);
-          navigate("/");
-        });
-    }
+    if (!account?.address || hasClaimedRef.current) return;
+    hasClaimedRef.current = true;
+
+    const claim = async () => {
+      try {
+        const result = params.premium
+          ? await claimSeasonReward({ address: account.address, level, isPremium })
+          : await claimUnclaimedRewards({
+              address: account.address,
+            });
+
+        if (!Array.isArray(result)) {
+          throw new Error("Unexpected claim response");
+        }
+
+        setPacks(result);
+        setCurrentPackIndex(0);
+      } catch (error) {
+        console.error("Error claiming season reward:", error);
+        navigate("/");
+      }
+    };
+
+    claim();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account?.address]);
 
   const headingStages: LoadingProgress[] = [

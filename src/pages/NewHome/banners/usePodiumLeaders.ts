@@ -6,16 +6,12 @@ import { useGameStore } from "../../../state/useGameStore";
 export const usePodiumLeaders = () => {
   const { id: gameId } = useGameStore();
   const { tournament } = useTournamentSettings();
-  const {
-    startCountingAtGameId = 0,
-    stopCountingAtGameId = 1000000,
-  } = tournament ?? {};
+  const isTournament = Boolean(tournament?.isActive);
 
   const { data: fullLeaderboard } = useGetLeaderboard(
     gameId,
     true,
-    startCountingAtGameId,
-    stopCountingAtGameId
+    isTournament
   );
 
   const leaders = useMemo(() => {

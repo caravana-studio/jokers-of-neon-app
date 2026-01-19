@@ -1,4 +1,7 @@
+import { gql } from "graphql-tag";
 import { Plays } from "../../enums/plays";
+import graphQLClient from "../../graphQLClient";
+import { snakeToCamel } from "../../utils/snakeToCamel";
 
 export interface GameTrackerView {
   highestHand: number;
@@ -68,8 +71,94 @@ const getPokerHandVariant = (hand: any): Plays => {
   return variantKey ? POKER_HAND_TO_PLAY[variantKey] : Plays.NONE;
 };
 
+const DOJO_NAMESPACE =
+  import.meta.env.VITE_DOJO_NAMESPACE || "jokers_of_neon_core";
+const CAMEL_CASE_NAMESPACE = snakeToCamel(DOJO_NAMESPACE);
+const GAME_TRACKER_FIELD_NAME = `${CAMEL_CASE_NAMESPACE}GameTrackerModels`;
+
+const GAME_TRACKER_QUERY = gql`
+  query ($gameId: u64!) {
+    ${GAME_TRACKER_FIELD_NAME}(
+      where: { game_idEQ: $gameId }
+      first: 1
+    ) {
+      edges {
+        node {
+          game_id
+          highest_hand
+          most_played_hand {
+            _0
+            _1
+          }
+          highest_cash
+          cards_played_count
+          cards_discarded_count
+          rage_wins
+        }
+      }
+    }
+  }
+`;
+
+const parseTracker = (tracker: any): GameTrackerView => {
+  const mostPlayedHandRaw = tracker?.most_played_hand ?? [];
+  const hand =
+    Array.isArray(mostPlayedHandRaw) && mostPlayedHandRaw.length > 0
+      ? mostPlayedHandRaw[0]
+      : mostPlayedHandRaw?.hand ??
+        (mostPlayedHandRaw && typeof mostPlayedHandRaw === "object"
+          ? (mostPlayedHandRaw as any)._0 ?? (mostPlayedHandRaw as any)[0]
+          : typeof mostPlayedHandRaw === "string"
+          ? (() => {
+              const trimmed = mostPlayedHandRaw.trim();
+              if (trimmed.startsWith("[")) {
+                try {
+                  const parsed = JSON.parse(trimmed);
+                  return Array.isArray(parsed) ? parsed[0] : undefined;
+                } catch {
+                  return undefined;
+                }
+              }
+              return mostPlayedHandRaw;
+            })()
+          : undefined);
+  const count =
+    Array.isArray(mostPlayedHandRaw) && mostPlayedHandRaw.length > 1
+      ? mostPlayedHandRaw[1]
+      : mostPlayedHandRaw?.count ??
+        (mostPlayedHandRaw && typeof mostPlayedHandRaw === "object"
+          ? (mostPlayedHandRaw as any)._1 ?? (mostPlayedHandRaw as any)[1]
+          : typeof mostPlayedHandRaw === "string"
+          ? (() => {
+              const trimmed = mostPlayedHandRaw.trim();
+              if (trimmed.startsWith("[")) {
+                try {
+                  const parsed = JSON.parse(trimmed);
+                  return Array.isArray(parsed) ? parsed[1] : undefined;
+                } catch {
+                  return undefined;
+                }
+              }
+              return undefined;
+            })()
+          : undefined);
+
+  return {
+    highestHand: Number(tracker?.highest_hand ?? tracker?.highestHand ?? 0),
+    mostPlayedHand: getPokerHandVariant(hand),
+    mostPlayedHandCount: Number(count ?? 0),
+    highestCash: Number(tracker?.highest_cash ?? tracker?.highestCash ?? 0),
+    cardsPlayedCount: Number(
+      tracker?.cards_played_count ?? tracker?.cardsPlayedCount ?? 0
+    ),
+    cardsDiscardedCount: Number(
+      tracker?.cards_discarded_count ?? tracker?.cardsDiscardedCount ?? 0
+    ),
+    rageWins: Number(tracker?.rage_wins ?? tracker?.rageWins ?? 0),
+  };
+};
+
 export const getGameTracker = async (
-  client: any,
   gameId: number
 ): Promise<GameTrackerView> => {
   if (!gameId) {
@@ -77,38 +166,22 @@ export const getGameTracker = async (
   }
 
   try {
-    const txResult: any = await client.game_views.getGameTracker(gameId);
-    const tracker = txResult?.game_tracker ?? txResult?.[0] ?? txResult;
-
-    const mostPlayedHandRaw = tracker?.most_played_hand ?? [];
-    const hand =
-      Array.isArray(mostPlayedHandRaw) && mostPlayedHandRaw.length > 0
-        ? mostPlayedHandRaw[0]
-        : mostPlayedHandRaw?.hand ??
-          (mostPlayedHandRaw && typeof mostPlayedHandRaw === "object"
-            ? mostPlayedHandRaw[0]
-            : undefined);
-    const count =
-      Array.isArray(mostPlayedHandRaw) && mostPlayedHandRaw.length > 1
-        ? mostPlayedHandRaw[1]
-        : mostPlayedHandRaw?.count ??
-          (mostPlayedHandRaw && typeof mostPlayedHandRaw === "object"
-            ? mostPlayedHandRaw[1]
-            : undefined);
-
-    return {
-      highestHand: Number(tracker?.highest_hand ?? 0),
-      mostPlayedHand: getPokerHandVariant(hand),
-      mostPlayedHandCount: Number(count ?? 0),
-      highestCash: Number(tracker?.highest_cash ?? 0),
-      cardsPlayedCount: Number(tracker?.cards_played_count ?? 0),
-      cardsDiscardedCount: Number(tracker?.cards_discarded_count ?? 0),
-      rageWins: Number(tracker?.rage_wins ?? 0),
-    };
+    const graphQLResponse: Record<string, any> = await graphQLClient.request(
+      GAME_TRACKER_QUERY,
+      {
+        gameId: gameId.toString(),
+      }
+    );
+    const tracker =
+      graphQLResponse?.[GAME_TRACKER_FIELD_NAME]?.edges?.[0]?.node ?? null;
+    if (tracker) {
+      return parseTracker(tracker);
+    }
   } catch (e) {
-    console.error("error getting game tracker", e);
-    return DEFAULT_GAME_TRACKER;
+    console.error("error getting game tracker via graphql", e);
   }
+
+  return DEFAULT_GAME_TRACKER;
 };
 
 export const DEFAULT_TRACKER_VIEW = DEFAULT_GAME_TRACKER;

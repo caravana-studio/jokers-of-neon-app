@@ -16,7 +16,7 @@ export const getDailyMissionCompleteEvent = (
     .map((event) => {
       const player = event.data.at(1) ?? "";
 
-      const txValue = event.data.at(3);
+      const txValue = event.data.at(2);
       const dailyMissionId = decodeString(txValue ?? "");
 
       return { player, dailyMissionId };

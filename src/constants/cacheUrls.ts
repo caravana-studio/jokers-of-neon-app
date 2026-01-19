@@ -5,7 +5,7 @@ import { SPECIALS_RARITY } from "../data/specialCards";
 import { CARDS_SUIT_DATA } from "../data/traditionalCards";
 import { ALL_GLOBS, STATIC_IMAGE_URLS } from "./imageConstants";
 
-export const CACHE_IMAGE = "big-image-cache-4";
+export const CACHE_IMAGE = "big-image-cache-s1";
 export const CACHE_VIDEO = "background-video-cache";
 
 export const getDefaultImageUrls = async (): Promise<string[]> => {

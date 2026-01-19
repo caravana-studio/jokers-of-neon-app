@@ -1,24 +1,23 @@
 import { gql } from "graphql-tag";
 import { useQuery } from "react-query";
-import { useDojo } from "../dojo/useDojo";
-import { decodeString, encodeString } from "../dojo/utils/decodeString";
-import graphQLClient from "../graphQLClient";
-import { useGameStore } from "../state/useGameStore";
+import { decodeString } from "../dojo/utils/decodeString";
+import mainnetGraphQLClient from "../mainnetGraphQLClient";
 import { signedHexToNumber } from "../utils/signedHexToNumber";
 import { snakeToCamel } from "../utils/snakeToCamel";
+import { useTournamentSettings } from "./useTournamentSettings";
 
 export const LEADERBOARD_QUERY_KEY = "leaderboard";
 const guestNamePattern = /^joker_guest_\d+$/;
 
 const DOJO_NAMESPACE =
-  import.meta.env.VITE_DOJO_NAMESPACE || "jokers_of_neon_core";
+  import.meta.env.VITE_MAINNET_NAMESPACE || "jokers_of_neon_core";
 const CAMEL_CASE_NAMESPACE = snakeToCamel(DOJO_NAMESPACE);
-const QUERY_FIELD_NAME = `${CAMEL_CASE_NAMESPACE}GameModels`;
+const QUERY_FIELD_NAME = `${CAMEL_CASE_NAMESPACE}GameDataModels`;
 
 export const LEADERBOARD_QUERY = gql`
-  query ($modId: String!, $startCountingAtGameId: String, $stopCountingAtGameId: String) {
+  query ($isTournament: Boolean!, $startCountingAtGameId: u64!) {
     ${QUERY_FIELD_NAME}(
-      where: { mod_idEQ: $modId, idGT: $startCountingAtGameId, idLT: $stopCountingAtGameId }
+      where: { is_tournament: $isTournament, idGT: $startCountingAtGameId }
       first: 10000
       order: { field: "LEVEL", direction: "DESC" }
     ) {
@@ -28,8 +27,8 @@ export const LEADERBOARD_QUERY = gql`
           level
           player_name
           id
-          current_node_id
           round
+          is_tournament
         }
       }
     }
@@ -42,43 +41,24 @@ interface GameEdge {
     level: number;
     player_name: string;
     id: number;
-    current_node_id: number;
     round: number;
+    is_tournament: boolean;
   };
 }
 
 type LeaderboardResponse = Record<string, { edges: GameEdge[] }>;
 
-const getPrize = (position: number): number => {
-  if (position >= 3 && position <= 6) {
-    return 100;
-  } else if (position >= 7 && position <= 10) {
-    return 50;
-  }
-  switch (position) {
-    case 1:
-      return 300;
-    case 2:
-      return 200;
-    default:
-      return 0;
-  }
-};
-
 const fetchGraphQLData = async (
-  modId: string,
-  client: any,
   filterLoggedInPlayers: boolean,
   gameId?: number,
-  startCountingAtGameId: number = 0,
-  stopCountingAtGameId: number = 1000000
+  isTournament: boolean = false,
+  startCountingAtGameId: number = 0
 ) => {
-  const rawData: LeaderboardResponse = await graphQLClient.request(
+  const rawData: LeaderboardResponse = await mainnetGraphQLClient.request(
     LEADERBOARD_QUERY,
     {
-      modId: encodeString(modId),
-      startCountingAtGameId: startCountingAtGameId.toString(),
-      stopCountingAtGameId: stopCountingAtGameId.toString(),
+      isTournament,
+      startCountingAtGameId,
     }
   );
 
@@ -163,26 +143,32 @@ const fetchGraphQLData = async (
   return filteredLeaderboard.map((leader, index) => ({
     ...leader,
     position: index + 1,
-    prize: getPrize(index + 1),
   }));
 };
 
 export const useGetLeaderboard = (
   gameId?: number,
   filterLoggedInPlayers = true,
-  startCountingAtGameId: number = 0,
-  stopCountingAtGameId: number = 1000000,
+  isTournament = false
 ) => {
-  const { modId } = useGameStore();
-  const {
-    setup: { client },
-  } = useDojo();
+  const { tournament, loading: tournamentLoading } = useTournamentSettings();
+  const startCountingAtGameId =
+    (!tournamentLoading &&
+      Number(tournament?.startCountingAtGameId ?? 0)) ||
+    0;
 
   const queryResponse = useQuery(
-    [LEADERBOARD_QUERY_KEY, modId, gameId, startCountingAtGameId, stopCountingAtGameId],
-    () => fetchGraphQLData(modId, client, filterLoggedInPlayers, gameId, startCountingAtGameId, stopCountingAtGameId),
+    [LEADERBOARD_QUERY_KEY, gameId, isTournament, startCountingAtGameId],
+    () =>
+      fetchGraphQLData(
+        filterLoggedInPlayers,
+        gameId,
+        isTournament,
+        startCountingAtGameId
+      ),
     {
       refetchOnWindowFocus: false,
+      enabled: !tournamentLoading,
     }
   );
 

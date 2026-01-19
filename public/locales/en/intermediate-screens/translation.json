@@ -25,8 +25,8 @@
         "1-description-1": "Progressing through season 1 gives vou extra rewards.",
         "1-description-2": "All your rewards are transferrable.",
         "2-title": "More games per day",
-        "2-description-1": "You can play 4 games of Jokers per day instead of 2.",
-        "2-description-2": "Every game recovers every 4 hours intead of 12.",
+        "2-description-1": "You can play 6 games of Jokers per day instead of 3.",
+        "2-description-2": "Every game recovers every 4 hours intead of 8.",
         "3-title": "Discounts on packs",
         "3-description-1": "20% discount on every Season 1 pack you buy.",
         "3-description-2": ""
@@ -168,7 +168,7 @@
     },
     "btn": {
       "gameOver-share-btn": "SHARE ON",
-      "gameOver-newGame-btn": "START NEW GAME"
+      "gameOver-mygames-btn": "MY GAMES"
     }
   },
   "login": {
@@ -241,7 +241,8 @@
   "common": {
     "go-back-btn": "Go back",
     "login": "Login",
-    "login-to-access": "Please, login to access this page"
+    "login-to-access": "Please, login to access this page",
+    "login-purchases": "An account is required to purchase items. Your purchases are securely linked to your account and can be accessed across devices."
   },
   "profile-menu": {
     "level": "Level",
@@ -263,6 +264,17 @@
     "title": "Collection",
     "no-collection": "Please login to see your collection",
     "login": "Login",
+    "intro": {
+      "summary": "Each season brings a new set of exclusive special cards. Unlock them from packs to use them in game and track them here.",
+      "learn-more": "Learn more",
+      "popup-title": "How collection works",
+      "points": {
+        "1": "Each season adds new special cards that are only available for that season.",
+        "2": "You unlock cards by obtaining them from packs.",
+        "3": "Packs unlock as you earn XP by completing daily missions and passing levels each day.",
+        "4": "Once a special card is in your collection, it is unlocked inside the game."
+      }
+    },
     "collections": {
       "traditionals": "Traditional Cards",
       "neons": "Neon Cards",
@@ -272,6 +284,7 @@
   },
   "wallet-provider": {
     "not-allowed": "You are not allowed to access.",
+    "register-at": "Please register at ",
     "season-1": "SEASON 1",
     "early-access": "EARLY ACCESS",
     "login": "LOGIN",

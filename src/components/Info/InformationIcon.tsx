@@ -8,9 +8,11 @@ import { useResponsiveValues } from "../../theme/responsiveSettings";
 export const InformationIcon = ({
   title,
   informationContent,
+  unstyledPopup = false,
 }: {
   title: string;
   informationContent?: JSX.Element;
+  unstyledPopup?: boolean;
 }) => {
   const { setInformation } = useInformationPopUp();
   const { t } = useTranslation("store", { keyPrefix: "information" });
@@ -21,7 +23,7 @@ export const InformationIcon = ({
       size={isSmallScreen ? "14px" : "18px"}
       onClick={(event) => {
         event.stopPropagation();
-        setInformation(informationContent);
+        setInformation(informationContent, { unstyled: unstyledPopup });
       }}
       cursor="pointer"
       style={{

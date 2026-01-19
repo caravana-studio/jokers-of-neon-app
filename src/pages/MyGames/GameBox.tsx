@@ -75,10 +75,17 @@ export const GameBox = ({
           gap={1.5}
           w={isSmallScreen ? "100px" : "210px"}
         >
-          <CachedImage
-            src="/logos/jn.png"
-            height={isSmallScreen ? "13px" : "25px"}
-          />
+          {game.isTournament ? (
+            <CachedImage
+              src="/tournament-entry.png"
+              h={isSmallScreen ? "30px" : "45px"}
+            />
+          ) : (
+            <CachedImage
+              src="/logos/jn.png"
+              height={isSmallScreen ? "13px" : "25px"}
+            />
+          )}
           <Text
             fontFamily="Orbitron"
             fontSize={isSmallScreen ? "11px" : "23px"}

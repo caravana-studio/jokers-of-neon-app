@@ -7,6 +7,13 @@
       "start": "Start"
     },
     "join-discord": "Join our Discord!",
+    "xpBooster": {
+      "title": "DOUBLE XP",
+      "subtitle": "LIMITED TIME EVENT",
+      "headline": "All your <xp>XP</xp> gains are <double>DOUBLED</double> while this event is live",
+      "countdownLabel": "Ends in:",
+      "dontShowAgain": "Don't show again"
+    },
     "leaderboard-banner": {
       "title": "Leaderboard",
       "button": "Full leaderboard"
@@ -40,8 +47,15 @@
     "title": "Leaderboard",
     "tournament": "Tournament active",
     "finished": "Tournament finished",
+    "tabs": {
+      "game-leaderboard": "Game leaderboard",
+      "xp-leaderboard": "XP Leaderboard",
+      "tournament-leaderboard": "Tournament leaderboard"
+    },
     "level": "Level ",
     "round": "R ",
+    "xp": "XP",
+    "address": "Address",
     "points": "Points",
     "see-prizes": "See prizes",
     "prizes": {

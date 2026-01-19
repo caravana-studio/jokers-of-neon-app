@@ -4,7 +4,7 @@
     "specials": "Las cartas especiales aplican efectos globales que pueden influir en cartas específicas o en la mecánica del juego. Hay dos tipos: Permanentes y Temporales. Las cartas temporales se destruyen después de 3 rondas.",
     "modifiers": "Las cartas modificadoras otorgan efectos únicos a cartas individuales, mejorando sus habilidades.",
     "traditionals": "Las cartas tradicionales son la base del juego, utilizadas para formar manos de póker y avanzar por los niveles. Las cartas neón son una variante mejorada que otorgan el doble de puntos y un multiplicador adicional de +1, haciéndolas muy valiosas.",
-    "power-ups": "Los power-ups son objetos consumibles que mejoran tus jugadas al aumentar puntos o multiplicador.",
+    "power-ups": "Los potenciadores son objetos consumibles que mejoran tus jugadas al aumentar puntos o multiplicador.",
     "permanent": "Las cartas permanentes permanecen contigo hasta que decidas eliminarlas.",
     "temporal": "Las cartas temporales se eliminan automáticamente después de 3 ronda.",
     "burn": "Elimina una carta de tu mazo",
@@ -26,7 +26,7 @@
         "improve-plays": "Mejora tus manos de póker",
         "my-special-cards": "Cartas speciales",
         "loot-boxes": "Cajas",
-        "power-ups": "Power-ups"
+        "power-ups": "Potenciadores"
       }
     },
     "labels": {
@@ -52,7 +52,7 @@
       "special": "Cartas especiales",
       "my-special-cards": "Cartas especiales",
       "packs": "Paquetes",
-      "powerups": "Power-ups"
+      "powerups": "Potenciadores"
     },
     "tooltip": {
       "reroll-default": "Actualizar items",
@@ -81,7 +81,7 @@
       "tooltip": {
         "no-coins": "Monedas insuficientes",
         "no-space": "No tienes espacios disponibles para comprar esta carta especial.",
-        "no-space-power-ups": "No tienes espacios disponibles para comprar este power-up."
+        "no-space-power-ups": "No tienes espacios disponibles para comprar este potenciador."
       },
       "labels": {
         "buy": "Comprar",
@@ -92,7 +92,7 @@
         "temporary": "Temporal",
         "close": "Cerrar",
         "temporal": "Carta temporal. Se destruye después de {{remaining}} rondas.",
-        "power-up": "Power-up"
+        "power-up": "Potenciador"
       }
     },
     "packs": {
@@ -132,7 +132,7 @@
     },
     "2": {
       "name": "Global",
-      "content": "{{specials}} cartas especiales, {{powerups}} power-ups"
+      "content": "{{specials}} cartas especiales, {{powerups}} potenciadores"
     },
     "3": {
       "name": "Especiales",
@@ -148,7 +148,7 @@
     },
     "6": {
       "name": "Mix",
-      "content": "{{lootboxes}} cajas, {{powerups}} power-ups, {{levelups}} mejoras de nivel"
+      "content": "{{lootboxes}} cajas, {{powerups}} potenciadores, {{levelups}} mejoras de nivel"
     }
   },
   "loot-box-rates": {

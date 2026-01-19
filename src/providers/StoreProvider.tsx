@@ -13,6 +13,7 @@ import { PokerHandItem } from "../types/PokerHandItem";
 import { PowerUp } from "../types/Powerup/PowerUp.ts";
 import { getCardType } from "../utils/getCardType.ts";
 import { useCardData } from "./CardDataProvider.tsx";
+import { useSettings } from "./SettingsProvider";
 
 interface IStoreContext {
   buyCard: (card: Card) => Promise<boolean>;
@@ -81,8 +82,6 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     setLocked,
     specialSlotItem,
     burnItem,
-    burnCard: stateBurnCard,
-    rollbackBurnCard,
   } = useShopStore();
 
   const {
@@ -107,9 +106,10 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
 
   const { getCardData } = useCardData();
 
-  const { play: levelUpHandSound } = useAudio(levelUpSfx, 0.45);
-  const { play: buySound } = useAudio(buySfx, 0.5);
-  const { play: rerollSound } = useAudio(rerollSfx, 0.25);
+  const { sfxVolume } = useSettings();
+  const { play: levelUpHandSound } = useAudio(levelUpSfx, sfxVolume);
+  const { play: buySound } = useAudio(buySfx, sfxVolume);
+  const { play: rerollSound } = useAudio(rerollSfx, sfxVolume);
 
   const {
     buyCard: dojoBuyCard,
@@ -212,20 +212,18 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
       ? burnItem.discount_cost
       : burnItem?.cost ?? 0;
     removeCash(cost);
-    stateBurnCard();
 
     const promise = dojoBurnCard(gameId, card.card_id ?? 0)
       .then(async ({ success }) => {
         if (success) {
           fetchDeck(client, gameId, getCardData);
+          refetchShopStore(client, gameId);
         } else {
-          rollbackBurnCard();
           addCash(cost);
         }
         return success;
       })
       .catch(() => {
-        rollbackBurnCard();
         addCash(cost);
         return false;
       })

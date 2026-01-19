@@ -16,6 +16,7 @@ export const mainMenuUrls = [
 ];
 
 export const gameUrls = [
+  "/map",
   "/demo",
   "/store",
   "/rewards",
@@ -26,7 +27,6 @@ export const gameUrls = [
   "/preview/:type",
   "/loot-box-cards-selection",
   "/manage",
-  "/map",
   "/docs",
   "/deck",
   "/plays",
@@ -74,8 +74,8 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
   const { state } = useGameStore();
   const { isSmallScreen } = useResponsiveValues();
 
-  const mainMenuItems: MenuItem[] = useMemo(
-    () => [
+  const mainMenuItems: MenuItem[] = useMemo(() => {
+    const items: MenuItem[] = [
       {
         icon: Icons.HOME,
         url: "/",
@@ -116,23 +116,27 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
         url: "/profile",
         active: url === "/profile",
         key: "profile",
-      },
-      {
+      },*/
+    ];
+
+    if (!isSmallScreen) {
+      items.push({
         icon: Icons.SETTINGS,
         url: "/settings",
         active: url === "/settings",
         key: "settings",
-      },*/
-    ],
-    [url]
-  );
+      });
+    }
+
+    return items;
+  }, [isSmallScreen, url]);
 
   const inGameMenuItems: MenuItem[] = [
     {
       icon: getIcon(state),
       url: "/redirect",
       disabled: state === GameStateEnum.Map,
-      active: gameUrls.some((gameUrl) => {
+      active: gameUrls.slice(1).some((gameUrl) => {
         if (gameUrl.includes(":")) {
           const base = gameUrl.split(":")[0];
           return url.startsWith(base);

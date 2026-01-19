@@ -36,6 +36,7 @@ import { ShopPage } from "./pages/Shop/ShopPage";
 import { SummaryPage } from "./pages/SummaryPage";
 import { TestPage } from "./pages/TestPage";
 import { VibrationPage } from "./pages/VibrationPage";
+import { ReferralTestPage } from "./pages/ReferralTestPage";
 import { CardHighlightProvider } from "./providers/HighlightProvider/CardHighlightProvider";
 import { PowerupHighlightProvider } from "./providers/HighlightProvider/PowerupHighlightProvider";
 import { StoreProvider } from "./providers/StoreProvider";
@@ -76,6 +77,14 @@ export const AppRoutes = () => {
         element={
           <AnimatedPage>
             <VibrationPage />
+          </AnimatedPage>
+        }
+      />
+      <Route
+        path="/referral-test"
+        element={
+          <AnimatedPage>
+            <ReferralTestPage />
           </AnimatedPage>
         }
       />
@@ -162,11 +171,21 @@ export const AppRoutes = () => {
         }
       />
       <Route
-        path="/summary/:win?"
+        path="/win"
         element={
           <AnimatedPage>
             <GameStoreLoader>
-              <SummaryPage />
+              <SummaryPage win />
+            </GameStoreLoader>
+          </AnimatedPage>
+        }
+      />      
+      <Route
+        path="/loose"
+        element={
+          <AnimatedPage>
+            <GameStoreLoader>
+              <SummaryPage win={false} />
             </GameStoreLoader>
           </AnimatedPage>
         }
@@ -317,7 +336,7 @@ export const AppRoutes = () => {
         path="/shop"
         element={
           <AnimatedPage>
-            <LoginGate>
+            <LoginGate translationKey="login-purchases">
               <ShopPage />
             </LoginGate>
           </AnimatedPage>

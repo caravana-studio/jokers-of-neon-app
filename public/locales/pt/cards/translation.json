@@ -302,7 +302,7 @@
     },
     "10101": {
       "name": "Pôster Desbotado",
-      "description": "Começa com ^blue(+100 pontos)^, perde ^blue(10 pontos)^ por jogada até chegar em ^blue(10 pontos)^."
+      "description": "Começa com ^blue(+100 pontos)^, perde ^blue(10 pontos)^ por jogada até chegar em ^blue(10 pontos)^. ^blue(Atualmente com +{{points}} pontos)^."
     },
     "10102": {
       "name": "Domador da Sorte",
@@ -350,7 +350,7 @@
     },
     "10113": {
       "name": "Quebrador de Rage",
-      "description": "Ganhe ^violet(+2 multi)^ (acumulativo) para cada Rage derrotada. ^violet(Actualmente +{{multi}} multi)^."
+      "description": "Ganhe ^violet(+3 multi)^ (acumulativo) para cada Rage derrotada. ^violet(Actualmente +{{multi}} multi)^."
     },
     "10114": {
       "name": "Recompensas em Chamas",
@@ -366,7 +366,7 @@
     },
     "19903": {
       "name": "Redenção do Pântano",
-      "description": "Ganha entre ^blue(+1)^ e ^blue(+5 pontos)^ (acumulativos) cada vez que descarta."
+      "description": "Ganha entre ^blue(+1)^ e ^blue(+5 pontos)^ (acumulativos) cada vez que descarta. Actualmente ^blue(+{{points}} pontos)^."
     }
   },
   "power-ups": {

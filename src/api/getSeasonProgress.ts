@@ -11,6 +11,7 @@ export type GetSeasonLineParams = {
   userAddress: string;
   seasonId?: number;
   limit?: number;
+  forceSeasonPassUnlocked?: boolean;
 };
 
 type SeasonLineApiEntry = {
@@ -141,6 +142,7 @@ const transformSeasonLine = (
 export async function getSeasonProgress({
   userAddress,
   seasonId = DEFAULT_SEASON_ID,
+  forceSeasonPassUnlocked,
 }: GetSeasonLineParams): Promise<{
   steps: IStep[];
   seasonPassUnlocked: boolean;
@@ -176,13 +178,17 @@ export async function getSeasonProgress({
 
   const progressJson = await progressResponse.json();
 
-  const seasonPassUnlocked = !!Number(progressJson?.data?.has_season_pass ?? 0);
+  const apiSeasonPassUnlocked = !!Number(
+    progressJson?.data?.has_season_pass ?? 0
+  );
+  const seasonPassUnlocked =
+    forceSeasonPassUnlocked === true ? true : apiSeasonPassUnlocked;
   const playerProgress = Number(progressJson?.data?.season_xp ?? 0);
   const seasonPassUnlockedAtLevel = seasonPassUnlocked
     ? Number(progressJson?.data?.season_pass_unlocked_at_level ?? 0)
     : 0;
 
-  const tournamentEntries = Number(progressJson?.data?.tournament_ticket ?? 0);
+  const tournamentEntries = Number(progressJson?.data?.ticket_amount ?? 0);
   const rewardsLeftToClaim = progressJson?.data?.claimable_rewards_id ??  [];
 
   const seasonLineRequestUrl = `${baseUrl}/api/season/line/${encodeURIComponent(

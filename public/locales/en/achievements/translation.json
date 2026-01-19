@@ -15,7 +15,7 @@
     "level-up-1": "Level up a hand 3 levels",
     "level-up-2": "Level up a play to level 10",
     "loot-box-1": "Get a joker",
-    "neon-flush-1": "Play a NEON flush",
+    "neon-flush-1": "Play a Flush only using neon cards",
     "neon-1": "Own 10 neon cards",
     "play-least-three-joker": "Use 3 jokers",
     "play-least-three-neon-joker": "Use 3 neon jokers",
@@ -25,12 +25,20 @@
     "rage-round-3": "Defeat 10 Rage rounds",
     "round-last-hand-1": "Pass a round with the last hand",
     "round-only-hand-1": "Pass a round with 1 hand",
-    "round-without-discards-1": "Don't use discards",
-    "royal-flush-without-jokers-1": "Play royal flush",
+    "round-without-discards-1": "Pass a round without using discards",
+    "royal-flush-without-jokers-1": "Play a Royal Flush without using jokers",
     "sell-1": "Sell 3 special cards",
-    "slot-1": "Buy all the slots",
-    "straight-flush-1": "Play a straight flush",
-    "neon-play-1": "Play a neon hand"
+    "slot-1": "Buy all the 7 slots",
+    "straight-flush-1": "Play a Straight Flush",
+    "neon-play-1": "Play a hand that only contains neon cards"
+  },
+  "levelComplete": {
+    "title": "Level {{level}} completed +{{xp}}XP",
+    "description": "{{ordinalLabel}} time completing level {{level}} today",
+    "ordinal_one": "{{count}}st",
+    "ordinal_two": "{{count}}nd",
+    "ordinal_few": "{{count}}rd",
+    "ordinal_other": "{{count}}th"
   },
   "purchases": {
     "success": {

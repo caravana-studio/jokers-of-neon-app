@@ -131,7 +131,7 @@ export const SeasonPassRow = ({ id, price, unlocked }: SeasonPassRowProps) => {
           <Flex w="50%" flexDir={"column"} gap={isSmallScreen ? 4 : 6}>
             <Fact number={1} />
             <Fact number={2} />
-            <Fact number={3} />
+            {/* <Fact number={3} /> */}
           </Flex>
         </Flex>
         <Button

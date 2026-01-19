@@ -3,12 +3,17 @@ import { App } from "@capacitor/app";
 import { Capacitor, PluginListenerHandle } from "@capacitor/core";
 import { Howl } from "howler";
 import { useCallback, useEffect, useRef } from "react";
-import { SFX_ON } from "../constants/localStorage";
+import { useSettings } from "../providers/SettingsProvider";
 import { runNativeAudioTask } from "../utils/nativeAudioQueue";
 
 const toNativeAssetPath = (path: string) => {
   const sanitized = path.replace(/^\/+/, "");
   return sanitized.startsWith("public/") ? sanitized : `public/${sanitized}`;
+};
+
+const toWebAssetPath = (path: string) => {
+  const sanitized = path.replace(/^\/+/, "");
+  return `${import.meta.env.BASE_URL}${sanitized}`;
 };
 
 const toNativeAssetId = (path: string) =>
@@ -22,6 +27,7 @@ const toNativeAssetId = (path: string) =>
  */
 export const useAudio = (audioPath: string, volume: number = 1) => {
   const isNative = Capacitor.isNativePlatform();
+  const { sfxOn } = useSettings();
   const soundRef = useRef<Howl | null>(null);
   const assetId = useRef<string>(toNativeAssetId(audioPath));
 
@@ -55,7 +61,7 @@ export const useAudio = (audioPath: string, volume: number = 1) => {
         }
       } else {
         soundRef.current = new Howl({
-          src: [audioPath],
+          src: [toWebAssetPath(audioPath)],
           preload: true,
           volume,
         });
@@ -112,8 +118,7 @@ export const useAudio = (audioPath: string, volume: number = 1) => {
 
   // 🔹 Play sound (with optional channel)
   const play = useCallback(async (channel: number = 2) => {
-    const isSoundOn = localStorage.getItem(SFX_ON) === "true";
-    if (!isSoundOn) return;
+    if (!sfxOn) return;
 
     try {
       if (isNative) {
@@ -146,7 +151,7 @@ export const useAudio = (audioPath: string, volume: number = 1) => {
     } catch (err) {
       console.warn("Audio play error:", err);
     }
-  }, [audioPath, isNative, volume]);
+  }, [audioPath, isNative, sfxOn, volume]);
 
   const stop = useCallback(async () => {
     try {

@@ -117,7 +117,7 @@ export async function claimSeasonReward({
   level,
   isPremium,
   seasonId = DEFAULT_SEASON_ID,
-}: ClaimSeasonRewardParams): Promise<SeasonRewardPack[]> {
+}: ClaimSeasonRewardParams): Promise<SeasonRewardPack[] | boolean> {
   if (!address) {
     throw new Error("claimSeasonReward: address is required");
   }
@@ -167,7 +167,7 @@ export async function claimSeasonReward({
     );
   }
 
-  return parseMintedCards(json.mintedCards, "claimSeasonReward");
+  return json.mintedCards?.length ? parseMintedCards(json.mintedCards, "claimSeasonReward") : true;
 }
 
 export type ClaimUnclaimedRewardsParams = {
