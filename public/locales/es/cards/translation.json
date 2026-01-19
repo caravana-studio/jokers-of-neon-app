@@ -972,7 +972,7 @@
     "8": {
       "name": "Caja de los Amantes",
       "description": "Contiene solo cartas tradicionales y modificadoras de corazones.",
-      "details": "55% de probabilidad de obtener cartas de Corazones\n30% de probabilidad de obtener cartas de Corazones de Neon\n10% de probabilidad de obtener un modificador del palo de Corazones\n5% de probabilidad de obtener la carta especial 'Todas las cartas a corazones'\nTamaño de la caja 5"
+      "details": "55% de probabilidad de obtener cartas de Corazones\n30% de probabilidad de obtener cartas de Corazones de Neon\n10% de probabilidad de obtener un modificador de Corazones\n5% de probabilidad de obtener la carta especial 'El Amor está en el Aire'\nTamaño de la caja 5"
     },
     "9": {
       "name": "Caja de Apuesta Especial",
