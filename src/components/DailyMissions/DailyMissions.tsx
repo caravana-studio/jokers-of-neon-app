@@ -69,7 +69,7 @@ export const DailyMissions = ({ showTitle = true, fontSize }: DailyMissionsProps
       <Flex w="100%" flexDir="column" gap={1.5} overflow="hidden">
         {dailyMissions.length === 0 ? (
           <Text fontSize={fontSize || (isSmallScreen ? "12px" : "14px")} color="gray.400">
-            No missions available
+            {t("noMissionsAvailable")}
           </Text>
         ) : (
           dailyMissions.map((mission, index) => (

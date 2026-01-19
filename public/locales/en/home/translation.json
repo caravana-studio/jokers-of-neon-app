@@ -28,7 +28,8 @@
       "play-tournament": "Play tournament"
     },
     "level": "level",
-    "dailyMissions": "Daily Missions"
+    "dailyMissions": "Daily Missions",
+    "noMissionsAvailable": "No missions available"
   },
   "packs": {
     "title": "Packs",
