@@ -15,6 +15,7 @@ export interface ProfileStatsProps {
   games: number;
   victories: number;
   currentXp: number;
+  totalXp: number;
   xpLine: {
     prevLevelXp: number;
     nextLevelXp: number;
@@ -34,6 +35,7 @@ export const ProfileStats: React.FC<
   games,
   victories,
   currentXp,
+  totalXp,
   xpLine,
 }) => {
   const [profilePickerVisible, setProfilePickerVisible] = useState(false);
@@ -133,11 +135,11 @@ export const ProfileStats: React.FC<
         gap={4}
         alignItems={"center"}
         justifyContent={"center"}
-        width={"80px"}
       >
         {/* <ProfileStat title={t("streaks")} value={streak} suffix={t("days")} /> */}
         <ProfileStat title={t("games")} value={games} />
         <ProfileStat title={t("victories")} value={victories} />
+        <ProfileStat title={t("total-xp")} value={totalXp} />
       </Flex>
       <Box my={2} borderRadius="md" width="100%" maxW="600px">
         <Flex justify="space-between" gap={1} align="center">

@@ -88,6 +88,7 @@ export const useProfileStore = create<ProfileStore>((set, get) => ({
         profile: {
           username: profile.username,
           currentXp: sanitizedCurrentXp,
+          totalXp: sanitizedTotalXp,
           level: toInt(profile.level),
           streak: toInt(profile.dailyStreak),
           avatarId: finalAvatarId,

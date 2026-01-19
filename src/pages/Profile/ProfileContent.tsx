@@ -65,6 +65,7 @@ export const ProfileContent = ({
             games={playerStats.games}
             victories={playerStats.victories}
             currentXp={profile.currentXp}
+            totalXp={profile.totalXp}
             xpLine={xpLine}
             profilePicture={profile.avatarId}
             onUpdateAvatar={(avatarId) =>
