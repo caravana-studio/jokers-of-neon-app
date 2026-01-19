@@ -99,17 +99,19 @@
       "5": "Quase pronto, vamos jogar!"
     },
     "hints": {
-      "1": "Jogadas neon aumentam sua mão em 4 níveis",
-      "2": "Completar níveis dá XP para a temporada",
-      "3": "Você pode queimar cartas do seu baralho nas lojas",
-      "4": "As lojas oferecem slots extras para mais cartas especiais",
-      "5": "Usar menos jogadas e descartes te dá mais moedas por rodada",
-      "6": "Cartas especiais potencializam suas jogadas - compre nas lojas do mapa",
-      "7": "O Season Pass dobra suas vidas e reduz pela metade o tempo de recarga",
-      "8": "Existem mais de 70 cartas especiais para descobrir",
-      "9": "Suba de nível suas jogadas nas lojas do mapa",
-      "10": "Veja todas as cartas especiais, packs, modificadores e rages na Lista de Cartas",
-      "11": "O Season Pass permite trocar suas cartas especiais"
+      "1": "Jogar uma carta Neon aumenta sua mão em 4 níveis",
+      "2": "Se sua jogada é composta por cartas Neon, você fará uma jogada Neon",
+      "3": "Completar níveis dá XP para a temporada",
+      "4": "Você pode queimar cartas do seu baralho nas lojas",
+      "5": "As lojas oferecem slots extras para mais cartas especiais",
+      "6": "Usar menos jogadas e descartes te dá mais moedas por rodada",
+      "7": "Cartas especiais potencializam suas jogadas",
+      "8": "Arraste as cartas modificadoras para a carta desejada para aplicar seu efeito",
+      "9": "O Season Pass dobra suas vidas e reduz pela metade o tempo de recarga",
+      "10": "Existem mais de 70 cartas especiais para descobrir",
+      "11": "Suba de nível suas jogadas nas lojas",
+      "12": "Veja todas as cartas especiais, packs, modificadores e rages na Lista de Cartas",
+      "13": "Com Season Pass, todas as cartas especiais que você obtém são negociáveis"
     },
     "presents": "APRESENTA",
     "powered-by": "Impulsionado por"
