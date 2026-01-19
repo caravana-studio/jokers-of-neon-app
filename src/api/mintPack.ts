@@ -49,10 +49,5 @@ export async function mintPack({ packId, recipient }: MintPackParams) {
     throw new Error("mintPack: No cards minted");
   }
 
-  return json.mintedCards.sort((a: any, b: any) => {
-    if (a.skin_id !== b.skin_id) {
-      return b.skin_id - a.skin_id;
-    }
-    return b.card_id - a.card_id;
-  });
+  return json.mintedCards;
 }
