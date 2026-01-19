@@ -482,19 +482,19 @@
     },
     "10004": {
       "name": "Pair Booster",
-      "description": "Level up PAIR hand by 4 levels"
+      "description": "Level up PAIR hand by 4 levels. (+40 points +4 multi)"
     },
     "10005": {
       "name": "Two Pair Booster",
-      "description": "Level up TWO PAIR hand by 4 levels"
+      "description": "Level up TWO PAIR hand by 4 levels. (+80 points +4 multi)"
     },
     "10006": {
       "name": "Straight Booster",
-      "description": "Level up STRAIGHT hand by 4 levels"
+      "description": "Level up STRAIGHT hand by 4 levels. (+100 points +8 multi)"
     },
     "10007": {
       "name": "Flush Booster",
-      "description": "Level up FLUSH hand by 4 levels"
+      "description": "Level up FLUSH hand by 4 levels. (+100 points +8 multi)"
     },
     "10008": {
       "name": "Easy Straight",
@@ -622,19 +622,19 @@
     },
     "10043": {
       "name": "Full House Booster",
-      "description": "Level up Full house hand by 4 levels"
+      "description": "Level up Full house hand by 4 levels. (+100 points +8 multi)"
     },
     "10044": {
       "name": "Three of a Kind Booster",
-      "description": "Level up Three of a Kind hand by 4 levels"
+      "description": "Level up Three of a Kind hand by 4 levels. (+80 points +4 multi)"
     },
     "10045": {
       "name": "Four of a Kind Booster",
-      "description": "Level up Four of a Kind hand by 4 levels"
+      "description": "Level up Four of a Kind hand by 4 levels. (+120 points +8 multi)"
     },
     "10046": {
       "name": "Five of a Kind Booster",
-      "description": "Level up Five of a Kind hand by 4 levels"
+      "description": "Level up Five of a Kind hand by 4 levels. (+140 points +12 multi)"
     },
     "10047": {
       "name": "Dice of Hearts",

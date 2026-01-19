@@ -46,19 +46,19 @@
     },
     "10004": {
       "name": "Potenciador de Par",
-      "description": "Mejora PAR en 4 niveles"
+      "description": "Mejora PAR en 4 niveles. (+40 puntos +4 multi)"
     },
     "10005": {
       "name": "Potenciador de Doble Par",
-      "description": "Mejora DOBLE PAR en 4 niveles"
+      "description": "Mejora DOBLE PAR en 4 niveles. (+80 puntos +4 multi)"
     },
     "10006": {
       "name": "Potenciador de Escalera",
-      "description": "Mejora ESCALERA en 4 niveles"
+      "description": "Mejora ESCALERA en 4 niveles. (+100 puntos +8 multi)"
     },
     "10007": {
       "name": "Potenciador de Color",
-      "description": "Mejora COLOR en 4 niveles"
+      "description": "Mejora COLOR en 4 niveles. (+100 puntos +8 multi)"
     },
     "10008": {
       "name": "Escalera simplificada",
@@ -186,19 +186,19 @@
     },
     "10043": {
       "name": "Potenciador de Full",
-      "description": "Mejora FULL en 4 niveles"
+      "description": "Mejora FULL en 4 niveles. (+100 puntos +8 multi)"
     },
     "10044": {
       "name": "Potenciador de Trío",
-      "description": "Mejora TRÍO en 4 niveles"
+      "description": "Mejora TRÍO en 4 niveles. (+80 puntos +4 multi)"
     },
     "10045": {
       "name": "Potenciador de Póker",
-      "description": "Mejora PÓKER en 4 niveles"
+      "description": "Mejora PÓKER en 4 niveles. (+120 puntos +8 multi)"
     },
     "10046": {
       "name": "Potenciador de Repóker",
-      "description": "Mejora REPÓKER en 4 niveles"
+      "description": "Mejora REPÓKER en 4 niveles. (+140 puntos +12 multi)"
     },
     "10047": {
       "name": "Dado de Corazones",
