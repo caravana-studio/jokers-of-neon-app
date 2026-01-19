@@ -151,16 +151,6 @@ export const ExternalPack = ({
     }
   }, [obtainedCards, resolvedHighlightedCard]);
 
-  useEffect(() => {
-    if (obtainedCards.length > 0) {
-      console.info(
-        "[ExternalPack] cards received:",
-        obtainedCards.map((c) => c.card_id),
-        "highlighted:",
-        resolvedHighlightedCard
-      );
-    }
-  }, [obtainedCards, resolvedHighlightedCard]);
   return (
     <DelayedLoading ms={100}>
       {!shouldDisableHeavyBackground && (
