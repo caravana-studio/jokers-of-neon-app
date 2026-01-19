@@ -69,8 +69,8 @@
       "description": "Se necesitan 4 cartas para formar COLOR"
     },
     "10010": {
-      "name": "Potenciador de Joker",
-      "description": "Se duplican los puntos y el multi de los Jokers jugados"
+      "name": "Potenciador de Comodín",
+      "description": "Se duplican los puntos y el multi de los Comodines jugados"
     },
     "10011": {
       "name": "Potenciador de Power-ups",
@@ -142,7 +142,7 @@
     },
     "10032": {
       "name": "Día de suerte",
-      "description": "Suma ^yellow(+500 monedas)^ extra por cada Joker que tengas en la mano, sin usar, al final de la ronda"
+      "description": "Suma ^yellow(+500 monedas)^ extra por cada Comodín que tengas en la mano, sin usar, al final de la ronda"
     },
     "10033": {
       "name": "Efecto espejo",
@@ -158,7 +158,7 @@
     },
     "10036": {
       "name": "Caída del Joker",
-      "description": "Suma ^yellow(+500 monedas)^ cada vez que descartes un Joker"
+      "description": "Suma ^yellow(+500 monedas)^ cada vez que descartes un Comodín"
     },
     "10037": {
       "name": "Descartes extra",
@@ -221,8 +221,8 @@
       "description": "Suma ^violet(+3 multi)^ por cada carta especial que poseas."
     },
     "10053": {
-      "name": "Reinicio de Rage",
-      "description": "Permite volver a tirar cartas de Rage una vez por ronda. Cuesta 500 por cada carta Rage en la ronda."
+      "name": "Reinicio de Furia",
+      "description": "Permite volver a tirar cartas de Furia una vez por ronda. Cuesta 500 por cada carta de Furia en la ronda."
     },
     "10054": {
       "name": "Omitir Bonus",
@@ -277,8 +277,8 @@
       "description": "Las cartas de corazones y diamantes dan doble puntos. Las cartas de tréboles y picas dan ^violet(+1 multi)^."
     },
     "10071": {
-      "name": "Joker sin valor",
-      "description": "Los Jokers no otorgan puntos ni multiplicador. Todas las demás cartas suman ^violet(+1 multi)^."
+      "name": "Comodín sin valor",
+      "description": "Los Comodines no otorgan puntos ni multiplicador. Todas las demás cartas suman ^violet(+1 multi)^."
     },
     "10072": {
       "name": "Escalera Ascendente",
@@ -289,8 +289,8 @@
       "description": "Convierte cualquier escalera en una escalera de 10 a As (la escalera más alta posible)."
     },
     "10074": {
-      "name": "Impulso de Comodines",
-      "description": "Cada comodín otorga ^blue(+100 puntos)^."
+      "name": "Camaleón Potenciado",
+      "description": "Cada carta Camaleón otorga ^blue(+100 puntos)^."
     },
     "10079": {
       "name": "Arcoíris",
@@ -326,15 +326,15 @@
     },
     "10107": {
       "name": "Bendición de Hestia",
-      "description": "Las cartas quemadas acumulan sus ^blue(puntos)^; si es un Joker, se acumula ^violet(+1 multi)^. Actualmente ^blue(+{{points}} puntos)^  ^violet(+{{multi}} multi)^."
+      "description": "Las cartas quemadas acumulan sus ^blue(puntos)^; si es un Comodín, se acumula ^violet(+1 multi)^. Actualmente ^blue(+{{points}} puntos)^  ^violet(+{{multi}} multi)^."
     },
     "10108": {
       "name": "Ruleta de Palos",
       "description": "Elige un palo aleatorio en cada jugada; suma ^violet(+5 multi)^ por cada carta de ese palo jugada."
     },
     "10109": {
-      "name": "Joker Colgado",
-      "description": "Si tu mano contiene un Joker, tiene un 25% de probabilidad de acumular ^blue(+10 puntos)^."
+      "name": "Comodín Colgado",
+      "description": "Si tu mano contiene un Comodín, tiene un 25% de probabilidad de acumular ^blue(+10 puntos)^."
     },
     "10110": {
       "name": "Sacrifio Especial",
@@ -349,8 +349,8 @@
       "description": "Suma ^violet(+10 multi)^ y ^blue(+50 puntos)^ al jugar 3 o menos cartas."
     },
     "10113": {
-      "name": "Rompedor de Rages",
-      "description": "Gana ^violet(+3 multi)^ (acumulativos) por cada Rage derrotada. ^violet(Actualmente +{{multi}} multi)^."
+      "name": "Rompedor de Rondas furia",
+      "description": "Gana ^violet(+3 multi)^ (acumulativos) por cada Ronda de Furia derrotada. ^violet(Actualmente +{{multi}} multi)^."
     },
     "10114": {
       "name": "Recompensas Quemadas",
@@ -613,11 +613,11 @@
       "description": "Suma ^blue(+22 puntos)^ y ^violet(+1 multi)^"
     },
     "252": {
-      "name": "Joker de Neón",
+      "name": "Comodín de Neón",
       "description": "Sustituye cualquier carta tradicional. ^blue(+200 puntos)^ y ^violet(+2 multi)^"
     },
     "253": {
-      "name": "Comodín de Neón",
+      "name": "Carta Camaleón de Neón",
       "description": "Sustituye cualquier carta de neón"
     }
   },
@@ -831,11 +831,11 @@
       "description": "Suma ^blue(+11 puntos)^"
     },
     "52": {
-      "name": "Joker",
-      "description": "Joker que sustituye cualquier carta tradicional. ^blue(+100 puntos)^ y ^violet(+1 multi)^"
+      "name": "Comodín",
+      "description": "Comodín que sustituye cualquier carta tradicional. ^blue(+100 puntos)^ y ^violet(+1 multi)^"
     },
     "53": {
-      "name": "Comodín",
+      "name": "Carta Camaleón",
       "description": "Sustituye cualquier carta tradicional"
     }
   },
@@ -857,8 +857,8 @@
       "description": "Las cartas del palo de picas no puntuarán durante esta ronda"
     },
     "20005": {
-      "name": "Jokers Rotos",
-      "description": "Los Jokers no puntuarán durante esta ronda"
+      "name": "Comodines Rotos",
+      "description": "Los Comodines no puntuarán durante esta ronda"
     },
     "20006": {
       "name": "Mano Disminuida",
@@ -937,17 +937,17 @@
     "1": {
       "name": "Caja Básica",
       "description": "Contiene principalmente cartas tradicionales y modificadoras",
-      "details": "2% de probabilidad de obtener una carta especial\n5% de probabilidad de obtener una modificadora\n4% de probabilidad de obtener un joker\n1% de probabilidad de obtener un joker de neón\n88% de probabilidad de obtener una carta tradicional\nTamaño de la caja 5"
+      "details": "2% de probabilidad de obtener una carta especial\n5% de probabilidad de obtener una modificadora\n4% de probabilidad de obtener un comodín\n1% de probabilidad de obtener un comodín de neón\n88% de probabilidad de obtener una carta tradicional\nTamaño de la caja 5"
     },
     "2": {
       "name": "Caja Avanzada",
-      "description": "Más posibilidades de obtener una carta especial o un joker",
-      "details": "4% de probabilidad de obtener una carta especial\n10% de probabilidad de obtener un modificador\n8% de probabilidad de obtener un joker\n2% de probabilidad de obtener un joker de neón\n76% de probabilidad de obtener una carta tradicional\nTamaño de la caja 5"
+      "description": "Más posibilidades de obtener una carta especial o un comodín",
+      "details": "4% de probabilidad de obtener una carta especial\n10% de probabilidad de obtener un modificador\n8% de probabilidad de obtener un comodín\n2% de probabilidad de obtener un comodín de neón\n76% de probabilidad de obtener una carta tradicional\nTamaño de la caja 5"
     },
     "3": {
-      "name": "Caja de Jokers",
-      "description": "Más posibilidades de obtener un joker",
-      "details": "15% de probabilidad de obtener un joker\n1% de probabilidad de obtener un joker de neón\n84% de probabilidad de obtener una carta tradicional\nTamaño de la caja 5"
+      "name": "Caja de Comodines",
+      "description": "Más posibilidades de obtener un comodín",
+      "details": "15% de probabilidad de obtener un comodín\n1% de probabilidad de obtener un comodín de neón\n84% de probabilidad de obtener una carta tradicional\nTamaño de la caja 5"
     },
     "4": {
       "name": "Caja de Cartas Especiales",
@@ -965,9 +965,9 @@
       "details": "70% de probabilidad de obtener una figura\n30% de probabilidad de obtener otras cartas tradicionales\nTamaño de la caja 5"
     },
     "7": {
-      "name": "Caja del Joker Engañoso",
-      "description": "1 joker garantizado",
-      "details": "1 joker garantizado\n9% de probabilidad de obtener un joker\n1% de probabilidad de obtener un joker de neón\n90% de probabilidad de obtener una carta tradicional\nTamaño de la caja 4"
+      "name": "Caja del Comodín Engañoso",
+      "description": "1 comodín garantizado",
+      "details": "1 comodín garantizado\n9% de probabilidad de obtener un comodín\n1% de probabilidad de obtener un comodín de neón\n90% de probabilidad de obtener una carta tradicional\nTamaño de la caja 4"
     },
     "8": {
       "name": "Caja de los Amantes",
@@ -982,7 +982,7 @@
     "10": {
       "name": "Caja de Neón",
       "description": "Una caja exclusiva de cartas de neón",
-      "details": "97% de probabilidad de obtener una carta de neón\n3% de probabilidad de obtener un Joker de Neón\nTamaño de la caja 5"
+      "details": "97% de probabilidad de obtener una carta de neón\n3% de probabilidad de obtener un Comodín de Neón\nTamaño de la caja 5"
     }
   }
 }
