@@ -1,11 +1,10 @@
 import { Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { faCaretRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { GalaxyBackground } from "../../components/backgrounds/galaxy/GalaxyBackground";
-import { Intensity } from "../../types/intensity";
 import CachedImage from "../../components/CachedImage";
 import { DelayedLoading } from "../../components/DelayedLoading";
 import { NFTPackRateInfo } from "../../components/Info/NFTPackRateInfo";
@@ -16,8 +15,9 @@ import { SKINS_RARITY } from "../../data/specialCards";
 import { CardTypes } from "../../enums/cardTypes";
 import { useCardData } from "../../providers/CardDataProvider";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
-import { colorizeText } from "../../utils/getTooltip";
+import { Intensity } from "../../types/intensity";
 import { isNativeAndroid } from "../../utils/capacitorUtils";
+import { colorizeText } from "../../utils/getTooltip";
 import Stack from "./CardStack/Stack";
 import PackTear from "./PackTear";
 import { SplitPackOnce } from "./SplitPackOnce";
@@ -102,7 +102,13 @@ export const ExternalPack = ({
     [isSmallScreen]
   );
 
+  const [obtainedCards, setObtainedCards] = useState<SimplifiedCard[]>(
+    initialCardsSource ?? []
+  );
   const [highlightedCard, setHighlightedCard] = useState<number | null>(null);
+  const resolvedHighlightedCard =
+    highlightedCard ?? obtainedCards?.[0]?.card_id ?? null;
+
   const {
     name,
     description,
@@ -112,18 +118,39 @@ export const ExternalPack = ({
     rarity,
     temporaryPrice,
     details,
-  } = getCardData(highlightedCard ?? 0);
+  } =
+    resolvedHighlightedCard !== null
+      ? getCardData(resolvedHighlightedCard)
+      : {
+          name: "",
+          description: "",
+          type: CardTypes.NONE,
+        };
 
   const navigate = useNavigate();
-
-  const [obtainedCards, setObtainedCards] = useState<SimplifiedCard[]>(
-    initialCardsSource ?? []
-  );
   const highlightedCardSkin =
     obtainedCards.find((card) => card.card_id === highlightedCard)?.skin_id ??
     0;
 
   const shouldDisableHeavyBackground = isNativeAndroid;
+
+  const cardsData = useMemo(
+    () =>
+      obtainedCards.map((card, index) => ({
+        id: index,
+        cardId: card.card_id,
+        img: `/Cards/${card.card_id}${card.skin_id !== 0 ? `_sk${card.skin_id}` : ""}.png`,
+      })),
+    [obtainedCards]
+  );
+
+  // Ensure the first render highlights the first real card instead of the fallback (ID 0 / 2 de trébol).
+  useEffect(() => {
+    if (resolvedHighlightedCard === null && obtainedCards.length > 0) {
+      setHighlightedCard(obtainedCards[0].card_id);
+    }
+  }, [obtainedCards, resolvedHighlightedCard]);
+
   return (
     <DelayedLoading ms={100}>
       {!shouldDisableHeavyBackground && (
@@ -196,7 +223,9 @@ export const ExternalPack = ({
               </Flex>
               <NFTPackRateInfo
                 name={t(`shop.packs.${packId}.name`)}
-                details={t(`shop.packs.${packId > 4 ? "limited-edition" : "player-pack"}`)}
+                details={t(
+                  `shop.packs.${packId > 4 ? "limited-edition" : "player-pack"}`
+                )}
                 packId={packId}
               />
             </>
@@ -345,11 +374,7 @@ export const ExternalPack = ({
                     width: packWidth - 10,
                     height: packHeight - 40,
                   }}
-                  cardsData={obtainedCards.map((card, index) => ({
-                    id: index,
-                    cardId: card.card_id,
-                    img: `/Cards/${card.card_id}${card.skin_id !== 0 ? `_sk${card.skin_id}` : ""}.png`,
-                  }))}
+                  cardsData={cardsData}
                   onCardChange={(cardId) => {
                     setHighlightedCard(cardId);
                   }}

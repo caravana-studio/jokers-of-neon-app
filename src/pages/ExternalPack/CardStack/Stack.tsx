@@ -1,9 +1,5 @@
-import {
-  motion,
-  useMotionValue,
-  useReducedMotion,
-  useTransform,
-} from "framer-motion";
+import { useReducedMotion } from "framer-motion";
+import { motion, useMotionValue, useTransform } from "motion/react";
 import React, { useEffect, useRef, useState } from "react";
 import { isLegacyAndroid } from "../../../utils/capacitorUtils";
 import "./Stack.css";
@@ -102,10 +98,10 @@ export default function Stack({
 
   useEffect(() => {
     let cancelled = false;
-    console.log('calling isLegacyAndroid');
+    console.log("calling isLegacyAndroid");
     isLegacyAndroid()
       .then((result) => {
-        console.log('isLegacyAndroid result', result);
+        console.log("isLegacyAndroid result", result);
         if (!cancelled) {
           setIsLegacyAndroidDevice(result);
         }
@@ -133,6 +129,19 @@ export default function Stack({
     });
   }, [cardsData, randomRotation]);
 
+  // Keep local state in sync with incoming cards and notify the consumer of the current top card.
+  useEffect(() => {
+    setCards(cardsData);
+    setSeenCards(new Set());
+
+    const topCardId = cardsData[cardsData.length - 1]?.cardId;
+    if (topCardId !== undefined && onCardChange) {
+      onCardChange(topCardId);
+    }
+    // Depend only on cardsData so navigation interactions (click/drag) are not reset.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cardsData]);
+
   const sendToBack = (id: CardData["id"]) => {
     setCards((prev) => {
       const newCards = [...prev];
@@ -140,6 +149,7 @@ export default function Stack({
       if (index === -1) return prev;
       const [card] = newCards.splice(index, 1);
       newCards.unshift(card);
+      // The top card is always the last element rendered; notify with that card's id.
       onCardChange?.(newCards[newCards.length - 1].cardId);
 
       // Track seen cards
