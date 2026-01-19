@@ -1,4 +1,5 @@
 import { cssVar, defineStyle, defineStyleConfig } from "@chakra-ui/react";
+import { isMobile } from "react-device-detect";
 const $arrowBg = cssVar("popper-arrow-bg");
 
 // define the base component styles
@@ -11,6 +12,7 @@ const baseStyle = {
   boxShadow: `0px 0px 10px 2px white`,
   borderRadius: '10px',
   [$arrowBg.variable]: "colors.transparent",
+  ...(isMobile ? { display: "none" } : {}),
 };
 
 const sizes = {
