@@ -99,17 +99,7 @@ function parseMintedCards(
     throw new Error(`${context}: No valid packs returned by API`);
   }
 
-  return Array.from(packsMap.values())
-    .map((pack) => ({
-      ...pack,
-      mintedCards: [...pack.mintedCards].sort((a, b) => {
-        if (a.skin_id !== b.skin_id) {
-          return b.skin_id - a.skin_id;
-        }
-        return b.card_id - a.card_id;
-      }),
-    }))
-    .sort((a, b) => a.packNumber - b.packNumber);
+  return Array.from(packsMap.values());
 }
 
 export async function claimSeasonReward({

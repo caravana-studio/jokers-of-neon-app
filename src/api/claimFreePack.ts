@@ -63,12 +63,5 @@ export async function claimFreePack(recipient: string): Promise<MintedCard[]> {
     throw new Error("claimFreePack: No minted cards returned by API");
   }
 
-  const sortedCards = json.mintedCards.sort((a, b) => {
-    if (a.skin_id !== b.skin_id) {
-      return b.skin_id - a.skin_id;
-    }
-    return b.card_id - a.card_id;
-  });
-
-  return sortedCards;
+  return json.mintedCards;
 }
