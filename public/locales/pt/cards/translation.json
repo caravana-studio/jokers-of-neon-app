@@ -46,19 +46,19 @@
     },
     "10004": {
       "name": "Impulsionador de Par",
-      "description": "Aumenta o nível da mão de PAR em 4 níveis"
+      "description": "Aumenta o nível da mão de PAR em 4 níveis. (+40 pontos +4 multi)"
     },
     "10005": {
       "name": "Impulsionador de Dois Pares",
-      "description": "Aumenta o nível da mão de DOIS PARES em 4 níveis"
+      "description": "Aumenta o nível da mão de DOIS PARES em 4 níveis. (+80 pontos +4 multi)"
     },
     "10006": {
       "name": "Impulsionador de Sequência",
-      "description": "Aumenta o nível da mão de SEQUÊNCIA em 4 níveis"
+      "description": "Aumenta o nível da mão de SEQUÊNCIA em 4 níveis. (+100 pontos +8 multi)"
     },
     "10007": {
       "name": "Impulsionador de Flush",
-      "description": "Aumenta o nível da mão de FLUSH em 4 níveis"
+      "description": "Aumenta o nível da mão de FLUSH em 4 níveis. (+100 pontos +8 multi)"
     },
     "10008": {
       "name": "Sequência Fácil",
@@ -186,19 +186,19 @@
     },
     "10043": {
       "name": "Impulsionador de Full House",
-      "description": "Aprimora a mão Full House em 4 níveis"
+      "description": "Aprimora a mão Full House em 4 níveis. (+100 pontos +8 multi)"
     },
     "10044": {
       "name": "Impulsionador de Trinca",
-      "description": "Aprimora a mão Trinca em 4 níveis"
+      "description": "Aprimora a mão Trinca em 4 níveis. (+80 pontos +4 multi)"
     },
     "10045": {
       "name": "Impulsionador de Quadra",
-      "description": "Aprimora a mão Quadra em 4 níveis"
+      "description": "Aprimora a mão Quadra em 4 níveis. (+120 pontos +8 multi)"
     },
     "10046": {
       "name": "Impulsionador de Quinteto",
-      "description": "Aprimora a mão Quinteto em 4 níveis"
+      "description": "Aprimora a mão Quinteto em 4 níveis. (+140 pontos +12 multi)"
     },
     "10047": {
       "name": "Dado de Copas",
