@@ -68,7 +68,7 @@ export const RewardItem = ({
             <RerollIndicators rerolls={value} justifyContent="flex-end" />
           )
         ) : (
-          <Flex gap={1} alignItems="flex-end" justifyContent={"center"}>
+          <Flex gap={1} alignItems="center" justifyContent={"center"}>
             {showCashSymbol && <CashSymbol />}
             <Heading
               size="s"

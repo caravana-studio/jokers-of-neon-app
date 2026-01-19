@@ -51,8 +51,6 @@ type ShopStore = {
   rollbackBuyPowerUp: (idx: number) => void;
   buySlotSpecialCard: () => void;
   rollbackBuySlotSpecialCard: () => void;
-  burnCard: () => void;
-  rollbackBurnCard: () => void;
 };
 
 function updateList<T extends { idx: number; purchased?: boolean }>(
@@ -236,18 +234,6 @@ export const useShopStore = create<ShopStore>((set, get) => ({
           : null,
       };
     }),
-
-  burnCard: () => set((state) => {
-    return {
-      burnItem: state.burnItem ? { ...state.burnItem, purchased: true } : null,
-    }
-  }),
-
-  rollbackBurnCard: () => set((state) => {
-    return {
-      burnItem: state.burnItem ? { ...state.burnItem, purchased: false } : null,
-    }
-  }),
 
   setLocked: (locked: boolean) => set({ locked }),
 

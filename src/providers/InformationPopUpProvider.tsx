@@ -2,23 +2,32 @@ import { PropsWithChildren, ReactNode, createContext, useContext, useState } fro
 import { InformationPopUp } from "../components/InformationPopUp";
 
 interface IInformationPopUpContext {
-  information: ReactNode | undefined;
-  setInformation: (information: ReactNode) => void;
+  information: InformationPayload | undefined;
+  setInformation: (information: ReactNode, options?: { unstyled?: boolean }) => void;
   onClose: () => void;
+}
+
+interface InformationPayload {
+  content: ReactNode;
+  unstyled?: boolean;
 }
 
 const InformationPopUpContext = createContext<IInformationPopUpContext>({
   information: undefined,
-  setInformation: (_) => {},
+  setInformation: (_info, _options) => {},
   onClose: () => {},
 });
 export const useInformationPopUp = () => useContext(InformationPopUpContext);
 
 export const InformationPopUpProvider = ({ children }: PropsWithChildren) => {
-  const [information, setInformation] = useState<ReactNode | undefined>();
+  const [information, setInformationState] = useState<InformationPayload | undefined>();
+
+  const setInformation = (info: ReactNode, options?: { unstyled?: boolean }) => {
+    setInformationState({ content: info, unstyled: options?.unstyled });
+  };
 
   const onClose = () => {
-    setInformation(undefined);
+    setInformationState(undefined);
   };
 
   return (
@@ -32,8 +41,9 @@ export const InformationPopUpProvider = ({ children }: PropsWithChildren) => {
       {children}
       {information && (
         <InformationPopUp
-          content={information}
-          onClose={() => setInformation(undefined)}
+          content={information.content}
+          unstyled={information.unstyled}
+          onClose={() => setInformationState(undefined)}
         />
       )}
     </InformationPopUpContext.Provider>

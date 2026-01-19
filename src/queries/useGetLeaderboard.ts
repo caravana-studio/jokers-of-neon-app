@@ -4,6 +4,7 @@ import { decodeString } from "../dojo/utils/decodeString";
 import mainnetGraphQLClient from "../mainnetGraphQLClient";
 import { signedHexToNumber } from "../utils/signedHexToNumber";
 import { snakeToCamel } from "../utils/snakeToCamel";
+import { useTournamentSettings } from "./useTournamentSettings";
 
 export const LEADERBOARD_QUERY_KEY = "leaderboard";
 const guestNamePattern = /^joker_guest_\d+$/;
@@ -14,9 +15,9 @@ const CAMEL_CASE_NAMESPACE = snakeToCamel(DOJO_NAMESPACE);
 const QUERY_FIELD_NAME = `${CAMEL_CASE_NAMESPACE}GameDataModels`;
 
 export const LEADERBOARD_QUERY = gql`
-  query ($isTournament: Boolean!) {
+  query ($isTournament: Boolean!, $startCountingAtGameId: u64!) {
     ${QUERY_FIELD_NAME}(
-      where: { is_tournament: $isTournament }
+      where: { is_tournament: $isTournament, idGT: $startCountingAtGameId }
       first: 10000
       order: { field: "LEVEL", direction: "DESC" }
     ) {
@@ -50,12 +51,14 @@ type LeaderboardResponse = Record<string, { edges: GameEdge[] }>;
 const fetchGraphQLData = async (
   filterLoggedInPlayers: boolean,
   gameId?: number,
-  isTournament: boolean = false
+  isTournament: boolean = false,
+  startCountingAtGameId: number = 0
 ) => {
   const rawData: LeaderboardResponse = await mainnetGraphQLClient.request(
     LEADERBOARD_QUERY,
     {
       isTournament,
+      startCountingAtGameId,
     }
   );
 
@@ -146,13 +149,26 @@ const fetchGraphQLData = async (
 export const useGetLeaderboard = (
   gameId?: number,
   filterLoggedInPlayers = true,
-  isTournament = false,
+  isTournament = false
 ) => {
+  const { tournament, loading: tournamentLoading } = useTournamentSettings();
+  const startCountingAtGameId =
+    (!tournamentLoading &&
+      Number(tournament?.startCountingAtGameId ?? 0)) ||
+    0;
+
   const queryResponse = useQuery(
-    [LEADERBOARD_QUERY_KEY, gameId, isTournament],
-    () => fetchGraphQLData(filterLoggedInPlayers, gameId, isTournament),
+    [LEADERBOARD_QUERY_KEY, gameId, isTournament, startCountingAtGameId],
+    () =>
+      fetchGraphQLData(
+        filterLoggedInPlayers,
+        gameId,
+        isTournament,
+        startCountingAtGameId
+      ),
     {
       refetchOnWindowFocus: false,
+      enabled: !tournamentLoading,
     }
   );
 

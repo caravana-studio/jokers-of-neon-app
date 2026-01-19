@@ -38,6 +38,7 @@ import { LoadingScreenHandle } from "./types/LoadingProgress.ts";
 import { preloadImages, preloadVideos } from "./utils/cacheUtils.ts";
 import { isNative } from "./utils/capacitorUtils.ts";
 import { preloadSpineAnimations } from "./utils/preloadAnimations.ts";
+import { registerAppUrlOpenListener } from "./utils/registerAppUrlOpenListener.ts";
 import { registerServiceWorker } from "./utils/registerServiceWorker.ts";
 import { getMajor, getMinor } from "./utils/versionUtils.ts";
 
@@ -56,9 +57,11 @@ const I18N_NAMESPACES = [
 
 const progressBarRef = createRef<LoadingScreenHandle>();
 
-const BYPASS_MOBILE_BROWSER_RULE = import.meta.env.VITE_BYPASS_MOBILE_BROWSER_RULE;
+const BYPASS_MOBILE_BROWSER_RULE = import.meta.env
+  .VITE_BYPASS_MOBILE_BROWSER_RULE;
 
 initDatadogRum();
+registerAppUrlOpenListener();
 
 async function init() {
   const rootElement = document.getElementById("root");

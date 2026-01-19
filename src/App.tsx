@@ -5,6 +5,7 @@ import { SpeedInsights } from "@vercel/speed-insights/react";
 import { AppTrackingTransparency } from "capacitor-plugin-app-tracking-transparency";
 import { AnimatePresence } from "framer-motion";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { createProfile, fetchProfile } from "./api/profile";
 import { AppRoutes } from "./AppRoutes";
 import { Background } from "./components/Background";
@@ -12,6 +13,8 @@ import { Layout } from "./components/Layout";
 import { useDojo } from "./dojo/DojoContext";
 import { useGameActions } from "./dojo/useGameActions";
 import { useUsername } from "./dojo/utils/useUsername";
+import { useAppsFlyerReferral } from "./hooks/useAppsFlyerReferral";
+import { initAppsFlyerReferralListener } from "./utils/appsflyerReferral";
 import { BackgroundAnimationProvider } from "./providers/BackgroundAnimationProvider";
 import { CardAnimationsProvider } from "./providers/CardAnimationsProvider";
 import { CardDataProvider } from "./providers/CardDataProvider";
@@ -21,15 +24,23 @@ import { PageTransitionsProvider } from "./providers/PageTransitionsProvider";
 import { RevenueCatProvider } from "./providers/RevenueCatProvider";
 import { SeasonPassProvider } from "./providers/SeasonPassProvider";
 import ZoomPrevention from "./utils/ZoomPrevention";
+import { registerPushListeners } from "./utils/notifications/registerPushListeners";
 
 function App() {
   const {
     account: { account },
   } = useDojo();
 
+  const navigate = useNavigate();
   const username = useUsername();
 
   const { claimLives } = useGameActions();
+  
+  // Handle AppsFlyer referral data
+  useAppsFlyerReferral();
+  
+  // Handle AppsFlyer referral data
+  useAppsFlyerReferral();
 
   useEffect(() => {
     const askForTracking = async () => {
@@ -55,6 +66,13 @@ function App() {
     });
 
     askForTracking();
+    
+    // Initialize AppsFlyer referral listener
+    initAppsFlyerReferralListener().catch((err) => {
+      console.warn("Failed to initialize AppsFlyer listener:", err);
+    });
+
+    registerPushListeners(navigate);
   }, []);
 
   return (

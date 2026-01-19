@@ -82,8 +82,6 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     setLocked,
     specialSlotItem,
     burnItem,
-    burnCard: stateBurnCard,
-    rollbackBurnCard,
   } = useShopStore();
 
   const {
@@ -214,20 +212,18 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
       ? burnItem.discount_cost
       : burnItem?.cost ?? 0;
     removeCash(cost);
-    stateBurnCard();
 
     const promise = dojoBurnCard(gameId, card.card_id ?? 0)
       .then(async ({ success }) => {
         if (success) {
           fetchDeck(client, gameId, getCardData);
+          refetchShopStore(client, gameId);
         } else {
-          rollbackBurnCard();
           addCash(cost);
         }
         return success;
       })
       .catch(() => {
-        rollbackBurnCard();
         addCash(cost);
         return false;
       })

@@ -13,6 +13,7 @@ import {
 import LightPillar from "../components/animations/LightPilar/LightPillar";
 import Lightning from "../components/animations/Lightning/Lightning";
 import { Intensity } from "../types/intensity";
+import { isNativeAndroid } from "../utils/capacitorUtils";
 
 export type LightningSection = "full" | "top" | "middle" | "bottom";
 export type LightningColor = "blue" | "violet";
@@ -230,6 +231,7 @@ const getIntensityPreset = (intensityLevel: Intensity) =>
 export const BackgroundAnimationProvider = ({
   children,
 }: PropsWithChildren) => {
+  const disableBackgroundAnimations = isNativeAndroid;
   const [lightningAnimation, setLightningAnimation] =
     useState<LightningAnimationState | null>(null);
   const [lightPillarAnimation, setLightPillarAnimation] =
@@ -253,6 +255,9 @@ export const BackgroundAnimationProvider = ({
 
   const showLightningAnimation = useCallback(
     (config: LightningAnimationConfig = {}) => {
+      if (disableBackgroundAnimations) {
+        return;
+      }
       clearLightningTimeout();
 
       const rect = config.target?.getBoundingClientRect();
@@ -287,11 +292,14 @@ export const BackgroundAnimationProvider = ({
         lightningTimeoutRef.current = null;
       }, nextState.durationMs ?? DEFAULT_LIGHTNING_CONFIG.durationMs);
     },
-    []
+    [disableBackgroundAnimations]
   );
 
   const showLightPillarAnimation = useCallback(
     (config: LightPillarAnimationConfig = {}) => {
+      if (disableBackgroundAnimations) {
+        return;
+      }
       clearLightPillarTimeout();
 
       const rect = config.target?.getBoundingClientRect();
@@ -333,7 +341,7 @@ export const BackgroundAnimationProvider = ({
         lightPillarTimeoutRef.current = null;
       }, nextState.durationMs ?? DEFAULT_LIGHT_PILLAR_CONFIG.durationMs);
     },
-    []
+    [disableBackgroundAnimations]
   );
 
   useEffect(
@@ -356,7 +364,7 @@ export const BackgroundAnimationProvider = ({
     <BackgroundAnimationContext.Provider value={value}>
       <div style={{ ...containerStyle, height: "100%", width: "100%" }}>
         <AnimatePresence>
-          {lightPillarAnimation && (
+          {!disableBackgroundAnimations && lightPillarAnimation && (
             <motion.div
               key={lightPillarAnimation.id}
               initial={{ opacity: 0 }}
@@ -395,7 +403,7 @@ export const BackgroundAnimationProvider = ({
               />
             </motion.div>
           )}
-          {lightningAnimation && (
+          {!disableBackgroundAnimations && lightningAnimation && (
             <motion.div
               key={lightningAnimation.id}
               initial={{ opacity: 0 }}

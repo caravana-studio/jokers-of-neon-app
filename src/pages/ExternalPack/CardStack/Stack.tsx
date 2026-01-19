@@ -1,5 +1,7 @@
+import { useReducedMotion } from "framer-motion";
 import { motion, useMotionValue, useTransform } from "motion/react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { isLegacyAndroid } from "../../../utils/capacitorUtils";
 import "./Stack.css";
 
 // Types
@@ -14,9 +16,17 @@ interface CardRotateProps {
   children: React.ReactNode;
   onSendToBack: () => void;
   sensitivity: number;
+  disableTilt: boolean;
+  disableDrag: boolean;
 }
 
-function CardRotate({ children, onSendToBack, sensitivity }: CardRotateProps) {
+function CardRotate({
+  children,
+  onSendToBack,
+  sensitivity,
+  disableTilt,
+  disableDrag,
+}: CardRotateProps) {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   const rotateX = useTransform(y, [-100, 100], [60, -60]);
@@ -40,8 +50,13 @@ function CardRotate({ children, onSendToBack, sensitivity }: CardRotateProps) {
   return (
     <motion.div
       className="card-rotate"
-      style={{ x, y, rotateX, rotateY }}
-      drag
+      style={{
+        x,
+        y,
+        rotateX: disableTilt ? 0 : rotateX,
+        rotateY: disableTilt ? 0 : rotateY,
+      }}
+      drag={disableDrag ? false : true}
       dragConstraints={{ top: 0, right: 0, bottom: 0, left: 0 }}
       dragElastic={0.6}
       whileTap={{ cursor: "grabbing" }}
@@ -75,6 +90,44 @@ export default function Stack({
 }: StackProps) {
   const [cards, setCards] = useState<CardData[]>(cardsData);
   const [seenCards, setSeenCards] = useState<Set<number | string>>(new Set());
+  const prefersReducedMotion = useReducedMotion();
+  const [isLegacyAndroidDevice, setIsLegacyAndroidDevice] = useState(false);
+  const disableTilt = prefersReducedMotion || isLegacyAndroidDevice;
+  const disableDrag = isLegacyAndroidDevice;
+  const randomRotationCache = useRef<Map<CardData["id"], number>>(new Map());
+
+  useEffect(() => {
+    let cancelled = false;
+    console.log("calling isLegacyAndroid");
+    isLegacyAndroid()
+      .then((result) => {
+        console.log("isLegacyAndroid result", result);
+        if (!cancelled) {
+          setIsLegacyAndroidDevice(result);
+        }
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setIsLegacyAndroidDevice(false);
+        }
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!randomRotation) {
+      randomRotationCache.current.clear();
+      return;
+    }
+
+    cardsData.forEach((card) => {
+      if (!randomRotationCache.current.has(card.id)) {
+        randomRotationCache.current.set(card.id, Math.random() * 10 - 5);
+      }
+    });
+  }, [cardsData, randomRotation]);
 
   // Keep local state in sync with incoming cards and notify the consumer of the current top card.
   useEffect(() => {
@@ -103,12 +156,12 @@ export default function Stack({
       setSeenCards((prev) => {
         const newSet = new Set(prev);
         newSet.add(id);
-        
+
         // Check if all cards have been seen
         if (newSet.size === cardsData.length && onAllSeen) {
           onAllSeen();
         }
-        
+
         return newSet;
       });
 
@@ -126,13 +179,17 @@ export default function Stack({
       }}
     >
       {cards.map((card: CardData, index: number) => {
-        const randomRotate = randomRotation ? Math.random() * 10 - 5 : 0;
+        const randomRotate = randomRotation
+          ? randomRotationCache.current.get(card.id) ?? 0
+          : 0;
 
         return (
           <CardRotate
             key={card.id}
             onSendToBack={() => sendToBack(card.id)}
             sensitivity={sensitivity}
+            disableTilt={disableTilt}
+            disableDrag={disableDrag}
           >
             <motion.div
               className="card"

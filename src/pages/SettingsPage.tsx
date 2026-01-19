@@ -19,11 +19,24 @@ export const SettingsPage = () => {
         w="100%"
         pt={isSmallScreen ? "30px" : "80px"}
         flexDir="column"
-        justifyContent="space-between"
+        justifyContent="flex-start"
         alignItems="center"
+        minH={0}
+        gap={4}
       >
         <Heading variant={"italic"}>{title}</Heading>
-        <SettingsContent />
+        <Flex
+          w="100%"
+          flex="1"
+          overflowY="auto"
+          minH={0}
+          flexDir="column"
+          justifyContent="center"
+          alignItems="center"
+          px={isSmallScreen ? 4 : 8}
+        >
+          <SettingsContent />
+        </Flex>
         <Box h="50px" />
       </Flex>
     </DelayedLoading>

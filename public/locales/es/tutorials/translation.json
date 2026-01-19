@@ -45,9 +45,9 @@
       "drag": "Arrastra el <5>modificador de trébol</5> a la carta <4>8 de corazones</4> y luego haz clic en 'Siguiente'."
     },
     "power-ups": {
-      "title": "Power-ups",
-      "content": "Los <1>Power-ups</1> te dan <2>puntos</2> y <3>multi</3> extra. Son de un solo uso, pero puedes comprar más en la tienda.",
-      "select": "Selecciona este power-up."
+      "title": "Potenciadores",
+      "content": "Los <1>Potenciadores</1> te dan <2>puntos</2> y <3>multi</3> extra. Son de un solo uso, pero puedes comprar más en la tienda.",
+      "select": "Selecciona este potenciador."
     }
   },
   "storeTutorial": {

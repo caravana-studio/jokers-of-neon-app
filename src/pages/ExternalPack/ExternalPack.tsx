@@ -5,7 +5,6 @@ import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { GalaxyBackground } from "../../components/backgrounds/galaxy/GalaxyBackground";
-import { Intensity } from "../../types/intensity";
 import CachedImage from "../../components/CachedImage";
 import { DelayedLoading } from "../../components/DelayedLoading";
 import { NFTPackRateInfo } from "../../components/Info/NFTPackRateInfo";
@@ -16,6 +15,8 @@ import { SKINS_RARITY } from "../../data/specialCards";
 import { CardTypes } from "../../enums/cardTypes";
 import { useCardData } from "../../providers/CardDataProvider";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
+import { Intensity } from "../../types/intensity";
+import { isNativeAndroid } from "../../utils/capacitorUtils";
 import { colorizeText } from "../../utils/getTooltip";
 import Stack from "./CardStack/Stack";
 import PackTear from "./PackTear";
@@ -84,7 +85,6 @@ export const ExternalPack = ({
   const { getCardData } = useCardData();
 
   const [allCardsSeen, setAllCardsSeen] = useState(false);
-
   const initialCardsSource =
     (initialCards && initialCards.length > 0 ? initialCards : undefined) ??
     (locationState?.initialCards && locationState.initialCards.length > 0
@@ -129,8 +129,10 @@ export const ExternalPack = ({
 
   const navigate = useNavigate();
   const highlightedCardSkin =
-    obtainedCards.find((card) => card.card_id === resolvedHighlightedCard)
-      ?.skin_id ?? 0;
+    obtainedCards.find((card) => card.card_id === highlightedCard)?.skin_id ??
+    0;
+
+  const shouldDisableHeavyBackground = isNativeAndroid;
 
   const cardsData = useMemo(
     () =>
@@ -151,19 +153,26 @@ export const ExternalPack = ({
 
   useEffect(() => {
     if (obtainedCards.length > 0) {
-      console.info("[ExternalPack] cards received:", obtainedCards.map((c) => c.card_id), "highlighted:", resolvedHighlightedCard);
+      console.info(
+        "[ExternalPack] cards received:",
+        obtainedCards.map((c) => c.card_id),
+        "highlighted:",
+        resolvedHighlightedCard
+      );
     }
   }, [obtainedCards, resolvedHighlightedCard]);
   return (
     <DelayedLoading ms={100}>
-      <GalaxyBackground
-        opacity={step >= 3 ? 1 : 0}
-        intensity={getIntensity(
-          type ?? CardTypes.NONE,
-          rarity ?? RARITY.C,
-          SKINS_RARITY[highlightedCardSkin]
-        )}
-      />
+      {!shouldDisableHeavyBackground && (
+        <GalaxyBackground
+          opacity={step >= 3 ? 1 : 0}
+          intensity={getIntensity(
+            type ?? CardTypes.NONE,
+            rarity ?? RARITY.C,
+            SKINS_RARITY[highlightedCardSkin]
+          )}
+        />
+      )}
 
       {allCardsSeen && (
         <Button
@@ -224,7 +233,9 @@ export const ExternalPack = ({
               </Flex>
               <NFTPackRateInfo
                 name={t(`shop.packs.${packId}.name`)}
-                details={t(`shop.packs.${packId > 4 ? "limited-edition" : "player-pack"}`)}
+                details={t(
+                  `shop.packs.${packId > 4 ? "limited-edition" : "player-pack"}`
+                )}
                 packId={packId}
               />
             </>

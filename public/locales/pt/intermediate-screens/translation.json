@@ -263,6 +263,17 @@
     "title": "Coleção",
     "no-collection": "Por favor, inicie sessão para ver sua coleção",
     "login": "Iniciar sessão",
+    "intro": {
+      "summary": "Cada temporada traz um novo set de cartas especiais exclusivas. Desbloqueie-as abrindo packs para usá-las no jogo e acompanhe-as aqui.",
+      "learn-more": "Saiba mais",
+      "popup-title": "Como a coleção funciona",
+      "points": {
+        "1": "Cada temporada adiciona novas cartas especiais disponíveis apenas naquela temporada.",
+        "2": "As cartas são desbloqueadas quando você as consegue abrindo packs.",
+        "3": "Os packs são desbloqueados ao ganhar XP completando missões diárias e passando níveis diariamente.",
+        "4": "Quando você tem a carta especial na coleção, ela fica liberada dentro do jogo."
+      }
+    },
     "collections": {
       "traditionals": "Cartas tradicionais",
       "neons": "Cartas de Neon",
