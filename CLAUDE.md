@@ -4,119 +4,136 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Jokers of Neon is a roguelike deck-builder card game (inspired by Balatro) that runs fully on-chain using the Dojo framework on Starknet. The frontend is a React app with Capacitor for iOS/Android native builds.
+Jokers of Neon is a roguelike deck-builder card game built as a React web app with native mobile support via Capacitor. The game runs fully on-chain using the Dojo engine on Starknet.
 
 ## Commands
 
+### Development
 ```bash
-# Install dependencies (legacy peer deps required)
-npm i --legacy-peer-deps
-
-# Development
-npm run dev                    # Start dev server
-npm run dev:shop              # Start standalone shop dev server
-
-# Build
-npm run build                  # Production build
-npm run build:shop            # Build standalone shop
-npm run build:all             # Build all variants
-
-# Code Generation
-npm run generate              # Generate Dojo contract bindings (requires sozo)
-npm run codegen               # Generate GraphQL types
-
-# Testing & Linting
-npm run test                  # Run tests with vitest
-npm run lint                  # ESLint check
+npm i --legacy-peer-deps     # Install dependencies (legacy peer deps required)
+npm run dev                  # Start development server
+npm run dev:shop             # Start standalone shop development server
 ```
 
-**After running `npm run generate`:** Manually update `src/dojo/typescript/contracts.gen.ts`:
-1. Replace all `"jokers_of_neon_core"` with `DOJO_NAMESPACE`
-2. Add at top: `const DOJO_NAMESPACE = import.meta.env.VITE_DOJO_NAMESPACE || "jokers_of_neon_core";`
+### Building
+```bash
+npm run build                # Build for production
+npm run build:shop           # Build standalone shop
+npm run build:all            # Build main app + shop
+```
+
+### Testing & Quality
+```bash
+npm run test                 # Run tests with Vitest
+npm run lint                 # Run ESLint on src/
+```
+
+### Code Generation
+```bash
+npm run generate             # Generate Dojo bindings from contracts
+npm run codegen              # Generate GraphQL types
+```
+
+After running `npm run generate`, manually update `src/dojo/typescript/contracts.gen.ts`:
+1. Replace all instances of `"jokers_of_neon_core"` with `DOJO_NAMESPACE`
+2. Add at the top: `const DOJO_NAMESPACE = import.meta.env.VITE_DOJO_NAMESPACE || "jokers_of_neon_core";`
+
+### Native Builds (Capacitor)
+```bash
+npm run build && npx cap copy    # Prepare web assets for native
+npx cap open ios                  # Open in Xcode
+npx cap open android              # Open in Android Studio
+```
 
 ## Architecture
 
-### State Management
-
-**Zustand Stores** (`src/state/`):
-- `useGameStore` - Game state (score, plays, cash, level, rounds, powers, cards)
-- `useCurrentHandStore` - Current hand/play state
-- `useDeckStore` - Deck management
-- `useShopStore` - Shop/purchase state
-- `useProfileStore` - User profile data
-- `useAnimationStore` - Animation states
-
-**Context Providers** (`src/providers/`):
-- `GameProvider` - Game logic & actions (play/discard/shop operations)
-- `StoreProvider` - Shop state
-- `CardAnimationsProvider` - Card animation effects
-- `SettingsProvider` - Audio/game settings
-- `SeasonPassProvider` - Season pass tracking
-- `RevenueCatProvider` - In-app purchases
+### Entry Points
+- `src/main.tsx` - Main app entry with loading sequence, provider setup, and version checking
+- `src/AppRoutes.tsx` - Route definitions for all pages
 
 ### Dojo Integration (Blockchain)
+The game uses Dojo engine for on-chain game logic:
+- `dojoConfig.ts` - Dojo configuration with RPC/Torii URLs
+- `src/dojo/setup.ts` - Initializes Torii client, contract components, and burner wallet
+- `src/dojo/DojoContext.tsx` & `WalletContext.tsx` - React contexts for Dojo state
+- `src/dojo/useGameActions.tsx` - Game action hooks (play, discard, surrender)
+- `src/dojo/useShopActions.tsx` - Shop action hooks (buy items, reroll)
+- `src/dojo/queries/` - Data fetching functions from on-chain state
+- `src/dojo/typescript/` - Auto-generated contract bindings
 
-- `dojoConfig.ts` - Dojo configuration (RPC/Torii URLs)
-- `src/dojo/setup.ts` - Initializes Torii client and contract components
-- `src/dojo/DojoContext.tsx` - Provides Dojo setup to app
-- `src/dojo/WalletContext.tsx` - Wallet/burner account management
-- `src/dojo/useGameActions.tsx` - Game action dispatchers
-- `src/dojo/typescript/contracts.gen.ts` - Generated contract bindings
+### State Management
+Uses Zustand stores in `src/state/`:
+- `useGameStore.ts` - Main game state (score, cards, powerups, rounds)
+- `useShopStore.ts` - Shop state during rounds
+- `useCurrentHandStore.ts` - Current hand being played
+- `useDeckStore.ts` - Deck management
+- `useProfileStore.ts` - Player profile data
 
-**Data Flow:**
-1. `setup()` initializes Torii client & contract components
-2. `useGameActions()` dispatches transactions to smart contracts
-3. Contract events update Zustand stores
-4. UI re-renders from store changes
+### Providers
+Key providers in `src/providers/`:
+- `GameProvider.tsx` - Game session state and lifecycle
+- `StoreProvider.tsx` - In-game store state
+- `SettingsProvider.tsx` - Audio/visual settings
+- `StarknetProvider.tsx` - Starknet wallet connection
+- `RevenueCatProvider.tsx` - In-app purchases
+- `TutorialGameProvider.tsx` - Tutorial mode state
 
-### Directory Structure
+### API Layer
+- `src/api/` - Backend API calls (profile, season rewards, referrals)
+- `src/queries/` - React Query hooks for data fetching
+- `src/dojo/queries/` - On-chain data queries via Torii
 
+### Internationalization
+Translations in `public/locales/{en,es,pt}/` with namespaces: game, home, store, cards, tutorials, intermediate-screens, plays, achievements, map, docs.
+
+### Key Directories
+- `src/components/` - Reusable UI components
+- `src/pages/` - Page-level components (Game, Shop, Map, etc.)
+- `src/types/` - TypeScript type definitions
+- `src/enums/` - Game enums (plays, cards, suits)
+- `src/constants/` - Configuration constants
+- `src/utils/` - Helper functions
+
+### AppsFlyer Integration (Mobile Attribution & Referrals)
+The app uses AppsFlyer for install attribution, deferred deep linking, and referral tracking.
+
+**Key Files:**
+- `src/utils/appsflyer.ts` - SDK wrapper, link generation (`generateNativeInviteUrl`)
+- `src/utils/appsflyerReferral.ts` - Deep link handling, localStorage
+- `src/hooks/useAppsFlyerReferral.tsx` - Hook for processing referral on login
+- `ios/App/App/AppsFlyerBridge.swift` - Capacitor bridge (event listeners)
+- `ios/App/App/AppDelegate.swift` - SDK initialization and deep link delegates
+
+**Referral Link Format:**
 ```
-src/
-├── api/                    # Backend API calls
-├── components/             # Reusable UI components
-├── constants/              # Game constants (animations, icons, plays)
-├── dojo/                   # Blockchain integration layer
-│   ├── controller/         # Account & transaction controllers
-│   ├── queries/            # Contract data fetching
-│   └── typescript/         # Generated bindings
-├── hooks/                  # Custom React hooks
-├── pages/                  # Route-level pages
-├── providers/              # Context providers
-├── state/                  # Zustand stores
-├── theme/                  # Chakra UI theme
-├── types/                  # TypeScript types
-└── utils/                  # Utility functions
+https://jokersofneon.onelink.me/2BD9?ref=username
 ```
+- OneLink template `2BD9` has `deep_link_value=ref` as default
+- The `ref` parameter contains the username (referral code)
+- Backend looks up referrer wallet from username in `referral_codes` table
 
-### Key Technologies
+**Backend API (jokers-of-neon-api):**
+- `POST /api/referral/claim` - Claim referral (anti-fraud checks)
+- `POST /api/referral/create-code` - Create code from username
+- `GET /api/referral/stats/:user_address` - Get statistics
+- `POST /api/referral/milestone` - Register milestones
 
-- **UI**: Chakra UI, Framer Motion, React Spring, Three.js
-- **State**: Zustand, React Context
-- **Web3**: @dojoengine/*, Starknet.js, Cartridge connector
-- **Data**: GraphQL (graphql-request), React Query
-- **Mobile**: Capacitor (iOS/Android), RevenueCat (IAP)
-- **Build**: Vite, TypeScript
+**Test Page:** `/referral-test`
 
-### Routing
+## Environment Configuration
 
-React Router v6 in `AppRoutes.tsx`. Key routes:
-- `/` - Home
-- `/game-page` - Active game
-- `/deck`, `/manage`, `/shop` - Deck/card management
-- `/store` - Purchases/packs
-- `/leaderboard`, `/tournament` - Competitions
-
-### Patterns
-
-- **Provider Composition** - Multiple nested context providers
-- **Store-Driven UI** - Zustand stores as single source of truth
-- **Loaders** - `GameStoreLoader`, `ShopStoreLoader` fetch data before rendering
-- **Feature Flags** - Rox integration for gradual rollouts
-
-## Environment Variables
-
-See `.env_example` for required variables including:
+Copy `.env_example` to `.env`. Key variables:
 - `VITE_RPC_URL` - Starknet RPC endpoint
 - `VITE_TORII_URL` - Torii indexer URL
-- `VITE_DOJO_NAMESPACE` - Contract namespace
+- `VITE_GRAPHQL_URL` - GraphQL endpoint
+- `VITE_DOJO_NAMESPACE` - Dojo contract namespace
+- `VITE_DEV` - Enable dev features
+
+## Testing
+
+Tests use Vitest and are located alongside source files or in `__tests__` directories. Example pattern: `src/utils/tests/checkHand/basic.test.ts`
+
+Run a single test file:
+```bash
+npm run test -- src/utils/versionUtils.test.ts
+```

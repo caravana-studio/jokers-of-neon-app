@@ -1,4 +1,7 @@
 PODS:
+  - AppsFlyerFramework (6.17.8):
+    - AppsFlyerFramework/Main (= 6.17.8)
+  - AppsFlyerFramework/Main (6.17.8)
   - Capacitor (7.4.3):
     - CapacitorCordova
   - CapacitorApp (7.1.0):
@@ -100,6 +103,7 @@ PODS:
     - PurchasesHybridCommon (= 17.13.0)
 
 DEPENDENCIES:
+  - AppsFlyerFramework
   - "Capacitor (from `../../node_modules/@capacitor/ios`)"
   - "CapacitorApp (from `../../node_modules/@capacitor/app`)"
   - "CapacitorAppLauncher (from `../../node_modules/@capacitor/app-launcher`)"
@@ -121,6 +125,7 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - AppsFlyerFramework
     - FBAEMKit
     - FBSDKCoreKit
     - FBSDKCoreKit_Basics
@@ -169,6 +174,7 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@revenuecat/purchases-capacitor"
 
 SPEC CHECKSUMS:
+  AppsFlyerFramework: 63577b60d6b9fcdab60135289979e7d1c9ec79b9
   Capacitor: b4741ca7affb32c1b70debd03df92cbf522d8a80
   CapacitorApp: 846d4b4a1dbb19dd1e9029c08ba6f028aa7be862
   CapacitorAppLauncher: 96930b89740f1deabc737df750dbc3e9a0430f34
@@ -200,6 +206,6 @@ SPEC CHECKSUMS:
   RevenueCat: 0423a85e1f2ef06f1002b18cae53fe856f60ea53
   RevenuecatPurchasesCapacitor: 4baf123df27c556e366f937d8f763d5f09f5698b
 
-PODFILE CHECKSUM: 3b3ec0315f94746ceb286ec81232fad7a096ff59
+PODFILE CHECKSUM: 824699f5d373b3001db58fbeefb5aa354e4950eb
 
 COCOAPODS: 1.16.2

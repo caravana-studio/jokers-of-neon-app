@@ -60,6 +60,17 @@ export const TestPage = () => {
         {isSmallScreen && (
           <Divider borderColor="white" borderWidth="1px" my={2} />
         )}
+        <MenuBtn
+          icon={Icons.LIST}
+          description={"Test referral system"}
+          label={"Referral Test"}
+          onClick={() => navigate("/referral-test")}
+          arrowRight
+          width={"18px"}
+        />
+        {isSmallScreen && (
+          <Divider borderColor="white" borderWidth="1px" my={2} />
+        )}
       </Flex>
     </DelayedLoading>
   );
