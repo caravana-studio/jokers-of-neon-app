@@ -175,19 +175,19 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AppsFlyerFramework: 63577b60d6b9fcdab60135289979e7d1c9ec79b9
-  Capacitor: 28d6c01026a9a3f7156529498ec1f389a2a28dbc
-  CapacitorApp: 26587c2ce485d88ddb39adb21cac64f8e481afe3
-  CapacitorAppLauncher: b70f649f609bab6412eccdd413bd7f0dd42df4a9
-  CapacitorBrowser: 22541e48442de44dc629c214388290d6eecc6ae9
-  CapacitorCommunityNativeAudio: 035096f7f8830ccb6f49afe51a0e2b20da748f47
+  Capacitor: b4741ca7affb32c1b70debd03df92cbf522d8a80
+  CapacitorApp: 846d4b4a1dbb19dd1e9029c08ba6f028aa7be862
+  CapacitorAppLauncher: 96930b89740f1deabc737df750dbc3e9a0430f34
+  CapacitorBrowser: 45c681e7abc3b4384e54eb52bafeef1347d98fa8
+  CapacitorCommunityNativeAudio: 146110e0969d2378d886a8cfb7f9ca3288840607
   CapacitorCordova: 435121e81a2df4d0034f0fb11fcefab5104cfdb5
-  CapacitorDevice: b64654eb4d404373e733c01d835055ba59286e5c
-  CapacitorFirebaseMessaging: 1ac12c0dab16d1e4edcf9cb878620507ac868a4e
-  CapacitorHaptics: b3fb2869e72c4466e18ce9ccbeb60a3d8723b3d4
-  CapacitorPluginAppTrackingTransparency: 92ae9c1cfb5cf477753db9269689332a686f675a
-  CapacitorPreferences: 65107ed7437d96ee72583df5763985e3c0ff2bc2
-  CapacitorPushNotifications: 7604512af53bbfdf1dd8fb2256b9ef1e8a69cdc2
-  CordovaPlugins: 39454af61b66c5495293b4be216bd851e0cd32ab
+  CapacitorDevice: acceaa3502f9a5edd446c96a451eb200d1ac6c03
+  CapacitorFirebaseMessaging: 6db74cce2af7a8b8b3f617735bc722d528d5116b
+  CapacitorHaptics: 09d96bcb5a2b74ede8fd039b4cdf58fc43dcacf1
+  CapacitorPluginAppTrackingTransparency: 2a2792623a5a72795f2e8f9ab3f1147573732fd8
+  CapacitorPreferences: b583b5deb74e564c35968189d25d32c0fd41200d
+  CapacitorPushNotifications: 57b0df89c5084a19c939e2fbe3b77446fe55a35b
+  CordovaPlugins: 64931e3435a866da9d124e6242a9361b484e9b05
   FBAEMKit: b2ed182002dbcb65d5a60059c9693d322186cd00
   FBSDKCoreKit: 7f96852f2539bdb88ba8d47e5ab4ae70a6f8d691
   FBSDKCoreKit_Basics: 22d4c1a509ded4e45116f3bb167a14907550f62e
@@ -204,7 +204,7 @@ SPEC CHECKSUMS:
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
   PurchasesHybridCommon: f408c80577f9d1b7400acf7466846125496877b0
   RevenueCat: 0423a85e1f2ef06f1002b18cae53fe856f60ea53
-  RevenuecatPurchasesCapacitor: 49b9f126a56072857abd60f759516aa391ae900c
+  RevenuecatPurchasesCapacitor: 4baf123df27c556e366f937d8f763d5f09f5698b
 
 PODFILE CHECKSUM: 824699f5d373b3001db58fbeefb5aa354e4950eb
 
