@@ -63,17 +63,20 @@ export const StepReward = ({
                 variant="secondarySolid"
                 disabled={claiming || claimed}
                 isLoading={claiming}
-                onClick={() => {
+                onClick={async () => {
                   if (reward.tournamentEntries > 0) {
-                    setClaiming(true);
-                    claimSeasonReward({
-                      address: account.address,
-                      level,
-                      isPremium: type === "premium",
-                    }).then(() => {
-                      setClaiming(false);
+                    try {
+                      setClaiming(true);
+                      await claimSeasonReward({
+                        address: account.address,
+                        level,
+                        isPremium: type === "premium",
+                      });
                       setClaimed(true);
-                    });
+                      refetch();
+                    } finally {
+                      setClaiming(false);
+                    }
                   } else {
                     navigate(`/claim-season-pack/${level}/${type}`);
                   }
