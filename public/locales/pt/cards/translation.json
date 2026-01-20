@@ -334,7 +334,7 @@
     },
     "10109": {
       "name": "Joker Pendurado",
-      "description": "Se sua mão contiver um Joker, tem 25% de chance de acumular ^blue(+10 pontos)^."
+      "description": "Se sua mão contiver um Joker, tem 25% de chance de acumular ^blue(+10 pontos)^. Actualmente ^blue(+{{points}} pontos)^."
     },
     "10110": {
       "name": "Sacrifício Especial",

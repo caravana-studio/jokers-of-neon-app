@@ -334,7 +334,7 @@
     },
     "10109": {
       "name": "Comodín Colgado",
-      "description": "Si tu mano contiene un Comodín, tiene un 25% de probabilidad de acumular ^blue(+10 puntos)^."
+      "description": "Si tu mano contiene un Comodín, tiene un 25% de probabilidad de acumular ^blue(+10 puntos)^. Actualmente ^blue(+{{points}} puntos)^."
     },
     "10110": {
       "name": "Sacrifio Especial",
