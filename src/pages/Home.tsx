@@ -12,6 +12,7 @@ import SpineAnimation from "../components/SpineAnimation";
 import { useGameContext } from "../providers/GameProvider";
 import { useGetMyGames } from "../queries/useGetMyGames";
 import { useResponsiveValues } from "../theme/responsiveSettings";
+import { logEvent } from "../utils/analytics";
 
 export const Home = () => {
   const { t } = useTranslation(["home"]);
@@ -44,6 +45,9 @@ export const Home = () => {
   const handleDeclineTutorial = () => {
     handleCreateGame();
     setTutorialModalOpen(false);
+
+    logEvent("tutorial_skipped");
+    logEvent("tutorial_done");
   };
 
   return (

@@ -16,6 +16,7 @@ import { DailyMissionDifficulty } from "../types/DailyMissions.ts";
 import type { LevelCompleteEvent } from "../types/ScoreData";
 import { getEnvString } from "./getEnvValue.ts";
 import { isNative, nativePaddingTop } from "./capacitorUtils.ts";
+import { logEvent } from "./analytics.ts";
 
 const TOAST_COMMON_OPTIONS: ExternalToast = {
   id: "transaction",
@@ -203,6 +204,7 @@ export const showLevelCompleteToast = (
   levelCompleteEvents: LevelCompleteEvent[]
 ): void => {
   levelCompleteEvents.forEach((event, index) => {
+    logEvent(`level_completed`, { level: event.level });
     const ordinalLabel = getOrdinalLabel(event.completion_count);
     setTimeout(() => {
       toast.custom(
