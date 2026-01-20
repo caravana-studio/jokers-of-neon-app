@@ -1,4 +1,4 @@
-import { Button, Flex, Text } from "@chakra-ui/react";
+import { Button, Flex } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -128,6 +128,8 @@ export const NewHome = () => {
   const handleDeclineTutorial = () => {
     handleCreateGame();
     setTutorialModalOpen(false);
+    logEvent("tutorial_skipped");
+    logEvent("tutorial_done");
   };
 
   return (

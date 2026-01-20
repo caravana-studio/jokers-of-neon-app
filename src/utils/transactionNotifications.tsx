@@ -204,7 +204,7 @@ export const showLevelCompleteToast = (
   levelCompleteEvents: LevelCompleteEvent[]
 ): void => {
   levelCompleteEvents.forEach((event, index) => {
-    logEvent(`level_${event.level}_completed`);
+    logEvent(`level_completed`, { level: event.level });
     const ordinalLabel = getOrdinalLabel(event.completion_count);
     setTimeout(() => {
       toast.custom(
