@@ -139,6 +139,17 @@ const transformSeasonLine = (
   });
 };
 
+const countUnclaimedRewards = (steps: IStep[]) =>
+  steps.reduce((total, step) => {
+    if (step.free?.status === RewardStatus.UNCLAIMED) {
+      total += 1;
+    }
+    if (step.premium?.status === RewardStatus.UNCLAIMED) {
+      total += 1;
+    }
+    return total;
+  }, 0);
+
 export async function getSeasonProgress({
   userAddress,
   seasonId = DEFAULT_SEASON_ID,
@@ -149,6 +160,7 @@ export async function getSeasonProgress({
   playerProgress: number;
   tournamentEntries: number;
   rewardsLeftToClaim: number[];
+  unclaimedRewardsCount: number;
 }> {
   if (!userAddress) {
     throw new Error("getSeasonLine: userAddress is required");
@@ -226,16 +238,20 @@ export async function getSeasonProgress({
     throw new Error("getSeasonLine: Unexpected API response shape");
   }
 
+  const steps = transformSeasonLine(
+    json.data,
+    seasonPassUnlocked,
+    playerProgress,
+    seasonPassUnlockedAtLevel
+  );
+  const unclaimedRewardsCount = countUnclaimedRewards(steps);
+
   return {
     seasonPassUnlocked,
     playerProgress,
     tournamentEntries,
     rewardsLeftToClaim,
-    steps: transformSeasonLine(
-      json.data,
-      seasonPassUnlocked,
-      playerProgress,
-      seasonPassUnlockedAtLevel
-    ),
+    unclaimedRewardsCount,
+    steps,
   };
 }
