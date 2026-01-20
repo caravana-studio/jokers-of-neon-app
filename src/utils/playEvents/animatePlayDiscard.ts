@@ -405,6 +405,9 @@ export const animatePlayDiscard = (config: AnimatePlayConfig) => {
     setPlayIsNeon(false);
 
     setCurrentScore(playEvents.score);
+    if (playEvents.levelPassed && playEvents.detailEarned) {
+      addCash(playEvents.detailEarned.total);
+    }
 
     handleGameEnd();
     setCardTransformationLock(false);

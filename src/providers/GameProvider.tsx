@@ -328,7 +328,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     refetchSpecialCardsData(modId, gameId, specialCards);
     if (response.levelPassed && response.detailEarned) {
       response.levelPassed.level_passed > 0 && advanceLevel();
-      addCash(response.detailEarned.total);
       response.detailEarned.rerolls &&
         addRerolls(response.detailEarned.rerolls);
     }
