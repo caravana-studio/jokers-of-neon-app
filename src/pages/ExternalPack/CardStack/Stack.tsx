@@ -215,6 +215,9 @@ export default function Stack({
                 alt={`card-${card.id}`}
                 className="card-image"
               />
+              {card.isNew && (
+                <div className="card-new-badge">{card.newLabel ?? "NEW"}</div>
+              )}
             </motion.div>
           </CardRotate>
         );

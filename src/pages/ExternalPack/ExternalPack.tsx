@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { getUserCards } from "../../api/getUserCards";
 import { GalaxyBackground } from "../../components/backgrounds/galaxy/GalaxyBackground";
 import CachedImage from "../../components/CachedImage";
 import { DelayedLoading } from "../../components/DelayedLoading";
@@ -13,6 +14,7 @@ import { packAnimation, packGlowAnimation } from "../../constants/animations";
 import { RARITY, RarityLabels } from "../../constants/rarity";
 import { SKINS_RARITY } from "../../data/specialCards";
 import { CardTypes } from "../../enums/cardTypes";
+import { useDojo } from "../../dojo/useDojo";
 import { useCardData } from "../../providers/CardDataProvider";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { Intensity } from "../../types/intensity";
@@ -72,6 +74,9 @@ export const ExternalPack = ({
   returnTo,
 }: ExternalPackProps) => {
   const { t } = useTranslation("intermediate-screens");
+  const { t: tPack } = useTranslation("intermediate-screens", {
+    keyPrefix: "external-pack",
+  });
 
   const params = useParams();
   const location = useLocation();
@@ -83,6 +88,9 @@ export const ExternalPack = ({
   const { t: tDocs } = useTranslation("docs");
   const { t: tGame } = useTranslation("game");
   const { getCardData } = useCardData();
+  const {
+    account: { account },
+  } = useDojo();
 
   const [allCardsSeen, setAllCardsSeen] = useState(false);
   const initialCardsSource =
@@ -92,6 +100,8 @@ export const ExternalPack = ({
       : undefined);
 
   const [step, setStep] = useState(0);
+  const [ownedCardIds, setOwnedCardIds] = useState<Set<number>>(new Set());
+  const [ownedCardsLoaded, setOwnedCardsLoaded] = useState(false);
 
   const { isSmallScreen } = useResponsiveValues();
 
@@ -134,14 +144,47 @@ export const ExternalPack = ({
 
   const shouldDisableHeavyBackground = isNativeAndroid;
 
+  useEffect(() => {
+    if (!account?.address) {
+      setOwnedCardIds(new Set());
+      setOwnedCardsLoaded(false);
+      return;
+    }
+
+    let cancelled = false;
+    getUserCards(account.address)
+      .then((data) => {
+        if (cancelled) return;
+        setOwnedCardIds(new Set(data.ownedCardIds ?? []));
+        setOwnedCardsLoaded(true);
+      })
+      .catch((error) => {
+        if (cancelled) return;
+        console.error("ExternalPack: failed to load user collection", error);
+        setOwnedCardIds(new Set());
+        setOwnedCardsLoaded(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [account?.address]);
+
   const cardsData = useMemo(
     () =>
-      obtainedCards.map((card, index) => ({
-        id: index,
-        cardId: card.card_id,
-        img: `/Cards/${card.card_id}${card.skin_id !== 0 ? `_sk${card.skin_id}` : ""}.png`,
-      })),
-    [obtainedCards]
+      obtainedCards.map((card, index) => {
+        const skinId = card.skin_id ?? 0;
+        const isNew = true;
+
+        return {
+          id: index,
+          cardId: card.card_id,
+          img: `/Cards/${card.card_id}${skinId !== 0 ? `_sk${skinId}` : ""}.png`,
+          isNew,
+          newLabel: tPack("new"),
+        };
+      }),
+    [obtainedCards, ownedCardIds, ownedCardsLoaded, t]
   );
 
   // Ensure the first render highlights the first real card instead of the fallback (ID 0 / 2 de trébol).
@@ -177,7 +220,7 @@ export const ExternalPack = ({
           {isSmallScreen ? (
             <FontAwesomeIcon color="white" fontSize={13} icon={faCaretRight} />
           ) : (
-            t("external-pack.continue")
+            tPack("continue")
           )}
         </Button>
       )}
@@ -287,7 +330,7 @@ export const ExternalPack = ({
                 animation: "fadeIn 1s ease 3s forwards",
               }}
             >
-              <Text size="lg">{t("external-pack.draw-line")}</Text>
+              <Text size="lg">{tPack("draw-line")}</Text>
             </Flex>
           )}
 
@@ -395,7 +438,7 @@ export const ExternalPack = ({
               fontFamily="Oxanium"
               fontSize={14}
             >
-              {t("external-pack.open")}
+              {tPack("open")}
             </Button>
           )}
           {step === 4 && (
