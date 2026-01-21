@@ -61,11 +61,11 @@
       "description": "Mejora la jugada COLOR en 4 niveles. Otorgando ^blue(+100 puntos)^ y ^violet(+8 multi)^ adicionales"
     },
     "10008": {
-      "name": "Escalera simplificada",
+      "name": "Escalera Simplificada",
       "description": "Se necesitan 4 cartas para formar ESCALERA"
     },
     "10009": {
-      "name": "Color simplificado",
+      "name": "Color Simplificado",
       "description": "Se necesitan 4 cartas para formar COLOR"
     },
     "10010": {
@@ -113,27 +113,27 @@
       "description": "La primera mano jugada suma ^blue(+100 puntos)^ y ^violet(+10 multi)^"
     },
     "10021": {
-      "name": "Mano de la suerte",
+      "name": "Mano de la Suerte",
       "description": "Suma ^yellow(+50 monedas)^ por cada carta de diamantes que juegues"
     },
     "10022": {
-      "name": "Maestría en descartes",
+      "name": "Maestría en Descartes",
       "description": "Si no te quedan descartes cada mano jugada suma ^violet(+10 multi)^"
     },
     "10023": {
-      "name": "Segunda oportunidad",
+      "name": "Segunda Oportunidad",
       "description": "Esta carta permite seguir jugando aunque la ronda no se supere. Se destruye al perder"
     },
     "10024": {
-      "name": "Escudo del guardián",
+      "name": "Escudo del Guardián",
       "description": "Bloquea todas las cartas de rage por 1 ronda. Se destruye después"
     },
     "10025": {
-      "name": "Sinergia de neón",
+      "name": "Sinergia de Neón",
       "description": "Si más del 50% de las cartas jugadas son neón, todas las demás cartas se transforman en neón"
     },
     "10026": {
-      "name": "Doctrina de neón",
+      "name": "Doctrina de Neón",
       "description": "Convierte dos cartas jugadas en cartas de neón."
     },
     "10031": {
@@ -141,19 +141,19 @@
       "description": "Los puntos necesarios para superar la ronda se reducen en un 20%"
     },
     "10032": {
-      "name": "Día de suerte",
+      "name": "Día de Suerte",
       "description": "Suma ^yellow(+500 monedas)^ extra por cada Comodín que tengas en la mano, sin usar, al final de la ronda"
     },
     "10033": {
-      "name": "Efecto espejo",
+      "name": "Efecto Espejo",
       "description": "Repite el efecto de la carta especial a la izquierda"
     },
     "10034": {
-      "name": "Cajas en oferta",
+      "name": "Cajas en Oferta",
       "description": "Las cajas tienen un 30% de descuento"
     },
     "10035": {
-      "name": "Selecciones extra",
+      "name": "Selecciones Extra",
       "description": "2 opciones de carta especial adicionales en la tienda"
     },
     "10036": {
@@ -161,27 +161,27 @@
       "description": "Suma ^yellow(+500 monedas)^ cada vez que descartes un Comodín"
     },
     "10037": {
-      "name": "Descartes extra",
+      "name": "Descartes Extra",
       "description": "Agrega 2 descartes"
     },
     "10038": {
-      "name": "Jugadas extra",
+      "name": "Jugadas Extra",
       "description": "Agrega 2 jugadas"
     },
     "10039": {
-      "name": "Factor de escala",
+      "name": "Factor de Escala",
       "description": "Mejora todas tus manos en 2 niveles"
     },
     "10040": {
-      "name": "Doses salvajes",
+      "name": "Doses Salvajes",
       "description": "Todos los 2s se consideran comodines"
     },
     "10041": {
-      "name": "Robo inmortal",
+      "name": "Robo Inmortal",
       "description": "Sube de nivel la primer mano descartada"
     },
     "10042": {
-      "name": "Inicio protegido",
+      "name": "Inicio Protegido",
       "description": "Protege tu primera mano jugada de todos los efectos negativos"
     },
     "10043": {
@@ -245,7 +245,7 @@
       "description": "Suma ^blue(+30 puntos)^ por cada 2 que tengas en tu mano."
     },
     "10062": {
-      "name": "Mano de modificadores",
+      "name": "Mano de Modificadores",
       "description": "Suma ^violet(+5 de multi)^ por cada carta modificadora que tengas en tu mano."
     },
     "10064": {
@@ -257,11 +257,11 @@
       "description": "Suma ^blue(+30 puntos)^ por cada Jota que tengas en tu mano."
     },
     "10066": {
-      "name": "Ciclo del dinero",
+      "name": "Ciclo del Dinero",
       "description": "Gana un 50% más de recompensas después de cada nivel."
     },
     "10067": {
-      "name": "Cazador de especiales",
+      "name": "Cazador de Especiales",
       "description": "Se duplica la probabilidad de encontrar cartas especiales de categoria A y S en la tienda."
     },
     "10068": {
@@ -277,7 +277,7 @@
       "description": "Las cartas de corazones y diamantes dan doble puntos. Las cartas de tréboles y picas dan ^violet(+1 multi)^."
     },
     "10071": {
-      "name": "Comodín sin valor",
+      "name": "Comodín Sin Valor",
       "description": "Los Comodines no otorgan puntos ni multiplicador. Todas las demás cartas suman ^violet(+1 multi)^."
     },
     "10072": {
@@ -349,7 +349,7 @@
       "description": "Suma ^violet(+10 multi)^ y ^blue(+50 puntos)^ al jugar 3 o menos cartas."
     },
     "10113": {
-      "name": "Rompedor de Rondas furia",
+      "name": "Rompedor de Rondas Furia",
       "description": "Gana ^violet(+3 multi)^ (acumulativos) por cada Ronda de Furia derrotada. Actualmente ^violet(+{{multi}} multi)^."
     },
     "10114": {
