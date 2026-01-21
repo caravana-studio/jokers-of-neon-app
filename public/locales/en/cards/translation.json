@@ -482,19 +482,19 @@
     },
     "10004": {
       "name": "Pair Booster",
-      "description": "Level up PAIR hand by 4 levels. (+40 points +4 multi)"
+      "description": "Level up the PAIR hand by 4 levels. Granting ^blue(+40 points)^ and ^violet(+4 multi)^ additional"
     },
     "10005": {
       "name": "Two Pair Booster",
-      "description": "Level up TWO PAIR hand by 4 levels. (+80 points +4 multi)"
+      "description": "Level up the TWO PAIR hand by 4 levels. Granting ^blue(+80 points)^ and ^violet(+4 multi)^ additional"
     },
     "10006": {
       "name": "Straight Booster",
-      "description": "Level up STRAIGHT hand by 4 levels. (+100 points +8 multi)"
+      "description": "Level up the STRAIGHT hand by 4 levels. Granting ^blue(+100 points)^ and ^violet(+8 multi)^ additional"
     },
     "10007": {
       "name": "Flush Booster",
-      "description": "Level up FLUSH hand by 4 levels. (+100 points +8 multi)"
+      "description": "Level up the FLUSH hand by 4 levels. Granting ^blue(+100 points)^ and ^violet(+8 multi)^ additional"
     },
     "10008": {
       "name": "Easy Straight",
@@ -622,19 +622,19 @@
     },
     "10043": {
       "name": "Full House Booster",
-      "description": "Level up Full house hand by 4 levels. (+100 points +8 multi)"
+      "description": "Level up the FULL HOUSE hand by 4 levels. Granting ^blue(+100 points)^ and ^violet(+8 multi)^ additional"
     },
     "10044": {
       "name": "Three of a Kind Booster",
-      "description": "Level up Three of a Kind hand by 4 levels. (+80 points +4 multi)"
+      "description": "Level up the THREE OF A KIND hand by 4 levels. Granting ^blue(+80 points)^ and ^violet(+4 multi)^ additional"
     },
     "10045": {
       "name": "Four of a Kind Booster",
-      "description": "Level up Four of a Kind hand by 4 levels. (+120 points +8 multi)"
+      "description": "Level up the FOUR OF A KIND hand by 4 levels. Granting ^blue(+120 points)^ and ^violet(+8 multi)^ additional"
     },
     "10046": {
       "name": "Five of a Kind Booster",
-      "description": "Level up Five of a Kind hand by 4 levels. (+140 points +12 multi)"
+      "description": "Level up the FIVE OF A KIND hand by 4 levels. Granting ^blue(+140 points)^ and ^violet(+12 multi)^ additional"
     },
     "10047": {
       "name": "Dice of Hearts",

@@ -46,19 +46,19 @@
     },
     "10004": {
       "name": "Potenciador de Par",
-      "description": "Mejora PAR en 4 niveles. (+40 puntos +4 multi)"
+      "description": "Mejora la jugada PAR en 4 niveles. Otorgando ^blue(+40 puntos)^ y ^violet(+4 multi)^ adicionales"
     },
     "10005": {
       "name": "Potenciador de Doble Par",
-      "description": "Mejora DOBLE PAR en 4 niveles. (+80 puntos +4 multi)"
+      "description": "Mejora la jugada DOBLE PAR en 4 niveles. Otorgando ^blue(+80 puntos)^ y ^violet(+4 multi)^ adicionales"
     },
     "10006": {
       "name": "Potenciador de Escalera",
-      "description": "Mejora ESCALERA en 4 niveles. (+100 puntos +8 multi)"
+      "description": "Mejora la jugada ESCALERA en 4 niveles. Otorgando ^blue(+100 puntos)^ y ^violet(+8 multi)^ adicionales"
     },
     "10007": {
       "name": "Potenciador de Color",
-      "description": "Mejora COLOR en 4 niveles. (+100 puntos +8 multi)"
+      "description": "Mejora la jugada COLOR en 4 niveles. Otorgando ^blue(+100 puntos)^ y ^violet(+8 multi)^ adicionales"
     },
     "10008": {
       "name": "Escalera simplificada",
@@ -165,8 +165,8 @@
       "description": "Agrega 2 descartes"
     },
     "10038": {
-      "name": "Robos extra",
-      "description": "Agrega 2 manos"
+      "name": "Jugadas extra",
+      "description": "Agrega 2 jugadas"
     },
     "10039": {
       "name": "Factor de escala",
@@ -186,19 +186,19 @@
     },
     "10043": {
       "name": "Potenciador de Full",
-      "description": "Mejora FULL en 4 niveles. (+100 puntos +8 multi)"
+      "description": "Mejora la jugada FULL en 4 niveles. Otorgando ^blue(+100 puntos)^ y ^violet(+8 multi)^ adicionales"
     },
     "10044": {
       "name": "Potenciador de Trío",
-      "description": "Mejora TRÍO en 4 niveles. (+80 puntos +4 multi)"
+      "description": "Mejora la jugada TRÍO en 4 niveles. Otorgando ^blue(+80 puntos)^ y ^violet(+4 multi)^ adicionales"
     },
     "10045": {
       "name": "Potenciador de Póker",
-      "description": "Mejora PÓKER en 4 niveles. (+120 puntos +8 multi)"
+      "description": "Mejora la jugada PÓKER en 4 niveles. Otorgando ^blue(+120 puntos)^ y ^violet(+8 multi)^ adicionales"
     },
     "10046": {
       "name": "Potenciador de Repóker",
-      "description": "Mejora REPÓKER en 4 niveles. (+140 puntos +12 multi)"
+      "description": "Mejora la jugada REPÓKER en 4 niveles. Otorgando ^blue(+140 puntos)^ y ^violet(+12 multi)^ adicionales"
     },
     "10047": {
       "name": "Dado de Corazones",
