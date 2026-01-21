@@ -226,7 +226,7 @@
     },
     "10054": {
       "name": "Bônus de Pular",
-      "description": "Ganhe ^blue(+25 pontos)^ (acumulativos) para cada caixa de recompensa pulada (aberta sem selecionar uma carta). ^blue(Actualmente +{{points}} pontos)^."
+      "description": "Ganhe ^blue(+25 pontos)^ (acumulativos) para cada caixa de recompensa pulada (aberta sem selecionar uma carta). Atualmente ^blue(+{{points}} pontos)^."
     },
     "10056": {
       "name": "Guardião de Slot",
@@ -282,7 +282,7 @@
     },
     "10072": {
       "name": "Escada Ascendente",
-      "description": "Ganhe ^blue(+10 pontos)^ acumulativos para cada sequência jogada. ^blue(Atualmente com +{{points}} pontos)^."
+      "description": "Ganhe ^blue(+10 pontos)^ (acumulativos) para cada sequência jogada. Atualmente ^blue(+{{points}} pontos)^."
     },
     "10073": {
       "name": "Relatividade",
@@ -302,7 +302,7 @@
     },
     "10101": {
       "name": "Pôster Desbotado",
-      "description": "Começa com ^blue(+100 pontos)^, perde ^blue(10 pontos)^ por jogada até chegar em ^blue(10 pontos)^. ^blue(Atualmente com +{{points}} pontos)^."
+      "description": "Começa com ^blue(+100 pontos)^, perde ^blue(10 pontos)^ por jogada até chegar em ^blue(10 pontos)^. Atualmente ^blue(+{{points}} pontos)^."
     },
     "10102": {
       "name": "Domador da Sorte",
@@ -326,7 +326,7 @@
     },
     "10107": {
       "name": "Bênção de Héstia",
-      "description": "As cartas queimadas acumulam seus ^blue(pontos)^; se for um Joker, acumula ^violet(+1 multi)^. Actualmente ^blue(+{{points}} pontos)^  ^violet(+{{multi}} multi)^."
+      "description": "As cartas queimadas acumulam seus ^blue(pontos)^; se for um Joker, acumula ^violet(+1 multi)^. Atualmente ^blue(+{{points}} pontos)^ ^violet(+{{multi}} multi)^."
     },
     "10108": {
       "name": "Roleta de Naipes",
@@ -334,15 +334,15 @@
     },
     "10109": {
       "name": "Joker Pendurado",
-      "description": "Se sua mão contiver um Joker, tem 25% de chance de acumular ^blue(+10 pontos)^. Actualmente ^blue(+{{points}} pontos)^."
+      "description": "Se sua mão contiver um Joker, tem 25% de chance de acumular ^blue(+10 pontos)^. Atualmente ^blue(+{{points}} pontos)^."
     },
     "10110": {
       "name": "Sacrifício Especial",
-      "description": "Ganhe ^violet(+1 multi)^ (acumulativo) para cada carta especial vendida. ^violet(Actualmente +{{multi}} multi)^."
+      "description": "Ganhe ^violet(+1 multi)^ (acumulativo) para cada carta especial vendida. Atualmente ^violet(+{{multi}} multi)^."
     },
     "10111": {
       "name": "High Roller",
-      "description": "Cada Carta Alta jogada tem 50% de chances de ganhar ^violet(+1 multi)^ (acumulativo). ^violet(Actualmente +{{multi}} multi)^."
+      "description": "Cada Carta Alta jogada tem 50% de chances de ganhar ^violet(+1 multi)^ (acumulativo). Atualmente ^violet(+{{multi}} multi)^."
     },
     "10112": {
       "name": "Jogada Eficiente",
@@ -350,11 +350,11 @@
     },
     "10113": {
       "name": "Quebrador de Rage",
-      "description": "Ganhe ^violet(+3 multi)^ (acumulativo) para cada Rage derrotada. ^violet(Actualmente +{{multi}} multi)^."
+      "description": "Ganhe ^violet(+3 multi)^ (acumulativo) para cada Rage derrotada. Atualmente ^violet(+{{multi}} multi)^."
     },
     "10114": {
       "name": "Recompensas em Chamas",
-      "description": "Ganhe ^blue(+15 pontos)^ (acumulativos) para cada carta queimar do seu baralho. ^blue(Actualmente +{{points}} pontos)^."
+      "description": "Ganhe ^blue(+15 pontos)^ (acumulativos) para cada carta queimada do seu baralho. Atualmente ^blue(+{{points}} pontos)^."
     },
     "19901": {
       "name": "Reembolso Sortudo",
@@ -366,7 +366,7 @@
     },
     "19903": {
       "name": "Redenção do Pântano",
-      "description": "Ganha entre ^blue(+1)^ e ^blue(+5 pontos)^ (acumulativos) cada vez que descarta. Actualmente ^blue(+{{points}} pontos)^."
+      "description": "Ganha entre ^blue(+1)^ e ^blue(+5 pontos)^ (acumulativos) cada vez que descarta. Atualmente ^blue(+{{points}} pontos)^."
     }
   },
   "power-ups": {

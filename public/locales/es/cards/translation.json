@@ -226,7 +226,7 @@
     },
     "10054": {
       "name": "Omitir Bonus",
-      "description": "Gana ^blue(+25 puntos)^ (acumulativos) por cada caja de botín omitida (abierta sin seleccionar una carta). ^blue(Actualmente +{{points}} puntos)^."
+      "description": "Gana ^blue(+25 puntos)^ (acumulativos) por cada caja de botín omitida (abierta sin seleccionar una carta). Actualmente ^blue(+{{points}} puntos)^."
     },
     "10056": {
       "name": "Guardián de Slots",
@@ -282,7 +282,7 @@
     },
     "10072": {
       "name": "Escalera Ascendente",
-      "description": "Gana ^blue(+10 puntos)^ acumulativos por cada escalera jugada. ^blue(Actualmente +{{points}} puntos)^."
+      "description": "Gana ^blue(+10 puntos)^ (acumulativos) por cada escalera jugada. Actualmente ^blue(+{{points}} puntos)^."
     },
     "10073": {
       "name": "Relatividad",
@@ -302,7 +302,7 @@
     },
     "10101": {
       "name": "Póster Desgastado",
-      "description": "Comienza con ^blue(+100 puntos)^, pierde ^blue(10 puntos)^ por cada jugada hasta llegar a ^blue(10 puntos)^. ^blue(Actualmente +{{points}} puntos)^."
+      "description": "Comienza con ^blue(+100 puntos)^, pierde ^blue(10 puntos)^ por cada jugada hasta llegar a ^blue(10 puntos)^. Actualmente ^blue(+{{points}} puntos)^."
     },
     "10102": {
       "name": "Domador de Oportunidades",
@@ -337,12 +337,12 @@
       "description": "Si tu mano contiene un Comodín, tiene un 25% de probabilidad de acumular ^blue(+10 puntos)^. Actualmente ^blue(+{{points}} puntos)^."
     },
     "10110": {
-      "name": "Sacrifio Especial",
-      "description": "Gana ^violet(+1 multi)^ (acumulativos) por cada carta especial vendida. ^violet(Actualmente +{{multi}} multi)^."
+      "name": "Sacrificio Especial",
+      "description": "Gana ^violet(+1 multi)^ (acumulativos) por cada carta especial vendida. Actualmente ^violet(+{{multi}} multi)^."
     },
     "10111": {
       "name": "High Roller",
-      "description": "Cada Carta Alta jugada tiene un 50% de probabilidad de ganar ^violet(+1 multi)^ (acumulativos). ^violet(Actualmente +{{multi}} multi)^."
+      "description": "Cada Carta Alta jugada tiene un 50% de probabilidad de ganar ^violet(+1 multi)^ (acumulativos). Actualmente ^violet(+{{multi}} multi)^."
     },
     "10112": {
       "name": "Juego Eficiente",
@@ -350,11 +350,11 @@
     },
     "10113": {
       "name": "Rompedor de Rondas furia",
-      "description": "Gana ^violet(+3 multi)^ (acumulativos) por cada Ronda de Furia derrotada. ^violet(Actualmente +{{multi}} multi)^."
+      "description": "Gana ^violet(+3 multi)^ (acumulativos) por cada Ronda de Furia derrotada. Actualmente ^violet(+{{multi}} multi)^."
     },
     "10114": {
       "name": "Recompensas Quemadas",
-      "description": "Gana ^blue(+15 puntos)^ (acumulativos) por cada carta quemada de tu mazo. ^blue(Actualmente +{{points}} puntos)^."
+      "description": "Gana ^blue(+15 puntos)^ (acumulativos) por cada carta quemada de tu mazo. Actualmente ^blue(+{{points}} puntos)^."
     },
     "19901": {
       "name": "Reembolso Afortunado",
