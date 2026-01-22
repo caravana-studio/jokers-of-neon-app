@@ -482,11 +482,11 @@
     },
     "10004": {
       "name": "Pair Booster",
-      "description": "Level up the PAIR hand by 4 levels. Granting ^blue(+40 points)^ and ^violet(+4 multi)^ additional"
+      "description": "Level up the PAIR hand by 6 levels. Granting ^blue(+60 points)^ and ^violet(+6 multi)^ additional"
     },
     "10005": {
       "name": "Two Pair Booster",
-      "description": "Level up the TWO PAIR hand by 4 levels. Granting ^blue(+80 points)^ and ^violet(+4 multi)^ additional"
+      "description": "Level up the TWO PAIR hand by 5 levels. Granting ^blue(+100 points)^ and ^violet(+5 multi)^ additional"
     },
     "10006": {
       "name": "Straight Booster",
@@ -630,11 +630,11 @@
     },
     "10045": {
       "name": "Four of a Kind Booster",
-      "description": "Level up the FOUR OF A KIND hand by 4 levels. Granting ^blue(+120 points)^ and ^violet(+8 multi)^ additional"
+      "description": "Level up the FOUR OF A KIND hand by 3 levels. Granting ^blue(+90 points)^ and ^violet(+6 multi)^ additional"
     },
     "10046": {
       "name": "Five of a Kind Booster",
-      "description": "Level up the FIVE OF A KIND hand by 4 levels. Granting ^blue(+140 points)^ and ^violet(+12 multi)^ additional"
+      "description": "Level up the FIVE OF A KIND hand by 3 levels. Granting ^blue(+105 points)^ and ^violet(+9 multi)^ additional"
     },
     "10047": {
       "name": "Dice of Hearts",

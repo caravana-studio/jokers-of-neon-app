@@ -46,11 +46,11 @@
     },
     "10004": {
       "name": "Impulsionador de Par",
-      "description": "Melhora a jogada PAR em 4 níveis. Concedendo ^blue(+40 pontos)^ e ^violet(+4 multi)^ adicionais"
+      "description": "Melhora a jogada PAR em 6 níveis. Concedendo ^blue(+60 pontos)^ e ^violet(+6 multi)^ adicionais"
     },
     "10005": {
       "name": "Impulsionador de Dois Pares",
-      "description": "Melhora a jogada DOIS PARES em 4 níveis. Concedendo ^blue(+80 pontos)^ e ^violet(+4 multi)^ adicionais"
+      "description": "Melhora a jogada DOIS PARES em 5 níveis. Concedendo ^blue(+100 pontos)^ e ^violet(+5 multi)^ adicionais"
     },
     "10006": {
       "name": "Impulsionador de Sequência",
@@ -194,11 +194,11 @@
     },
     "10045": {
       "name": "Impulsionador de Quadra",
-      "description": "Melhora a jogada QUADRA em 4 níveis. Concedendo ^blue(+120 pontos)^ e ^violet(+8 multi)^ adicionais"
+      "description": "Melhora a jogada QUADRA em 3 níveis. Concedendo ^blue(+90 pontos)^ e ^violet(+6 multi)^ adicionais"
     },
     "10046": {
       "name": "Impulsionador de Quinteto",
-      "description": "Melhora a jogada QUINTETO em 4 níveis. Concedendo ^blue(+140 pontos)^ e ^violet(+12 multi)^ adicionais"
+      "description": "Melhora a jogada QUINTETO em 3 níveis. Concedendo ^blue(+105 pontos)^ e ^violet(+9 multi)^ adicionais"
     },
     "10047": {
       "name": "Dado de Copas",

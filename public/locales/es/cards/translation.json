@@ -46,11 +46,11 @@
     },
     "10004": {
       "name": "Potenciador de Par",
-      "description": "Mejora la jugada PAR en 4 niveles. Otorgando ^blue(+40 puntos)^ y ^violet(+4 multi)^ adicionales"
+      "description": "Mejora la jugada PAR en 6 niveles. Otorgando ^blue(+60 puntos)^ y ^violet(+6 multi)^ adicionales"
     },
     "10005": {
       "name": "Potenciador de Doble Par",
-      "description": "Mejora la jugada DOBLE PAR en 4 niveles. Otorgando ^blue(+80 puntos)^ y ^violet(+4 multi)^ adicionales"
+      "description": "Mejora la jugada DOBLE PAR en 5 niveles. Otorgando ^blue(+100 puntos)^ y ^violet(+5 multi)^ adicionales"
     },
     "10006": {
       "name": "Potenciador de Escalera",
@@ -194,11 +194,11 @@
     },
     "10045": {
       "name": "Potenciador de Póker",
-      "description": "Mejora la jugada PÓKER en 4 niveles. Otorgando ^blue(+120 puntos)^ y ^violet(+8 multi)^ adicionales"
+      "description": "Mejora la jugada PÓKER en 3 niveles. Otorgando ^blue(+90 puntos)^ y ^violet(+6 multi)^ adicionales"
     },
     "10046": {
       "name": "Potenciador de Repóker",
-      "description": "Mejora la jugada REPÓKER en 4 niveles. Otorgando ^blue(+140 puntos)^ y ^violet(+12 multi)^ adicionales"
+      "description": "Mejora la jugada REPÓKER en 3 niveles. Otorgando ^blue(+105 puntos)^ y ^violet(+9 multi)^ adicionales"
     },
     "10047": {
       "name": "Dado de Corazones",
