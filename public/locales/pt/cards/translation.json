@@ -46,19 +46,19 @@
     },
     "10004": {
       "name": "Impulsionador de Par",
-      "description": "Aumenta o nível da mão de PAR em 4 níveis. (+40 pontos +4 multi)"
+      "description": "Melhora a jogada PAR em 6 níveis. Concedendo ^blue(+60 pontos)^ e ^violet(+6 multi)^ adicionais"
     },
     "10005": {
       "name": "Impulsionador de Dois Pares",
-      "description": "Aumenta o nível da mão de DOIS PARES em 4 níveis. (+80 pontos +4 multi)"
+      "description": "Melhora a jogada DOIS PARES em 5 níveis. Concedendo ^blue(+100 pontos)^ e ^violet(+5 multi)^ adicionais"
     },
     "10006": {
       "name": "Impulsionador de Sequência",
-      "description": "Aumenta o nível da mão de SEQUÊNCIA em 4 níveis. (+100 pontos +8 multi)"
+      "description": "Melhora a jogada SEQUÊNCIA em 4 níveis. Concedendo ^blue(+100 pontos)^ e ^violet(+8 multi)^ adicionais"
     },
     "10007": {
       "name": "Impulsionador de Flush",
-      "description": "Aumenta o nível da mão de FLUSH em 4 níveis. (+100 pontos +8 multi)"
+      "description": "Melhora a jogada FLUSH em 4 níveis. Concedendo ^blue(+100 pontos)^ e ^violet(+8 multi)^ adicionais"
     },
     "10008": {
       "name": "Sequência Fácil",
@@ -186,19 +186,19 @@
     },
     "10043": {
       "name": "Impulsionador de Full House",
-      "description": "Aprimora a mão Full House em 4 níveis. (+100 pontos +8 multi)"
+      "description": "Melhora a jogada FULL HOUSE em 4 níveis. Concedendo ^blue(+100 pontos)^ e ^violet(+8 multi)^ adicionais"
     },
     "10044": {
       "name": "Impulsionador de Trinca",
-      "description": "Aprimora a mão Trinca em 4 níveis. (+80 pontos +4 multi)"
+      "description": "Melhora a jogada TRINCA em 4 níveis. Concedendo ^blue(+80 pontos)^ e ^violet(+4 multi)^ adicionais"
     },
     "10045": {
       "name": "Impulsionador de Quadra",
-      "description": "Aprimora a mão Quadra em 4 níveis. (+120 pontos +8 multi)"
+      "description": "Melhora a jogada QUADRA em 3 níveis. Concedendo ^blue(+90 pontos)^ e ^violet(+6 multi)^ adicionais"
     },
     "10046": {
       "name": "Impulsionador de Quinteto",
-      "description": "Aprimora a mão Quinteto em 4 níveis. (+140 pontos +12 multi)"
+      "description": "Melhora a jogada QUINTETO em 3 níveis. Concedendo ^blue(+105 pontos)^ e ^violet(+9 multi)^ adicionais"
     },
     "10047": {
       "name": "Dado de Copas",
@@ -226,7 +226,7 @@
     },
     "10054": {
       "name": "Bônus de Pular",
-      "description": "Ganhe ^blue(+25 pontos)^ (acumulativos) para cada caixa de recompensa pulada (aberta sem selecionar uma carta). ^blue(Actualmente +{{points}} pontos)^."
+      "description": "Ganhe ^blue(+25 pontos)^ (acumulativos) para cada caixa de recompensa pulada (aberta sem selecionar uma carta). Atualmente ^blue(+{{points}} pontos)^."
     },
     "10056": {
       "name": "Guardião de Slot",
@@ -282,7 +282,7 @@
     },
     "10072": {
       "name": "Escada Ascendente",
-      "description": "Ganhe ^blue(+10 pontos)^ acumulativos para cada sequência jogada. ^blue(Atualmente com +{{points}} pontos)^."
+      "description": "Ganhe ^blue(+10 pontos)^ (acumulativos) para cada sequência jogada. Atualmente ^blue(+{{points}} pontos)^."
     },
     "10073": {
       "name": "Relatividade",
@@ -302,7 +302,7 @@
     },
     "10101": {
       "name": "Pôster Desbotado",
-      "description": "Começa com ^blue(+100 pontos)^, perde ^blue(10 pontos)^ por jogada até chegar em ^blue(10 pontos)^. ^blue(Atualmente com +{{points}} pontos)^."
+      "description": "Começa com ^blue(+100 pontos)^, perde ^blue(10 pontos)^ por jogada até chegar em ^blue(10 pontos)^. Atualmente ^blue(+{{points}} pontos)^."
     },
     "10102": {
       "name": "Domador da Sorte",
@@ -326,7 +326,7 @@
     },
     "10107": {
       "name": "Bênção de Héstia",
-      "description": "As cartas queimadas acumulam seus ^blue(pontos)^; se for um Joker, acumula ^violet(+1 multi)^. Actualmente ^blue(+{{points}} pontos)^  ^violet(+{{multi}} multi)^."
+      "description": "As cartas queimadas acumulam seus ^blue(pontos)^; se for um Joker, acumula ^violet(+1 multi)^. Atualmente ^blue(+{{points}} pontos)^ ^violet(+{{multi}} multi)^."
     },
     "10108": {
       "name": "Roleta de Naipes",
@@ -334,15 +334,15 @@
     },
     "10109": {
       "name": "Joker Pendurado",
-      "description": "Se sua mão contiver um Joker, tem 25% de chance de acumular ^blue(+10 pontos)^. Actualmente ^blue(+{{points}} pontos)^."
+      "description": "Se sua mão contiver um Joker, tem 25% de chance de acumular ^blue(+10 pontos)^. Atualmente ^blue(+{{points}} pontos)^."
     },
     "10110": {
       "name": "Sacrifício Especial",
-      "description": "Ganhe ^violet(+1 multi)^ (acumulativo) para cada carta especial vendida. ^violet(Actualmente +{{multi}} multi)^."
+      "description": "Ganhe ^violet(+1 multi)^ (acumulativo) para cada carta especial vendida. Atualmente ^violet(+{{multi}} multi)^."
     },
     "10111": {
       "name": "High Roller",
-      "description": "Cada Carta Alta jogada tem 50% de chances de ganhar ^violet(+1 multi)^ (acumulativo). ^violet(Actualmente +{{multi}} multi)^."
+      "description": "Cada Carta Alta jogada tem 50% de chances de ganhar ^violet(+1 multi)^ (acumulativo). Atualmente ^violet(+{{multi}} multi)^."
     },
     "10112": {
       "name": "Jogada Eficiente",
@@ -350,11 +350,11 @@
     },
     "10113": {
       "name": "Quebrador de Rage",
-      "description": "Ganhe ^violet(+3 multi)^ (acumulativo) para cada Rage derrotada. ^violet(Actualmente +{{multi}} multi)^."
+      "description": "Ganhe ^violet(+3 multi)^ (acumulativo) para cada Rage derrotada. Atualmente ^violet(+{{multi}} multi)^."
     },
     "10114": {
       "name": "Recompensas em Chamas",
-      "description": "Ganhe ^blue(+15 pontos)^ (acumulativos) para cada carta queimar do seu baralho. ^blue(Actualmente +{{points}} pontos)^."
+      "description": "Ganhe ^blue(+15 pontos)^ (acumulativos) para cada carta queimada do seu baralho. Atualmente ^blue(+{{points}} pontos)^."
     },
     "19901": {
       "name": "Reembolso Sortudo",
@@ -366,7 +366,7 @@
     },
     "19903": {
       "name": "Redenção do Pântano",
-      "description": "Ganha entre ^blue(+1)^ e ^blue(+5 pontos)^ (acumulativos) cada vez que descarta. Actualmente ^blue(+{{points}} pontos)^."
+      "description": "Ganha entre ^blue(+1)^ e ^blue(+5 pontos)^ (acumulativos) cada vez que descarta. Atualmente ^blue(+{{points}} pontos)^."
     }
   },
   "power-ups": {
