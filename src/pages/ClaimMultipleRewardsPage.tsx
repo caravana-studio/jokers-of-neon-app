@@ -7,6 +7,7 @@ import {
   claimUnclaimedRewards,
   SeasonRewardPack,
 } from "../api/claimSeasonReward";
+import { getUserCards } from "../api/getUserCards";
 import { DelayedLoading } from "../components/DelayedLoading";
 import { SimulatedLoadingBar } from "../components/LoadingProgressBar/SimulatedLoadingProgressBar";
 import { MobileDecoration } from "../components/MobileDecoration";
@@ -31,6 +32,7 @@ export const ClaimMultipleRewardsPage = () => {
   const [packs, setPacks] = useState<SeasonRewardPack[]>([]);
   const [currentPackIndex, setCurrentPackIndex] = useState<number>(0);
   const [transitioning, setTransitioning] = useState<boolean>(false);
+  const [ownedCardIds, setOwnedCardIds] = useState<number[]>([]);
   const hasClaimedRef = useRef<boolean>(false);
 
   useEffect(() => {
@@ -39,6 +41,10 @@ export const ClaimMultipleRewardsPage = () => {
 
     const claim = async () => {
       try {
+        // First get owned cards before claiming
+        const userCardsData = await getUserCards(account.address);
+        setOwnedCardIds(userCardsData.ownedCardIds ?? []);
+
         const result = params.premium
           ? await claimSeasonReward({ address: account.address, level, isPremium })
           : await claimUnclaimedRewards({
@@ -88,6 +94,7 @@ export const ClaimMultipleRewardsPage = () => {
     <ExternalPack
       initialCards={packs[currentPackIndex].mintedCards}
       packId={packs[currentPackIndex].packId}
+      ownedCardIds={ownedCardIds}
       onContinue={
         packs[currentPackIndex + 1]
           ? () => transitionTo(currentPackIndex + 1)

@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { claimFreePack } from "../api/claimFreePack";
+import { getUserCards } from "../api/getUserCards";
 import { DelayedLoading } from "../components/DelayedLoading";
 import { SimulatedLoadingBar } from "../components/LoadingProgressBar/SimulatedLoadingProgressBar";
 import { MobileDecoration } from "../components/MobileDecoration";
@@ -21,13 +22,19 @@ export const FreePackPage = () => {
   const navigate = useNavigate();
 
   const [mintedCards, setMintedCards] = useState<SimplifiedCard[]>([]);
+  const [ownedCardIds, setOwnedCardIds] = useState<number[]>([]);
   const hasClaimedRef = useRef<boolean>(false);
 
   useEffect(() => {
     if (!account?.address || hasClaimedRef.current) return;
     hasClaimedRef.current = true;
 
-    claimFreePack(account.address)
+    // First get owned cards, then claim the free pack
+    getUserCards(account.address)
+      .then((data) => {
+        setOwnedCardIds(data.ownedCardIds ?? []);
+        return claimFreePack(account.address);
+      })
       .then((mintedCards) => {
         setMintedCards(mintedCards);
       })
@@ -35,7 +42,7 @@ export const FreePackPage = () => {
         console.error("Error claiming free pack:", e);
         navigate("/");
       });
-  }, [account?.address]);
+  }, [account?.address, navigate]);
 
   const headingStages: LoadingProgress[] = [
     {
@@ -53,7 +60,7 @@ export const FreePackPage = () => {
   ];
 
   return mintedCards?.length > 0 ? (
-    <ExternalPack initialCards={mintedCards} />
+    <ExternalPack initialCards={mintedCards} ownedCardIds={ownedCardIds} />
   ) : (
     <DelayedLoading ms={0}>
       <MobileDecoration />

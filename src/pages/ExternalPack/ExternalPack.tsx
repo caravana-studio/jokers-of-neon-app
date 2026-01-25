@@ -65,6 +65,7 @@ interface ExternalPackProps {
   onContinue?: () => void;
   packId?: number;
   returnTo?: string;
+  ownedCardIds?: number[];
 }
 
 export const ExternalPack = ({
@@ -72,6 +73,7 @@ export const ExternalPack = ({
   onContinue,
   packId: providedPackId,
   returnTo,
+  ownedCardIds: providedOwnedCardIds,
 }: ExternalPackProps) => {
   const { t } = useTranslation("intermediate-screens");
   const { t: tPack } = useTranslation("intermediate-screens", {
@@ -144,7 +146,18 @@ export const ExternalPack = ({
 
   const shouldDisableHeavyBackground = isNativeAndroid;
 
+  // Use pre-open ownedCardIds from props or navigation state
+  const preOpenOwnedCardIds = providedOwnedCardIds ?? locationState?.ownedCardIds;
+
   useEffect(() => {
+    // Use pre-open ownedCardIds from props or navigation state if available
+    // This ensures new cards from the pack are correctly marked as "NEW"
+    if (preOpenOwnedCardIds && preOpenOwnedCardIds.length >= 0) {
+      setOwnedCardIds(new Set(preOpenOwnedCardIds));
+      setOwnedCardsLoaded(true);
+      return;
+    }
+
     if (!account?.address) {
       setOwnedCardIds(new Set());
       setOwnedCardsLoaded(false);
@@ -168,7 +181,7 @@ export const ExternalPack = ({
     return () => {
       cancelled = true;
     };
-  }, [account?.address]);
+  }, [account?.address, preOpenOwnedCardIds]);
 
   const cardsData = useMemo(
     () =>
