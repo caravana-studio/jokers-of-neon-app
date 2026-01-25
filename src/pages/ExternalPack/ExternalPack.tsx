@@ -174,17 +174,15 @@ export const ExternalPack = ({
     () =>
       obtainedCards.map((card, index) => {
         const skinId = card.skin_id ?? 0;
-        const isNew = true;
 
         return {
           id: index,
           cardId: card.card_id,
           img: `/Cards/${card.card_id}${skinId !== 0 ? `_sk${skinId}` : ""}.png`,
-          isNew,
           newLabel: tPack("new"),
         };
       }),
-    [obtainedCards, ownedCardIds, ownedCardsLoaded, t]
+    [obtainedCards, tPack]
   );
 
   // Ensure the first render highlights the first real card instead of the fallback (ID 0 / 2 de trébol).
@@ -418,6 +416,7 @@ export const ExternalPack = ({
                     height: packHeight - 40,
                   }}
                   cardsData={cardsData}
+                  ownedCardIds={ownedCardIds}
                   onCardChange={(cardId) => {
                     setHighlightedCard(cardId);
                   }}

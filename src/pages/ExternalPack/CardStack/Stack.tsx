@@ -76,6 +76,7 @@ interface StackProps {
   sendToBackOnClick?: boolean;
   onCardChange?: (cardId: number) => void;
   onAllSeen?: () => void;
+  ownedCardIds?: Set<number>;
 }
 
 export default function Stack({
@@ -87,6 +88,7 @@ export default function Stack({
   sendToBackOnClick = false,
   onCardChange,
   onAllSeen,
+  ownedCardIds,
 }: StackProps) {
   const [cards, setCards] = useState<CardData[]>(cardsData);
   const [seenCards, setSeenCards] = useState<Set<number | string>>(new Set());
@@ -215,7 +217,8 @@ export default function Stack({
                 alt={`card-${card.id}`}
                 className="card-image"
               />
-              {card.isNew && (
+              {ownedCardIds &&
+                !ownedCardIds.has(card.cardId) && (
                 <div className="card-new-badge">{card.newLabel ?? "NEW"}</div>
               )}
             </motion.div>
