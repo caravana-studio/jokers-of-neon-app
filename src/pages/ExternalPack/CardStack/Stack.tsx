@@ -185,6 +185,8 @@ export default function Stack({
           ? randomRotationCache.current.get(card.id) ?? 0
           : 0;
 
+        const isTopCard = index === cards.length - 1;
+
         return (
           <CardRotate
             key={card.id}
@@ -217,9 +219,12 @@ export default function Stack({
                 alt={`card-${card.id}`}
                 className="card-image"
               />
-              {ownedCardIds &&
-                !ownedCardIds.has(card.cardId) && (
-                <div className="card-new-badge">{card.newLabel ?? "NEW"}</div>
+              {isTopCard && ownedCardIds && !ownedCardIds.has(card.cardId) && (
+                <div className="card-new-badge">
+                  {(card.newLabel ?? "NEW") === "external-pack.new"
+                    ? "NEW"
+                    : card.newLabel ?? "NEW"}
+                </div>
               )}
             </motion.div>
           </CardRotate>
