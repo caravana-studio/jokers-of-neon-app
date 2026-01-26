@@ -1,6 +1,7 @@
 import { useReducedMotion } from "framer-motion";
 import { motion, useMotionValue, useTransform } from "motion/react";
 import React, { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { isLegacyAndroid } from "../../../utils/capacitorUtils";
 import "./Stack.css";
 
@@ -92,6 +93,7 @@ export default function Stack({
 }: StackProps) {
   const [cards, setCards] = useState<CardData[]>(cardsData);
   const [seenCards, setSeenCards] = useState<Set<number | string>>(new Set());
+  const { i18n } = useTranslation();
   const prefersReducedMotion = useReducedMotion();
   const [isLegacyAndroidDevice, setIsLegacyAndroidDevice] = useState(false);
   const disableTilt = prefersReducedMotion || isLegacyAndroidDevice;
@@ -186,6 +188,15 @@ export default function Stack({
           : 0;
 
         const isTopCard = index === cards.length - 1;
+        const locale = i18n.language ?? "en";
+        const fallbackNew = locale.startsWith("es")
+          ? "NUEVA"
+          : locale.startsWith("pt")
+            ? "NOVA"
+            : "NEW";
+        const rawLabel = card.newLabel ?? fallbackNew;
+        const newLabel =
+          rawLabel === "external-pack.new" ? fallbackNew : rawLabel;
 
         return (
           <CardRotate
@@ -220,11 +231,7 @@ export default function Stack({
                 className="card-image"
               />
               {isTopCard && ownedCardIds && !ownedCardIds.has(card.cardId) && (
-                <div className="card-new-badge">
-                  {(card.newLabel ?? "NEW") === "external-pack.new"
-                    ? "NEW"
-                    : card.newLabel ?? "NEW"}
-                </div>
+                <div className="card-new-badge">{newLabel}</div>
               )}
             </motion.div>
           </CardRotate>
