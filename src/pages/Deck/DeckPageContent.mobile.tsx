@@ -1,5 +1,5 @@
-import { Box, Flex, Heading, Text } from "@chakra-ui/react";
-import { useState } from "react";
+import { Badge, Flex, Heading, Text } from "@chakra-ui/react";
+import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { CashSymbol } from "../../components/CashSymbol";
@@ -12,7 +12,6 @@ import { useShopStore } from "../../state/useShopStore";
 import { useDeckStore } from "../../state/useDeckStore";
 import { Card } from "../../types/Card";
 import { Deck } from "./Deck";
-import { BLUE_LIGHT, VIOLET } from "../../theme/colors";
 
 interface DeckPageContentMobileProps {
   state: {
@@ -22,36 +21,53 @@ interface DeckPageContentMobileProps {
   };
 }
 
+// Calculate progressive burn cost
+// Formula: total = N * baseCost + 100 * (N * (N-1) / 2)
+const calculateBurnCost = (numCards: number, baseCost: number): number => {
+  if (numCards === 0) return 0;
+  return numCards * baseCost + 100 * ((numCards * (numCards - 1)) / 2);
+};
+
 export const DeckPageContentMobile = ({
   state,
 }: DeckPageContentMobileProps) => {
   const { t } = useTranslation("game", { keyPrefix: "game.deck" });
-  const [cardToBurn, setCardToBurn] = useState<Card>();
+  const [cardsToBurn, setCardsToBurn] = useState<Card[]>([]);
   const navigate = useNavigate();
-  const { burnCard } = useStore();
+  const { burnCards } = useStore();
   const { burnItem } = useShopStore();
   const { cash } = useGameStore();
   const { currentLength, size } = useDeckStore();
 
   const handleCardSelect = (card: Card) => {
     if (!burnItem?.purchased) {
-      if (cardToBurn?.id === card.id) {
-        setCardToBurn(undefined);
-      } else {
-        setCardToBurn(card);
-      }
+      setCardsToBurn((prev) => {
+        const exists = prev.find((c) => c.id === card.id);
+        if (exists) {
+          return prev.filter((c) => c.id !== card.id);
+        }
+        return [...prev, card];
+      });
     }
   };
 
-  const handleBurnCard = (card: Card) => {
-    burnCard(card);
-    navigate("/store");
+  const handleBurnCards = async () => {
+    if (cardsToBurn.length > 0) {
+      await burnCards(cardsToBurn, totalCost);
+      navigate("/store");
+      setCardsToBurn([]);
+    }
   };
 
-  const effectiveCost: number =
-    burnItem?.discount_cost && burnItem.discount_cost !== 0
+  const baseCost: number = useMemo(() => {
+    return burnItem?.discount_cost && burnItem.discount_cost !== 0
       ? Number(burnItem.discount_cost)
-      : Number(burnItem?.cost);
+      : Number(burnItem?.cost ?? 0);
+  }, [burnItem]);
+
+  const totalCost: number = useMemo(() => {
+    return calculateBurnCost(cardsToBurn.length, baseCost);
+  }, [cardsToBurn.length, baseCost]);
 
   return (
     <Flex
@@ -89,6 +105,7 @@ export const DeckPageContentMobile = ({
               inStore={state.inStore}
               burn={state.burn}
               onCardSelect={handleCardSelect}
+              selectedCards={cardsToBurn}
               inMap={state.map}
             />
           </Flex>
@@ -107,6 +124,7 @@ export const DeckPageContentMobile = ({
           inStore={state.inStore}
           burn={state.burn}
           onCardSelect={handleCardSelect}
+          selectedCards={cardsToBurn}
           inMap={state.map}
         />
       )}
@@ -114,19 +132,22 @@ export const DeckPageContentMobile = ({
         firstButton={
           state.burn
             ? {
-                onClick: () => {
-                  if (cardToBurn) handleBurnCard(cardToBurn);
-                },
+                onClick: handleBurnCards,
                 label: (
-                  <Flex gap={1}>
+                  <Flex gap={1} alignItems="center">
+                    {cardsToBurn.length > 0 && (
+                      <Badge colorScheme="blue" fontSize="xs" mr={1}>
+                        {cardsToBurn.length}
+                      </Badge>
+                    )}
                     {`${t("btns.burn").toUpperCase()} `}
                     <CashSymbol />
-                    {` ${effectiveCost}`}
+                    {` ${totalCost}`}
                   </Flex>
                 ),
                 disabled:
-                  cardToBurn === undefined ||
-                  cash < effectiveCost ||
+                  cardsToBurn.length === 0 ||
+                  cash < totalCost ||
                   burnItem?.purchased,
               }
             : undefined
