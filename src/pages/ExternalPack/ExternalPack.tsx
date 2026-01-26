@@ -331,6 +331,7 @@ export const ExternalPack = ({
                       setStep(2);
                     }}
                     width={extraPackWidth}
+                    packWidth={packWidth}
                     step={step}
                     color={packId > 3 ? "white" : "black"}
                   />
