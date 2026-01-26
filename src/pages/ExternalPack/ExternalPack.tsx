@@ -11,6 +11,9 @@ import { NFTPackRateInfo } from "../../components/Info/NFTPackRateInfo";
 import { MobileDecoration } from "../../components/MobileDecoration";
 import { packAnimation, packGlowAnimation } from "../../constants/animations";
 import { RARITY, RarityLabels } from "../../constants/rarity";
+import { packCutSfx, packResultSfx } from "../../constants/sfx";
+import { useAudio } from "../../hooks/useAudio";
+import { useSettings } from "../../providers/SettingsProvider";
 import { SKINS_RARITY } from "../../data/specialCards";
 import { CardTypes } from "../../enums/cardTypes";
 import { useCardData } from "../../providers/CardDataProvider";
@@ -133,6 +136,10 @@ export const ExternalPack = ({
     0;
 
   const shouldDisableHeavyBackground = isNativeAndroid;
+
+  const { sfxVolume } = useSettings();
+  const { play: playPackCut } = useAudio(packCutSfx, sfxVolume);
+  const { play: playPackResult } = useAudio(packResultSfx, sfxVolume);
 
   const cardsData = useMemo(
     () =>
@@ -319,7 +326,10 @@ export const ExternalPack = ({
               {step < 2 && (
                 <>
                   <PackTear
-                    onOpened={() => setStep(2)}
+                    onOpened={() => {
+                      playPackCut();
+                      setStep(2);
+                    }}
                     width={extraPackWidth}
                     step={step}
                     color={packId > 3 ? "white" : "black"}
@@ -343,6 +353,7 @@ export const ExternalPack = ({
                   height={packHeight}
                   src={`/packs/${packId}.png`}
                   onDone={() => {
+                    playPackResult();
                     setStep(3);
 
                     const timer = setTimeout(() => {
