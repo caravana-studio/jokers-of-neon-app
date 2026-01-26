@@ -24,7 +24,7 @@ interface IStoreContext {
   selectCardsFromPack: (cardIndices: number[]) => Promise<boolean>;
   buySpecialSlot: () => Promise<boolean>;
   setLoading: (loading: boolean) => void;
-  burnCard: (card: Card) => Promise<boolean>;
+  burnCards: (cards: Card[], totalCost: number) => Promise<boolean>;
   buyPowerUp: (powerUp: PowerUp) => Promise<boolean>;
   refetch: () => Promise<void>;
 }
@@ -50,7 +50,7 @@ const StoreContext = createContext<IStoreContext>({
   },
   buySpecialSlot: () => new Promise((resolve) => resolve(false)),
   setLoading: (_) => {},
-  burnCard: (_) => {
+  burnCards: (_cards, _totalCost) => {
     return new Promise((resolve) => resolve(false));
   },
   buyPowerUp: (_) => {
@@ -119,7 +119,7 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     storeReroll,
     levelUpPokerHand: dojoLevelUpHand,
     buySpecialSlot: dojoBuySpecialSlot,
-    burnCard: dojoBurnCard,
+    burnCards: dojoBurnCards,
     buyPowerUp: dojoBuyPowerUp,
   } = useShopActions();
 
@@ -204,27 +204,25 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     return promise;
   };
 
-  const burnCard = (card: Card): Promise<boolean> => {
+  const burnCards = (cards: Card[], totalCost: number): Promise<boolean> => {
     buySound();
     setLocked(true);
 
-    const cost = burnItem?.discount_cost
-      ? burnItem.discount_cost
-      : burnItem?.cost ?? 0;
-    removeCash(cost);
+    removeCash(totalCost);
 
-    const promise = dojoBurnCard(gameId, card.card_id ?? 0)
+    const cardIds = cards.map((card) => card.card_id ?? 0);
+    const promise = dojoBurnCards(gameId, cardIds)
       .then(async ({ success }) => {
         if (success) {
           fetchDeck(client, gameId, getCardData);
           refetchShopStore(client, gameId);
         } else {
-          addCash(cost);
+          addCash(totalCost);
         }
         return success;
       })
       .catch(() => {
-        addCash(cost);
+        addCash(totalCost);
         return false;
       })
       .finally(() => {
@@ -399,7 +397,7 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
         selectCardsFromPack,
         buySpecialSlot,
         setLoading,
-        burnCard,
+        burnCards,
         buyPowerUp,
         refetch: fetchShopItems
       }}

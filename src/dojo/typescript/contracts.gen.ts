@@ -1622,26 +1622,26 @@ export function setupWorld(provider: DojoProvider) {
     }
   };
 
-  const build_shop_system_burnCard_calldata = (
+  const build_shop_system_burnCards_calldata = (
     gameId: BigNumberish,
-    cardId: BigNumberish
+    cardIds: Array<BigNumberish>
   ): DojoCall => {
     return {
       contractName: "shop_system",
-      entrypoint: "burn_card",
-      calldata: [gameId, cardId],
+      entrypoint: "burn_cards",
+      calldata: [gameId, cardIds],
     };
   };
 
-  const shop_system_burnCard = async (
+  const shop_system_burnCards = async (
     snAccount: Account | AccountInterface,
     gameId: BigNumberish,
-    cardId: BigNumberish
+    cardIds: Array<BigNumberish>
   ) => {
     try {
       return await provider.execute(
         snAccount,
-        build_shop_system_burnCard_calldata(gameId, cardId),
+        build_shop_system_burnCards_calldata(gameId, cardIds),
         DOJO_NAMESPACE
       );
     } catch (error) {
@@ -2348,8 +2348,8 @@ export function setupWorld(provider: DojoProvider) {
       buildProcessCalldata: build_power_up_process_calldata,
     },
     shop_system: {
-      burnCard: shop_system_burnCard,
-      buildBurnCardCalldata: build_shop_system_burnCard_calldata,
+      burnCards: shop_system_burnCards,
+      buildBurnCardsCalldata: build_shop_system_burnCards_calldata,
       buyCard: shop_system_buyCard,
       buildBuyCardCalldata: build_shop_system_buyCard_calldata,
       buyLootBox: shop_system_buyLootBox,

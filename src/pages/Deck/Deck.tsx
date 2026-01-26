@@ -12,10 +12,11 @@ interface DeckProps {
   inStore?: boolean;
   burn?: boolean;
   onCardSelect?: (card: Card) => void;
+  selectedCards?: Card[];
   inMap?: boolean;
 }
 
-export const Deck = ({ inStore, burn, onCardSelect, inMap }: DeckProps) => {
+export const Deck = ({ inStore, burn, onCardSelect, selectedCards = [], inMap }: DeckProps) => {
   const { t } = useTranslation("game", { keyPrefix: "game.deck" });
   const deck = useDeckStore();
   const { filterButtonsState } = useDeckFilters();
@@ -79,6 +80,7 @@ export const Deck = ({ inStore, burn, onCardSelect, inMap }: DeckProps) => {
               isAces: filterButtonsState.isAces,
             }}
             onCardSelect={burn ? onCardSelect : () => {}}
+            selectedCards={selectedCards}
             inBurn={burn}
           />
         </Box>
