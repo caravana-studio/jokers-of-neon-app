@@ -1,0 +1,43 @@
+diff --git a/node_modules/@capacitor-community/native-audio/android/src/main/java/com/getcapacitor/community/audio/AudioDispatcher.java b/node_modules/@capacitor-community/native-audio/android/src/main/java/com/getcapacitor/community/audio/AudioDispatcher.java
+index 6ed5d39..1bddc7a 100644
+--- a/node_modules/@capacitor-community/native-audio/android/src/main/java/com/getcapacitor/community/audio/AudioDispatcher.java
++++ b/node_modules/@capacitor-community/native-audio/android/src/main/java/com/getcapacitor/community/audio/AudioDispatcher.java
+@@ -24,6 +24,7 @@ public class AudioDispatcher
+     private MediaPlayer mediaPlayer;
+     private int mediaState;
+     private AudioAsset owner;
++    private boolean released = false;
+ 
+     public AudioDispatcher(AssetFileDescriptor assetFileDescriptor, float volume) throws Exception {
+         mediaState = INVALID;
+@@ -96,6 +97,11 @@ public class AudioDispatcher
+ 
+     public void unload() throws Exception {
+         this.stop();
++        released = true;
++        mediaState = INVALID;
++        mediaPlayer.setOnCompletionListener(null);
++        mediaPlayer.setOnPreparedListener(null);
++        mediaPlayer.setOnSeekCompleteListener(null);
+         mediaPlayer.release();
+     }
+ 
+@@ -166,10 +172,16 @@ public class AudioDispatcher
+ 
+     @Override
+     public void onSeekComplete(MediaPlayer mp) {
++        if (released) return;
+         if (mediaState == PENDING_PLAY || mediaState == PENDING_LOOP) {
+             Log.w("AudioDispatcher", "play " + mediaState);
+-            mediaPlayer.start();
+-            mediaState = PLAYING;
++            try {
++                mp.start();
++                mediaState = PLAYING;
++            } catch (IllegalStateException ex) {
++                Log.w(TAG, "Caught exception while starting after seek: " + ex.getLocalizedMessage());
++                mediaState = INVALID;
++            }
+         }
+     }
+ 
