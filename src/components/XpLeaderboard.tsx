@@ -90,7 +90,7 @@ export const XpLeaderboard = ({ lines = 100, mb = "" }: XpLeaderboardProps) => {
                       )}
                       </Flex>
                     </Td>
-                    <Td maxW="150px" p="12px 20px" whiteSpace="normal">
+{/*                     <Td maxW="150px" p="12px 20px" whiteSpace="normal">
                       <Text
                         color={textColor}
                         overflowWrap="break-word"
@@ -100,7 +100,7 @@ export const XpLeaderboard = ({ lines = 100, mb = "" }: XpLeaderboardProps) => {
                         {t("level")}
                         {entry.level}
                       </Text>
-                    </Td>
+                    </Td> */}
                     <Td maxW="150px" p="12px 20px" whiteSpace="normal">
                       <Text
                         color={textColor}
