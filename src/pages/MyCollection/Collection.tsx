@@ -10,13 +10,14 @@ import {
 import { faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
-import { MobileCardHighlight } from "../../components/MobileCardHighlight";
+import { isMobile } from "react-device-detect";
+import CachedImage from "../../components/CachedImage";
+import { CollectionCardHighlight } from "../../components/CollectionCardHighlight";
 import { TiltCard } from "../../components/TiltCard";
 import { TimesBadge } from "../../components/TimesBadge";
 import { CARD_HEIGHT, CARD_WIDTH } from "../../constants/visualProps";
 import { getCardFromCardId } from "../../dojo/utils/getCardFromCardId";
-import { useCardData } from "../../providers/CardDataProvider";
-import { useCardHighlight } from "../../providers/HighlightProvider/CardHighlightProvider";
+import { useGameStore } from "../../state/useGameStore";
 import { BLUE } from "../../theme/colors";
 import { Card } from "../../types/Card";
 import { Collection } from "./types";
@@ -33,12 +34,15 @@ const CollectionGrid: React.FC<Props> = ({ collection, hideHighlight = false, de
     keyPrefix: "my-collection.collections",
   });
   const [open, setOpen] = useState(defaultOpen);
+  const [selectedCard, setSelectedCard] = useState<Card | null>(null);
+  const [selectedSkinId, setSelectedSkinId] = useState(0);
+  const [selectedOwnedSkins, setSelectedOwnedSkins] = useState<number[]>([]);
   const ownedCount = collection.cards.filter(
     (card) => card.userNfts.length > 0
   ).length;
   const customCardScale = useBreakpointValue(
     {
-      base: 0.6,
+      base: 0.8,
       sm: 1,
       md: 1.2,
       lg: 1.5,
@@ -46,9 +50,7 @@ const CollectionGrid: React.FC<Props> = ({ collection, hideHighlight = false, de
     },
     { ssr: false }
   );
-  const { getCardData } = useCardData();
-  const { highlightItem: highlightCard, highlightedItem: highlightedCard } =
-    useCardHighlight();
+  const { isClassic } = useGameStore();
 
   const cardHeight = CARD_HEIGHT * (customCardScale ?? 1);
   const cardWith = CARD_WIDTH * (customCardScale ?? 1);
@@ -57,11 +59,17 @@ const CollectionGrid: React.FC<Props> = ({ collection, hideHighlight = false, de
   
   return (
     <Box px={6} w="100%">
-      {highlightedCard && !hideHighlight && (
-        <MobileCardHighlight
-          card={highlightedCard as Card}
-          showExtraInfo
-          hidePrice
+      {selectedCard && !hideHighlight && (
+        <CollectionCardHighlight
+          card={selectedCard}
+          selectedSkinId={selectedSkinId}
+          ownedSkinIds={selectedOwnedSkins}
+          onSkinChange={setSelectedSkinId}
+          onClose={() => {
+            setSelectedCard(null);
+            setSelectedSkinId(0);
+            setSelectedOwnedSkins([]);
+          }}
         />
       )}
       <Flex
@@ -109,6 +117,18 @@ const CollectionGrid: React.FC<Props> = ({ collection, hideHighlight = false, de
           >
             {collection.cards.map((nftCard, index) => {
               const card = getCardFromCardId(nftCard.id, index);
+              const maxSkinId = nftCard.userNfts.reduce(
+                (maxSkin, nft) => (nft.skin > maxSkin ? nft.skin : maxSkin),
+                0
+              );
+              const cardImageSrc = `/Cards/${
+                (card.card_id ?? 0) < 300 && isMobile && isClassic
+                  ? "mobile/"
+                  : ""
+              }${card.img}`;
+              const ownedSkinIds = Array.from(
+                new Set(nftCard.userNfts.map((nft) => nft.skin))
+              );
               return nftCard.userNfts.length > 0 ? (
                 <Flex
                   key={index}
@@ -121,9 +141,12 @@ const CollectionGrid: React.FC<Props> = ({ collection, hideHighlight = false, de
                   )}
                   <TiltCard
                     card={{ ...card, price: undefined }}
+                    skin_id={maxSkinId}
                     scale={customCardScale}
                     onClick={() => {
-                      highlightCard(card);
+                      setSelectedCard(card);
+                      setSelectedSkinId(maxSkinId);
+                      setSelectedOwnedSkins(ownedSkinIds);
                     }}
                     cursor="pointer"
                   />
@@ -134,22 +157,15 @@ const CollectionGrid: React.FC<Props> = ({ collection, hideHighlight = false, de
                   justifyContent={"center"}
                   alignItems={"center"}
                 >
-                  <Flex
-                    key={card.id}
-                    border="1px dashed"
-                    borderColor="rgba(255, 255, 255, 0.5)"
-                    borderRadius="5px"
-                    height={`${cardHeight}px`}
+                  <CachedImage
+                    borderRadius={{ base: "5px", sm: "8px" }}
+                    src={cardImageSrc}
+                    alt={card.img}
                     width={`${cardWith}px`}
-                    align="center"
-                    justify="center"
-                    color="white"
-                    fontSize={[9, 10, 12, 14]}
-                    bg="blackAlpha.300"
-                    fontFamily="Orbitron"
-                  >
-                    # {String(card.id).slice(-2)}
-                  </Flex>
+                    height={`${cardHeight}px`}
+                    filter="grayscale(1)"
+                    opacity={0.4}
+                  />
                 </Flex>
               );
             })}

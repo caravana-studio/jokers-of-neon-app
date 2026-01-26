@@ -34,6 +34,7 @@ import { TemporalBadge } from "./TemporalBadge.tsx";
 interface ICardProps {
   sx?: SystemStyleObject;
   card: Card;
+  skin_id?: number;
   onClick?: () => void;
   cursor?: string;
   isPack?: boolean;
@@ -47,6 +48,7 @@ interface ICardProps {
 
 export const TiltCard = ({
   card,
+  skin_id,
   onClick,
   cursor,
   isPack = false,
@@ -72,6 +74,13 @@ export const TiltCard = ({
   const modifiedCard = useTransformedCard(card);
   const isSilent = useIsSilent(modifiedCard);
   const isDebuffed = useIsDebuffed(modifiedCard);
+  const skinSuffix = skin_id && skin_id > 0 ? `_sk${skin_id}` : "";
+  const cardImgWithSkin = (() => {
+    if (!skinSuffix) return modifiedCard.img;
+    const dotIndex = modifiedCard.img.lastIndexOf(".");
+    if (dotIndex === -1) return `${modifiedCard.img}${skinSuffix}`;
+    return `${modifiedCard.img.slice(0, dotIndex)}${skinSuffix}${modifiedCard.img.slice(dotIndex)}`;
+  })();
 
   const { t } = useTranslation(["store"]);
   const { state, isClassic } = useGameStore();
@@ -128,8 +137,8 @@ export const TiltCard = ({
                     : "0px 0px 5px 0px rgba(0,0,0,0.5)"
                 }
                 sx={{ maxWidth: "unset", opacity: purchased ? 0.3 : 1 }}
-                src={`/Cards/${(modifiedCard.card_id ?? 0) < 300 && isMobile && isClassic ? "mobile/" : ""}${modifiedCard.img}`}
-                alt={modifiedCard.img}
+                src={`/Cards/${(modifiedCard.card_id ?? 0) < 300 && isMobile && isClassic ? "mobile/" : ""}${cardImgWithSkin}`}
+                alt={cardImgWithSkin}
                 w="100%"
                 height="100%"
                 className={className}

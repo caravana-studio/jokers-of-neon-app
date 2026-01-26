@@ -16,6 +16,7 @@ interface ICardImage3DProps {
   width?: string;
   layerCount?: number;
   disableTilt?: boolean;
+  imageSrc?: string;
 }
 
 const checkImageExists = (src: string): Promise<boolean> => {
@@ -35,12 +36,19 @@ export const CardImage3D = ({
   width = "100%",
   layerCount = 4,
   disableTilt = false,
+  imageSrc,
 }: ICardImage3DProps) => {
   const cid = card.card_id ?? 0;
+  const shouldUse3dLayers = !imageSrc;
 
   const [availableLayers, setAvailableLayers] = useState<boolean[]>([]);
 
   useEffect(() => {
+    if (!shouldUse3dLayers) {
+      setAvailableLayers([]);
+      return;
+    }
+
     const checkLayers = async () => {
       const results = await Promise.all(
         Array.from({ length: layerCount }, (_, i) =>
@@ -50,7 +58,7 @@ export const CardImage3D = ({
       setAvailableLayers(results);
     };
     checkLayers();
-  }, [cid]);
+  }, [cid, layerCount, shouldUse3dLayers]);
 
   const borderRadius = small ? { base: "5px", sm: "8px" } : "20px";
 
@@ -60,12 +68,13 @@ export const CardImage3D = ({
   const showPlain = (isSmallScreen && small) || !isClassic;
 
   const calculatedHeight = height ?? "100%";
+  const plainImageSrc = imageSrc ?? `/Cards/${cid}.png`;
 
   const plainImg = (
     <CachedImage
       position={"absolute"}
       borderRadius={borderRadius}
-      src={`/Cards/${cid}.png`}
+      src={plainImageSrc}
       width={width}
       height={calculatedHeight}
       zIndex={-1}
@@ -106,20 +115,23 @@ export const CardImage3D = ({
   return (
     <ConditionalTilt cardId={cid} small={small} disableTilt={disableTilt}>
       {hideTooltip ? (
-        availableLayers[0] && !showPlain ? (
+        availableLayers[0] && !showPlain && shouldUse3dLayers ? (
           layer0Img
         ) : (
           plainImg
         )
       ) : (
         <CardTooltip card={card}>
-          {availableLayers[0] && !showPlain ? layer0Img : plainImg}
+          {availableLayers[0] && !showPlain && shouldUse3dLayers
+            ? layer0Img
+            : plainImg}
         </CardTooltip>
       )}
 
-      {availableLayers
-        .map((exists, i) => exists && i > 0 && !showPlain && getLayerImage(i))
-        .filter(Boolean)}
+      {shouldUse3dLayers &&
+        availableLayers
+          .map((exists, i) => exists && i > 0 && !showPlain && getLayerImage(i))
+          .filter(Boolean)}
 
       <CachedImage
         src={`/Cards/empty.png`}
