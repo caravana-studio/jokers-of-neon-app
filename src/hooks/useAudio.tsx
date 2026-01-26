@@ -19,6 +19,8 @@ const toWebAssetPath = (path: string) => {
 const toNativeAssetId = (path: string) =>
   `sfx_${path.replace(/^\/+/, "").replace(/[^\w-]/g, "_")}`;
 
+const DEFAULT_CHANNEL = 3;
+
 /**
  * useAudio hook for short sound effects (SFX)
  * - Web: uses Howler
@@ -30,9 +32,13 @@ export const useAudio = (audioPath: string, volume: number = 1) => {
   const { sfxOn } = useSettings();
   const soundRef = useRef<Howl | null>(null);
   const assetId = useRef<string>(toNativeAssetId(audioPath));
+  const currentChannel = useRef<number | null>(null);
+  const isPreloaded = useRef(false);
 
   useEffect(() => {
     assetId.current = toNativeAssetId(audioPath);
+    currentChannel.current = null;
+    isPreloaded.current = false;
   }, [audioPath]);
 
   // 🔹 Prepare sound
@@ -41,13 +47,14 @@ export const useAudio = (audioPath: string, volume: number = 1) => {
       if (isNative) {
         try {
           const nativeAssetPath = toNativeAssetPath(audioPath);
+          if (isPreloaded.current) return;
 
           await runNativeAudioTask(async () => {
             await NativeAudio.preload({
               assetId: assetId.current,
               assetPath: nativeAssetPath,
-              audioChannelNum: 2, // default for SFX (Android)
-              channels: 2,
+              audioChannelNum: DEFAULT_CHANNEL, // default for SFX (Android)
+              channels: DEFAULT_CHANNEL,
               isUrl: false,
             } as any);
 
@@ -55,6 +62,9 @@ export const useAudio = (audioPath: string, volume: number = 1) => {
               assetId: assetId.current,
               volume,
             }).catch(() => {});
+
+            currentChannel.current = DEFAULT_CHANNEL;
+            isPreloaded.current = true;
           });
         } catch (err) {
           console.warn("NativeAudio preload error:", err);
@@ -117,25 +127,31 @@ export const useAudio = (audioPath: string, volume: number = 1) => {
   }, []);
 
   // 🔹 Play sound (with optional channel)
-  const play = useCallback(async (channel: number = 2) => {
+  const play = useCallback(async (channel: number = DEFAULT_CHANNEL) => {
     if (!sfxOn) return;
 
     try {
       if (isNative) {
         const nativeAssetPath = toNativeAssetPath(audioPath);
+        const needsReload =
+          !isPreloaded.current || currentChannel.current !== channel;
 
-        // ensure it uses the requested channel
         await runNativeAudioTask(async () => {
-          await NativeAudio.unload({ assetId: assetId.current }).catch(
-            () => {}
-          );
-          await NativeAudio.preload({
-            assetId: assetId.current,
-            assetPath: nativeAssetPath,
-            audioChannelNum: channel,
-            channels: channel,
-            isUrl: false,
-          } as any);
+          if (needsReload) {
+            isPreloaded.current = false;
+            await NativeAudio.unload({ assetId: assetId.current }).catch(
+              () => {}
+            );
+            await NativeAudio.preload({
+              assetId: assetId.current,
+              assetPath: nativeAssetPath,
+              audioChannelNum: channel,
+              channels: channel,
+              isUrl: false,
+            } as any);
+            currentChannel.current = channel;
+            isPreloaded.current = true;
+          }
 
           await NativeAudio.setVolume({
             assetId: assetId.current,
