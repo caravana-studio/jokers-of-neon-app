@@ -301,6 +301,16 @@
       "neons": "Cartas de Neón",
       "sx": "Temporada {{season}}",
       "c99": "Colección exclusiva GG - v1"
+    },
+    "highlight": {
+      "variants-title": "Variantes de carta",
+      "close": "Cerrar",
+      "show-details": "Mostrar detalles",
+      "hide-details": "Ocultar detalles",
+      "card-rarity-label": "Rareza de carta:",
+      "skin-rarity-label": "Rareza de skin:",
+      "base-label": "BASE",
+      "skin-label": "skin {{id}}"
     }
   },
   "wallet-provider": {

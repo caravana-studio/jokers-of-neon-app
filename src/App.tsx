@@ -23,6 +23,7 @@ import { InformationPopUpProvider } from "./providers/InformationPopUpProvider";
 import { PageTransitionsProvider } from "./providers/PageTransitionsProvider";
 import { RevenueCatProvider } from "./providers/RevenueCatProvider";
 import { SeasonPassProvider } from "./providers/SeasonPassProvider";
+import { useSkinPreferencesStore } from "./state/useSkinPreferencesStore";
 import ZoomPrevention from "./utils/ZoomPrevention";
 import { registerPushListeners } from "./utils/notifications/registerPushListeners";
 
@@ -30,6 +31,13 @@ function App() {
   const {
     account: { account },
   } = useDojo();
+  const refetchSkinPreferences = useSkinPreferencesStore(
+    (store) => store.refetchSkinPreferences
+  );
+  const resetSkinPreferences = useSkinPreferencesStore((store) => store.reset);
+  const lastSkinPreferencesAddress = useSkinPreferencesStore(
+    (store) => store.lastUserAddress
+  );
 
   const navigate = useNavigate();
   const username = useUsername();
@@ -41,6 +49,24 @@ function App() {
   
   // Handle AppsFlyer referral data
   useAppsFlyerReferral();
+
+  useEffect(() => {
+    if (!account?.address) {
+      if (lastSkinPreferencesAddress) {
+        resetSkinPreferences();
+      }
+      return;
+    }
+
+    if (lastSkinPreferencesAddress !== account.address) {
+      void refetchSkinPreferences(account.address);
+    }
+  }, [
+    account?.address,
+    lastSkinPreferencesAddress,
+    refetchSkinPreferences,
+    resetSkinPreferences,
+  ]);
 
   useEffect(() => {
     const askForTracking = async () => {

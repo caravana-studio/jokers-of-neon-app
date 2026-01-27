@@ -302,6 +302,16 @@
       "neons": "Neon Cards",
       "sx": "Season {{season}}",
       "c99": "GG Exclusive Collection - v1"
+    },
+    "highlight": {
+      "variants-title": "Card variants",
+      "close": "Close",
+      "show-details": "Show details",
+      "hide-details": "Hide details",
+      "card-rarity-label": "Card rarity:",
+      "skin-rarity-label": "Skin rarity:",
+      "base-label": "BASE",
+      "skin-label": "skin {{id}}"
     }
   },
   "wallet-provider": {
