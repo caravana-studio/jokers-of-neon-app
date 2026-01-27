@@ -1,13 +1,16 @@
 import { useReducedMotion } from "framer-motion";
 import { motion, useMotionValue, useTransform } from "motion/react";
 import React, { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { isLegacyAndroid } from "../../../utils/capacitorUtils";
 import "./Stack.css";
+import { VIOLET, VIOLET_RGBA } from "../../../theme/colors";
 
 // Types
 export type CardData = {
   id: number | string;
   cardId: number;
+  skinId?: number;
   img: string;
   [key: string]: any;
 };
@@ -67,6 +70,59 @@ function CardRotate({
   );
 }
 
+type NewBadgeProps = {
+  reduceMotion?: boolean;
+};
+
+function NewBadge({ reduceMotion = false }: NewBadgeProps) {
+  const { t } = useTranslation("intermediate-screens", {
+    keyPrefix: "external-pack",
+  });
+  const label = t("new");
+  const baseShadow = `0 0px 10px 7px ${VIOLET_RGBA(1)}`;
+  const pulseShadow = `0 0px 5px 2px ${VIOLET_RGBA(0.4)}`;
+
+  return (
+    <motion.div
+      style={{
+        position: "absolute",
+        top: -28,
+        left: 8,
+        padding: "4px 12px",
+        background: VIOLET,
+        color: "#ffffff",
+        fontSize: 12,
+        letterSpacing: 0.6,
+        fontWeight: 700,
+        textTransform: "capitalize",
+        borderRadius: 999,
+        boxShadow: baseShadow,
+        pointerEvents: "none",
+        fontFamily: "'Sonara', sans-serif",
+        lineHeight: 1.2,
+      }}
+      animate={
+        reduceMotion
+          ? undefined
+          : {
+              boxShadow: [baseShadow, pulseShadow, baseShadow],
+            }
+      }
+      transition={
+        reduceMotion
+          ? undefined
+          : {
+              duration: 2,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }
+      }
+    >
+      {label}
+    </motion.div>
+  );
+}
+
 interface StackProps {
   randomRotation?: boolean;
   sensitivity?: number;
@@ -76,6 +132,7 @@ interface StackProps {
   sendToBackOnClick?: boolean;
   onCardChange?: (cardId: number) => void;
   onAllSeen?: () => void;
+  ownedCardIds?: Set<string>;
 }
 
 export default function Stack({
@@ -87,6 +144,7 @@ export default function Stack({
   sendToBackOnClick = false,
   onCardChange,
   onAllSeen,
+  ownedCardIds,
 }: StackProps) {
   const [cards, setCards] = useState<CardData[]>(cardsData);
   const [seenCards, setSeenCards] = useState<Set<number | string>>(new Set());
@@ -183,6 +241,9 @@ export default function Stack({
           ? randomRotationCache.current.get(card.id) ?? 0
           : 0;
 
+        const isTopCard = index === cards.length - 1;
+        const ownedKey = `${card.cardId}_${card.skinId ?? 0}`;
+
         return (
           <CardRotate
             key={card.id}
@@ -215,6 +276,9 @@ export default function Stack({
                 alt={`card-${card.id}`}
                 className="card-image"
               />
+              {isTopCard && ownedCardIds && !ownedCardIds.has(ownedKey) && (
+                <NewBadge reduceMotion={prefersReducedMotion ?? false} />
+              )}
             </motion.div>
           </CardRotate>
         );

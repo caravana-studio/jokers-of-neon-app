@@ -6,10 +6,10 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { mintPack } from "../../api/mintPack";
+import { getUserCards } from "../../api/getUserCards";
 import CachedImage from "../../components/CachedImage";
 import { NFTPackRateInfo } from "../../components/Info/NFTPackRateInfo";
 import { packAnimation } from "../../constants/animations";
@@ -42,6 +42,30 @@ export const PackRow = ({ packId, packageId, price }: PackRowProps) => {
   const username = useUsername();
   const { purchasePackageById, offerings } = useRevenueCat();
   const [isPurchasing, setIsPurchasing] = useState(false);
+  const [ownedCardIds, setOwnedCardIds] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (!account?.address) {
+      setOwnedCardIds([]);
+      return;
+    }
+
+    let cancelled = false;
+    getUserCards(account.address)
+      .then((data) => {
+        if (cancelled) return;
+        setOwnedCardIds(data.ownedCardIds ?? []);
+      })
+      .catch((error) => {
+        if (cancelled) return;
+        console.error("PackRow: failed to load user collection", error);
+        setOwnedCardIds([]);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [account?.address]);
 
   const handlePurchase = async () => {
     if (isPurchasing) {
@@ -87,6 +111,7 @@ export const PackRow = ({ packId, packageId, price }: PackRowProps) => {
             initialCards: simplifiedCards,
             packId,
             returnTo: "/shop",
+            ownedCardIds,
           },
         });
       });

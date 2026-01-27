@@ -8,6 +8,10 @@
   cursor: grab;
 }
 
+.card {
+  position: relative;
+}
+
 .card-image {
   pointer-events: none;
   width: 100%;
