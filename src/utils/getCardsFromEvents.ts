@@ -20,6 +20,7 @@ export const getCardsFromEvents = (events: DojoEvent[]): Card[] => {
       card_id,
       img: `${card_id}.png`,
       isModifier: card_id >= 600 && card_id <= 700,
+      isNeon: card_id >= 200 && card_id < 300,
       idx: index,
       id: index.toString(),
     };
