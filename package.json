@@ -14,7 +14,7 @@
     "codegen": "graphql-codegen",
     "generate": "sozo build --typescript --manifest-path ../jokers-of-neon-core/Scarb.toml --bindings-output ./src/dojo",
     "test": "vitest",
-    "postinstall": "npm rebuild rollup"
+    "postinstall": "npm rebuild rollup && patch-package"
   },
   "engines": {
     "node": ">=20"
@@ -146,6 +146,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.3.4",
     "jsdom": "^24.1.1",
+    "patch-package": "^8.0.1",
     "typescript": "^5.0.3",
     "vite": "^6.0.5",
     "vitest": "^2.0.5"
