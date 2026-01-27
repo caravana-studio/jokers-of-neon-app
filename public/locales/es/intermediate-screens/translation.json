@@ -32,6 +32,11 @@
         "3-description-2": ""
       }
     },
+    "collector-packs-modal": {
+      "title": "PACKS COLECCIONISTA",
+      "subtitle": "SOLO POR TIEMPO LIMITADO",
+      "description": "Los packs Coleccionista contienen las skins más raras del juego. Están disponibles solo por tiempo limitado. Consigue las skins antes de que sea demasiado tarde."
+    },
     "packs": {
       "buy": "COMPRAR",
       "purchase-error-title": "Compra fallida",

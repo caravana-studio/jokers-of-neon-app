@@ -1,5 +1,6 @@
 import { Box, Flex, Heading } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
+import { CollectorPacksShopModal } from "../../components/CollectorPacksShopModal";
 import { DelayedLoading } from "../../components/DelayedLoading";
 import { MobileDecoration } from "../../components/MobileDecoration";
 import { DiscountSign } from "../../components/DiscountSign";
@@ -40,6 +41,15 @@ export const ShopPage = () => {
       ?.formattedPrice;
   };
   const { distribution, loading } = useShopDistribution();
+  const collectorPackIds = new Set([5, 6]);
+  const hasCollectorPacks =
+    !loading &&
+    !!distribution?.packs?.some((pack) => collectorPackIds.has(pack.packId));
+  const collectorBackground = distribution?.packs?.some(
+    (pack) => pack.packId === 6
+  )
+    ? "/packs/bg/6.jpg"
+    : "/packs/bg/5.jpg";
 
   const appType = useAppContext();
   const isShop = appType === AppType.SHOP;
@@ -48,6 +58,9 @@ export const ShopPage = () => {
     <DelayedLoading loading={loading || loadingSeasonPass}>
       <MobileDecoration fadeToBlack />
       {EARLY_ACCESS_VERSION && <DiscountSign percentage={30} />}
+      {hasCollectorPacks && (
+        <CollectorPacksShopModal backgroundImage={collectorBackground} />
+      )}
       <Flex
         flexDir={"column"}
         w="100%"

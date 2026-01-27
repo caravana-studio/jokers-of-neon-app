@@ -12,13 +12,18 @@ import { useNavigate } from "react-router-dom";
 import { getUserCards } from "../../api/getUserCards";
 import CachedImage from "../../components/CachedImage";
 import { NFTPackRateInfo } from "../../components/Info/NFTPackRateInfo";
-import { packAnimation } from "../../constants/animations";
+import {
+  buttonGlowAnimation,
+  limitedEditionPulse,
+  packAnimation,
+  shopPackGlowAnimation,
+} from "../../constants/animations";
 import { useDojo } from "../../dojo/DojoContext";
+import { useUsername } from "../../dojo/utils/useUsername";
 import { useRevenueCat } from "../../providers/RevenueCatProvider";
 import { listenForPurchase } from "../../queries/listenForPurchase";
 import { BLUE } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
-import { useUsername } from "../../dojo/utils/useUsername";
 
 interface PackRowProps {
   packId: number;
@@ -42,6 +47,7 @@ export const PackRow = ({ packId, packageId, price }: PackRowProps) => {
   const username = useUsername();
   const { purchasePackageById, offerings } = useRevenueCat();
   const [isPurchasing, setIsPurchasing] = useState(false);
+  const isBuyDisabled = isPurchasing || !price;
   const [ownedCardIds, setOwnedCardIds] = useState<string[]>([]);
 
   useEffect(() => {
@@ -84,7 +90,7 @@ export const PackRow = ({ packId, packageId, price }: PackRowProps) => {
     try {
       setIsPurchasing(true);
       const availablePackageIds = Object.keys(
-        offerings?.packPackages ?? {}
+        offerings?.packPackages ?? {},
       ).map((key) => key.toLowerCase());
       if (
         availablePackageIds.length === 0 ||
@@ -103,7 +109,7 @@ export const PackRow = ({ packId, packageId, price }: PackRowProps) => {
           (card: { card_id: number; skin_id: number }) => ({
             card_id: card.card_id,
             skin_id: card.skin_id,
-          })
+          }),
         );
 
         navigate(`/external-pack/${packId}`, {
@@ -117,7 +123,6 @@ export const PackRow = ({ packId, packageId, price }: PackRowProps) => {
       });
 
       await purchasePackageById(packageId);
-      
     } catch (error) {
       console.error("Failed to purchase pack", error);
       navigate("/shop");
@@ -154,9 +159,18 @@ export const PackRow = ({ packId, packageId, price }: PackRowProps) => {
             px={2}
           >
             <Heading
-              fontSize={isSmallScreen ? 18 : 35}
+              fontSize={isSmallScreen ? 15 : 35}
               variant="italic"
               textShadow={"0 0 5px white"}
+              whiteSpace="nowrap"
+              animation={
+                isLimitedEdition
+                  ? `${limitedEditionPulse} 2.8s ease-in-out infinite`
+                  : undefined
+              }
+              transformOrigin="center"
+              display="inline-block"
+              willChange={isLimitedEdition ? "transform, filter" : undefined}
             >
               {t(`${packId}.name`)}
             </Heading>
@@ -166,6 +180,15 @@ export const PackRow = ({ packId, packageId, price }: PackRowProps) => {
               color={isLimitedEdition ? "gold" : "lightViolet"}
               textShadow={"0 0 5px black"}
               mb={isSmallScreen ? 4 : 8}
+              animation={
+                isLimitedEdition
+                  ? `${limitedEditionPulse} 2.4s ease-in-out infinite`
+                  : undefined
+              }
+              style={isLimitedEdition ? { animationDelay: "0.4s" } : undefined}
+              transformOrigin="center"
+              display="inline-block"
+              willChange={isLimitedEdition ? "transform, filter" : undefined}
             >
               {t(isLimitedEdition ? "limited-edition" : `player-pack`)}
             </Heading>
@@ -208,7 +231,11 @@ export const PackRow = ({ packId, packageId, price }: PackRowProps) => {
                 </Text>
               )}
             </Flex>
-            <NFTPackRateInfo name={t(`${packId}.name`)} details={t(`${packId}.description.1`)} packId={packId} />
+            <NFTPackRateInfo
+              name={t(`${packId}.name`)}
+              details={t(`${packId}.description.1`)}
+              packId={packId}
+            />
             <Button
               variant={"secondarySolid"}
               w={isSmallScreen ? "70%" : "300px"}
@@ -216,20 +243,28 @@ export const PackRow = ({ packId, packageId, price }: PackRowProps) => {
               fontSize={isSmallScreen ? 13 : 16}
               mt={isSmallScreen ? 4 : 8}
               h={isSmallScreen ? "30px" : "40px"}
-              isDisabled={isPurchasing || !price}
+              isDisabled={isBuyDisabled}
+              animation={
+                isBuyDisabled || !isLimitedEdition
+                  ? undefined
+                  : `${buttonGlowAnimation} 2.2s ease-in-out infinite`
+              }
+              willChange={
+                isBuyDisabled || !isLimitedEdition ? undefined : "box-shadow"
+              }
               onClick={handlePurchase}
             >
-              {isPurchasing || !price ? (
-                <Spinner size="xs" />
-              ) : (
-                `${t("buy")} · ${price}`
-              )}
+              {isBuyDisabled ? <Spinner size="xs" /> : `${t("buy")} · ${price}`}
             </Button>
           </Flex>
           <Flex
             w="40%"
             justifyContent={isSmallScreen ? "center" : "flex-start"}
-            animation={`${packAnimation} 4s ease-in-out infinite`}
+            animation={
+              isLimitedEdition
+                ? `${packAnimation} 4s ease-in-out infinite`
+                : undefined
+            }
             transformOrigin="center"
             alignItems="center"
             pr={6}
@@ -238,6 +273,12 @@ export const PackRow = ({ packId, packageId, price }: PackRowProps) => {
               w={isSmallScreen ? "90%" : "300px"}
               src={`/packs/${packId}.png`}
               boxShadow={"0 0 15px 0px white, inset 0 0 5px 0 white"}
+              animation={
+                isLimitedEdition
+                  ? `${shopPackGlowAnimation} 2.8s ease-in-out infinite`
+                  : undefined
+              }
+              willChange={isLimitedEdition ? "box-shadow" : undefined}
             />
           </Flex>
         </Flex>
