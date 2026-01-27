@@ -35,6 +35,19 @@ export const LEADERBOARD_QUERY = gql`
   }
 `;
 
+const GAME_TOURNAMENT_QUERY = gql`
+  query ($gameId: u64!) {
+    ${QUERY_FIELD_NAME}(where: { idEQ: $gameId }, first: 1) {
+      edges {
+        node {
+          id
+          is_tournament
+        }
+      }
+    }
+  }
+`;
+
 interface GameEdge {
   node: {
     player_score: number;
@@ -48,16 +61,55 @@ interface GameEdge {
 
 type LeaderboardResponse = Record<string, { edges: GameEdge[] }>;
 
+interface GameTournamentEdge {
+  node: {
+    id: number;
+    is_tournament: boolean;
+  };
+}
+
+type GameTournamentResponse = Record<string, { edges?: GameTournamentEdge[] }>;
+
+const fetchGameIsTournament = async (
+  gameId?: number
+): Promise<boolean | null> => {
+  if (gameId === undefined || Number.isNaN(gameId)) {
+    return null;
+  }
+
+  try {
+    const rawData: GameTournamentResponse = await mainnetGraphQLClient.request(
+      GAME_TOURNAMENT_QUERY,
+      {
+        gameId: gameId.toString(),
+      }
+    );
+
+    const node = rawData?.[QUERY_FIELD_NAME]?.edges?.[0]?.node;
+    if (typeof node?.is_tournament === "boolean") {
+      return node.is_tournament;
+    }
+  } catch (error) {
+    console.error("Failed to fetch game tournament flag", error);
+  }
+
+  return null;
+};
+
 const fetchGraphQLData = async (
   filterLoggedInPlayers: boolean,
   gameId?: number,
   isTournament: boolean = false,
   startCountingAtGameId: number = 0
 ) => {
+  const resolvedIsTournament =
+    gameId !== undefined ? await fetchGameIsTournament(gameId) : null;
+  const effectiveIsTournament = resolvedIsTournament ?? isTournament;
+
   const rawData: LeaderboardResponse = await mainnetGraphQLClient.request(
     LEADERBOARD_QUERY,
     {
-      isTournament,
+      isTournament: effectiveIsTournament,
       startCountingAtGameId,
     }
   );

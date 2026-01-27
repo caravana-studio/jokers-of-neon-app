@@ -40,13 +40,13 @@ export const getPrizeText = (t: TFunction, prize: Prize | undefined) => {
     prizeArray.push(
       t(`prizes.collectorXL`, {
         count: prize.packs.collectorXL,
-      })
+      }),
     );
   prize.packs.collector &&
     prizeArray.push(
       t(`prizes.collector`, {
         count: prize.packs.collector,
-      })
+      }),
     );
   prize.packs.epic &&
     prizeArray.push(t(`prizes.epic`, { count: prize.packs.epic }));
@@ -54,7 +54,7 @@ export const getPrizeText = (t: TFunction, prize: Prize | undefined) => {
     prizeArray.push(
       t(`prizes.legendary`, {
         count: prize.packs.legendary,
-      })
+      }),
     );
   prize.packs.advanced &&
     prizeArray.push(t(`prizes.advanced`, { count: prize.packs.advanced }));
@@ -86,24 +86,23 @@ export const Leaderboard = ({
   const { t } = useTranslation("home", { keyPrefix: "leaderboard" });
   const { isSmallScreen } = useResponsiveValues();
   const { tournament } = useTournamentSettings();
-  const isTournament = isTournamentLeaderboard ?? Boolean(tournament?.isActive);
+  const isTournament = isTournamentLeaderboard;
 
   const { data: fullLeaderboard, isLoading } = useGetLeaderboard(
     gameId,
     filterLoggedInPlayers,
-    isTournament
+    isTournament,
   );
 
   const actualPlayer = fullLeaderboard?.find(
-    (player) => signedHexToNumber(player.id.toString()) === gameId
+    (player) => signedHexToNumber(player.id.toString()) === gameId,
   );
 
   const username = useUsername();
 
   const leaderboard = fullLeaderboard?.slice(hidePodium ? 3 : 0, lines);
-
   const currentPlayerIsInReducedLeaderboard = leaderboard?.some(
-    (leader) => signedHexToNumber(leader.id.toString()) === gameId
+    (leader) => signedHexToNumber(leader.id.toString()) === gameId,
   );
 
   return (
@@ -153,7 +152,9 @@ export const Leaderboard = ({
                       >
                         #{leader.position}
                       </Td>
-                      <Td color={"white !important"}>{leader.player_name}</Td>
+                      <Td color={"white !important"}>
+                        <Text>{leader.player_name}</Text>
+                      </Td>
                       {seePrizes ? (
                         <Td maxW="150px" p="12px 20px" whiteSpace="normal">
                           <Text
@@ -165,7 +166,7 @@ export const Leaderboard = ({
                           >
                             {getPrizeText(
                               t,
-                              tournament?.prizes[leader.position]
+                              tournament?.prizes[leader.position],
                             )}
                           </Text>
                         </Td>
@@ -211,10 +212,7 @@ export const Leaderboard = ({
                     <Td>...</Td>
                     <Td>...</Td>
                   </Tr>
-                  <CustomTr
-                    highlighted
-                    key={actualPlayer.position}
-                  >
+                  <CustomTr highlighted key={actualPlayer.position}>
                     <Td>#{actualPlayer.position}</Td>
                     <Td>{actualPlayer.player_name}</Td>
                     {/*                     <Td isNumeric>

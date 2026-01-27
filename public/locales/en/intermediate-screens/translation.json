@@ -32,6 +32,11 @@
         "3-description-2": ""
       }
     },
+    "collector-packs-modal": {
+      "title": "COLLECTOR PACKS",
+      "subtitle": "LIMITED TIME ONLY",
+      "description": "Collector packs include the rarest skins in the game. Available for a limited time. Grab the skins before it's too late."
+    },
     "packs": {
       "buy": "BUY",
       "purchase-error-title": "Purchase failed",
@@ -139,7 +144,8 @@
   "external-pack": {
     "continue": "Continue",
     "open": "Open",
-    "draw-line": "Draw a line to open"
+    "draw-line": "Draw a line to open",
+    "new": "NEW"
   },
   "my-games": {
     "title": "Games",

@@ -10,14 +10,15 @@ import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { formatNumber } from "../../utils/formatNumber";
 interface PodiumProps {
   seePrizes?: boolean;
+  isTournamentLeaderboard?: boolean;
 }
 
-export const Podium = ({ seePrizes = false }: PodiumProps) => {
+export const Podium = ({ seePrizes = false, isTournamentLeaderboard = false }: PodiumProps) => {
   const { t } = useTranslation("home", { keyPrefix: "leaderboard" });
   const { isSmallScreen } = useResponsiveValues();
   const { id: gameId } = useGameStore();
   const { tournament } = useTournamentSettings();
-  const isTournament = Boolean(tournament?.isActive);
+  const isTournament = isTournamentLeaderboard;
 
   const { data: fullLeaderboard } = useGetLeaderboard(
     gameId,

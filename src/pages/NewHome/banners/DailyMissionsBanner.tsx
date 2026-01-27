@@ -49,12 +49,13 @@ export const DailyMissionsBanner = () => {
       });
   }, []);
   const date = getNextResetDate();
+  const sortedMissions = [...dailyMissions].sort((a, b) => a.xp - b.xp);
 
   const { isSmallScreen } = useResponsiveValues();
 
   return (
     <RegularBanner title={t("dailyMissions")} date={date}>
-      {dailyMissions.map((mission) => (
+      {sortedMissions.map((mission) => (
         <MissionRow
           key={mission.description}
           mission={mission}

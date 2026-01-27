@@ -33,7 +33,6 @@ export const LeaderboardPageLayout = ({
           w="70%"
           h="100%"
           alignItems={"center"}
-          mt={isTournamentActive ? 4 : 8}
         >
           <Flex
             minH={0}
@@ -64,11 +63,10 @@ export const LeaderboardPageLayout = ({
                 mt={4}
               >
                 <Flex
-                  w="100%"
-                  justifyContent="space-between"
-                  alignItems="center"
                   px={isSmallScreen ? 2 : 6}
                   mb={isSmallScreen ? 2 : 4}
+                  position="absolute"
+                  right={4}
                 >
                   <Flex>
                     {tournament?.endDate &&
@@ -97,7 +95,7 @@ export const LeaderboardPageLayout = ({
                     alignItems={"center"}
                     h={isSmallScreen ? "unset" : "100%"}
                   >
-                    <Podium seePrizes={seePrizes} />
+                    <Podium seePrizes={seePrizes} isTournamentLeaderboard />
                   </Flex>
                   <Flex
                     w={isSmallScreen ? "100%" : "50%"}
@@ -131,7 +129,6 @@ export const LeaderboardPageLayout = ({
           w="70%"
           h="100%"
           alignItems={"center"}
-          mt={isTournamentActive ? 4 : 8}
         >
           <Flex
             minH={0}
@@ -151,7 +148,7 @@ export const LeaderboardPageLayout = ({
   return (
     <DelayedLoading ms={200}>
       <PositionedDiscordLink />
-      <TabPattern mobileDecorationProps={{ fadeToBlack: true }}>
+      <TabPattern mobileDecorationProps={{ fadeToBlack: true }} disableGoBack>
         {tabs}
       </TabPattern>
     </DelayedLoading>
