@@ -6,17 +6,18 @@ import { Card } from "../../types/Card";
 import { PlayEvents } from "../../types/ScoreData";
 import { eventTypeToSuit } from "./eventTypeToSuit";
 
+// Number of pitch variants available (points_0.mp3 to points_17.mp3)
+const PITCH_VARIANTS = 18;
+
 interface AnimatePlayConfig {
   playEvents: PlayEvents;
   playAnimationDuration: number;
   setPlayIsNeon: (isNeon: boolean) => void;
   setAnimatedCard: (card: any) => void;
   setAnimatedPowerUp: (powerUp: any) => void;
-  pointsSound: () => void;
-  multiSound: () => void;
+  pointsSound: (pitchIndex?: number) => void;
   acumSound: () => void;
   negativeMultiSound: () => void;
-  cashSound: () => void;
   setPoints: (points: number) => void;
   setMulti: (multi: number) => void;
   addPoints: (points: number) => void;
@@ -29,7 +30,6 @@ interface AnimatePlayConfig {
   refetchPowerUps: () => void;
   preSelectedPowerUps: number[];
   navigate: (path: string) => void;
-  gameId: number;
   setRoundRewards: (rewards: any) => void;
   replaceCards: (cards: Card[]) => void;
   remainingPlays: number;
@@ -54,10 +54,8 @@ export const animatePlayDiscard = (config: AnimatePlayConfig) => {
     setAnimatedCard,
     setAnimatedPowerUp,
     pointsSound,
-    multiSound,
     acumSound,
     negativeMultiSound,
-    cashSound,
     setPoints,
     setMulti,
     changeCardsNeon,
@@ -67,7 +65,6 @@ export const animatePlayDiscard = (config: AnimatePlayConfig) => {
     clearPreSelection,
     refetchPowerUps,
     navigate,
-    gameId,
     setRoundRewards,
     replaceCards,
     remainingPlays,
@@ -87,6 +84,14 @@ export const animatePlayDiscard = (config: AnimatePlayConfig) => {
   } = config;
 
   if (!playEvents) return;
+
+  // Pitch counter for incremental pitch effect on scoring sounds
+  let pitchIndex = 0;
+  const getNextPitchIndex = () => {
+    const index = Math.min(pitchIndex, PITCH_VARIANTS - 1);
+    pitchIndex++;
+    return index;
+  };
 
   // Calculate durations more concisely
   const calculateDuration = (
@@ -122,10 +127,10 @@ export const animatePlayDiscard = (config: AnimatePlayConfig) => {
       idx: playEvents.neonPlayEvent.neon_cards_idx,
     });
 
-    pointsSound();
+    pointsSound(getNextPitchIndex());
     playEvents.neonPlayEvent.points &&
       setPoints(playEvents.neonPlayEvent.points);
-    multiSound();
+    pointsSound(getNextPitchIndex());
     playEvents.neonPlayEvent.multi && setMulti(playEvents.neonPlayEvent.multi);
   };
 
@@ -133,7 +138,7 @@ export const animatePlayDiscard = (config: AnimatePlayConfig) => {
     return new Promise<void>((resolve) => {
       playEvents.cardPlayChangeEvents?.forEach((event, index) => {
         setTimeout(() => {
-          pointsSound();
+          pointsSound(getNextPitchIndex());
 
           const suit = eventTypeToSuit(event.eventType);
           const handIndexes = event.hand.map((card) => card.idx);
@@ -177,7 +182,7 @@ export const animatePlayDiscard = (config: AnimatePlayConfig) => {
             const { idx, quantity } = card;
             setTimeout(() => {
               if (isPoints) {
-                pointsSound();
+                pointsSound(getNextPitchIndex());
                 setAnimatedCard({
                   special_idx,
                   idx: [idx],
@@ -186,7 +191,7 @@ export const animatePlayDiscard = (config: AnimatePlayConfig) => {
                 });
                 addPoints(quantity);
               } else if (isMulti) {
-                quantity > 0 ? multiSound() : negativeMultiSound();
+                quantity > 0 ? pointsSound(getNextPitchIndex()) : negativeMultiSound();
                 setAnimatedCard({
                   special_idx,
                   idx: [idx],
@@ -195,7 +200,7 @@ export const animatePlayDiscard = (config: AnimatePlayConfig) => {
                 });
                 addMulti(quantity);
               } else if (isCash) {
-                cashSound();
+                pointsSound(getNextPitchIndex());
                 addCash(quantity);
                 setAnimatedCard({
                   special_idx,
@@ -212,7 +217,7 @@ export const animatePlayDiscard = (config: AnimatePlayConfig) => {
 
         setTimeout(() => {
           if (isPoints) {
-            pointsSound();
+            pointsSound(getNextPitchIndex());
             setAnimatedCard({
               special_idx,
               idx: [],
@@ -221,7 +226,7 @@ export const animatePlayDiscard = (config: AnimatePlayConfig) => {
             });
             addPoints(quantity);
           } else if (isMulti) {
-            multiSound();
+            pointsSound(getNextPitchIndex());
             setAnimatedCard({
               special_idx,
               idx: [],
@@ -230,7 +235,7 @@ export const animatePlayDiscard = (config: AnimatePlayConfig) => {
             });
             addMulti(quantity);
           } else if (isCash) {
-            cashSound();
+            pointsSound(getNextPitchIndex());
             addCash(quantity);
             setAnimatedCard({
               special_idx,
@@ -263,12 +268,12 @@ export const animatePlayDiscard = (config: AnimatePlayConfig) => {
         });
 
         if (points) {
-          pointsSound();
+          pointsSound(getNextPitchIndex());
           addPoints(points);
         }
 
         if (multi) {
-          multiSound();
+          pointsSound(getNextPitchIndex());
           addMulti(multi);
         }
       }, playAnimationDuration * index);
