@@ -14,12 +14,12 @@ export const packAnimation = keyframes`
 
 export const packGlowAnimation = keyframes`
   0% {
-    box-shadow: 0 0 10px 5px rgba(255,255,255,0.2), inset 0 0 10px 5px rgba(255,255,255,0.2);
+    filter: drop-shadow(0 0 8px rgba(255,255,255,0.3)) drop-shadow(0 0 15px rgba(255,255,255,0.15));
   }
   50% {
-    box-shadow: 0 0 20px 5px rgba(255,255,255,0.3), inset 0 0 20px 5px rgba(255,255,255,0.3);
+    filter: drop-shadow(0 0 12px rgba(255,255,255,0.5)) drop-shadow(0 0 25px rgba(255,255,255,0.25));
   }
   100% {
-    box-shadow: 0 0 10px 5px rgba(255,255,255,0.2), inset 0 0 10px 5px rgba(255,255,255,0.2);
+    filter: drop-shadow(0 0 8px rgba(255,255,255,0.3)) drop-shadow(0 0 15px rgba(255,255,255,0.15));
   }
 `;
