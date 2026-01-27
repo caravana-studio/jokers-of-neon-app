@@ -17,7 +17,8 @@ type ShopDistributionResponse = Partial<
   Record<ShopEnvironment, ShopDistribution>
 >;
 
-const SHOP_DISTRIBUTION_URL = "https://jokersofneon.com/app/settings/shop.json";
+const SHOP_DISTRIBUTION_URL =
+  "https://jokersofneon.com/app/settings/shop.json";
 
 const DEFAULT_SHOP_DISTRIBUTIONS: Record<ShopEnvironment, ShopDistribution> = {
   android: {
@@ -54,7 +55,7 @@ const getEnvironment = (): ShopEnvironment => {
 
 export const useShopDistribution = () => {
   const [distribution, setDistribution] = useState<ShopDistribution | null>(
-    null,
+    null
   );
   const [loading, setLoading] = useState(true);
 
@@ -79,7 +80,7 @@ export const useShopDistribution = () => {
       } catch (err) {
         console.error(
           "Failed to fetch shop distribution settings. Unknown error occurred",
-          err,
+          err
         );
         setDistribution({ ...DEFAULT_SHOP_DISTRIBUTIONS[environment] });
       } finally {
@@ -90,15 +91,5 @@ export const useShopDistribution = () => {
     fetchShopDistribution();
   }, []);
 
-  return {
-    distribution: {
-      ...distribution,
-      packs: [
-        { shopId: "pack_collector_xl", packId: 6 },
-        { shopId: "pack_collector", packId: 5 },
-        ...distribution?.packs ?? [],
-      ],
-    },
-    loading,
-  };
+  return { distribution, loading };
 };
