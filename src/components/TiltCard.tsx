@@ -18,6 +18,7 @@ import {
   useIsSilent,
 } from "../hooks/useIsSilent.tsx";
 import { useGameStore } from "../state/useGameStore.ts";
+import { useSkinPreferencesStore } from "../state/useSkinPreferencesStore";
 import { HEARTS, VIOLET } from "../theme/colors.tsx";
 import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
 import { Card } from "../types/Card";
@@ -74,7 +75,12 @@ export const TiltCard = ({
   const modifiedCard = useTransformedCard(card);
   const isSilent = useIsSilent(modifiedCard);
   const isDebuffed = useIsDebuffed(modifiedCard);
-  const skinSuffix = skin_id && skin_id > 0 ? `_sk${skin_id}` : "";
+  const storeSkinId = useSkinPreferencesStore((store) =>
+    card.card_id !== undefined ? store.getSkinFor(card.card_id) : 0
+  );
+  const resolvedSkinId = skin_id ?? storeSkinId;
+  const skinSuffix =
+    resolvedSkinId && resolvedSkinId > 0 ? `_sk${resolvedSkinId}` : "";
   const cardImgWithSkin = (() => {
     if (!skinSuffix) return modifiedCard.img;
     const dotIndex = modifiedCard.img.lastIndexOf(".");

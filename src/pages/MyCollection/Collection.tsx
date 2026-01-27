@@ -18,6 +18,7 @@ import { TimesBadge } from "../../components/TimesBadge";
 import { CARD_HEIGHT, CARD_WIDTH } from "../../constants/visualProps";
 import { getCardFromCardId } from "../../dojo/utils/getCardFromCardId";
 import { useGameStore } from "../../state/useGameStore";
+import { useSkinPreferencesStore } from "../../state/useSkinPreferencesStore";
 import { BLUE } from "../../theme/colors";
 import { Card } from "../../types/Card";
 import { Collection } from "./types";
@@ -37,6 +38,9 @@ const CollectionGrid: React.FC<Props> = ({ collection, hideHighlight = false, de
   const [selectedCard, setSelectedCard] = useState<Card | null>(null);
   const [selectedSkinId, setSelectedSkinId] = useState(0);
   const [selectedOwnedSkins, setSelectedOwnedSkins] = useState<number[]>([]);
+  const skinsByCardId = useSkinPreferencesStore(
+    (store) => store.skinsByCardId
+  );
   const ownedCount = collection.cards.filter(
     (card) => card.userNfts.length > 0
   ).length;
@@ -141,11 +145,25 @@ const CollectionGrid: React.FC<Props> = ({ collection, hideHighlight = false, de
                   )}
                   <TiltCard
                     card={{ ...card, price: undefined }}
-                    skin_id={maxSkinId}
                     scale={customCardScale}
                     onClick={() => {
                       setSelectedCard(card);
-                      setSelectedSkinId(maxSkinId);
+                      const cardIdKey =
+                        card.card_id !== undefined ? String(card.card_id) : "";
+                      const hasStoredSkin =
+                        cardIdKey.length > 0 &&
+                        Object.prototype.hasOwnProperty.call(
+                          skinsByCardId,
+                          cardIdKey
+                        );
+                      const storedSkinId = hasStoredSkin
+                        ? skinsByCardId[cardIdKey]
+                        : undefined;
+                      setSelectedSkinId(
+                        Number.isFinite(storedSkinId)
+                          ? (storedSkinId as number)
+                          : maxSkinId
+                      );
                       setSelectedOwnedSkins(ownedSkinIds);
                     }}
                     cursor="pointer"
