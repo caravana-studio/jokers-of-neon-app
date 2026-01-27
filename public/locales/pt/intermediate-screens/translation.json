@@ -32,6 +32,11 @@
         "3-description-2": ""
       }
     },
+    "collector-packs-modal": {
+      "title": "PACKS COLECIONADOR",
+      "subtitle": "SOMENTE POR TEMPO LIMITADO",
+      "description": "Os packs Colecionador contêm as skins mais raras do jogo. Estão disponíveis apenas por tempo limitado. Garanta suas skins antes que seja tarde demais."
+    },
     "packs": {
       "buy": "COMPRAR",
       "purchase-error-title": "Compra falhou",

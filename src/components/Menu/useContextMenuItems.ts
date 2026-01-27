@@ -6,6 +6,7 @@ import { GameStateEnum } from "../../dojo/typescript/custom";
 import { useGameStore } from "../../state/useGameStore";
 import { useSeasonProgressStore } from "../../state/useSeasonProgressStore";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
+import { useShopDistribution } from "../../queries/useShopDistribution";
 
 export const mainMenuUrls = [
   "/",
@@ -79,6 +80,7 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
   const {
     account: { account },
   } = useDojo();
+  const { distribution, loading: loadingDistribution } = useShopDistribution();
   const seasonNotificationCount = useSeasonProgressStore(
     (store) => store.unclaimedRewardsCount
   );
@@ -89,6 +91,12 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
     (store) => store.refetch
   );
   const resetSeasonProgress = useSeasonProgressStore((store) => store.reset);
+  const hasCollectorPacks =
+    !loadingDistribution &&
+    !!distribution?.packs?.some(
+      (pack) => pack.packId === 5 || pack.packId === 6
+    );
+  const collectorNotificationCount = hasCollectorPacks ? 1 : 0;
 
   useEffect(() => {
     if (!account?.address) {
@@ -145,6 +153,7 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
         url: "/shop",
         active: url === "/shop",
         key: "shop",
+        notificationCount: collectorNotificationCount,
       },
       /*{
         icon: Icons.PROFILE,
@@ -164,7 +173,7 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
     }
 
     return items;
-  }, [isSmallScreen, url, seasonNotificationCount]);
+  }, [collectorNotificationCount, isSmallScreen, url, seasonNotificationCount]);
 
   const inGameMenuItems: MenuItem[] = [
     {
