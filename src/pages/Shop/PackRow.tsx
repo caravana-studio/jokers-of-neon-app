@@ -260,11 +260,7 @@ export const PackRow = ({ packId, packageId, price }: PackRowProps) => {
           <Flex
             w="40%"
             justifyContent={isSmallScreen ? "center" : "flex-start"}
-            animation={
-              isLimitedEdition
-                ? `${packAnimation} 4s ease-in-out infinite`
-                : undefined
-            }
+            animation={`${packAnimation} 4s ease-in-out infinite`}
             transformOrigin="center"
             alignItems="center"
             pr={6}
@@ -272,13 +268,13 @@ export const PackRow = ({ packId, packageId, price }: PackRowProps) => {
             <CachedImage
               w={isSmallScreen ? "90%" : "300px"}
               src={`/packs/${packId}.png`}
-              boxShadow={"0 0 15px 0px white, inset 0 0 5px 0 white"}
+              filter="drop-shadow(0 0 10px rgba(255,255,255,0.5)) drop-shadow(0 0 22px rgba(255,255,255,0.25))"
               animation={
                 isLimitedEdition
                   ? `${shopPackGlowAnimation} 2.8s ease-in-out infinite`
                   : undefined
               }
-              willChange={isLimitedEdition ? "box-shadow" : undefined}
+              willChange={isLimitedEdition ? "filter" : undefined}
             />
           </Flex>
         </Flex>
