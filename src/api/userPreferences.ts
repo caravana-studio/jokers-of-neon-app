@@ -26,7 +26,11 @@ type UserPreferencesApiResponse =
       data?: UserPreferences;
     };
 
-type SkinPreferencesApiResponse = Record<string, { skin?: number }>;
+type SkinPreferencesApiResponse = {
+  success?: boolean;
+  data?: Record<string, { skin?: number }>;
+  error?: string;
+};
 
 const baseUrl =
   import.meta.env.VITE_GAME_API_URL?.replace(/\/+$/, "") ||
@@ -64,20 +68,42 @@ const normalizeSkinValue = (value: unknown): number | null => {
 };
 
 function extractSkinPreferences(payload: unknown): SkinPreferences {
-  const data =
-    payload &&
-    typeof payload === "object" &&
-    "data" in payload &&
-    (payload as { data?: unknown }).data
-      ? (payload as { data: unknown }).data
-      : payload;
-
-  if (!data || typeof data !== "object") {
+  if (!payload || typeof payload !== "object") {
     return {};
   }
 
+  if ("success" in payload) {
+    const { success, error, data } = payload as SkinPreferencesApiResponse;
+    if (success === false) {
+      const message =
+        typeof error === "string" && error.trim().length > 0
+          ? error
+          : "Unknown error";
+      throw new Error(`skinPreferences: ${message}`);
+    }
+    if (!data || typeof data !== "object") {
+      return {};
+    }
+
+    const entries = Object.entries(
+      data as Record<string, { skin?: number } | null | undefined>
+    );
+    return entries.reduce<SkinPreferences>((acc, [cardId, entry]) => {
+      const skinValue =
+        entry && typeof entry === "object" && "skin" in entry
+          ? entry.skin
+          : null;
+      const normalized = normalizeSkinValue(skinValue);
+      if (normalized === null) {
+        return acc;
+      }
+      acc[cardId] = normalized;
+      return acc;
+    }, {});
+  }
+
   const entries = Object.entries(
-    data as Record<string, { skin?: number } | null | undefined>
+    payload as Record<string, { skin?: number } | null | undefined>
   );
 
   return entries.reduce<SkinPreferences>((acc, [cardId, entry]) => {
@@ -170,6 +196,9 @@ export async function getUserSkinPreferences(
     const payload = (await response.json()) as SkinPreferencesApiResponse;
     return extractSkinPreferences(payload);
   } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
     throw new Error(`getUserSkinPreferences: Failed to parse response JSON`);
   }
 }
@@ -178,7 +207,7 @@ export async function updateUserSkinPreference(
   userAddress: string,
   cardId: string | number,
   skinId: number
-): Promise<SkinPreferences | null> {
+): Promise<SkinPreferences> {
   if (!userAddress) {
     throw new Error("updateUserSkinPreference: userAddress is required");
   }
@@ -222,8 +251,13 @@ export async function updateUserSkinPreference(
   try {
     const payload = (await response.json()) as SkinPreferencesApiResponse;
     return extractSkinPreferences(payload);
-  } catch {
-    return null;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
+    throw new Error(
+      "updateUserSkinPreference: Failed to parse response JSON"
+    );
   }
 }
 
