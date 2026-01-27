@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   Collapse,
+  Divider,
   Flex,
   Heading,
   IconButton,
@@ -13,7 +14,9 @@ import { useEffect, useState } from "react";
 import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { updateUserSkinPreference } from "../api/userPreferences";
+import { RARITY, RarityLabels } from "../constants/rarity";
 import { CARD_HEIGHT, CARD_WIDTH } from "../constants/visualProps";
+import { SKINS_RARITY } from "../data/specialCards";
 import { useDojo } from "../dojo/useDojo";
 import { CardTypes } from "../enums/cardTypes";
 import { useCardData } from "../providers/CardDataProvider";
@@ -22,16 +25,18 @@ import { Card } from "../types/Card";
 import { colorizeText } from "../utils/getTooltip";
 import CachedImage from "./CachedImage";
 import { CardImage3D } from "./CardImage3D";
+import { TimesBadge } from "./TimesBadge";
 
 interface CollectionCardHighlightProps {
   card: Card;
   selectedSkinId: number;
   ownedSkinIds: number[];
+  ownedSkinCounts: Record<number, number>;
   onSkinChange: (skinId: number) => void;
   onClose: () => void;
 }
 
-const SKIN_CANDIDATES = [1, 2, 3, 4];
+const SKIN_CANDIDATES = [1, 2, 3, 4, 101, 102, 103, 104];
 
 const splitBaseImageName = (img: string) => {
   const dotIndex = img.lastIndexOf(".");
@@ -54,12 +59,14 @@ export const CollectionCardHighlight = ({
   card,
   selectedSkinId,
   ownedSkinIds,
+  ownedSkinCounts,
   onSkinChange,
   onClose,
 }: CollectionCardHighlightProps) => {
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "my-collection.highlight",
   });
+  const { t: tDocs } = useTranslation("docs");
   const {
     account: { account },
   } = useDojo();
@@ -73,7 +80,7 @@ export const CollectionCardHighlight = ({
   const [hasCheckedSkins, setHasCheckedSkins] = useState(false);
   const [isDescriptionOpen, setIsDescriptionOpen] = useState(false);
 
-  const { name, description, type } = getCardData(cardId);
+  const { name, description, type, rarity } = getCardData(cardId);
   const variantsEnabled = type !== CardTypes.COMMON && type !== CardTypes.NEON;
 
   const getImageSrc = (skinId: number) =>
@@ -126,6 +133,13 @@ export const CollectionCardHighlight = ({
       ? selectedSkinId
       : fallbackSkinId
     : 0;
+  const cardRarityLabel = rarity
+    ? tDocs(`rarity.${RarityLabels[rarity as RARITY]}`)
+    : null;
+  const skinRarity = SKINS_RARITY[resolvedSkinId];
+  const skinRarityLabel = skinRarity
+    ? tDocs(`rarity.${RarityLabels[skinRarity as RARITY]}`)
+    : null;
 
   useEffect(() => {
     if (!variantsEnabled) return;
@@ -150,6 +164,9 @@ export const CollectionCardHighlight = ({
 
   const [opacity, setOpacity] = useState(0);
   const [scale, setScale] = useState(0.96);
+  const detailsToggleLabel = isDescriptionOpen
+    ? t("hide-details")
+    : t("show-details");
 
   useEffect(() => {
     setOpacity(1);
@@ -173,10 +190,19 @@ export const CollectionCardHighlight = ({
     resolvedSkinId > 0 ? getImageSrc(resolvedSkinId) : undefined;
   const userAddress = account?.address;
 
+  const getSkinLabel = (skinId: number) => {
+    if (skinId === 0) return t("base-label");
+    if (skinId === 101) return "GALAXY SKIN";
+    if (skinId > 1 && skinId < 100) {
+      return `SEASON ${skinId - 1} SKIN`;
+    }
+    return t("skin-label", { id: skinId });
+  };
+
   const handleSkinSelect = async (
     skinId: number,
     isOwned: boolean,
-    isSelected: boolean
+    isSelected: boolean,
   ) => {
     if (!isOwned || isSelected) return;
     const previousSkinId = selectedSkinId;
@@ -216,21 +242,27 @@ export const CollectionCardHighlight = ({
       opacity={opacity}
       flexDirection="column"
       transition="opacity 0.5s ease"
-      justifyContent="center"
+      justifyContent={{ base: "center", sm: "center" }}
       alignItems="center"
+      py={{ base: 0, sm: 6, md: 8 }}
       backdropFilter="blur(10px)"
       backgroundColor=" rgba(0, 0, 0, 0.7)"
       onClick={onClose}
     >
       <Flex
+        width="100%"
         flexDirection="column"
         alignItems="center"
-        gap={3}
+        justifyContent={{ base: "center", sm: "flex-start" }}
+        gap={{ base: 3, sm: 2 }}
+        px={{ base: 0, sm: 6 }}
+        pt={{ base: 0, sm: 2 }}
         transform={`scale(${scale})`}
         transition="transform 0.3s ease"
         onClick={(e) => e.stopPropagation()}
+        // backgroundColor="red"
       >
-        <Flex flexDirection="column" alignItems="center" textAlign="center">
+        <Flex flexDirection="column" alignItems="center"  mb={{base: 0, sm: 4}} textAlign="center">
           <Heading
             fontWeight={500}
             fontSize={{ base: "18px", sm: "22px" }}
@@ -250,15 +282,17 @@ export const CollectionCardHighlight = ({
             >
               {t("variants-title")}
             </Heading>
-            <Flex gap={3} justifyContent="center" flexWrap="wrap">
+            <Flex gap={{base: 3, sm: 5}} mb={{base: 0, sm: 8}} justifyContent="center" flexWrap="wrap">
               {availableSkinIds.map((skinId) => {
                 const isSelected = skinId === resolvedSkinId;
                 const isOwned = ownedSkinIds.includes(skinId);
+                const ownedCount = ownedSkinCounts[skinId] ?? 0;
                 return (
                   <Box
                     key={`skin-option-${skinId}`}
                     borderRadius="8px"
                     border="1px solid"
+                    position="relative"
                     borderColor={
                       isOwned
                         ? isSelected
@@ -277,6 +311,9 @@ export const CollectionCardHighlight = ({
                       void handleSkinSelect(skinId, isOwned, isSelected);
                     }}
                   >
+                    {ownedCount > 1 && (
+                      <TimesBadge count={ownedCount} size="sm" />
+                    )}
                     <Flex
                       direction="column"
                       alignItems="center"
@@ -295,13 +332,16 @@ export const CollectionCardHighlight = ({
                       />
                       <Text
                         fontSize="10px"
+                        lineHeight={0.9}
                         letterSpacing={0.4}
                         color="whiteAlpha.800"
                         textTransform="uppercase"
+                        maxW={thumbWidth}
+                        textAlign="center"
+                        whiteSpace="normal"
+                        wordBreak="break-word"
                       >
-                        {skinId === 0
-                          ? t("base-label")
-                          : t("skin-label", { id: skinId })}
+                        {getSkinLabel(skinId)}
                       </Text>
                     </Flex>
                   </Box>
@@ -318,6 +358,7 @@ export const CollectionCardHighlight = ({
           justifyContent="center"
           borderRadius="12px"
           boxShadow="0 10px 30px rgba(0, 0, 0, 0.6)"
+          position="relative"
         >
           <CardImage3D
             key={`collection-highlight-${cardId}-${resolvedSkinId}`}
@@ -327,75 +368,117 @@ export const CollectionCardHighlight = ({
             width={bigWidth}
             height={bigHeight}
           />
+          {variantsEnabled && (
+            <Box
+              position="absolute"
+              bottom={{ base: 2, sm: 3 }}
+              left="50%"
+              transform="translateX(-50%)"
+              width={{ base: "92%", sm: "88%" }}
+              zIndex={3}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <Collapse in={isDescriptionOpen} animateOpacity>
+                <Box
+                  borderRadius="16px"
+                  backgroundColor="rgba(0, 0, 0, 0.6)"
+                  px={4}
+                  pb={3}
+                  pt={2}
+                  textAlign="center"
+                >
+                  <IconButton
+                    aria-label={t("hide-details")}
+                    icon={<ChevronDownIcon />}
+                    variant="ghost"
+                    size="md"
+                    color="white"
+                    _hover={{ color: "white" }}
+                    mb={1}
+                    onClick={() => setIsDescriptionOpen(false)}
+                  />
+                  {(cardRarityLabel || skinRarityLabel) && (
+                    <Flex flexDir="column" alignItems="center">
+                      {cardRarityLabel && (
+                        <Text
+                          fontSize={{ base: "13px", sm: "16px" }}
+                          color="white"
+                        >
+                          {t("card-rarity-label")}{" "}
+                          <Text
+                            as="span"
+                            fontWeight="bold"
+                            textTransform="uppercase"
+                            fontSize={{ base: "14px", sm: "17px" }}
+                          >
+                            {cardRarityLabel}
+                          </Text>
+                        </Text>
+                      )}
+                      {skinRarityLabel && (
+                        <Text
+                          fontSize={{ base: "13px", sm: "16px" }}
+                          color="white"
+                        >
+                          {t("skin-rarity-label")}{" "}
+                          <Text
+                            as="span"
+                            fontWeight="bold"
+                            textTransform="uppercase"
+                            fontSize={{ base: "14px", sm: "17px" }}
+                          >
+                            {skinRarityLabel}
+                          </Text>
+                        </Text>
+                      )}
+                      <Divider my={3} w="80%" borderColor="whiteAlpha.700" />
+                    </Flex>
+                  )}
+                  <Text
+                    fontSize={{ base: "14px", sm: "17px" }}
+                    color="whiteAlpha.900"
+                  >
+                    {colorizeText(description)}
+                  </Text>
+                </Box>
+              </Collapse>
+            </Box>
+          )}
         </Box>
       </Flex>
       {variantsEnabled && (
         <Flex
-          position="absolute"
-          bottom={{ base: 4, sm: 6 }}
+          position={{ base: "absolute", sm: "relative" }}
+          bottom={{ base: 4, sm: "auto" }}
+          mt={{ base: 0, sm: 3 }}
+          pb={{ base: 0, sm: 0 }}
           width="100%"
           alignItems="center"
           justifyContent="center"
           flexDirection="column"
-          gap={3}
+          gap={{ base: 3, sm: 3 }}
           onClick={(e) => e.stopPropagation()}
         >
-          <Collapse
-            in={isDescriptionOpen}
-            animateOpacity
-            style={{ width: "100%" }}
-          >
-            <Flex justifyContent="center">
-              <Box
-                width={{ base: "90%", sm: "70%", md: "60%" }}
-                maxW="720px"
-                borderRadius="16px"
-                backgroundColor="rgba(0, 0, 0, 0.6)"
-                px={4}
-                pb={3}
-                textAlign="center"
-              >
-                <IconButton
-                  aria-label={t("hide-description")}
-                  icon={<ChevronDownIcon />}
-                  variant="ghost"
-                  size="md"
-                  color="white"
-                  _hover={{ color: "white" }}
-                  mb={1}
-                  onClick={() => setIsDescriptionOpen(false)}
-                />
-                <Text
-                  fontSize={{ base: "14px", sm: "17px" }}
-                  color="whiteAlpha.900"
-                >
-                  {colorizeText(description)}
-                </Text>
-              </Box>
-            </Flex>
-          </Collapse>
-          <Flex gap={5} justifyContent="center">
+          <Flex gap={5} justifyContent="center" mt={{ base: 0, sm: 6 }}>
             <Button
               onClick={(e) => {
                 e.stopPropagation();
                 onClose();
               }}
               variant="secondarySolid"
-              size="xs"
-              fontSize={{ base: "9px", sm: "14px" }}
+              size={{ base: "xs", sm: "md" }}
+              fontSize={{ base: "10px !important", sm: "14px !important" }}
             >
               {t("close")}
             </Button>
             <Button
               onClick={() => setIsDescriptionOpen((open) => !open)}
               variant="solid"
-              size="xs"
+              size={{ base: "xs", sm: "md" }}
               isDisabled={!description}
-              fontSize={{ base: "9px", sm: "14px" }}
+              fontSize={{ base: "10px !important", sm: "14px !important" }}
             >
-              {isDescriptionOpen
-                ? t("hide-description")
-                : t("show-description")}
+              {detailsToggleLabel}
             </Button>
           </Flex>
         </Flex>

@@ -38,6 +38,9 @@ const CollectionGrid: React.FC<Props> = ({ collection, hideHighlight = false, de
   const [selectedCard, setSelectedCard] = useState<Card | null>(null);
   const [selectedSkinId, setSelectedSkinId] = useState(0);
   const [selectedOwnedSkins, setSelectedOwnedSkins] = useState<number[]>([]);
+  const [selectedOwnedSkinCounts, setSelectedOwnedSkinCounts] = useState<
+    Record<number, number>
+  >({});
   const skinsByCardId = useSkinPreferencesStore(
     (store) => store.skinsByCardId
   );
@@ -68,11 +71,13 @@ const CollectionGrid: React.FC<Props> = ({ collection, hideHighlight = false, de
           card={selectedCard}
           selectedSkinId={selectedSkinId}
           ownedSkinIds={selectedOwnedSkins}
+          ownedSkinCounts={selectedOwnedSkinCounts}
           onSkinChange={setSelectedSkinId}
           onClose={() => {
             setSelectedCard(null);
             setSelectedSkinId(0);
             setSelectedOwnedSkins([]);
+            setSelectedOwnedSkinCounts({});
           }}
         />
       )}
@@ -133,6 +138,14 @@ const CollectionGrid: React.FC<Props> = ({ collection, hideHighlight = false, de
               const ownedSkinIds = Array.from(
                 new Set(nftCard.userNfts.map((nft) => nft.skin))
               );
+              const ownedSkinCounts = nftCard.userNfts.reduce(
+                (counts, nft) => {
+                  const skinId = nft.skin;
+                  counts[skinId] = (counts[skinId] ?? 0) + 1;
+                  return counts;
+                },
+                {} as Record<number, number>
+              );
               return nftCard.userNfts.length > 0 ? (
                 <Flex
                   key={index}
@@ -165,6 +178,7 @@ const CollectionGrid: React.FC<Props> = ({ collection, hideHighlight = false, de
                           : maxSkinId
                       );
                       setSelectedOwnedSkins(ownedSkinIds);
+                      setSelectedOwnedSkinCounts(ownedSkinCounts);
                     }}
                     cursor="pointer"
                   />

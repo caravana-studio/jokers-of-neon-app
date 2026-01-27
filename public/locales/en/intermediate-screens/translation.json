@@ -306,8 +306,10 @@
     "highlight": {
       "variants-title": "Card variants",
       "close": "Close",
-      "show-description": "Show description",
-      "hide-description": "Hide description",
+      "show-details": "Show details",
+      "hide-details": "Hide details",
+      "card-rarity-label": "Card rarity:",
+      "skin-rarity-label": "Skin rarity:",
       "base-label": "BASE",
       "skin-label": "skin {{id}}"
     }

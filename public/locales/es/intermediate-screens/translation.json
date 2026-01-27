@@ -305,8 +305,10 @@
     "highlight": {
       "variants-title": "Variantes de carta",
       "close": "Cerrar",
-      "show-description": "Mostrar descripción",
-      "hide-description": "Ocultar descripción",
+      "show-details": "Mostrar detalles",
+      "hide-details": "Ocultar detalles",
+      "card-rarity-label": "Rareza de carta:",
+      "skin-rarity-label": "Rareza de skin:",
       "base-label": "BASE",
       "skin-label": "skin {{id}}"
     }
