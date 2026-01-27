@@ -186,8 +186,6 @@ export const CollectionCardHighlight = ({
   const bigHeight = `${CARD_HEIGHT * (bigScale ?? 2.4)}px`;
   const thumbWidth = `${CARD_WIDTH * (thumbScale ?? 0.7)}px`;
   const thumbHeight = `${CARD_HEIGHT * (thumbScale ?? 0.7)}px`;
-  const bigImageSrc =
-    resolvedSkinId > 0 ? getImageSrc(resolvedSkinId) : undefined;
   const userAddress = account?.address;
 
   const getSkinLabel = (skinId: number) => {
@@ -250,7 +248,8 @@ export const CollectionCardHighlight = ({
       onClick={onClose}
     >
       <Flex
-        width="100%"
+        maxW="100%"
+        alignSelf="center"
         flexDirection="column"
         alignItems="center"
         justifyContent={{ base: "center", sm: "flex-start" }}
@@ -364,7 +363,7 @@ export const CollectionCardHighlight = ({
             key={`collection-highlight-${cardId}-${resolvedSkinId}`}
             hideTooltip
             card={card}
-            imageSrc={bigImageSrc}
+            skinId={resolvedSkinId}
             width={bigWidth}
             height={bigHeight}
           />
@@ -452,11 +451,12 @@ export const CollectionCardHighlight = ({
           bottom={{ base: 4, sm: "auto" }}
           mt={{ base: 0, sm: 3 }}
           pb={{ base: 0, sm: 0 }}
-          width="100%"
+          width={{ base: "100%", sm: "auto" }}
           alignItems="center"
           justifyContent="center"
           flexDirection="column"
           gap={{ base: 3, sm: 3 }}
+          alignSelf="center"
           onClick={(e) => e.stopPropagation()}
         >
           <Flex gap={5} justifyContent="center" mt={{ base: 0, sm: 6 }}>

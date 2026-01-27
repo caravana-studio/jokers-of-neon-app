@@ -18,6 +18,7 @@ interface ICardImage3DProps {
   layerCount?: number;
   disableTilt?: boolean;
   imageSrc?: string;
+  skinId?: number;
 }
 
 const checkImageExists = (src: string): Promise<boolean> => {
@@ -38,6 +39,7 @@ export const CardImage3D = ({
   layerCount = 4,
   disableTilt = false,
   imageSrc,
+  skinId,
 }: ICardImage3DProps) => {
   const cid = card.card_id ?? 0;
   const shouldUse3dLayers = !imageSrc;
@@ -47,7 +49,9 @@ export const CardImage3D = ({
 
   const [availableLayers, setAvailableLayers] = useState<boolean[]>([]);
   const layersCheckIdRef = useRef(0);
-  const resolvedSkinId = storeSkinId > 0 ? storeSkinId : 0;
+  const preferredSkinId =
+    typeof skinId === "number" ? skinId : storeSkinId;
+  const resolvedSkinId = preferredSkinId > 0 ? preferredSkinId : 0;
   const layerPrefix =
     shouldUse3dLayers && resolvedSkinId > 0
       ? `${cid}_sk${resolvedSkinId}`
