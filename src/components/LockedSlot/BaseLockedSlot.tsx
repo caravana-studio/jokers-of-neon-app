@@ -43,30 +43,37 @@ export const BaseLockedSlot = ({
           onMouseEnter={() => hoverBgImage && setBgImage(hoverBgImage)}
           onMouseLeave={() => setBgImage(defaultBg)}
         >
-        <CachedImage
-          src={bgImage}
-          alt="slot-icon"
-          width={`${CARD_WIDTH * scale}`}
-          height={`${CARD_HEIGHT * scale}`}
-          minWidth={`${CARD_WIDTH * scale}`}
-          backgroundColor={backgroundColor ?? "transparent"}
-          borderRadius={borderRadius ?? "0px"}
-        />
+          <CachedImage
+            src={bgImage}
+            alt="slot-icon"
+            width={`${CARD_WIDTH * scale}`}
+            height={`${CARD_HEIGHT * scale}`}
+            minWidth={`${CARD_WIDTH * scale}`}
+            backgroundColor={backgroundColor ?? "transparent"}
+            borderRadius={borderRadius ?? "0px"}
+          />
         </Box>
         {showPrice && finalPrice > 0 && (
           <Flex
             position="absolute"
             left="50%"
             transform="translateX(-50%)"
-            bottom={scale > 1 ? "18%" : "14%"}
+            bottom={scale > 1 ? "-18%" : "-16%"}
             alignItems="center"
             gap={1}
             color="white"
-            fontSize={scale > 1 ? "16px" : "14px"}
+            fontSize={scale > 1 ? "14px" : "12px"}
             fontFamily="Orbitron"
             pointerEvents="none"
+            bg="black"
+            px={2}
+            py={0.5}
+            borderRadius="20px"
+            minW="56px"
+            justifyContent="center"
+            boxShadow="0 0 10px 3px rgba(255, 255, 255, 0.2)"
           >
-            <CashSymbol size={scale > 1 ? "16px" : "14px"} />
+            <CashSymbol size={scale > 1 ? "14px" : "12px"} />
             <Text lineHeight={1}>{finalPrice}</Text>
           </Flex>
         )}

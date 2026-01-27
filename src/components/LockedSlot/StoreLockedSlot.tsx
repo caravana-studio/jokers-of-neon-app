@@ -19,7 +19,7 @@ export const StoreLockedSlot = (props: LockedSlotProps) => {
       {...props}
       price={Number(specialSlotItem?.cost ?? 0)}
       discountPrice={Number(specialSlotItem?.discount_cost ?? 0)}
-      tooltipText={canBuy ? t("locked-slot") : ""}
+      tooltipText=""
       hoverEffect={
         canBuy
           ? {
