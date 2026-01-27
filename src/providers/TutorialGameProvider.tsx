@@ -2,14 +2,16 @@ import React, { createContext, useEffect, useState } from "react";
 import {
   acumSfx,
   discardSfx,
-  multiSfx,
-  pointsSfx,
   preselectedCardSfx,
 } from "../constants/sfx";
+
+// Number of pitch variants for scoring sounds (points_0.mp3 to points_17.mp3)
+const PITCH_VARIANTS = 18;
 import { GameStateEnum } from "../dojo/typescript/custom.ts";
 import { useDojo } from "../dojo/useDojo";
 import { getLSGameId } from "../dojo/utils/getLSGameId";
 import { useAudio } from "../hooks/useAudio";
+import { usePitchedAudio } from "../hooks/usePitchedAudio";
 import { useAnimationStore } from "../state/useAnimationStore.ts";
 import { useCurrentHandStore } from "../state/useCurrentHandStore";
 import { useGameStore } from "../state/useGameStore";
@@ -69,8 +71,8 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
   const { sfxVolume } = useSettings();
   const { play: preselectCardSound } = useAudio(preselectedCardSfx, sfxVolume);
   const { play: discardSound } = useAudio(discardSfx, sfxVolume);
-  const { play: pointsSound } = useAudio(pointsSfx, sfxVolume);
-  const { play: multiSound } = useAudio(multiSfx, sfxVolume);
+  // Use pitched audio for scoring sounds (points_0.mp3 to points_17.mp3)
+  const { play: pointsSound } = usePitchedAudio("/music/sfx/points", PITCH_VARIANTS, sfxVolume);
   const { play: acumSound } = useAudio(acumSfx, sfxVolume);
 
   const {
@@ -130,10 +132,8 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
       setAnimatedCard,
       setAnimatedPowerUp,
       pointsSound,
-      multiSound,
       acumSound,
       negativeMultiSound: emptyFn,
-      cashSound: emptyFn,
       setPoints: setPoints,
       setMulti: setMulti,
       addPoints: addPoints,
@@ -158,7 +158,6 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
       },
       preSelectedPowerUps,
       navigate: emptyFn,
-      gameId: 0,
       setRoundRewards: emptyFn,
       replaceCards: useCurrentHandStore.getState().replaceCards,
       remainingPlays: remainingPlays - 1,
