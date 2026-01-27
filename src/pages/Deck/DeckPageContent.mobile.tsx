@@ -22,10 +22,20 @@ interface DeckPageContentMobileProps {
 }
 
 // Calculate progressive burn cost
-// Formula: total = N * baseCost + 100 * (N * (N-1) / 2)
-const calculateBurnCost = (numCards: number, baseCost: number): number => {
+// First card uses discounted price (if available), remaining cards use regular price
+// Formula: firstCardCost + (N-1) * regularCost + 100 * ((N-1) * (N-2) / 2)
+const calculateBurnCost = (
+  numCards: number,
+  firstCardCost: number,
+  regularCost: number
+): number => {
   if (numCards === 0) return 0;
-  return numCards * baseCost + 100 * ((numCards * (numCards - 1)) / 2);
+  if (numCards === 1) return firstCardCost;
+  const remainingCards = numCards - 1;
+  const remainingCost =
+    remainingCards * regularCost +
+    100 * ((remainingCards * (remainingCards - 1)) / 2);
+  return firstCardCost + remainingCost;
 };
 
 export const DeckPageContentMobile = ({
@@ -59,15 +69,19 @@ export const DeckPageContentMobile = ({
     }
   };
 
-  const baseCost: number = useMemo(() => {
-    return burnItem?.discount_cost && burnItem.discount_cost !== 0
-      ? Number(burnItem.discount_cost)
-      : Number(burnItem?.cost ?? 0);
+  const regularCost: number = useMemo(() => {
+    return Number(burnItem?.cost ?? 0);
   }, [burnItem]);
 
+  const firstCardCost: number = useMemo(() => {
+    return burnItem?.discount_cost && burnItem.discount_cost !== 0
+      ? Number(burnItem.discount_cost)
+      : regularCost;
+  }, [burnItem, regularCost]);
+
   const totalCost: number = useMemo(() => {
-    return calculateBurnCost(cardsToBurn.length, baseCost);
-  }, [cardsToBurn.length, baseCost]);
+    return calculateBurnCost(cardsToBurn.length, firstCardCost, regularCost);
+  }, [cardsToBurn.length, firstCardCost, regularCost]);
 
   return (
     <Flex
