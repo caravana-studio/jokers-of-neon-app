@@ -1,7 +1,8 @@
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 import Tilt from "react-parallax-tilt";
 import { TILT_OPTIONS } from "../constants/visualProps";
 import { useGameStore } from "../state/useGameStore";
+import { useSkinPreferencesStore } from "../state/useSkinPreferencesStore";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import { Card } from "../types/Card";
 import CachedImage from "./CachedImage";
@@ -40,8 +41,17 @@ export const CardImage3D = ({
 }: ICardImage3DProps) => {
   const cid = card.card_id ?? 0;
   const shouldUse3dLayers = !imageSrc;
+  const storeSkinId = useSkinPreferencesStore((store) =>
+    card.card_id !== undefined ? store.getSkinFor(card.card_id) : 0
+  );
 
   const [availableLayers, setAvailableLayers] = useState<boolean[]>([]);
+  const layersCheckIdRef = useRef(0);
+  const resolvedSkinId = storeSkinId > 0 ? storeSkinId : 0;
+  const layerPrefix =
+    shouldUse3dLayers && resolvedSkinId > 0
+      ? `${cid}_sk${resolvedSkinId}`
+      : `${cid}`;
 
   useEffect(() => {
     if (!shouldUse3dLayers) {
@@ -49,16 +59,20 @@ export const CardImage3D = ({
       return;
     }
 
+    layersCheckIdRef.current += 1;
+    const checkId = layersCheckIdRef.current;
     const checkLayers = async () => {
+      setAvailableLayers([]);
       const results = await Promise.all(
         Array.from({ length: layerCount }, (_, i) =>
-          checkImageExists(`/Cards/3d/${cid}-l${i}.png`)
+          checkImageExists(`/Cards/3d/${layerPrefix}-l${i}.png`)
         )
       );
+      if (layersCheckIdRef.current !== checkId) return;
       setAvailableLayers(results);
     };
     checkLayers();
-  }, [cid, layerCount, shouldUse3dLayers]);
+  }, [layerCount, layerPrefix, shouldUse3dLayers]);
 
   const borderRadius = small ? { base: "5px", sm: "8px" } : "20px";
 
@@ -68,7 +82,9 @@ export const CardImage3D = ({
   const showPlain = (isSmallScreen && small) || !isClassic;
 
   const calculatedHeight = height ?? "100%";
-  const plainImageSrc = imageSrc ?? `/Cards/${cid}.png`;
+  const plainImageSrc =
+    imageSrc ??
+    `/Cards/${cid}${resolvedSkinId > 0 ? `_sk${resolvedSkinId}` : ""}.png`;
 
   const plainImg = (
     <CachedImage
@@ -86,7 +102,7 @@ export const CardImage3D = ({
     <CachedImage
       position={"absolute"}
       borderRadius={borderRadius}
-      src={`/Cards/3d/${cid}-l0.png`}
+      src={`/Cards/3d/${layerPrefix}-l0.png`}
       width={width}
       height={calculatedHeight}
       zIndex={-1}
@@ -103,7 +119,7 @@ export const CardImage3D = ({
         key={`layer-${index}`}
         position="absolute"
         borderRadius={borderRadius}
-        src={`/Cards/3d/${cid}-l${index}.png`}
+        src={`/Cards/3d/${layerPrefix}-l${index}.png`}
         width={width}
         height={calculatedHeight}
         pointerEvents="none"
@@ -114,6 +130,8 @@ export const CardImage3D = ({
 
   return (
     <ConditionalTilt cardId={cid} small={small} disableTilt={disableTilt}>
+      {/** Only render layered stack when layer 0 exists to avoid mixed skins */}
+      {/** availableLayers[0] is checked below before rendering additional layers */}
       {hideTooltip ? (
         availableLayers[0] && !showPlain && shouldUse3dLayers ? (
           layer0Img
@@ -130,7 +148,10 @@ export const CardImage3D = ({
 
       {shouldUse3dLayers &&
         availableLayers
-          .map((exists, i) => exists && i > 0 && !showPlain && getLayerImage(i))
+          .map(
+            (exists, i) =>
+              availableLayers[0] && exists && i > 0 && !showPlain && getLayerImage(i)
+          )
           .filter(Boolean)}
 
       <CachedImage

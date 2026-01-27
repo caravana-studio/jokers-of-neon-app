@@ -1,3 +1,4 @@
+import { ChevronDownIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
@@ -8,14 +9,15 @@ import {
   Text,
   useBreakpointValue,
 } from "@chakra-ui/react";
-import { ChevronDownIcon } from "@chakra-ui/icons";
 import { useEffect, useState } from "react";
 import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
+import { updateUserSkinPreference } from "../api/userPreferences";
 import { CARD_HEIGHT, CARD_WIDTH } from "../constants/visualProps";
+import { useDojo } from "../dojo/useDojo";
 import { CardTypes } from "../enums/cardTypes";
 import { useCardData } from "../providers/CardDataProvider";
-import { useGameStore } from "../state/useGameStore";
+import { useSkinPreferencesStore } from "../state/useSkinPreferencesStore";
 import { Card } from "../types/Card";
 import { colorizeText } from "../utils/getTooltip";
 import CachedImage from "./CachedImage";
@@ -58,13 +60,15 @@ export const CollectionCardHighlight = ({
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "my-collection.highlight",
   });
-  const { t: tGame } = useTranslation("game");
-  const { isClassic } = useGameStore();
+  const {
+    account: { account },
+  } = useDojo();
+  const updateSkin = useSkinPreferencesStore((store) => store.updateSkin);
   const { getCardData } = useCardData();
   const cardId = card.card_id ?? 0;
   const baseImageName = card.img || `${cardId}.png`;
   const { baseWithoutSkin, extension } = splitBaseImageName(baseImageName);
-  const baseDir = cardId < 300 && isMobile && isClassic ? "mobile/" : "";
+  const baseDir = cardId < 300 && isMobile ? "mobile/" : "";
   const [availableSkinIds, setAvailableSkinIds] = useState<number[]>([0]);
   const [hasCheckedSkins, setHasCheckedSkins] = useState(false);
   const [isDescriptionOpen, setIsDescriptionOpen] = useState(false);
@@ -117,12 +121,11 @@ export const CollectionCardHighlight = ({
   const selectedIsAvailable = availableSkinIds.includes(selectedSkinId);
   const fallbackSkinId =
     availableSkinIds.find((skinId) => ownedSkinIds.includes(skinId)) ?? 0;
-  const resolvedSkinId =
-    variantsEnabled
-      ? selectedIsOwned && (selectedIsAvailable || !hasCheckedSkins)
-        ? selectedSkinId
-        : fallbackSkinId
-      : 0;
+  const resolvedSkinId = variantsEnabled
+    ? selectedIsOwned && (selectedIsAvailable || !hasCheckedSkins)
+      ? selectedSkinId
+      : fallbackSkinId
+    : 0;
 
   useEffect(() => {
     if (!variantsEnabled) return;
@@ -168,6 +171,39 @@ export const CollectionCardHighlight = ({
   const thumbHeight = `${CARD_HEIGHT * (thumbScale ?? 0.7)}px`;
   const bigImageSrc =
     resolvedSkinId > 0 ? getImageSrc(resolvedSkinId) : undefined;
+  const userAddress = account?.address;
+
+  const handleSkinSelect = async (
+    skinId: number,
+    isOwned: boolean,
+    isSelected: boolean
+  ) => {
+    if (!isOwned || isSelected) return;
+    const previousSkinId = selectedSkinId;
+    onSkinChange(skinId);
+    if (cardId) {
+      updateSkin(cardId, skinId);
+    }
+
+    if (!userAddress) {
+      console.warn("updateUserSkinPreference: missing user address");
+      return;
+    }
+    if (!cardId) {
+      console.warn("updateUserSkinPreference: missing card id");
+      return;
+    }
+
+    try {
+      await updateUserSkinPreference(userAddress, cardId, skinId);
+    } catch (error) {
+      console.error("Failed to update skin preference", error);
+      onSkinChange(previousSkinId);
+      if (cardId) {
+        updateSkin(cardId, previousSkinId);
+      }
+    }
+  };
 
   return (
     <Flex
@@ -238,7 +274,7 @@ export const CollectionCardHighlight = ({
                     cursor={isOwned ? "pointer" : "not-allowed"}
                     transition="all 0.2s ease"
                     onClick={() => {
-                      if (isOwned) onSkinChange(skinId);
+                      void handleSkinSelect(skinId, isOwned, isSelected);
                     }}
                   >
                     <Flex
@@ -304,7 +340,11 @@ export const CollectionCardHighlight = ({
           gap={3}
           onClick={(e) => e.stopPropagation()}
         >
-          <Collapse in={isDescriptionOpen} animateOpacity style={{ width: "100%" }}>
+          <Collapse
+            in={isDescriptionOpen}
+            animateOpacity
+            style={{ width: "100%" }}
+          >
             <Flex justifyContent="center">
               <Box
                 width={{ base: "90%", sm: "70%", md: "60%" }}
@@ -325,7 +365,10 @@ export const CollectionCardHighlight = ({
                   mb={1}
                   onClick={() => setIsDescriptionOpen(false)}
                 />
-                <Text fontSize={{ base: "14px", sm: "17px" }} color="whiteAlpha.900">
+                <Text
+                  fontSize={{ base: "14px", sm: "17px" }}
+                  color="whiteAlpha.900"
+                >
                   {colorizeText(description)}
                 </Text>
               </Box>
@@ -350,7 +393,9 @@ export const CollectionCardHighlight = ({
               isDisabled={!description}
               fontSize={{ base: "9px", sm: "14px" }}
             >
-              {isDescriptionOpen ? t("hide-description") : t("show-description")}
+              {isDescriptionOpen
+                ? t("hide-description")
+                : t("show-description")}
             </Button>
           </Flex>
         </Flex>
