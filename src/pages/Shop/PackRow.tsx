@@ -6,16 +6,17 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { getUserCards } from "../../api/getUserCards";
 import CachedImage from "../../components/CachedImage";
 import { NFTPackRateInfo } from "../../components/Info/NFTPackRateInfo";
 import {
   buttonGlowAnimation,
   limitedEditionPulse,
   packAnimation,
-  shopPackGlowAnimation
+  shopPackGlowAnimation,
 } from "../../constants/animations";
 import { useDojo } from "../../dojo/DojoContext";
 import { useUsername } from "../../dojo/utils/useUsername";
@@ -47,6 +48,30 @@ export const PackRow = ({ packId, packageId, price }: PackRowProps) => {
   const { purchasePackageById, offerings } = useRevenueCat();
   const [isPurchasing, setIsPurchasing] = useState(false);
   const isBuyDisabled = isPurchasing || !price;
+  const [ownedCardIds, setOwnedCardIds] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (!account?.address) {
+      setOwnedCardIds([]);
+      return;
+    }
+
+    let cancelled = false;
+    getUserCards(account.address)
+      .then((data) => {
+        if (cancelled) return;
+        setOwnedCardIds(data.ownedCardIds ?? []);
+      })
+      .catch((error) => {
+        if (cancelled) return;
+        console.error("PackRow: failed to load user collection", error);
+        setOwnedCardIds([]);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [account?.address]);
 
   const handlePurchase = async () => {
     if (isPurchasing) {
@@ -92,6 +117,7 @@ export const PackRow = ({ packId, packageId, price }: PackRowProps) => {
             initialCards: simplifiedCards,
             packId,
             returnTo: "/shop",
+            ownedCardIds,
           },
         });
       });
@@ -159,9 +185,7 @@ export const PackRow = ({ packId, packageId, price }: PackRowProps) => {
                   ? `${limitedEditionPulse} 2.4s ease-in-out infinite`
                   : undefined
               }
-              style={
-                isLimitedEdition ? { animationDelay: "0.4s" } : undefined
-              }
+              style={isLimitedEdition ? { animationDelay: "0.4s" } : undefined}
               transformOrigin="center"
               display="inline-block"
               willChange={isLimitedEdition ? "transform, filter" : undefined}

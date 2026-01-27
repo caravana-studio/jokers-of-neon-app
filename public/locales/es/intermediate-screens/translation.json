@@ -144,7 +144,8 @@
   "external-pack": {
     "continue": "Continuar",
     "open": "Abrir",
-    "draw-line": "Traza una línea para abrir"
+    "draw-line": "Traza una línea para abrir",
+    "new": "NUEVA"
   },
   "my-games": {
     "title": "Juegos",
