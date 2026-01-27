@@ -39,7 +39,7 @@ export async function getUserCards(userAddress: string): Promise<{
   specials: Collection[];
   traditionals: Collection;
   neons: Collection;
-  ownedCardIds: number[];
+  ownedCardIds: string[];
 }> {
   if (!userAddress) {
     throw new Error("getUserCards: userAddress is required");
@@ -101,7 +101,7 @@ export async function getUserCards(userAddress: string): Promise<{
     new Set(
       userCards
         .filter((card) => Number(card.count) > 0)
-        .map((card) => card.cardId)
+        .map((card) => `${card.cardId}_${card.skinId ?? 0}`)
     )
   );
 

@@ -42,7 +42,7 @@ export const PackRow = ({ packId, packageId, price }: PackRowProps) => {
   const username = useUsername();
   const { purchasePackageById, offerings } = useRevenueCat();
   const [isPurchasing, setIsPurchasing] = useState(false);
-  const [ownedCardIds, setOwnedCardIds] = useState<number[]>([]);
+  const [ownedCardIds, setOwnedCardIds] = useState<string[]>([]);
 
   useEffect(() => {
     if (!account?.address) {

@@ -32,7 +32,7 @@ export const ClaimMultipleRewardsPage = () => {
   const [packs, setPacks] = useState<SeasonRewardPack[]>([]);
   const [currentPackIndex, setCurrentPackIndex] = useState<number>(0);
   const [transitioning, setTransitioning] = useState<boolean>(false);
-  const [ownedCardIds, setOwnedCardIds] = useState<number[]>([]);
+  const [ownedCardIds, setOwnedCardIds] = useState<string[]>([]);
   const hasClaimedRef = useRef<boolean>(false);
 
   useEffect(() => {

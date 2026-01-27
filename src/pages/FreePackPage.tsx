@@ -22,7 +22,7 @@ export const FreePackPage = () => {
   const navigate = useNavigate();
 
   const [mintedCards, setMintedCards] = useState<SimplifiedCard[]>([]);
-  const [ownedCardIds, setOwnedCardIds] = useState<number[]>([]);
+  const [ownedCardIds, setOwnedCardIds] = useState<string[]>([]);
   const hasClaimedRef = useRef<boolean>(false);
 
   useEffect(() => {

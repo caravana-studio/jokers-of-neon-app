@@ -65,7 +65,7 @@ interface ExternalPackProps {
   onContinue?: () => void;
   packId?: number;
   returnTo?: string;
-  ownedCardIds?: number[];
+  ownedCardIds?: string[];
 }
 
 export const ExternalPack = ({
@@ -102,7 +102,7 @@ export const ExternalPack = ({
       : undefined);
 
   const [step, setStep] = useState(0);
-  const [ownedCardIds, setOwnedCardIds] = useState<Set<number>>(new Set());
+  const [ownedCardIds, setOwnedCardIds] = useState<Set<string>>(new Set());
   const [ownedCardsLoaded, setOwnedCardsLoaded] = useState(false);
 
   const { isSmallScreen } = useResponsiveValues();
@@ -191,6 +191,7 @@ export const ExternalPack = ({
         return {
           id: index,
           cardId: card.card_id,
+          skinId,
           img: `/Cards/${card.card_id}${skinId !== 0 ? `_sk${skinId}` : ""}.png`,
         };
       }),

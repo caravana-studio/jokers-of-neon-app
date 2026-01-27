@@ -10,6 +10,7 @@ import { VIOLET, VIOLET_RGBA } from "../../../theme/colors";
 export type CardData = {
   id: number | string;
   cardId: number;
+  skinId?: number;
   img: string;
   [key: string]: any;
 };
@@ -131,7 +132,7 @@ interface StackProps {
   sendToBackOnClick?: boolean;
   onCardChange?: (cardId: number) => void;
   onAllSeen?: () => void;
-  ownedCardIds?: Set<number>;
+  ownedCardIds?: Set<string>;
 }
 
 export default function Stack({
@@ -241,6 +242,7 @@ export default function Stack({
           : 0;
 
         const isTopCard = index === cards.length - 1;
+        const ownedKey = `${card.cardId}_${card.skinId ?? 0}`;
 
         return (
           <CardRotate
@@ -274,7 +276,7 @@ export default function Stack({
                 alt={`card-${card.id}`}
                 className="card-image"
               />
-              {isTopCard && ownedCardIds && !ownedCardIds.has(card.cardId) && (
+              {isTopCard && ownedCardIds && !ownedCardIds.has(ownedKey) && (
                 <NewBadge reduceMotion={prefersReducedMotion ?? false} />
               )}
             </motion.div>
