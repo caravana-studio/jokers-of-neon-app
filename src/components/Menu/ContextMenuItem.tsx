@@ -12,6 +12,7 @@ interface ContextMenuItemProps {
   disabled?: boolean;
   onClick?: () => void;
   nameKey?: string;
+  notificationCount?: number;
 }
 export const ContextMenuItem = ({
   icon,
@@ -20,9 +21,18 @@ export const ContextMenuItem = ({
   active = false,
   onClick,
   nameKey,
+  notificationCount,
 }: ContextMenuItemProps) => {
   const { isSmallScreen } = useResponsiveValues();
   const iconSize = isSmallScreen ? "20px" : "22px";
+  const badgeValue =
+    typeof notificationCount === "number" && notificationCount > 0
+      ? notificationCount > 9
+        ? "9+"
+        : String(notificationCount)
+      : null;
+  const badgeSize = isSmallScreen ? "12px" : "14px";
+  const badgeFontSize = isSmallScreen ? "8px" : "9px";
   const { t } = useTranslation("home", { keyPrefix: "menu" });
   return (
     <Link
@@ -65,7 +75,34 @@ export const ContextMenuItem = ({
           py={isSmallScreen ? 0 : 2.5}
           backgroundColor={active ? "rgba(255,255,255,0.15)" : "none"}
         >
-          <IconComponent icon={icon} width={iconSize} height={iconSize} />
+          <Flex position="relative" align="center" justify="center">
+            <IconComponent icon={icon} width={iconSize} height={iconSize} />
+            {badgeValue && (
+              <Flex
+                position="absolute"
+                top={isSmallScreen ? "-4px" : "-5px"}
+                right={isSmallScreen ? "-6px" : "-7px"}
+                minW={badgeSize}
+                h={badgeSize}
+                px={badgeValue === "9+" ? 1 : 0}
+                borderRadius="999px"
+                backgroundColor="red.500"
+                alignItems="center"
+                justifyContent="center"
+                zIndex={1}
+                pointerEvents="none"
+              >
+                <Text
+                  fontSize={badgeFontSize}
+                  lineHeight="1"
+                  color="white"
+                  fontWeight="700"
+                >
+                  {badgeValue}
+                </Text>
+              </Flex>
+            )}
+          </Flex>
           {isSmallScreen && nameKey && <Text fontSize={9}>{t(nameKey)}</Text>}
         </Flex>
       </Flex>

@@ -55,7 +55,7 @@ export const DailyMissions = ({ showTitle = true, fontSize }: DailyMissionsProps
       });
   }, [account, client]);
 
-  const date = getNextResetDate();
+  const sortedMissions = [...dailyMissions].sort((a, b) => a.xp - b.xp);
 
   return (
     <Flex w="100%" flexDir="column" gap={2} overflow="hidden">
@@ -72,7 +72,7 @@ export const DailyMissions = ({ showTitle = true, fontSize }: DailyMissionsProps
             {t("noMissionsAvailable")}
           </Text>
         ) : (
-          dailyMissions.map((mission, index) => (
+          sortedMissions.map((mission, index) => (
             <MissionRow key={index} mission={mission} fontSize={fontSize} />
           ))
         )}

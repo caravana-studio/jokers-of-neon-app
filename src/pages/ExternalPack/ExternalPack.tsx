@@ -12,10 +12,13 @@ import { NFTPackRateInfo } from "../../components/Info/NFTPackRateInfo";
 import { MobileDecoration } from "../../components/MobileDecoration";
 import { packAnimation, packGlowAnimation } from "../../constants/animations";
 import { RARITY, RarityLabels } from "../../constants/rarity";
+import { packCutSfx, packResultSfx } from "../../constants/sfx";
 import { SKINS_RARITY } from "../../data/specialCards";
-import { CardTypes } from "../../enums/cardTypes";
 import { useDojo } from "../../dojo/useDojo";
+import { CardTypes } from "../../enums/cardTypes";
+import { useAudio } from "../../hooks/useAudio";
 import { useCardData } from "../../providers/CardDataProvider";
+import { useSettings } from "../../providers/SettingsProvider";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { Intensity } from "../../types/intensity";
 import { isNativeAndroid } from "../../utils/capacitorUtils";
@@ -27,7 +30,7 @@ import { SplitPackOnce } from "./SplitPackOnce";
 const getIntensity = (
   type: CardTypes,
   rarity: RARITY,
-  highlightedCardSkin: RARITY
+  highlightedCardSkin: RARITY,
 ) => {
   switch (type) {
     case CardTypes.JOKER:
@@ -111,11 +114,11 @@ export const ExternalPack = ({
   const extraPackWidth = packWidth + 50;
   const packHeight = useMemo(
     () => (isSmallScreen ? 405 : 472),
-    [isSmallScreen]
+    [isSmallScreen],
   );
 
   const [obtainedCards, setObtainedCards] = useState<SimplifiedCard[]>(
-    initialCardsSource ?? []
+    initialCardsSource ?? [],
   );
   const [highlightedCard, setHighlightedCard] = useState<number | null>(null);
   const resolvedHighlightedCard =
@@ -146,8 +149,13 @@ export const ExternalPack = ({
 
   const shouldDisableHeavyBackground = isNativeAndroid;
 
+  const { sfxVolume } = useSettings();
+  const { play: playPackCut } = useAudio(packCutSfx, sfxVolume);
+  const { play: playPackResult } = useAudio(packResultSfx, sfxVolume);
+
   // Use pre-open ownedCardIds from props or navigation state
-  const preOpenOwnedCardIds = providedOwnedCardIds ?? locationState?.ownedCardIds;
+  const preOpenOwnedCardIds =
+    providedOwnedCardIds ?? locationState?.ownedCardIds;
 
   useEffect(() => {
     // Use pre-open ownedCardIds from props or navigation state if available
@@ -185,7 +193,7 @@ export const ExternalPack = ({
 
   const cardsData = useMemo(
     () =>
-      obtainedCards.map((card, index) => {
+      [...obtainedCards].reverse().map((card, index) => {
         const skinId = card.skin_id ?? 0;
 
         return {
@@ -195,7 +203,7 @@ export const ExternalPack = ({
           img: `/Cards/${card.card_id}${skinId !== 0 ? `_sk${skinId}` : ""}.png`,
         };
       }),
-    [obtainedCards]
+    [obtainedCards],
   );
 
   // Ensure the first render highlights the first real card instead of the fallback (ID 0 / 2 de trébol).
@@ -213,7 +221,7 @@ export const ExternalPack = ({
           intensity={getIntensity(
             type ?? CardTypes.NONE,
             rarity ?? RARITY.C,
-            SKINS_RARITY[highlightedCardSkin]
+            SKINS_RARITY[highlightedCardSkin],
           )}
         />
       )}
@@ -270,7 +278,7 @@ export const ExternalPack = ({
                 >
                   -{" "}
                   {t(
-                    `shop.packs.${packId > 4 ? "limited-edition" : "player-pack"}`
+                    `shop.packs.${packId > 4 ? "limited-edition" : "player-pack"}`,
                   )}{" "}
                   -
                 </Text>
@@ -278,7 +286,7 @@ export const ExternalPack = ({
               <NFTPackRateInfo
                 name={t(`shop.packs.${packId}.name`)}
                 details={t(
-                  `shop.packs.${packId > 4 ? "limited-edition" : "player-pack"}`
+                  `shop.packs.${packId > 4 ? "limited-edition" : "player-pack"}`,
                 )}
                 packId={packId}
               />
@@ -321,7 +329,7 @@ export const ExternalPack = ({
               <Text size="l" textTransform="lowercase" fontWeight={600}>
                 -{" "}
                 {tGame(
-                  `game.card-types.${highlightedCardSkin > 1 ? "skin-special" : type}`
+                  `game.card-types.${highlightedCardSkin > 1 ? "skin-special" : type}`,
                 )}{" "}
                 -
               </Text>
@@ -373,8 +381,12 @@ export const ExternalPack = ({
               {step < 2 && (
                 <>
                   <PackTear
-                    onOpened={() => setStep(2)}
+                    onOpened={() => {
+                      playPackCut();
+                      setStep(2);
+                    }}
                     width={extraPackWidth}
+                    packWidth={packWidth}
                     step={step}
                     color={packId > 3 ? "white" : "black"}
                   />
@@ -397,6 +409,7 @@ export const ExternalPack = ({
                   height={packHeight}
                   src={`/packs/${packId}.png`}
                   onDone={() => {
+                    playPackResult();
                     setStep(3);
 
                     const timer = setTimeout(() => {

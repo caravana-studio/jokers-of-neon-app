@@ -106,7 +106,7 @@ export const GameContent = () => {
     setRunCallback: React.Dispatch<React.SetStateAction<boolean>>
   ) => {
     return (data: CallBackProps) => {
-      const { type } = data;
+      const { type, status } = data;
 
       if (
         type === "step:after" &&
@@ -136,7 +136,8 @@ export const GameContent = () => {
       }
 
       if (type === "tour:end") {
-        logEvent("tutorial_finished");
+        logEvent(status === "skipped" ? "tutorial_skipped" : "tutorial_finished");
+        logEvent('tutorial_done')
         setRunCallback(false);
         switch (state) {
           case GameStateEnum.Store:

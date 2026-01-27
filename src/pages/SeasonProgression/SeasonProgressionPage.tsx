@@ -1,50 +1,72 @@
-import { useEffect, useState } from "react";
-import { getSeasonProgress } from "../../api/getSeasonProgress";
+import { useCallback, useEffect } from "react";
 import { DelayedLoading } from "../../components/DelayedLoading";
 import { MobileDecoration } from "../../components/MobileDecoration";
 import { useDojo } from "../../dojo/DojoContext";
+import { useSeasonProgressStore } from "../../state/useSeasonProgressStore";
 import { SeasonProgressionContent } from "./SeasonProgressionContent";
 import { SeasonProgressionHeader } from "./SeasonProgressionHeader";
-import { IStep } from "./types";
 
 export const SeasonProgressionPage = () => {
-  const [steps, setSteps] = useState<IStep[]>([]);
-  const [playerProgress, setPlayerProgress] = useState<number>(0);
-  const [isLoading, setIsLoading] = useState(true);
   const {
     account: { account },
   } = useDojo();
+  const steps = useSeasonProgressStore((store) => store.steps);
+  const playerProgress = useSeasonProgressStore((store) => store.playerProgress);
+  const loading = useSeasonProgressStore((store) => store.loading);
+  const lastUserAddress = useSeasonProgressStore(
+    (store) => store.lastUserAddress
+  );
+  const refetchSeasonProgress = useSeasonProgressStore(
+    (store) => store.refetch
+  );
+  const resetSeasonProgress = useSeasonProgressStore((store) => store.reset);
 
-  const fetchSeasonProgress = (forceSeasonPassUnlocked = false) => {
-    setIsLoading(true);
-    getSeasonProgress({
-      userAddress: account?.address,
-      forceSeasonPassUnlocked,
-    }).then((data) => {
-      setIsLoading(false);
-      setSteps(data.steps);
-      setPlayerProgress(data.playerProgress);
-    });
-  };
+  const fetchSeasonProgress = useCallback(
+    async (forceSeasonPassUnlocked = false) => {
+      if (!account?.address) {
+        return;
+      }
+
+      await refetchSeasonProgress({
+        userAddress: account.address,
+        forceSeasonPassUnlocked,
+      });
+    },
+    [account?.address, refetchSeasonProgress]
+  );
 
   useEffect(() => {
-    if (account?.address) {
-      fetchSeasonProgress();
+    if (!account?.address) {
+      if (lastUserAddress) {
+        resetSeasonProgress();
+      }
+      return;
     }
-  }, [account.address]);
+
+    if (lastUserAddress !== account.address) {
+      void refetchSeasonProgress({ userAddress: account.address });
+    }
+  }, [
+    account?.address,
+    lastUserAddress,
+    refetchSeasonProgress,
+    resetSeasonProgress,
+  ]);
 
   return (
-    <DelayedLoading ms={200} loading={isLoading}>
+    <DelayedLoading ms={200} loading={loading}>
       <MobileDecoration fadeToBlack />
       <SeasonProgressionHeader
         onSeasonPassPurchased={() => {
-          fetchSeasonProgress(true);
+          void fetchSeasonProgress(true);
         }}
       />
       <SeasonProgressionContent
         steps={steps}
         playerProgress={playerProgress}
-        refetch={fetchSeasonProgress}
+        refetch={() => {
+          void fetchSeasonProgress();
+        }}
       />
     </DelayedLoading>
   );

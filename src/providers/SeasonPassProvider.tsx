@@ -7,8 +7,8 @@ import {
   useMemo,
   useState,
 } from "react";
-import { getSeasonProgress } from "../api/getSeasonProgress";
 import { useDojo } from "../dojo/DojoContext";
+import { useSeasonProgressStore } from "../state/useSeasonProgressStore";
 import { showPurchaseSuccessToast } from "../utils/transactionNotifications";
 import { useRevenueCat } from "./RevenueCatProvider";
 
@@ -26,40 +26,39 @@ const SeasonPassContext = createContext<SeasonPassContextValue>({
   purchaseSeasonPass: async () => {},
 });
 
-const DEFAULT_API_BASE_URL = "http://localhost:3001";
-
 export const SeasonPassProvider = ({ children }: PropsWithChildren) => {
   const {
     account: { account },
   } = useDojo();
-  const [seasonPassUnlocked, setSeasonPassUnlocked] = useState(false);
-  const [loading, setLoading] = useState(true);
-
   const userAddress = account?.address;
   const { offerings, purchasePackageById } = useRevenueCat();
+  const [isPurchasing, setIsPurchasing] = useState(false);
+  const seasonPassUnlocked = useSeasonProgressStore(
+    (store) => store.seasonPassUnlocked
+  );
+  const seasonProgressLoading = useSeasonProgressStore(
+    (store) => store.loading
+  );
+  const lastUserAddress = useSeasonProgressStore(
+    (store) => store.lastUserAddress
+  );
+  const refetchSeasonProgress = useSeasonProgressStore(
+    (store) => store.refetch
+  );
+  const resetSeasonProgress = useSeasonProgressStore((store) => store.reset);
 
-  const fetchSeasonPassUnlocked = useCallback(async () => {
+  useEffect(() => {
     if (!userAddress) {
-      setSeasonPassUnlocked(false);
-      setLoading(false);
+      if (lastUserAddress) {
+        resetSeasonProgress();
+      }
       return;
     }
 
-    setLoading(true);
-    try {
-      const progress = await getSeasonProgress({ userAddress });
-      setSeasonPassUnlocked(Boolean(progress.seasonPassUnlocked));
-    } catch (error) {
-      console.error("Failed to fetch season pass status", error);
-      setSeasonPassUnlocked(false);
-    } finally {
-      setLoading(false);
+    if (lastUserAddress !== userAddress) {
+      void refetchSeasonProgress({ userAddress });
     }
-  }, [userAddress]);
-
-  useEffect(() => {
-    fetchSeasonPassUnlocked();
-  }, [fetchSeasonPassUnlocked]);
+  }, [lastUserAddress, refetchSeasonProgress, resetSeasonProgress, userAddress]);
 
   const seasonPassId = offerings?.seasonPass?.id;
 
@@ -77,29 +76,41 @@ export const SeasonPassProvider = ({ children }: PropsWithChildren) => {
       return;
     }
 
-    setLoading(true);
+    setIsPurchasing(true);
     try {
       await purchasePackageById(seasonPassPackageId);
-      await fetchSeasonPassUnlocked();
-      setSeasonPassUnlocked(true);
+      await refetchSeasonProgress({
+        userAddress,
+        forceSeasonPassUnlocked: true,
+      });
       showPurchaseSuccessToast("season-pass");
     } catch (error) {
       console.error("Failed to purchase season pass", error);
-      setLoading(false);
       throw error;
     } finally {
-      setLoading(false);
+      setIsPurchasing(false);
     }
-  }, [fetchSeasonPassUnlocked, seasonPassId, purchasePackageById, userAddress]);
+  }, [purchasePackageById, refetchSeasonProgress, seasonPassId, userAddress]);
+
+  const refetchSeasonPassUnlocked = useCallback(async () => {
+    if (!userAddress) {
+      resetSeasonProgress();
+      return;
+    }
+
+    await refetchSeasonProgress({ userAddress });
+  }, [refetchSeasonProgress, resetSeasonProgress, userAddress]);
+
+  const loading = seasonProgressLoading || isPurchasing;
 
   const value = useMemo(
     () => ({
       seasonPassUnlocked,
       loading,
-      refetchSeasonPassUnlocked: fetchSeasonPassUnlocked,
+      refetchSeasonPassUnlocked,
       purchaseSeasonPass,
     }),
-    [seasonPassUnlocked, loading, fetchSeasonPassUnlocked, purchaseSeasonPass]
+    [seasonPassUnlocked, loading, refetchSeasonPassUnlocked, purchaseSeasonPass]
   );
 
   return (

@@ -1,15 +1,14 @@
 import { Button, Flex, Text } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { getSeasonProgress } from "../../api/getSeasonProgress";
 import CachedImage from "../../components/CachedImage";
 import { useDojo } from "../../dojo/DojoContext";
 import { useGameContext } from "../../providers/GameProvider";
+import { useSeasonProgressStore } from "../../state/useSeasonProgressStore";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 
 export const TournamentEntries = () => {
-  const [entries, setEntries] = useState(0);
   const { t } = useTranslation("home", {
     keyPrefix: "home.tournament-banner",
   });
@@ -18,12 +17,32 @@ export const TournamentEntries = () => {
   } = useDojo();
   const { prepareNewGame, executeCreateGame } = useGameContext();
   const navigate = useNavigate();
+  const entries = useSeasonProgressStore((store) => store.tournamentEntries);
+  const lastUserAddress = useSeasonProgressStore(
+    (store) => store.lastUserAddress
+  );
+  const refetchSeasonProgress = useSeasonProgressStore(
+    (store) => store.refetch
+  );
+  const resetSeasonProgress = useSeasonProgressStore((store) => store.reset);
 
   useEffect(() => {
-    getSeasonProgress({ userAddress: account?.address }).then((data) => {
-      setEntries(data.tournamentEntries);
-    });
-  }, []);
+    if (!account?.address) {
+      if (lastUserAddress) {
+        resetSeasonProgress();
+      }
+      return;
+    }
+
+    if (lastUserAddress !== account.address) {
+      void refetchSeasonProgress({ userAddress: account.address });
+    }
+  }, [
+    account?.address,
+    lastUserAddress,
+    refetchSeasonProgress,
+    resetSeasonProgress,
+  ]);
 
   const handleCreateGame = async () => {
     prepareNewGame();

@@ -1,8 +1,10 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useLocation } from "react-router-dom";
 import { Icons } from "../../constants/icons";
+import { useDojo } from "../../dojo/DojoContext";
 import { GameStateEnum } from "../../dojo/typescript/custom";
 import { useGameStore } from "../../state/useGameStore";
+import { useSeasonProgressStore } from "../../state/useSeasonProgressStore";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 
 export const mainMenuUrls = [
@@ -66,6 +68,7 @@ interface MenuItem {
   key: string;
   onClick?: () => void;
   disabled?: boolean;
+  notificationCount?: number;
 }
 
 export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
@@ -73,6 +76,37 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
   const url = location.pathname;
   const { state } = useGameStore();
   const { isSmallScreen } = useResponsiveValues();
+  const {
+    account: { account },
+  } = useDojo();
+  const seasonNotificationCount = useSeasonProgressStore(
+    (store) => store.unclaimedRewardsCount
+  );
+  const lastUserAddress = useSeasonProgressStore(
+    (store) => store.lastUserAddress
+  );
+  const refetchSeasonProgress = useSeasonProgressStore(
+    (store) => store.refetch
+  );
+  const resetSeasonProgress = useSeasonProgressStore((store) => store.reset);
+
+  useEffect(() => {
+    if (!account?.address) {
+      if (lastUserAddress) {
+        resetSeasonProgress();
+      }
+      return;
+    }
+
+    if (lastUserAddress !== account.address) {
+      void refetchSeasonProgress({ userAddress: account.address });
+    }
+  }, [
+    account?.address,
+    lastUserAddress,
+    refetchSeasonProgress,
+    resetSeasonProgress,
+  ]);
 
   const mainMenuItems: MenuItem[] = useMemo(() => {
     const items: MenuItem[] = [
@@ -104,6 +138,7 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
         url: "/season",
         active: url === "/season",
         key: "season",
+        notificationCount: seasonNotificationCount,
       },
       {
         icon: Icons.SHOP,
@@ -129,7 +164,7 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
     }
 
     return items;
-  }, [isSmallScreen, url]);
+  }, [isSmallScreen, url, seasonNotificationCount]);
 
   const inGameMenuItems: MenuItem[] = [
     {

@@ -12,6 +12,7 @@ import { DelayedLoading } from "../components/DelayedLoading";
 import { SimulatedLoadingBar } from "../components/LoadingProgressBar/SimulatedLoadingProgressBar";
 import { MobileDecoration } from "../components/MobileDecoration";
 import { useDojo } from "../dojo/useDojo";
+import { useSeasonProgressStore } from "../state/useSeasonProgressStore";
 import { LoadingProgress } from "../types/LoadingProgress";
 import { ExternalPack } from "./ExternalPack/ExternalPack";
 
@@ -34,6 +35,9 @@ export const ClaimMultipleRewardsPage = () => {
   const [transitioning, setTransitioning] = useState<boolean>(false);
   const [ownedCardIds, setOwnedCardIds] = useState<string[]>([]);
   const hasClaimedRef = useRef<boolean>(false);
+  const refetchSeasonProgress = useSeasonProgressStore(
+    (store) => store.refetch
+  );
 
   useEffect(() => {
     if (!account?.address || hasClaimedRef.current) return;
@@ -57,6 +61,7 @@ export const ClaimMultipleRewardsPage = () => {
 
         setPacks(result);
         setCurrentPackIndex(0);
+        void refetchSeasonProgress({ userAddress: account.address });
       } catch (error) {
         console.error("Error claiming season reward:", error);
         navigate("/");
