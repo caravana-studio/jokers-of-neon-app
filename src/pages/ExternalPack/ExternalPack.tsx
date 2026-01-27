@@ -192,10 +192,9 @@ export const ExternalPack = ({
           id: index,
           cardId: card.card_id,
           img: `/Cards/${card.card_id}${skinId !== 0 ? `_sk${skinId}` : ""}.png`,
-          newLabel: tPack("new"),
         };
       }),
-    [obtainedCards, tPack]
+    [obtainedCards]
   );
 
   // Ensure the first render highlights the first real card instead of the fallback (ID 0 / 2 de trébol).

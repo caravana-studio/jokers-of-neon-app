@@ -18,19 +18,3 @@
   height: 100%;
   object-fit: cover;
 }
-
-.card-new-badge {
-  position: absolute;
-  top: -16px;
-  left: 8px;
-  padding: 4px 12px;
-  background: linear-gradient(135deg, #ff5aa0 0%, #ff7ab8 100%);
-  color: #ffffff;
-  font-size: 12px;
-  letter-spacing: 0.6px;
-  font-weight: 700;
-  text-transform: capitalize;
-  border-radius: 999px;
-  box-shadow: 0 6px 12px rgba(255, 90, 160, 0.45);
-  pointer-events: none;
-}

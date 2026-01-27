@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { isLegacyAndroid } from "../../../utils/capacitorUtils";
 import "./Stack.css";
+import { VIOLET, VIOLET_RGBA } from "../../../theme/colors";
 
 // Types
 export type CardData = {
@@ -68,6 +69,59 @@ function CardRotate({
   );
 }
 
+type NewBadgeProps = {
+  reduceMotion?: boolean;
+};
+
+function NewBadge({ reduceMotion = false }: NewBadgeProps) {
+  const { t } = useTranslation("intermediate-screens", {
+    keyPrefix: "external-pack",
+  });
+  const label = t("new");
+  const baseShadow = `0 0px 10px 7px ${VIOLET_RGBA(1)}`;
+  const pulseShadow = `0 0px 5px 2px ${VIOLET_RGBA(0.4)}`;
+
+  return (
+    <motion.div
+      style={{
+        position: "absolute",
+        top: -28,
+        left: 8,
+        padding: "4px 12px",
+        background: VIOLET,
+        color: "#ffffff",
+        fontSize: 12,
+        letterSpacing: 0.6,
+        fontWeight: 700,
+        textTransform: "capitalize",
+        borderRadius: 999,
+        boxShadow: baseShadow,
+        pointerEvents: "none",
+        fontFamily: "'Sonara', sans-serif",
+        lineHeight: 1.2,
+      }}
+      animate={
+        reduceMotion
+          ? undefined
+          : {
+              boxShadow: [baseShadow, pulseShadow, baseShadow],
+            }
+      }
+      transition={
+        reduceMotion
+          ? undefined
+          : {
+              duration: 2,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }
+      }
+    >
+      {label}
+    </motion.div>
+  );
+}
+
 interface StackProps {
   randomRotation?: boolean;
   sensitivity?: number;
@@ -93,7 +147,6 @@ export default function Stack({
 }: StackProps) {
   const [cards, setCards] = useState<CardData[]>(cardsData);
   const [seenCards, setSeenCards] = useState<Set<number | string>>(new Set());
-  const { i18n } = useTranslation();
   const prefersReducedMotion = useReducedMotion();
   const [isLegacyAndroidDevice, setIsLegacyAndroidDevice] = useState(false);
   const disableTilt = prefersReducedMotion || isLegacyAndroidDevice;
@@ -188,15 +241,6 @@ export default function Stack({
           : 0;
 
         const isTopCard = index === cards.length - 1;
-        const locale = i18n.language ?? "en";
-        const fallbackNew = locale.startsWith("es")
-          ? "NUEVA"
-          : locale.startsWith("pt")
-            ? "NOVA"
-            : "NEW";
-        const rawLabel = card.newLabel ?? fallbackNew;
-        const newLabel =
-          rawLabel === "external-pack.new" ? fallbackNew : rawLabel;
 
         return (
           <CardRotate
@@ -231,7 +275,7 @@ export default function Stack({
                 className="card-image"
               />
               {isTopCard && ownedCardIds && !ownedCardIds.has(card.cardId) && (
-                <div className="card-new-badge">{newLabel}</div>
+                <NewBadge reduceMotion={prefersReducedMotion ?? false} />
               )}
             </motion.div>
           </CardRotate>
