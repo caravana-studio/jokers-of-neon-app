@@ -143,7 +143,7 @@ export const ExternalPack = ({
 
   const cardsData = useMemo(
     () =>
-      obtainedCards.map((card, index) => ({
+      [...obtainedCards].reverse().map((card, index) => ({
         id: index,
         cardId: card.card_id,
         img: `/Cards/${card.card_id}${card.skin_id !== 0 ? `_sk${card.skin_id}` : ""}.png`,
