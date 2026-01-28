@@ -7,6 +7,9 @@ export interface LockedSlotProps {
   scale?: number;
   backgroundColor?: string;
   borderRadius?: string;
+  price?: number;
+  discountPrice?: number;
+  showPrice?: boolean;
 }
 
 export const LockedSlot = (props: LockedSlotProps) => {
