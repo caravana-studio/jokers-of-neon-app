@@ -174,11 +174,11 @@ export const CollectionCardHighlight = ({
   }, []);
 
   const bigScale = useBreakpointValue(
-    { base: 2.0, sm: 2.4, md: 2.8, lg: 3.1 },
+    { base: 2.0, sm: 2.1, md: 2.2, lg: 2.2, xl: 2.6 },
     { ssr: false },
   );
   const thumbScale = useBreakpointValue(
-    { base: 0.55, sm: 0.7, md: 0.8, lg: 0.9 },
+    { base: 0.55, sm: 0.7, md: 0.7, lg: 0.7 },
     { ssr: false },
   );
 
@@ -281,7 +281,7 @@ export const CollectionCardHighlight = ({
             >
               {t("variants-title")}
             </Heading>
-            <Flex gap={{base: 3, sm: 5}} mb={{base: 0, sm: 8}} justifyContent="center" flexWrap="wrap">
+            <Flex gap={{base: 3, sm: 5}} mb={{base: 0, sm: 3}} justifyContent="center" flexWrap="wrap">
               {availableSkinIds.map((skinId) => {
                 const isSelected = skinId === resolvedSkinId;
                 const isOwned = ownedSkinIds.includes(skinId);
@@ -449,7 +449,7 @@ export const CollectionCardHighlight = ({
         <Flex
           position={{ base: "absolute", sm: "relative" }}
           bottom={{ base: 4, sm: "auto" }}
-          mt={{ base: 0, sm: 3 }}
+          mt={{ base: 0, sm: 2 }}
           pb={{ base: 0, sm: 0 }}
           width={{ base: "100%", sm: "auto" }}
           alignItems="center"
