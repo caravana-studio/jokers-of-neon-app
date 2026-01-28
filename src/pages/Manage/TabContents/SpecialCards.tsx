@@ -15,8 +15,8 @@ import { TemporalBadge } from "../../../components/TemporalBadge";
 import { UnlockedSlot } from "../../../components/UnlockedSlot";
 import { CARD_HEIGHT, CARD_WIDTH } from "../../../constants/visualProps";
 import { useCardData } from "../../../providers/CardDataProvider";
-import { useGameContext } from "../../../providers/GameProvider";
 import { useGameStore } from "../../../state/useGameStore";
+import { useSkinPreferencesStore } from "../../../state/useSkinPreferencesStore";
 import { useResponsiveValues } from "../../../theme/responsiveSettings";
 import { getTooltip } from "../../../utils/getTooltip";
 import { FullScreenCardContainer } from "../../FullScreenCardContainer";
@@ -42,6 +42,7 @@ export const SpecialCards: React.FC<SpecialCardsProps> = ({
 
   const { getCardData } = useCardData();
   const { specialSlots, specialCards, maxSpecialCards } = useGameStore();
+  const getSkinFor = useSkinPreferencesStore((store) => store.getSkinFor);
 
   const freeUnlockedSlots = specialSlots - specialCards.length;
   const lockedSlots =
@@ -78,6 +79,15 @@ export const SpecialCards: React.FC<SpecialCardsProps> = ({
               .includes(card.card_id!);
 
             const { name, description } = getCardData(card.card_id ?? 0);
+            const preferredSkinId =
+              card.card_id !== undefined ? getSkinFor(card.card_id) : 0;
+            const skinSuffix = preferredSkinId > 0 ? `_sk${preferredSkinId}` : "";
+            const cardImgWithSkin = (() => {
+              if (!skinSuffix) return card.img;
+              const dotIndex = card.img.lastIndexOf(".");
+              if (dotIndex === -1) return `${card.img}${skinSuffix}`;
+              return `${card.img.slice(0, dotIndex)}${skinSuffix}${card.img.slice(dotIndex)}`;
+            })();
 
             return (
               card &&
@@ -108,8 +118,8 @@ export const SpecialCards: React.FC<SpecialCardsProps> = ({
                     >
                       <CachedImage
                         borderRadius={{ base: "5px", sm: "8px" }}
-                        src={`/Cards/${card.img}`}
-                        alt={card.img}
+                        src={`/Cards/${cardImgWithSkin}`}
+                        alt={cardImgWithSkin}
                         w="100%"
                         height="100%"
                       />
