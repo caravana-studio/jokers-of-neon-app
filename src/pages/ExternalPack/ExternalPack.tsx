@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { getUserCards } from "../../api/getUserCards";
 import { GalaxyBackground } from "../../components/backgrounds/galaxy/GalaxyBackground";
 import CachedImage from "../../components/CachedImage";
 import { DelayedLoading } from "../../components/DelayedLoading";
@@ -12,11 +13,12 @@ import { MobileDecoration } from "../../components/MobileDecoration";
 import { packAnimation, packGlowAnimation } from "../../constants/animations";
 import { RARITY, RarityLabels } from "../../constants/rarity";
 import { packCutSfx, packResultSfx } from "../../constants/sfx";
-import { useAudio } from "../../hooks/useAudio";
-import { useSettings } from "../../providers/SettingsProvider";
 import { SKINS_RARITY } from "../../data/specialCards";
+import { useDojo } from "../../dojo/useDojo";
 import { CardTypes } from "../../enums/cardTypes";
+import { useAudio } from "../../hooks/useAudio";
 import { useCardData } from "../../providers/CardDataProvider";
+import { useSettings } from "../../providers/SettingsProvider";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { Intensity } from "../../types/intensity";
 import { isNativeAndroid } from "../../utils/capacitorUtils";
@@ -28,7 +30,7 @@ import { SplitPackOnce } from "./SplitPackOnce";
 const getIntensity = (
   type: CardTypes,
   rarity: RARITY,
-  highlightedCardSkin: RARITY
+  highlightedCardSkin: RARITY,
 ) => {
   switch (type) {
     case CardTypes.JOKER:
@@ -66,6 +68,7 @@ interface ExternalPackProps {
   onContinue?: () => void;
   packId?: number;
   returnTo?: string;
+  ownedCardIds?: string[];
 }
 
 export const ExternalPack = ({
@@ -73,8 +76,12 @@ export const ExternalPack = ({
   onContinue,
   packId: providedPackId,
   returnTo,
+  ownedCardIds: providedOwnedCardIds,
 }: ExternalPackProps) => {
   const { t } = useTranslation("intermediate-screens");
+  const { t: tPack } = useTranslation("intermediate-screens", {
+    keyPrefix: "external-pack",
+  });
 
   const params = useParams();
   const location = useLocation();
@@ -86,6 +93,9 @@ export const ExternalPack = ({
   const { t: tDocs } = useTranslation("docs");
   const { t: tGame } = useTranslation("game");
   const { getCardData } = useCardData();
+  const {
+    account: { account },
+  } = useDojo();
 
   const [allCardsSeen, setAllCardsSeen] = useState(false);
   const initialCardsSource =
@@ -95,6 +105,8 @@ export const ExternalPack = ({
       : undefined);
 
   const [step, setStep] = useState(0);
+  const [ownedCardIds, setOwnedCardIds] = useState<Set<string>>(new Set());
+  const [ownedCardsLoaded, setOwnedCardsLoaded] = useState(false);
 
   const { isSmallScreen } = useResponsiveValues();
 
@@ -102,11 +114,11 @@ export const ExternalPack = ({
   const extraPackWidth = packWidth + 50;
   const packHeight = useMemo(
     () => (isSmallScreen ? 405 : 472),
-    [isSmallScreen]
+    [isSmallScreen],
   );
 
   const [obtainedCards, setObtainedCards] = useState<SimplifiedCard[]>(
-    initialCardsSource ?? []
+    initialCardsSource ?? [],
   );
   const [highlightedCard, setHighlightedCard] = useState<number | null>(null);
   const resolvedHighlightedCard =
@@ -141,14 +153,57 @@ export const ExternalPack = ({
   const { play: playPackCut } = useAudio(packCutSfx, sfxVolume);
   const { play: playPackResult } = useAudio(packResultSfx, sfxVolume);
 
+  // Use pre-open ownedCardIds from props or navigation state
+  const preOpenOwnedCardIds =
+    providedOwnedCardIds ?? locationState?.ownedCardIds;
+
+  useEffect(() => {
+    // Use pre-open ownedCardIds from props or navigation state if available
+    // This ensures new cards from the pack are correctly marked as "NEW"
+    if (preOpenOwnedCardIds && preOpenOwnedCardIds.length >= 0) {
+      setOwnedCardIds(new Set(preOpenOwnedCardIds));
+      setOwnedCardsLoaded(true);
+      return;
+    }
+
+    if (!account?.address) {
+      setOwnedCardIds(new Set());
+      setOwnedCardsLoaded(false);
+      return;
+    }
+
+    let cancelled = false;
+    getUserCards(account.address)
+      .then((data) => {
+        if (cancelled) return;
+        setOwnedCardIds(new Set(data.ownedCardIds ?? []));
+        setOwnedCardsLoaded(true);
+      })
+      .catch((error) => {
+        if (cancelled) return;
+        console.error("ExternalPack: failed to load user collection", error);
+        setOwnedCardIds(new Set());
+        setOwnedCardsLoaded(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [account?.address, preOpenOwnedCardIds]);
+
   const cardsData = useMemo(
     () =>
-      obtainedCards.map((card, index) => ({
-        id: index,
-        cardId: card.card_id,
-        img: `/Cards/${card.card_id}${card.skin_id !== 0 ? `_sk${card.skin_id}` : ""}.png`,
-      })),
-    [obtainedCards]
+      [...obtainedCards].reverse().map((card, index) => {
+        const skinId = card.skin_id ?? 0;
+
+        return {
+          id: index,
+          cardId: card.card_id,
+          skinId,
+          img: `/Cards/${card.card_id}${skinId !== 0 ? `_sk${skinId}` : ""}.png`,
+        };
+      }),
+    [obtainedCards],
   );
 
   // Ensure the first render highlights the first real card instead of the fallback (ID 0 / 2 de trébol).
@@ -166,7 +221,7 @@ export const ExternalPack = ({
           intensity={getIntensity(
             type ?? CardTypes.NONE,
             rarity ?? RARITY.C,
-            SKINS_RARITY[highlightedCardSkin]
+            SKINS_RARITY[highlightedCardSkin],
           )}
         />
       )}
@@ -184,7 +239,7 @@ export const ExternalPack = ({
           {isSmallScreen ? (
             <FontAwesomeIcon color="white" fontSize={13} icon={faCaretRight} />
           ) : (
-            t("external-pack.continue")
+            tPack("continue")
           )}
         </Button>
       )}
@@ -223,7 +278,7 @@ export const ExternalPack = ({
                 >
                   -{" "}
                   {t(
-                    `shop.packs.${packId > 4 ? "limited-edition" : "player-pack"}`
+                    `shop.packs.${packId > 4 ? "limited-edition" : "player-pack"}`,
                   )}{" "}
                   -
                 </Text>
@@ -231,7 +286,7 @@ export const ExternalPack = ({
               <NFTPackRateInfo
                 name={t(`shop.packs.${packId}.name`)}
                 details={t(
-                  `shop.packs.${packId > 4 ? "limited-edition" : "player-pack"}`
+                  `shop.packs.${packId > 4 ? "limited-edition" : "player-pack"}`,
                 )}
                 packId={packId}
               />
@@ -274,7 +329,7 @@ export const ExternalPack = ({
               <Text size="l" textTransform="lowercase" fontWeight={600}>
                 -{" "}
                 {tGame(
-                  `game.card-types.${highlightedCardSkin > 1 ? "skin-special" : type}`
+                  `game.card-types.${highlightedCardSkin > 1 ? "skin-special" : type}`,
                 )}{" "}
                 -
               </Text>
@@ -294,7 +349,7 @@ export const ExternalPack = ({
                 animation: "fadeIn 1s ease 3s forwards",
               }}
             >
-              <Text size="lg">{t("external-pack.draw-line")}</Text>
+              <Text size="lg">{tPack("draw-line")}</Text>
             </Flex>
           )}
 
@@ -387,6 +442,7 @@ export const ExternalPack = ({
                     height: packHeight - 40,
                   }}
                   cardsData={cardsData}
+                  ownedCardIds={ownedCardIds}
                   onCardChange={(cardId) => {
                     setHighlightedCard(cardId);
                   }}
@@ -407,7 +463,7 @@ export const ExternalPack = ({
               fontFamily="Oxanium"
               fontSize={14}
             >
-              {t("external-pack.open")}
+              {tPack("open")}
             </Button>
           )}
           {step === 4 && (

@@ -6,19 +6,24 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { mintPack } from "../../api/mintPack";
+import { getUserCards } from "../../api/getUserCards";
 import CachedImage from "../../components/CachedImage";
 import { NFTPackRateInfo } from "../../components/Info/NFTPackRateInfo";
-import { packAnimation } from "../../constants/animations";
+import {
+  buttonGlowAnimation,
+  limitedEditionPulse,
+  packAnimation,
+  shopPackGlowAnimation,
+} from "../../constants/animations";
 import { useDojo } from "../../dojo/DojoContext";
+import { useUsername } from "../../dojo/utils/useUsername";
 import { useRevenueCat } from "../../providers/RevenueCatProvider";
 import { listenForPurchase } from "../../queries/listenForPurchase";
 import { BLUE } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
-import { useUsername } from "../../dojo/utils/useUsername";
 
 interface PackRowProps {
   packId: number;
@@ -42,6 +47,31 @@ export const PackRow = ({ packId, packageId, price }: PackRowProps) => {
   const username = useUsername();
   const { purchasePackageById, offerings } = useRevenueCat();
   const [isPurchasing, setIsPurchasing] = useState(false);
+  const isBuyDisabled = isPurchasing || !price;
+  const [ownedCardIds, setOwnedCardIds] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (!account?.address) {
+      setOwnedCardIds([]);
+      return;
+    }
+
+    let cancelled = false;
+    getUserCards(account.address)
+      .then((data) => {
+        if (cancelled) return;
+        setOwnedCardIds(data.ownedCardIds ?? []);
+      })
+      .catch((error) => {
+        if (cancelled) return;
+        console.error("PackRow: failed to load user collection", error);
+        setOwnedCardIds([]);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [account?.address]);
 
   const handlePurchase = async () => {
     if (isPurchasing) {
@@ -60,7 +90,7 @@ export const PackRow = ({ packId, packageId, price }: PackRowProps) => {
     try {
       setIsPurchasing(true);
       const availablePackageIds = Object.keys(
-        offerings?.packPackages ?? {}
+        offerings?.packPackages ?? {},
       ).map((key) => key.toLowerCase());
       if (
         availablePackageIds.length === 0 ||
@@ -79,7 +109,7 @@ export const PackRow = ({ packId, packageId, price }: PackRowProps) => {
           (card: { card_id: number; skin_id: number }) => ({
             card_id: card.card_id,
             skin_id: card.skin_id,
-          })
+          }),
         );
 
         navigate(`/external-pack/${packId}`, {
@@ -87,12 +117,12 @@ export const PackRow = ({ packId, packageId, price }: PackRowProps) => {
             initialCards: simplifiedCards,
             packId,
             returnTo: "/shop",
+            ownedCardIds,
           },
         });
       });
 
       await purchasePackageById(packageId);
-      
     } catch (error) {
       console.error("Failed to purchase pack", error);
       navigate("/shop");
@@ -129,9 +159,18 @@ export const PackRow = ({ packId, packageId, price }: PackRowProps) => {
             px={2}
           >
             <Heading
-              fontSize={isSmallScreen ? 18 : 35}
+              fontSize={isSmallScreen ? 15 : 35}
               variant="italic"
               textShadow={"0 0 5px white"}
+              whiteSpace="nowrap"
+              animation={
+                isLimitedEdition
+                  ? `${limitedEditionPulse} 2.8s ease-in-out infinite`
+                  : undefined
+              }
+              transformOrigin="center"
+              display="inline-block"
+              willChange={isLimitedEdition ? "transform, filter" : undefined}
             >
               {t(`${packId}.name`)}
             </Heading>
@@ -141,6 +180,15 @@ export const PackRow = ({ packId, packageId, price }: PackRowProps) => {
               color={isLimitedEdition ? "gold" : "lightViolet"}
               textShadow={"0 0 5px black"}
               mb={isSmallScreen ? 4 : 8}
+              animation={
+                isLimitedEdition
+                  ? `${limitedEditionPulse} 2.4s ease-in-out infinite`
+                  : undefined
+              }
+              style={isLimitedEdition ? { animationDelay: "0.4s" } : undefined}
+              transformOrigin="center"
+              display="inline-block"
+              willChange={isLimitedEdition ? "transform, filter" : undefined}
             >
               {t(isLimitedEdition ? "limited-edition" : `player-pack`)}
             </Heading>
@@ -183,7 +231,11 @@ export const PackRow = ({ packId, packageId, price }: PackRowProps) => {
                 </Text>
               )}
             </Flex>
-            <NFTPackRateInfo name={t(`${packId}.name`)} details={t(`${packId}.description.1`)} packId={packId} />
+            <NFTPackRateInfo
+              name={t(`${packId}.name`)}
+              details={t(`${packId}.description.1`)}
+              packId={packId}
+            />
             <Button
               variant={"secondarySolid"}
               w={isSmallScreen ? "70%" : "300px"}
@@ -191,14 +243,18 @@ export const PackRow = ({ packId, packageId, price }: PackRowProps) => {
               fontSize={isSmallScreen ? 13 : 16}
               mt={isSmallScreen ? 4 : 8}
               h={isSmallScreen ? "30px" : "40px"}
-              isDisabled={isPurchasing || !price}
+              isDisabled={isBuyDisabled}
+              animation={
+                isBuyDisabled || !isLimitedEdition
+                  ? undefined
+                  : `${buttonGlowAnimation} 2.2s ease-in-out infinite`
+              }
+              willChange={
+                isBuyDisabled || !isLimitedEdition ? undefined : "box-shadow"
+              }
               onClick={handlePurchase}
             >
-              {isPurchasing || !price ? (
-                <Spinner size="xs" />
-              ) : (
-                `${t("buy")} · ${price}`
-              )}
+              {isBuyDisabled ? <Spinner size="xs" /> : `${t("buy")} · ${price}`}
             </Button>
           </Flex>
           <Flex
@@ -212,7 +268,13 @@ export const PackRow = ({ packId, packageId, price }: PackRowProps) => {
             <CachedImage
               w={isSmallScreen ? "90%" : "300px"}
               src={`/packs/${packId}.png`}
-              boxShadow={"0 0 15px 0px white, inset 0 0 5px 0 white"}
+              filter="drop-shadow(0 0 10px rgba(255,255,255,0.5)) drop-shadow(0 0 22px rgba(255,255,255,0.25))"
+              animation={
+                isLimitedEdition
+                  ? `${shopPackGlowAnimation} 2.8s ease-in-out infinite`
+                  : undefined
+              }
+              willChange={isLimitedEdition ? "filter" : undefined}
             />
           </Flex>
         </Flex>

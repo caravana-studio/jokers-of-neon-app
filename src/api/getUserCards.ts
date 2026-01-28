@@ -39,6 +39,7 @@ export async function getUserCards(userAddress: string): Promise<{
   specials: Collection[];
   traditionals: Collection;
   neons: Collection;
+  ownedCardIds: string[];
 }> {
   if (!userAddress) {
     throw new Error("getUserCards: userAddress is required");
@@ -96,6 +97,14 @@ export async function getUserCards(userAddress: string): Promise<{
     quality: Number(entry.quality),
   }));
 
+  const ownedCardIds = Array.from(
+    new Set(
+      userCards
+        .filter((card) => Number(card.count) > 0)
+        .map((card) => `${card.cardId}_${card.skinId ?? 0}`)
+    )
+  );
+
   return {
     specials: fillCollections(
       transformAPIResultToCollection(
@@ -122,5 +131,6 @@ export async function getUserCards(userAddress: string): Promise<{
         252
       ),
     },
+    ownedCardIds,
   };
 }
