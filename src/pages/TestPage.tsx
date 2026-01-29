@@ -20,7 +20,7 @@ export const TestPage = () => {
           icon={Icons.STORE}
           description={"Open external pack"}
           label={"Open external pack"}
-          onClick={() => navigate("/external-pack")}
+          onClick={() => navigate("/test/external-pack/5")}
           arrowRight
           width={"18px"}
         />

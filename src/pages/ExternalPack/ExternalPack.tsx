@@ -8,6 +8,7 @@ import { getUserCards } from "../../api/getUserCards";
 import { GalaxyBackground } from "../../components/backgrounds/galaxy/GalaxyBackground";
 import CachedImage from "../../components/CachedImage";
 import { DelayedLoading } from "../../components/DelayedLoading";
+import { GlowBadge, GlowBadgeIntensity } from "../../components/GlowBadge";
 import { NFTPackRateInfo } from "../../components/Info/NFTPackRateInfo";
 import { MobileDecoration } from "../../components/MobileDecoration";
 import { packAnimation, packGlowAnimation } from "../../constants/animations";
@@ -19,6 +20,14 @@ import { CardTypes } from "../../enums/cardTypes";
 import { useAudio } from "../../hooks/useAudio";
 import { useCardData } from "../../providers/CardDataProvider";
 import { useSettings } from "../../providers/SettingsProvider";
+import {
+  BLACK,
+  BLUE,
+  DIAMONDS,
+  GREY_LINE,
+  HEARTS,
+  VIOLET,
+} from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { Intensity } from "../../types/intensity";
 import { isNativeAndroid } from "../../utils/capacitorUtils";
@@ -30,7 +39,7 @@ import { SplitPackOnce } from "./SplitPackOnce";
 const getIntensity = (
   type: CardTypes,
   rarity: RARITY,
-  highlightedCardSkin: RARITY,
+  isSkinned: boolean,
 ) => {
   switch (type) {
     case CardTypes.JOKER:
@@ -38,7 +47,7 @@ const getIntensity = (
     case CardTypes.NEON:
       return Intensity.MEDIUM;
     case CardTypes.SPECIAL:
-      if (highlightedCardSkin) {
+      if (isSkinned) {
         return Intensity.MAX;
       }
       switch (rarity) {
@@ -56,6 +65,17 @@ const getIntensity = (
     default:
       return Intensity.LOW;
   }
+};
+
+const RARITY_BADGE_STYLES: Record<
+  RARITY,
+  { color: string; intensity: GlowBadgeIntensity }
+> = {
+  [RARITY.C]: { color: GREY_LINE, intensity: "low" },
+  [RARITY.B]: { color: BLUE, intensity: "medium" },
+  [RARITY.A]: { color: DIAMONDS, intensity: "high" },
+  [RARITY.S]: { color: VIOLET, intensity: "max" },
+  [RARITY.SS]: { color: HEARTS, intensity: "ultra" },
 };
 
 export interface SimplifiedCard {
@@ -146,6 +166,16 @@ export const ExternalPack = ({
   const highlightedCardSkin =
     obtainedCards.find((card) => card.card_id === highlightedCard)?.skin_id ??
     0;
+  const isSkinned = highlightedCardSkin > 0;
+  const resolvedRarityStyle = rarity
+    ? RARITY_BADGE_STYLES[rarity as RARITY]
+    : undefined;
+  const resolvedSkinRarity = isSkinned
+    ? SKINS_RARITY[highlightedCardSkin] ?? (rarity as RARITY | undefined) ?? RARITY.C
+    : undefined;
+  const resolvedSkinStyle = resolvedSkinRarity
+    ? RARITY_BADGE_STYLES[resolvedSkinRarity]
+    : undefined;
 
   const shouldDisableHeavyBackground = isNativeAndroid;
 
@@ -221,7 +251,7 @@ export const ExternalPack = ({
           intensity={getIntensity(
             type ?? CardTypes.NONE,
             rarity ?? RARITY.C,
-            SKINS_RARITY[highlightedCardSkin],
+            isSkinned,
           )}
         />
       )}
@@ -329,10 +359,37 @@ export const ExternalPack = ({
               <Text size="l" textTransform="lowercase" fontWeight={600}>
                 -{" "}
                 {tGame(
-                  `game.card-types.${highlightedCardSkin > 1 ? "skin-special" : type}`,
+                  `game.card-types.${isSkinned ? "skin-special" : type}`,
                 )}{" "}
                 -
               </Text>
+              <Flex
+                mt={2}
+                gap={3}
+                flexWrap="wrap"
+                justifyContent="center"
+                width="100%"
+                opacity={rarity || resolvedSkinRarity ? 1 : 0}
+              >
+                {rarity && resolvedRarityStyle && (
+                  <GlowBadge
+                    label={tDocs(`rarity.${RarityLabels[rarity as RARITY]}`)}
+                    background={resolvedRarityStyle.color}
+                    glowColor={resolvedRarityStyle.color}
+                    intensity={resolvedRarityStyle.intensity}
+                  />
+                )}
+                {resolvedSkinRarity && resolvedSkinStyle && (
+                  <GlowBadge
+                    label={`${tGame("game.skin")} ${tDocs(
+                      `rarity.${RarityLabels[resolvedSkinRarity]}`
+                    )}`}
+                    background={BLACK}
+                    glowColor={resolvedSkinStyle.color}
+                    intensity={resolvedSkinStyle.intensity}
+                  />
+                )}
+              </Flex>
             </Flex>
           )}
 
@@ -495,25 +552,12 @@ export const ExternalPack = ({
                 textAlign="center"
                 size="xl"
                 zIndex={10}
-                fontSize={"17px"}
+                fontSize={{base: "12px", sm: "17px"}}
                 width={"65%"}
               >
                 {colorizeText(description)}
               </Text>
-              {
-                <Text
-                  zIndex={10}
-                  textAlign="center"
-                  size="l"
-                  fontSize={"14px"}
-                  width={"65%"}
-                  opacity={rarity ? 1 : 0}
-                >
-                  {tDocs(`rarity.${RarityLabels[rarity as RARITY]}`)}
-                  {highlightedCardSkin > 1 &&
-                    ` - ${tGame("game.skin")} ${tDocs(`rarity.${RarityLabels[SKINS_RARITY[highlightedCardSkin]]}`)}`}
-                </Text>
-              }
+
             </Flex>
           )}
         </Flex>
