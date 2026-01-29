@@ -15,6 +15,7 @@ import { VIOLET } from "../../theme/colors.tsx";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 import { logEvent } from "../../utils/analytics.ts";
 import { GameBox } from "./GameBox.tsx";
+import { TournamentEntriesBar } from "./TournamentEntriesBar.tsx";
 
 export interface GameSummary {
   id: number;
@@ -70,6 +71,8 @@ export const MyGames = () => {
     setSurrenderedIds((prev) => [...prev, gameId]);
   };
 
+  const showTournament = tournament?.isActive && !tournament?.isFinished;
+
   useEffect(() => {
     refetch();
     resetLevel();
@@ -87,12 +90,21 @@ export const MyGames = () => {
         alignItems="center"
         height="100%"
         width="100%"
-        pt={[8, 12]}
+        pt={[8, 16]}
         pb={[0, 4]}
       >
         <Flex
           flexDirection={"column"}
-          height={isSmallScreen ? "75%" : "60%"}
+          height={
+            isSmallScreen
+              ? showTournament
+                ? "70%"
+                : "75%"
+              : showTournament
+                ? "60%"
+                : "70%"
+          }
+          // bgColor="red"
           width={"100%"}
           justifyContent={"center"}
           alignItems={"center"}
@@ -172,73 +184,33 @@ export const MyGames = () => {
               </Flex>
             </Flex>
           </Box>
-          {tournament?.isActive && !tournament?.isFinished && (
-            <Flex
-              px={[2, 4]}
-              py={isSmallScreen ? 0 : 4}
-              width={{ base: "90%", sm: "70%", md: "900px" }}
-              justifyContent={isSmallScreen ? "space-between" : "center"}
-              gap={8}
-              alignItems={"center"}
-              zIndex={2}
-              mt={5}
-            >
-              <Text fontSize={isSmallScreen ? 12 : 20}>
-                {t("tournament-active")}
-              </Text>
-              <Button
-                size={"sm"}
-                width={isSmallScreen ? "90px" : "110px"}
-                h={isSmallScreen ? "25px" : undefined}
-                onClick={() => navigate("/tournament")}
-              >
-                {t("join")}
-              </Button>
-            </Flex>
-          )}
         </Flex>
-        <Flex w="100%" h="25%" justifyContent={"center"} alignItems={"center"}>
-          <DailyGames />
-        </Flex>
-
-        {/*  {isSmallScreen ? (
-          <MobileBottomBar
-            firstButton={{
-              onClick: () => {
-                navigate("/tutorial");
-              },
-              variant: "secondarySolid",
-              label: t("tuto"),
-            }}
-            secondButton={{
-              onClick: () => {
-                handleCreateGame();
-              },
-              variant: "solid",
-              label: t("start-game"),
-            }}
-          />
-        ) : (
+        <Flex
+          w="100%"
+          // bgColor="blue"
+          h={
+            isSmallScreen
+              ? showTournament
+                ? "30%"
+                : "25%"
+              : showTournament
+                ? "40%"
+                : "30%"
+          }
+          justifyContent={"center"}
+          alignItems={"center"}
+          pb={4}
+        >
           <Flex
-            justifyContent="center"
-            width={{ base: "90%", sm: "600px" }}
-            gap={{ base: "0", sm: "5rem" }}
-            pt={{ base: 10, sm: 14 }}
+            w="100%"
+            flexDirection="column"
+            alignItems="center"
+            gap={isSmallScreen ? 4 : 6}
           >
-            <Button
-              onClick={() => {
-                navigate("/tutorial");
-              }}
-              width="280px"
-              variant="secondarySolid"
-            >
-              {t("tuto")}
-            </Button>
-            <Button onClick={handleCreateGame} width="280px" variant="solid">
-              {t("start-game")}
-            </Button>
+            {showTournament && <TournamentEntriesBar />}
+            <DailyGames />
           </Flex>
-        )} */}
+        </Flex>
       </Flex>
     </DelayedLoading>
   );

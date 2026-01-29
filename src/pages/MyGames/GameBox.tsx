@@ -8,6 +8,7 @@ import { stateToPageMap } from "../../constants/redirectConfig.ts";
 import { GameStateEnum } from "../../dojo/typescript/custom.ts";
 import { useGameContext } from "../../providers/GameProvider.tsx";
 import { useGameStore } from "../../state/useGameStore.ts";
+import { BLUE, VIOLET_RGBA } from "../../theme/colors.tsx";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 import { GameSummary } from "./MyGames.tsx";
 
@@ -56,6 +57,7 @@ export const GameBox = ({
       borderRadius="15px"
       color="white"
       width="100%"
+      boxShadow={`inset 0 0 10px 5px ${game.isTournament ? BLUE : VIOLET_RGBA(0.6)}`}
       height={isSmallScreen ? "60px" : "70px"}
       opacity={game.status === GameStateEnum.GameOver ? 0.6 : 1}
     >
@@ -67,7 +69,30 @@ export const GameBox = ({
         alignItems="center"
         w="100%"
         gap={0.5}
+        position="relative"
       >
+        {game.isTournament && (
+          <Flex
+            sx={{
+              width: "100%",
+              position: "absolute",
+              top: "-18px",
+              right: isSmallScreen ? "12px" : "25px",
+              justifyContent: "flex-end",
+            }}
+          >
+            <Flex
+              bgColor="blue"
+              px={2}
+              borderRadius={"full"}
+              border="1px solid white"
+            >
+              <Text fontSize={{base: "7px", sm: "11px"}} fontWeight={400}>
+                TOURNAMENT GAME
+              </Text>
+            </Flex>
+          </Flex>
+        )}
         {/* Game ID Section */}
         <Flex
           pl={isSmallScreen ? 2 : 6}
@@ -150,7 +175,7 @@ export const GameBox = ({
                     {t(
                       game.status === GameStateEnum.NotStarted
                         ? "start-btn"
-                        : "continue-btn"
+                        : "continue-btn",
                     ).toUpperCase()}
                   </Button>
 
