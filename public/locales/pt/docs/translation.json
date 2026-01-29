@@ -8,10 +8,10 @@
     "back-btn": "Voltar ao jogo"
   },
   "rarity": {
-    "ss": "Lendário",
-    "s": "Épico",
-    "a": "Raro",
-    "b": "Incomum",
+    "ss": "Mítico",
+    "s": "Lendário",
+    "a": "Épico",
+    "b": "Raro",
     "c": "Comum"
   }
 }

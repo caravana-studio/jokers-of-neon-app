@@ -9,6 +9,7 @@ import { DeckPage } from "./pages/Deck/DeckPage";
 import { DocsPage } from "./pages/Docs/Docs";
 import { DynamicStorePage } from "./pages/DynamicStore/DynamicStorePage";
 import { ExternalPack } from "./pages/ExternalPack/ExternalPack";
+import { ExternalPackTestPage } from "./pages/ExternalPack/ExternalPackTestPage";
 import { FreePackPage } from "./pages/FreePackPage";
 import { GamePage } from "./pages/Game/GamePage";
 import { GamePageTutorial } from "./pages/Game/GamePageTutorial";
@@ -72,6 +73,14 @@ export const AppRoutes = () => {
           </AnimatedPage>
         }
       />{" "}
+      <Route
+        path="/test/external-pack/:packId"
+        element={
+          <AnimatedPage>
+            <ExternalPackTestPage />
+          </AnimatedPage>
+        }
+      />
       <Route
         path="/vibration"
         element={
