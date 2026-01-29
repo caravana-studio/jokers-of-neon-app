@@ -152,6 +152,7 @@
     "go-back": "Volver",
     "start-game": "Nuevo juego",
     "show-finished-games": "Mostrar juegos terminados",
+    "tournament-game": "JUEGO DE TORNEO",
     "continue-btn": "Continuar",
     "start-btn": "Iniciar",
     "tuto": "Tutorial",
@@ -177,6 +178,12 @@
       "stage-4": "Barajando las cartas",
       "stage-5": "La partida está a punto de comenzar..."
     }
+  },
+  "tournament": {
+    "title": "Torneo activo",
+    "full-leaderboard": "Leaderboard completo del torneo",
+    "your-games": "Tus juegos de torneo",
+    "your-entries": "Tus entradas de torneo"
   },
   "game-over": {
     "current-position": "Estás en la posición número {{position}}, ¿quieres mantenerlo?",

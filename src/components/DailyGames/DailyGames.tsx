@@ -93,7 +93,6 @@ export const DailyGames = () => {
       <Flex
         w="100%"
         justifyContent={"center"}
-        alignItems={"center"}
         gap={isSmallScreen ? 2 : 6}
       >
         {slots.map((unlockedPercentage, index) => (
@@ -113,6 +112,7 @@ export const DailyGames = () => {
             fontSize={isSmallScreen ? 10 : 15}
             h={isSmallScreen ? "30px" : "35px"}
             variant={seasonPassUnlocked ? "secondarySolid" : "solid"}
+            mt={1.5}
           >
             {t("new-game")}
           </Button>
