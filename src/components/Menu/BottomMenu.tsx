@@ -37,7 +37,12 @@ export const BottomMenu = () => {
           ? inGameMenuItems
           : mainMenuItems
         ).map((item) => (
-          <ContextMenuItem {...item} nameKey={item.key} disabled={inTutorial} />
+          <ContextMenuItem
+            {...item}
+            nameKey={item.key}
+            disabled={inTutorial}
+            pulse={item.pulse}
+          />
         ))}
       </Flex>
 
