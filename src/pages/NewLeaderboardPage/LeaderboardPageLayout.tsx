@@ -66,9 +66,9 @@ export const LeaderboardPageLayout = ({
                   px={isSmallScreen ? 2 : 6}
                   mb={isSmallScreen ? 2 : 4}
                   position="absolute"
-                  right={4}
+                  right={{base: 0, sm: 4}}
                 >
-                  <Flex>
+                  <Flex w={isSmallScreen ? "100px" : "150px"}>
                     {tournament?.endDate &&
                       tournament.isActive &&
                       !tournament.isFinished && (
@@ -79,7 +79,6 @@ export const LeaderboardPageLayout = ({
                     onChange={(value) => setSeePrizes(value)}
                   />
                 </Flex>
-                {entriesSection}
                 <Flex
                   minH={0}
                   flexGrow={1}
@@ -101,6 +100,7 @@ export const LeaderboardPageLayout = ({
                     w={isSmallScreen ? "100%" : "50%"}
                     overflowY="auto"
                     h="100%"
+                    mt={{base: 0, sm: 12}}
                   >
                     <Leaderboard
                       hidePodium
