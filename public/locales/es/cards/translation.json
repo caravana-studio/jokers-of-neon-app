@@ -970,9 +970,9 @@
       "details": "1 comodín garantizado\n9% de probabilidad de obtener un comodín\n1% de probabilidad de obtener un comodín de neón\n90% de probabilidad de obtener una carta tradicional\nTamaño de la caja 4"
     },
     "8": {
-      "name": "Caja de los Amantes",
-      "description": "Contiene solo cartas tradicionales y modificadoras de corazones.",
-      "details": "55% de probabilidad de obtener cartas de Corazones\n30% de probabilidad de obtener cartas de Corazones de Neon\n10% de probabilidad de obtener un modificador de Corazones\n5% de probabilidad de obtener la carta especial 'El Amor está en el Aire'\nTamaño de la caja 5"
+      "name": "Caja de Corazones",
+      "description": "Contiene cartas de corazones, puede contener cartas especiales y modificadores.",
+      "details": "100% de probabilidad de obtener As de Corazones\n55% de probabilidad de obtener cartas de Corazones\n30% de probabilidad de obtener cartas de Corazones de Neon\n10% de probabilidad de obtener un modificador de Corazones\n5% de probabilidad de obtener la carta especial 'El Amor está en el Aire'\nTamaño de la caja 5"
     },
     "9": {
       "name": "Caja de Apuesta Especial",
@@ -983,6 +983,21 @@
       "name": "Caja de Neón",
       "description": "Una caja exclusiva de cartas de neón",
       "details": "97% de probabilidad de obtener una carta de neón\n3% de probabilidad de obtener un Comodín de Neón\nTamaño de la caja 5"
+    },
+    "11": {
+      "name": "Caja de Picas",
+      "description": "Contiene cartas de picas, puede contener cartas de neón y modificadores.",
+      "details": "100% de probabilidad de obtener As de Picas\n60% de probabilidad de obtener cartas de Picas\n30% de probabilidad de obtener cartas de Picas de Neón\n10% de probabilidad de obtener un modificador de Picas\nTamaño de la caja 5"
+    },
+    "12": {
+      "name": "Caja de Diamantes",
+      "description": "Contiene cartas de diamantes, puede contener cartas de neón y modificadores.",
+      "details": "100% de probabilidad de obtener As de Diamantes\n60% de probabilidad de obtener cartas de Diamantes\n30% de probabilidad de obtener cartas de Diamantes de Neón\n10% de probabilidad de obtener un modificador de Diamantes\nTamaño de la caja 5"
+    },
+    "13": {
+      "name": "Caja de Tréboles",
+      "description": "Contiene cartas de tréboles, puede contener cartas de neón y modificadores.",
+      "details": "100% de probabilidad de obtener As de Tréboles\n60% de probabilidad de obtener cartas de Tréboles\n30% de probabilidad de obtener cartas de Tréboles de Neón\n10% de probabilidad de obtener un modificador de Tréboles\nTamaño de la caja 5"
     }
   }
 }

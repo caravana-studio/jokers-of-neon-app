@@ -970,9 +970,9 @@
       "details": "1 Joker garantido\n9% de chance de obter um Joker\n1% de chance de obter um Joker Neon\n90% de chance de obter uma carta tradicional\nTamanho do Baú 4"
     },
     "8": {
-      "name": "Baú dos Amantes",
+      "name": "Baú de Copas",
       "description": "Todas as cartas do naipe de copas, pode conter cartas especiais e modificadores.",
-      "detalhes": "55% de probabilidade de obter cartas de Copas\n30% de probabilidade de obter cartas de Copas Neon\n10% de probabilidade de obter um modificador do naipe de Copas\n5% de probabilidade de obter a carta especial 'Todas as cartas para Copas'\nTamanho da caixa: 5"
+      "details": "100% de chance de obter Ás de Copas\n55% de chance de obter uma carta de Copas\n30% de chance de obter carta de Copas Neon\n10% de chance de obter modificador de Copas\n5% de chance de obter especial 'Todas as cartas para Copas'\nTamanho do Baú 5"
     },
     "9": {
       "name": "Baú de Aposta Especial",
@@ -983,6 +983,21 @@
       "name": "Baú Neon",
       "description": "Um Baú exclusivo com chances de obter cartas neon",
       "details": "97% de chance de obter uma carta neon\n3% de chance de obter um Joker Neon\nTamanho do Baú 5"
+    },
+    "11": {
+      "name": "Baú de Espadas",
+      "description": "Todas as cartas do naipe de espadas, pode conter cartas neon e modificadores.",
+      "details": "100% de chance de obter Ás de Espadas\n60% de chance de obter uma carta de Espadas\n30% de chance de obter carta de Espadas Neon\n10% de chance de obter modificador de Espadas\nTamanho do Baú 5"
+    },
+    "12": {
+      "name": "Baú de Ouros",
+      "description": "Todas as cartas do naipe de ouros, pode conter cartas neon e modificadores.",
+      "details": "100% de chance de obter Ás de Ouros\n60% de chance de obter uma carta de Ouros\n30% de chance de obter carta de Ouros Neon\n10% de chance de obter modificador de Ouros\nTamanho do Baú 5"
+    },
+    "13": {
+      "name": "Baú de Paus",
+      "description": "Todas as cartas do naipe de paus, pode conter cartas neon e modificadores.",
+      "details": "100% de chance de obter Ás de Paus\n60% de chance de obter uma carta de Paus\n30% de chance de obter carta de Paus Neon\n10% de chance de obter modificador de Paus\nTamanho do Baú 5"
     }
   }
 }

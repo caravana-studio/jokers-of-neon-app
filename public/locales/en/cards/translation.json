@@ -970,9 +970,9 @@
       "details": "1 guaranteed Joker\n9% chance of getting a Joker\n1% chance of getting a Neon Joker\n90% chance of getting a traditional card\nLoot box size 4"
     },
     "8": {
-      "name": "The Lovers loot box",
+      "name": "Hearts loot box",
       "description": "All hearts suited cards, can contain special cards and modifiers.",
-      "details": "55% chance of getting a traditional Heart card\n30% chance of getting Neon Heart card\n10% chance of getting Heart Suit modifier\n5% chance of getting 'All cards to heart' special\nLoot box size 5"
+      "details": "100% chance of getting Ace of Hearts\n55% chance of getting a traditional Heart card\n30% chance of getting Neon Heart card\n10% chance of getting Heart Suit modifier\n5% chance of getting 'All cards to heart' special\nLoot box size 5"
     },
     "9": {
       "name": "Special Bet loot box",
@@ -983,6 +983,21 @@
       "name": "Neon loot box",
       "description": "An exclusive loot box filled with neon cards",
       "details": "97% chance of getting a neon card\n3% chance of getting a Neon Joker \nLoot box size 5"
+    },
+    "11": {
+      "name": "Spades loot box",
+      "description": "All spades suited cards, can contain neon cards and modifiers.",
+      "details": "100% chance of getting Ace of Spades\n60% chance of getting a traditional Spade card\n30% chance of getting Neon Spade card\n10% chance of getting Spade Suit modifier\nLoot box size 5"
+    },
+    "12": {
+      "name": "Diamonds loot box",
+      "description": "All diamonds suited cards, can contain neon cards and modifiers.",
+      "details": "100% chance of getting Ace of Diamonds\n60% chance of getting a traditional Diamond card\n30% chance of getting Neon Diamond card\n10% chance of getting Diamond Suit modifier\nLoot box size 5"
+    },
+    "13": {
+      "name": "Clubs loot box",
+      "description": "All clubs suited cards, can contain neon cards and modifiers.",
+      "details": "100% chance of getting Ace of Clubs\n60% chance of getting a traditional Club card\n30% chance of getting Neon Club card\n10% chance of getting Club Suit modifier\nLoot box size 5"
     }
   }
 }
