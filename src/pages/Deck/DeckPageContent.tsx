@@ -97,7 +97,6 @@ export const DeckPageContent = ({ state }: DeckPageContentProps) => {
               burnItem?.purchased ||
               locked
             }
-            isLoading={locked}
           >
             {t("btns.burn").toUpperCase()}
             {cardsToBurn.length > 0 && ` ${cardsToBurn.length} ${cardsToBurn.length === 1 ? "card" : "cards"}`}

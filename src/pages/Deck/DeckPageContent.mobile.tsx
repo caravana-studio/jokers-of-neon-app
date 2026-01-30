@@ -144,7 +144,6 @@ export const DeckPageContentMobile = ({
                   cash < totalCost ||
                   burnItem?.purchased ||
                   locked,
-                isLoading: locked,
               }
             : undefined
         }
