@@ -4,6 +4,7 @@ import { useDeckFilters } from "../../providers/DeckFilterProvider";
 import { useDeckStore } from "../../state/useDeckStore";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { Card } from "../../types/Card";
+import { MobileCoins } from "../store/Coins";
 import { DeckCardsGrid } from "./DeckCardsGrid";
 import { DeckFilters } from "./Filters/DeckFilters";
 import { preprocessCards } from "./Utils/DeckCardsUtils";
@@ -12,10 +13,11 @@ interface DeckProps {
   inStore?: boolean;
   burn?: boolean;
   onCardSelect?: (card: Card) => void;
+  selectedCards?: Card[];
   inMap?: boolean;
 }
 
-export const Deck = ({ inStore, burn, onCardSelect, inMap }: DeckProps) => {
+export const Deck = ({ inStore, burn, onCardSelect, selectedCards = [], inMap }: DeckProps) => {
   const { t } = useTranslation("game", { keyPrefix: "game.deck" });
   const deck = useDeckStore();
   const { filterButtonsState } = useDeckFilters();
@@ -55,7 +57,10 @@ export const Deck = ({ inStore, burn, onCardSelect, inMap }: DeckProps) => {
             </Text>
           </Flex>
         )}
-        <DeckFilters inStore={inStore} />
+        <Flex alignItems="center" gap={4} flex={1} justifyContent="flex-end">
+          <DeckFilters inStore={inStore} />
+          {burn && <MobileCoins />}
+        </Flex>
       </Flex>
       <Flex
         alignItems={"center"}
@@ -79,6 +84,7 @@ export const Deck = ({ inStore, burn, onCardSelect, inMap }: DeckProps) => {
               isAces: filterButtonsState.isAces,
             }}
             onCardSelect={burn ? onCardSelect : () => {}}
+            selectedCards={selectedCards}
             inBurn={burn}
           />
         </Box>

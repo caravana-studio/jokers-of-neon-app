@@ -1,5 +1,5 @@
 import { Box, Flex, Text, useBreakpointValue } from "@chakra-ui/react";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { TiltCard } from "../../components/TiltCard";
@@ -17,6 +17,7 @@ interface DeckCardsGridProps {
   filters?: DeckFiltersState;
   usedCards?: Card[];
   onCardSelect?: (card: Card) => void;
+  selectedCards?: Card[];
   inBurn?: boolean;
 }
 
@@ -25,6 +26,7 @@ export const DeckCardsGrid: React.FC<DeckCardsGridProps> = ({
   filters,
   usedCards = [],
   onCardSelect,
+  selectedCards = [],
   inBurn = false,
 }) => {
   const { isSmallScreen } = useResponsiveValues();
@@ -41,7 +43,11 @@ export const DeckCardsGrid: React.FC<DeckCardsGridProps> = ({
   const CUSTOM_CARD_WIDTH = SCALE ? CARD_WIDTH * SCALE : CARD_WIDTH;
   const CUSTOM_CARD_HEIGHT = SCALE ? CARD_HEIGHT * SCALE : CARD_HEIGHT;
 
-  const [selectedCard, setSelectedCard] = useState<Card>();
+  // Create a Set of selected card IDs for efficient lookup
+  const selectedCardIds = useMemo(
+    () => new Set(selectedCards.map((c) => c.id)),
+    [selectedCards]
+  );
 
   // Memoize filtering condition
   const hasFilters = useMemo(
@@ -106,7 +112,7 @@ export const DeckCardsGrid: React.FC<DeckCardsGridProps> = ({
           const usedCount = usedCardCountMap[card.id] || 0;
           const opacity = usedCount > 0 ? 0.6 : 1;
           const borderRadius = isMobile ? "5px" : "8px";
-          const isSelected = selectedCard?.id === card.id;
+          const isSelected = selectedCardIds.has(card.id);
 
           return (
             <Box
@@ -133,9 +139,6 @@ export const DeckCardsGrid: React.FC<DeckCardsGridProps> = ({
                 used={usedCount > 0}
                 onClick={() => {
                   if (inBurn) {
-                    setSelectedCard(
-                      selectedCard?.id === card.id ? undefined : card
-                    );
                     onCardSelect?.(card);
                   }
                 }}

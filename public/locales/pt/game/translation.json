@@ -139,7 +139,7 @@
     "deck": {
       "tooltip": "Ver baralho",
       "title": "Baralho",
-      "burn-title": "Selecione uma carta para queimar",
+      "burn-title": "Selecione cartas para queimar",
       "filter-title": "Filtrar por",
       "suit": {
         "club": "Paus",

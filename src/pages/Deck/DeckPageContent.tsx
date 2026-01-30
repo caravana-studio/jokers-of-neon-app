@@ -1,5 +1,5 @@
 import { Button, Flex } from "@chakra-ui/react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { CashSymbol } from "../../components/CashSymbol";
@@ -9,6 +9,7 @@ import { useStore } from "../../providers/StoreProvider";
 import { useGameStore } from "../../state/useGameStore";
 import { useShopStore } from "../../state/useShopStore";
 import { Card } from "../../types/Card";
+import { calculateBurnCost } from "../../utils/burnUtils";
 import { Deck } from "./Deck";
 
 interface DeckPageContentProps {
@@ -21,9 +22,9 @@ interface DeckPageContentProps {
 
 export const DeckPageContent = ({ state }: DeckPageContentProps) => {
   const { t } = useTranslation("game", { keyPrefix: "game.deck" });
-  const [cardToBurn, setCardToBurn] = useState<Card>();
-  const { burnCard } = useStore();
-  const { burnItem } = useShopStore();
+  const [cardsToBurn, setCardsToBurn] = useState<Card[]>([]);
+  const { burnCards } = useStore();
+  const { burnItem, locked } = useShopStore();
   const navigate = useNavigate();
   const { cash } = useGameStore();
 
@@ -31,24 +32,37 @@ export const DeckPageContent = ({ state }: DeckPageContentProps) => {
 
   const handleCardSelect = (card: Card) => {
     if (!burnItem?.purchased) {
-      if (cardToBurn?.id === card.id) {
-        setCardToBurn(undefined);
-      } else {
-        setCardToBurn(card);
-      }
+      setCardsToBurn((prev) => {
+        const exists = prev.find((c) => c.id === card.id);
+        if (exists) {
+          return prev.filter((c) => c.id !== card.id);
+        }
+        return [...prev, card];
+      });
     }
   };
 
-  const handleBurnCard = (card: Card) => {
-    burnCard(card);
-    navigate("/store");
-    setCardToBurn(undefined);
+  const handleBurnCards = async () => {
+    if (cardsToBurn.length > 0) {
+      await burnCards(cardsToBurn, totalCost);
+      navigate("/store");
+      setCardsToBurn([]);
+    }
   };
 
-  const effectiveCost: number =
-    burnItem?.discount_cost && burnItem.discount_cost !== 0
+  const regularCost: number = useMemo(() => {
+    return Number(burnItem?.cost ?? 0);
+  }, [burnItem]);
+
+  const firstCardCost: number = useMemo(() => {
+    return burnItem?.discount_cost && burnItem.discount_cost !== 0
       ? Number(burnItem.discount_cost)
-      : Number(burnItem?.cost);
+      : regularCost;
+  }, [burnItem, regularCost]);
+
+  const totalCost: number = useMemo(() => {
+    return calculateBurnCost(cardsToBurn.length, firstCardCost, regularCost);
+  }, [cardsToBurn.length, firstCardCost, regularCost]);
 
   return (
     <Flex
@@ -65,9 +79,10 @@ export const DeckPageContent = ({ state }: DeckPageContentProps) => {
         inStore={state.inStore}
         burn={state.burn}
         onCardSelect={handleCardSelect}
+        selectedCards={cardsToBurn}
         inMap={state.map}
       />
-      <Flex gap={6}>
+      <Flex gap={6} alignItems="center">
         {backToGameButton}
         {state.burn && (
           <Button
@@ -75,20 +90,20 @@ export const DeckPageContent = ({ state }: DeckPageContentProps) => {
             size={"md"}
             lineHeight={1.6}
             fontSize={[10, 10, 10, 14, 14]}
-            onClick={() => {
-              if (cardToBurn) handleBurnCard(cardToBurn);
-            }}
+            onClick={handleBurnCards}
             isDisabled={
-              cardToBurn === undefined ||
-              cash < effectiveCost ||
-              burnItem?.purchased
+              cardsToBurn.length === 0 ||
+              cash < totalCost ||
+              burnItem?.purchased ||
+              locked
             }
           >
             {t("btns.burn").toUpperCase()}
+            {cardsToBurn.length > 0 && ` ${cardsToBurn.length} ${cardsToBurn.length === 1 ? "card" : "cards"}`}
             <Flex ml={3} mr={1}>
               <CashSymbol />
             </Flex>
-            {" " + effectiveCost}
+            {totalCost}
           </Button>
         )}
       </Flex>
