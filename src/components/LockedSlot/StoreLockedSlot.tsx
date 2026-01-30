@@ -10,14 +10,16 @@ export const StoreLockedSlot = (props: LockedSlotProps) => {
   });
 
   const navigate = useNavigate();
-  const { locked } = useShopStore();
+  const { locked, specialSlotItem } = useShopStore();
 
   const canBuy = !locked;
 
   return (
     <BaseLockedSlot
       {...props}
-      tooltipText={canBuy ? t("locked-slot") : ""}
+      price={Number(specialSlotItem?.cost ?? 0)}
+      discountPrice={Number(specialSlotItem?.discount_cost ?? 0)}
+      tooltipText=""
       hoverEffect={
         canBuy
           ? {
