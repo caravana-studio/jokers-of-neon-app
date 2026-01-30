@@ -181,9 +181,9 @@
   },
   "tournament": {
     "title": "Tournament active",
-    "full-leaderboard": "Full tournament leaderboard",
-    "your-games": "Your tournament games",
-    "your-entries": "Your tournament entries"
+    "full-leaderboard": "Tournament leaderboard",
+    "your-games": "Games",
+    "your-entries": "Entries"
   },
   "game-over": {
     "current-position": "You are in position number {{position}}, do you want to keep it?",

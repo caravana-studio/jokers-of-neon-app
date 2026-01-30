@@ -6,11 +6,9 @@ import { DailyGames } from "../../components/DailyGames/DailyGames.tsx";
 import { DelayedLoading } from "../../components/DelayedLoading.tsx";
 import { MobileDecoration } from "../../components/MobileDecoration.tsx";
 import { useGetMyGames } from "../../queries/useGetMyGames.ts";
-import { useTournamentSettings } from "../../queries/useTournamentSettings.ts";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 import { logEvent } from "../../utils/analytics.ts";
 import { GamesListBox } from "./GamesListBox.tsx";
-import { TournamentEntriesBar } from "./TournamentEntriesBar.tsx";
 
 export interface GameSummary {
   id: number;
@@ -34,10 +32,6 @@ export const MyGames = () => {
   const { isLoading } = useGetMyGames();
   const { isSmallScreen } = useResponsiveValues();
 
-  const { tournament } = useTournamentSettings();
-
-  const showTournament = tournament?.isActive && !tournament?.isFinished;
-
   const navigate = useNavigate();
 
   return (
@@ -54,15 +48,7 @@ export const MyGames = () => {
       >
         <Flex
           flexDirection={"column"}
-          height={
-            isSmallScreen
-              ? showTournament
-                ? "70%"
-                : "75%"
-              : showTournament
-                ? "60%"
-                : "70%"
-          }
+          height={isSmallScreen ? "75%" : "70%"}
           // bgColor="red"
           width={"100%"}
           justifyContent={"center"}
@@ -102,15 +88,7 @@ export const MyGames = () => {
         <Flex
           w="100%"
           // bgColor="blue"
-          h={
-            isSmallScreen
-              ? showTournament
-                ? "30%"
-                : "25%"
-              : showTournament
-                ? "40%"
-                : "30%"
-          }
+          h={isSmallScreen ? "25%" : "30%"}
           justifyContent={"center"}
           alignItems={"center"}
           pb={4}
@@ -121,7 +99,6 @@ export const MyGames = () => {
             alignItems="center"
             gap={isSmallScreen ? 4 : 6}
           >
-            {showTournament && <TournamentEntriesBar />}
             <DailyGames />
           </Flex>
         </Flex>

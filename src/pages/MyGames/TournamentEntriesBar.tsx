@@ -20,6 +20,9 @@ export const TournamentEntriesBar = () => {
   } = useDojo();
 
   const entries = useSeasonProgressStore((store) => store.tournamentEntries);
+  const decrementTournamentEntries = useSeasonProgressStore(
+    (store) => store.decrementTournamentEntries,
+  );
 
   const entryLimit = isSmallScreen ? 4 : 6;
 
@@ -50,6 +53,10 @@ export const TournamentEntriesBar = () => {
   ]);
 
   const handleCreateGame = () => {
+    if (entries <= 0) {
+      return;
+    }
+    decrementTournamentEntries();
     prepareNewGame();
     executeCreateGame(true);
     navigate("/entering-tournament");

@@ -96,7 +96,7 @@ export const useTournamentSettings = () => {
   }, []);
 
   return {
-    tournament: { ...tournament, isActive: true, isFinished: false, endDate: new Date('2026-02-01T00:00:00.000Z') },
+    tournament,
     loading,
   };
 };

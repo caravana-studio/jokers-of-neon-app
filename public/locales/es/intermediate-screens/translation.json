@@ -181,9 +181,9 @@
   },
   "tournament": {
     "title": "Torneo activo",
-    "full-leaderboard": "Leaderboard completo del torneo",
-    "your-games": "Tus juegos de torneo",
-    "your-entries": "Tus entradas de torneo"
+    "full-leaderboard": "Leaderboard del torneo",
+    "your-games": "Juegos",
+    "your-entries": "Entradas"
   },
   "game-over": {
     "current-position": "Estás en la posición número {{position}}, ¿quieres mantenerlo?",
