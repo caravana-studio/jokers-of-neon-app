@@ -78,7 +78,10 @@ export const UnclaimedRewards = () => {
               fontSize={isSmallScreen ? 10 : 14}
               size="xs"
               variant="secondarySolid"
-              onClick={() => navigate("/unclaimed-rewards")}
+              onClick={() => {
+                navigate("/unclaimed-rewards")
+                setRewardsLeftToClaim([]);
+              }}
             >
               {t("claim-now")}
             </Button>
