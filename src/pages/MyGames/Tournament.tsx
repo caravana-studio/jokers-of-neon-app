@@ -41,88 +41,93 @@ export const Tournament = () => {
         alignItems="center"
         height="100%"
         width="100%"
-        pt={[8, 12]}
-        pb={[0, 4]}
+        py={[8, "80px"]}
+        px={{ base: 4, sm: "100px" }}
+        gap={{ base: 5, sm: 8 }}
       >
         <Flex
-          flexDirection="column"
-          // height={isSmallScreen ? "75%" : "60%"}
-          width="100%"
-          flexGrow={1}
-          minH={0}
-          justifyContent="center"
+          width={{ base: "100%" }}
           alignItems="center"
+          justifyContent="space-between"
+          zIndex={2}
+        >
+          <Heading variant="italic" size={isSmallScreen ? "sm" : "md"}>
+            {tTournament("title")}
+          </Heading>
+          {tournamentEndDate && (
+            <Clock
+              date={tournamentEndDate}
+              fontSize={isSmallScreen ? 10 : 14}
+              iconSize={isSmallScreen ? "10px" : "12px"}
+            />
+          )}
+        </Flex>
+        <Flex
+          flexDirection={{ base: "column", sm: "row" }}
+          width="100%"
+          minH={0}
+          flexGrow={1}
+          gap={{ base: 4, sm: 8 }}
         >
           <Flex
-            width={{ base: "90%", sm: "70%", md: "900px" }}
+            flexDirection="column"
+            // height={isSmallScreen ? "75%" : "60%"}
+            width={{ base: "100%", sm: "40%" }}
+            justifyContent="center"
             alignItems="center"
-            justifyContent="space-between"
-            zIndex={2}
-            mb={3}
-          >
-            <Heading
-              variant="italic"
-              size={isSmallScreen ? "sm" : "md"}
-            >
-              {tTournament("title")}
-            </Heading>
-            {tournamentEndDate && (
-              <Clock
-                date={tournamentEndDate}
-                fontSize={isSmallScreen ? 10 : 14}
-                iconSize={isSmallScreen ? "10px" : "12px"}
-              />
-            )}
-          </Flex>
-          <Flex
-            width={{ base: "90%", sm: "70%", md: "900px" }}
-            flexDirection={{ base: "column", md: "row" }}
-            alignItems="stretch"
-            justifyContent="space-between"
-            gap={isSmallScreen ? 4 : 8}
-            zIndex={2}
-            flexGrow={1}
-            minH={0}
           >
             <Flex
-              flexDirection="column"
+              width={{ base: "100%"}}
+              flexDirection={{ base: "column", md: "row" }}
               alignItems="center"
               justifyContent="center"
-              w={{ base: "100%", md: "40%" }}
-              gap={2}
+              gap={isSmallScreen ? 4 : 8}
+              zIndex={2}
+              flexGrow={1}
+              minH={0}
+              mt={-10}
             >
-              <Podium isTournamentLeaderboard />
-              <Button
-                size="sm"
-                width={isSmallScreen ? "190px" : "240px"}
-                h={isSmallScreen ? "28px" : undefined}
-                onClick={() => navigate("/leaderboard")}
+              <Flex
+                flexDirection="column"
+                alignItems="center"
+                justifyContent="center"
+                w={{ base: "100%" }}
+                gap={{ base: 2, sm: 4 }}
               >
-                {tTournament("full-leaderboard")}
-              </Button>
-            </Flex>
-            <Flex w={{ base: "100%", md: "60%" }} minH={0}>
-              <Flex flexDirection="column" w="100%" minH={0} gap={2}>
-                <Text
-                  textTransform="uppercase"
-                  textAlign="left"
-                  alignSelf="flex-start"
-                  zIndex={3}
-                  fontFamily="Sonara"
+                <Podium isTournamentLeaderboard />
+                <Button
+                  size="sm"
+                  width={isSmallScreen ? "220px" : "400px"}
+                  h={isSmallScreen ? "28px" : undefined}
+                  onClick={() => navigate("/leaderboard")}
                 >
-                  {tTournament("your-games")}
-                </Text>
-                <GamesListBox isTournament width="100%" />
+                  {tTournament("full-leaderboard")}
+                </Button>
               </Flex>
             </Flex>
           </Flex>
+          <Flex w={{ base: "100%", sm: "60%" }} flexGrow={1} minH={0}>
+            <Flex flexDirection="column" w="100%" minH={0} gap={2}>
+              <Text
+                textTransform="uppercase"
+                textAlign="left"
+                alignSelf="flex-start"
+                zIndex={3}
+                fontFamily="Sonara"
+              >
+                {tTournament("your-games")}
+              </Text>
+              <GamesListBox isTournament width="100%" />
+            </Flex>
+          </Flex>
         </Flex>
-        <Flex w="100%" justifyContent="center" alignItems="flex-start" bgColor={"red"}>
+
+        <Flex w="100%" justifyContent="center" alignItems="flex-start">
           <Flex
             flexDirection="column"
             alignItems="stretch"
             gap={2}
-            width={{ base: "90%", sm: "70%", md: "900px" }}
+            width={{ base: "100%" }}
           >
             <Text
               textTransform="uppercase"

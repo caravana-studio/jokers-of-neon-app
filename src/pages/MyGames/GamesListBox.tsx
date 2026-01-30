@@ -42,7 +42,7 @@ export const GamesListBox = ({
 
   const filteredGames = useMemo(() => {
     return games.filter((game) => {
-      if (Boolean(game.isTournament) !== isTournament) return false;
+      if (isTournament && !Boolean(game.isTournament)) return false;
       const notSurrendered = !surrenderedIds.includes(game.id);
       const shouldShow = showFinishedGames
         ? true
