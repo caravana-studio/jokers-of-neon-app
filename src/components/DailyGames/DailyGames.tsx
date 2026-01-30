@@ -20,7 +20,7 @@ export const DailyGames = () => {
   const navigate = useNavigate();
   const { seasonPassUnlocked } = useSeasonPass();
   const [availableLives, setAvailableLives] = useState(0);
-  const [totalSlots, setTotalSlots] = useState(seasonPassUnlocked ? 4 : 2);
+  const [totalSlots, setTotalSlots] = useState(seasonPassUnlocked ? 6 : 3);
   const [nextLiveIn, setNextLiveIn] = useState<Date | undefined>(undefined);
 
   const {
@@ -93,7 +93,6 @@ export const DailyGames = () => {
       <Flex
         w="100%"
         justifyContent={"center"}
-        alignItems={"center"}
         gap={isSmallScreen ? 2 : 6}
       >
         {slots.map((unlockedPercentage, index) => (
@@ -113,6 +112,7 @@ export const DailyGames = () => {
             fontSize={isSmallScreen ? 10 : 15}
             h={isSmallScreen ? "30px" : "35px"}
             variant={seasonPassUnlocked ? "secondarySolid" : "solid"}
+            mt={availableLives < totalSlots ? 1.5 : 0}
           >
             {t("new-game")}
           </Button>

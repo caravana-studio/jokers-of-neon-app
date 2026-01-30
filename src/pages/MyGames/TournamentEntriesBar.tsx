@@ -20,6 +20,9 @@ export const TournamentEntriesBar = () => {
   } = useDojo();
 
   const entries = useSeasonProgressStore((store) => store.tournamentEntries);
+  const decrementTournamentEntries = useSeasonProgressStore(
+    (store) => store.decrementTournamentEntries,
+  );
 
   const entryLimit = isSmallScreen ? 4 : 6;
 
@@ -50,6 +53,10 @@ export const TournamentEntriesBar = () => {
   ]);
 
   const handleCreateGame = () => {
+    if (entries <= 0) {
+      return;
+    }
+    decrementTournamentEntries();
     prepareNewGame();
     executeCreateGame(true);
     navigate("/entering-tournament");
@@ -60,11 +67,6 @@ export const TournamentEntriesBar = () => {
 
   return (
     <Flex flexDir="column" gap={2} alignItems="center">
-      {entries > 0 && (
-        <Text textTransform="uppercase" textAlign="center">
-          {entriesText}
-        </Text>
-      )}
       <Flex
         w="100%"
         justifyContent="center"
@@ -95,27 +97,20 @@ export const TournamentEntriesBar = () => {
           </Text>
         )}
 
-        <Button
-          onClick={handleCreateGame}
-          width={isSmallScreen ? "150px" : "200px"}
-          ml={1}
-          fontSize={isSmallScreen ? 10 : 15}
-          h={isSmallScreen ? "30px" : "35px"}
-          variant="solid"
-          isDisabled={entries === 0}
-        >
-          {t("play-tournament")}
-        </Button>
+        {entries > 0 && (
+          <Button
+            onClick={handleCreateGame}
+            width={isSmallScreen ? "150px" : "200px"}
+            ml={1}
+            fontSize={isSmallScreen ? 10 : 15}
+            h={isSmallScreen ? "30px" : "35px"}
+            variant="solid"
+            isDisabled={entries === 0}
+          >
+            {t("play-tournament")}
+          </Button>
+        )}
       </Flex>
-      {/*       {entries === 0 && (
-        <Text
-          fontSize={isSmallScreen ? 9 : 15}
-          textTransform="uppercase"
-          textAlign="center"
-        >
-          {t("unlock")}
-        </Text>
-      )} */}
     </Flex>
   );
 };

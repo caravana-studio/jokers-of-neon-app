@@ -20,9 +20,9 @@ import { MapPage } from "./pages/Map/MapPage";
 import { MyCollectionPage } from "./pages/MyCollection/MyCollectionPage";
 import { EnteringTournament } from "./pages/MyGames/EnteringTournament";
 import { MyGames } from "./pages/MyGames/MyGames";
+import { Tournament } from "./pages/MyGames/Tournament";
 import { NewHome } from "./pages/NewHome/NewHome";
 import { NewLeaderboardPage } from "./pages/NewLeaderboardPage/NewLeaderboardPage";
-import { TournamentPage } from "./pages/NewLeaderboardPage/TournamentPage";
 import { OpenLootBox } from "./pages/OpenLootBox/Stages/OpenLootBox";
 import { OpenLootBoxCardSelection } from "./pages/OpenLootBox/Stages/OpenLootBoxCardSelection";
 import { PlaysLayout } from "./pages/Plays/PlaysLayout";
@@ -211,7 +211,7 @@ export const AppRoutes = () => {
         path="/tournament"
         element={
           <AnimatedPage>
-            <TournamentPage />
+            <Tournament />
           </AnimatedPage>
         }
       />
