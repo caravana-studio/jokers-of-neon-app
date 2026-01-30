@@ -1,4 +1,4 @@
-import { Button, Flex } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import {
   forwardRef,
   useEffect,
@@ -6,7 +6,6 @@ import {
   useRef,
   useState,
 } from "react";
-import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { RemoveScroll } from "react-remove-scroll";
 import "../../App.scss";
@@ -114,24 +113,13 @@ export const LoadingScreen = forwardRef<
                   <RealLoadingBar ref={progressBarRef} steps={steps} />
                 )}
 
-                {!skipAnimation && !isMobile && (
-                  <Button
-                    onClick={handleAnimationEnd}
-                    position="absolute"
-                    bottom="20px"
-                    right="20px"
-                    variant={"ghost"}
-                  >
-                    {t("skip")}
-                  </Button>
-                )}
               </Flex>
             )}
           </PreThemeLoadingPage>
           <RemoveScroll>
             <></>
           </RemoveScroll>
-          {!skipAnimation && isMobile && (
+          {!skipAnimation && showPresentation && (
             <div
               style={{
                 position: "absolute",
@@ -139,6 +127,7 @@ export const LoadingScreen = forwardRef<
                 left: 0,
                 width: "100%",
                 height: "100%",
+                cursor: "pointer",
               }}
               onClick={handleAnimationEnd}
             />
