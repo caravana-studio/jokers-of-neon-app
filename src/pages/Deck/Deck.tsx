@@ -4,6 +4,7 @@ import { useDeckFilters } from "../../providers/DeckFilterProvider";
 import { useDeckStore } from "../../state/useDeckStore";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { Card } from "../../types/Card";
+import { MobileCoins } from "../store/Coins";
 import { DeckCardsGrid } from "./DeckCardsGrid";
 import { DeckFilters } from "./Filters/DeckFilters";
 import { preprocessCards } from "./Utils/DeckCardsUtils";
@@ -56,7 +57,10 @@ export const Deck = ({ inStore, burn, onCardSelect, selectedCards = [], inMap }:
             </Text>
           </Flex>
         )}
-        <DeckFilters inStore={inStore} />
+        <Flex alignItems="center" gap={4} flex={1} justifyContent="flex-end">
+          <DeckFilters inStore={inStore} />
+          {burn && <MobileCoins />}
+        </Flex>
       </Flex>
       <Flex
         alignItems={"center"}

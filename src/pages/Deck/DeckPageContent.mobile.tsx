@@ -1,4 +1,4 @@
-import { Badge, Flex, Heading, Text } from "@chakra-ui/react";
+import { Flex, Heading, Text } from "@chakra-ui/react";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -11,6 +11,7 @@ import { useGameStore } from "../../state/useGameStore";
 import { useShopStore } from "../../state/useShopStore";
 import { useDeckStore } from "../../state/useDeckStore";
 import { Card } from "../../types/Card";
+import { calculateBurnCost } from "../../utils/burnUtils";
 import { Deck } from "./Deck";
 
 interface DeckPageContentMobileProps {
@@ -21,23 +22,6 @@ interface DeckPageContentMobileProps {
   };
 }
 
-// Calculate progressive burn cost
-// First card uses discounted price (if available), remaining cards use regular price
-// Formula: firstCardCost + (N-1) * regularCost + 100 * ((N-1) * (N-2) / 2)
-const calculateBurnCost = (
-  numCards: number,
-  firstCardCost: number,
-  regularCost: number
-): number => {
-  if (numCards === 0) return 0;
-  if (numCards === 1) return firstCardCost;
-  const remainingCards = numCards - 1;
-  const remainingCost =
-    remainingCards * regularCost +
-    100 * ((remainingCards * (remainingCards - 1)) / 2);
-  return firstCardCost + remainingCost;
-};
-
 export const DeckPageContentMobile = ({
   state,
 }: DeckPageContentMobileProps) => {
@@ -45,7 +29,7 @@ export const DeckPageContentMobile = ({
   const [cardsToBurn, setCardsToBurn] = useState<Card[]>([]);
   const navigate = useNavigate();
   const { burnCards } = useStore();
-  const { burnItem } = useShopStore();
+  const { burnItem, locked } = useShopStore();
   const { cash } = useGameStore();
   const { currentLength, size } = useDeckStore();
 
@@ -149,20 +133,18 @@ export const DeckPageContentMobile = ({
                 onClick: handleBurnCards,
                 label: (
                   <Flex gap={1} alignItems="center">
-                    {cardsToBurn.length > 0 && (
-                      <Badge colorScheme="blue" fontSize="xs" mr={1}>
-                        {cardsToBurn.length}
-                      </Badge>
-                    )}
-                    {`${t("btns.burn").toUpperCase()} `}
+                    {`${t("btns.burn").toUpperCase()}`}
+                    {cardsToBurn.length > 0 && ` ${cardsToBurn.length} ${cardsToBurn.length === 1 ? "card" : "cards"}`}
                     <CashSymbol />
-                    {` ${totalCost}`}
+                    {totalCost}
                   </Flex>
                 ),
                 disabled:
                   cardsToBurn.length === 0 ||
                   cash < totalCost ||
-                  burnItem?.purchased,
+                  burnItem?.purchased ||
+                  locked,
+                isLoading: locked,
               }
             : undefined
         }

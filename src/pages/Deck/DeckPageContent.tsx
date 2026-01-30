@@ -1,4 +1,4 @@
-import { Badge, Button, Flex } from "@chakra-ui/react";
+import { Button, Flex } from "@chakra-ui/react";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -9,6 +9,7 @@ import { useStore } from "../../providers/StoreProvider";
 import { useGameStore } from "../../state/useGameStore";
 import { useShopStore } from "../../state/useShopStore";
 import { Card } from "../../types/Card";
+import { calculateBurnCost } from "../../utils/burnUtils";
 import { Deck } from "./Deck";
 
 interface DeckPageContentProps {
@@ -19,28 +20,11 @@ interface DeckPageContentProps {
   };
 }
 
-// Calculate progressive burn cost
-// First card uses discounted price (if available), remaining cards use regular price
-// Formula: firstCardCost + (N-1) * regularCost + 100 * ((N-1) * (N-2) / 2)
-const calculateBurnCost = (
-  numCards: number,
-  firstCardCost: number,
-  regularCost: number
-): number => {
-  if (numCards === 0) return 0;
-  if (numCards === 1) return firstCardCost;
-  const remainingCards = numCards - 1;
-  const remainingCost =
-    remainingCards * regularCost +
-    100 * ((remainingCards * (remainingCards - 1)) / 2);
-  return firstCardCost + remainingCost;
-};
-
 export const DeckPageContent = ({ state }: DeckPageContentProps) => {
   const { t } = useTranslation("game", { keyPrefix: "game.deck" });
   const [cardsToBurn, setCardsToBurn] = useState<Card[]>([]);
   const { burnCards } = useStore();
-  const { burnItem } = useShopStore();
+  const { burnItem, locked } = useShopStore();
   const navigate = useNavigate();
   const { cash } = useGameStore();
 
@@ -101,31 +85,27 @@ export const DeckPageContent = ({ state }: DeckPageContentProps) => {
       <Flex gap={6} alignItems="center">
         {backToGameButton}
         {state.burn && (
-          <Flex alignItems="center" gap={2}>
-            {cardsToBurn.length > 0 && (
-              <Badge colorScheme="blue" fontSize="md" px={2} py={1}>
-                {cardsToBurn.length} {cardsToBurn.length === 1 ? "card" : "cards"}
-              </Badge>
-            )}
-            <Button
-              minWidth={"100px"}
-              size={"md"}
-              lineHeight={1.6}
-              fontSize={[10, 10, 10, 14, 14]}
-              onClick={handleBurnCards}
-              isDisabled={
-                cardsToBurn.length === 0 ||
-                cash < totalCost ||
-                burnItem?.purchased
-              }
-            >
-              {t("btns.burn").toUpperCase()}
-              <Flex ml={3} mr={1}>
-                <CashSymbol />
-              </Flex>
-              {" " + totalCost}
-            </Button>
-          </Flex>
+          <Button
+            minWidth={"100px"}
+            size={"md"}
+            lineHeight={1.6}
+            fontSize={[10, 10, 10, 14, 14]}
+            onClick={handleBurnCards}
+            isDisabled={
+              cardsToBurn.length === 0 ||
+              cash < totalCost ||
+              burnItem?.purchased ||
+              locked
+            }
+            isLoading={locked}
+          >
+            {t("btns.burn").toUpperCase()}
+            {cardsToBurn.length > 0 && ` ${cardsToBurn.length} ${cardsToBurn.length === 1 ? "card" : "cards"}`}
+            <Flex ml={3} mr={1}>
+              <CashSymbol />
+            </Flex>
+            {totalCost}
+          </Button>
         )}
       </Flex>
     </Flex>
