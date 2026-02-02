@@ -113,6 +113,7 @@ export default function Stack({
   const disableDrag = isLegacyAndroidDevice;
   const randomRotationCache = useRef<Map<CardData["id"], number>>(new Map());
   const seenTopCardIds = useRef<Set<CardData["id"]>>(new Set());
+  const lastAdvanceAtRef = useRef(0);
 
   useEffect(() => {
     let cancelled = false;
@@ -169,6 +170,11 @@ export default function Stack({
       const newCards = [...prev];
       const index = newCards.findIndex((card) => card.id === id);
       if (index === -1) return prev;
+      const now = Date.now();
+      if (now - lastAdvanceAtRef.current < 100) {
+        return prev;
+      }
+      lastAdvanceAtRef.current = now;
       const previousTopId = prev[prev.length - 1]?.id;
       const [card] = newCards.splice(index, 1);
       newCards.unshift(card);
