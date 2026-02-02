@@ -17,7 +17,13 @@ interface DeckProps {
   inMap?: boolean;
 }
 
-export const Deck = ({ inStore, burn, onCardSelect, selectedCards = [], inMap }: DeckProps) => {
+export const Deck = ({
+  inStore,
+  burn,
+  onCardSelect,
+  selectedCards = [],
+  inMap,
+}: DeckProps) => {
   const { t } = useTranslation("game", { keyPrefix: "game.deck" });
   const deck = useDeckStore();
   const { filterButtonsState } = useDeckFilters();
@@ -59,8 +65,13 @@ export const Deck = ({ inStore, burn, onCardSelect, selectedCards = [], inMap }:
         )}
         <Flex alignItems="center" gap={4} flex={1} justifyContent="flex-end">
           <DeckFilters inStore={inStore} />
-          {burn && <MobileCoins />}
+          {burn && !isSmallScreen && <MobileCoins />}
         </Flex>
+        {isSmallScreen && (
+          <Flex position="absolute" right={5} top="20px" transform={"scale(0.8)"}>
+            <MobileCoins />
+          </Flex>
+        )}
       </Flex>
       <Flex
         alignItems={"center"}

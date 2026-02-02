@@ -78,16 +78,16 @@ export const DeckPageContentMobile = ({
       flexShrink={1}
       minH={0}
     >
-      <Flex gap={2} alignItems="center" justifyContent="center" mb={1}>
-        <Heading size="sm">{t("title")}</Heading>
-        <Text
+      <Flex gap={2} alignItems="left" justifyContent="left" ml={6} mb={1}>
+        <Heading size={"sm"} fontSize={state.burn ? 13 : 15}>{t(state.burn ? "burn-title" : "title")}</Heading>
+        {!state.burn && <Text
           size="lg"
           color="blueLight"
           fontWeight={500}
           whiteSpace="nowrap"
         >
           ({currentLength}/{size})
-        </Text>
+        </Text>}
       </Flex>
       <MobileDecoration />
       {!state.inStore ? (
