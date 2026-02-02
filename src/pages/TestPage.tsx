@@ -9,6 +9,15 @@ import { useResponsiveValues } from "../theme/responsiveSettings";
 export const TestPage = () => {
   const { isSmallScreen } = useResponsiveValues();
   const navigate = useNavigate();
+  const packButtons = [
+    { id: 1, label: "Open Basic pack" },
+    { id: 2, label: "Open Advanced pack" },
+    { id: 3, label: "Open Epic pack" },
+    { id: 4, label: "Open Legendary pack" },
+    { id: 5, label: "Open Collector pack" },
+    { id: 6, label: "Open Collector XL pack" },
+  ];
+
   return (
     <DelayedLoading ms={0}>
       <MobileDecoration />
@@ -16,14 +25,17 @@ export const TestPage = () => {
         {isSmallScreen && (
           <Divider borderColor="white" borderWidth="1px" my={2} />
         )}
-        <MenuBtn
-          icon={Icons.STORE}
-          description={"Open external pack"}
-          label={"Open external pack"}
-          onClick={() => navigate("/test/external-pack/5")}
-          arrowRight
-          width={"18px"}
-        />
+        {packButtons.map((pack) => (
+          <MenuBtn
+            key={pack.id}
+            icon={Icons.STORE}
+            description={pack.label}
+            label={pack.label}
+            onClick={() => navigate(`/test/external-pack/${pack.id}`)}
+            arrowRight
+            width={"18px"}
+          />
+        ))}
         {isSmallScreen && (
           <Divider borderColor="white" borderWidth="1px" my={2} />
         )}
