@@ -751,7 +751,7 @@ export const SettingsProvider = ({
             await delay(200);
             await NativeAudio.play({ assetId: "bg_music" });
             return true;
-          });
+          }, "bg_music");
 
           setIsMusicPlaying(shouldPlay);
         } catch (err) {
@@ -810,8 +810,9 @@ export const SettingsProvider = ({
 
     return () => {
       if (isNative) {
-        runNativeAudioTask(() =>
-          NativeAudio.stop({ assetId: "bg_music" }).catch(() => {})
+        runNativeAudioTask(
+          () => NativeAudio.stop({ assetId: "bg_music" }).catch(() => {}),
+          "bg_music"
         );
         setIsMusicPlaying(false);
       } else if (activeSoundInstance) {
@@ -831,11 +832,13 @@ export const SettingsProvider = ({
 
   useEffect(() => {
     if (isNative) {
-      runNativeAudioTask(() =>
-        NativeAudio.setVolume({
-          assetId: "bg_music",
-          volume: musicVolume,
-        }).catch(() => {})
+      runNativeAudioTask(
+        () =>
+          NativeAudio.setVolume({
+            assetId: "bg_music",
+            volume: musicVolume,
+          }).catch(() => {}),
+        "bg_music"
       );
     } else if (sound) {
       sound.volume(musicVolume);
@@ -850,8 +853,9 @@ export const SettingsProvider = ({
 
     const registerListeners = async () => {
       pauseHandle = await App.addListener("pause", async () => {
-        await runNativeAudioTask(() =>
-          NativeAudio.stop({ assetId: "bg_music" }).catch(() => {})
+        await runNativeAudioTask(
+          () => NativeAudio.stop({ assetId: "bg_music" }).catch(() => {}),
+          "bg_music"
         );
         setIsMusicPlaying(false);
       });
