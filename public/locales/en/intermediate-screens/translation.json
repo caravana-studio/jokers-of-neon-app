@@ -152,6 +152,7 @@
     "go-back": "Go back",
     "start-game": "New game",
     "show-finished-games": "Show finished games",
+    "tournament-game": "TOURNAMENT GAME",
     "continue-btn": "continue",
     "start-btn": "start",
     "tuto": "Tutorial",
@@ -177,6 +178,12 @@
       "stage-4": "Shuffling cards",
       "stage-5": "The game is about to begin..."
     }
+  },
+  "tournament": {
+    "title": "Tournament active",
+    "full-leaderboard": "Tournament leaderboard",
+    "your-games": "Games",
+    "your-entries": "Entries"
   },
   "game-over": {
     "current-position": "You are in position number {{position}}, do you want to keep it?",

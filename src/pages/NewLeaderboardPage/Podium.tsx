@@ -29,7 +29,7 @@ export const Podium = ({ seePrizes = false, isTournamentLeaderboard = false }: P
 
   return (
     <Flex
-      w={isSmallScreen ? "220px" : "440px"}
+      w={isSmallScreen ? "220px" : "400px"}
       mt={6}
       alignItems="center"
       justifyContent="center"
@@ -40,8 +40,8 @@ export const Podium = ({ seePrizes = false, isTournamentLeaderboard = false }: P
         <>
           <Text
             position="absolute"
-            left={isSmallScreen ? "75px" : "150px"}
-            top={isSmallScreen ? "10px" : "30px"}
+            left={isSmallScreen ? "75px" : "130px"}
+            top={isSmallScreen ? "10px" : "25px"}
             width={isSmallScreen ? "70px" : "140px"}
             textAlign="center"
             lineHeight={0.9}
@@ -51,8 +51,8 @@ export const Podium = ({ seePrizes = false, isTournamentLeaderboard = false }: P
           </Text>
           <Flex
             position="absolute"
-            left={isSmallScreen ? "75px" : "150px"}
-            top={isSmallScreen ? "120px" : "240px"}
+            left={isSmallScreen ? "75px" : "130px"}
+            top={isSmallScreen ? "120px" : "220px"}
             width={isSmallScreen ? "70px" : "140px"}
             justifyContent="center"
             lineHeight={1.1}
@@ -98,8 +98,8 @@ export const Podium = ({ seePrizes = false, isTournamentLeaderboard = false }: P
         <>
           <Text
             position="absolute"
-            left={isSmallScreen ? "5px" : "10px"}
-            top={isSmallScreen ? "55px" : "120px"}
+            left={isSmallScreen ? "5px" : "-2px"}
+            top={isSmallScreen ? "55px" : "110px"}
             width={isSmallScreen ? "70px" : "140px"}
             textAlign="center"
             lineHeight={0.9}
@@ -109,8 +109,8 @@ export const Podium = ({ seePrizes = false, isTournamentLeaderboard = false }: P
           </Text>
           <Flex
             position="absolute"
-            left={isSmallScreen ? "5px" : "10px"}
-            top={isSmallScreen ? "160px" : "320px"}
+            left={isSmallScreen ? "5px" : "0px"}
+            top={isSmallScreen ? "160px" : "295px"}
             width={isSmallScreen ? "70px" : "140px"}
             justifyContent="center"
             lineHeight={1.1}
@@ -156,8 +156,8 @@ export const Podium = ({ seePrizes = false, isTournamentLeaderboard = false }: P
         <>
           <Text
             position="absolute"
-            left={isSmallScreen ? "145px" : "295px"}
-            top={isSmallScreen ? "84px" : "178px"}
+            left={isSmallScreen ? "145px" : "260px"}
+            top={isSmallScreen ? "84px" : "162px"}
             width={isSmallScreen ? "70px" : "140px"}
             textAlign="center"
             lineHeight={0.9}
@@ -167,8 +167,8 @@ export const Podium = ({ seePrizes = false, isTournamentLeaderboard = false }: P
           </Text>
           <Flex
             position="absolute"
-            left={isSmallScreen ? "145px" : "295px"}
-            top={isSmallScreen ? "173px" : "346px"}
+            left={isSmallScreen ? "145px" : "260px"}
+            top={isSmallScreen ? "173px" : "320px"}
             width={isSmallScreen ? "70px" : "140px"}
             justifyContent="center"
             lineHeight={1.1}

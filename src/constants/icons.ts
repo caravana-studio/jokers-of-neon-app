@@ -26,6 +26,7 @@ import MapSimpleIcon from "../assets/MenuIcons/map-simple.png";
 import StoreIcon from "../assets/MenuIcons/shop.png";
 import ShopIcon from "../assets/MenuIcons/shop2.png";
 import SeasonIcon from "../assets/MenuIcons/season.png";
+import TournamentIcon from "../assets/MenuIcons/tournament.png";
 import RoundIcon from "../assets/MenuIcons/round.png";
 import RageIcon from "../assets/MenuIcons/rage.png";
 import HomeIcon from "../assets/MenuIcons/home.png";
@@ -76,6 +77,7 @@ export const Icons = {
   SHOP: ShopIcon,
   SEASON: SeasonIcon,
   GIFT: GiftIcon,
+  TOURNAMENT: TournamentIcon,
 } as const;
 
 export type IconType = keyof typeof Icons;
