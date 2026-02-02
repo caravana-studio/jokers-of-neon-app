@@ -115,6 +115,19 @@ export default function Stack({
   const seenTopCardIds = useRef<Set<CardData["id"]>>(new Set());
   const lastAdvanceAtRef = useRef(0);
 
+  const getGlowClassName = (intensity?: Intensity) => {
+    switch (intensity) {
+      case Intensity.MAX:
+        return "card-top-glow--max";
+      case Intensity.HIGH:
+        return "card-top-glow--high";
+      case Intensity.MEDIUM:
+        return "card-top-glow--medium";
+      default:
+        return "card-top-glow--low";
+    }
+  };
+
   useEffect(() => {
     let cancelled = false;
     console.log("calling isLegacyAndroid");
@@ -230,6 +243,11 @@ export default function Stack({
 
         const isTopCard = index === cards.length - 1;
         const ownedKey = `${card.cardId}_${card.skinId ?? 0}`;
+        const glowClass = isTopCard
+          ? `card-top-glow ${getGlowClassName(card.intensity)}${
+              prefersReducedMotion ? " card-top-glow--static" : ""
+            }`
+          : "";
 
         return (
           <CardRotate
@@ -240,7 +258,7 @@ export default function Stack({
             disableDrag={disableDrag}
           >
             <motion.div
-              className="card"
+              className={`card ${glowClass}`.trim()}
               onClick={() => sendToBackOnClick && sendToBack(card.id)}
               animate={{
                 rotateZ: (cards.length - index - 1) * 1 + randomRotate,
