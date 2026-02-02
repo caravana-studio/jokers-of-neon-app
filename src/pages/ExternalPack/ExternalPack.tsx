@@ -225,15 +225,22 @@ export const ExternalPack = ({
     () =>
       [...obtainedCards].reverse().map((card, index) => {
         const skinId = card.skin_id ?? 0;
+        const { type: cardType, rarity: cardRarity } = getCardData(card.card_id);
+        const intensity = getIntensity(
+          cardType ?? CardTypes.NONE,
+          (cardRarity as RARITY | undefined) ?? RARITY.C,
+          skinId > 0,
+        );
 
         return {
           id: index,
           cardId: card.card_id,
           skinId,
           img: `/Cards/${card.card_id}${skinId !== 0 ? `_sk${skinId}` : ""}.png`,
+          intensity,
         };
       }),
-    [obtainedCards],
+    [getCardData, obtainedCards],
   );
 
   // Ensure the first render highlights the first real card instead of the fallback (ID 0 / 2 de trébol).
