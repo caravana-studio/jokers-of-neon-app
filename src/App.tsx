@@ -14,7 +14,7 @@ import { useDojo } from "./dojo/DojoContext";
 import { useGameActions } from "./dojo/useGameActions";
 import { useUsername } from "./dojo/utils/useUsername";
 import { useAppsFlyerReferral } from "./hooks/useAppsFlyerReferral";
-import { initAppsFlyerReferralListener } from "./utils/appsflyerReferral";
+import { initAppsFlyerReferralListener, initWebReferralDetection } from "./utils/appsflyerReferral";
 import { BackgroundAnimationProvider } from "./providers/BackgroundAnimationProvider";
 import { CardAnimationsProvider } from "./providers/CardAnimationsProvider";
 import { CardDataProvider } from "./providers/CardDataProvider";
@@ -93,10 +93,13 @@ function App() {
 
     askForTracking();
     
-    // Initialize AppsFlyer referral listener
+    // Initialize AppsFlyer referral listener (native platforms)
     initAppsFlyerReferralListener().catch((err) => {
       console.warn("Failed to initialize AppsFlyer listener:", err);
     });
+
+    // Detect web referrals from URL params (?ref=username)
+    initWebReferralDetection();
 
     registerPushListeners(navigate);
   }, []);

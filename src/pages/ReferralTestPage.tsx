@@ -1,4 +1,19 @@
-import { Box, Button, Flex, Heading, Text, useToast, VStack, HStack, Code, Divider } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  Heading,
+  Text,
+  useToast,
+  VStack,
+  HStack,
+  Code,
+  Badge,
+  IconButton,
+  Collapse,
+  useDisclosure,
+  Progress,
+} from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { DelayedLoading } from "../components/DelayedLoading";
@@ -10,16 +25,18 @@ import {
   generateNativeInviteUrl,
   logReferralInvite,
   getAppsFlyerUID,
-  getDeviceId
+  getDeviceId,
 } from "../utils/appsflyer";
 import {
   getPendingReferralData,
   getPendingConversionData,
   clearPendingReferralData,
-  clearPendingConversionData
+  clearPendingConversionData,
 } from "../utils/appsflyerReferral";
 import { useAppsFlyerReferral } from "../hooks/useAppsFlyerReferral";
 import { Capacitor } from "@capacitor/core";
+import { Share } from "@capacitor/share";
+import { FaChevronDown, FaChevronUp, FaCopy, FaShare, FaSync, FaTrash, FaArrowLeft, FaLink, FaUsers, FaGift } from "react-icons/fa";
 
 interface ReferralStats {
   referral_code: string | null;
@@ -38,7 +55,9 @@ interface ReferralStats {
 export const ReferralTestPage = () => {
   const navigate = useNavigate();
   const toast = useToast();
-  const { account: { account } } = useDojo();
+  const {
+    account: { account },
+  } = useDojo();
   const username = useUsername();
 
   const [referralCode, setReferralCode] = useState<string | null>(null);
@@ -47,6 +66,10 @@ export const ReferralTestPage = () => {
   const [loading, setLoading] = useState(false);
   const [appsFlyerUID, setAppsFlyerUID] = useState<string | null>(null);
   const [deviceId, setDeviceId] = useState<string | null>(null);
+
+  // Collapsible sections
+  const debugSection = useDisclosure();
+  const instructionsSection = useDisclosure();
 
   // Hook data
   const { referralData, conversionData, state } = useAppsFlyerReferral();
@@ -57,6 +80,7 @@ export const ReferralTestPage = () => {
 
   const userAddress = account?.address;
   const isNative = Capacitor.isNativePlatform();
+  const shortAddress = userAddress ? `${userAddress.slice(0, 6)}...${userAddress.slice(-4)}` : null;
 
   // Load initial data
   useEffect(() => {
@@ -64,17 +88,14 @@ export const ReferralTestPage = () => {
   }, [userAddress]);
 
   const loadData = async () => {
-    // Load pending data
     setPendingReferral(getPendingReferralData());
     setPendingConversion(getPendingConversionData());
 
-    // Load AppsFlyer IDs
     const uid = await getAppsFlyerUID();
     const devId = await getDeviceId();
     setAppsFlyerUID(uid);
     setDeviceId(devId);
 
-    // Load stats if user is logged in
     if (userAddress) {
       try {
         const statsData = await getReferralStats(userAddress);
@@ -95,7 +116,11 @@ export const ReferralTestPage = () => {
     }
 
     if (!username) {
-      toast({ title: "Username not found", description: "Please set a username first", status: "error" });
+      toast({
+        title: "Username required",
+        description: "Set a username first",
+        status: "error",
+      });
       return;
     }
 
@@ -103,10 +128,10 @@ export const ReferralTestPage = () => {
     try {
       const code = await createReferralCode(userAddress, username);
       setReferralCode(code);
-      toast({ title: "Referral code created!", description: code, status: "success" });
-      await loadData(); // Refresh stats
+      toast({ title: "Code created!", description: code, status: "success" });
+      await loadData();
     } catch (error) {
-      toast({ title: "Failed to create code", description: String(error), status: "error" });
+      toast({ title: "Failed", description: String(error), status: "error" });
     } finally {
       setLoading(false);
     }
@@ -124,15 +149,15 @@ export const ReferralTestPage = () => {
 
       if (url) {
         setGeneratedLink(url);
-        toast({ title: "Link generated!", status: "success" });
+        toast({ title: "Link ready!", status: "success" });
         await logReferralInvite(referralCode, "test_share");
       } else {
         const fallbackUrl = generateReferralLink(referralCode);
         setGeneratedLink(fallbackUrl);
-        toast({ title: "Fallback link generated", status: "info" });
+        toast({ title: "Fallback link", status: "info" });
       }
     } catch (error) {
-      toast({ title: "Failed to generate link", description: String(error), status: "error" });
+      toast({ title: "Failed", description: String(error), status: "error" });
     } finally {
       setLoading(false);
     }
@@ -141,7 +166,24 @@ export const ReferralTestPage = () => {
   const handleCopyLink = () => {
     if (generatedLink) {
       navigator.clipboard.writeText(generatedLink);
-      toast({ title: "Link copied!", status: "success", duration: 2000 });
+      toast({ title: "Copied!", status: "success", duration: 1500 });
+    }
+  };
+
+  const handleShareLink = async () => {
+    if (!generatedLink || !referralCode) return;
+
+    try {
+      await Share.share({
+        title: "Join Jokers of Neon!",
+        text: `Use my referral code: ${referralCode}`,
+        url: generatedLink,
+        dialogTitle: "Share your referral link",
+      });
+      await logReferralInvite(referralCode, "native_share");
+    } catch (error) {
+      // User cancelled or share failed, fall back to copy
+      handleCopyLink();
     }
   };
 
@@ -150,195 +192,368 @@ export const ReferralTestPage = () => {
     clearPendingConversionData();
     setPendingReferral(null);
     setPendingConversion(null);
-    toast({ title: "Pending data cleared", status: "info" });
+    toast({ title: "Data cleared", status: "info" });
   };
 
   const handleRefresh = () => {
     loadData();
-    toast({ title: "Data refreshed", status: "info" });
+    toast({ title: "Refreshed", status: "info", duration: 1000 });
   };
 
   return (
     <DelayedLoading ms={0}>
       <MobileDecoration />
       <Flex
-        m={4}
         flexDirection="column"
-        gap={4}
+        gap={3}
         w="100%"
         color="white"
-        maxW="600px"
+        maxW="500px"
         mx="auto"
-        pb={10}
+        px={4}
+        py={3}
+        pb={20}
       >
-        <Button size="sm" onClick={() => navigate(-1)} alignSelf="flex-start">
-          Back
-        </Button>
+        {/* Header */}
+        <HStack justify="space-between" align="center">
+          <IconButton
+            aria-label="Back"
+            icon={<FaArrowLeft />}
+            variant="ghost"
+            size="sm"
+            onClick={() => navigate(-1)}
+          />
+          <Heading size="md">Referral System</Heading>
+          <IconButton
+            aria-label="Refresh"
+            icon={<FaSync />}
+            variant="ghost"
+            size="sm"
+            onClick={handleRefresh}
+          />
+        </HStack>
 
-        <Heading size="lg">Referral System Test</Heading>
-
-        {/* Platform Info */}
-        <Box bg="gray.800" p={4} borderRadius="md">
-          <Heading size="sm" mb={2}>Platform Info</Heading>
-          <VStack align="start" spacing={1} fontSize="sm">
-            <Text>Platform: <Code>{isNative ? "Native (iOS/Android)" : "Web"}</Code></Text>
-            <Text>Username: <Code colorScheme={username ? "green" : "red"}>{username || "Not set"}</Code></Text>
-            <Text>User Address: <Code fontSize="xs">{userAddress || "Not logged in"}</Code></Text>
-            <Text>AppsFlyer UID: <Code fontSize="xs">{appsFlyerUID || "N/A"}</Code></Text>
-            <Text>Device ID: <Code fontSize="xs">{deviceId || "N/A"}</Code></Text>
+        {/* Status Bar */}
+        <HStack
+          bg="whiteAlpha.100"
+          p={2}
+          borderRadius="lg"
+          justify="space-around"
+          fontSize="xs"
+        >
+          <VStack spacing={0}>
+            <Text color="gray.400">Platform</Text>
+            <Badge colorScheme={isNative ? "green" : "blue"} fontSize="xs">
+              {isNative ? "Native" : "Web"}
+            </Badge>
           </VStack>
-        </Box>
-
-        <Divider />
-
-        {/* Referral Code Section */}
-        <Box bg="gray.800" p={4} borderRadius="md">
-          <Heading size="sm" mb={2}>Your Referral Code</Heading>
-          {referralCode ? (
-            <VStack align="start" spacing={2}>
-              <HStack>
-                <Text>Code:</Text>
-                <Code colorScheme="green" fontSize="lg">{referralCode}</Code>
-              </HStack>
-              <Button
-                colorScheme="blue"
-                onClick={handleGenerateLink}
-                isLoading={loading}
-                size="sm"
-              >
-                Generate Invite Link (SDK)
-              </Button>
-            </VStack>
-          ) : (
-            <Button
-              colorScheme="green"
-              onClick={handleCreateCode}
-              isLoading={loading}
-              isDisabled={!userAddress}
-            >
-              Create Referral Code
-            </Button>
-          )}
-        </Box>
-
-        {/* Generated Link */}
-        {generatedLink && (
-          <Box bg="gray.800" p={4} borderRadius="md">
-            <Heading size="sm" mb={2}>Generated Link</Heading>
-            <Code
-              display="block"
-              whiteSpace="pre-wrap"
-              wordBreak="break-all"
-              p={2}
+          <VStack spacing={0}>
+            <Text color="gray.400">User</Text>
+            <Text fontWeight="bold">{username || shortAddress || "—"}</Text>
+          </VStack>
+          <VStack spacing={0}>
+            <Text color="gray.400">Status</Text>
+            <Badge
+              colorScheme={state === "idle" ? "green" : state === "processing" ? "yellow" : "blue"}
               fontSize="xs"
-              mb={2}
             >
-              {generatedLink}
-            </Code>
-            <Button colorScheme="teal" size="sm" onClick={handleCopyLink}>
-              Copy Link
-            </Button>
-          </Box>
-        )}
+              {state}
+            </Badge>
+          </VStack>
+        </HStack>
 
-        <Divider />
+        {/* Main Referral Card */}
+        <Box
+          bg="linear-gradient(135deg, #1a365d 0%, #2d3748 100%)"
+          p={4}
+          borderRadius="xl"
+          border="1px solid"
+          borderColor="whiteAlpha.200"
+        >
+          <VStack spacing={3} align="stretch">
+            <HStack justify="space-between">
+              <HStack>
+                <FaLink color="#63B3ED" />
+                <Text fontWeight="bold">Your Referral Code</Text>
+              </HStack>
+            </HStack>
 
-        {/* Stats Section */}
-        <Box bg="gray.800" p={4} borderRadius="md">
-          <HStack justify="space-between" mb={2}>
-            <Heading size="sm">Your Referral Stats</Heading>
-            <Button size="xs" onClick={handleRefresh}>Refresh</Button>
-          </HStack>
-          {stats ? (
-            <VStack align="start" spacing={1} fontSize="sm">
-              <Text>Total Claims: <Code>{stats.total_claims}</Code></Text>
-              <Text>Valid Claims: <Code colorScheme="green">{stats.valid_claims}</Code></Text>
-              <Text>Fraudulent: <Code colorScheme="red">{stats.fraudulent_claims}</Code></Text>
-              <Text>Rewards Given: <Code colorScheme="blue">{stats.rewards_given}</Code></Text>
-              {stats.milestones && stats.milestones.length > 0 && (
-                <Box mt={2}>
-                  <Text fontWeight="bold">Milestones:</Text>
-                  {stats.milestones.map((m, i) => (
-                    <Text key={i} fontSize="xs" ml={2}>
-                      - {m.milestone_type}: {m.reward_type} x{m.reward_amount}
-                      {m.reward_given ? " (given)" : " (pending)"}
-                    </Text>
-                  ))}
+            {referralCode ? (
+              <>
+                <Box
+                  bg="whiteAlpha.200"
+                  p={3}
+                  borderRadius="lg"
+                  textAlign="center"
+                >
+                  <Text fontSize="2xl" fontWeight="bold" letterSpacing="wider">
+                    {referralCode}
+                  </Text>
                 </Box>
-              )}
-            </VStack>
-          ) : (
-            <Text fontSize="sm" color="gray.400">No stats available</Text>
-          )}
-        </Box>
 
-        <Divider />
-
-        {/* Hook State */}
-        <Box bg="gray.800" p={4} borderRadius="md">
-          <Heading size="sm" mb={2}>Hook State (useAppsFlyerReferral)</Heading>
-          <VStack align="start" spacing={1} fontSize="sm">
-            <Text>Processing State: <Code>{state}</Code></Text>
-            <Text>Referral Data: <Code>{referralData ? "Present" : "None"}</Code></Text>
-            <Text>Conversion Data: <Code>{conversionData ? "Present" : "None"}</Code></Text>
-            {referralData && (
-              <Code display="block" fontSize="xs" whiteSpace="pre-wrap" mt={2}>
-                {JSON.stringify(referralData, null, 2)}
-              </Code>
+                {!generatedLink ? (
+                  <Button
+                    colorScheme="blue"
+                    onClick={handleGenerateLink}
+                    isLoading={loading}
+                    leftIcon={<FaLink />}
+                    size="lg"
+                  >
+                    Generate Invite Link
+                  </Button>
+                ) : (
+                  <VStack spacing={2}>
+                    <Code
+                      display="block"
+                      p={2}
+                      borderRadius="md"
+                      fontSize="xs"
+                      wordBreak="break-all"
+                      bg="blackAlpha.400"
+                      w="100%"
+                    >
+                      {generatedLink}
+                    </Code>
+                    <HStack w="100%" spacing={2}>
+                      <Button
+                        flex={1}
+                        colorScheme="teal"
+                        onClick={handleCopyLink}
+                        leftIcon={<FaCopy />}
+                        size="md"
+                      >
+                        Copy
+                      </Button>
+                      <Button
+                        flex={1}
+                        colorScheme="blue"
+                        onClick={handleShareLink}
+                        leftIcon={<FaShare />}
+                        size="md"
+                      >
+                        Share
+                      </Button>
+                    </HStack>
+                  </VStack>
+                )}
+              </>
+            ) : (
+              <Button
+                colorScheme="green"
+                onClick={handleCreateCode}
+                isLoading={loading}
+                isDisabled={!userAddress}
+                size="lg"
+                w="100%"
+              >
+                {!userAddress ? "Login Required" : "Create Referral Code"}
+              </Button>
             )}
           </VStack>
         </Box>
 
-        {/* Pending Data */}
-        <Box bg="gray.800" p={4} borderRadius="md">
-          <HStack justify="space-between" mb={2}>
-            <Heading size="sm">Pending Data (localStorage)</Heading>
-            <Button size="xs" colorScheme="red" onClick={handleClearPendingData}>
-              Clear
-            </Button>
+        {/* Stats Card */}
+        <Box bg="whiteAlpha.100" p={4} borderRadius="xl">
+          <HStack mb={3}>
+            <FaUsers color="#68D391" />
+            <Text fontWeight="bold">Your Stats</Text>
           </HStack>
-          <VStack align="start" spacing={2} fontSize="sm">
-            <Box w="100%">
-              <Text fontWeight="bold">Pending Referral:</Text>
-              <Code display="block" fontSize="xs" whiteSpace="pre-wrap" maxH="100px" overflow="auto">
-                {pendingReferral ? JSON.stringify(pendingReferral, null, 2) : "None"}
-              </Code>
-            </Box>
-            <Box w="100%">
-              <Text fontWeight="bold">Pending Conversion:</Text>
-              <Code display="block" fontSize="xs" whiteSpace="pre-wrap" maxH="100px" overflow="auto">
-                {pendingConversion ? JSON.stringify(pendingConversion, null, 2) : "None"}
-              </Code>
-            </Box>
-          </VStack>
+
+          {stats ? (
+            <VStack spacing={3} align="stretch">
+              <HStack justify="space-around">
+                <VStack spacing={0}>
+                  <Text fontSize="2xl" fontWeight="bold" color="green.300">
+                    {stats.valid_claims}
+                  </Text>
+                  <Text fontSize="xs" color="gray.400">
+                    Referrals
+                  </Text>
+                </VStack>
+                <VStack spacing={0}>
+                  <Text fontSize="2xl" fontWeight="bold" color="blue.300">
+                    {stats.rewards_given}
+                  </Text>
+                  <Text fontSize="xs" color="gray.400">
+                    Rewards
+                  </Text>
+                </VStack>
+                <VStack spacing={0}>
+                  <Text fontSize="2xl" fontWeight="bold" color="red.300">
+                    {stats.fraudulent_claims}
+                  </Text>
+                  <Text fontSize="xs" color="gray.400">
+                    Blocked
+                  </Text>
+                </VStack>
+              </HStack>
+
+              {stats.milestones && stats.milestones.length > 0 && (
+                <Box mt={2}>
+                  <HStack mb={2}>
+                    <FaGift color="#F6AD55" size={12} />
+                    <Text fontSize="sm" fontWeight="bold">
+                      Milestones
+                    </Text>
+                  </HStack>
+                  <VStack spacing={1} align="stretch">
+                    {stats.milestones.map((m, i) => (
+                      <HStack
+                        key={i}
+                        justify="space-between"
+                        bg="whiteAlpha.100"
+                        p={2}
+                        borderRadius="md"
+                        fontSize="xs"
+                      >
+                        <Text>{m.milestone_type.replace(/_/g, " ")}</Text>
+                        <HStack>
+                          <Badge colorScheme="purple">
+                            {m.reward_type} x{m.reward_amount}
+                          </Badge>
+                          <Badge colorScheme={m.reward_given ? "green" : "yellow"}>
+                            {m.reward_given ? "Given" : "Pending"}
+                          </Badge>
+                        </HStack>
+                      </HStack>
+                    ))}
+                  </VStack>
+                </Box>
+              )}
+            </VStack>
+          ) : (
+            <Text fontSize="sm" color="gray.500" textAlign="center" py={4}>
+              {userAddress ? "Loading stats..." : "Login to see your stats"}
+            </Text>
+          )}
         </Box>
 
-        {/* Instructions */}
-        <Box bg="blue.900" p={4} borderRadius="md">
-          <Heading size="sm" mb={2}>Testing Instructions</Heading>
-          <VStack align="start" spacing={1} fontSize="sm">
-            <Text>1. Create a referral code (uses your username)</Text>
-            <Text>2. Generate an invite link using the SDK</Text>
-            <Text>3. Copy and share the link</Text>
-            <Text>4. On another device, click the link and install the app</Text>
-            <Text>5. Check the "Pending Data" section for deep link data</Text>
-            <Text>6. After login, check "Hook State" for processing status</Text>
-            <Text>7. Refresh stats to see new claims</Text>
-          </VStack>
+        {/* Debug Section (Collapsible) */}
+        <Box bg="whiteAlpha.50" borderRadius="xl" overflow="hidden">
+          <Button
+            w="100%"
+            variant="ghost"
+            justifyContent="space-between"
+            rightIcon={debugSection.isOpen ? <FaChevronUp /> : <FaChevronDown />}
+            onClick={debugSection.onToggle}
+            size="sm"
+            py={3}
+          >
+            Debug Info
+          </Button>
+          <Collapse in={debugSection.isOpen}>
+            <VStack spacing={3} p={3} align="stretch" fontSize="xs">
+              {/* Device Info */}
+              <Box>
+                <Text fontWeight="bold" mb={1}>
+                  Device
+                </Text>
+                <Code display="block" p={2} fontSize="xs" wordBreak="break-all">
+                  AF UID: {appsFlyerUID || "N/A"}
+                </Code>
+                <Code display="block" p={2} fontSize="xs" wordBreak="break-all" mt={1}>
+                  Device: {deviceId || "N/A"}
+                </Code>
+              </Box>
+
+              {/* Hook State */}
+              <Box>
+                <Text fontWeight="bold" mb={1}>
+                  Hook State
+                </Text>
+                <HStack spacing={2}>
+                  <Badge>State: {state}</Badge>
+                  <Badge colorScheme={referralData ? "green" : "gray"}>
+                    Referral: {referralData ? "Yes" : "No"}
+                  </Badge>
+                  <Badge colorScheme={conversionData ? "green" : "gray"}>
+                    Conversion: {conversionData ? "Yes" : "No"}
+                  </Badge>
+                </HStack>
+                {referralData && (
+                  <Code
+                    display="block"
+                    fontSize="xs"
+                    whiteSpace="pre-wrap"
+                    mt={2}
+                    p={2}
+                    maxH="80px"
+                    overflow="auto"
+                  >
+                    {JSON.stringify(referralData, null, 2)}
+                  </Code>
+                )}
+              </Box>
+
+              {/* Pending Data */}
+              <Box>
+                <HStack justify="space-between" mb={1}>
+                  <Text fontWeight="bold">Pending Data</Text>
+                  <IconButton
+                    aria-label="Clear"
+                    icon={<FaTrash />}
+                    size="xs"
+                    colorScheme="red"
+                    variant="ghost"
+                    onClick={handleClearPendingData}
+                  />
+                </HStack>
+                <Code
+                  display="block"
+                  fontSize="xs"
+                  whiteSpace="pre-wrap"
+                  p={2}
+                  maxH="60px"
+                  overflow="auto"
+                >
+                  Referral: {pendingReferral ? JSON.stringify(pendingReferral) : "None"}
+                </Code>
+                <Code
+                  display="block"
+                  fontSize="xs"
+                  whiteSpace="pre-wrap"
+                  p={2}
+                  mt={1}
+                  maxH="60px"
+                  overflow="auto"
+                >
+                  Conversion: {pendingConversion ? JSON.stringify(pendingConversion) : "None"}
+                </Code>
+              </Box>
+            </VStack>
+          </Collapse>
         </Box>
 
-        {/* Console Logs Info */}
-        <Box bg="orange.900" p={4} borderRadius="md">
-          <Heading size="sm" mb={2}>Check Console Logs</Heading>
-          <Text fontSize="sm">
-            Open Xcode console or Safari Web Inspector to see detailed logs with prefix:
-          </Text>
-          <VStack align="start" spacing={0} mt={2} fontSize="xs">
-            <Code>[AppsFlyer]</Code>
-            <Code>[AppsFlyerBridge]</Code>
-            <Code>[AppsFlyer Referral]</Code>
-            <Code>[useAppsFlyerReferral]</Code>
-          </VStack>
+        {/* Instructions (Collapsible) */}
+        <Box bg="blue.900" borderRadius="xl" overflow="hidden">
+          <Button
+            w="100%"
+            variant="ghost"
+            justifyContent="space-between"
+            rightIcon={instructionsSection.isOpen ? <FaChevronUp /> : <FaChevronDown />}
+            onClick={instructionsSection.onToggle}
+            size="sm"
+            py={3}
+          >
+            How to Test
+          </Button>
+          <Collapse in={instructionsSection.isOpen}>
+            <VStack align="start" spacing={2} p={3} fontSize="xs">
+              <Text>1. Create a referral code (uses your username)</Text>
+              <Text>2. Generate and share your invite link</Text>
+              <Text>3. On another device, open the link</Text>
+              <Text>4. Install/open the app from the link</Text>
+              <Text>5. Login and check if referral was captured</Text>
+              <Text>6. Refresh stats to see new claims</Text>
+              <Box mt={2} p={2} bg="whiteAlpha.100" borderRadius="md" w="100%">
+                <Text fontWeight="bold" mb={1}>
+                  Console Logs:
+                </Text>
+                <Text color="gray.400">[AppsFlyer], [AppsFlyerBridge]</Text>
+                <Text color="gray.400">[AppsFlyer Referral], [useAppsFlyerReferral]</Text>
+              </Box>
+            </VStack>
+          </Collapse>
         </Box>
       </Flex>
     </DelayedLoading>

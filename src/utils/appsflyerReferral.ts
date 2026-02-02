@@ -285,6 +285,7 @@ export async function processConversionData(
 /**
  * Register a milestone achieved by this user
  * Call this when user reaches milestones (games played, levels, etc.)
+ * @param milestoneValue Optional numeric value (e.g., actual level, purchase amount in cents)
  */
 export async function registerMilestone(
   userAddress: string,

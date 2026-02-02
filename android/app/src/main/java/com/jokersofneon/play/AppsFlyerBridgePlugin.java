@@ -26,6 +26,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import com.jokersofneon.play.BuildConfig;
+
 /**
  * AppsFlyer Bridge Plugin for Capacitor
  * Provides communication between Java and JavaScript for AppsFlyer SDK
