@@ -1,6 +1,6 @@
 import { App } from "@capacitor/app";
 import { Capacitor } from "@capacitor/core";
-import { AppsFlyerBridge, getDeviceId } from "./appsflyer";
+import { AppsFlyerBridge, getDeviceId, getWebBridgeInstance } from "./appsflyer";
 
 // =============================================================================
 // TYPES
@@ -34,6 +34,7 @@ const STORAGE_KEYS = {
   REFERRAL: "appsflyer_referral_data",
   CONVERSION: "appsflyer_conversion_data",
   PROCESSED: "appsflyer_referral_processed",
+  WEB_REFERRAL: "pending_web_referral",
 } as const;
 
 let pendingReferralData: AppsFlyerReferralData | null = null;
@@ -287,7 +288,16 @@ export async function processConversionData(
  */
 export async function registerMilestone(
   userAddress: string,
-  milestoneType: "account_created" | "games_played_5" | "games_played_10" | "level_5" | "level_10",
+  milestoneType:
+    | "account_created"
+    | "games_played_5"
+    | "games_played_10"
+    | "level_5"
+    | "level_10"
+    | "first_purchase"
+    | "daily_mission_completed"
+    | "season_pass_purchased"
+    | "pack_purchased",
   milestoneValue?: number
 ): Promise<boolean> {
   const { apiKey, baseUrl } = getApiConfig();
@@ -318,4 +328,189 @@ export async function registerMilestone(
     console.error("[AppsFlyer Referral] Milestone error:", error);
     return false;
   }
+}
+
+// =============================================================================
+// WEB REFERRAL HANDLING
+// =============================================================================
+
+/**
+ * Check URL for referral parameter and store for later processing
+ * Call this on app initialization (before auth)
+ *
+ * @returns The referral code if found, null otherwise
+ */
+export function detectWebReferral(): string | null {
+  // Only run on web platform
+  if (Capacitor.isNativePlatform()) {
+    return null;
+  }
+
+  try {
+    const urlParams = new URLSearchParams(window.location.search);
+    const referralCode = urlParams.get("ref");
+
+    if (referralCode && referralCode.trim()) {
+      const trimmedCode = referralCode.trim();
+      console.log("[AppsFlyer Referral] Web referral detected:", trimmedCode);
+
+      // Store for later processing after login
+      const webReferral: AppsFlyerReferralData = {
+        type: "referral",
+        isDeferred: false,
+        deepLinkValue: "ref",
+        referralCode: trimmedCode,
+        mediaSource: "web_referral",
+        campaign: urlParams.get("c") || urlParams.get("campaign") || undefined,
+      };
+
+      localStorage.setItem(STORAGE_KEYS.WEB_REFERRAL, JSON.stringify(webReferral));
+
+      // Also set as pending referral data for unified processing
+      pendingReferralData = webReferral;
+      localStorage.setItem(STORAGE_KEYS.REFERRAL, JSON.stringify(webReferral));
+
+      // Optionally clean the URL (remove ref param)
+      cleanReferralFromUrl();
+
+      return trimmedCode;
+    }
+  } catch (error) {
+    console.error("[AppsFlyer Referral] Error detecting web referral:", error);
+  }
+
+  return null;
+}
+
+/**
+ * Get pending web referral if any
+ */
+export function getPendingWebReferral(): AppsFlyerReferralData | null {
+  try {
+    const stored = localStorage.getItem(STORAGE_KEYS.WEB_REFERRAL);
+    if (stored) {
+      return JSON.parse(stored) as AppsFlyerReferralData;
+    }
+  } catch (error) {
+    console.error("[AppsFlyer Referral] Error getting pending web referral:", error);
+  }
+  return null;
+}
+
+/**
+ * Clear pending web referral
+ */
+export function clearPendingWebReferral(): void {
+  localStorage.removeItem(STORAGE_KEYS.WEB_REFERRAL);
+}
+
+/**
+ * Process web referral on login
+ * Call this after user successfully logs in on web platform
+ *
+ * @param userAddress - The logged-in user's address
+ * @returns true if referral was processed successfully
+ */
+export async function processWebReferral(userAddress: string): Promise<boolean> {
+  // Check for pending web referral
+  const webReferral = getPendingWebReferral();
+
+  // Also check the general pending referral data (unified approach)
+  const referralData = webReferral || getPendingReferralData();
+
+  if (!referralData) {
+    console.log("[AppsFlyer Referral] No pending web referral to process");
+    return false;
+  }
+
+  // Skip if already processed for this user
+  if (isReferralAlreadyProcessed(userAddress)) {
+    console.log("[AppsFlyer Referral] Web referral already processed for this user");
+    clearPendingWebReferral();
+    clearPendingReferralData();
+    return true;
+  }
+
+  console.log("[AppsFlyer Referral] Processing web referral:", referralData.referralCode);
+
+  // Process using the same logic as native
+  const success = await processReferralData(referralData, userAddress);
+
+  if (success) {
+    clearPendingWebReferral();
+    clearPendingReferralData();
+
+    // Also register attribution for web
+    await registerWebAttribution(userAddress, referralData);
+  }
+
+  return success;
+}
+
+/**
+ * Register web attribution data
+ */
+async function registerWebAttribution(
+  userAddress: string,
+  referralData: AppsFlyerReferralData
+): Promise<void> {
+  const { apiKey, baseUrl } = getApiConfig();
+  const deviceId = await getDeviceId();
+
+  try {
+    await fetch(`${baseUrl}/api/referral/attribution`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-API-Key": apiKey,
+      },
+      body: JSON.stringify({
+        user_address: userAddress,
+        device_id: deviceId,
+        media_source: referralData.mediaSource || "web_referral",
+        campaign: referralData.campaign,
+        af_status: "Non-organic",
+        is_first_launch: true,
+        platform: "web",
+        attribution_data: referralData,
+      }),
+    });
+    console.log("[AppsFlyer Referral] Web attribution registered");
+  } catch (error) {
+    console.error("[AppsFlyer Referral] Web attribution error:", error);
+  }
+}
+
+/**
+ * Remove ref parameter from URL without page reload
+ * Keeps the URL clean after capturing the referral
+ */
+function cleanReferralFromUrl(): void {
+  try {
+    const url = new URL(window.location.href);
+    url.searchParams.delete("ref");
+    url.searchParams.delete("c");
+    url.searchParams.delete("campaign");
+
+    // Only update if we removed parameters
+    if (url.href !== window.location.href) {
+      window.history.replaceState({}, document.title, url.href);
+      console.log("[AppsFlyer Referral] Cleaned referral params from URL");
+    }
+  } catch (error) {
+    // Ignore errors (e.g., in non-browser environments)
+  }
+}
+
+/**
+ * Initialize web referral detection
+ * Call this early in app initialization
+ */
+export function initWebReferralDetection(): void {
+  if (Capacitor.isNativePlatform()) {
+    return;
+  }
+
+  console.log("[AppsFlyer Referral] Initializing web referral detection...");
+  detectWebReferral();
 }
