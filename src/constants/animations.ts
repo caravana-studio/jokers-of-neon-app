@@ -40,6 +40,26 @@ export const shopPackGlowAnimation = keyframes`
   }
 `;
 
+export const packShineAnimation = keyframes`
+  0% {
+    background-position: -30% 130%;
+    opacity: 0;
+  }
+  15% {
+    opacity: 0;
+  }
+  45% {
+    opacity: 0.65;
+  }
+  60% {
+    opacity: 0.35;
+  }
+  100% {
+    background-position: 130% -30%;
+    opacity: 0;
+  }
+`;
+
 export const limitedEditionPulse = keyframes`
   0% {
     transform: scale(1);

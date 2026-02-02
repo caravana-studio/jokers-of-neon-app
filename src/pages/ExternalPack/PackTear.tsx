@@ -570,6 +570,7 @@ export default function PackTear({
         marginTop: "5px",
         width,
         height,
+        zIndex: 2,
         userSelect: "none",
         touchAction: "none",
       }}

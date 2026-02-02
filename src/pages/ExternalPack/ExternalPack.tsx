@@ -11,7 +11,11 @@ import { DelayedLoading } from "../../components/DelayedLoading";
 import { GlowBadge, GlowBadgeIntensity } from "../../components/GlowBadge";
 import { NFTPackRateInfo } from "../../components/Info/NFTPackRateInfo";
 import { MobileDecoration } from "../../components/MobileDecoration";
-import { packAnimation, packGlowAnimation } from "../../constants/animations";
+import {
+  packAnimation,
+  packGlowAnimation,
+  packShineAnimation,
+} from "../../constants/animations";
 import { RARITY, RarityLabels } from "../../constants/rarity";
 import { packCutSfx, packResultSfx } from "../../constants/sfx";
 import { SKINS_RARITY } from "../../data/specialCards";
@@ -454,15 +458,47 @@ export const ExternalPack = ({
                     step={step}
                     color={packId > 3 ? "white" : "black"}
                   />
-                  <CachedImage
-                    src={`/packs/${packId}.png`}
+                  <Flex
+                    position="relative"
                     h="100%"
+                    w="100%"
                     animation={
-                      step === 0
-                        ? `${packGlowAnimation} 1s ease-in-out infinite, ${packAnimation} 3s ease-in-out infinite`
-                        : "none"
+                      step === 0 ? `${packGlowAnimation} 1s ease-in-out infinite` : "none"
                     }
-                  />
+                  >
+                    <Flex position="relative" h="100%" w="100%" overflow="hidden">
+                      <CachedImage
+                        src={`/packs/${packId}.png`}
+                        h="100%"
+                        w="100%"
+                        objectFit="contain"
+                        animation={
+                          step === 0
+                            ? `${packAnimation} 3s ease-in-out infinite`
+                            : "none"
+                        }
+                      />
+                      <Flex
+                        position="absolute"
+                        inset={0}
+                        background="linear-gradient(135deg, rgba(255,255,255,0) 30%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0) 70%)"
+                        backgroundSize="200% 200%"
+                        animation={`${packShineAnimation} 2.8s ease-in-out infinite`}
+                        pointerEvents="none"
+                        mixBlendMode="screen"
+                        sx={{
+                          WebkitMaskImage: `url(/packs/${packId}.png)`,
+                          maskImage: `url(/packs/${packId}.png)`,
+                          WebkitMaskSize: "contain",
+                          maskSize: "contain",
+                          WebkitMaskRepeat: "no-repeat",
+                          maskRepeat: "no-repeat",
+                          WebkitMaskPosition: "center",
+                          maskPosition: "center",
+                        }}
+                      />
+                    </Flex>
+                  </Flex>
                 </>
               )}
 
