@@ -76,6 +76,10 @@ dependencies {
     implementation project(':capacitor-cordova-android-plugins')
 
     implementation 'com.facebook.android:facebook-android-sdk:[15,16)'
+
+    // AppsFlyer SDK for attribution and deep linking
+    implementation 'com.appsflyer:af-android-sdk:6.15.2'
+    implementation 'com.android.installreferrer:installreferrer:2.2'
 }
 
 apply from: 'capacitor.build.gradle'

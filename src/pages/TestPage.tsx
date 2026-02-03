@@ -63,8 +63,8 @@ export const TestPage = () => {
         )}
         <MenuBtn
           icon={Icons.LIST}
-          description={"Test referral system"}
-          label={"Referral Test"}
+          description={"Referral"}
+          label={"Referral"}
           onClick={() => navigate("/referral-test")}
           arrowRight
           width={"18px"}
