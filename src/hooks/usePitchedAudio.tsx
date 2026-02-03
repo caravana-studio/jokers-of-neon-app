@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback } from "react";
 import AudioManager from "../audio/AudioManager";
 import { useSettings } from "../providers/SettingsProvider";
 
@@ -7,26 +7,19 @@ import { useSettings } from "../providers/SettingsProvider";
  * Expects files named: basePath_0.mp3, basePath_1.mp3, ..., basePath_{N-1}.mp3
  *
  * Delegates to AudioManager singleton which handles preloading and playback.
+ * Volume is managed globally by SettingsProvider, not per-hook.
  *
  * @param basePath - Base path for files (e.g., "/music/sfx/points")
  * @param variants - Number of variant files (e.g., 18 for points_0.mp3 to points_17.mp3)
- * @param volume - Volume level (0-1)
+ * @param _volume - Deprecated, volume is managed globally
  */
 export const usePitchedAudio = (
   basePath: string,
   variants: number,
-  volume: number = 1
+  _volume: number = 1
 ) => {
   const { sfxOn } = useSettings();
-  const volumeRef = useRef(volume);
 
-  // Keep volume ref updated and sync to AudioManager
-  useEffect(() => {
-    volumeRef.current = volume;
-    AudioManager.getInstance().setVolume(volume);
-  }, [volume]);
-
-  // Generate path for a sound variant
   const getSoundPath = useCallback(
     (index: number) => {
       const clampedIndex = Math.min(Math.max(0, index), variants - 1);
@@ -47,7 +40,6 @@ export const usePitchedAudio = (
   );
 
   const stop = useCallback(() => {
-    // Stop all variants
     for (let i = 0; i < variants; i++) {
       const path = getSoundPath(i);
       AudioManager.getInstance().stop(path);

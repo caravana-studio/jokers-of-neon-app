@@ -24,6 +24,7 @@ import { LOOTBOX_TRANSITION_DEFAULT } from "../constants/settings.ts";
 import { useDojo } from "../dojo/useDojo.tsx";
 import { Speed } from "../enums/settings.ts";
 import i18n from "../i18n.ts";
+import AudioManager from "../audio/AudioManager";
 import { useGameStore } from "../state/useGameStore.ts";
 import { runNativeAudioTask } from "../utils/nativeAudioQueue";
 
@@ -840,6 +841,12 @@ export const SettingsProvider = ({
       sound.volume(musicVolume);
     }
   }, [isNative, musicVolume, sound]);
+
+  // Sync SFX volume to AudioManager (single source of truth)
+  useEffect(() => {
+    AudioManager.getInstance().setVolume(sfxVolume);
+    AudioManager.getInstance().setSfxOn(sfxOn);
+  }, [sfxVolume, sfxOn]);
 
   useEffect(() => {
     if (!isNative) return;

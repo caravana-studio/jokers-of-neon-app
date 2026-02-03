@@ -1,18 +1,14 @@
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 import AudioManager from "../audio/AudioManager";
 import { useSettings } from "../providers/SettingsProvider";
 
 /**
  * useAudio hook for short sound effects (SFX)
  * Delegates to AudioManager singleton which handles preloading and playback.
+ * Volume is managed globally by SettingsProvider, not per-hook.
  */
-export const useAudio = (audioPath: string, volume: number = 1) => {
+export const useAudio = (audioPath: string, _volume: number = 1) => {
   const { sfxOn } = useSettings();
-
-  // Sync volume changes to AudioManager
-  useEffect(() => {
-    AudioManager.getInstance().setVolume(volume);
-  }, [volume]);
 
   const play = useCallback(() => {
     if (!sfxOn) return;
