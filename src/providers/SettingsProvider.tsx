@@ -231,6 +231,7 @@ export const SettingsProvider = ({
   const defaultPreferences = useMemo(() => buildDefaultPreferences(), []);
   const lastSfxVolumeRef = useRef(defaultPreferences.sound_volume);
   const lastMusicVolumeRef = useRef(defaultPreferences.music_volume);
+  const musicVolumeRef = useRef(defaultPreferences.music_volume);
 
   const [sfxVolume, setSfxVolumeState] = useState(
     defaultPreferences.sound_volume
@@ -534,8 +535,10 @@ export const SettingsProvider = ({
           0,
           MUSIC_VOLUME_MAX
         );
+        // Update ref immediately (before state) so effects see the new value
+        musicVolumeRef.current = volume;
         setMusicVolumeState(volume);
-        setMusicOnState(volume > 0);
+        // Don't auto-toggle musicOn based on volume - let the toggle control it
         if (volume > 0) {
           lastMusicVolumeRef.current = volume;
         }
@@ -719,13 +722,24 @@ export const SettingsProvider = ({
     let fadeTimeout: NodeJS.Timeout;
 
     const playWithFade = async () => {
+      console.log("[AUDIO DEBUG] playWithFade called:", {
+        isNative,
+        musicOn,
+        currentActiveSongPath,
+        musicVolumeRef: musicVolumeRef.current,
+        nativePlaybackKey,
+      });
+
       if (isNative) {
         try {
           const shouldPlay = await runNativeAudioTask(async () => {
+            console.log("[AUDIO DEBUG] Inside runNativeAudioTask, musicOn:", musicOn);
+
             await NativeAudio.stop({ assetId: "bg_music" }).catch(() => {});
             await NativeAudio.unload({ assetId: "bg_music" }).catch(() => {});
 
             if (!currentActiveSongPath || !musicOn) {
+              console.log("[AUDIO DEBUG] Skipping play - no path or musicOn false");
               return false;
             }
 
@@ -736,6 +750,8 @@ export const SettingsProvider = ({
               ? safePath
               : `public/${safePath}`;
 
+            console.log("[AUDIO DEBUG] Preloading:", nativeAssetPath);
+
             await NativeAudio.preload({
               assetId: "bg_music",
               assetPath: nativeAssetPath,
@@ -744,18 +760,24 @@ export const SettingsProvider = ({
               isUrl: false,
             } as any);
 
+            console.log("[AUDIO DEBUG] Setting volume:", musicVolumeRef.current);
+
             await NativeAudio.setVolume({
               assetId: "bg_music",
-              volume: musicVolume,
+              volume: musicVolumeRef.current,
             }).catch(() => {});
 
             await delay(200);
+
+            console.log("[AUDIO DEBUG] Playing bg_music");
             await NativeAudio.play({ assetId: "bg_music" });
             return true;
           });
 
+          console.log("[AUDIO DEBUG] shouldPlay result:", shouldPlay);
           setIsMusicPlaying(shouldPlay);
-        } catch {
+        } catch (err) {
+          console.log("[AUDIO DEBUG] Error in playWithFade:", err);
           setIsMusicPlaying(false);
         }
         return;
@@ -772,7 +794,7 @@ export const SettingsProvider = ({
         !sound
       ) {
         if (sound) {
-          sound.fade(musicVolume, 0, 1000);
+          sound.fade(musicVolumeRef.current, 0, 1000);
           fadeTimeout = setTimeout(() => {
             sound.stop();
             sound.unload();
@@ -788,7 +810,7 @@ export const SettingsProvider = ({
           setSound(newSound);
 
           newSound.play();
-          newSound.fade(0, musicVolume, 1000);
+          newSound.fade(0, musicVolumeRef.current, 1000);
           setIsMusicPlaying(true);
         } else {
           setIsMusicPlaying(false);
@@ -796,10 +818,10 @@ export const SettingsProvider = ({
       } else if (sound) {
         if (musicOn) {
           if (!sound.playing()) sound.play();
-          sound.fade(0, musicVolume, 500);
+          sound.fade(0, musicVolumeRef.current, 500);
           setIsMusicPlaying(true);
         } else {
-          sound.fade(musicVolume, 0, 500);
+          sound.fade(musicVolumeRef.current, 0, 500);
           setTimeout(() => sound.stop(), 500);
           setIsMusicPlaying(false);
         }
@@ -823,7 +845,6 @@ export const SettingsProvider = ({
   }, [
     currentActiveSongPath,
     musicOn,
-    musicVolume,
     isNative,
     nativePlaybackKey,
     sound,
@@ -907,14 +928,34 @@ export const SettingsProvider = ({
 
   const setMusicOn = useCallback(
     (value: boolean) => {
+      console.log("[AUDIO DEBUG] setMusicOn called:", {
+        value,
+        lastMusicVolumeRef: lastMusicVolumeRef.current,
+        currentMusicOn: musicOn,
+      });
+
+      // Directly update musicOn state
+      setMusicOnState(value);
+
+      // Also update volume
       const nextVolume = value
         ? lastMusicVolumeRef.current > 0
           ? lastMusicVolumeRef.current
           : defaultPreferences.music_volume
         : 0;
+
+      console.log("[AUDIO DEBUG] setMusicOn nextVolume:", nextVolume);
+
+      musicVolumeRef.current = nextVolume;
       updateSettings({ music_volume: nextVolume });
+
+      // Force restart playback on native when turning on
+      if (value && isNative) {
+        console.log("[AUDIO DEBUG] Forcing native playback restart");
+        setNativePlaybackKey((key) => key + 1);
+      }
     },
-    [defaultPreferences.music_volume, updateSettings]
+    [defaultPreferences.music_volume, updateSettings, isNative, musicOn]
   );
 
   const toggleMusic = useCallback(() => {

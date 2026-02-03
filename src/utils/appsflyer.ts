@@ -98,7 +98,6 @@ class AppsFlyerBridgeWeb implements Partial<AppsFlyerBridgePlugin> {
 
   async setCustomerUserId(options: { customerUserId: string }): Promise<void> {
     localStorage.setItem(WEB_STORAGE_KEYS.CUSTOMER_ID, options.customerUserId);
-    console.log("[AppsFlyer Web] Customer ID set:", options.customerUserId);
   }
 
   async logEvent(options: { eventName: string; eventValues?: Record<string, unknown> }): Promise<void> {
@@ -204,7 +203,6 @@ const isNative = () => Capacitor.isNativePlatform();
 export async function setAppsFlyerCustomerUserId(userAddress: string): Promise<void> {
   try {
     await AppsFlyerBridge.setCustomerUserId({ customerUserId: userAddress });
-    console.log("[AppsFlyer] CUID set:", userAddress);
   } catch {
     // Silent fail - CUID is optional for analytics
   }
