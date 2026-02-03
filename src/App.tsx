@@ -46,9 +46,6 @@ function App() {
   
   // Handle AppsFlyer referral data
   useAppsFlyerReferral();
-  
-  // Handle AppsFlyer referral data
-  useAppsFlyerReferral();
 
   useEffect(() => {
     if (!account?.address) {
