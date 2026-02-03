@@ -787,13 +787,22 @@ export const SettingsProvider = ({
         ? toWebAssetPath(currentActiveSongPath)
         : null;
       const currentHowlSource = getHowlSource(sound);
+      // Check if sound was unloaded (state becomes 'unloaded' after unload())
+      const soundIsLoaded = sound && (sound as any)._state !== "unloaded";
+
+      console.log("[AUDIO DEBUG] Web path:", {
+        resolvedSongPath,
+        currentHowlSource,
+        soundIsLoaded,
+        soundState: sound ? (sound as any)._state : null,
+      });
 
       if (
         resolvedSongPath === null ||
         resolvedSongPath !== currentHowlSource ||
-        !sound
+        !soundIsLoaded
       ) {
-        if (sound) {
+        if (sound && soundIsLoaded) {
           sound.fade(musicVolumeRef.current, 0, 1000);
           fadeTimeout = setTimeout(() => {
             sound.stop();
@@ -802,6 +811,7 @@ export const SettingsProvider = ({
         }
 
         if (resolvedSongPath && musicOn) {
+          console.log("[AUDIO DEBUG] Creating new Howl");
           const newSound = new Howl({
             src: [resolvedSongPath],
             loop: true,
@@ -815,8 +825,9 @@ export const SettingsProvider = ({
         } else {
           setIsMusicPlaying(false);
         }
-      } else if (sound) {
+      } else if (soundIsLoaded) {
         if (musicOn) {
+          console.log("[AUDIO DEBUG] Resuming existing sound");
           if (!sound.playing()) sound.play();
           sound.fade(0, musicVolumeRef.current, 500);
           setIsMusicPlaying(true);
