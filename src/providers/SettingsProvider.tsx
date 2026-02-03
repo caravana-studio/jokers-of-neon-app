@@ -754,9 +754,8 @@ export const SettingsProvider = ({
           });
 
           setIsMusicPlaying(shouldPlay);
-        } catch (err) {
+        } catch {
           setIsMusicPlaying(false);
-          console.warn("NativeAudio bg_music error:", err);
         }
         return;
       }
