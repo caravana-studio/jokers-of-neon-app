@@ -9,7 +9,6 @@ import { DeckPage } from "./pages/Deck/DeckPage";
 import { DocsPage } from "./pages/Docs/Docs";
 import { DynamicStorePage } from "./pages/DynamicStore/DynamicStorePage";
 import { ExternalPack } from "./pages/ExternalPack/ExternalPack";
-import { ExternalPackTestPage } from "./pages/ExternalPack/ExternalPackTestPage";
 import { FreePackPage } from "./pages/FreePackPage";
 import { GamePage } from "./pages/Game/GamePage";
 import { GamePageTutorial } from "./pages/Game/GamePageTutorial";
@@ -38,6 +37,7 @@ import { SummaryPage } from "./pages/SummaryPage";
 import { TestPage } from "./pages/TestPage";
 import { VibrationPage } from "./pages/VibrationPage";
 import { ReferralTestPage } from "./pages/ReferralTestPage";
+import { SimulatePacksPage } from "./pages/SimulatePacks/SimulatePacksPage";
 import { CardHighlightProvider } from "./providers/HighlightProvider/CardHighlightProvider";
 import { PowerupHighlightProvider } from "./providers/HighlightProvider/PowerupHighlightProvider";
 import { StoreProvider } from "./providers/StoreProvider";
@@ -74,10 +74,12 @@ export const AppRoutes = () => {
         }
       />{" "}
       <Route
-        path="/test/external-pack/:packId"
+        path="/test/simulate-packs"
         element={
           <AnimatedPage>
-            <ExternalPackTestPage />
+            <LoginGate>
+              <SimulatePacksPage />
+            </LoginGate>
           </AnimatedPage>
         }
       />
