@@ -37,12 +37,6 @@ interface MapContextType {
   reachableNodes: string[];
   selectedNodeData: SelectedNodeData | undefined;
   setSelectedNodeData: (data: SelectedNodeData | undefined) => void;
-  isNodeTransactionPending: boolean;
-  setNodeTransactionPending: (pending: boolean) => void;
-  activeNodeId: string | null;
-  setActiveNodeId: (id: string | null) => void;
-  pulsingNodeId: string | null;
-  setPulsingNodeId: (id: string | null) => void;
 }
 
 const MapContext = createContext<MapContextType | undefined>(undefined);
@@ -53,29 +47,13 @@ interface MapProviderProps {
 
 export const MapProvider = ({ children }: MapProviderProps) => {
   const [nodes, setNodes] = useState<Node[]>([]);
-  const [edges, setEdges] = useState<Edge[]>([]);
+  const [baseEdges, setBaseEdges] = useState<Edge[]>([]);
   const [layoutReady, setLayoutReady] = useState(false);
   const [selectedNodeData, setSelectedNodeData] = useState<
     SelectedNodeData | undefined
   >();
-  const [isNodeTransactionPending, setNodeTransactionPending] = useState(false);
-  const [activeNodeId, setActiveNodeId] = useState<string | null>(null);
-  const [pulsingNodeId, setPulsingNodeId] = useState<string | null>(null);
 
   const { isSmallScreen } = useResponsiveValues();
-
-  const currentNode = useMemo(
-    () => nodes.find((n) => n.data?.current) ?? nodes[0],
-    [nodes]
-  );
-
-  const reachableNodes = useMemo(() => {
-    return currentNode && edges
-      ? edges
-          .filter((edge) => edge.target === currentNode.id)
-          .map((edge) => edge.source)
-      : [];
-  }, [edges, currentNode?.id]);
 
   const {
     setup: { client },
@@ -87,6 +65,51 @@ export const MapProvider = ({ children }: MapProviderProps) => {
   const isBossLevel = level === BOSS_LEVEL;
 
   const stateInMap = state === GameStateEnum.Map;
+
+  const currentNode = useMemo(
+    () => nodes.find((n) => n.data?.current) ?? nodes[0],
+    [nodes]
+  );
+
+  // Calculate styled edges derivatively to avoid re-renders from setEdges
+  const styledEdges = useMemo(() => {
+    if (!currentNode || baseEdges.length === 0) return baseEdges;
+
+    return baseEdges.map((edge) => {
+      const sourceNode = nodes.find((n) => n.id === edge.source);
+      const targetNode = nodes.find((n) => n.id === edge.target);
+
+      const isEdgeToCurrentNode = targetNode?.id === currentNode.id;
+      const sourceVisited = Boolean(sourceNode?.data?.visited);
+      const targetVisited = Boolean(targetNode?.data?.visited);
+      const isCompletedPath = sourceVisited && targetVisited;
+
+      const visibleLine = isCompletedPath || (isEdgeToCurrentNode && stateInMap);
+      const shouldPulse = !isCompletedPath && visibleLine;
+
+      return {
+        ...edge,
+        data: {
+          ...edge.data,
+          shouldPulse,
+        },
+        style: {
+          stroke: visibleLine ? (shouldPulse ? VIOLET_LIGHT : BLUE) : "#fff",
+          strokeWidth: 2,
+          strokeDasharray: visibleLine ? undefined : "5 5",
+          opacity: visibleLine ? 1 : 0.3,
+        },
+      };
+    });
+  }, [baseEdges, currentNode, nodes, stateInMap]);
+
+  const reachableNodes = useMemo(() => {
+    return currentNode && styledEdges
+      ? styledEdges
+          .filter((edge) => edge.target === currentNode.id)
+          .map((edge) => edge.source)
+      : [];
+  }, [styledEdges, currentNode?.id]);
 
   useEffect(() => {
     getMap(client, id).then((dataNodes) => {
@@ -124,45 +147,13 @@ export const MapProvider = ({ children }: MapProviderProps) => {
       getLayoutedElements(transformedNodes, calculatedEdges).then(
         ({ nodes: layoutedNodes, edges: layoutedEdges }) => {
           setNodes(layoutedNodes);
-          setEdges(layoutedEdges);
+          setBaseEdges(layoutedEdges);
           setLayoutReady(true);
         }
       );
     });
   }, []);
 
-  useEffect(() => {
-    if (!currentNode || edges.length === 0) return;
-
-    const updatedEdges = edges.map((edge) => {
-      const sourceNode = nodes.find((n) => n.id === edge.source);
-      const targetNode = nodes.find((n) => n.id === edge.target);
-
-      const isReachable = targetNode?.id === currentNode.id;
-      const sourceVisited = Boolean(sourceNode?.data?.visited);
-      const targetVisited = Boolean(targetNode?.data?.visited);
-      const isCompletedPath = sourceVisited && targetVisited;
-
-      const visibleLine = isCompletedPath || (isReachable && stateInMap);
-      const shouldPulse = !isCompletedPath && visibleLine;
-
-      return {
-        ...edge,
-        data: {
-          ...edge.data,
-          shouldPulse,
-        },
-        style: {
-          stroke: visibleLine ? (shouldPulse ? VIOLET_LIGHT : BLUE) : "#fff",
-          strokeWidth: 2,
-          strokeDasharray: visibleLine ? undefined : "5 5",
-          opacity: visibleLine ? 1 : 0.3,
-        },
-      };
-    });
-
-    setEdges(updatedEdges);
-  }, [currentNode, nodes]);
 
   const calculateEdges = (nodes: NodeData[]): Edge[] => {
     const edges: Edge[] = [];
@@ -215,7 +206,7 @@ export const MapProvider = ({ children }: MapProviderProps) => {
     <MapContext.Provider
       value={{
         nodes,
-        edges,
+        edges: styledEdges,
         fitViewToCurrentNode,
         fitViewToFullMap,
         fitViewToNode,
@@ -224,12 +215,6 @@ export const MapProvider = ({ children }: MapProviderProps) => {
         reachableNodes,
         selectedNodeData,
         setSelectedNodeData,
-        isNodeTransactionPending,
-        setNodeTransactionPending,
-        activeNodeId,
-        setActiveNodeId,
-        pulsingNodeId,
-        setPulsingNodeId,
       }}
     >
       {children}

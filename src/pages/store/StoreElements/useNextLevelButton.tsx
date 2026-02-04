@@ -1,8 +1,7 @@
 import { Button } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
-import { GameStateEnum } from "../../../dojo/typescript/custom";
 import { useShopActions } from "../../../dojo/useShopActions";
-import { useCustomNavigate } from "../../../hooks/useCustomNavigate";
+import { useMapNavigate } from "../../../hooks/useMapNavigate";
 import { useGameContext } from "../../../providers/GameProvider";
 import { useStore } from "../../../providers/StoreProvider";
 import { useAnimationStore } from "../../../state/useAnimationStore";
@@ -11,7 +10,7 @@ import { useGameStore } from "../../../state/useGameStore";
 import { useShopStore } from "../../../state/useShopStore";
 
 export const useNextLevelButton = () => {
-  const navigate = useCustomNavigate();
+  const { navigateToMap } = useMapNavigate();
   const { t } = useTranslation(["store"]);
 
   const { onShopSkip } = useGameContext();
@@ -34,7 +33,7 @@ export const useNextLevelButton = () => {
 
         response.destroyedSpecialCard &&
           setDestroyedSpecialCardId(response.destroyedSpecialCard);
-        navigate(GameStateEnum.Map);
+        navigateToMap();
       } else {
         setLoading(false);
       }

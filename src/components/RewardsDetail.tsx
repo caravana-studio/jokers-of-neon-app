@@ -3,8 +3,7 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { BOSS_LEVEL } from "../constants/general.ts";
-import { GameStateEnum } from "../dojo/typescript/custom.ts";
-import { useCustomNavigate } from "../hooks/useCustomNavigate.tsx";
+import { useMapNavigate } from "../hooks/useMapNavigate.tsx";
 import { RerollIndicators } from "../pages/DynamicStore/storeComponents/TopBar/RerollIndicators.tsx";
 import { useGameStore } from "../state/useGameStore.ts";
 import { BLUE_LIGHT, VIOLET_LIGHT } from "../theme/colors";
@@ -129,7 +128,7 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
     labels.push(t("rage", { cards: rage_card_defeated }));
   }
 
-  const navigate = useCustomNavigate();
+  const { navigateToMap } = useMapNavigate();
   const { isSmallScreen } = useResponsiveValues();
   const { currentScore } = useGameStore();
   const [animationEnded, setAnimationEnded] = useState(false);
@@ -179,7 +178,7 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
         title={title}
         button={playerWon ? t("endless-mode") : t("continue-btn")}
         onClick={() => {
-          navigate(GameStateEnum.Map);
+          navigateToMap();
         }}
         actionHidden={!animationEnded}
         glowIntensity={level_passed ? (playerWon ? 1.5 : 1) : 0}

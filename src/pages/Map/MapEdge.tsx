@@ -1,6 +1,7 @@
+import { memo } from "react";
 import { BaseEdge, EdgeProps, getStraightPath } from "reactflow";
 
-const MapEdge = (props: EdgeProps) => {
+const MapEdge = memo((props: EdgeProps) => {
   const {
     id,
     sourceX,
@@ -47,6 +48,6 @@ const MapEdge = (props: EdgeProps) => {
       )}
     </>
   );
-};
+});
 
 export default MapEdge;

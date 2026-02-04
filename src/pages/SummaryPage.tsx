@@ -15,10 +15,9 @@ import {
   DEFAULT_TRACKER_VIEW,
   getGameTracker,
 } from "../dojo/queries/getGameTracker";
-import { GameStateEnum } from "../dojo/typescript/custom";
 import { useDojo } from "../dojo/useDojo";
 import { Plays } from "../enums/plays";
-import { useCustomNavigate } from "../hooks/useCustomNavigate";
+import { useMapNavigate } from "../hooks/useMapNavigate";
 import { useGameStore } from "../state/useGameStore";
 import { BLUE_LIGHT, VIOLET_LIGHT } from "../theme/colors";
 import { useResponsiveValues } from "../theme/responsiveSettings";
@@ -52,7 +51,7 @@ const SummaryDetail = ({ win }: SummaryPageProps) => {
   const { t: tGame } = useTranslation("game");
   const { t: tPlays } = useTranslation("plays", { keyPrefix: "playsData" });
 
-  const customNavigate = useCustomNavigate();
+  const { navigateToMap } = useMapNavigate();
   const navigate = useNavigate();
   const { isSmallScreen } = useResponsiveValues();
   const [skip, setSkip] = useState(false);
@@ -127,9 +126,7 @@ const SummaryDetail = ({ win }: SummaryPageProps) => {
         title={title}
         button={win ? t("endless-mode") : t("continue-btn")}
         onClick={() => {
-          win
-            ? customNavigate(GameStateEnum.Map)
-            : navigate(`/gameover/${gameId}`);
+          win ? navigateToMap() : navigate(`/gameover/${gameId}`);
         }}
         actionHidden={!animationEnded}
         glowIntensity={win ? 1.5 : 0}
