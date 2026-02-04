@@ -24,6 +24,7 @@ import { LOOTBOX_TRANSITION_DEFAULT } from "../constants/settings.ts";
 import { useDojo } from "../dojo/useDojo.tsx";
 import { Speed } from "../enums/settings.ts";
 import i18n from "../i18n.ts";
+import AudioManager from "../audio/AudioManager";
 import { useGameStore } from "../state/useGameStore.ts";
 import { runNativeAudioTask } from "../utils/nativeAudioQueue";
 
@@ -230,6 +231,7 @@ export const SettingsProvider = ({
   const defaultPreferences = useMemo(() => buildDefaultPreferences(), []);
   const lastSfxVolumeRef = useRef(defaultPreferences.sound_volume);
   const lastMusicVolumeRef = useRef(defaultPreferences.music_volume);
+  const musicVolumeRef = useRef(defaultPreferences.music_volume);
 
   const [sfxVolume, setSfxVolumeState] = useState(
     defaultPreferences.sound_volume
@@ -533,8 +535,10 @@ export const SettingsProvider = ({
           0,
           MUSIC_VOLUME_MAX
         );
+        // Update ref immediately (before state) so effects see the new value
+        musicVolumeRef.current = volume;
         setMusicVolumeState(volume);
-        setMusicOnState(volume > 0);
+        // Don't auto-toggle musicOn based on volume - let the toggle control it
         if (volume > 0) {
           lastMusicVolumeRef.current = volume;
         }
@@ -745,7 +749,7 @@ export const SettingsProvider = ({
 
             await NativeAudio.setVolume({
               assetId: "bg_music",
-              volume: musicVolume,
+              volume: musicVolumeRef.current,
             }).catch(() => {});
 
             await delay(200);
@@ -754,9 +758,8 @@ export const SettingsProvider = ({
           });
 
           setIsMusicPlaying(shouldPlay);
-        } catch (err) {
+        } catch {
           setIsMusicPlaying(false);
-          console.warn("NativeAudio bg_music error:", err);
         }
         return;
       }
@@ -765,14 +768,15 @@ export const SettingsProvider = ({
         ? toWebAssetPath(currentActiveSongPath)
         : null;
       const currentHowlSource = getHowlSource(sound);
+      const soundIsLoaded = sound && (sound as any)._state !== "unloaded";
 
       if (
         resolvedSongPath === null ||
         resolvedSongPath !== currentHowlSource ||
-        !sound
+        !soundIsLoaded
       ) {
-        if (sound) {
-          sound.fade(musicVolume, 0, 1000);
+        if (sound && soundIsLoaded) {
+          sound.fade(musicVolumeRef.current, 0, 1000);
           fadeTimeout = setTimeout(() => {
             sound.stop();
             sound.unload();
@@ -788,18 +792,18 @@ export const SettingsProvider = ({
           setSound(newSound);
 
           newSound.play();
-          newSound.fade(0, musicVolume, 1000);
+          newSound.fade(0, musicVolumeRef.current, 1000);
           setIsMusicPlaying(true);
         } else {
           setIsMusicPlaying(false);
         }
-      } else if (sound) {
+      } else if (soundIsLoaded) {
         if (musicOn) {
           if (!sound.playing()) sound.play();
-          sound.fade(0, musicVolume, 500);
+          sound.fade(0, musicVolumeRef.current, 500);
           setIsMusicPlaying(true);
         } else {
-          sound.fade(musicVolume, 0, 500);
+          sound.fade(musicVolumeRef.current, 0, 500);
           setTimeout(() => sound.stop(), 500);
           setIsMusicPlaying(false);
         }
@@ -823,7 +827,6 @@ export const SettingsProvider = ({
   }, [
     currentActiveSongPath,
     musicOn,
-    musicVolume,
     isNative,
     nativePlaybackKey,
     sound,
@@ -841,6 +844,12 @@ export const SettingsProvider = ({
       sound.volume(musicVolume);
     }
   }, [isNative, musicVolume, sound]);
+
+  // Sync SFX volume to AudioManager (single source of truth)
+  useEffect(() => {
+    AudioManager.getInstance().setVolume(sfxVolume);
+    AudioManager.getInstance().setSfxOn(sfxOn);
+  }, [sfxVolume, sfxOn]);
 
   useEffect(() => {
     if (!isNative) return;
@@ -901,14 +910,23 @@ export const SettingsProvider = ({
 
   const setMusicOn = useCallback(
     (value: boolean) => {
+      setMusicOnState(value);
+
       const nextVolume = value
         ? lastMusicVolumeRef.current > 0
           ? lastMusicVolumeRef.current
           : defaultPreferences.music_volume
         : 0;
+
+      musicVolumeRef.current = nextVolume;
       updateSettings({ music_volume: nextVolume });
+
+      // Force restart playback on native when turning on
+      if (value && isNative) {
+        setNativePlaybackKey((key) => key + 1);
+      }
     },
-    [defaultPreferences.music_volume, updateSettings]
+    [defaultPreferences.music_volume, updateSettings, isNative]
   );
 
   const toggleMusic = useCallback(() => {

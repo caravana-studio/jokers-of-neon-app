@@ -55,7 +55,6 @@ export async function initAppsFlyerReferralListener(): Promise<void> {
   }
 
   listenerInitialized = true;
-  console.log("[AppsFlyer Referral] Initializing listeners...");
 
   try {
     // Listen for conversion data (install attribution)
@@ -64,7 +63,6 @@ export async function initAppsFlyerReferralListener(): Promise<void> {
         const data = JSON.parse(event.data) as AppsFlyerConversionData;
         pendingConversionData = data;
         localStorage.setItem(STORAGE_KEYS.CONVERSION, event.data);
-        console.log("[AppsFlyer Referral] Conversion data received:", data.af_status);
       } catch (error) {
         console.error("[AppsFlyer Referral] Failed to parse conversion data:", error);
       }
@@ -76,7 +74,6 @@ export async function initAppsFlyerReferralListener(): Promise<void> {
         const data = JSON.parse(event.data) as AppsFlyerReferralData;
         pendingReferralData = data;
         localStorage.setItem(STORAGE_KEYS.REFERRAL, event.data);
-        console.log("[AppsFlyer Referral] Deep link received:", data.type, data.referralCode);
       } catch (error) {
         console.error("[AppsFlyer Referral] Failed to parse deep link:", error);
       }
@@ -85,12 +82,6 @@ export async function initAppsFlyerReferralListener(): Promise<void> {
     // Check for stored data from previous sessions
     loadStoredData();
 
-    // Listen for app URL opens (universal links)
-    App.addListener("appUrlOpen", ({ url }) => {
-      console.log("[AppsFlyer Referral] App opened with URL:", url);
-    });
-
-    console.log("[AppsFlyer Referral] Listeners initialized");
   } catch (error) {
     console.warn("[AppsFlyer Referral] Failed to initialize listeners:", error);
     loadStoredData();
@@ -106,13 +97,11 @@ function loadStoredData(): void {
     const storedReferral = localStorage.getItem(STORAGE_KEYS.REFERRAL);
     if (storedReferral && !pendingReferralData) {
       pendingReferralData = JSON.parse(storedReferral);
-      console.log("[AppsFlyer Referral] Loaded stored referral data");
     }
 
     const storedConversion = localStorage.getItem(STORAGE_KEYS.CONVERSION);
     if (storedConversion && !pendingConversionData) {
       pendingConversionData = JSON.parse(storedConversion);
-      console.log("[AppsFlyer Referral] Loaded stored conversion data");
     }
   } catch (error) {
     console.error("[AppsFlyer Referral] Failed to load stored data:", error);
@@ -182,13 +171,11 @@ export async function processReferralData(
 ): Promise<boolean> {
   // Validate referral data
   if (referralData.type !== "referral" || !referralData.referralCode) {
-    console.log("[AppsFlyer Referral] Not a valid referral link");
     return false;
   }
 
   // Skip if already processed
   if (isReferralAlreadyProcessed(userAddress)) {
-    console.log("[AppsFlyer Referral] Already processed for this user");
     clearPendingReferralData();
     return true;
   }
@@ -221,7 +208,6 @@ export async function processReferralData(
     }
 
     const result = await response.json();
-    console.log("[AppsFlyer Referral] Claim result:", result);
 
     if (result.success || result.already_claimed) {
       markReferralAsProcessed(userAddress);
@@ -244,7 +230,6 @@ export async function processConversionData(
 ): Promise<boolean> {
   // Only process non-organic installs
   if (conversionData.af_status !== "Non-organic") {
-    console.log("[AppsFlyer Referral] Organic install, skipping attribution");
     return true; // Return true to clear the data
   }
 
@@ -274,7 +259,6 @@ export async function processConversionData(
     }
 
     const result = await response.json();
-    console.log("[AppsFlyer Referral] Attribution result:", result);
     return result.success === true;
   } catch (error) {
     console.error("[AppsFlyer Referral] Attribution error:", error);
@@ -323,7 +307,6 @@ export async function registerMilestone(
     }
 
     const result = await response.json();
-    console.log("[AppsFlyer Referral] Milestone registered:", milestoneType, result);
     return result.success === true;
   } catch (error) {
     console.error("[AppsFlyer Referral] Milestone error:", error);
@@ -353,7 +336,6 @@ export function detectWebReferral(): string | null {
 
     if (referralCode && referralCode.trim()) {
       const trimmedCode = referralCode.trim();
-      console.log("[AppsFlyer Referral] Web referral detected:", trimmedCode);
 
       // Store for later processing after login
       const webReferral: AppsFlyerReferralData = {
@@ -420,19 +402,15 @@ export async function processWebReferral(userAddress: string): Promise<boolean> 
   const referralData = webReferral || getPendingReferralData();
 
   if (!referralData) {
-    console.log("[AppsFlyer Referral] No pending web referral to process");
     return false;
   }
 
   // Skip if already processed for this user
   if (isReferralAlreadyProcessed(userAddress)) {
-    console.log("[AppsFlyer Referral] Web referral already processed for this user");
     clearPendingWebReferral();
     clearPendingReferralData();
     return true;
   }
-
-  console.log("[AppsFlyer Referral] Processing web referral:", referralData.referralCode);
 
   // Process using the same logic as native
   const success = await processReferralData(referralData, userAddress);
@@ -476,7 +454,6 @@ async function registerWebAttribution(
         attribution_data: referralData,
       }),
     });
-    console.log("[AppsFlyer Referral] Web attribution registered");
   } catch (error) {
     console.error("[AppsFlyer Referral] Web attribution error:", error);
   }
@@ -496,7 +473,6 @@ function cleanReferralFromUrl(): void {
     // Only update if we removed parameters
     if (url.href !== window.location.href) {
       window.history.replaceState({}, document.title, url.href);
-      console.log("[AppsFlyer Referral] Cleaned referral params from URL");
     }
   } catch (error) {
     // Ignore errors (e.g., in non-browser environments)
@@ -512,6 +488,5 @@ export function initWebReferralDetection(): void {
     return;
   }
 
-  console.log("[AppsFlyer Referral] Initializing web referral detection...");
   detectWebReferral();
 }

@@ -32,7 +32,6 @@ const preloadMedia = async (cacheName: string, urls: string[]) => {
 
 export const preloadImages = async (urls?: string[]) => {
   const imageUrls: string[] = urls ?? (await getDefaultImageUrls());
-  console.log("Preloading images", imageUrls);
   try {
     await preloadMedia(CACHE_IMAGE, imageUrls);
   } catch (error) {

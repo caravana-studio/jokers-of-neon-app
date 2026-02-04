@@ -50,7 +50,6 @@ const getPrizes = (prizes: ApiPrize[]) => {
       }
     }
   });
-  console.log("tournament prizes:", tournamentPrizes);
   return tournamentPrizes;
 };
 

@@ -35,6 +35,7 @@ import { StarknetProvider } from "./providers/StarknetProvider.tsx";
 import { fetchVersion } from "./queries/fetchVersion.ts";
 import customTheme from "./theme/theme";
 import { LoadingScreenHandle } from "./types/LoadingProgress.ts";
+import AudioManager from "./audio/AudioManager.ts";
 import { preloadImages, preloadVideos } from "./utils/cacheUtils.ts";
 import { isNative } from "./utils/capacitorUtils.ts";
 import { preloadSpineAnimations } from "./utils/preloadAnimations.ts";
@@ -201,6 +202,13 @@ async function init() {
         progressBarRef.current?.nextStep();
       });
 
+  // Initialize AudioManager (preload all SFX once)
+  const audioPromise = AudioManager.getInstance()
+    .initialize()
+    .catch(() => {
+      // Audio init failure is non-fatal
+    });
+
   try {
     const setupPromise = setup(dojoConfig).then((result) => {
       progressBarRef.current?.nextStep();
@@ -211,6 +219,7 @@ async function init() {
       setupPromise,
       i18nPromise,
       imagesPromise,
+      audioPromise,
       presentationPromise,
     ]);
 
