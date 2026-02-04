@@ -42,6 +42,24 @@ const formatEntrypoint = (entrypoint: string): string => {
     .join(" ");
 };
 
+const sortMethods = (methods: Method[]): Method[] => {
+  return [...methods].sort((a, b) =>
+    a.entrypoint.localeCompare(b.entrypoint)
+  );
+};
+
+const sortContracts = (
+  contracts: Record<string, ContractPolicy>
+): Record<string, ContractPolicy> => {
+  return Object.fromEntries(
+    Object.entries(contracts)
+      .sort(([addressA], [addressB]) =>
+        addressA.toLowerCase().localeCompare(addressB.toLowerCase())
+      )
+      .map(([address, policy]) => [address, policy])
+  );
+};
+
 const generatePolicies = (): Policies => {
   const mockProvider = {
     execute: () => Promise.resolve({}),
@@ -87,24 +105,28 @@ const generatePolicies = (): Policies => {
     );
 
     if (methods.length > 0) {
+      const formattedMethods = methods.map((method) => ({
+        name: formatEntrypoint(method),
+        entrypoint: method,
+      }));
+
       policiesContracts[contractAddress] = {
-        methods: methods.map((method) => ({
-          name: formatEntrypoint(method),
-          entrypoint: method,
-        })),
+        methods: sortMethods(formattedMethods),
       };
     }
   });
 
   // Add VRF policy
   policiesContracts[VRF_POLICY.vrf.contract_address] = {
-    methods: VRF_POLICY.vrf.methods.map((method) => ({
-      name: formatEntrypoint(method.entrypoint),
-      entrypoint: method.entrypoint,
-    })),
+    methods: sortMethods(
+      VRF_POLICY.vrf.methods.map((method) => ({
+        name: formatEntrypoint(method.entrypoint),
+        entrypoint: method.entrypoint,
+      }))
+    ),
   };
 
-  return { contracts: policiesContracts };
+  return { contracts: sortContracts(policiesContracts) };
 };
 
 export const policies = generatePolicies();
