@@ -3,12 +3,22 @@ version = 1
 name = "jokers-of-neon-app"
 
 [setup]
-script = ""
+script = '''
+set -e
+
+ENV_SRC="$HOME/.config/jokers-of-neon/.env"
+
+# linkea el .env compartido si no existe en el worktree
+if [ -f "$ENV_SRC" ] && [ ! -e ".env" ]; then
+  ln -s "$ENV_SRC" .env || cp "$ENV_SRC" .env
+fi
+
+# instala deps (mejor que npm i)
+npm ci || npm install
+
+'''
 
 [[actions]]
 name = "Run"
 icon = "run"
-command = '''
-npm i
-npm run dev
-'''
+command = "npm run dev"
