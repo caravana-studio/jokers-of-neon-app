@@ -94,13 +94,13 @@ async function init() {
   fetchVersion().then((data) => {
     const version = data.version;
     // If the maintenance flag is set, block the app
-    // if (data.maintenance) {
-    //   return root.render(
-    //     <I18nextProvider i18n={localI18n} defaultNS={undefined}>
-    //       <Maintenance />
-    //     </I18nextProvider>
-    //   );
-    // }
+    if (data.maintenance) {
+      return root.render(
+        <I18nextProvider i18n={localI18n} defaultNS={undefined}>
+          <Maintenance />
+        </I18nextProvider>
+      );
+    }
     // If the major or minor version is different, block the app
     if (
       isNative &&
