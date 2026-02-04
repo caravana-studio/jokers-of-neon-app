@@ -61,6 +61,8 @@ const progressBarRef = createRef<LoadingScreenHandle>();
 const BYPASS_MOBILE_BROWSER_RULE = import.meta.env
   .VITE_BYPASS_MOBILE_BROWSER_RULE;
 
+const BYPASS_MAINTENANCE = import.meta.env.VITE_BYPASS_MAINTENANCE;
+
 initDatadogRum();
 registerAppUrlOpenListener();
 
@@ -95,7 +97,7 @@ async function init() {
   fetchVersion().then((data) => {
     const version = data.version;
     // If the maintenance flag is set, block the app
-    if (data.maintenance) {
+    if (data.maintenance && !BYPASS_MAINTENANCE) {
       return root.render(
         <I18nextProvider i18n={localI18n} defaultNS={undefined}>
           <Maintenance />
