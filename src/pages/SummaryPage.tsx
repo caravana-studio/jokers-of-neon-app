@@ -114,7 +114,17 @@ const SummaryDetail = ({ win }: SummaryPageProps) => {
 
   if (isNavigating) {
     return (
-      <Flex w="100%" h="100%" justifyContent="center" alignItems="center">
+      <Flex
+        position="fixed"
+        top={0}
+        left={0}
+        w="100vw"
+        h="100vh"
+        justifyContent="center"
+        alignItems="center"
+        bg="blackAlpha.700"
+        zIndex={1000}
+      >
         <Spinner size="xl" color="white" />
       </Flex>
     );
