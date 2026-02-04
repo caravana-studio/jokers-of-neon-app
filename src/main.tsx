@@ -25,6 +25,7 @@ import { DatadogUserContext } from "./monitoring/DatadogUserContext.tsx";
 import { LoadingScreen } from "./pages/LoadingScreen/LoadingScreen.tsx";
 import { Maintenance } from "./pages/Maintenance.tsx";
 import { MobileBrowserBlocker } from "./pages/MobileBrowserBlocker.tsx";
+import { OfflineBlocker } from "./pages/OfflineBlocker.tsx";
 import { VersionMismatch } from "./pages/VersionMismatch.tsx";
 import {
   AppContextProvider,
@@ -32,7 +33,7 @@ import {
 } from "./providers/AppContextProvider.tsx";
 import { SettingsProvider } from "./providers/SettingsProvider.tsx";
 import { StarknetProvider } from "./providers/StarknetProvider.tsx";
-import { fetchVersion } from "./queries/fetchVersion.ts";
+import { fetchVersion, VERSION_URL } from "./queries/fetchVersion.ts";
 import customTheme from "./theme/theme";
 import { LoadingScreenHandle } from "./types/LoadingProgress.ts";
 import AudioManager from "./audio/AudioManager.ts";
@@ -66,6 +67,31 @@ const BYPASS_MAINTENANCE = import.meta.env.VITE_BYPASS_MAINTENANCE;
 initDatadogRum();
 registerAppUrlOpenListener();
 
+const CONNECTION_CHECK_TIMEOUT_MS = 6000;
+
+const hasInternetConnection = async () => {
+  if (typeof navigator !== "undefined" && !navigator.onLine) return false;
+
+  const controller = new AbortController();
+  const timeoutId = window.setTimeout(
+    () => controller.abort(),
+    CONNECTION_CHECK_TIMEOUT_MS
+  );
+
+  try {
+    await fetch(VERSION_URL, {
+      method: "GET",
+      cache: "no-store",
+      signal: controller.signal,
+    });
+    return true;
+  } catch (error) {
+    return false;
+  } finally {
+    window.clearTimeout(timeoutId);
+  }
+};
+
 async function init() {
   const rootElement = document.getElementById("root");
   if (!rootElement) throw new Error("React root not found");
@@ -77,48 +103,9 @@ async function init() {
   const shouldSkipPresentation = hasSeenPresentation && !isNavigatingFromHome;
 
   let setCanFadeOut: (value: boolean) => void = () => {};
+  let isStartingApp = false;
 
   const theme = extendTheme(customTheme);
-
-  // Block mobile browsers
-  if (
-    isMobileOnly &&
-    !isNative &&
-    window.location.hostname !== "localhost" &&
-    !BYPASS_MOBILE_BROWSER_RULE
-  ) {
-    return root.render(
-      <I18nextProvider i18n={localI18n} defaultNS={undefined}>
-        <MobileBrowserBlocker />
-      </I18nextProvider>
-    );
-  }
-
-  fetchVersion().then((data) => {
-    const version = data.version;
-    // If the maintenance flag is set, block the app
-    if (data.maintenance && !BYPASS_MAINTENANCE) {
-      return root.render(
-        <I18nextProvider i18n={localI18n} defaultNS={undefined}>
-          <Maintenance />
-        </I18nextProvider>
-      );
-    }
-    // If the major or minor version is different, block the app
-    if (
-      isNative &&
-      (Number(getMajor(version)) > Number(getMajor(APP_VERSION)) ||
-        (Number(getMajor(version)) === Number(getMajor(APP_VERSION)) &&
-          Number(getMinor(version)) > Number(getMinor(APP_VERSION))))
-    ) {
-      console.log("Version mismatch", version, APP_VERSION);
-      return root.render(
-        <I18nextProvider i18n={localI18n} defaultNS={undefined}>
-          <VersionMismatch />
-        </I18nextProvider>
-      );
-    }
-  });
 
   const renderApp = (setupResult: any) => {
     const queryClient = new QueryClient();
@@ -155,86 +142,152 @@ async function init() {
     );
   };
 
-  const presentationPromise = new Promise<void>((resolve) => {
-    const updateLoadingScreen = (canFadeOut: boolean) => {
-      root.render(
-        <ChakraBaseProvider theme={theme}>
+  const startApp = async () => {
+    if (isStartingApp) return;
+    isStartingApp = true;
+
+    fetchVersion().then((data) => {
+      const version = data.version;
+      // If the maintenance flag is set, block the app
+      if (data.maintenance && !BYPASS_MAINTENANCE) {
+        return root.render(
           <I18nextProvider i18n={localI18n} defaultNS={undefined}>
-            <LoadingScreen
-              initial
-              ref={progressBarRef}
-              showPresentation={!shouldSkipPresentation}
-              onPresentationEnd={() => {
-                window.localStorage.setItem(SKIP_PRESENTATION, "true");
-                progressBarRef.current?.nextStep();
-                resolve();
-              }}
-              canFadeOut={canFadeOut}
-            />
-            <PositionedVersion />
+            <Maintenance />
           </I18nextProvider>
-        </ChakraBaseProvider>
-      );
-    };
+        );
+      }
+      // If the major or minor version is different, block the app
+      if (
+        isNative &&
+        (Number(getMajor(version)) > Number(getMajor(APP_VERSION)) ||
+          (Number(getMajor(version)) === Number(getMajor(APP_VERSION)) &&
+            Number(getMinor(version)) > Number(getMinor(APP_VERSION))))
+      ) {
+        console.log("Version mismatch", version, APP_VERSION);
+        return root.render(
+          <I18nextProvider i18n={localI18n} defaultNS={undefined}>
+            <VersionMismatch />
+          </I18nextProvider>
+        );
+      }
+    });
 
-    setCanFadeOut = (value: boolean) => {
-      updateLoadingScreen(value);
-    };
+    const presentationPromise = new Promise<void>((resolve) => {
+      const updateLoadingScreen = (canFadeOut: boolean) => {
+        root.render(
+          <ChakraBaseProvider theme={theme}>
+            <I18nextProvider i18n={localI18n} defaultNS={undefined}>
+              <LoadingScreen
+                initial
+                ref={progressBarRef}
+                showPresentation={!shouldSkipPresentation}
+                onPresentationEnd={() => {
+                  window.localStorage.setItem(SKIP_PRESENTATION, "true");
+                  progressBarRef.current?.nextStep();
+                  resolve();
+                }}
+                canFadeOut={canFadeOut}
+              />
+              <PositionedVersion />
+            </I18nextProvider>
+          </ChakraBaseProvider>
+        );
+      };
 
-    updateLoadingScreen(false);
-  });
+      setCanFadeOut = (value: boolean) => {
+        updateLoadingScreen(value);
+      };
 
-  registerServiceWorker();
+      updateLoadingScreen(false);
+    });
 
-  const i18nPromise = i18n.loadNamespaces(I18N_NAMESPACES).then(() => {
-    progressBarRef.current?.nextStep();
-  });
+    registerServiceWorker();
 
-  const imagesPromise = isNative
-    ? Promise.resolve().then(() => {
-        progressBarRef.current?.nextStep();
-      })
-    : Promise.all([
-        preloadImages(),
-        preloadSpineAnimations(),
-        preloadVideos(),
-      ]).then(() => {
-        progressBarRef.current?.nextStep();
+    const i18nPromise = i18n.loadNamespaces(I18N_NAMESPACES).then(() => {
+      progressBarRef.current?.nextStep();
+    });
+
+    const imagesPromise = isNative
+      ? Promise.resolve().then(() => {
+          progressBarRef.current?.nextStep();
+        })
+      : Promise.all([
+          preloadImages(),
+          preloadSpineAnimations(),
+          preloadVideos(),
+        ]).then(() => {
+          progressBarRef.current?.nextStep();
+        });
+
+    // Initialize AudioManager (preload all SFX once)
+    const audioPromise = AudioManager.getInstance()
+      .initialize()
+      .catch(() => {
+        // Audio init failure is non-fatal
       });
 
-  // Initialize AudioManager (preload all SFX once)
-  const audioPromise = AudioManager.getInstance()
-    .initialize()
-    .catch(() => {
-      // Audio init failure is non-fatal
-    });
+    try {
+      const setupPromise = setup(dojoConfig).then((result) => {
+        progressBarRef.current?.nextStep();
+        return result;
+      });
 
-  try {
-    const setupPromise = setup(dojoConfig).then((result) => {
-      progressBarRef.current?.nextStep();
-      return result;
-    });
+      const [setupResult] = await Promise.all([
+        setupPromise,
+        i18nPromise,
+        imagesPromise,
+        audioPromise,
+        presentationPromise,
+      ]);
 
-    const [setupResult] = await Promise.all([
-      setupPromise,
-      i18nPromise,
-      imagesPromise,
-      audioPromise,
-      presentationPromise,
-    ]);
+      setCanFadeOut(true);
 
-    setCanFadeOut(true);
+      setTimeout(
+        () => {
+          renderApp(setupResult);
+        },
+        shouldSkipPresentation ? 0 : 1000
+      );
+    } catch (e) {
+      console.error(e);
+      root.render(<LoadingScreen error />);
+    }
+  };
 
-    setTimeout(
-      () => {
-        renderApp(setupResult);
-      },
-      shouldSkipPresentation ? 0 : 1000
+  function renderOfflineBlocker() {
+    root.render(
+      <I18nextProvider i18n={localI18n} defaultNS={undefined}>
+        <OfflineBlocker onRetry={checkConnectivityAndStart} />
+      </I18nextProvider>
     );
-  } catch (e) {
-    console.error(e);
-    root.render(<LoadingScreen error />);
   }
+
+  async function checkConnectivityAndStart() {
+    if (isStartingApp) return;
+
+    // Block mobile browsers
+    if (
+      isMobileOnly &&
+      !isNative &&
+      window.location.hostname !== "localhost" &&
+      !BYPASS_MOBILE_BROWSER_RULE
+    ) {
+      return root.render(
+        <I18nextProvider i18n={localI18n} defaultNS={undefined}>
+          <MobileBrowserBlocker />
+        </I18nextProvider>
+      );
+    }
+
+    const hasConnection = await hasInternetConnection();
+    if (!hasConnection) {
+      return renderOfflineBlocker();
+    }
+
+    await startApp();
+  }
+
+  await checkConnectivityAndStart();
 }
 
 init();
