@@ -130,6 +130,11 @@
     "please-update": "Por favor, actualice para continuar",
     "update": "ACTUALIZAR"
   },
+  "offline": {
+    "title": "SIN CONEXIÓN A INTERNET",
+    "description": "Por favor, comprueba tu conexión e inténtalo de nuevo",
+    "retry": "REINTENTAR"
+  },
   "season-progression": {
     "free-rewards": "RECOMPENSAS GRATIS",
     "season": "TEMPORADA {{season}}",
