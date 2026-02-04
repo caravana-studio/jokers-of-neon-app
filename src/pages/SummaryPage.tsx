@@ -1,4 +1,4 @@
-import { Box, Flex, Heading } from "@chakra-ui/react";
+import { Box, Flex, Heading, Spinner } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -56,6 +56,7 @@ const SummaryDetail = ({ win }: SummaryPageProps) => {
   const { isSmallScreen } = useResponsiveValues();
   const [skip, setSkip] = useState(false);
   const [animationEnded, setAnimationEnded] = useState(false);
+  const [isNavigating, setIsNavigating] = useState(false);
   const { totalScore, level, round, id: gameId } = useGameStore();
   const [gameTracker, setGameTracker] = useState(DEFAULT_TRACKER_VIEW);
 
@@ -111,6 +112,14 @@ const SummaryDetail = ({ win }: SummaryPageProps) => {
     t("defeated-rages"),
   ];
 
+  if (isNavigating) {
+    return (
+      <Flex w="100%" h="100%" justifyContent="center" alignItems="center">
+        <Spinner size="xl" color="white" />
+      </Flex>
+    );
+  }
+
   return (
     <Flex
       flexDirection="column"
@@ -126,7 +135,12 @@ const SummaryDetail = ({ win }: SummaryPageProps) => {
         title={title}
         button={win ? t("endless-mode") : t("continue-btn")}
         onClick={() => {
-          win ? navigateToMap() : navigate(`/gameover/${gameId}`);
+          if (win) {
+            setIsNavigating(true);
+            navigateToMap();
+          } else {
+            navigate(`/gameover/${gameId}`);
+          }
         }}
         actionHidden={!animationEnded}
         glowIntensity={win ? 1.5 : 0}

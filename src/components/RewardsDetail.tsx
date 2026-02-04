@@ -1,4 +1,4 @@
-import { Box, Flex, Heading } from "@chakra-ui/react";
+import { Box, Flex, Heading, Spinner } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -133,6 +133,7 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
   const { currentScore } = useGameStore();
   const [animationEnded, setAnimationEnded] = useState(false);
   const [skip, setSkip] = useState(false);
+  const [isNavigating, setIsNavigating] = useState(false);
 
   const playerWon = level_passed === BOSS_LEVEL;
 
@@ -163,6 +164,24 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
   const rewardLines =
     3 + (rage_card_defeated_cash > 0 ? 1 : 0) + (rerolls > 0 ? 1 : 0);
 
+  if (isNavigating) {
+    return (
+      <Flex
+        position="fixed"
+        top={0}
+        left={0}
+        w="100vw"
+        h="100vh"
+        justifyContent="center"
+        alignItems="center"
+        bg="blackAlpha.700"
+        zIndex={1000}
+      >
+        <Spinner size="xl" color="white" />
+      </Flex>
+    );
+  }
+
   return (
     <Flex
       flexDirection="column"
@@ -178,6 +197,7 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
         title={title}
         button={playerWon ? t("endless-mode") : t("continue-btn")}
         onClick={() => {
+          setIsNavigating(true);
           navigateToMap();
         }}
         actionHidden={!animationEnded}
