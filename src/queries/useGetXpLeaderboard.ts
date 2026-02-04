@@ -62,6 +62,7 @@ const fetchXpLeaderboard = async () => {
     rawData?.jokersOfNeonProfile20GameDataModels?.edges ?? [];
 
   const blockedUsernames = new Set(["test111"]);
+  const guestNamePattern = /^joker_guest_\d+$/i;
 
   const ownerToPlayerName = new Map<string, string>();
   gameDataEdges.forEach((edge) => {
@@ -88,7 +89,10 @@ const fetchXpLeaderboard = async () => {
         blockedUsernames.has(normalizedName ?? "") ||
         blockedUsernames.has(normalizedAddress ?? "");
       const hasValidName = Boolean(entry.playerName);
-      return entry.address && hasValidName && !isBlocked;
+      const isGuest = Boolean(
+        normalizedName && guestNamePattern.test(normalizedName)
+      );
+      return entry.address && hasValidName && !isBlocked && !isGuest;
     });
 
   const sorted = processed.sort((a, b) => {
