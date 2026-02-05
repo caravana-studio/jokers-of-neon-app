@@ -1,17 +1,18 @@
 import { Box } from "@chakra-ui/react";
+import { memo } from "react";
 import { useNavigate } from "react-router-dom";
 import { Handle, Position } from "reactflow";
-import { GameStateEnum } from "../../../dojo/typescript/custom";
 import { useShopActions } from "../../../dojo/useShopActions";
 import { useGameStore } from "../../../state/useGameStore";
+import { useNodeReachability } from "./useNodeReachability";
 
-const EmojiNode = ({ data }: any) => {
+const EmojiNode = memo(({ data }: any) => {
   const { advanceNode } = useShopActions();
   const navigate = useNavigate();
 
-  const { state, id: gameId } = useGameStore();
+  const { id: gameId } = useGameStore();
 
-  const stateInMap = state === GameStateEnum.Map;
+  const { stateInMap, reachable } = useNodeReachability(data.id);
 
   return (
     <Box
@@ -27,10 +28,10 @@ const EmojiNode = ({ data }: any) => {
         fontSize: 24,
         color: "white",
         border: "2px solid #fff",
-        cursor: stateInMap ? "pointer" : "default",
+        cursor: reachable ? "pointer" : "default",
       }}
       onClick={() => {
-        if (stateInMap) {
+        if (reachable) {
           advanceNode(gameId, data.id).then(() => {
             navigate("/redirect");
           });
@@ -50,6 +51,6 @@ const EmojiNode = ({ data }: any) => {
       />
     </Box>
   );
-};
+});
 
 export default EmojiNode;

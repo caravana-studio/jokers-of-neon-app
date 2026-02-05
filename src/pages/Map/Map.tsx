@@ -4,7 +4,7 @@ import "./Map.css";
 import EmojiNode from "./nodes/EmojiNode";
 
 import { Flex } from "@chakra-ui/react";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { MobileBottomBar } from "../../components/MobileBottomBar";
 import { MobileDecoration } from "../../components/MobileDecoration";
@@ -15,6 +15,7 @@ import { useCustomNavigate } from "../../hooks/useCustomNavigate";
 import { useMap } from "../../providers/MapProvider";
 import { useStore } from "../../providers/StoreProvider";
 import { useGameStore } from "../../state/useGameStore";
+import { useMapNavigationStore } from "../../state/useMapNavigationStore";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { MobileCoins } from "../store/Coins";
 import MapEdge from "./MapEdge";
@@ -25,6 +26,17 @@ import RewardNode from "./nodes/StoreNode";
 import { useNodeNavigation } from "./nodes/useNodeNavigation";
 import { NodeType } from "./types";
 
+// Memoized outside component to prevent ReactFlow re-renders
+const NODE_TYPES = {
+  [NodeType.NONE]: EmojiNode,
+  [NodeType.RAGE]: RageNode,
+  [NodeType.STORE]: RewardNode,
+  [NodeType.ROUND]: RoundNode,
+  [NodeType.CHALLENGE]: RoundNode,
+};
+
+const EDGE_TYPES = { map: MapEdge };
+
 export const Map = () => {
   const { t } = useTranslation("map");
   const {
@@ -32,17 +44,14 @@ export const Map = () => {
     edges,
     fitViewToCurrentNode,
     fitViewToFullMap,
-    fitViewToNode,
     layoutReady,
     selectedNodeData,
     reachableNodes,
-    isNodeTransactionPending,
-    setNodeTransactionPending,
-    activeNodeId,
-    setActiveNodeId,
-    pulsingNodeId,
-    setPulsingNodeId,
   } = useMap();
+
+  const isNodeTransactionPending = useMapNavigationStore(
+    (state) => state.isNodeTransactionPending
+  );
 
   const {
     setup: { client },
@@ -54,9 +63,12 @@ export const Map = () => {
   const { backToGameButtonProps, backToGameButton } = useBackToGameButton();
   const { handleNodeNavigation } = useNodeNavigation();
   const { refetch: refetchStore } = useStore();
+  const hasInitialFitView = useRef(false);
 
   useEffect(() => {
-    if (layoutReady && nodes.length > 0) {
+    if (layoutReady && nodes.length > 0 && !hasInitialFitView.current) {
+      hasInitialFitView.current = true;
+
       const timeout1 = setTimeout(() => {
         fitViewToFullMap();
       }, 400);
@@ -71,7 +83,7 @@ export const Map = () => {
         clearTimeout(timeout2);
       };
     }
-  }, [layoutReady, nodes, isSmallScreen]);
+  }, [layoutReady]);
 
   const isReachable = reachableNodes.includes(
     selectedNodeData?.id?.toString() ?? ""
@@ -127,14 +139,8 @@ export const Map = () => {
       <ReactFlow
         nodes={nodes}
         edges={edges}
-        nodeTypes={{
-          [NodeType.NONE]: EmojiNode,
-          [NodeType.RAGE]: RageNode,
-          [NodeType.STORE]: RewardNode,
-          [NodeType.ROUND]: RoundNode,
-          [NodeType.CHALLENGE]: RoundNode,
-        }}
-        edgeTypes={{ map: MapEdge }}
+        nodeTypes={NODE_TYPES}
+        edgeTypes={EDGE_TYPES}
         panOnScroll={false}
         zoomOnScroll={true}
         nodesDraggable={false}
