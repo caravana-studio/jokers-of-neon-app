@@ -76,14 +76,14 @@ const ActivityItem = ({
       borderRadius="lg"
       spacing={3}
       borderLeft="3px solid"
-      borderLeftColor={milestone.reward_given ? "green.400" : "yellow.400"}
+      borderLeftColor="teal.400"
     >
       <Box
         p={2}
         borderRadius="full"
-        bg={milestone.reward_given ? "green.500" : "yellow.500"}
+        bgGradient="linear(to-br, teal.400, teal.200)"
       >
-        <FiGift size={16} />
+        <FiUsers size={16} />
       </Box>
       <VStack align="start" spacing={0} flex={1}>
         <Text fontSize="sm" fontWeight="medium">
@@ -93,18 +93,19 @@ const ActivityItem = ({
           {timeAgo}
         </Text>
       </VStack>
-      {milestone.reward_type && (
+      // TODO: Oculto por ahora
+      {/* {milestone.reward_type && (
         <Box
           px={2}
           py={1}
-          bg={milestone.reward_given ? "green.900" : "yellow.900"}
+          bg={milestone.reward_given ? "green.500" : "orange.500"}
           borderRadius="md"
         >
           <Text fontSize="xs" fontWeight="bold">
             +{milestone.reward_amount} {milestone.reward_type}
           </Text>
         </Box>
-      )}
+      )} */}
     </HStack>
   );
 };
@@ -177,11 +178,7 @@ export const ReferralPage = () => {
     }
 
     try {
-      console.log("[ReferralPage] Loading stats for:", userAddress);
       const statsData = await getReferralStats(userAddress);
-      console.log("[ReferralPage] Stats received:", statsData);
-      console.log("[ReferralPage] Claims:", statsData?.claims);
-      console.log("[ReferralPage] Milestones:", statsData?.milestones);
       setStats(statsData);
       if (statsData.referral_code) {
         setReferralCode(statsData.referral_code);
@@ -350,7 +347,7 @@ export const ReferralPage = () => {
 
         {/* Referral Code Section */}
         <Box
-          bgGradient="linear(to-br, purple.900, blue.900)"
+          bgGradient="linear(to-br, blackAlpha.100, whiteAlpha.300)"
           p={6}
           borderRadius="2xl"
           mb={6}
@@ -363,18 +360,18 @@ export const ReferralPage = () => {
                 {t("referral.your-code")}
               </Text>
               <Box
-                bg="whiteAlpha.200"
+                bg="blackAlpha.500"
                 px={6}
                 py={3}
+                border={"1px"}
                 borderRadius="xl"
-                border="2px dashed"
-                borderColor="purple.400"
+                borderColor="whiteAlpha.400"
               >
                 <Text
                   fontSize={isSmallScreen ? "2xl" : "3xl"}
                   fontWeight="bold"
                   letterSpacing="wider"
-                  color="white"
+                  color="green.100"
                 >
                   {referralCode}
                 </Text>
@@ -435,8 +432,10 @@ export const ReferralPage = () => {
               label={t("referral.stats.friends-invited")}
             />
             <StatBox
+            
               icon={<FiGift size={24} />}
-              value={claimedRewards + pendingRewards}
+              value="?"
+              // value={claimedRewards + pendingRewards}
               label={t("referral.stats.rewards-earned")}
             />
           </HStack>
@@ -449,19 +448,37 @@ export const ReferralPage = () => {
           </Heading>
 
           {activityFeed.length > 0 ? (
-            <VStack spacing={2} align="stretch">
-              {activityFeed.map((milestone, index) => (
-                <ActivityItem
-                  key={`${milestone.milestone_type}-${milestone.referee_address}-${index}`}
-                  milestone={milestone}
-                  t={t}
-                />
-              ))}
-            </VStack>
+            <Box
+              maxH={{ base: "300px", md: "400px" }}
+              overflowY="auto"
+              pr={2}
+              sx={{
+                "&::-webkit-scrollbar": {
+                  width: "4px",
+                },
+                "&::-webkit-scrollbar-track": {
+                  bg: "whiteAlpha.100",
+                  borderRadius: "full",
+                },
+                "&::-webkit-scrollbar-thumb": {
+                  bg: "purple.500",
+                  borderRadius: "full",
+                },
+              }}
+            >
+              <VStack spacing={2} align="stretch">
+                {activityFeed.map((milestone, index) => (
+                  <ActivityItem
+                    key={`${milestone.milestone_type}-${milestone.referee_address}-${index}`}
+                    milestone={milestone}
+                    t={t}
+                  />
+                ))}
+              </VStack>
+            </Box>
           ) : (
             <Box
               p={6}
-              bg="whiteAlpha.50"
               borderRadius="xl"
               textAlign="center"
             >
