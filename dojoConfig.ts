@@ -10,10 +10,17 @@ const masterPrivateKey =
   import.meta.env.VITE_MASTER_PRIVATE_KEY ||
   "0x1800000000300000180000000000030000000000003006001800006600";
 
-const manifest = getManifest()
+const manifest = getManifest();
+const manifestAny = manifest as {
+  abis?: unknown[];
+  world?: { abi?: unknown[] };
+};
+const manifestWithAbis = Array.isArray(manifestAny.abis)
+  ? manifest
+  : { ...manifest, abis: manifestAny.world?.abi ?? [] };
 
 export const dojoConfig = createDojoConfig({
-  manifest,
+  manifest: manifestWithAbis,
   rpcUrl,
   toriiUrl,
   masterAddress,
