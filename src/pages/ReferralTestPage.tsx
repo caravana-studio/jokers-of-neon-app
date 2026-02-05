@@ -171,9 +171,29 @@ export const ReferralTestPage = () => {
     ? `${userAddress.slice(0, 6)}...${userAddress.slice(-4)}`
     : "N/A";
 
-  // Load initial data
+  // Load initial data and set up polling
   useEffect(() => {
     loadData();
+
+    // Set up 30-second polling interval when page is visible
+    const pollInterval = setInterval(() => {
+      if (document.visibilityState === "visible") {
+        loadData();
+      }
+    }, 30000);
+
+    // Handle visibility change to refresh immediately when page becomes visible
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        loadData();
+      }
+    };
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      clearInterval(pollInterval);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
   }, [userAddress]);
 
   const loadData = async () => {

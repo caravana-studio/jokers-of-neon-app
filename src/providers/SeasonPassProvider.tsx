@@ -5,12 +5,17 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 import { useDojo } from "../dojo/DojoContext";
+import { useUsername } from "../dojo/utils/useUsername";
 import { useSeasonProgressStore } from "../state/useSeasonProgressStore";
 import { showPurchaseSuccessToast } from "../utils/transactionNotifications";
 import { useRevenueCat } from "./RevenueCatProvider";
+import { registerMilestone } from "../utils/appsflyerReferral";
+
+const FIRST_PURCHASE_KEY = "referral_first_purchase_tracked";
 
 type SeasonPassContextValue = {
   seasonPassUnlocked: boolean;
@@ -29,7 +34,9 @@ const SeasonPassContext = createContext<SeasonPassContextValue>({
 export const SeasonPassProvider = ({ children }: PropsWithChildren) => {
   const {
     account: { account },
+    setup: { accountType },
   } = useDojo();
+  const username = useUsername();
   const userAddress = account?.address;
   const { offerings, purchasePackageById } = useRevenueCat();
   const [isPurchasing, setIsPurchasing] = useState(false);
@@ -46,6 +53,9 @@ export const SeasonPassProvider = ({ children }: PropsWithChildren) => {
     (store) => store.refetch
   );
   const resetSeasonProgress = useSeasonProgressStore((store) => store.reset);
+
+  // Track if first purchase milestone has been registered
+  const hasTrackedFirstPurchaseRef = useRef(false);
 
   useEffect(() => {
     if (!userAddress) {
@@ -84,13 +94,26 @@ export const SeasonPassProvider = ({ children }: PropsWithChildren) => {
         forceSeasonPassUnlocked: true,
       });
       showPurchaseSuccessToast("season-pass");
+
+      // Register season pass purchase milestone
+      registerMilestone(userAddress, "season_pass_purchased", undefined, accountType, username)
+        .catch((e) => console.error("Error registering season pass milestone", e));
+
+      // Track first purchase milestone (only once per user)
+      const hasTrackedFirstPurchase = localStorage.getItem(FIRST_PURCHASE_KEY);
+      if (!hasTrackedFirstPurchase && !hasTrackedFirstPurchaseRef.current) {
+        hasTrackedFirstPurchaseRef.current = true;
+        localStorage.setItem(FIRST_PURCHASE_KEY, "true");
+        registerMilestone(userAddress, "first_purchase", undefined, accountType, username)
+          .catch((e) => console.error("Error registering first purchase milestone", e));
+      }
     } catch (error) {
       console.error("Failed to purchase season pass", error);
       throw error;
     } finally {
       setIsPurchasing(false);
     }
-  }, [purchasePackageById, refetchSeasonProgress, seasonPassId, userAddress]);
+  }, [purchasePackageById, refetchSeasonProgress, seasonPassId, userAddress, accountType, username]);
 
   const refetchSeasonPassUnlocked = useCallback(async () => {
     if (!userAddress) {

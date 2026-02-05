@@ -40,7 +40,8 @@ export const LoginGate = ({ children, translationKey }: LoginGateProps) => {
               client,
               newUsername.account.address,
               newUsername.account,
-              newUsername.username
+              newUsername.username,
+              "controller" // After switchToController, the account type is controller
             );
           })
         }

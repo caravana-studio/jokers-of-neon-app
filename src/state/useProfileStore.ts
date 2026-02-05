@@ -8,17 +8,21 @@ import {
   updateProfileAvatar,
   createProfile as createProfileApi,
 } from "../api/profile";
+import { registerMilestone } from "../utils/appsflyerReferral";
 
 export type ProfileStore = {
   profileData: ProfileData | null;
   loading: boolean;
   pendingAvatarId: number | null;
+  previousLevel: number | null;
+  previousGamesCount: number | null;
 
   fetchProfileData: (
     client: any,
     userAddress: string,
     snAccount?: Account | AccountInterface,
-    username?: string
+    username?: string,
+    accountType?: "burner" | "controller" | null
   ) => Promise<void>;
 
   updateAvatar: (
@@ -36,8 +40,10 @@ export const useProfileStore = create<ProfileStore>((set, get) => ({
   profileData: null,
   loading: false,
   pendingAvatarId: null,
+  previousLevel: null,
+  previousGamesCount: null,
 
-  fetchProfileData: async (_client, userAddress, _snAccount, username) => {
+  fetchProfileData: async (_client, userAddress, _snAccount, username, accountType) => {
     set({ loading: true });
 
     try {
@@ -105,10 +111,46 @@ export const useProfileStore = create<ProfileStore>((set, get) => ({
         },
       };
 
+      // Check for level milestones
+      const prevLevel = get().previousLevel;
+      const newLevel = toInt(profile.level);
+
+      // Track level milestones when crossing thresholds
+      if (prevLevel !== null && newLevel !== prevLevel) {
+        // Level 5 milestone
+        if (prevLevel < 5 && newLevel >= 5) {
+          registerMilestone(userAddress, "level_5", newLevel, accountType, username)
+            .catch((e) => console.error("Error registering level_5 milestone", e));
+        }
+        // Level 10 milestone
+        if (prevLevel < 10 && newLevel >= 10) {
+          registerMilestone(userAddress, "level_10", newLevel, accountType, username)
+            .catch((e) => console.error("Error registering level_10 milestone", e));
+        }
+      }
+
+      // Check for games played milestones
+      const prevGamesCount = get().previousGamesCount;
+      const newGamesCount = profileData.playerStats.games;
+
+      // Track games played milestones when crossing thresholds
+      if (prevGamesCount !== null && newGamesCount !== prevGamesCount) {
+        // Games played 5 milestone
+        if (prevGamesCount < 5 && newGamesCount >= 5) {
+          registerMilestone(userAddress, "games_played_5", newGamesCount, accountType, username)
+            .catch((e) => console.error("Error registering games_played_5 milestone", e));
+        }
+        // Games played 10 milestone
+        if (prevGamesCount < 10 && newGamesCount >= 10) {
+          registerMilestone(userAddress, "games_played_10", newGamesCount, accountType, username)
+            .catch((e) => console.error("Error registering games_played_10 milestone", e));
+        }
+      }
+
       if (pendingAvatarId !== null && toInt(profile.avatarId) === pendingAvatarId) {
-        set({ profileData, loading: false, pendingAvatarId: null });
+        set({ profileData, loading: false, pendingAvatarId: null, previousLevel: newLevel, previousGamesCount: newGamesCount });
       } else {
-        set({ profileData, loading: false });
+        set({ profileData, loading: false, previousLevel: newLevel, previousGamesCount: newGamesCount });
       }
     } catch (e) {
       console.log("Error fetching profile data", e);
@@ -141,5 +183,5 @@ export const useProfileStore = create<ProfileStore>((set, get) => ({
     }
   },
 
-  reset: () => set({ profileData: null, pendingAvatarId: null }),
+  reset: () => set({ profileData: null, pendingAvatarId: null, previousLevel: null, previousGamesCount: null }),
 }));

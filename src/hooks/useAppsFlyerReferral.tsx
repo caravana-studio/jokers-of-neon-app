@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useDojo } from "../dojo/DojoContext";
+import { useUsername } from "../dojo/utils/useUsername";
 import { setAppsFlyerCustomerUserId } from "../utils/appsflyer";
 import {
   AppsFlyerConversionData,
@@ -31,7 +32,9 @@ interface UseAppsFlyerReferralResult {
 export function useAppsFlyerReferral(): UseAppsFlyerReferralResult {
   const {
     account: { account },
+    setup: { accountType },
   } = useDojo();
+  const username = useUsername();
 
   const [referralData, setReferralData] = useState<AppsFlyerReferralData | null>(null);
   const [conversionData, setConversionData] = useState<AppsFlyerConversionData | null>(null);
@@ -41,7 +44,11 @@ export function useAppsFlyerReferral(): UseAppsFlyerReferralResult {
   const processedAddressRef = useRef<string | null>(null);
 
   // Process referral data
-  const processReferral = useCallback(async (userAddress: string) => {
+  const processReferral = useCallback(async (
+    userAddress: string,
+    accType: "burner" | "controller" | null,
+    user: string | null | undefined
+  ) => {
     const pending = getPendingReferralData();
 
     if (!pending) {
@@ -56,14 +63,14 @@ export function useAppsFlyerReferral(): UseAppsFlyerReferralResult {
     setState("processing");
 
     try {
-      const success = await processReferralData(pending, userAddress);
+      const success = await processReferralData(pending, userAddress, accType, user);
       if (success) {
         setReferralData(pending);
         clearPendingReferralData();
         setState("success");
 
         // Auto-register account_created milestone for new referrals
-        await registerMilestone(userAddress, "account_created");
+        await registerMilestone(userAddress, "account_created", undefined, accType, user);
       } else {
         setReferralData(pending); // Keep for retry
         setState("error");
@@ -113,12 +120,12 @@ export function useAppsFlyerReferral(): UseAppsFlyerReferralResult {
 
     // Small delay to ensure everything is ready
     const timer = setTimeout(async () => {
-      await processReferral(userAddress);
+      await processReferral(userAddress, accountType, username);
       await processConversion(userAddress);
     }, 500);
 
     return () => clearTimeout(timer);
-  }, [account?.address, processReferral, processConversion]);
+  }, [account?.address, accountType, username, processReferral, processConversion]);
 
   // Retry failed referral
   const retryReferral = useCallback(async () => {
@@ -127,7 +134,7 @@ export function useAppsFlyerReferral(): UseAppsFlyerReferralResult {
 
     setState("processing");
     try {
-      const success = await processReferralData(referralData, userAddress);
+      const success = await processReferralData(referralData, userAddress, accountType, username);
       if (success) {
         clearPendingReferralData();
         setState("success");
@@ -137,15 +144,15 @@ export function useAppsFlyerReferral(): UseAppsFlyerReferralResult {
     } catch (error) {
       setState("error");
     }
-  }, [account?.address, referralData]);
+  }, [account?.address, accountType, username, referralData]);
 
   // Register account created milestone (call after profile creation)
   const registerAccountCreatedMilestone = useCallback(async () => {
     const userAddress = account?.address;
     if (!userAddress) return;
 
-    await registerMilestone(userAddress, "account_created");
-  }, [account?.address]);
+    await registerMilestone(userAddress, "account_created", undefined, accountType, username);
+  }, [account?.address, accountType, username]);
 
   return {
     referralData,

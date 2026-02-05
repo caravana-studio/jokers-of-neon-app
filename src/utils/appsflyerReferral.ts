@@ -164,10 +164,14 @@ function getApiConfig() {
 
 /**
  * Process referral data - claim the referral code with the API
+ * @param accountType - The type of account (burner, controller, or null)
+ * @param username - The user's username (for guest detection)
  */
 export async function processReferralData(
   referralData: AppsFlyerReferralData,
-  userAddress: string
+  userAddress: string,
+  accountType?: "burner" | "controller" | null,
+  username?: string | null
 ): Promise<boolean> {
   // Validate referral data
   if (referralData.type !== "referral" || !referralData.referralCode) {
@@ -198,6 +202,8 @@ export async function processReferralData(
         media_source: referralData.mediaSource,
         campaign: referralData.campaign,
         device_id: deviceId,
+        account_type: accountType,
+        username: username,
       }),
     });
 
@@ -270,6 +276,8 @@ export async function processConversionData(
  * Register a milestone achieved by this user
  * Call this when user reaches milestones (games played, levels, etc.)
  * @param milestoneValue Optional numeric value (e.g., actual level, purchase amount in cents)
+ * @param accountType Optional account type for backend validation
+ * @param username Optional username for backend validation
  */
 export async function registerMilestone(
   userAddress: string,
@@ -283,7 +291,9 @@ export async function registerMilestone(
     | "daily_mission_completed"
     | "season_pass_purchased"
     | "pack_purchased",
-  milestoneValue?: number
+  milestoneValue?: number,
+  accountType?: "burner" | "controller" | null,
+  username?: string | null
 ): Promise<boolean> {
   const { apiKey, baseUrl } = getApiConfig();
 
@@ -298,6 +308,8 @@ export async function registerMilestone(
         user_address: userAddress,
         milestone_type: milestoneType,
         milestone_value: milestoneValue,
+        account_type: accountType,
+        username: username,
       }),
     });
 

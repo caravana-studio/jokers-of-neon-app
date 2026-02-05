@@ -7,11 +7,14 @@ import {
   showDailyMissionToast,
   showLevelCompleteToast,
 } from "./transactionNotifications";
+import { registerMilestone } from "./appsflyerReferral";
 
 export const handleXPEvents = async (
   events: DojoEvent[],
   achievementSound: () => void,
-  address: string
+  address: string,
+  accountType?: "burner" | "controller" | null,
+  username?: string | null
 ) => {
   const dailyMissionEvent = getDailyMissionCompleteEvent(events);
   const levelCompleteEvents = getLevelCompleteEvent(events);
@@ -32,6 +35,10 @@ export const handleXPEvents = async (
           missionDifficulty,
         }).catch((e) => console.error("Error posting daily mission XP", e));
     });
+
+    // Register daily mission milestone for referral tracking
+    registerMilestone(address, "daily_mission_completed", undefined, accountType, username ?? undefined)
+      .catch((e) => console.error("Error registering daily mission milestone", e));
 
     // ONLY FOR GG CAMPAIGN
     //await handleAchievementPush(achievementEvent, achievementSound);
