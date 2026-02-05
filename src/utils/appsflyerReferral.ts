@@ -110,6 +110,7 @@ function loadStoredData(): void {
 
 export function getPendingReferralData(): AppsFlyerReferralData | null {
   loadStoredData();
+  console.log("[AppsFlyer Referral] getPendingReferralData:", pendingReferralData);
   return pendingReferralData;
 }
 
@@ -345,17 +346,24 @@ export async function registerMilestone(
  * @returns The referral code if found, null otherwise
  */
 export function detectWebReferral(): string | null {
+  console.log("[AppsFlyer Referral] detectWebReferral called");
+  console.log("[AppsFlyer Referral] Current URL:", window.location.href);
+  console.log("[AppsFlyer Referral] Search params:", window.location.search);
+
   // Only run on web platform
   if (Capacitor.isNativePlatform()) {
+    console.log("[AppsFlyer Referral] Native platform, skipping web detection");
     return null;
   }
 
   try {
     const urlParams = new URLSearchParams(window.location.search);
     const referralCode = urlParams.get("ref");
+    console.log("[AppsFlyer Referral] Referral code from URL:", referralCode);
 
     if (referralCode && referralCode.trim()) {
       const trimmedCode = referralCode.trim();
+      console.log("[AppsFlyer Referral] Found referral code:", trimmedCode);
 
       // Store for later processing after login
       const webReferral: AppsFlyerReferralData = {
@@ -372,15 +380,23 @@ export function detectWebReferral(): string | null {
       // Also set as pending referral data for unified processing
       pendingReferralData = webReferral;
       localStorage.setItem(STORAGE_KEYS.REFERRAL, JSON.stringify(webReferral));
+      console.log("[AppsFlyer Referral] Stored referral data:", webReferral);
 
       // Optionally clean the URL (remove ref param)
       cleanReferralFromUrl();
 
+      console.log("[AppsFlyer Referral] Web referral detected and stored successfully");
       return trimmedCode;
+    } else {
+      console.log("[AppsFlyer Referral] No referral code in URL");
     }
   } catch (error) {
     console.error("[AppsFlyer Referral] Error detecting web referral:", error);
   }
+
+  // Check if there's existing stored data
+  const existingData = localStorage.getItem(STORAGE_KEYS.REFERRAL);
+  console.log("[AppsFlyer Referral] Existing stored referral data:", existingData);
 
   return null;
 }

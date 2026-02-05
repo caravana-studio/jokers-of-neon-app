@@ -43,6 +43,16 @@ export function useAppsFlyerReferral(): UseAppsFlyerReferralResult {
   // Use ref to track if we've already processed for this address
   const processedAddressRef = useRef<string | null>(null);
 
+  // Use refs to always get the latest values (avoids stale closure issues)
+  const accountTypeRef = useRef(accountType);
+  const usernameRef = useRef(username);
+
+  // Keep refs in sync with state
+  useEffect(() => {
+    accountTypeRef.current = accountType;
+    usernameRef.current = username;
+  }, [accountType, username]);
+
   // Process referral data
   const processReferral = useCallback(async (
     userAddress: string,
@@ -124,28 +134,48 @@ export function useAppsFlyerReferral(): UseAppsFlyerReferralResult {
   // Main effect - runs when user logs in
   useEffect(() => {
     const userAddress = account?.address;
+    console.log("[useAppsFlyerReferral] Main effect triggered", {
+      userAddress,
+      accountType,
+      username,
+      processedAddress: processedAddressRef.current
+    });
+
     if (!userAddress) {
+      console.log("[useAppsFlyerReferral] No user address, skipping");
       return;
     }
 
     // Skip if we already processed for this address
     if (processedAddressRef.current === userAddress) {
+      console.log("[useAppsFlyerReferral] Already processed for this address, skipping");
       return;
     }
 
     processedAddressRef.current = userAddress;
+    console.log("[useAppsFlyerReferral] Processing for new address:", userAddress);
 
     // Set customer user ID in AppsFlyer SDK
     setAppsFlyerCustomerUserId(userAddress);
 
     // Small delay to ensure everything is ready
     const timer = setTimeout(async () => {
-      await processReferral(userAddress, accountType, username);
+      // Use refs to get the latest values (avoids stale closure)
+      const latestAccountType = accountTypeRef.current;
+      const latestUsername = usernameRef.current;
+      console.log("[useAppsFlyerReferral] Timeout triggered, calling processReferral with latest values", {
+        userAddress,
+        latestAccountType,
+        latestUsername
+      });
+      await processReferral(userAddress, latestAccountType, latestUsername);
       await processConversion(userAddress);
     }, 500);
 
     return () => clearTimeout(timer);
-  }, [account?.address, accountType, username, processReferral, processConversion]);
+    // Note: accountType and username are accessed via refs, not closure
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [account?.address, processReferral, processConversion]);
 
   // Retry failed referral
   const retryReferral = useCallback(async () => {
