@@ -1,4 +1,4 @@
-import { Box, Flex, Heading } from "@chakra-ui/react";
+import { Box, Flex, Heading, Spinner } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -15,10 +15,9 @@ import {
   DEFAULT_TRACKER_VIEW,
   getGameTracker,
 } from "../dojo/queries/getGameTracker";
-import { GameStateEnum } from "../dojo/typescript/custom";
 import { useDojo } from "../dojo/useDojo";
 import { Plays } from "../enums/plays";
-import { useCustomNavigate } from "../hooks/useCustomNavigate";
+import { useMapNavigate } from "../hooks/useMapNavigate";
 import { useGameStore } from "../state/useGameStore";
 import { BLUE_LIGHT, VIOLET_LIGHT } from "../theme/colors";
 import { useResponsiveValues } from "../theme/responsiveSettings";
@@ -52,11 +51,12 @@ const SummaryDetail = ({ win }: SummaryPageProps) => {
   const { t: tGame } = useTranslation("game");
   const { t: tPlays } = useTranslation("plays", { keyPrefix: "playsData" });
 
-  const customNavigate = useCustomNavigate();
+  const { navigateToMap } = useMapNavigate();
   const navigate = useNavigate();
   const { isSmallScreen } = useResponsiveValues();
   const [skip, setSkip] = useState(false);
   const [animationEnded, setAnimationEnded] = useState(false);
+  const [isNavigating, setIsNavigating] = useState(false);
   const { totalScore, level, round, id: gameId } = useGameStore();
   const [gameTracker, setGameTracker] = useState(DEFAULT_TRACKER_VIEW);
 
@@ -112,6 +112,24 @@ const SummaryDetail = ({ win }: SummaryPageProps) => {
     t("defeated-rages"),
   ];
 
+  if (isNavigating) {
+    return (
+      <Flex
+        position="fixed"
+        top={0}
+        left={0}
+        w="100vw"
+        h="100vh"
+        justifyContent="center"
+        alignItems="center"
+        bg="blackAlpha.700"
+        zIndex={1000}
+      >
+        <Spinner size="xl" color="white" />
+      </Flex>
+    );
+  }
+
   return (
     <Flex
       flexDirection="column"
@@ -127,9 +145,12 @@ const SummaryDetail = ({ win }: SummaryPageProps) => {
         title={title}
         button={win ? t("endless-mode") : t("continue-btn")}
         onClick={() => {
-          win
-            ? customNavigate(GameStateEnum.Map)
-            : navigate(`/gameover/${gameId}`);
+          if (win) {
+            setIsNavigating(true);
+            navigateToMap();
+          } else {
+            navigate(`/gameover/${gameId}`);
+          }
         }}
         actionHidden={!animationEnded}
         glowIntensity={win ? 1.5 : 0}
