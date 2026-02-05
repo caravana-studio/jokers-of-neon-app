@@ -1,0 +1,46 @@
+{
+  "referral": {
+    "title": "Invitar Amigos",
+    "subtitle": "Comparte tu codigo y gana recompensas cuando tus amigos se unan!",
+    "your-code": "Tu codigo de referido",
+    "create-code": "Crea tu codigo de referido",
+    "create-code-btn": "Crear Codigo",
+    "share-btn": "Compartir",
+    "copy-btn": "Copiar",
+    "copied": "Copiado!",
+    "link-copied": "Enlace copiado al portapapeles",
+    "need-username": "Primero debes configurar un nombre de usuario",
+    "stats": {
+      "friends-invited": "Amigos invitados",
+      "rewards-earned": "Recompensas ganadas"
+    },
+    "activity": {
+      "title": "Actividad",
+      "empty": "Sin actividad aun. Comparte tu codigo para empezar a invitar amigos!",
+      "events": {
+        "account_created": "{{username}} se unio con tu codigo",
+        "games_played_5": "{{username}} jugo 5 partidas",
+        "games_played_10": "{{username}} jugo 10 partidas",
+        "level_5": "{{username}} alcanzo el nivel 5",
+        "level_10": "{{username}} alcanzo el nivel 10",
+        "first_purchase": "{{username}} hizo su primera compra",
+        "daily_mission_completed": "{{username}} completo una mision diaria",
+        "season_pass_purchased": "{{username}} compro el pase de temporada",
+        "pack_purchased": "{{username}} compro un paquete"
+      }
+    },
+    "rewards": {
+      "title": "Tus Recompensas",
+      "pending": "Pendiente",
+      "claimed": "Reclamado",
+      "pack": "Paquete",
+      "coins": "Monedas"
+    },
+    "how-it-works": {
+      "title": "Como funciona",
+      "step1": "Comparte tu codigo de referido con amigos",
+      "step2": "Ellos se registran usando tu codigo",
+      "step3": "Ambos ganan recompensas mientras juegan!"
+    }
+  }
+}

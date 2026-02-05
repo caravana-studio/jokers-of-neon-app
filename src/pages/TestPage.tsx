@@ -65,7 +65,7 @@ export const TestPage = () => {
           icon={Icons.LIST}
           description={"Referral"}
           label={"Referral"}
-          onClick={() => navigate("/referral-test")}
+          onClick={() => navigate("/referral")}
           arrowRight
           width={"18px"}
         />

@@ -122,7 +122,7 @@ https://jokersofneon.onelink.me/2BD9?ref=username
 - `GET /api/referral/stats/:user_address` - Get statistics
 - `POST /api/referral/milestone` - Register milestones
 
-**Test Page:** `/referral-test`
+**Page:** `/referral`
 
 ## Environment Configuration
 
