@@ -158,7 +158,13 @@ const StatBox = ({
 
 export const ReferralPage = () => {
   const navigate = useNavigate();
-  const toast = useToast({ position: "top", duration: 2000 });
+  const toast = useToast({
+    position: "top",
+    duration: 2000,
+    containerStyle: {
+      marginTop: "env(safe-area-inset-top, 20px)",
+    },
+  });
   const { t } = useTranslation("referral");
   const { isSmallScreen } = useResponsiveValues();
   const {
