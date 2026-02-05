@@ -50,18 +50,34 @@ import {
 } from "../utils/appsflyerReferral";
 import { useAppsFlyerReferral } from "../hooks/useAppsFlyerReferral";
 
+interface ReferralClaim {
+  id: number;
+  referee_address: string;
+  referee_username: string | null;
+  flagged_as_fraud: boolean;
+  fraud_reason: string | null;
+  reward_given: boolean;
+  created_at: string;
+}
+
+interface ReferralMilestone {
+  milestone_type: string;
+  referee_address: string;
+  referee_username: string | null;
+  reward_given: boolean;
+  reward_type: string;
+  reward_amount: number;
+  created_at: string;
+}
+
 interface ReferralStats {
   referral_code: string | null;
   total_claims: number;
   valid_claims: number;
   fraudulent_claims: number;
   rewards_given: number;
-  milestones: Array<{
-    milestone_type: string;
-    reward_given: boolean;
-    reward_type: string;
-    reward_amount: number;
-  }>;
+  claims: ReferralClaim[];
+  milestones: ReferralMilestone[];
 }
 
 // Collapsible section component
@@ -482,13 +498,49 @@ export const ReferralTestPage = () => {
           </SimpleGrid>
         )}
 
+        {/* Claims Section */}
+        {stats?.claims && stats.claims.length > 0 && (
+          <Section title="Referred Users" badge={`${stats.valid_claims}/${stats.total_claims}`}>
+            <VStack align="start" spacing={2}>
+              {stats.claims.map((c, i) => (
+                <Box key={i} w="100%" p={2} bg="gray.700" borderRadius="md">
+                  <HStack justify="space-between" fontSize="xs">
+                    <VStack align="start" spacing={0}>
+                      <Text fontWeight="bold">{c.referee_username || "Unknown"}</Text>
+                      <Text fontSize="2xs" color="gray.400">
+                        {c.referee_address.slice(0, 8)}...{c.referee_address.slice(-6)}
+                      </Text>
+                    </VStack>
+                    <VStack align="end" spacing={0}>
+                      <Badge
+                        colorScheme={c.flagged_as_fraud ? "red" : "green"}
+                        fontSize="2xs"
+                      >
+                        {c.flagged_as_fraud ? c.fraud_reason || "Fraud" : "Valid"}
+                      </Badge>
+                      <Text fontSize="2xs" color="gray.500">
+                        {new Date(c.created_at).toLocaleDateString()}
+                      </Text>
+                    </VStack>
+                  </HStack>
+                </Box>
+              ))}
+            </VStack>
+          </Section>
+        )}
+
         {/* Milestones Section */}
         {stats?.milestones && stats.milestones.length > 0 && (
           <Section title="Milestones" badge={`${stats.milestones.length}`}>
             <VStack align="start" spacing={1}>
               {stats.milestones.map((m, i) => (
                 <HStack key={i} justify="space-between" w="100%" fontSize="xs">
-                  <Text>{m.milestone_type}</Text>
+                  <VStack align="start" spacing={0}>
+                    <Text>{m.milestone_type}</Text>
+                    <Text fontSize="2xs" color="gray.400">
+                      {m.referee_username || m.referee_address.slice(0, 10)}...
+                    </Text>
+                  </VStack>
                   <HStack>
                     <Code>
                       {m.reward_type} x{m.reward_amount}

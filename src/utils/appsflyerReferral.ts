@@ -162,26 +162,32 @@ function getApiConfig() {
   return { apiKey, baseUrl };
 }
 
+export interface ProcessReferralResult {
+  success: boolean;
+  ignored: boolean; // true if claim was ignored (burner/guest account)
+}
+
 /**
  * Process referral data - claim the referral code with the API
  * @param accountType - The type of account (burner, controller, or null)
  * @param username - The user's username (for guest detection)
+ * @returns { success: boolean, ignored: boolean } - ignored is true if burner/guest account
  */
 export async function processReferralData(
   referralData: AppsFlyerReferralData,
   userAddress: string,
   accountType?: "burner" | "controller" | null,
   username?: string | null
-): Promise<boolean> {
+): Promise<ProcessReferralResult> {
   // Validate referral data
   if (referralData.type !== "referral" || !referralData.referralCode) {
-    return false;
+    return { success: false, ignored: false };
   }
 
   // Skip if already processed
   if (isReferralAlreadyProcessed(userAddress)) {
     clearPendingReferralData();
-    return true;
+    return { success: true, ignored: false };
   }
 
   const { apiKey, baseUrl } = getApiConfig();
@@ -210,20 +216,22 @@ export async function processReferralData(
     if (!response.ok) {
       const errorText = await response.text();
       console.error("[AppsFlyer Referral] Claim failed:", response.status, errorText);
-      return false;
+      return { success: false, ignored: false };
     }
 
     const result = await response.json();
+    console.log("[AppsFlyer Referral] Claim response:", result);
 
     if (result.success || result.already_claimed) {
       markReferralAsProcessed(userAddress);
-      return true;
+      // Return whether the claim was ignored (burner/guest account)
+      return { success: true, ignored: !!result.ignored };
     }
 
-    return false;
+    return { success: false, ignored: false };
   } catch (error) {
     console.error("[AppsFlyer Referral] Claim error:", error);
-    return false;
+    return { success: false, ignored: false };
   }
 }
 
@@ -425,17 +433,19 @@ export async function processWebReferral(userAddress: string): Promise<boolean> 
   }
 
   // Process using the same logic as native
-  const success = await processReferralData(referralData, userAddress);
+  const result = await processReferralData(referralData, userAddress);
 
-  if (success) {
+  if (result.success) {
     clearPendingWebReferral();
     clearPendingReferralData();
 
-    // Also register attribution for web
-    await registerWebAttribution(userAddress, referralData);
+    // Also register attribution for web (only if not ignored)
+    if (!result.ignored) {
+      await registerWebAttribution(userAddress, referralData);
+    }
   }
 
-  return success;
+  return result.success;
 }
 
 /**
