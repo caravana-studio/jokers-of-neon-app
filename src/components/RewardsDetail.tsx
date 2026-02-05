@@ -1,10 +1,9 @@
-import { Box, Flex, Heading } from "@chakra-ui/react";
+import { Box, Flex, Heading, Spinner } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { BOSS_LEVEL } from "../constants/general.ts";
-import { GameStateEnum } from "../dojo/typescript/custom.ts";
-import { useCustomNavigate } from "../hooks/useCustomNavigate.tsx";
+import { useMapNavigate } from "../hooks/useMapNavigate.tsx";
 import { RerollIndicators } from "../pages/DynamicStore/storeComponents/TopBar/RerollIndicators.tsx";
 import { useGameStore } from "../state/useGameStore.ts";
 import { BLUE_LIGHT, VIOLET_LIGHT } from "../theme/colors";
@@ -129,11 +128,12 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
     labels.push(t("rage", { cards: rage_card_defeated }));
   }
 
-  const navigate = useCustomNavigate();
+  const { navigateToMap } = useMapNavigate();
   const { isSmallScreen } = useResponsiveValues();
   const { currentScore } = useGameStore();
   const [animationEnded, setAnimationEnded] = useState(false);
   const [skip, setSkip] = useState(false);
+  const [isNavigating, setIsNavigating] = useState(false);
 
   const playerWon = level_passed === BOSS_LEVEL;
 
@@ -164,6 +164,24 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
   const rewardLines =
     3 + (rage_card_defeated_cash > 0 ? 1 : 0) + (rerolls > 0 ? 1 : 0);
 
+  if (isNavigating) {
+    return (
+      <Flex
+        position="fixed"
+        top={0}
+        left={0}
+        w="100vw"
+        h="100vh"
+        justifyContent="center"
+        alignItems="center"
+        bg="blackAlpha.700"
+        zIndex={1000}
+      >
+        <Spinner size="xl" color="white" />
+      </Flex>
+    );
+  }
+
   return (
     <Flex
       flexDirection="column"
@@ -179,7 +197,8 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
         title={title}
         button={playerWon ? t("endless-mode") : t("continue-btn")}
         onClick={() => {
-          navigate(GameStateEnum.Map);
+          setIsNavigating(true);
+          navigateToMap();
         }}
         actionHidden={!animationEnded}
         glowIntensity={level_passed ? (playerWon ? 1.5 : 1) : 0}

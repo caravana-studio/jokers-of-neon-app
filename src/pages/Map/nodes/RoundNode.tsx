@@ -1,5 +1,6 @@
 import { Box, Tooltip } from "@chakra-ui/react";
 import { keyframes } from "@emotion/react";
+import { memo } from "react";
 import { useTranslation } from "react-i18next";
 import { Handle, Position } from "reactflow";
 import CachedImage from "../../../components/CachedImage";
@@ -8,11 +9,15 @@ import { useDojo } from "../../../dojo/useDojo";
 import { useCustomNavigate } from "../../../hooks/useCustomNavigate";
 import { useMap } from "../../../providers/MapProvider";
 import { useGameStore } from "../../../state/useGameStore";
+import { useMapNavigationStore } from "../../../state/useMapNavigationStore";
 import { BLUE, VIOLET } from "../../../theme/colors";
 import { useResponsiveValues } from "../../../theme/responsiveSettings";
 import { TooltipContent } from "../TooltipContent";
 import { NodeType } from "../types";
 import { HereSign } from "./HereSign";
+import { NodeClickPulse } from "./NodeClickPulse";
+import { useNodeNavigation } from "./useNodeNavigation";
+import { useNodeReachability } from "./useNodeReachability";
 
 const reachablePulse = keyframes`
   0% {
@@ -27,12 +32,10 @@ const reachablePulse = keyframes`
     opacity: 0;
   }
 `;
-import { NodeClickPulse } from "./NodeClickPulse";
-import { useNodeNavigation } from "./useNodeNavigation";
 
-const RoundNode = ({ data }: any) => {
+const RoundNode = memo(({ data }: any) => {
   const { t } = useTranslation("map", { keyPrefix: "round" });
-  const { id: gameId } = useGameStore();
+  const { id: gameId, refetchGameStore } = useGameStore();
   const navigate = useCustomNavigate();
   const { handleNodeNavigation } = useNodeNavigation();
 
@@ -40,13 +43,12 @@ const RoundNode = ({ data }: any) => {
     setup: { client },
   } = useDojo();
 
-  const { reachableNodes, setSelectedNodeData, selectedNodeData, isNodeTransactionPending, activeNodeId, pulsingNodeId } = useMap();
+  const { setSelectedNodeData, selectedNodeData } = useMap();
+  const isNodeTransactionPending = useMapNavigationStore((s) => s.isNodeTransactionPending);
+  const pulsingNodeId = useMapNavigationStore((s) => s.pulsingNodeId);
   const { isSmallScreen } = useResponsiveValues();
-  const { state, refetchGameStore } = useGameStore();
 
-  const stateInMap = state === GameStateEnum.Map;
-  const isActiveNode = activeNodeId === data.id.toString();
-  const reachable = reachableNodes.includes(data.id.toString()) && stateInMap && (!isNodeTransactionPending || isActiveNode);
+  const { stateInMap, reachable } = useNodeReachability(data.id);
 
   const title = t("name");
 
@@ -129,8 +131,7 @@ const RoundNode = ({ data }: any) => {
             });
           } else if (data.current && !stateInMap) {
             navigate(GameStateEnum.Round);
-          } else if (stateInMap && reachableNodes.includes(data.id.toString())) {
-            // Desktop: navigate with a single click
+          } else if (reachable) {
             handleNodeNavigation({
               nodeId: data.id,
               gameId,
@@ -158,6 +159,6 @@ const RoundNode = ({ data }: any) => {
       </Box>
     </Tooltip>
   );
-};
+});
 
 export default RoundNode;
