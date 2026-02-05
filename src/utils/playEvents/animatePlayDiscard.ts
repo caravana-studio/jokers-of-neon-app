@@ -3,7 +3,7 @@ import { BOSS_LEVEL } from "../../constants/general";
 import { EventTypeEnum } from "../../dojo/typescript/custom";
 import { Suits } from "../../enums/suits";
 import { Card } from "../../types/Card";
-import { PlayEvents } from "../../types/ScoreData";
+import { CardPlayEvent, PlayEvents } from "../../types/ScoreData";
 import { eventTypeToSuit } from "./eventTypeToSuit";
 
 // Number of pitch variants available (points_0.mp3 to points_17.mp3)
@@ -93,6 +93,51 @@ export const animatePlayDiscard = (config: AnimatePlayConfig) => {
     return index;
   };
 
+  const groupCardPlayChangeEvents = (events?: CardPlayEvent[]) => {
+    if (!events?.length) return [];
+
+    const groups: {
+      key: string;
+      suit?: Suits;
+      isNeon: boolean;
+      handIndexes: number[];
+      special_idx?: number;
+    }[] = [];
+    const groupMap = new Map<string, (typeof groups)[number]>();
+
+    events.forEach((event) => {
+      const isNeon = event.eventType === EventTypeEnum.Neon;
+      const suit = eventTypeToSuit(event.eventType);
+      const key = isNeon ? "neon" : `suit:${suit}`;
+      const handIndexes = event.hand.map((card) => card.idx);
+      const special_idx = event.specials[0]?.idx;
+
+      let group = groupMap.get(key);
+      if (!group) {
+        group = {
+          key,
+          suit,
+          isNeon,
+          handIndexes: [],
+          special_idx,
+        };
+        groupMap.set(key, group);
+        groups.push(group);
+      }
+
+      group.handIndexes.push(...handIndexes);
+      if (group.special_idx === undefined && special_idx !== undefined) {
+        group.special_idx = special_idx;
+      }
+    });
+
+    groups.forEach((group) => {
+      group.handIndexes = Array.from(new Set(group.handIndexes));
+    });
+
+    return groups;
+  };
+
   // Calculate durations more concisely
   const calculateDuration = (
     events?: any[],
@@ -100,10 +145,14 @@ export const animatePlayDiscard = (config: AnimatePlayConfig) => {
     multiplier = 1
   ) => (events?.length ?? 0) * baseDuration * multiplier;
 
+  const cardPlayChangeGroups = groupCardPlayChangeEvents(
+    playEvents.cardPlayChangeEvents
+  );
+
   const durations = {
     neonPlay: playEvents.neonPlayEvent ? playAnimationDuration : 0,
     powerUps: calculateDuration(playEvents.powerUpEvents),
-    cardPlayChange: calculateDuration(playEvents.cardPlayChangeEvents),
+    cardPlayChange: calculateDuration(cardPlayChangeGroups),
     cardPlayEvents: calculateDuration(playEvents.cardPlayEvents),
     accumDuration: playEvents.acumulativeEvents
       ? playEvents.acumulativeEvents.length * 500
@@ -136,33 +185,28 @@ export const animatePlayDiscard = (config: AnimatePlayConfig) => {
 
   const handleCardPlayChangeEvents = () => {
     return new Promise<void>((resolve) => {
-      playEvents.cardPlayChangeEvents?.forEach((event, index) => {
+      cardPlayChangeGroups.forEach((group, index) => {
         setTimeout(() => {
           pointsSound(getNextPitchIndex());
 
-          const suit = eventTypeToSuit(event.eventType);
-          const handIndexes = event.hand.map((card) => card.idx);
-          const special_idx = event.specials[0]?.idx;
-          const isNeon = event.eventType === EventTypeEnum.Neon;
-
           setCardTransformationLock(true);
 
-          if (isNeon) {
+          if (group.isNeon) {
             setAnimatedCard({
               isNeon: true,
-              special_idx,
-              idx: handIndexes,
+              special_idx: group.special_idx,
+              idx: group.handIndexes,
               animationIndex: 200 + index,
             });
-            changeCardsNeon(handIndexes);
+            changeCardsNeon(group.handIndexes);
           } else {
             setAnimatedCard({
-              suit,
-              special_idx,
-              idx: handIndexes,
+              suit: group.suit,
+              special_idx: group.special_idx,
+              idx: group.handIndexes,
               animationIndex: 200 + index,
             });
-            suit && changeCardsSuit(handIndexes, suit);
+            group.suit && changeCardsSuit(group.handIndexes, group.suit);
           }
         }, playAnimationDuration * index);
       });

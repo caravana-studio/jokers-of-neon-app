@@ -15,9 +15,11 @@ import { GameSummary } from "./MyGames.tsx";
 export const GameBox = ({
   game,
   onSurrendered,
+  hideTournamentBadge = false,
 }: {
   game: GameSummary;
   onSurrendered?: (gameId: number) => void;
+  hideTournamentBadge?: boolean;
 }) => {
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "my-games",
@@ -71,7 +73,7 @@ export const GameBox = ({
         gap={0.5}
         position="relative"
       >
-        {game.isTournament && (
+        {game.isTournament && !hideTournamentBadge && (
           <Flex
             sx={{
               width: "100%",
@@ -88,7 +90,7 @@ export const GameBox = ({
               border="1px solid white"
             >
               <Text fontSize={{base: "7px", sm: "11px"}} fontWeight={400}>
-                TOURNAMENT GAME
+                {t("tournament-game")}
               </Text>
             </Flex>
           </Flex>

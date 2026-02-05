@@ -9,7 +9,6 @@ import { DeckPage } from "./pages/Deck/DeckPage";
 import { DocsPage } from "./pages/Docs/Docs";
 import { DynamicStorePage } from "./pages/DynamicStore/DynamicStorePage";
 import { ExternalPack } from "./pages/ExternalPack/ExternalPack";
-import { ExternalPackTestPage } from "./pages/ExternalPack/ExternalPackTestPage";
 import { FreePackPage } from "./pages/FreePackPage";
 import { GamePage } from "./pages/Game/GamePage";
 import { GamePageTutorial } from "./pages/Game/GamePageTutorial";
@@ -20,9 +19,9 @@ import { MapPage } from "./pages/Map/MapPage";
 import { MyCollectionPage } from "./pages/MyCollection/MyCollectionPage";
 import { EnteringTournament } from "./pages/MyGames/EnteringTournament";
 import { MyGames } from "./pages/MyGames/MyGames";
+import { Tournament } from "./pages/MyGames/Tournament";
 import { NewHome } from "./pages/NewHome/NewHome";
 import { NewLeaderboardPage } from "./pages/NewLeaderboardPage/NewLeaderboardPage";
-import { TournamentPage } from "./pages/NewLeaderboardPage/TournamentPage";
 import { OpenLootBox } from "./pages/OpenLootBox/Stages/OpenLootBox";
 import { OpenLootBoxCardSelection } from "./pages/OpenLootBox/Stages/OpenLootBoxCardSelection";
 import { PlaysLayout } from "./pages/Plays/PlaysLayout";
@@ -38,6 +37,7 @@ import { SummaryPage } from "./pages/SummaryPage";
 import { TestPage } from "./pages/TestPage";
 import { VibrationPage } from "./pages/VibrationPage";
 import { ReferralTestPage } from "./pages/ReferralTestPage";
+import { SimulatePacksPage } from "./pages/SimulatePacks/SimulatePacksPage";
 import { CardHighlightProvider } from "./providers/HighlightProvider/CardHighlightProvider";
 import { PowerupHighlightProvider } from "./providers/HighlightProvider/PowerupHighlightProvider";
 import { StoreProvider } from "./providers/StoreProvider";
@@ -74,10 +74,12 @@ export const AppRoutes = () => {
         }
       />{" "}
       <Route
-        path="/test/external-pack/:packId"
+        path="/test/simulate-packs"
         element={
           <AnimatedPage>
-            <ExternalPackTestPage />
+            <LoginGate>
+              <SimulatePacksPage />
+            </LoginGate>
           </AnimatedPage>
         }
       />
@@ -211,7 +213,7 @@ export const AppRoutes = () => {
         path="/tournament"
         element={
           <AnimatedPage>
-            <TournamentPage />
+            <Tournament />
           </AnimatedPage>
         }
       />

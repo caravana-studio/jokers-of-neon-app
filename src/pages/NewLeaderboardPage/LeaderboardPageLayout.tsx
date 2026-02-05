@@ -26,31 +26,6 @@ export const LeaderboardPageLayout = ({
   const isTournamentActive = Boolean(tournament?.isActive);
 
   const tabs = [
-    <Tab key="game" title={t("tabs.game-leaderboard")}>
-      <Flex w="100%" h="100%" flexDir="column" alignItems="center">
-        <Flex
-          flexDir="column"
-          w="70%"
-          h="100%"
-          alignItems={"center"}
-        >
-          <Flex
-            minH={0}
-            flexGrow={1}
-            flexDir="column"
-            w="100%"
-            alignItems={"center"}
-            justifyContent={"center"}
-          >
-            <Leaderboard
-              lines={100}
-              mb={isSmallScreen ? "100px" : "200px"}
-              isTournamentLeaderboard={false}
-            />
-          </Flex>
-        </Flex>
-      </Flex>
-    </Tab>,
     ...(isTournamentActive
       ? [
           <Tab key="tournament" title={t("tabs.tournament-leaderboard")}>
@@ -66,7 +41,7 @@ export const LeaderboardPageLayout = ({
                   px={isSmallScreen ? 2 : 6}
                   mb={isSmallScreen ? 2 : 4}
                   position="absolute"
-                  right={{base: 0, sm: 4}}
+                  right={{ base: 0, sm: 4 }}
                 >
                   <Flex w={isSmallScreen ? "100px" : "150px"}>
                     {tournament?.endDate &&
@@ -100,7 +75,7 @@ export const LeaderboardPageLayout = ({
                     w={isSmallScreen ? "100%" : "50%"}
                     overflowY="auto"
                     h="100%"
-                    mt={{base: 0, sm: 12}}
+                    mt={{ base: 0, sm: 12 }}
                   >
                     <Leaderboard
                       hidePodium
@@ -116,6 +91,26 @@ export const LeaderboardPageLayout = ({
           </Tab>,
         ]
       : []),
+    <Tab key="game" title={t("tabs.game-leaderboard")}>
+      <Flex w="100%" h="100%" flexDir="column" alignItems="center">
+        <Flex flexDir="column" w="70%" h="100%" alignItems={"center"}>
+          <Flex
+            minH={0}
+            flexGrow={1}
+            flexDir="column"
+            w="100%"
+            alignItems={"center"}
+            justifyContent={"center"}
+          >
+            <Leaderboard
+              lines={100}
+              mb={isSmallScreen ? "100px" : "200px"}
+              isTournamentLeaderboard={false}
+            />
+          </Flex>
+        </Flex>
+      </Flex>
+    </Tab>,
     <Tab key="xp" title={t("tabs.xp-leaderboard")}>
       <Flex
         w="100%"
@@ -124,12 +119,7 @@ export const LeaderboardPageLayout = ({
         alignItems="center"
         justifyContent="center"
       >
-        <Flex
-          flexDir="column"
-          w="70%"
-          h="100%"
-          alignItems={"center"}
-        >
+        <Flex flexDir="column" w="70%" h="100%" alignItems={"center"}>
           <Flex
             minH={0}
             flexGrow={1}

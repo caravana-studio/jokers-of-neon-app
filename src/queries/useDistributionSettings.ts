@@ -15,6 +15,7 @@ export interface Banner {
   url?: string;
   navigateTo?: string;
   packs?: number[];
+  endTime?: string;
 }
 
 interface DistributionSettings {

@@ -1,6 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import { useEffect, useRef } from "react";
 import { animated, useSpring } from "react-spring";
+import AudioManager from "../audio/AudioManager";
 import {
   rolling15ms,
   rolling1s,
@@ -9,8 +10,8 @@ import {
   rolling4s,
   rolling5s,
 } from "../constants/sfx";
-import { useAudio } from "../hooks/useAudio";
 import { useSettings } from "../providers/SettingsProvider";
+
 interface RollingNumberProps {
   n: number;
   className?: string;
@@ -24,19 +25,11 @@ export const RollingNumber = ({
   delay = 100,
   sound = false,
 }: RollingNumberProps) => {
-  const { sfxVolume } = useSettings();
-
-  const { play: playRolling15ms } = useAudio(rolling15ms, sfxVolume);
-  const { play: playRolling1s } = useAudio(rolling1s, sfxVolume);
-  const { play: playRolling2s } = useAudio(rolling2s, sfxVolume);
-  const { play: playRolling3s } = useAudio(rolling3s, sfxVolume);
-  const { play: playRolling4s } = useAudio(rolling4s, sfxVolume);
-  const { play: playRolling5s } = useAudio(rolling5s, sfxVolume);
-
+  const { sfxOn } = useSettings();
   const lastValueRef = useRef<number | null>(null);
 
   useEffect(() => {
-    if (!sound) return;
+    if (!sound || !sfxOn) return;
 
     let animationDuration;
     const safeValue = Math.abs(Math.trunc(n));
@@ -56,24 +49,24 @@ export const RollingNumber = ({
 
     if (!valueChanged) return;
 
-    const getSoundPlayer = () => {
-      if (animationDuration <= 200) return playRolling15ms;
-      if (animationDuration <= 1500) return playRolling1s;
-      if (animationDuration <= 2500) return playRolling2s;
-      if (animationDuration <= 3500) return playRolling3s;
-      if (animationDuration <= 4500) return playRolling4s;
-      return playRolling5s;
+    const getSoundPath = () => {
+      if (animationDuration <= 200) return rolling15ms;
+      if (animationDuration <= 1500) return rolling1s;
+      if (animationDuration <= 2500) return rolling2s;
+      if (animationDuration <= 3500) return rolling3s;
+      if (animationDuration <= 4500) return rolling4s;
+      return rolling5s;
     };
 
-    const playSound = getSoundPlayer();
+    const soundPath = getSoundPath();
     const timeout = setTimeout(() => {
-      playSound();
+      AudioManager.getInstance().play(soundPath);
     }, delay);
 
     return () => {
       clearTimeout(timeout);
     };
-  }, [n]);
+  }, [n, sound, sfxOn, delay]);
 
   const { number } = useSpring({
     from: { number: 0 },

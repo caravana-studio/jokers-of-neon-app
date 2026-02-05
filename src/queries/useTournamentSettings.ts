@@ -50,7 +50,6 @@ const getPrizes = (prizes: ApiPrize[]) => {
       }
     }
   });
-  console.log("tournament prizes:", tournamentPrizes);
   return tournamentPrizes;
 };
 
@@ -62,7 +61,7 @@ export const useTournamentSettings = () => {
     const fetchTournament = async () => {
       try {
         const response = await fetch(
-          "https://jokersofneon.com/app/settings/tournament.json"
+          "https://jokersofneon.com/app/settings/tournament.json",
         );
         if (!response.ok) {
           console.error("Failed to fetch tournament settings");
@@ -84,7 +83,7 @@ export const useTournamentSettings = () => {
       } catch (err) {
         console.error(
           "Failed to fetch tournament settings. Unknown error occurred",
-          err
+          err,
         );
         return defaultTournamentSettings;
       } finally {
