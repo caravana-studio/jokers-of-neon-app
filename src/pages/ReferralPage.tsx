@@ -72,7 +72,9 @@ const ActivityItem = ({
     <HStack
       w="100%"
       p={3}
-      bg="whiteAlpha.100"
+      bgGradient="linear(to-br, blackAlpha.100, whiteAlpha.300)"
+      border="1px solid"
+      borderColor="whiteAlpha.200"
       borderRadius="lg"
       spacing={3}
       borderLeft="3px solid"
@@ -132,13 +134,15 @@ const StatBox = ({
   label,
 }: {
   icon: React.ReactNode;
-  value: number;
+  value: number | string;
   label: string;
 }) => (
   <VStack
     flex={1}
     p={4}
-    bg="whiteAlpha.100"
+    bgGradient="linear(to-br, blackAlpha.100, whiteAlpha.300)"
+    border="1px solid"
+    borderColor="whiteAlpha.200"
     borderRadius="xl"
     spacing={1}
   >
@@ -324,15 +328,8 @@ export const ReferralPage = () => {
         justifyContent={{ base: "flex-start", md: "center" }}
       >
         {/* Header */}
-        <HStack justify="space-between" mb={4}>
-          <IconButton
-            aria-label="Back"
-            icon={<FiArrowLeft />}
-            variant="ghost"
-            onClick={() => navigate(-1)}
-          />
-          <Heading size="md">{t("referral.title")}</Heading>
-          <Box w="40px" /> {/* Spacer for alignment */}
+        <HStack justify="center" mb={4}>
+          <Heading size="md" paddingTop={"7%"}>{t("referral.title")}</Heading>
         </HStack>
 
         {/* Subtitle */}
@@ -432,7 +429,6 @@ export const ReferralPage = () => {
               label={t("referral.stats.friends-invited")}
             />
             <StatBox
-            
               icon={<FiGift size={24} />}
               value="?"
               // value={claimedRewards + pendingRewards}
@@ -479,6 +475,9 @@ export const ReferralPage = () => {
           ) : (
             <Box
               p={6}
+              bgGradient="linear(to-br, blackAlpha.100, whiteAlpha.300)"
+              border="1px solid"
+              borderColor="whiteAlpha.200"
               borderRadius="xl"
               textAlign="center"
             >
