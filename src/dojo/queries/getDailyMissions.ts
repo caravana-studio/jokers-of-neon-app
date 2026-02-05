@@ -17,6 +17,14 @@ export const getDailyMissions = async (
         userAddress
       );
 
+    try {
+      const xpForToday =
+        await client.daily_missions_system.getDailyMissionsXpForToday();
+      console.log("getDailyMissionsXpForToday", xpForToday);
+    } catch (xpError) {
+      console.log("getDailyMissionsXpForToday error", xpError);
+    }
+
     return tx_result.map((mission: any) => {
       const id = decodeString(mission.mission_id);
       const difficulty = DAILY_MISSIONS[id] ?? DailyMissionDifficulty.EASY;

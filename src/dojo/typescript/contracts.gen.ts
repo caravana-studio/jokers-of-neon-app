@@ -227,6 +227,27 @@ export function setupWorld(provider: DojoProvider) {
     }
   };
 
+  const build_daily_missions_system_getDailyMissionsXpForToday_calldata =
+    (): DojoCall => {
+      return {
+        contractName: "daily_missions_system",
+        entrypoint: "get_daily_missions_xp_for_today",
+        calldata: [],
+      };
+    };
+
+  const daily_missions_system_getDailyMissionsXpForToday = async () => {
+    try {
+      return await provider.call(
+        DOJO_NAMESPACE,
+        build_daily_missions_system_getDailyMissionsXpForToday_calldata()
+      );
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+
   const build_game_system_newGame_calldata = (
     player: string,
     playerName: BigNumberish,
@@ -2187,6 +2208,10 @@ export function setupWorld(provider: DojoProvider) {
       getDailyMissionsForDay: daily_missions_system_getDailyMissionsForDay,
       buildGetDailyMissionsForDayCalldata:
         build_daily_missions_system_getDailyMissionsForDay_calldata,
+      getDailyMissionsXpForToday:
+        daily_missions_system_getDailyMissionsXpForToday,
+      buildGetDailyMissionsXpForTodayCalldata:
+        build_daily_missions_system_getDailyMissionsXpForToday_calldata,
     },
     game_system: {
       newGame: game_system_newGame,
