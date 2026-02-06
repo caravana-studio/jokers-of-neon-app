@@ -9,9 +9,10 @@ const layoutOptions = {
   "elk.spacing.nodeNode": "80",
   "elk.layered.spacing.nodeNodeBetweenLayers": "60",
   // "elk.layered.edgeRouting": "ORTHOGONAL",
-  "elk.layered.nodeAlignment.default": "CENTER", 
-  // "elk.layered.cycleBreaking.strategy": "DFS", 
-  // "elk.layered.nodePlacement.strategy": "BRANDES_KOEPF", 
+  "elk.layered.nodeAlignment.default": "CENTER",
+  "elk.contentAlignment": "H_CENTER V_CENTER",
+  // "elk.layered.cycleBreaking.strategy": "DFS",
+  // "elk.layered.nodePlacement.strategy": "BRANDES_KOEPF",
 };
 
 const getNodeDimensions = (node: Node) => {
@@ -74,10 +75,13 @@ export const getLayoutedElements = async (
 
   const layoutedGraph = await elk.layout(graph);
 
-  const layoutedNodes = nodes.map((node) => {
+  const positionedNodes = nodes.map((node) => {
     const layoutedNode = layoutedGraph.children?.find((n) => n.id === node.id);
+    const { width, height } = getNodeDimensions(node);
     return {
       ...node,
+      width,
+      height,
       position: {
         x: layoutedNode?.x ?? 0,
         y: layoutedNode?.y ?? 0,
@@ -85,5 +89,5 @@ export const getLayoutedElements = async (
     };
   });
 
-  return { nodes: layoutedNodes, edges };
+  return { nodes: positionedNodes, edges };
 };

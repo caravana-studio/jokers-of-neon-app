@@ -1,5 +1,4 @@
 import { Box, Tooltip } from "@chakra-ui/react";
-import { keyframes } from "@emotion/react";
 import { memo } from "react";
 import { useTranslation } from "react-i18next";
 import { Handle, Position } from "reactflow";
@@ -16,22 +15,9 @@ import { TooltipContent } from "../TooltipContent";
 import { NodeType } from "../types";
 import { HereSign } from "./HereSign";
 import { NodeClickPulse } from "./NodeClickPulse";
+import { getReachablePulseSx } from "./reachablePulseAnimation";
 import { useNodeNavigation } from "./useNodeNavigation";
 import { useNodeReachability } from "./useNodeReachability";
-
-const reachablePulse = keyframes`
-  0% {
-    transform: scale(1);
-    opacity: 0.8;
-  }
-  70% {
-    transform: scale(1.6);
-    opacity: 0;
-  }
-  100% {
-    opacity: 0;
-  }
-`;
 
 const getStoreItemsBasedOnShopId = (shopId: number) => {
   switch (shopId) {
@@ -122,20 +108,7 @@ const StoreNode = memo(({ data }: any) => {
             transform: "scale(1.2)",
           },
           ...(reachable && !data.current
-            ? {
-                "&::after": {
-                  content: '""',
-                  position: "absolute",
-                  inset: "-8px",
-                  borderRadius: "100%",
-                  border: `2px solid ${VIOLET}`,
-                  animation: `${reachablePulse} 1.8s ease-out infinite`,
-                  pointerEvents: "none",
-                  opacity: 0.8,
-                  zIndex: -1,
-                  transformOrigin: "center",
-                },
-              }
+            ? getReachablePulseSx("100%", "-8px")
             : {}),
         }}
         onClick={() => {

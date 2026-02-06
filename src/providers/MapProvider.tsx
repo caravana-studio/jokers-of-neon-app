@@ -183,14 +183,14 @@ export const MapProvider = ({ children }: MapProviderProps) => {
           id,
         })),
       ],
-      padding: 0.1,
+      padding: 0.2,
       duration: 750,
       maxZoom: isSmallScreen ? 0.7 : 1.2,
     });
   };
 
   const fitViewToFullMap = () => {
-    reactFlowInstance.fitView({ padding: 0.1 });
+    reactFlowInstance.fitView({ padding: 0.2 });
   };
 
   const fitViewToNode = (nodeId: string) => {

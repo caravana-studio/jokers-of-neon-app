@@ -146,6 +146,8 @@ export const Map = () => {
         nodesDraggable={false}
         nodesConnectable={false}
         edgesFocusable={false}
+        fitView
+        fitViewOptions={{ padding: 0.2 }}
       >
         {!isSmallScreen && (
           <Controls
