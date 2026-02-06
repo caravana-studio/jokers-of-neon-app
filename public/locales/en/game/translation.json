@@ -140,7 +140,7 @@
     "deck": {
       "tooltip": "See deck",
       "title": "Deck",
-      "burn-title": "Select a card to burn",
+      "burn-title": "Select cards to burn",
       "filter-title": "Filter by",
       "suit": {
         "club": "Clubs",
