@@ -14,6 +14,7 @@ import { useDojo } from "../dojo/useDojo";
 import { getLayoutedElements } from "../pages/Map/layout";
 import { NodeData, NodeType } from "../pages/Map/types";
 import { useGameStore } from "../state/useGameStore";
+import { useMapNavigationStore } from "../state/useMapNavigationStore";
 import { BLUE, VIOLET_LIGHT } from "../theme/colors";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import { getRageNodeData } from "../utils/getRageNodeData";
@@ -71,6 +72,15 @@ export const MapProvider = ({ children }: MapProviderProps) => {
     [nodes]
   );
 
+  const reachableNodeIds = useMemo(() => {
+    if (!currentNode || baseEdges.length === 0) return [];
+    return baseEdges
+      .filter((edge) => edge.target === currentNode.id)
+      .map((edge) => edge.source);
+  }, [baseEdges, currentNode?.id]);
+
+  const activeNodeId = useMapNavigationStore((s) => s.activeNodeId);
+
   // Calculate styled edges derivatively to avoid re-renders from setEdges
   const styledEdges = useMemo(() => {
     if (!currentNode || baseEdges.length === 0) return baseEdges;
@@ -87,29 +97,29 @@ export const MapProvider = ({ children }: MapProviderProps) => {
       const visibleLine = isCompletedPath || (isEdgeToCurrentNode && stateInMap);
       const shouldPulse = !isCompletedPath && visibleLine;
 
+      // When a node is actively selected, dim edges to other reachable nodes
+      const dimmedBySelection =
+        activeNodeId && visibleLine && shouldPulse && edge.source !== activeNodeId;
+
       return {
         ...edge,
         data: {
           ...edge.data,
-          shouldPulse,
+          shouldPulse: shouldPulse && !dimmedBySelection,
         },
         style: {
-          stroke: visibleLine ? (shouldPulse ? VIOLET_LIGHT : BLUE) : "#fff",
+          stroke: visibleLine && !dimmedBySelection
+            ? (shouldPulse ? VIOLET_LIGHT : BLUE)
+            : "#fff",
           strokeWidth: 2,
-          strokeDasharray: visibleLine ? undefined : "5 5",
-          opacity: visibleLine ? 1 : 0.3,
+          strokeDasharray: visibleLine && !dimmedBySelection ? undefined : "5 5",
+          opacity: dimmedBySelection ? 0.12 : visibleLine ? 1 : 0.12,
         },
       };
     });
-  }, [baseEdges, currentNode, nodes, stateInMap]);
+  }, [baseEdges, currentNode, nodes, stateInMap, reachableNodeIds, activeNodeId]);
 
-  const reachableNodes = useMemo(() => {
-    return currentNode && styledEdges
-      ? styledEdges
-          .filter((edge) => edge.target === currentNode.id)
-          .map((edge) => edge.source)
-      : [];
-  }, [styledEdges, currentNode?.id]);
+  const reachableNodes = reachableNodeIds;
 
   useEffect(() => {
     getMap(client, id).then((dataNodes) => {
@@ -183,14 +193,14 @@ export const MapProvider = ({ children }: MapProviderProps) => {
           id,
         })),
       ],
-      padding: 0.1,
+      padding: 0.2,
       duration: 750,
-      maxZoom: isSmallScreen ? 0.7 : 1.2,
+      maxZoom: isSmallScreen ? 0.84 : 1.44,
     });
   };
 
   const fitViewToFullMap = () => {
-    reactFlowInstance.fitView({ padding: 0.1 });
+    reactFlowInstance.fitView({ padding: 0.2 });
   };
 
   const fitViewToNode = (nodeId: string) => {
