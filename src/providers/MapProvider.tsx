@@ -71,6 +71,13 @@ export const MapProvider = ({ children }: MapProviderProps) => {
     [nodes]
   );
 
+  const reachableNodeIds = useMemo(() => {
+    if (!currentNode || baseEdges.length === 0) return [];
+    return baseEdges
+      .filter((edge) => edge.target === currentNode.id)
+      .map((edge) => edge.source);
+  }, [baseEdges, currentNode?.id]);
+
   // Calculate styled edges derivatively to avoid re-renders from setEdges
   const styledEdges = useMemo(() => {
     if (!currentNode || baseEdges.length === 0) return baseEdges;
@@ -97,19 +104,13 @@ export const MapProvider = ({ children }: MapProviderProps) => {
           stroke: visibleLine ? (shouldPulse ? VIOLET_LIGHT : BLUE) : "#fff",
           strokeWidth: 2,
           strokeDasharray: visibleLine ? undefined : "5 5",
-          opacity: visibleLine ? 1 : 0.3,
+          opacity: visibleLine ? 1 : 0.12,
         },
       };
     });
-  }, [baseEdges, currentNode, nodes, stateInMap]);
+  }, [baseEdges, currentNode, nodes, stateInMap, reachableNodeIds]);
 
-  const reachableNodes = useMemo(() => {
-    return currentNode && styledEdges
-      ? styledEdges
-          .filter((edge) => edge.target === currentNode.id)
-          .map((edge) => edge.source)
-      : [];
-  }, [styledEdges, currentNode?.id]);
+  const reachableNodes = reachableNodeIds;
 
   useEffect(() => {
     getMap(client, id).then((dataNodes) => {

@@ -90,6 +90,7 @@ const RageNode = memo(({ data }: any) => {
               ? "scale(1.2)"
               : "scale(1)",
           cursor: stateInMap && reachable ? "pointer" : "default",
+          opacity: !data.visited && !data.current && !reachable ? 0.4 : 1,
           position: "relative",
         }}
         sx={{

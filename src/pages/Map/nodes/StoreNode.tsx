@@ -91,6 +91,7 @@ const StoreNode = memo(({ data }: any) => {
           color: "white",
           cursor: stateInMap && reachable ? "pointer" : "default",
           boxShadow: data.current ? `0px 0px 18px 6px ${BLUE}` : "none",
+          opacity: !data.visited && !data.current && !reachable ? 0.4 : 1,
           position: "relative",
         }}
         sx={{
