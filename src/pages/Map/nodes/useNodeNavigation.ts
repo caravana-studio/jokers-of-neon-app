@@ -1,5 +1,6 @@
 import { useShopActions } from "../../../dojo/useShopActions";
 import { useMap } from "../../../providers/MapProvider";
+import { useMapNavigationStore } from "../../../state/useMapNavigationStore";
 
 interface NodeNavigationParams {
   nodeId: number;
@@ -9,12 +10,9 @@ interface NodeNavigationParams {
 
 export const useNodeNavigation = () => {
   const { advanceNode } = useShopActions();
-  const {
-    setActiveNodeId,
-    setNodeTransactionPending,
-    setPulsingNodeId,
-    fitViewToNode,
-  } = useMap();
+  const { fitViewToNode } = useMap();
+  const { setActiveNodeId, setNodeTransactionPending, setPulsingNodeId } =
+    useMapNavigationStore();
 
   const handleNodeNavigation = async ({
     nodeId,
@@ -40,15 +38,13 @@ export const useNodeNavigation = () => {
       if (response) {
         // Navigate after blockchain transaction completes
         await onNavigate();
-      } else {
-        setNodeTransactionPending(false);
-        setActiveNodeId(null);
       }
     } catch (error) {
-      setNodeTransactionPending(false);
-      setActiveNodeId(null);
+      // Error handling is silent
     } finally {
       clearTimeout(pulseTimeout);
+      setNodeTransactionPending(false);
+      setActiveNodeId(null);
     }
   };
 

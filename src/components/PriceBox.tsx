@@ -52,6 +52,8 @@ export const PriceBox = ({
         ...containerSx,
       }}
       flexDir="column"
+      alignItems="center"
+      justifyContent="center"
       gap={isSmallScreen ? 1 : 1.5}
     >
       <Flex

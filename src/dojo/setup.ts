@@ -181,7 +181,11 @@ export async function setup({ ...config }: DojoConfig) {
     contractComponents,
     systemCalls: createSystemCalls({ client }, clientComponents, world),
     publish: (typedData: string, signature: ArraySignatureType) => {
-      const msj: Message = { message: typedData, signature };
+      const msj: Message = {
+        message: typedData,
+        signature,
+        world_address: config.manifest.world.address || "",
+      };
       toriiClient.publishMessage(msj);
     },
     config,

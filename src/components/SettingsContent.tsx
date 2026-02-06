@@ -211,7 +211,7 @@ export const SettingsContent = () => {
             paddingLeft: "8px",
             paddingRight: "8px",
           }}
-          isEnabled={sfxOn}
+          isEnabled={sfxOn && sfxVolume > 0}
           onClick={() => setSfxOn(!sfxOn)}
         />
         <Slider
@@ -220,7 +220,6 @@ export const SettingsContent = () => {
           step={0.01}
           value={sfxVolume}
           onChange={(value) => setSfxVolume(value)}
-          isDisabled={!sfxOn}
         >
           <SliderTrack>
             <SliderFilledTrack bg={NEON_PINK} />
@@ -248,7 +247,6 @@ export const SettingsContent = () => {
           max={0.4}
           step={0.01}
           value={musicVolume}
-          isDisabled={!musicOn}
           onChange={(value) => setMusicVolume(value)}
         >
           <SliderTrack>

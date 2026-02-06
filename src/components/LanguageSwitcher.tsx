@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   Menu,
   MenuButton,
   MenuItem,
@@ -26,6 +25,9 @@ const LanguageSwitcher = () => {
     i18n.changeLanguage(lng);
   };
 
+  const buttonSize = isMobile ? 36 : 44;
+  const flagSize = isMobile ? 28 : 36;
+
   return (
     <Box
       transform={isMobile ? "scale(0.7)" : ""}
@@ -36,53 +38,91 @@ const LanguageSwitcher = () => {
     >
       <Menu>
         <MenuButton
-          as={Button}
-          p={"5px !important"}
-          width={"40px"}
-          height={"40px"}
+          width={`${buttonSize}px`}
+          height={`${buttonSize}px`}
+          borderRadius="full"
+          bg="transparent"
+          border="2px solid"
+          borderColor="whiteAlpha.400"
+          p={0}
+          overflow="hidden"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          cursor="pointer"
+          transition="all 0.2s ease"
+          _hover={{
+            borderColor: "whiteAlpha.700",
+          }}
+          _active={{
+            transform: "scale(0.95)",
+          }}
         >
-          <CircleFlagLanguage
-            style={{ paddingTop: "10px" }}
-            width={"25px"}
-            languageCode={currentLanguage.substring(0, 2)}
-          />
-        </MenuButton>
-        <MenuList>
-          <MenuItem
-            height={"40px"}
-            fontSize={isMobile ? 15 : 17}
-            onClick={() => changeLanguage("en")}
-            gap={2}
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            width="100%"
+            height="100%"
           >
             <CircleFlagLanguage
-              width={isMobile ? "25px" : "30px"}
+              width={`${flagSize}px`}
+              languageCode={currentLanguage.substring(0, 2)}
+            />
+          </Box>
+        </MenuButton>
+        <MenuList
+          bg="gray.900"
+          borderColor="whiteAlpha.300"
+          borderRadius="xl"
+          py={2}
+          boxShadow="0 4px 20px rgba(0, 0, 0, 0.5)"
+          minW="160px"
+        >
+          <MenuItem
+            height={"44px"}
+            fontSize={isMobile ? 14 : 16}
+            onClick={() => changeLanguage("en")}
+            gap={3}
+            bg="transparent"
+            _hover={{ bg: "whiteAlpha.100" }}
+            px={4}
+          >
+            <CircleFlagLanguage
+              width={isMobile ? "26px" : "30px"}
               languageCode="en-us"
             />
-            <Text ml={8}>English</Text>
+            <Text fontWeight="medium">English</Text>
           </MenuItem>
           <MenuItem
-            height={"40px"}
-            fontSize={isMobile ? 15 : 17}
+            height={"44px"}
+            fontSize={isMobile ? 14 : 16}
             onClick={() => changeLanguage("es")}
-            gap={2}
+            gap={3}
+            bg="transparent"
+            _hover={{ bg: "whiteAlpha.100" }}
+            px={4}
           >
             <CircleFlagLanguage
-              width={isMobile ? "25px" : "30px"}
+              width={isMobile ? "26px" : "30px"}
               languageCode="es"
             />
-            <Text ml={8}>Español</Text>
+            <Text fontWeight="medium">Español</Text>
           </MenuItem>
           <MenuItem
-            height={"40px"}
-            fontSize={isMobile ? 15 : 17}
+            height={"44px"}
+            fontSize={isMobile ? 14 : 16}
             onClick={() => changeLanguage("pt")}
-            gap={2}
+            gap={3}
+            bg="transparent"
+            _hover={{ bg: "whiteAlpha.100" }}
+            px={4}
           >
             <CircleFlagLanguage
-              width={isMobile ? "25px" : "30px"}
+              width={isMobile ? "26px" : "30px"}
               languageCode="pt"
             />
-            <Text ml={8}>Português</Text>
+            <Text fontWeight="medium">Português</Text>
           </MenuItem>
         </MenuList>
       </Menu>

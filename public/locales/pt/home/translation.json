@@ -14,6 +14,13 @@
       "countdownLabel": "Termina em:",
       "dontShowAgain": "Não mostrar novamente"
     },
+    "guestLoginModal": {
+      "title": "Faça login para a experiência completa",
+      "body": "O modo convidado é apenas para testar o jogo, recomendamos fazer login para ter acesso a colecionar cartas e salvar seu progresso.",
+      "button": "Faça login",
+      "welcomePack": "e ganhe um pacote de boas-vindas grátis",
+      "dontShowAgain": "Não mostrar novamente"
+    },
     "leaderboard-banner": {
       "title": "Classificação",
       "button": "Classificação completa"
@@ -102,6 +109,7 @@
     "deck": "Deck",
     "season": "Temporada",
     "plays": "Jogadas",
+    "tournament": "Torneio",
     "more": "Mais",
     "round": "Rodada",
     "rage": "Rodada de raiva",

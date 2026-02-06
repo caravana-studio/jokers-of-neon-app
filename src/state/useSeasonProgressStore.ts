@@ -17,6 +17,7 @@ type SeasonProgressStore = {
   lastUserAddress?: string;
   lastSeasonId?: number;
   refetch: (params: GetSeasonLineParams) => Promise<void>;
+  decrementTournamentEntries: () => void;
   reset: () => void;
 };
 
@@ -77,6 +78,10 @@ export const useSeasonProgressStore = create<SeasonProgressStore>(
         });
       }
     },
+    decrementTournamentEntries: () =>
+      set((state) => ({
+        tournamentEntries: Math.max(0, state.tournamentEntries - 1),
+      })),
     reset: () => set(initialState),
   })
 );

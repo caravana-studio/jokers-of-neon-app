@@ -5,20 +5,21 @@ import { createGame } from "../api/createGame.ts";
 import { SKIP_IN_GAME_TUTORIAL } from "../constants/localStorage";
 import {
   acumSfx,
-  cashSfx,
   clearLevel,
   clearRound,
   discardSfx,
-  multiSfx,
   negativeMultiSfx,
-  pointsSfx,
 } from "../constants/sfx.ts";
+
+// Number of pitch variants for scoring sounds (points_0.mp3 to points_17.mp3)
+const PITCH_VARIANTS = 18;
 import { GameStateEnum } from "../dojo/typescript/custom.ts";
 import { useDojo } from "../dojo/useDojo.tsx";
 import { useGameActions } from "../dojo/useGameActions.tsx";
 import { useUsername } from "../dojo/utils/useUsername.tsx";
 import { useFeatureFlagEnabled } from "../featureManagement/useFeatureFlagEnabled.ts";
 import { useAudio } from "../hooks/useAudio.tsx";
+import { usePitchedAudio } from "../hooks/usePitchedAudio.tsx";
 import { useCustomToast } from "../hooks/useCustomToast.tsx";
 import { useCardAnimations } from "../providers/CardAnimationsProvider";
 import { useAnimationStore } from "../state/useAnimationStore.ts";
@@ -158,9 +159,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const { sfxVolume, animationSpeed } = useSettings();
 
   const { play: discardSound } = useAudio(discardSfx, sfxVolume);
-  const { play: cashSound } = useAudio(cashSfx, sfxVolume);
-  const { play: pointsSound } = useAudio(pointsSfx, sfxVolume);
-  const { play: multiSound } = useAudio(multiSfx, sfxVolume);
+  // Use pitched audio for scoring sounds (points_0.mp3 to points_17.mp3)
+  const { play: pointsSound } = usePitchedAudio("/music/sfx/points", PITCH_VARIANTS, sfxVolume);
   const { play: acumSound } = useAudio(acumSfx, sfxVolume);
   const { play: negativeMultiSound } = useAudio(negativeMultiSfx, sfxVolume);
   const { play: clearRoundSound } = useAudio(clearRound, sfxVolume);
@@ -291,10 +291,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       setAnimatedCard,
       setAnimatedPowerUp,
       pointsSound,
-      multiSound,
       acumSound,
       negativeMultiSound,
-      cashSound,
       setPoints,
       setMulti,
       changeCardsSuit,
@@ -305,7 +303,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       refetchPowerUps,
       preSelectedPowerUps,
       navigate,
-      gameId,
       setRoundRewards,
       replaceCards,
       remainingPlays,

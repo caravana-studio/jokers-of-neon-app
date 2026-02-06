@@ -32,6 +32,11 @@
         "3-description-2": ""
       }
     },
+    "collector-packs-modal": {
+      "title": "PACKS COLECIONADOR",
+      "subtitle": "SOMENTE POR TEMPO LIMITADO",
+      "description": "Os packs Colecionador contêm as skins mais raras do jogo. Estão disponíveis apenas por tempo limitado. Garanta suas skins antes que seja tarde demais."
+    },
     "packs": {
       "buy": "COMPRAR",
       "purchase-error-title": "Compra falhou",
@@ -125,6 +130,11 @@
     "please-update": "Por favor, atualize para continuar",
     "update": "ATUALIZAR"
   },
+  "offline": {
+    "title": "SEM CONEXÃO COM A INTERNET",
+    "description": "Por favor, verifique sua conexão e tente novamente",
+    "retry": "TENTAR NOVAMENTE"
+  },
   "season-progression": {
     "free-rewards": "RECOMPENSAS GRATIS",
     "season": "TEMPORADA {{season}}",
@@ -139,13 +149,15 @@
   "external-pack": {
     "continue": "Continuar",
     "open": "Abrir",
-    "draw-line": "Desenha uma linha para abrir"
+    "draw-line": "Desenha uma linha para abrir",
+    "new": "NOVA"
   },
   "my-games": {
     "title": "Jogos",
     "go-back": "Voltar",
     "start-game": "Novo jogo",
     "show-finished-games": "Mostrar jogos terminados",
+    "tournament-game": "JOGO DE TORNEIO",
     "continue-btn": "continuar",
     "start-btn": "iniciar",
     "tuto": "Tutorial",
@@ -171,6 +183,12 @@
       "stage-4": "Embaralhando as cartas",
       "stage-5": "O jogo está prestes a começar..."
     }
+  },
+  "tournament": {
+    "title": "Torneio ativo",
+    "full-leaderboard": "Leaderboard do torneio",
+    "your-games": "Jogos",
+    "your-entries": "Entradas"
   },
   "game-over": {
     "current-position": "Você está na posição número {{position}}, deseja mantê-lo?",
@@ -295,6 +313,16 @@
       "neons": "Cartas de Neon",
       "sx": "Temporada {{season}}",
       "c99": "Coleção exclusiva GG - v1"
+    },
+    "highlight": {
+      "variants-title": "Variantes da carta",
+      "close": "Fechar",
+      "show-details": "Mostrar detalhes",
+      "hide-details": "Ocultar detalhes",
+      "card-rarity-label": "Raridade da carta:",
+      "skin-rarity-label": "Raridade da skin:",
+      "base-label": "BASE",
+      "skin-label": "skin {{id}}"
     }
   },
   "wallet-provider": {

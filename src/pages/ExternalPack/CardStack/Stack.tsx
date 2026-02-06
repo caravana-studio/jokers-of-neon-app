@@ -1,6 +1,13 @@
 import { useReducedMotion } from "framer-motion";
 import { motion, useMotionValue, useTransform } from "motion/react";
 import React, { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { GlowBadge } from "../../../components/GlowBadge";
+import { cardDragSfx, looseSfx } from "../../../constants/sfx";
+import { useAudio } from "../../../hooks/useAudio";
+import { useSettings } from "../../../providers/SettingsProvider";
+import { VIOLET } from "../../../theme/colors";
+import { Intensity } from "../../../types/intensity";
 import { isLegacyAndroid } from "../../../utils/capacitorUtils";
 import "./Stack.css";
 
@@ -8,7 +15,9 @@ import "./Stack.css";
 export type CardData = {
   id: number | string;
   cardId: number;
+  skinId?: number;
   img: string;
+  intensity?: Intensity;
   [key: string]: any;
 };
 
@@ -34,7 +43,7 @@ function CardRotate({
 
   function handleDragEnd(
     _event: any,
-    info: { offset: { x: number; y: number } }
+    info: { offset: { x: number; y: number } },
   ) {
     if (
       Math.abs(info.offset.x) > sensitivity ||
@@ -76,6 +85,7 @@ interface StackProps {
   sendToBackOnClick?: boolean;
   onCardChange?: (cardId: number) => void;
   onAllSeen?: () => void;
+  ownedCardIds?: Set<string>;
 }
 
 export default function Stack({
@@ -87,14 +97,36 @@ export default function Stack({
   sendToBackOnClick = false,
   onCardChange,
   onAllSeen,
+  ownedCardIds,
 }: StackProps) {
   const [cards, setCards] = useState<CardData[]>(cardsData);
   const [seenCards, setSeenCards] = useState<Set<number | string>>(new Set());
   const prefersReducedMotion = useReducedMotion();
+  const { t } = useTranslation("intermediate-screens", {
+    keyPrefix: "external-pack",
+  });
+  const { sfxVolume } = useSettings();
+  const { play: playCardDrag } = useAudio(cardDragSfx, sfxVolume);
+  const { play: playLooseSfx } = useAudio(looseSfx, sfxVolume);
   const [isLegacyAndroidDevice, setIsLegacyAndroidDevice] = useState(false);
   const disableTilt = prefersReducedMotion || isLegacyAndroidDevice;
   const disableDrag = isLegacyAndroidDevice;
   const randomRotationCache = useRef<Map<CardData["id"], number>>(new Map());
+  const seenTopCardIds = useRef<Set<CardData["id"]>>(new Set());
+  const lastAdvanceAtRef = useRef(0);
+
+  const getGlowClassName = (intensity?: Intensity) => {
+    switch (intensity) {
+      case Intensity.MAX:
+        return "card-top-glow--max";
+      case Intensity.HIGH:
+        return "card-top-glow--high";
+      case Intensity.MEDIUM:
+        return "card-top-glow--medium";
+      default:
+        return "card-top-glow--low";
+    }
+  };
 
   useEffect(() => {
     let cancelled = false;
@@ -133,10 +165,14 @@ export default function Stack({
   useEffect(() => {
     setCards(cardsData);
     setSeenCards(new Set());
+    seenTopCardIds.current = new Set();
 
-    const topCardId = cardsData[cardsData.length - 1]?.cardId;
-    if (topCardId !== undefined && onCardChange) {
-      onCardChange(topCardId);
+    const topCard = cardsData[cardsData.length - 1];
+    if (topCard) {
+      seenTopCardIds.current.add(topCard.id);
+      if (onCardChange) {
+        onCardChange(topCard.cardId);
+      }
     }
     // Depend only on cardsData so navigation interactions (click/drag) are not reset.
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -147,8 +183,30 @@ export default function Stack({
       const newCards = [...prev];
       const index = newCards.findIndex((card) => card.id === id);
       if (index === -1) return prev;
+      const now = Date.now();
+      if (now - lastAdvanceAtRef.current < 100) {
+        return prev;
+      }
+      lastAdvanceAtRef.current = now;
+      const previousTopId = prev[prev.length - 1]?.id;
       const [card] = newCards.splice(index, 1);
       newCards.unshift(card);
+      const nextTopCard = newCards[newCards.length - 1];
+      const nextTopId = nextTopCard?.id;
+      if (nextTopId !== previousTopId) {
+        playCardDrag();
+        if (nextTopId !== undefined) {
+          const hasSeenTopCard = seenTopCardIds.current.has(nextTopId);
+          if (
+            !hasSeenTopCard &&
+            nextTopCard?.intensity !== undefined &&
+            nextTopCard.intensity >= Intensity.HIGH
+          ) {
+            playLooseSfx();
+          }
+          seenTopCardIds.current.add(nextTopId);
+        }
+      }
       // The top card is always the last element rendered; notify with that card's id.
       onCardChange?.(newCards[newCards.length - 1].cardId);
 
@@ -183,6 +241,14 @@ export default function Stack({
           ? randomRotationCache.current.get(card.id) ?? 0
           : 0;
 
+        const isTopCard = index === cards.length - 1;
+        const ownedKey = `${card.cardId}_${card.skinId ?? 0}`;
+        const glowClass = isTopCard
+          ? `card-top-glow ${getGlowClassName(card.intensity)}${
+              prefersReducedMotion ? " card-top-glow--static" : ""
+            }`
+          : "";
+
         return (
           <CardRotate
             key={card.id}
@@ -192,10 +258,10 @@ export default function Stack({
             disableDrag={disableDrag}
           >
             <motion.div
-              className="card"
+              className={`card ${glowClass}`.trim()}
               onClick={() => sendToBackOnClick && sendToBack(card.id)}
               animate={{
-                rotateZ: (cards.length - index - 1) * 4 + randomRotate,
+                rotateZ: (cards.length - index - 1) * 1 + randomRotate,
                 scale: 1 + index * 0.06 - cards.length * 0.06,
                 transformOrigin: "90% 90%",
               }}
@@ -215,6 +281,16 @@ export default function Stack({
                 alt={`card-${card.id}`}
                 className="card-image"
               />
+              {isTopCard && ownedCardIds && !ownedCardIds.has(ownedKey) && (
+                <GlowBadge
+                  label={t("new")}
+                  background={VIOLET}
+                  glowColor={VIOLET}
+                  intensity="medium"
+                  reduceMotion={prefersReducedMotion ?? false}
+                  style={{ position: "absolute", top: -28, left: 8 }}
+                />
+              )}
             </motion.div>
           </CardRotate>
         );

@@ -63,7 +63,7 @@ export const SidebarMenu = () => {
         w="100%"
       >
         {(!inGame ? mainMenuItems : inGameMenuItems).map((item) => (
-          <ContextMenuItem {...item} />
+          <ContextMenuItem {...item} pulse={item.pulse} />
         ))}
 
         {inGame && (

@@ -57,7 +57,7 @@ export const MyCollectionPage = () => {
         </VStack>
       </VStack>
     ),
-    [t]
+    [t],
   );
 
   useEffect(() => {

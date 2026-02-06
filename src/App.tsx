@@ -14,7 +14,7 @@ import { useDojo } from "./dojo/DojoContext";
 import { useGameActions } from "./dojo/useGameActions";
 import { useUsername } from "./dojo/utils/useUsername";
 import { useAppsFlyerReferral } from "./hooks/useAppsFlyerReferral";
-import { initAppsFlyerReferralListener } from "./utils/appsflyerReferral";
+import { initAppsFlyerReferralListener, initWebReferralDetection } from "./utils/appsflyerReferral";
 import { BackgroundAnimationProvider } from "./providers/BackgroundAnimationProvider";
 import { CardAnimationsProvider } from "./providers/CardAnimationsProvider";
 import { CardDataProvider } from "./providers/CardDataProvider";
@@ -23,6 +23,7 @@ import { InformationPopUpProvider } from "./providers/InformationPopUpProvider";
 import { PageTransitionsProvider } from "./providers/PageTransitionsProvider";
 import { RevenueCatProvider } from "./providers/RevenueCatProvider";
 import { SeasonPassProvider } from "./providers/SeasonPassProvider";
+import { useSkinPreferencesStore } from "./state/useSkinPreferencesStore";
 import ZoomPrevention from "./utils/ZoomPrevention";
 import { registerPushListeners } from "./utils/notifications/registerPushListeners";
 
@@ -30,6 +31,13 @@ function App() {
   const {
     account: { account },
   } = useDojo();
+  const refetchSkinPreferences = useSkinPreferencesStore(
+    (store) => store.refetchSkinPreferences
+  );
+  const resetSkinPreferences = useSkinPreferencesStore((store) => store.reset);
+  const lastSkinPreferencesAddress = useSkinPreferencesStore(
+    (store) => store.lastUserAddress
+  );
 
   const navigate = useNavigate();
   const username = useUsername();
@@ -38,9 +46,24 @@ function App() {
   
   // Handle AppsFlyer referral data
   useAppsFlyerReferral();
-  
-  // Handle AppsFlyer referral data
-  useAppsFlyerReferral();
+
+  useEffect(() => {
+    if (!account?.address) {
+      if (lastSkinPreferencesAddress) {
+        resetSkinPreferences();
+      }
+      return;
+    }
+
+    if (lastSkinPreferencesAddress !== account.address) {
+      void refetchSkinPreferences(account.address);
+    }
+  }, [
+    account?.address,
+    lastSkinPreferencesAddress,
+    refetchSkinPreferences,
+    resetSkinPreferences,
+  ]);
 
   useEffect(() => {
     const askForTracking = async () => {
@@ -67,10 +90,13 @@ function App() {
 
     askForTracking();
     
-    // Initialize AppsFlyer referral listener
+    // Initialize AppsFlyer referral listener (native platforms)
     initAppsFlyerReferralListener().catch((err) => {
       console.warn("Failed to initialize AppsFlyer listener:", err);
     });
+
+    // Detect web referrals from URL params (?ref=username)
+    initWebReferralDetection();
 
     registerPushListeners(navigate);
   }, []);

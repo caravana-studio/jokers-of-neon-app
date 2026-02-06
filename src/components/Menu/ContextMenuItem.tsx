@@ -1,4 +1,5 @@
 import { Flex, Text } from "@chakra-ui/react";
+import { keyframes } from "@emotion/react";
 import { FC, ReactSVGElement, SVGProps } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
@@ -13,7 +14,19 @@ interface ContextMenuItemProps {
   onClick?: () => void;
   nameKey?: string;
   notificationCount?: number;
+  pulse?: boolean;
 }
+
+const pulseKeyframes = keyframes`
+  0% { filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.25)); }
+  50% {
+    filter:
+      drop-shadow(0 0 10px rgba(255, 255, 255, 0.95))
+      drop-shadow(0 0 5px rgba(255, 255, 255, 0.95));
+  }
+  100% { filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.25)); }
+`;
+
 export const ContextMenuItem = ({
   icon,
   url,
@@ -22,6 +35,7 @@ export const ContextMenuItem = ({
   onClick,
   nameKey,
   notificationCount,
+  pulse = false,
 }: ContextMenuItemProps) => {
   const { isSmallScreen } = useResponsiveValues();
   const iconSize = isSmallScreen ? "20px" : "22px";
@@ -34,6 +48,7 @@ export const ContextMenuItem = ({
   const badgeSize = isSmallScreen ? "12px" : "14px";
   const badgeFontSize = isSmallScreen ? "8px" : "9px";
   const { t } = useTranslation("home", { keyPrefix: "menu" });
+  const pulseAnimation = `${pulseKeyframes} 1.6s ease-in-out infinite`;
   return (
     <Link
       style={{
@@ -76,7 +91,14 @@ export const ContextMenuItem = ({
           backgroundColor={active ? "rgba(255,255,255,0.15)" : "none"}
         >
           <Flex position="relative" align="center" justify="center">
-            <IconComponent icon={icon} width={iconSize} height={iconSize} />
+            <Flex
+              align="center"
+              justify="center"
+              animation={pulse ? pulseAnimation : undefined}
+              sx={{ willChange: pulse ? "filter" : undefined }}
+            >
+              <IconComponent icon={icon} width={iconSize} height={iconSize} />
+            </Flex>
             {badgeValue && (
               <Flex
                 position="absolute"

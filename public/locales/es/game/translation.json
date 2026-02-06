@@ -140,7 +140,7 @@
     "deck": {
       "tooltip": "Ver mazo",
       "title": "Mazo",
-      "burn-title": "Selecciona una carta para quemar",
+      "burn-title": "Selecciona cartas para quemar",
       "filter-title": "Filtrar por",
       "suit": {
         "club": "Tréboles",

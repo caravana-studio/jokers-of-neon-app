@@ -1,16 +1,22 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { Icons } from "../../constants/icons";
 import { useDojo } from "../../dojo/DojoContext";
 import { GameStateEnum } from "../../dojo/typescript/custom";
+import { useGetMyGames } from "../../queries/useGetMyGames";
+import { useShopDistribution } from "../../queries/useShopDistribution";
+import { useTournamentSettings } from "../../queries/useTournamentSettings";
 import { useGameStore } from "../../state/useGameStore";
 import { useSeasonProgressStore } from "../../state/useSeasonProgressStore";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
+
+const PLAYS_PULSE_SEEN_KEY = "jn-plays-pulse-seen";
 
 export const mainMenuUrls = [
   "/",
   "/my-collection",
   "/my-games",
+  "/tournament",
   "/profile",
   "/settings",
   "/leaderboard",
@@ -69,6 +75,7 @@ interface MenuItem {
   onClick?: () => void;
   disabled?: boolean;
   notificationCount?: number;
+  pulse?: boolean;
 }
 
 export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
@@ -76,19 +83,37 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
   const url = location.pathname;
   const { state } = useGameStore();
   const { isSmallScreen } = useResponsiveValues();
+  const { data: games } = useGetMyGames();
+  const { tournament } = useTournamentSettings();
   const {
     account: { account },
   } = useDojo();
+  const { distribution, loading: loadingDistribution } = useShopDistribution();
   const seasonNotificationCount = useSeasonProgressStore(
-    (store) => store.unclaimedRewardsCount
+    (store) => store.unclaimedRewardsCount,
+  );
+  const tournamentEntries = useSeasonProgressStore(
+    (store) => store.tournamentEntries,
   );
   const lastUserAddress = useSeasonProgressStore(
-    (store) => store.lastUserAddress
+    (store) => store.lastUserAddress,
   );
   const refetchSeasonProgress = useSeasonProgressStore(
-    (store) => store.refetch
+    (store) => store.refetch,
   );
   const resetSeasonProgress = useSeasonProgressStore((store) => store.reset);
+  const hasCollectorPacks =
+    !loadingDistribution &&
+    !!distribution?.packs?.some(
+      (pack) => pack.packId === 5 || pack.packId === 6,
+    );
+  const collectorNotificationCount = hasCollectorPacks ? 1 : 0;
+  const [hasSeenPlays, setHasSeenPlays] = useState(() => {
+    if (typeof window === "undefined") {
+      return false;
+    }
+    return localStorage.getItem(PLAYS_PULSE_SEEN_KEY) === "1";
+  });
 
   useEffect(() => {
     if (!account?.address) {
@@ -107,6 +132,23 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
     refetchSeasonProgress,
     resetSeasonProgress,
   ]);
+
+  useEffect(() => {
+    if (url === "/plays" && !hasSeenPlays) {
+      localStorage.setItem(PLAYS_PULSE_SEEN_KEY, "1");
+      setHasSeenPlays(true);
+    }
+  }, [hasSeenPlays, url]);
+
+  const gamesCount = games?.length;
+  const isTournamentActive = Boolean(
+    tournament?.isActive && !tournament?.isFinished,
+  );
+  const shouldPulsePlays =
+    !hasSeenPlays &&
+    (state === GameStateEnum.Round || state === GameStateEnum.Rage) &&
+    typeof gamesCount === "number" &&
+    gamesCount < 5;
 
   const mainMenuItems: MenuItem[] = useMemo(() => {
     const items: MenuItem[] = [
@@ -127,6 +169,18 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
         active: url === "/leaderboard",
         key: "leaderboard",
       },*/,
+      ...(isTournamentActive
+        ? [
+            {
+              icon: Icons.TOURNAMENT,
+              url: "/tournament",
+              active: url === "/tournament",
+              key: "tournament",
+              notificationCount:
+                tournamentEntries > 0 ? tournamentEntries : undefined,
+            },
+          ]
+        : []),
       {
         icon: Icons.JOKER,
         url: "/my-games",
@@ -145,6 +199,7 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
         url: "/shop",
         active: url === "/shop",
         key: "shop",
+        notificationCount: collectorNotificationCount,
       },
       /*{
         icon: Icons.PROFILE,
@@ -164,7 +219,14 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
     }
 
     return items;
-  }, [isSmallScreen, url, seasonNotificationCount]);
+  }, [
+    collectorNotificationCount,
+    isSmallScreen,
+    isTournamentActive,
+    seasonNotificationCount,
+    tournamentEntries,
+    url,
+  ]);
 
   const inGameMenuItems: MenuItem[] = [
     {
@@ -198,6 +260,7 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
       url: "/plays",
       active: url === "/plays",
       key: "plays",
+      pulse: shouldPulsePlays,
     },
   ];
 
