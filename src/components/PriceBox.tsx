@@ -1,4 +1,4 @@
-import { Flex, SystemStyleObject } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import { isMobile } from "react-device-detect";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import { CashSymbol } from "./CashSymbol";
@@ -11,8 +11,6 @@ interface IPriceBoxProps {
   absolutePosition?: boolean;
   fontSize?: number | string | string[];
   discountFontSize?: number | string | string[];
-  bottomOffset?: string | number;
-  containerSx?: SystemStyleObject;
 }
 
 export const PriceBox = ({
@@ -23,8 +21,6 @@ export const PriceBox = ({
   absolutePosition = true,
   fontSize,
   discountFontSize,
-  bottomOffset,
-  containerSx,
 }: IPriceBoxProps) => {
   const { isSmallScreen } = useResponsiveValues();
   const finalFontSize = fontSize ?? (isMobile ? 15 : 20);
@@ -35,8 +31,7 @@ export const PriceBox = ({
     <Flex
       sx={{
         position: absolutePosition ? "absolute" : "default",
-        bottom:
-          bottomOffset ?? `-${isPowerUp ? powerUpBottom : 8}%`,
+        bottom: `-${isPowerUp ? powerUpBottom : 8}%`,
         left: "50%",
         transform: absolutePosition ? "translateX(-50%)" : "translateX(0)",
         zIndex: 10,
@@ -49,7 +44,6 @@ export const PriceBox = ({
         opacity: purchased ? 0.5 : 1,
         pointerEvents: "none",
         fontWeight: 400,
-        ...containerSx,
       }}
       flexDir="column"
       alignItems="center"

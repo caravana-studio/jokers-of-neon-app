@@ -61,16 +61,6 @@ export const BaseLockedSlot = ({
             absolutePosition
             fontSize={scale > 1 ? "14px" : "12px"}
             discountFontSize={scale > 1 ? "12px" : "10px"}
-            bottomOffset={scale > 1 ? "-18%" : "-16%"}
-            containerSx={{
-              backgroundColor: "black",
-              borderRadius: "20px",
-              boxShadow: "0 0 10px 3px rgba(255, 255, 255, 0.2)",
-              px: 2,
-              py: 0.5,
-              minW: "56px",
-              justifyContent: "center",
-            }}
           />
         )}
       </Box>
