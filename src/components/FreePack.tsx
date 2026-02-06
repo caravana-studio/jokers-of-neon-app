@@ -10,7 +10,11 @@ import { useResponsiveValues } from "../theme/responsiveSettings";
 import { Clock } from "./Clock";
 import { IconComponent } from "./IconComponent";
 
-export const FreePack = () => {
+interface FreePackProps {
+  onClaimClick?: () => void;
+}
+
+export const FreePack = ({ onClaimClick }: FreePackProps) => {
   const { isSmallScreen } = useResponsiveValues();
   const { t } = useTranslation("home", {
     keyPrefix: "packs",
@@ -35,6 +39,14 @@ export const FreePack = () => {
       });
     }
   }, [account?.address, client]);
+
+  const handleClaimClick = () => {
+    if (onClaimClick) {
+      onClaimClick();
+      return;
+    }
+    navigate("/free-pack");
+  };
 
   return (
     <Flex
@@ -102,7 +114,7 @@ export const FreePack = () => {
                 h={isSmallScreen ? "16px" : "30px"}
                 fontSize={isSmallScreen ? 10 : 14}
                 size="xs"
-                onClick={() => navigate("/free-pack")}
+                onClick={handleClaimClick}
               >
                 {t("claim-now")}
               </Button>
