@@ -89,5 +89,40 @@ export const getLayoutedElements = async (
     };
   });
 
+  // Center each layer horizontally around the same vertical axis
+  if (positionedNodes.length > 0) {
+    // Group nodes by layer (same y position)
+    const layers = new Map<number, typeof positionedNodes>();
+    for (const node of positionedNodes) {
+      const y = Math.round(node.position.y);
+      if (!layers.has(y)) layers.set(y, []);
+      layers.get(y)!.push(node);
+    }
+
+    // Find the global horizontal center from the widest layer
+    let globalMinX = Infinity;
+    let globalMaxX = -Infinity;
+    for (const node of positionedNodes) {
+      globalMinX = Math.min(globalMinX, node.position.x);
+      globalMaxX = Math.max(globalMaxX, node.position.x + (node.width ?? 0));
+    }
+    const globalCenterX = (globalMinX + globalMaxX) / 2;
+
+    // Shift each layer so its center aligns with the global center
+    for (const [, layerNodes] of layers) {
+      let layerMinX = Infinity;
+      let layerMaxX = -Infinity;
+      for (const node of layerNodes) {
+        layerMinX = Math.min(layerMinX, node.position.x);
+        layerMaxX = Math.max(layerMaxX, node.position.x + (node.width ?? 0));
+      }
+      const layerCenterX = (layerMinX + layerMaxX) / 2;
+      const shift = globalCenterX - layerCenterX;
+      for (const node of layerNodes) {
+        node.position.x += shift;
+      }
+    }
+  }
+
   return { nodes: positionedNodes, edges };
 };
