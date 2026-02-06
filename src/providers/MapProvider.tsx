@@ -14,6 +14,7 @@ import { useDojo } from "../dojo/useDojo";
 import { getLayoutedElements } from "../pages/Map/layout";
 import { NodeData, NodeType } from "../pages/Map/types";
 import { useGameStore } from "../state/useGameStore";
+import { useMapNavigationStore } from "../state/useMapNavigationStore";
 import { BLUE, VIOLET_LIGHT } from "../theme/colors";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import { getRageNodeData } from "../utils/getRageNodeData";
@@ -78,6 +79,8 @@ export const MapProvider = ({ children }: MapProviderProps) => {
       .map((edge) => edge.source);
   }, [baseEdges, currentNode?.id]);
 
+  const activeNodeId = useMapNavigationStore((s) => s.activeNodeId);
+
   // Calculate styled edges derivatively to avoid re-renders from setEdges
   const styledEdges = useMemo(() => {
     if (!currentNode || baseEdges.length === 0) return baseEdges;
@@ -94,21 +97,27 @@ export const MapProvider = ({ children }: MapProviderProps) => {
       const visibleLine = isCompletedPath || (isEdgeToCurrentNode && stateInMap);
       const shouldPulse = !isCompletedPath && visibleLine;
 
+      // When a node is actively selected, dim edges to other reachable nodes
+      const dimmedBySelection =
+        activeNodeId && visibleLine && shouldPulse && edge.source !== activeNodeId;
+
       return {
         ...edge,
         data: {
           ...edge.data,
-          shouldPulse,
+          shouldPulse: shouldPulse && !dimmedBySelection,
         },
         style: {
-          stroke: visibleLine ? (shouldPulse ? VIOLET_LIGHT : BLUE) : "#fff",
+          stroke: visibleLine && !dimmedBySelection
+            ? (shouldPulse ? VIOLET_LIGHT : BLUE)
+            : "#fff",
           strokeWidth: 2,
-          strokeDasharray: visibleLine ? undefined : "5 5",
-          opacity: visibleLine ? 1 : 0.12,
+          strokeDasharray: visibleLine && !dimmedBySelection ? undefined : "5 5",
+          opacity: dimmedBySelection ? 0.12 : visibleLine ? 1 : 0.12,
         },
       };
     });
-  }, [baseEdges, currentNode, nodes, stateInMap, reachableNodeIds]);
+  }, [baseEdges, currentNode, nodes, stateInMap, reachableNodeIds, activeNodeId]);
 
   const reachableNodes = reachableNodeIds;
 
