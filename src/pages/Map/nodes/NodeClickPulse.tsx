@@ -29,7 +29,7 @@ export const NodeClickPulse = ({
       width={width}
       height={height}
       borderRadius={borderRadius}
-      border="3px solid white"
+      border="1px solid white"
       sx={{
         animation: `${clickPulse} 0.8s ease-out forwards`,
         pointerEvents: "none",

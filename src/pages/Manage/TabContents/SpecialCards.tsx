@@ -139,7 +139,11 @@ export const SpecialCards: React.FC<SpecialCardsProps> = ({
           ))}
           {Array.from({ length: lockedSlots }).map((_, index) => (
             <Box mx={1.5} p={1}>
-              <LockedSlot scale={scale} key={`locked-${index}`} />
+              <LockedSlot
+                scale={scale}
+                showPrice={index === 0}
+                key={`locked-${index}`}
+              />
             </Box>
           ))}
         </FullScreenCardContainer>

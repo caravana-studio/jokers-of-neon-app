@@ -227,6 +227,27 @@ export function setupWorld(provider: DojoProvider) {
     }
   };
 
+  const build_daily_missions_system_getDailyMissionsXpForToday_calldata =
+    (): DojoCall => {
+      return {
+        contractName: "daily_missions_system",
+        entrypoint: "get_daily_missions_xp_for_today",
+        calldata: [],
+      };
+    };
+
+  const daily_missions_system_getDailyMissionsXpForToday = async () => {
+    try {
+      return await provider.call(
+        DOJO_NAMESPACE,
+        build_daily_missions_system_getDailyMissionsXpForToday_calldata()
+      );
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+
   const build_game_system_newGame_calldata = (
     player: string,
     playerName: BigNumberish,
@@ -1622,26 +1643,26 @@ export function setupWorld(provider: DojoProvider) {
     }
   };
 
-  const build_shop_system_burnCard_calldata = (
+  const build_shop_system_burnCards_calldata = (
     gameId: BigNumberish,
-    cardId: BigNumberish
+    cardIds: Array<BigNumberish>
   ): DojoCall => {
     return {
       contractName: "shop_system",
-      entrypoint: "burn_card",
-      calldata: [gameId, cardId],
+      entrypoint: "burn_cards",
+      calldata: [gameId, cardIds],
     };
   };
 
-  const shop_system_burnCard = async (
+  const shop_system_burnCards = async (
     snAccount: Account | AccountInterface,
     gameId: BigNumberish,
-    cardId: BigNumberish
+    cardIds: Array<BigNumberish>
   ) => {
     try {
       return await provider.execute(
         snAccount,
-        build_shop_system_burnCard_calldata(gameId, cardId),
+        build_shop_system_burnCards_calldata(gameId, cardIds),
         DOJO_NAMESPACE
       );
     } catch (error) {
@@ -2187,6 +2208,10 @@ export function setupWorld(provider: DojoProvider) {
       getDailyMissionsForDay: daily_missions_system_getDailyMissionsForDay,
       buildGetDailyMissionsForDayCalldata:
         build_daily_missions_system_getDailyMissionsForDay_calldata,
+      getDailyMissionsXpForToday:
+        daily_missions_system_getDailyMissionsXpForToday,
+      buildGetDailyMissionsXpForTodayCalldata:
+        build_daily_missions_system_getDailyMissionsXpForToday_calldata,
     },
     game_system: {
       newGame: game_system_newGame,
@@ -2348,8 +2373,8 @@ export function setupWorld(provider: DojoProvider) {
       buildProcessCalldata: build_power_up_process_calldata,
     },
     shop_system: {
-      burnCard: shop_system_burnCard,
-      buildBurnCardCalldata: build_shop_system_burnCard_calldata,
+      burnCards: shop_system_burnCards,
+      buildBurnCardsCalldata: build_shop_system_burnCards_calldata,
       buyCard: shop_system_buyCard,
       buildBuyCardCalldata: build_shop_system_buyCard_calldata,
       buyLootBox: shop_system_buyLootBox,

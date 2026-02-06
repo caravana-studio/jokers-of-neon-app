@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { BaseEdge, EdgeProps, getStraightPath } from "reactflow";
+import { BaseEdge, EdgeProps, Position, getBezierPath } from "reactflow";
 
 const MapEdge = memo((props: EdgeProps) => {
   const {
@@ -14,11 +14,14 @@ const MapEdge = memo((props: EdgeProps) => {
     data,
   } = props;
 
-  const [edgePath] = getStraightPath({
+  const [edgePath] = getBezierPath({
     sourceX,
     sourceY,
     targetX,
     targetY,
+    sourcePosition: Position.Bottom,
+    targetPosition: Position.Top,
+    curvature: 0.25,
   });
 
   const shouldPulse = Boolean(data?.shouldPulse);

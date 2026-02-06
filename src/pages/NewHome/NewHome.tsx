@@ -9,6 +9,7 @@ import { ConfirmationModal } from "../../components/ConfirmationModal";
 import { DelayedLoading } from "../../components/DelayedLoading";
 import { PositionedDiscordLink } from "../../components/DiscordLink";
 import { FreePack } from "../../components/FreePack";
+import { GuestLoginModal } from "../../components/GuestLoginModal";
 import { IconComponent } from "../../components/IconComponent";
 import { MobileBottomBar } from "../../components/MobileBottomBar";
 import { MobileDecoration } from "../../components/MobileDecoration";
@@ -17,7 +18,10 @@ import SpineAnimation from "../../components/SpineAnimation";
 import { UnclaimedRewards } from "../../components/UnclaimedRewards";
 import { XpBoosterModal } from "../../components/XpBoosterModal";
 import { Icons } from "../../constants/icons";
-import { SKIPPED_VERSION } from "../../constants/localStorage";
+import {
+  GUEST_LOGIN_MODAL_SHOWN,
+  SKIPPED_VERSION,
+} from "../../constants/localStorage";
 import { APP_VERSION } from "../../constants/version";
 import { useDojo } from "../../dojo/DojoContext";
 import { useGameContext } from "../../providers/GameProvider";
@@ -41,11 +45,12 @@ export const NewHome = () => {
 
   const [isTutorialModalOpen, setTutorialModalOpen] = useState(false);
   const [isVersionModalOpen, setVersionModalOpen] = useState(false);
+  const [isGuestLoginModalOpen, setGuestLoginModalOpen] = useState(false);
   const [version, setVersion] = useState<string | null>(null);
 
   const banners = settings?.home?.banners || [];
   const {
-    setup: { useBurnerAcc },
+    setup: { useBurnerAcc, switchToController },
     account,
   } = useDojo();
 
@@ -87,6 +92,34 @@ export const NewHome = () => {
     }
   }, []);
 
+  useEffect(() => {
+    if (!useBurnerAcc) return;
+
+    const checkGuestModal = async () => {
+      try {
+        const res = await Preferences.get({
+          key: GUEST_LOGIN_MODAL_SHOWN,
+        });
+        if (res.value !== "hidden") {
+          setGuestLoginModalOpen(true);
+        }
+      } catch (error) {
+        console.warn("Preferences.get failed for guest modal", error);
+        try {
+          const stored = window.localStorage.getItem(GUEST_LOGIN_MODAL_SHOWN);
+          if (stored !== "hidden") {
+            setGuestLoginModalOpen(true);
+          }
+        } catch (storageError) {
+          console.warn("localStorage failed for guest modal", storageError);
+          setGuestLoginModalOpen(true);
+        }
+      }
+    };
+
+    checkGuestModal();
+  }, [useBurnerAcc]);
+
   const handleCreateGame = async () => {
     prepareNewGame();
     executeCreateGame();
@@ -104,6 +137,15 @@ export const NewHome = () => {
   const handleConfirmTutorial = () => {
     navigate("/tutorial");
     setTutorialModalOpen(false);
+  };
+
+  const handleGuestLoginClick = () => {
+    setGuestLoginModalOpen(false);
+    switchToController();
+  };
+
+  const handleOpenGuestLoginModal = () => {
+    setGuestLoginModalOpen(true);
   };
 
   const handleSettingsClick = () => {
@@ -135,7 +177,9 @@ export const NewHome = () => {
   return (
     <DelayedLoading ms={100}>
       <XpBoosterModal />
-      {!useBurnerAcc && <FreePack />}
+      <FreePack
+        onClaimClick={useBurnerAcc ? handleOpenGuestLoginModal : undefined}
+      />
       {!useBurnerAcc && <UnclaimedRewards />}
       <PositionedDiscordLink />
       <MobileDecoration />
@@ -275,6 +319,13 @@ export const NewHome = () => {
           confirmText={t("versionModal.confirm-text")}
           cancelText={t("versionModal.cancel-text")}
           onConfirm={handleConfirmUpdate}
+        />
+      )}
+      {useBurnerAcc && (
+        <GuestLoginModal
+          isOpen={isGuestLoginModalOpen}
+          onClose={() => setGuestLoginModalOpen(false)}
+          onLogin={handleGuestLoginClick}
         />
       )}
     </DelayedLoading>

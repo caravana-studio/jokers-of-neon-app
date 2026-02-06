@@ -11,28 +11,15 @@ import { useCustomNavigate } from "../../../hooks/useCustomNavigate";
 import { useMap } from "../../../providers/MapProvider";
 import { useGameStore } from "../../../state/useGameStore";
 import { useMapNavigationStore } from "../../../state/useMapNavigationStore";
-import { BLUE, VIOLET } from "../../../theme/colors";
+import { BLUE } from "../../../theme/colors";
 import { useResponsiveValues } from "../../../theme/responsiveSettings";
 import { TooltipContent } from "../TooltipContent";
 import { NodeType } from "../types";
 import { HereSign } from "./HereSign";
 import { NodeClickPulse } from "./NodeClickPulse";
+import { getReachablePulseSx } from "./reachablePulseAnimation";
 import { useNodeNavigation } from "./useNodeNavigation";
 import { useNodeReachability } from "./useNodeReachability";
-
-const reachablePulse = keyframes`
-  0% {
-    transform: scale(1);
-    opacity: 0.8;
-  }
-  70% {
-    transform: scale(1.4);
-    opacity: 0;
-  }
-  100% {
-    opacity: 0;
-  }
-`;
 
 const bossPulse = keyframes`
   0% { transform: scale(1); opacity: 0.9; }
@@ -103,24 +90,12 @@ const RageNode = memo(({ data }: any) => {
               ? "scale(1.2)"
               : "scale(1)",
           cursor: stateInMap && reachable ? "pointer" : "default",
+          opacity: !data.visited && !data.current && !reachable ? 0.4 : 1,
           position: "relative",
         }}
         sx={{
           ...(reachable && !data.current
-            ? {
-                "&::after": {
-                  content: '""',
-                  position: "absolute",
-                  inset: "-10px",
-                  borderRadius: "50%",
-                  border: `2px solid ${VIOLET}`,
-                  animation: `${reachablePulse} 1.8s ease-out infinite`,
-                  pointerEvents: "none",
-                  opacity: 0.8,
-                  zIndex: -1,
-                  transformOrigin: "center",
-                },
-              }
+            ? getReachablePulseSx("50%", "-10px")
             : {}),
         }}
         onClick={() => {

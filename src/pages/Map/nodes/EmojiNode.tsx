@@ -29,6 +29,7 @@ const EmojiNode = memo(({ data }: any) => {
         color: "white",
         border: "2px solid #fff",
         cursor: reachable ? "pointer" : "default",
+        opacity: !data.visited && !data.current && !reachable ? 0.4 : 1,
       }}
       onClick={() => {
         if (reachable) {

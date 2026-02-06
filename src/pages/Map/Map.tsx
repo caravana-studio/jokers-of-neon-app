@@ -69,19 +69,17 @@ export const Map = () => {
     if (layoutReady && nodes.length > 0 && !hasInitialFitView.current) {
       hasInitialFitView.current = true;
 
-      const timeout1 = setTimeout(() => {
-        fitViewToFullMap();
-      }, 400);
+      // Double rAF ensures React has committed and browser has painted nodes
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          fitViewToFullMap();
 
-      // Zoom to current node on both desktop and mobile
-      const timeout2 = setTimeout(() => {
-        fitViewToCurrentNode();
-      }, 1000);
-
-      return () => {
-        clearTimeout(timeout1);
-        clearTimeout(timeout2);
-      };
+          // Zoom to current node on both desktop and mobile
+          setTimeout(() => {
+            fitViewToCurrentNode();
+          }, 600);
+        });
+      });
     }
   }, [layoutReady]);
 
