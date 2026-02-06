@@ -185,7 +185,7 @@ export const MapProvider = ({ children }: MapProviderProps) => {
       ],
       padding: 0.2,
       duration: 750,
-      maxZoom: isSmallScreen ? 0.7 : 1.2,
+      maxZoom: isSmallScreen ? 0.84 : 1.44,
     });
   };
 
