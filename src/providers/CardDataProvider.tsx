@@ -51,9 +51,26 @@ export const CardDataProvider = ({ children }: CardDataProviderProps) => {
   >({});
 
   const getLootBoxData = (id: number) => {
-    const rarity = BOXES_RARITY[id].rarity;
+    const boxData = BOXES_RARITY[id];
+    if (!boxData) {
+      console.warn(`[CardDataProvider] Missing loot box data for id ${id}`);
+      return {
+        name: t(`lootBoxes.${id}.name`, { defaultValue: "Loot box" }),
+        description: t(`lootBoxes.${id}.description`, {
+          defaultValue: "Unknown loot box",
+        }),
+        details: t(`lootBoxes.${id}.details`, { defaultValue: "" }),
+        type: CardTypes.PACK,
+        animation: {
+          jsonUrl: `${animationFolder}${animationPrefix}${id}.json`,
+          atlasUrl: `${animationFolder}${animationPrefix}${id}.atlas`,
+        },
+      };
+    }
+
+    const rarity = boxData.rarity;
     const price = BOXES_PRICE[rarity];
-    const size = BOXES_RARITY[id].size;
+    const size = boxData.size;
 
     return {
       name: t(`lootBoxes.${id}.name`),

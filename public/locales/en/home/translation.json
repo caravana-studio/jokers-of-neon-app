@@ -14,6 +14,13 @@
       "countdownLabel": "Ends in:",
       "dontShowAgain": "Don't show again"
     },
+    "guestLoginModal": {
+      "title": "Log in for the full experience",
+      "body": "Guest mode is just for testing the game, we recommend you to log in to get access to collect cards and save your progress.",
+      "button": "login",
+      "welcomePack": "and get a free welcome pack",
+      "dontShowAgain": "Don't show this again"
+    },
     "leaderboard-banner": {
       "title": "Leaderboard",
       "button": "Full leaderboard"

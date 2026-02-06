@@ -185,13 +185,13 @@ export const useShopActions = () => {
     }
   };
 
-  const burnCard = async (gameId: number, card_id: number) => {
+  const burnCards = async (gameId: number, card_ids: number[]) => {
     try {
       showTransactionToast();
-      const response = await client.shop_system.burnCard(
+      const response = await client.shop_system.burnCards(
         account,
         gameId,
-        card_id
+        card_ids
       );
       const transaction_hash = response?.transaction_hash ?? "";
       showTransactionToast(transaction_hash);
@@ -389,7 +389,7 @@ export const useShopActions = () => {
   return {
     skipShop,
     buyCard,
-    burnCard,
+    burnCards,
     buySpecialCard,
     buyPack,
     selectCardsFromPack,
