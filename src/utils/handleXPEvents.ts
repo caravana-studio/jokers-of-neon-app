@@ -22,7 +22,7 @@ export const handleXPEvents = async (
       (mission) => mission.dailyMissionId
     );
 
-    showDailyMissionToast(dailyMissionIds);
+    showDailyMissionToast(dailyMissionEvent);
 
     dailyMissionIds.forEach((id) => {
       const missionDifficulty = DAILY_MISSIONS[id];

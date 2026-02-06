@@ -4,7 +4,6 @@ import { shortenHex } from "@dojoengine/utils";
 import { MouseEventHandler } from "react";
 import { isMobile } from "react-device-detect";
 import { ExternalToast, toast } from "sonner";
-import { DAILY_MISSIONS, XP_PER_DIFFICULTY } from "../data/dailyMissions.ts";
 import i18n from "../i18n.ts";
 import {
   ERROR_TOAST,
@@ -12,8 +11,7 @@ import {
   SUCCESS_TOAST,
   VIOLET_LIGHT,
 } from "../theme/colors.tsx";
-import { DailyMissionDifficulty } from "../types/DailyMissions.ts";
-import type { LevelCompleteEvent } from "../types/ScoreData";
+import type { DailyMissionCompleted, LevelCompleteEvent } from "../types/ScoreData";
 import { getEnvString } from "./getEnvValue.ts";
 import { isNative, nativePaddingTop } from "./capacitorUtils.ts";
 import { logEvent } from "./analytics.ts";
@@ -146,12 +144,12 @@ const getOrdinalLabel = (count: number): string => {
   return label;
 };
 
-export const showDailyMissionToast = (dailyMissionIds: string[]): void => {
-
-  dailyMissionIds.forEach((id, index) => {
-    const difficulty =
-      DAILY_MISSIONS[id] ?? DailyMissionDifficulty.EASY;
-    const xp = XP_PER_DIFFICULTY[difficulty];
+export const showDailyMissionToast = (
+  dailyMissionEvents: DailyMissionCompleted[]
+): void => {
+  dailyMissionEvents.forEach((mission, index) => {
+    const xp = mission.base_xp;
+    const id = mission.dailyMissionId;
     setTimeout(() => {
       toast.custom(
         (t) => (

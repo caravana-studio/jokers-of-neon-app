@@ -78,7 +78,7 @@
     },
     {
       "address": "0x67d2a7dddff6ac92e04da57cb8321cb9f68973e25d5b6f37abd7432b29d7d6",
-      "class_hash": "0x1e197e70098f5a33236ea5c6d5a838039fb3e392f4b84e3a5c269cb985be592",
+      "class_hash": "0x5f0260813431ec0f9d770845492333f1b4df3f20c4f83769b18fc978ec2ba9f",
       "init_calldata": [],
       "tag": "jokers_of_neon_core-daily_missions_system",
       "selector": "0x156eeb853e4394f56b8042873481ea1614c697db1e95a75dde9bb75750b441e",
@@ -7072,6 +7072,17 @@
               "type": "core::integer::u64"
             }
           ],
+          "outputs": [
+            {
+              "type": "((core::felt252, core::integer::u32), (core::felt252, core::integer::u32), (core::felt252, core::integer::u32))"
+            }
+          ],
+          "state_mutability": "view"
+        },
+        {
+          "type": "function",
+          "name": "get_daily_missions_xp_for_today",
+          "inputs": [],
           "outputs": [
             {
               "type": "((core::felt252, core::integer::u32), (core::felt252, core::integer::u32), (core::felt252, core::integer::u32))"

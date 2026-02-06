@@ -26,6 +26,6 @@ export enum DojoEvents {
   CARD_ACTIVATE = "CardActivateEvent",
 
   ACHIEVEMENT_COMPLETE = "AchievementCompletedEvent",
-  DAILY_MISSION_COMPLETE = "MissionCompletedEvent",
+  DAILY_MISSION_COMPLETE = "DailyMissionXPEvent",
   LEVEL_COMPLETE = "LevelCompletionXPEvent",
 }
