@@ -16,6 +16,7 @@ import { useSettings } from "../providers/SettingsProvider";
 import { handleXPEvents } from "../utils/handleXPEvents";
 import { getModifiersForContract } from "./utils/getModifiersForContract";
 import { SEASON_NUMBER } from "../constants/season";
+import { useUsername } from "./utils/useUsername";
 
 const createGameEmptyResponse = {
   gameId: 0,
@@ -32,7 +33,9 @@ export const useGameActions = () => {
   const {
     setup: { client },
     account: { account },
+    accountType,
   } = useDojo();
+  const username = useUsername();
 
   const { sfxVolume } = useSettings();
   const { play: achievementSound } = useAudio(achievementSfx, sfxVolume);
@@ -133,7 +136,9 @@ export const useGameActions = () => {
         await handleXPEvents(
           tx.value.events,
           achievementSound,
-          account.address
+          account.address,
+          accountType,
+          username
         );
         return getPlayEvents(tx.value.events);
       }
@@ -166,7 +171,9 @@ export const useGameActions = () => {
         await handleXPEvents(
           tx.value.events,
           achievementSound,
-          account.address
+          account.address,
+          accountType,
+          username
         );
         return {
           success: true,
@@ -207,7 +214,9 @@ export const useGameActions = () => {
         await handleXPEvents(
           tx.value.events,
           achievementSound,
-          account.address
+          account.address,
+          accountType,
+          username
         );
       }
 
@@ -238,7 +247,9 @@ export const useGameActions = () => {
         await handleXPEvents(
           tx.value.events,
           achievementSound,
-          account.address
+          account.address,
+          accountType,
+          username
         );
       }
 
@@ -300,7 +311,9 @@ export const useGameActions = () => {
         await handleXPEvents(
           tx.value.events,
           achievementSound,
-          account.address
+          account.address,
+          accountType,
+          username
         );
         return getPlayEvents(events);
       }

@@ -110,6 +110,7 @@ function loadStoredData(): void {
 
 export function getPendingReferralData(): AppsFlyerReferralData | null {
   loadStoredData();
+  console.log("[AppsFlyer Referral] getPendingReferralData:", pendingReferralData);
   return pendingReferralData;
 }
 
@@ -162,22 +163,32 @@ function getApiConfig() {
   return { apiKey, baseUrl };
 }
 
+export interface ProcessReferralResult {
+  success: boolean;
+  ignored: boolean; // true if claim was ignored (burner/guest account)
+}
+
 /**
  * Process referral data - claim the referral code with the API
+ * @param accountType - The type of account (burner, controller, or null)
+ * @param username - The user's username (for guest detection)
+ * @returns { success: boolean, ignored: boolean } - ignored is true if burner/guest account
  */
 export async function processReferralData(
   referralData: AppsFlyerReferralData,
-  userAddress: string
-): Promise<boolean> {
+  userAddress: string,
+  accountType?: "burner" | "controller" | null,
+  username?: string | null
+): Promise<ProcessReferralResult> {
   // Validate referral data
   if (referralData.type !== "referral" || !referralData.referralCode) {
-    return false;
+    return { success: false, ignored: false };
   }
 
   // Skip if already processed
   if (isReferralAlreadyProcessed(userAddress)) {
     clearPendingReferralData();
-    return true;
+    return { success: true, ignored: false };
   }
 
   const { apiKey, baseUrl } = getApiConfig();
@@ -198,26 +209,30 @@ export async function processReferralData(
         media_source: referralData.mediaSource,
         campaign: referralData.campaign,
         device_id: deviceId,
+        account_type: accountType,
+        username: username,
       }),
     });
 
     if (!response.ok) {
       const errorText = await response.text();
       console.error("[AppsFlyer Referral] Claim failed:", response.status, errorText);
-      return false;
+      return { success: false, ignored: false };
     }
 
     const result = await response.json();
+    console.log("[AppsFlyer Referral] Claim response:", result);
 
     if (result.success || result.already_claimed) {
       markReferralAsProcessed(userAddress);
-      return true;
+      // Return whether the claim was ignored (burner/guest account)
+      return { success: true, ignored: !!result.ignored };
     }
 
-    return false;
+    return { success: false, ignored: false };
   } catch (error) {
     console.error("[AppsFlyer Referral] Claim error:", error);
-    return false;
+    return { success: false, ignored: false };
   }
 }
 
@@ -270,6 +285,8 @@ export async function processConversionData(
  * Register a milestone achieved by this user
  * Call this when user reaches milestones (games played, levels, etc.)
  * @param milestoneValue Optional numeric value (e.g., actual level, purchase amount in cents)
+ * @param accountType Optional account type for backend validation
+ * @param username Optional username for backend validation
  */
 export async function registerMilestone(
   userAddress: string,
@@ -283,7 +300,9 @@ export async function registerMilestone(
     | "daily_mission_completed"
     | "season_pass_purchased"
     | "pack_purchased",
-  milestoneValue?: number
+  milestoneValue?: number,
+  accountType?: "burner" | "controller" | null,
+  username?: string | null
 ): Promise<boolean> {
   const { apiKey, baseUrl } = getApiConfig();
 
@@ -298,6 +317,8 @@ export async function registerMilestone(
         user_address: userAddress,
         milestone_type: milestoneType,
         milestone_value: milestoneValue,
+        account_type: accountType,
+        username: username,
       }),
     });
 
@@ -325,17 +346,24 @@ export async function registerMilestone(
  * @returns The referral code if found, null otherwise
  */
 export function detectWebReferral(): string | null {
+  console.log("[AppsFlyer Referral] detectWebReferral called");
+  console.log("[AppsFlyer Referral] Current URL:", window.location.href);
+  console.log("[AppsFlyer Referral] Search params:", window.location.search);
+
   // Only run on web platform
   if (Capacitor.isNativePlatform()) {
+    console.log("[AppsFlyer Referral] Native platform, skipping web detection");
     return null;
   }
 
   try {
     const urlParams = new URLSearchParams(window.location.search);
     const referralCode = urlParams.get("ref");
+    console.log("[AppsFlyer Referral] Referral code from URL:", referralCode);
 
     if (referralCode && referralCode.trim()) {
       const trimmedCode = referralCode.trim();
+      console.log("[AppsFlyer Referral] Found referral code:", trimmedCode);
 
       // Store for later processing after login
       const webReferral: AppsFlyerReferralData = {
@@ -352,15 +380,23 @@ export function detectWebReferral(): string | null {
       // Also set as pending referral data for unified processing
       pendingReferralData = webReferral;
       localStorage.setItem(STORAGE_KEYS.REFERRAL, JSON.stringify(webReferral));
+      console.log("[AppsFlyer Referral] Stored referral data:", webReferral);
 
       // Optionally clean the URL (remove ref param)
       cleanReferralFromUrl();
 
+      console.log("[AppsFlyer Referral] Web referral detected and stored successfully");
       return trimmedCode;
+    } else {
+      console.log("[AppsFlyer Referral] No referral code in URL");
     }
   } catch (error) {
     console.error("[AppsFlyer Referral] Error detecting web referral:", error);
   }
+
+  // Check if there's existing stored data
+  const existingData = localStorage.getItem(STORAGE_KEYS.REFERRAL);
+  console.log("[AppsFlyer Referral] Existing stored referral data:", existingData);
 
   return null;
 }
@@ -413,17 +449,19 @@ export async function processWebReferral(userAddress: string): Promise<boolean> 
   }
 
   // Process using the same logic as native
-  const success = await processReferralData(referralData, userAddress);
+  const result = await processReferralData(referralData, userAddress);
 
-  if (success) {
+  if (result.success) {
     clearPendingWebReferral();
     clearPendingReferralData();
 
-    // Also register attribution for web
-    await registerWebAttribution(userAddress, referralData);
+    // Also register attribution for web (only if not ignored)
+    if (!result.ignored) {
+      await registerWebAttribution(userAddress, referralData);
+    }
   }
 
-  return success;
+  return result.success;
 }
 
 /**

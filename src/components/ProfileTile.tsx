@@ -7,7 +7,7 @@ import { IconComponent } from "./IconComponent";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import { useEffect } from "react";
 import { useProfileStore } from "../state/useProfileStore";
-import { useDojo } from "../dojo/DojoContext";
+import { useDojo } from "../dojo/useDojo";
 import { useUsername } from "../dojo/utils/useUsername";
 import { useTranslation } from "react-i18next";
 
@@ -24,6 +24,7 @@ export const ProfileTile = () => {
 
   const {
     setup: { account, client },
+    accountType,
   } = useDojo();
   const { profileData, fetchProfileData, loading } = useProfileStore();
 
@@ -33,10 +34,11 @@ export const ProfileTile = () => {
         client,
         account.account.address,
         account.account,
-        loggedInUser
+        loggedInUser,
+        accountType
       );
     }
-  }, [client, account, loggedInUser, profileData?.profile.username]);
+  }, [client, account, loggedInUser, profileData?.profile.username, accountType]);
 
   return (
     <Flex position="relative">

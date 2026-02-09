@@ -36,7 +36,7 @@ import { ShopPage } from "./pages/Shop/ShopPage";
 import { SummaryPage } from "./pages/SummaryPage";
 import { TestPage } from "./pages/TestPage";
 import { VibrationPage } from "./pages/VibrationPage";
-import { ReferralTestPage } from "./pages/ReferralTestPage";
+import { ReferralPage } from "./pages/ReferralPage";
 import { SimulatePacksPage } from "./pages/SimulatePacks/SimulatePacksPage";
 import { CardHighlightProvider } from "./providers/HighlightProvider/CardHighlightProvider";
 import { PowerupHighlightProvider } from "./providers/HighlightProvider/PowerupHighlightProvider";
@@ -92,10 +92,10 @@ export const AppRoutes = () => {
         }
       />
       <Route
-        path="/referral-test"
+        path="/referral"
         element={
           <AnimatedPage>
-            <ReferralTestPage />
+            <ReferralPage />
           </AnimatedPage>
         }
       />

@@ -1,0 +1,46 @@
+{
+  "referral": {
+    "title": "Invite Friends",
+    "subtitle": "Share your code and earn rewards when friends join!",
+    "your-code": "Your referral code",
+    "create-code": "Create your referral code",
+    "create-code-btn": "Create Code",
+    "share-btn": "Share",
+    "copy-btn": "Copy",
+    "copied": "Copied!",
+    "link-copied": "Link copied to clipboard",
+    "need-username": "You need to set a username first",
+    "stats": {
+      "friends-invited": "Friends invited",
+      "rewards-earned": "Rewards earned"
+    },
+    "activity": {
+      "title": "Activity",
+      "empty": "No activity yet. Share your code to start inviting friends!",
+      "events": {
+        "account_created": "{{username}} joined with your code",
+        "games_played_5": "{{username}} played 5 games",
+        "games_played_10": "{{username}} played 10 games",
+        "level_5": "{{username}} reached level 5",
+        "level_10": "{{username}} reached level 10",
+        "first_purchase": "{{username}} made their first purchase",
+        "daily_mission_completed": "{{username}} completed a daily mission",
+        "season_pass_purchased": "{{username}} bought the season pass",
+        "pack_purchased": "{{username}} bought a pack"
+      }
+    },
+    "rewards": {
+      "title": "Your Rewards",
+      "pending": "Pending",
+      "claimed": "Claimed",
+      "pack": "Pack",
+      "coins": "Coins"
+    },
+    "how-it-works": {
+      "title": "How it works",
+      "step1": "Share your referral code with friends",
+      "step2": "They sign up using your code",
+      "step3": "You both earn rewards as they play!"
+    }
+  }
+}

@@ -29,6 +29,9 @@ import { useDojo } from "../dojo/DojoContext";
 import { useUsername } from "../dojo/utils/useUsername";
 import { isNative as realNative } from "../utils/capacitorUtils";
 import { getRevenueCatApiKey } from "../utils/getRevenueCatApiKey";
+import { registerMilestone } from "../utils/appsflyerReferral";
+
+const FIRST_PURCHASE_KEY = "referral_first_purchase_tracked";
 
 const forceWebPayments = import.meta.env.VITE_FORCE_WEB_PAYMENTS
 const isNative = forceWebPayments ? false : realNative;
@@ -279,13 +282,14 @@ const normalizeOfferings = (
 };
 
 export const RevenueCatProvider = ({ children }: PropsWithChildren) => {
-  const username = useUsername();
+  const usernameFromHook = useUsername();
   const {
     account: { account },
+    setup: { accountType },
   } = useDojo();
 
   const userId =
-    username && account?.address ? `${username},${account.address}` : null;
+    usernameFromHook && account?.address ? `${usernameFromHook},${account.address}` : null;
   const [offerings, setOfferings] =
     useState<RevenueCatFormattedOfferings | null>(null);
   const [loading, setLoading] = useState(false);
@@ -324,7 +328,7 @@ export const RevenueCatProvider = ({ children }: PropsWithChildren) => {
   }, []);
 
   const configureRevenueCat = useCallback(async () => {
-    if (!userId || !username || !account?.address || hasConfiguredRef.current) {
+    if (!userId || !usernameFromHook || !account?.address || hasConfiguredRef.current) {
       return;
     }
 
@@ -422,6 +426,7 @@ export const RevenueCatProvider = ({ children }: PropsWithChildren) => {
       const normalizedId = packageId.toLowerCase();
 
       let resolvedPackage: RevenueCatPackage | null = null;
+      let isSeasonPass = false;
 
       if (
         offerings?.seasonPassPackage &&
@@ -429,6 +434,7 @@ export const RevenueCatProvider = ({ children }: PropsWithChildren) => {
           normalizedId
       ) {
         resolvedPackage = offerings.seasonPassPackage;
+        isSeasonPass = true;
       } else if (offerings?.packPackages) {
         const candidate = offerings.packPackages[packageId];
         const fallbackCandidate =
@@ -447,9 +453,26 @@ export const RevenueCatProvider = ({ children }: PropsWithChildren) => {
         );
       }
 
-      return purchasePackage(resolvedPackage, options);
+      const result = await purchasePackage(resolvedPackage, options);
+
+      // Track milestones for pack purchases (not season pass - that's handled in SeasonPassProvider)
+      if (!isSeasonPass && account?.address) {
+        // Register pack purchase milestone
+        registerMilestone(account.address, "pack_purchased", undefined, accountType, usernameFromHook)
+          .catch((e) => console.error("Error registering pack purchase milestone", e));
+
+        // Track first purchase milestone (only once per user)
+        const hasTrackedFirstPurchase = localStorage.getItem(FIRST_PURCHASE_KEY);
+        if (!hasTrackedFirstPurchase) {
+          localStorage.setItem(FIRST_PURCHASE_KEY, "true");
+          registerMilestone(account.address, "first_purchase", undefined, accountType, usernameFromHook)
+            .catch((e) => console.error("Error registering first purchase milestone", e));
+        }
+      }
+
+      return result;
     },
-    [offerings, purchasePackage]
+    [offerings, purchasePackage, account?.address, accountType, usernameFromHook]
   );
 
   const value = useMemo<RevenueCatContextValue>(
