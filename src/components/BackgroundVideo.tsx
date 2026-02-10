@@ -4,9 +4,41 @@ import { BackgroundType } from "./Background";
 
 interface BackgroundVideoProps {
   type: BackgroundType;
+  useTournamentTheme: boolean;
 }
 
-const BackgroundVideo = ({ type }: BackgroundVideoProps) => {
+const tournamentVideoSources: Partial<Record<BackgroundType, string>> = {
+  [BackgroundType.Store]: "/bg/store-bg_t.mp4",
+  [BackgroundType.Game]: "/bg/game-bg_t.mp4",
+  [BackgroundType.Rage]: "/bg/rage-bg_t.mp4",
+  [BackgroundType.Map]: "/bg/map-bg_t.mp4",
+  [BackgroundType.RageBoss]: "/bg/rage-boss_t.mp4",
+};
+
+const defaultVideoSources: Record<BackgroundType, string> = {
+  [BackgroundType.Home]: "/bg/jn-bg.mp4",
+  [BackgroundType.Store]: "/bg/store-bg.mp4",
+  [BackgroundType.Game]: "/bg/game-bg.mp4",
+  [BackgroundType.Rage]: "/bg/rage-bg.mp4",
+  [BackgroundType.RageBoss]: "/bg/rageboss-bg.mp4",
+  [BackgroundType.Map]: "/bg/map-bg.mp4",
+  [BackgroundType.Win]: "/bg/summary-bg.mp4",
+  [BackgroundType.Loose]: "/bg/summary-bg.mp4",
+};
+
+const getVideoSource = (
+  type: BackgroundType,
+  useTournamentTheme: boolean
+): string => {
+  if (useTournamentTheme) {
+    const tournamentVideo = tournamentVideoSources[type];
+    if (tournamentVideo) return tournamentVideo;
+  }
+
+  return defaultVideoSources[type];
+};
+
+const BackgroundVideo = ({ type, useTournamentTheme }: BackgroundVideoProps) => {
   const [videoSrc1, setVideoSrc1] = useState<string | null>(null);
   const [videoSrc2, setVideoSrc2] = useState<string | null>(null);
   const [isFading, setIsFading] = useState(false);
@@ -15,23 +47,13 @@ const BackgroundVideo = ({ type }: BackgroundVideoProps) => {
   const videoRef1 = useRef<HTMLVideoElement | null>(null);
   const videoRef2 = useRef<HTMLVideoElement | null>(null);
 
-  const videoSources: Record<string, string> = {
-    home: "/bg/jn-bg.mp4",
-    store: "/bg/store-bg.mp4",
-    game: "/bg/game-bg.mp4",
-    rage: "/bg/rage-bg.mp4",
-    rageboss: "/bg/rageboss-bg.mp4",
-    map: "/bg/map-bg.mp4",
-    win: "/bg/summary-bg.mp4",
-    loose: "/bg/summary-bg.mp4",
-  };
-
   const isLooseVideo = type === BackgroundType.Loose;
 
   useEffect(() => {
     const loadVideo = async () => {
-      const cachedVideo = await getVideoFromCache(videoSources[type]);
-      const newVideoSrc = cachedVideo || videoSources[type];
+      const videoSource = getVideoSource(type, useTournamentTheme);
+      const cachedVideo = await getVideoFromCache(videoSource);
+      const newVideoSrc = cachedVideo || videoSource;
 
       setIsFading(true); // Start fade transition
 
@@ -49,7 +71,7 @@ const BackgroundVideo = ({ type }: BackgroundVideoProps) => {
     };
 
     loadVideo();
-  }, [type]);
+  }, [type, useTournamentTheme]);
 
   return (
     <div
@@ -66,7 +88,7 @@ const BackgroundVideo = ({ type }: BackgroundVideoProps) => {
     >
       <video
         ref={videoRef1}
-        src={videoSrc1 || videoSources[type]}
+        src={videoSrc1 || getVideoSource(type, useTournamentTheme)}
         autoPlay
         loop
         muted

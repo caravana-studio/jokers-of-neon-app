@@ -19,18 +19,6 @@ const getBackgroundColor = (type: string) => {
   }
 };
 
-const getBackgroundImage = (type: string) => {
-  switch (type) {
-    case "white":
-      return "none";
-    default:
-      return `url(/bg/${type}-bg.jpg)`;
-  }
-};
-
-const scrollOnMobile = true;
-const dark = false;
-
 export enum BackgroundType {
   Home = "home",
   Game = "game",
@@ -41,6 +29,47 @@ export enum BackgroundType {
   Win = "win",
   Loose = "loose",
 }
+
+const tournamentBackgroundTypes = new Set<BackgroundType>([
+  BackgroundType.Game,
+  BackgroundType.Store,
+  BackgroundType.Rage,
+  BackgroundType.RageBoss,
+  BackgroundType.Map,
+]);
+
+const tournamentBackgroundImageByType: Partial<Record<BackgroundType, string>> = {
+  [BackgroundType.Game]: "/bg/game-bg_t.jpg",
+  [BackgroundType.Store]: "/bg/store-bg_t.jpg",
+  [BackgroundType.Rage]: "/bg/rage-bg_t.jpg",
+  [BackgroundType.Map]: "/bg/map-bg_t.jpg",
+  // There is no rageboss jpg, so fallback to rage tournament jpg.
+  [BackgroundType.RageBoss]: "/bg/rage-bg_t.jpg",
+};
+
+const getBackgroundImagePath = (
+  type: BackgroundType | undefined,
+  useTournamentTheme: boolean
+) => {
+  if (!type || type === BackgroundType.Home) {
+    return "/bg/home-bg.jpg";
+  }
+
+  if (useTournamentTheme) {
+    const tournamentPath = tournamentBackgroundImageByType[type];
+    if (tournamentPath) return tournamentPath;
+  }
+
+  if (type === BackgroundType.RageBoss) {
+    // There is no rageboss jpg in default assets.
+    return "/bg/rage-bg.jpg";
+  }
+
+  return `/bg/${type}-bg.jpg`;
+};
+
+const scrollOnMobile = true;
+const dark = false;
 
 const bgConfig: Record<string, { bg: BackgroundType; decoration?: boolean }> = {
   season: {
@@ -127,7 +156,8 @@ export const Background = ({ children }: PropsWithChildren) => {
   const { isSmallScreen } = useResponsiveValues();
   const [backgroundImageUrl, setBackgroundImageUrl] = useState<string>("none");
 
-  const { isRageRound, modId, isClassic, inBossRound } = useGameStore();
+  const { isRageRound, modId, isClassic, inBossRound, isTournament } =
+    useGameStore();
 
   const baseUrl = import.meta.env.VITE_MOD_URL + modId + "/resources";
 
@@ -141,6 +171,10 @@ export const Background = ({ children }: PropsWithChildren) => {
         : BackgroundType.Rage
       : bgConfig[page]?.bg;
 
+  const useTournamentTheme = Boolean(
+    type && isTournament && tournamentBackgroundTypes.has(type)
+  );
+
   const [src, setSrc] = useState("");
   const [videoType, setVideoType] = useState<BackgroundType>(
     BackgroundType.Home
@@ -148,10 +182,10 @@ export const Background = ({ children }: PropsWithChildren) => {
 
   useEffect(() => {
     if (type) {
-      setSrc(`/bg/${type}-bg.jpg`);
+      setSrc(getBackgroundImagePath(type, useTournamentTheme));
       setVideoType(type);
     }
-  }, [type, isRageRound, inBossRound]);
+  }, [type, useTournamentTheme]);
 
   const modAwareSrc = !isClassic ? baseUrl + src : src;
 
@@ -170,17 +204,17 @@ export const Background = ({ children }: PropsWithChildren) => {
     };
 
     loadBackgroundImage();
-  }, [type, isClassic]);
+  }, [isClassic, modAwareSrc, src]);
 
   return (
     <Box
       sx={{
         backgroundColor: getBackgroundColor(type),
         backgroundImage: isClassic
-          ? getBackgroundImage(type)
+          ? `url(${getBackgroundImagePath(type, useTournamentTheme)})`
           : backgroundImageUrl != "none"
             ? backgroundImageUrl
-            : getBackgroundImage(type),
+            : `url(${getBackgroundImagePath(type, useTournamentTheme)})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         height: "100svh",
@@ -197,7 +231,12 @@ export const Background = ({ children }: PropsWithChildren) => {
       }}
       onContextMenu={(e) => e.preventDefault()}
     >
-      {isClassic && !isNativeAndroid && <BackgroundVideo type={videoType} />}
+      {isClassic && !isNativeAndroid && (
+        <BackgroundVideo
+          type={videoType}
+          useTournamentTheme={useTournamentTheme}
+        />
+      )}
 
       {children}
     </Box>
