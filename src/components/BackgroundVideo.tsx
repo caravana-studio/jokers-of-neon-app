@@ -1,6 +1,16 @@
 import { useEffect, useRef, useState } from "react";
 import { getVideoFromCache } from "../utils/cacheUtils";
-import { BackgroundType } from "./Background";
+import type { BackgroundType as BackgroundTypeEnum } from "./Background";
+
+type BackgroundType =
+  | BackgroundTypeEnum.Home
+  | BackgroundTypeEnum.Store
+  | BackgroundTypeEnum.Game
+  | BackgroundTypeEnum.Rage
+  | BackgroundTypeEnum.RageBoss
+  | BackgroundTypeEnum.Map
+  | BackgroundTypeEnum.Win
+  | BackgroundTypeEnum.Loose;
 
 interface BackgroundVideoProps {
   type: BackgroundType;
@@ -8,22 +18,22 @@ interface BackgroundVideoProps {
 }
 
 const tournamentVideoSources: Partial<Record<BackgroundType, string>> = {
-  [BackgroundType.Store]: "/bg/store-bg_t.mp4",
-  [BackgroundType.Game]: "/bg/game-bg_t.mp4",
-  [BackgroundType.Rage]: "/bg/rage-bg_t.mp4",
-  [BackgroundType.Map]: "/bg/map-bg_t.mp4",
-  [BackgroundType.RageBoss]: "/bg/rage-boss_t.mp4",
+  store: "/bg/store-bg_t.mp4",
+  game: "/bg/game-bg_t.mp4",
+  rage: "/bg/rage-bg_t.mp4",
+  map: "/bg/map-bg_t.mp4",
+  rageboss: "/bg/rage-boss_t.mp4",
 };
 
 const defaultVideoSources: Record<BackgroundType, string> = {
-  [BackgroundType.Home]: "/bg/jn-bg.mp4",
-  [BackgroundType.Store]: "/bg/store-bg.mp4",
-  [BackgroundType.Game]: "/bg/game-bg.mp4",
-  [BackgroundType.Rage]: "/bg/rage-bg.mp4",
-  [BackgroundType.RageBoss]: "/bg/rageboss-bg.mp4",
-  [BackgroundType.Map]: "/bg/map-bg.mp4",
-  [BackgroundType.Win]: "/bg/summary-bg.mp4",
-  [BackgroundType.Loose]: "/bg/summary-bg.mp4",
+  home: "/bg/jn-bg.mp4",
+  store: "/bg/store-bg.mp4",
+  game: "/bg/game-bg.mp4",
+  rage: "/bg/rage-bg.mp4",
+  rageboss: "/bg/rageboss-bg.mp4",
+  map: "/bg/map-bg.mp4",
+  win: "/bg/summary-bg.mp4",
+  loose: "/bg/summary-bg.mp4",
 };
 
 const getVideoSource = (
@@ -47,7 +57,7 @@ const BackgroundVideo = ({ type, useTournamentTheme }: BackgroundVideoProps) => 
   const videoRef1 = useRef<HTMLVideoElement | null>(null);
   const videoRef2 = useRef<HTMLVideoElement | null>(null);
 
-  const isLooseVideo = type === BackgroundType.Loose;
+  const isLooseVideo = type === "loose";
 
   useEffect(() => {
     const loadVideo = async () => {
