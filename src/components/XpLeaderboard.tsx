@@ -28,7 +28,7 @@ const formatAddress = (address: string) => {
   return `${address.slice(0, 6)}...${address.slice(-4)}`;
 };
 
-export const XpLeaderboard = ({ lines = 100, mb = "" }: XpLeaderboardProps) => {
+export const XpLeaderboard = ({ lines = 50, mb = "" }: XpLeaderboardProps) => {
   const { t } = useTranslation("home", { keyPrefix: "leaderboard" });
   const { isSmallScreen } = useResponsiveValues();
   const { data: leaderboard, isLoading } = useGetXpLeaderboard();
