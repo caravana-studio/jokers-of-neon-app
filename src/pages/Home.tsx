@@ -37,12 +37,16 @@ export const Home = () => {
     }
   };
 
+  const handleCloseTutorialModal = () => {
+    setTutorialModalOpen(false);
+  };
+
   const handleConfirmTutorial = () => {
     navigate("/tutorial");
     setTutorialModalOpen(false);
   };
 
-  const handleDeclineTutorial = () => {
+  const handleSkipTutorial = () => {
     handleCreateGame();
     setTutorialModalOpen(false);
 
@@ -132,12 +136,14 @@ export const Home = () => {
 
       {isTutorialModalOpen && (
         <ConfirmationModal
-          close={handleDeclineTutorial}
+          close={handleCloseTutorialModal}
           title={t("tutorialModal.title")}
           description={t("tutorialModal.description")}
           confirmText={t("tutorialModal.confirm-text")}
           cancelText={t("tutorialModal.cancel-text")}
+          onCancel={handleSkipTutorial}
           onConfirm={handleConfirmTutorial}
+          showCloseButton
         />
       )}
     </DelayedLoading>
