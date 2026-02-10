@@ -1,12 +1,13 @@
 import { Box } from "@chakra-ui/react";
 import { PropsWithChildren, useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { matchPath, useLocation } from "react-router-dom";
 import { useGameStore } from "../state/useGameStore";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import { getImageFromCache } from "../utils/cacheUtils";
 import { isNativeAndroid } from "../utils/capacitorUtils";
 import BackgroundVideo from "./BackgroundVideo";
 import CachedImage, { checkImageExists } from "./CachedImage";
+import { gameUrls } from "./Menu/useContextMenuItems";
 
 const getBackgroundColor = (type: string) => {
   switch (type) {
@@ -31,6 +32,7 @@ export enum BackgroundType {
 }
 
 const tournamentBackgroundTypes = new Set<BackgroundType>([
+  BackgroundType.Home,
   BackgroundType.Game,
   BackgroundType.Store,
   BackgroundType.Rage,
@@ -150,6 +152,9 @@ const bgConfig: Record<string, { bg: BackgroundType; decoration?: boolean }> = {
   loose: {
     bg: BackgroundType.Loose,
   },
+  redirect: {
+    bg: BackgroundType.Game,
+  },
 };
 
 export const Background = ({ children }: PropsWithChildren) => {
@@ -171,8 +176,11 @@ export const Background = ({ children }: PropsWithChildren) => {
         : BackgroundType.Rage
       : bgConfig[page]?.bg;
 
+  const isInGamePage = gameUrls.some((gameUrl) =>
+    Boolean(matchPath({ path: gameUrl, end: true }, location.pathname))
+  );
   const useTournamentTheme = Boolean(
-    type && isTournament && tournamentBackgroundTypes.has(type)
+    type && isTournament && isInGamePage && tournamentBackgroundTypes.has(type)
   );
 
   const [src, setSrc] = useState("");

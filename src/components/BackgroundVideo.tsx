@@ -18,11 +18,12 @@ interface BackgroundVideoProps {
 }
 
 const tournamentVideoSources: Partial<Record<BackgroundType, string>> = {
+  home: "/bg/home-bg_t.mp4",
   store: "/bg/store-bg_t.mp4",
   game: "/bg/game-bg_t.mp4",
   rage: "/bg/rage-bg_t.mp4",
   map: "/bg/map-bg_t.mp4",
-  rageboss: "/bg/rage-boss_t.mp4",
+  rageboss: "/bg/rage-boss-bg_t.mp4",
 };
 
 const defaultVideoSources: Record<BackgroundType, string> = {
