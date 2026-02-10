@@ -119,7 +119,7 @@
     "title": "First time playing?",
     "description": "We recommend a quick tutorial to learn the basics. Would you like to start it now?",
     "confirm-text": "Play Tutorial",
-    "cancel-text": "Skip"
+    "cancel-text": "Skip tutorial"
   },
   "versionModal": {
     "title": "New version available",

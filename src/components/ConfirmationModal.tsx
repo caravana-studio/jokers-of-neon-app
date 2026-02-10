@@ -4,6 +4,7 @@ import {
   Heading,
   Modal,
   ModalBody,
+  ModalCloseButton,
   ModalContent,
   ModalFooter,
   ModalHeader,
@@ -19,9 +20,11 @@ interface ConfirmationModalProps {
   title: string;
   description: string;
   onConfirm: () => void;
+  onCancel?: () => void;
   isOpen?: boolean;
   confirmText?: string;
   cancelText?: string;
+  showCloseButton?: boolean;
 }
 
 export const ConfirmationModal = ({
@@ -29,9 +32,11 @@ export const ConfirmationModal = ({
   title,
   description,
   onConfirm,
+  onCancel,
   isOpen = true,
   confirmText,
   cancelText,
+  showCloseButton = false,
 }: ConfirmationModalProps) => {
   const { t } = useTranslation(["game"]);
 
@@ -40,6 +45,7 @@ export const ConfirmationModal = ({
     <Modal isOpen={isOpen} onClose={close}>
       <ModalOverlay bg="rgba(0, 0, 0, 0.6)" />
       <ModalContent p={3}>
+        {showCloseButton && <ModalCloseButton />}
         <ModalHeader>
           <Heading size="m" textAlign={"center"} variant="neonWhite">
             {title}
@@ -58,7 +64,7 @@ export const ConfirmationModal = ({
             size="sm"
             fontSize={[10, 12]}
             w={isSmallScreen ? "50%" : "auto"}
-            onClick={close}
+            onClick={onCancel ?? close}
           >
             {cancelText ?? t("confirmation-modal.close")}
           </Button>
