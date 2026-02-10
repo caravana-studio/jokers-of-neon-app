@@ -832,7 +832,7 @@
     },
     "52": {
       "name": "Comodín",
-      "description": "Comodín que sustituye cualquier carta tradicional. ^blue(+100 puntos)^ y ^violet(+1 multi)^"
+      "description": "Sustituye cualquier carta tradicional. ^blue(+100 puntos)^ y ^violet(+1 multi)^"
     },
     "53": {
       "name": "Carta Camaleón",
