@@ -26,7 +26,7 @@ export const GameBox = ({
   });
 
   const { prepareNewGame, surrenderGame } = useGameContext();
-  const { setGameId } = useGameStore();
+  const { setGameId, setIsTournament } = useGameStore();
 
   const { isSmallScreen } = useResponsiveValues();
   const [isLoading, setIsLoading] = useState(false);
@@ -37,6 +37,7 @@ export const GameBox = ({
     setIsLoading(true);
     prepareNewGame();
     setGameId(game.id);
+    setIsTournament(Boolean(game.isTournament));
     navigate(stateToPageMap[game.status as GameStateEnum]);
   };
 

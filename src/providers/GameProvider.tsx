@@ -106,7 +106,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     addRerolls,
     advanceLevel,
     refetchDebuffedPlayerHands,
-    refetchSpecialCards
+    refetchSpecialCards,
+    setIsTournament,
   } = useGameStore();
 
   const {
@@ -226,6 +227,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const executeCreateGame = async (isTournament = false) => {
     setGameError(false);
+    setIsTournament(isTournament);
     resetLevel();
     setGameLoading(true);
     logEvent("create_game");
