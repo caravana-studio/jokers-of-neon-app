@@ -72,6 +72,17 @@ export const TestPage = () => {
         {isSmallScreen && (
           <Divider borderColor="white" borderWidth="1px" my={2} />
         )}
+        <MenuBtn
+          icon={Icons.TOURNAMENT}
+          description={"Tournament"}
+          label={"Tournament"}
+          onClick={() => navigate("/tournament")}
+          arrowRight
+          width={"18px"}
+        />
+        {isSmallScreen && (
+          <Divider borderColor="white" borderWidth="1px" my={2} />
+        )}
       </Flex>
     </DelayedLoading>
   );
