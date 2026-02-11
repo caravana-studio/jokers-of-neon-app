@@ -181,6 +181,7 @@ export const PlaysAvailableTable = () => {
                                     <TiltCard
                                       card={card}
                                       scale={cardScale - (cardScale * 33) / 100}
+                                      disableBroken
                                     />
                                   </Box>
                                 );

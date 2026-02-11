@@ -119,7 +119,7 @@
     "title": "Primeira vez jogando?",
     "description": "Recomendamos um tutorial rápido para aprender o básico. Gostaria de começar agora?",
     "confirm-text": "Jogar Tutorial",
-    "cancel-text": "Pular"
+    "cancel-text": "Pular tutorial"
   },
   "versionModal": {
     "title": "Nova versão disponível",

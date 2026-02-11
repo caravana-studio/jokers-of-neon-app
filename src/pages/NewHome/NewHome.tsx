@@ -134,6 +134,10 @@ export const NewHome = () => {
     }
   };
 
+  const handleCloseTutorialModal = () => {
+    setTutorialModalOpen(false);
+  };
+
   const handleConfirmTutorial = () => {
     navigate("/tutorial");
     setTutorialModalOpen(false);
@@ -167,7 +171,7 @@ export const NewHome = () => {
     }
   };
 
-  const handleDeclineTutorial = () => {
+  const handleSkipTutorial = () => {
     handleCreateGame();
     setTutorialModalOpen(false);
     logEvent("tutorial_skipped");
@@ -303,12 +307,14 @@ export const NewHome = () => {
 
       {isTutorialModalOpen && (
         <ConfirmationModal
-          close={handleDeclineTutorial}
+          close={handleCloseTutorialModal}
           title={t("tutorialModal.title")}
           description={t("tutorialModal.description")}
           confirmText={t("tutorialModal.confirm-text")}
           cancelText={t("tutorialModal.cancel-text")}
+          onCancel={handleSkipTutorial}
           onConfirm={handleConfirmTutorial}
+          showCloseButton
         />
       )}
       {isVersionModalOpen && (

@@ -45,6 +45,7 @@ interface ICardProps {
   onDeck?: boolean;
   onHold?: () => void;
   height?: number;
+  disableBroken?: boolean;
 }
 
 export const TiltCard = ({
@@ -59,6 +60,7 @@ export const TiltCard = ({
   onDeck = false,
   onHold,
   height,
+  disableBroken = false,
 }: ICardProps) => {
   const { img, purchased = false } = card;
   const cardHeight = height
@@ -150,9 +152,11 @@ export const TiltCard = ({
                 className={className}
               />
 
-              {(isSilent || isDebuffed) && state === GameStateEnum.Rage && (
-                <BrokenCard onDeck={onDeck} isPack={isPack} />
-              )}
+              {!disableBroken &&
+                (isSilent || isDebuffed) &&
+                state === GameStateEnum.Rage && (
+                  <BrokenCard onDeck={onDeck} isPack={isPack} />
+                )}
 
               {used && (
                 <>
@@ -220,7 +224,7 @@ export const TiltCard = ({
                       onClick?.();
                     }}
                   />
-                  {isSilent && state === GameStateEnum.Rage && (
+                  {!disableBroken && isSilent && state === GameStateEnum.Rage && (
                     <BrokenCard onDeck={onDeck} isPack={isPack} />
                   )}
                 </CardTooltip>
