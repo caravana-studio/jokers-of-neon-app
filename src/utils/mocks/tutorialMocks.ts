@@ -31,7 +31,7 @@ export const EVENT_FLUSH = {
     multi: 1,
     points: 0,
   },
-  cardPlayScoreEvents: [
+  cardPlayEvents: [
     {
       hand: [{ idx: H8.idx, quantity: 8 }],
       specials: [],
@@ -173,7 +173,7 @@ export const EVENT_PAIR = {
     multi: 1,
     points: 0,
   },
-  cardPlayScoreEvents: [
+  cardPlayEvents: [
     {
       hand: [{ idx: D7.idx, quantity: 7 }],
       specials: [],
@@ -195,7 +195,7 @@ export const EVENT_PAIR_POWER_UPS = {
     multi: 1,
     points: 0,
   },
-  cardPlayScoreEvents: [
+  cardPlayEvents: [
     {
       hand: [{ idx: H5.idx, quantity: 5 }],
       specials: [],
