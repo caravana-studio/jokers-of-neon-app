@@ -292,6 +292,121 @@ const evaluateHand = (
   return Plays.HIGH_CARD;
 };
 
+const getMinimumCardsForPlay = (play: Plays, specialCards: Card[]): number => {
+  const easyFlush = specialCards.some(
+    (s) => s.card_id === specialCardIds.EASY_FLUSH
+  );
+  const easyStraight = specialCards.some(
+    (s) => s.card_id === specialCardIds.EASY_STRAIGHT
+  );
+
+  switch (play) {
+    case Plays.ROYAL_FLUSH:
+      return 5;
+    case Plays.STRAIGHT_FLUSH:
+      return Math.max(easyFlush ? 4 : 5, easyStraight ? 4 : 5);
+    case Plays.FIVE_OF_A_KIND:
+      return 5;
+    case Plays.FOUR_OF_A_KIND:
+      return 4;
+    case Plays.FULL_HOUSE:
+      return 5;
+    case Plays.STRAIGHT:
+      return easyStraight ? 4 : 5;
+    case Plays.FLUSH:
+      return easyFlush ? 4 : 5;
+    case Plays.THREE_OF_A_KIND:
+      return 3;
+    case Plays.TWO_PAIR:
+      return 4;
+    case Plays.PAIR:
+      return 2;
+    case Plays.HIGH_CARD:
+      return 1;
+    default:
+      return 0;
+  }
+};
+
+const getCardScore = (card?: Card): number => {
+  if (!card) return -1;
+
+  const cardValue =
+    card.value ??
+    card.card ??
+    (card.card_id !== undefined
+      ? CARDS_SUIT_DATA[Number(card.card_id)]?.card ?? 0
+      : 0);
+
+  if (card.suit === Suits.JOKER || card.suit === Suits.WILDCARD) {
+    return cardValue - 100;
+  }
+
+  return cardValue;
+};
+
+const getCardCombinations = (cards: number[], size: number): number[][] => {
+  const combinations: number[][] = [];
+
+  const buildCombinations = (start: number, current: number[]) => {
+    if (current.length === size) {
+      combinations.push([...current]);
+      return;
+    }
+
+    for (let index = start; index < cards.length; index += 1) {
+      current.push(cards[index]);
+      buildCombinations(index + 1, current);
+      current.pop();
+    }
+  };
+
+  buildCombinations(0, []);
+  return combinations;
+};
+
+const getCardsComposingPlay = (
+  hand: Card[],
+  preSelectedCards: number[],
+  specialCards: Card[],
+  preSelectedModifiers: { [key: number]: number[] },
+  play: Plays
+): number[] => {
+  if (preSelectedCards.length === 0) {
+    return [];
+  }
+
+  const minimumCardsForPlay = getMinimumCardsForPlay(play, specialCards);
+
+  if (
+    minimumCardsForPlay <= 0 ||
+    minimumCardsForPlay >= preSelectedCards.length
+  ) {
+    return [...preSelectedCards];
+  }
+
+  const handByIdx = new Map(hand.map((card) => [card.idx, card]));
+  const orderedPreselected = [...preSelectedCards].sort((a, b) => {
+    const scoreA = getCardScore(handByIdx.get(a));
+    const scoreB = getCardScore(handByIdx.get(b));
+
+    if (scoreA !== scoreB) {
+      return scoreB - scoreA;
+    }
+
+    return a - b;
+  });
+
+  const combinations = getCardCombinations(orderedPreselected, minimumCardsForPlay);
+  const matchingCombination = combinations.find((cardIndexes) => {
+    return (
+      evaluateHand(hand, cardIndexes, specialCards, preSelectedModifiers) === play
+    );
+  });
+
+  return matchingCombination ?? [...preSelectedCards];
+};
+
 export interface HandResult {
   play: Plays;
   isNeon: boolean;
@@ -304,13 +419,20 @@ export const checkHand = (
   preSelectedModifiers: { [key: number]: number[] }
 ): HandResult => {
   const play = evaluateHand(hand, preSelectedCards, specialCards, preSelectedModifiers);
+  const cardsComposingPlay = getCardsComposingPlay(
+    hand,
+    preSelectedCards,
+    specialCards,
+    preSelectedModifiers,
+    play
+  );
 
-  // Check if all preselected cards are neon
-  const selectedCards = preSelectedCards.map(cardIdx =>
+  // Check if all cards composing the detected play are neon
+  const selectedCards = cardsComposingPlay.map(cardIdx =>
     hand.find(c => c.idx === cardIdx)
   ).filter((card): card is Card => card !== undefined);
 
-  // A play is neon if all selected cards (excluding jokers/wildcards) are neon cards
+  // A play is neon if all cards composing it (excluding jokers/wildcards) are neon cards
   const isNeon = selectedCards.length > 0 && selectedCards.every(card => {
     // Jokers and wildcards don't affect neon status
     if (card.suit === Suits.JOKER || card.suit === Suits.WILDCARD) {
