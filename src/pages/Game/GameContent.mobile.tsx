@@ -240,7 +240,11 @@ export const MobileGameContent = () => {
       className="game-tutorial-intro"
     >
       {highlightedCard && (
-        <MobileCardHighlight card={highlightedCard} confirmationBtn />
+        <MobileCardHighlight
+          card={highlightedCard}
+          confirmationBtn
+          showCumulativeProgress
+        />
       )}
       <MobileDecoration />
       <Box

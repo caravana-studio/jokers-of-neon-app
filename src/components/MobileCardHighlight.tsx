@@ -25,6 +25,7 @@ interface MobileCardHighlightProps {
   showExtraInfo?: boolean;
   isPack?: boolean;
   hidePrice?: boolean;
+  showCumulativeProgress?: boolean;
 }
 
 export const MobileCardHighlight = ({
@@ -34,12 +35,18 @@ export const MobileCardHighlight = ({
   isPack = false,
   customBtn,
   hidePrice = false,
+  showCumulativeProgress = false,
 }: MobileCardHighlightProps) => {
   const { onClose } = useCardHighlight();
 
   const { getCardData, getLootBoxData } = useCardData();
 
-  const getDataFn = isPack ? getLootBoxData : getCardData;
+  const getDataFn = isPack
+    ? () => getLootBoxData(card.card_id ?? 0)
+    : () =>
+        getCardData(card.card_id ?? 0, {
+          showCumulativeProgress,
+        });
   const {
     name,
     description,
@@ -49,7 +56,7 @@ export const MobileCardHighlight = ({
     rarity,
     temporaryPrice,
     details,
-  } = getDataFn(card.card_id ?? 0);
+  } = getDataFn();
 
   const { isSmallScreen } = useResponsiveValues();
 
