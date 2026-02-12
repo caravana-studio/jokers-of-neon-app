@@ -67,6 +67,12 @@ export const DeckPageContentMobile = ({
     return calculateBurnCost(cardsToBurn.length, firstCardCost, regularCost);
   }, [cardsToBurn.length, firstCardCost, regularCost]);
 
+  const burnButtonLabel = (
+    cardsToBurn.length > 0
+      ? t("btns.burn-selected", { count: cardsToBurn.length })
+      : t("btns.burn")
+  ).toUpperCase();
+
   return (
     <Flex
       flexDir="column"
@@ -133,8 +139,7 @@ export const DeckPageContentMobile = ({
                 onClick: handleBurnCards,
                 label: (
                   <Flex gap={1} alignItems="center">
-                    {`${t("btns.burn").toUpperCase()}`}
-                    {cardsToBurn.length > 0 && ` ${cardsToBurn.length} ${cardsToBurn.length === 1 ? "card" : "cards"}`}
+                    {burnButtonLabel}
                     <CashSymbol />
                     {totalCost}
                   </Flex>
