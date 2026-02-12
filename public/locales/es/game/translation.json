@@ -156,7 +156,9 @@
       "btns": {
         "special-cards": "Ver cartas especiales",
         "back": "Volver al juego",
-        "burn": "Quemar carta"
+        "burn": "Quemar",
+        "burn-selected_one": "Quemar {{count}} carta",
+        "burn-selected_other": "Quemar {{count}} cartas"
       },
       "tabs": {
         "full-deck": "Mazo",

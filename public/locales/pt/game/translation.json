@@ -155,7 +155,9 @@
       "btns": {
         "special-cards": "Ver cartas especiais",
         "back": "Voltar ao jogo",
-        "burn": "Queimar carta"
+        "burn": "Queimar",
+        "burn-selected_one": "Queimar {{count}} carta",
+        "burn-selected_other": "Queimar {{count}} cartas"
       },
       "tabs": {
         "full-deck": "Baralho",
