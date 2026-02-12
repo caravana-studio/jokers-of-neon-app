@@ -211,6 +211,13 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
 
     if (!isSmallScreen) {
       items.push({
+        icon: Icons.LIST,
+        url: "/docs",
+        active: url === "/docs",
+        key: "docs",
+      });
+
+      items.push({
         icon: Icons.SETTINGS,
         url: "/settings",
         active: url === "/settings",
