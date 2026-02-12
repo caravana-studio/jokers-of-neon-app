@@ -137,7 +137,12 @@ export const SpecialCardsRow = () => {
                       isSmallScreen && highlightCard(card);
                     }}
                   >
-                    <CardImage3D card={card} height={`${cardHeight}px`} small />
+                    <CardImage3D
+                      card={card}
+                      height={`${cardHeight}px`}
+                      small
+                      showCumulativeProgress
+                    />
                   </Box>
                 </Box>
               </AnimatedParticleCard>
