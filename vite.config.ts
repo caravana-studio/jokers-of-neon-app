@@ -1,3 +1,5 @@
+import fs from "node:fs";
+import { execSync } from "node:child_process";
 import path from "node:path";
 import type { IncomingMessage } from "node:http";
 import { fileURLToPath } from "node:url";
@@ -13,10 +15,69 @@ type BuildTarget = "main" | "standaloneShop" | "all";
 const rootDir = fileURLToPath(new URL(".", import.meta.url));
 const indexHtml = path.resolve(rootDir, "index.html");
 const standaloneShopHtml = path.resolve(rootDir, "standalone-shop.html");
+const localCertDir = path.resolve(rootDir, ".cert");
+
+const ensureLocalHttpsCert = () => {
+  const keyFilePath = path.resolve(localCertDir, "localhost-key.pem");
+  const certFilePath = path.resolve(localCertDir, "localhost.pem");
+
+  if (fs.existsSync(keyFilePath) && fs.existsSync(certFilePath)) {
+    return { keyFilePath, certFilePath };
+  }
+
+  fs.mkdirSync(localCertDir, { recursive: true });
+
+  try {
+    execSync(
+      [
+        "openssl req -x509 -newkey rsa:2048 -nodes -sha256 -days 365",
+        `-keyout "${keyFilePath}"`,
+        `-out "${certFilePath}"`,
+        '-subj "/CN=localhost"',
+        '-addext "subjectAltName=DNS:localhost,IP:127.0.0.1,IP:::1"',
+      ].join(" "),
+      { stdio: "ignore" },
+    );
+  } catch (error) {
+    console.error(error);
+    throw new Error(
+      "Failed to generate local HTTPS certificate. Set VITE_DEV_SSL_KEY_PATH and VITE_DEV_SSL_CERT_PATH manually."
+    );
+  }
+
+  return { keyFilePath, certFilePath };
+};
+
+const resolveHttpsServerConfig = () => {
+  const isHttpsEnabled = process.env.VITE_DEV_HTTPS === "true";
+  if (!isHttpsEnabled) {
+    return undefined;
+  }
+
+  const keyPath = process.env.VITE_DEV_SSL_KEY_PATH;
+  const certPath = process.env.VITE_DEV_SSL_CERT_PATH;
+
+  if (keyPath && certPath) {
+    const resolvedKeyPath = path.resolve(rootDir, keyPath);
+    const resolvedCertPath = path.resolve(rootDir, certPath);
+
+    return {
+      key: fs.readFileSync(resolvedKeyPath),
+      cert: fs.readFileSync(resolvedCertPath),
+    };
+  }
+
+  const { keyFilePath, certFilePath } = ensureLocalHttpsCert();
+  return {
+    key: fs.readFileSync(keyFilePath),
+    cert: fs.readFileSync(certFilePath),
+  };
+};
 
 const createConfig = (target: BuildTarget): UserConfig => {
   const isStandaloneShop = target === "standaloneShop";
   const isAll = target === "all";
+  const https = resolveHttpsServerConfig();
   const config: UserConfig = {
     base: "./",
     plugins: [react(), wasm(), topLevelAwait(), svgx()],
@@ -32,12 +93,25 @@ const createConfig = (target: BuildTarget): UserConfig => {
     },
   };
 
+  if (https) {
+    config.server = {
+      ...config.server,
+      https,
+    };
+    config.preview = {
+      ...config.preview,
+      https,
+    };
+  }
+
   if (isStandaloneShop) {
     config.appType = "mpa";
     config.server = {
+      ...config.server,
       open: "/",
     };
     config.preview = {
+      ...config.preview,
       open: "/",
     };
     config.plugins?.push(htmlFallbackPlugin("/standalone-shop.html"));

@@ -428,3 +428,4 @@ yarn-error.log*
 # Capacitor
 android/my-release-key.keystore
 android/app/my-release-key.keystore
+.cert/
