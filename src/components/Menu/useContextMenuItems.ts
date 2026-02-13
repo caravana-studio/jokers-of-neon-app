@@ -18,6 +18,7 @@ export const mainMenuUrls = [
   "/my-games",
   "/tournament",
   "/profile",
+  "/docs",
   "/settings",
   "/leaderboard",
   "/gameover/:gameId",
@@ -35,7 +36,7 @@ export const gameUrls = [
   "/preview/:type",
   "/loot-box-cards-selection",
   "/manage",
-  "/docs",
+  "/docs-game",
   "/deck",
   "/plays",
   "/settings-game",
@@ -293,8 +294,8 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
     },
     {
       icon: Icons.LIST,
-      url: "/docs",
-      active: url === "/docs",
+      url: "/docs-game",
+      active: url === "/docs-game",
       key: "docs",
     },
     {

@@ -85,6 +85,14 @@ export const getPageConfig = (
       }),
     },
     {
+      path: "/docs-game",
+      getPageInfo: ({ tGame, match }) => ({
+        name: tGame("game-menu.pages.docs"),
+        icon: Icons.LIST,
+        url: match.pathname,
+      }),
+    },
+    {
       path: "/my-games",
       getPageInfo: ({ tGame, match }) => ({
         name: tGame("game-menu.pages.my-games"),
