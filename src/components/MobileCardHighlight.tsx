@@ -146,9 +146,7 @@ export const MobileCardHighlight = ({
       backdropFilter="blur(5px)"
       backgroundColor=" rgba(0, 0, 0, 0.5)"
       gap={temporaryPrice ? 2 : 4}
-      onClick={() => {
-        onClose();
-      }}
+      onClick={handleBackdropClick}
     >
       {confirmationModalOpen && (
         <ConfirmationModal
@@ -185,7 +183,11 @@ export const MobileCardHighlight = ({
         position={"relative"}
         transform={`scale(${scale})`}
         transition="all 0.5s ease"
-        onClick={(e) => e.stopPropagation()}
+        onClick={(e) => {
+          if (e.target !== e.currentTarget) {
+            e.stopPropagation();
+          }
+        }}
       >
         {!animation ? (
           <CardImage3D card={card} hideTooltip small={false} />
