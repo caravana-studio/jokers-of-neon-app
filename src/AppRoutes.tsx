@@ -382,9 +382,7 @@ export const AppRoutes = () => {
         element={
           <CardHighlightProvider>
             <AnimatedPage>
-              <GameStoreLoader>
-                <DocsPage lastIndexTab={0} />
-              </GameStoreLoader>
+              <DocsPage lastIndexTab={0} />
             </AnimatedPage>
           </CardHighlightProvider>
         }
