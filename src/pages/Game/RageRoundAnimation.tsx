@@ -5,7 +5,14 @@ import {
   Heading,
   Text,
 } from "@chakra-ui/react";
-import { ChangeEvent, useCallback, useEffect, useMemo, useState } from "react";
+import {
+  ChangeEvent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { animated, useSpring } from "@react-spring/web";
 import { useTranslation } from "react-i18next";
 import { CardImage3D } from "../../components/CardImage3D";
@@ -13,6 +20,7 @@ import CachedImage from "../../components/CachedImage";
 import { AUTO_SKIP_RAGE_ROUND_SCREEN } from "../../constants/localStorage";
 import { useCardData } from "../../providers/CardDataProvider";
 import { useAnimationStore } from "../../state/useAnimationStore";
+import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { Card } from "../../types/Card";
 import { useGameStore } from "../../state/useGameStore";
 
@@ -32,7 +40,11 @@ export const RageRoundAnimation = () => {
   const [showDescriptions, setShowDescriptions] = useState(false);
   const [showFooter, setShowFooter] = useState(false);
   const [hoveredCardKey, setHoveredCardKey] = useState<string | null>(null);
+  const [viewportWidth, setViewportWidth] = useState<number>(() =>
+    typeof window !== "undefined" ? window.innerWidth : 390
+  );
   const { t } = useTranslation("game");
+  const { isSmallScreen } = useResponsiveValues();
 
   const { showRages, showSpecials } = useGameStore();
 
@@ -40,6 +52,8 @@ export const RageRoundAnimation = () => {
     useAnimationStore();
 
   const { isRageRound, rageCards } = useGameStore();
+  const descriptionsContainerRef = useRef<HTMLDivElement | null>(null);
+  const descriptionItemRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   const { getCardData } = useCardData();
 
@@ -73,6 +87,45 @@ export const RageRoundAnimation = () => {
         ),
     [getCardData, rageCards]
   );
+
+  const rageCardsLayout = useMemo(() => {
+    const cardsCount = Math.max(rageCardsInfo.length, 1);
+    const rowMaxWidthPx = isSmallScreen
+      ? Math.max(viewportWidth - 32, 260)
+      : Math.max(Math.min(viewportWidth * 0.8, 980), 640);
+    const cardHeightPx = isSmallScreen ? 138 : 218;
+    const estimatedCardWidthPx = Math.round(
+      cardHeightPx * (isSmallScreen ? 0.72 : 0.74)
+    );
+    const baseGapPx = isSmallScreen ? 10 : 14;
+    const rawRowWidthPx =
+      cardsCount * estimatedCardWidthPx + (cardsCount - 1) * baseGapPx;
+    const overflowPx = Math.max(rawRowWidthPx - rowMaxWidthPx, 0);
+    const overlapPx =
+      cardsCount > 1
+        ? Math.min(
+            estimatedCardWidthPx * 0.88,
+            overflowPx / (cardsCount - 1)
+          )
+        : 0;
+
+    return {
+      cardHeightPx,
+      cardWidthPx: estimatedCardWidthPx,
+      overlapPx,
+      stepPx: baseGapPx - overlapPx,
+    };
+  }, [isSmallScreen, rageCardsInfo.length, viewportWidth]);
+
+  const activeHoveredCardKey = useMemo(() => {
+    if (!hoveredCardKey) {
+      return null;
+    }
+
+    return rageCardsInfo.some((card) => card.key === hoveredCardKey)
+      ? hoveredCardKey
+      : null;
+  }, [hoveredCardKey, rageCardsInfo]);
 
   const titleSpring = useSpring({
     x: showTitle ? (isClosing ? 240 : 0) : -240,
@@ -178,6 +231,61 @@ export const RageRoundAnimation = () => {
   }, [isVisible, resetSequence]);
 
   useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    const updateViewportWidth = () => {
+      setViewportWidth(window.innerWidth);
+    };
+
+    updateViewportWidth();
+    window.addEventListener("resize", updateViewportWidth);
+    return () => window.removeEventListener("resize", updateViewportWidth);
+  }, []);
+
+  const scrollDescriptionIntoView = useCallback((cardKey: string) => {
+    const tryScroll = () => {
+      const container = descriptionsContainerRef.current;
+      const target = descriptionItemRefs.current[cardKey];
+      if (!container || !target) {
+        return false;
+      }
+
+      const margin = 10;
+      const containerRect = container.getBoundingClientRect();
+      const targetRect = target.getBoundingClientRect();
+      const maxScrollTop = container.scrollHeight - container.clientHeight;
+      let nextScrollTop = container.scrollTop;
+
+      const isAbove = targetRect.top < containerRect.top + margin;
+      const isBelow = targetRect.bottom > containerRect.bottom - margin;
+
+      if (isAbove) {
+        const deltaUp = targetRect.top - containerRect.top - margin;
+        nextScrollTop = Math.max(0, container.scrollTop + deltaUp);
+      } else if (isBelow) {
+        const deltaDown = targetRect.bottom - containerRect.bottom + margin;
+        nextScrollTop = Math.min(maxScrollTop, container.scrollTop + deltaDown);
+      } else {
+        return true;
+      }
+
+      container.scrollTo({
+        top: nextScrollTop,
+        behavior: "smooth",
+      });
+      return true;
+    };
+
+    if (!tryScroll()) {
+      requestAnimationFrame(() => {
+        tryScroll();
+      });
+    }
+  }, []);
+
+  useEffect(() => {
     if (!isVisible || isClosing || !autoSkip) {
       return;
     }
@@ -223,7 +331,7 @@ export const RageRoundAnimation = () => {
       backgroundColor="rgba(0, 0, 0, 0.82)"
       px={{ base: 4, md: 8 }}
       py={{ base: 6, md: 8 }}
-      overflowY="auto"
+      overflow="hidden"
     >
       <Flex
         width="100%"
@@ -245,34 +353,60 @@ export const RageRoundAnimation = () => {
           {rageCardsInfo.length > 0 && (
             <Flex
               width="100%"
+              maxW={{ base: "100%", md: "80%" }}
+              mx="auto"
               justifyContent="center"
-              gap={{ base: 2, md: 4 }}
-              wrap="wrap"
+              alignItems="flex-end"
+              wrap="nowrap"
+              overflow="visible"
+              pt={rageCardsLayout.overlapPx > 0 ? 3 : 0}
+              onMouseLeave={() => setHoveredCardKey(null)}
             >
-              {rageCardsInfo.map((card) => {
-                const cardIsHovered = hoveredCardKey === card.key;
-                const dimmed = !!hoveredCardKey && !cardIsHovered;
+              {rageCardsInfo.map((card, index) => {
+                const cardIsHovered = activeHoveredCardKey === card.key;
+                const dimmed = !!activeHoveredCardKey && !cardIsHovered;
+                const defaultShadow = isSmallScreen
+                  ? "0px 0px 8px 1px rgba(255, 0, 0, 0.28)"
+                  : "0px 0px 14px 2px rgba(255, 0, 0, 0.38)";
+                const hoverShadow = isSmallScreen
+                  ? "0px 0px 14px 3px rgba(255, 0, 0, 0.52)"
+                  : "0px 0px 28px 8px rgba(255, 0, 0, 0.85)";
 
                 return (
                   <Flex
                     key={card.key}
                     flexDirection="column"
                     alignItems="center"
-                    maxW={{ base: "128px", md: "184px" }}
+                    ml={index === 0 ? 0 : `${rageCardsLayout.stepPx}px`}
                     opacity={dimmed ? 0.35 : 1}
                     transition="all 0.18s ease"
-                    onClick={(event) => event.stopPropagation()}
-                    onMouseEnter={() => setHoveredCardKey(card.key)}
-                    onMouseLeave={() => setHoveredCardKey(null)}
+                    zIndex={cardIsHovered ? 100 : index + 1}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      if (isSmallScreen) {
+                        setHoveredCardKey((current) => {
+                          const next = current === card.key ? null : card.key;
+                          if (next) {
+                            scrollDescriptionIntoView(next);
+                          }
+                          return next;
+                        });
+                      }
+                    }}
+                    onMouseEnter={() => {
+                      if (!isSmallScreen) {
+                        setHoveredCardKey(card.key);
+                        scrollDescriptionIntoView(card.key);
+                      }
+                    }}
+                    onMouseLeave={() => !isSmallScreen && setHoveredCardKey(null)}
                   >
                     <Box
                       borderRadius="10px"
                       overflow="visible"
                       display="inline-flex"
                       boxShadow={
-                        cardIsHovered
-                          ? "0px 0px 28px 8px rgba(255, 0, 0, 0.85)"
-                          : "0px 0px 14px 2px rgba(255, 0, 0, 0.38)"
+                        dimmed ? "none" : cardIsHovered ? hoverShadow : defaultShadow
                       }
                       transition="box-shadow 0.2s ease, opacity 0.2s ease"
                     >
@@ -280,8 +414,10 @@ export const RageRoundAnimation = () => {
                         card={card.card}
                         hideTooltip
                         small
-                        height="198px"
-                        width="auto"
+                        height={`${rageCardsLayout.cardHeightPx}px`}
+                        width={
+                          isSmallScreen ? `${rageCardsLayout.cardWidthPx}px` : "auto"
+                        }
                       />
                     </Box>
                   </Flex>
@@ -293,20 +429,43 @@ export const RageRoundAnimation = () => {
 
         <animated.div style={{ ...descriptionsSpring, width: "100%" }}>
           <Flex
+            ref={descriptionsContainerRef}
             width="100%"
             maxW="860px"
+            mx="auto"
             flexDirection="column"
             gap={3}
             mb={destroyedSpecialCardId ? 0 : 2}
+            maxH={{ base: "32vh", md: "40vh" }}
+            overflowY="scroll"
+            px={2}
+            py={2}
+            minH={0}
+            alignSelf="center"
+            onClick={(event) => event.stopPropagation()}
+            onTouchStart={(event) => event.stopPropagation()}
+            onTouchMove={(event) => event.stopPropagation()}
+            onTouchEnd={(event) => event.stopPropagation()}
+            onWheel={(event) => event.stopPropagation()}
+            onMouseLeave={() => setHoveredCardKey(null)}
+            sx={{
+              touchAction: "auto",
+              WebkitOverflowScrolling: "touch",
+              overscrollBehavior: "contain",
+              scrollPaddingBlock: "10px",
+            }}
           >
             {rageCardsInfo.length > 0 ? (
               rageCardsInfo.map((card) => {
-                const cardIsHovered = hoveredCardKey === card.key;
-                const dimmed = !!hoveredCardKey && !cardIsHovered;
+                const cardIsHovered = activeHoveredCardKey === card.key;
+                const dimmed = !!activeHoveredCardKey && !cardIsHovered;
 
                 return (
                   <Box
                     key={`${card.key}-description`}
+                    ref={(node) => {
+                      descriptionItemRefs.current[card.key] = node;
+                    }}
                     border={
                       cardIsHovered
                         ? "1px solid rgba(255, 95, 95, 0.95)"
@@ -323,9 +482,18 @@ export const RageRoundAnimation = () => {
                         : "none"
                     }
                     transition="all 0.2s ease"
-                    onClick={(event) => event.stopPropagation()}
-                    onMouseEnter={() => setHoveredCardKey(card.key)}
-                    onMouseLeave={() => setHoveredCardKey(null)}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      if (isSmallScreen) {
+                        setHoveredCardKey((current) =>
+                          current === card.key ? null : card.key
+                        );
+                      }
+                    }}
+                    onMouseEnter={() =>
+                      !isSmallScreen && setHoveredCardKey(card.key)
+                    }
+                    onMouseLeave={() => !isSmallScreen && setHoveredCardKey(null)}
                   >
                     <Text fontWeight="700" mb={1}>
                       {card.name}
