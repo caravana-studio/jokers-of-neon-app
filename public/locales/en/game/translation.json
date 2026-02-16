@@ -156,7 +156,9 @@
       "btns": {
         "special-cards": "See special cards",
         "back": "Back to game",
-        "burn": "Burn card"
+        "burn": "Burn",
+        "burn-selected_one": "Burn {{count}} card",
+        "burn-selected_other": "Burn {{count}} cards"
       },
       "tabs": {
         "full-deck": "Full deck",

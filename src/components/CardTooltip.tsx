@@ -10,15 +10,21 @@ import { colorizeText } from "../utils/getTooltip";
 
 interface ICardTooltipProps extends PropsWithChildren {
   card: Card;
+  showCumulativeProgress?: boolean;
 }
 
-export const CardTooltip = ({ card, children }: ICardTooltipProps) => {
+export const CardTooltip = ({
+  card,
+  children,
+  showCumulativeProgress = false,
+}: ICardTooltipProps) => {
   const { getCardData } = useCardData();
 
   const modifiedCard = useTransformedCard(card);
 
   const { name, description, rarity, creator } = getCardData(
-    modifiedCard.card_id ?? 0
+    modifiedCard.card_id ?? 0,
+    { showCumulativeProgress }
   );
   const { t } = useTranslation("cards");
 

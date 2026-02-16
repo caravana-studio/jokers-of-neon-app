@@ -64,6 +64,12 @@ export const DeckPageContent = ({ state }: DeckPageContentProps) => {
     return calculateBurnCost(cardsToBurn.length, firstCardCost, regularCost);
   }, [cardsToBurn.length, firstCardCost, regularCost]);
 
+  const burnButtonLabel = (
+    cardsToBurn.length > 0
+      ? t("btns.burn-selected", { count: cardsToBurn.length })
+      : t("btns.burn")
+  ).toUpperCase();
+
   return (
     <Flex
       w="100%"
@@ -98,8 +104,7 @@ export const DeckPageContent = ({ state }: DeckPageContentProps) => {
               locked
             }
           >
-            {t("btns.burn").toUpperCase()}
-            {cardsToBurn.length > 0 && ` ${cardsToBurn.length} ${cardsToBurn.length === 1 ? "card" : "cards"}`}
+            {burnButtonLabel}
             <Flex ml={3} mr={1}>
               <CashSymbol />
             </Flex>

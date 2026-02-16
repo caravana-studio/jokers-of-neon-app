@@ -20,13 +20,17 @@ import { Card } from "../types/Card.ts";
 import { CardData } from "../types/CardData.ts";
 
 interface CardDataContextType {
-  getCardData: (id: number) => CardData;
+  getCardData: (id: number, options?: GetCardDataOptions) => CardData;
   getLootBoxData: (id: number) => CardData;
   refetchSpecialCardsData: (
     modId: string,
     gameId: number,
     specialCards: Card[]
   ) => {};
+}
+
+interface GetCardDataOptions {
+  showCumulativeProgress?: boolean;
 }
 
 const CardDataContext = createContext<CardDataContextType | undefined>(
@@ -39,6 +43,11 @@ interface CardDataProviderProps {
 
 const animationFolder = "/spine-animations/";
 const animationPrefix = "loot_box_";
+const CUMULATIVE_PROGRESS_SUFFIX_REGEX =
+  /\s+(?:Currently(?:\s+at)?|Actualmente|Atualmente)\b[\s\S]*$/i;
+
+const stripCumulativeProgressSuffix = (description: string) =>
+  description.replace(CUMULATIVE_PROGRESS_SUFFIX_REGEX, "").trimEnd();
 
 export const CardDataProvider = ({ children }: CardDataProviderProps) => {
   const { t } = useTranslation("cards");
@@ -87,7 +96,7 @@ export const CardDataProvider = ({ children }: CardDataProviderProps) => {
     };
   };
 
-  const getCardData = (cardId: number) => {
+  const getCardData = (cardId: number, options?: GetCardDataOptions) => {
     const isTraditional = cardId < 100;
     const isNeon = cardId >= 200 && cardId < 300;
     const isRage = cardId >= 20000 && cardId < 30000;
@@ -107,13 +116,19 @@ export const CardDataProvider = ({ children }: CardDataProviderProps) => {
       const price = SPECIALS_PRICE[rarity];
       const creator = SPECIALS_CREATORS[cardId];
       const cardData = cumulativeCardsData[cardId];
+      const isCumulative = SPECIALS_CUMULATIVE.includes(cardId);
+      const showCumulativeProgress = options?.showCumulativeProgress ?? false;
+      const description = t(`specials.${cardId}.description`, {
+        points: cardData?.points,
+        multi: cardData?.multi,
+        cash: cardData?.cash,
+      });
       return {
         name: t(`specials.${cardId}.name`),
-        description: t(`specials.${cardId}.description`, {
-          points: cardData?.points,
-          multi: cardData?.multi,
-          cash: cardData?.cash,
-        }),
+        description:
+          isCumulative && !showCumulativeProgress
+            ? stripCumulativeProgressSuffix(description)
+            : description,
         rarity,
         price,
         type: CardTypes.SPECIAL,
