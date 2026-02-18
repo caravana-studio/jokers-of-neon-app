@@ -15,10 +15,14 @@ fi
 
 # instala deps (mejor que npm i)
 npm ci || npm install
-
 '''
 
 [[actions]]
 name = "Run"
 icon = "run"
 command = "npm run dev"
+
+[[actions]]
+name = "run:https"
+icon = "tool"
+command = "npm run dev:https"

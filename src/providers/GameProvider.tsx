@@ -1,4 +1,10 @@
-import { PropsWithChildren, createContext, useContext, useEffect } from "react";
+import {
+  PropsWithChildren,
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+} from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { AccountInterface } from "starknet";
 import { createGame } from "../api/createGame.ts";
@@ -30,7 +36,16 @@ import { Card } from "../types/Card";
 import { PlayEvents } from "../types/ScoreData";
 import { logEvent } from "../utils/analytics.ts";
 import { getPlayAnimationDuration } from "../utils/getPlayAnimationDuration.ts";
+import { isCardSilent } from "../utils/isCardSilent.ts";
+import {
+  OptimisticAnimationController,
+  animateOptimisticCardPlay,
+} from "../utils/playEvents/animateOptimisticCardPlay.ts";
 import { animatePlayDiscard } from "../utils/playEvents/animatePlayDiscard.ts";
+import { buildOptimisticCardPlayEvents } from "../utils/playEvents/buildOptimisticCardPlayEvents.ts";
+import { buildOptimisticPowerUpEvents } from "../utils/playEvents/buildOptimisticPowerUpEvents.ts";
+import { filterOptimisticEventsFromPlayEvents } from "../utils/playEvents/filterOptimisticEventsFromPlayEvents.ts";
+import { filterSilentCardEventsFromPlayEvents } from "../utils/playEvents/filterSilentCardEventsFromPlayEvents.ts";
 import { useCardData } from "./CardDataProvider.tsx";
 import { gameProviderDefaults } from "./gameProviderDefaults.ts";
 import { useSettings } from "./SettingsProvider.tsx";
@@ -92,6 +107,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     resetRage,
     removeSpecialCard,
     rageCards,
+    debuffedPlayerHands,
+    powerUps,
     resetPowerUps,
     preSelectedPowerUps,
     refetchPowerUps: doRefetchPowerUps,
@@ -115,6 +132,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     replaceCards,
     refetchCurrentHandStore,
     preSelectedCards,
+    preSelectedPlay,
     preSelectedModifiers,
     clearPreSelection,
     setPreSelectionLocked,
@@ -175,6 +193,9 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setAnimatedPowerUp,
     setanimateSpecialCardDefault,
   } = useCardAnimations();
+  const playAnimationQueueRef = useRef<Promise<void>>(Promise.resolve());
+  const activeOptimisticAnimationRef =
+    useRef<OptimisticAnimationController | null>(null);
 
   const resetLevel = () => {
     setRoundRewards(undefined);
@@ -281,14 +302,27 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     doRefetchPowerUps(client, gameId);
   };
 
-  const handlePlaySuccess = (
+  const handlePlaySideEffects = (response: PlayEvents) => {
+    fetchDeck(client, gameId, getCardData);
+    refetchDebuffedPlayerHands(client, gameId);
+    refetchSpecialCardsData(modId, gameId, specialCards);
+    if (response.levelPassed && response.detailEarned) {
+      response.levelPassed.level_passed > 0 && advanceLevel();
+      response.detailEarned.rerolls &&
+        addRerolls(response.detailEarned.rerolls);
+    }
+  };
+
+  const runResolvedPlayAnimation = (
     response: PlayEvents,
-    setAnimation: (playing: boolean) => void
-  ) => {
+    setAnimation: (playing: boolean) => void,
+    pitchState?: { index: number }
+  ): number => {
     console.log("events", response);
-    animatePlayDiscard({
+    return animatePlayDiscard({
       playEvents: response,
       playAnimationDuration,
+      pitchState,
       setPlayIsNeon,
       setAnimatedCard,
       setAnimatedPowerUp,
@@ -322,14 +356,29 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       clearRoundSound,
       clearLevelSound,
     });
-    fetchDeck(client, gameId, getCardData);
-    refetchDebuffedPlayerHands(client, gameId);
-    refetchSpecialCardsData(modId, gameId, specialCards);
-    if (response.levelPassed && response.detailEarned) {
-      response.levelPassed.level_passed > 0 && advanceLevel();
-      response.detailEarned.rerolls &&
-        addRerolls(response.detailEarned.rerolls);
-    }
+  };
+
+  const queueResolvedPlayAnimation = (
+    response: PlayEvents,
+    setAnimation: (playing: boolean) => void,
+    pitchState?: { index: number }
+  ) => {
+    playAnimationQueueRef.current = playAnimationQueueRef.current
+      .catch(() => undefined)
+      .then(() => {
+        const animationDuration = runResolvedPlayAnimation(
+          response,
+          setAnimation,
+          pitchState
+        );
+        if (animationDuration <= 0) {
+          return Promise.resolve();
+        }
+
+        return new Promise<void>((resolve) => {
+          setTimeout(() => resolve(), animationDuration);
+        });
+      });
   };
 
   const handlePlayAction = ({
@@ -348,7 +397,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     action()
       .then((response) => {
         if (response) {
-          handlePlaySuccess(response, setAnimation);
+          runResolvedPlayAnimation(response, setAnimation);
+          handlePlaySideEffects(response);
         } else {
           rollback();
           setPreSelectionLocked(false);
@@ -362,18 +412,96 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   };
 
   const onPlayClick = () => {
-    handlePlayAction({
-      action: () =>
-        play(
-          gameId,
-          preSelectedCards,
-          preSelectedModifiers,
-          preSelectedPowerUps
-        ),
-      setAnimation: setPlayAnimation,
-      onStateChange: statePlay,
-      rollback: rollbackPlay,
+    const handByIdx = new Map(hand.map((card) => [card.idx, card]));
+    const isDebuffedPlay = debuffedPlayerHands.includes(preSelectedPlay);
+    const nonAnimatedCardIndexes = new Set(
+      preSelectedCards.filter((cardIdx) => {
+        const card = handByIdx.get(cardIdx);
+        if (!card) {
+          return false;
+        }
+
+        return isCardSilent(card, rageCards);
+      })
+    );
+    if (isDebuffedPlay) {
+      preSelectedCards.forEach((cardIdx) => nonAnimatedCardIndexes.add(cardIdx));
+    }
+
+    const playPitchState = { index: 0 };
+
+    const optimisticCardPlayEvents = buildOptimisticCardPlayEvents({
+      hand,
+      preSelectedCards,
+      specialCards,
+      preSelectedModifiers,
+      silentCardIndexes: nonAnimatedCardIndexes,
     });
+    const optimisticPowerUpEvents = buildOptimisticPowerUpEvents({
+      preSelectedPowerUps,
+      powerUps,
+    });
+
+    const optimisticAnimation = animateOptimisticCardPlay({
+      events: optimisticCardPlayEvents,
+      powerUpEvents: optimisticPowerUpEvents,
+      playAnimationDuration,
+      pitchState: playPitchState,
+      setAnimatedCard,
+      setAnimatedPowerUp,
+      pointsSound,
+      negativeMultiSound,
+      addPoints,
+      addMulti,
+    });
+
+    activeOptimisticAnimationRef.current = optimisticAnimation;
+    playAnimationQueueRef.current = optimisticAnimation.done;
+    optimisticAnimation.done.finally(() => {
+      if (activeOptimisticAnimationRef.current === optimisticAnimation) {
+        activeOptimisticAnimationRef.current = null;
+      }
+    });
+
+    setPreSelectionLocked(true);
+    statePlay();
+
+    play(gameId, preSelectedCards, preSelectedModifiers, preSelectedPowerUps)
+      .then((response) => {
+        if (response) {
+          const dedupedResponse = filterOptimisticEventsFromPlayEvents(
+            response,
+            optimisticCardPlayEvents,
+            optimisticPowerUpEvents
+          );
+          const filteredResponse = filterSilentCardEventsFromPlayEvents(
+            dedupedResponse,
+            nonAnimatedCardIndexes
+          );
+
+          queueResolvedPlayAnimation(
+            filteredResponse,
+            setPlayAnimation,
+            playPitchState
+          );
+          handlePlaySideEffects(response);
+        } else {
+          activeOptimisticAnimationRef.current?.cancel();
+          activeOptimisticAnimationRef.current = null;
+          playAnimationQueueRef.current = Promise.resolve();
+          rollbackPlay();
+          setPreSelectionLocked(false);
+          clearPreSelection();
+        }
+      })
+      .catch(() => {
+        activeOptimisticAnimationRef.current?.cancel();
+        activeOptimisticAnimationRef.current = null;
+        playAnimationQueueRef.current = Promise.resolve();
+        rollbackPlay();
+        setPreSelectionLocked(false);
+        clearPreSelection();
+      });
   };
 
   const onDiscardClick = () => {
