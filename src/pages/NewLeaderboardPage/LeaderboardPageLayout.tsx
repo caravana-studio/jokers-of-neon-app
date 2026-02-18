@@ -9,6 +9,7 @@ import { XpLeaderboard } from "../../components/XpLeaderboard";
 import { Tab, TabPattern } from "../../patterns/tabs/TabPattern";
 import { useTournamentSettings } from "../../queries/useTournamentSettings";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
+import { GameLeaderboardTab } from "./GameLeaderboardTab";
 import { Podium } from "./Podium";
 import { SeePrizesSwitcher } from "./SeePrizesSwitcher";
 
@@ -67,6 +68,7 @@ export const LeaderboardPageLayout = ({
                     zIndex={10}
                     flexDir={"column"}
                     alignItems={"center"}
+                    justifyContent={isSmallScreen ? "flex-start" : "center"}
                     h={isSmallScreen ? "unset" : "100%"}
                   >
                     <Podium seePrizes={seePrizes} isTournamentLeaderboard />
@@ -92,24 +94,7 @@ export const LeaderboardPageLayout = ({
         ]
       : []),
     <Tab key="game" title={t("tabs.game-leaderboard")}>
-      <Flex w="100%" h="100%" flexDir="column" alignItems="center">
-        <Flex flexDir="column" w="70%" h="100%" alignItems={"center"}>
-          <Flex
-            minH={0}
-            flexGrow={1}
-            flexDir="column"
-            w="100%"
-            alignItems={"center"}
-            justifyContent={"center"}
-          >
-            <Leaderboard
-              lines={100}
-              mb={isSmallScreen ? "100px" : "200px"}
-              isTournamentLeaderboard={false}
-            />
-          </Flex>
-        </Flex>
-      </Flex>
+      <GameLeaderboardTab isSmallScreen={isSmallScreen} />
     </Tab>,
     <Tab key="xp" title={t("tabs.xp-leaderboard")}>
       <Flex

@@ -30,7 +30,7 @@ export const Podium = ({ seePrizes = false, isTournamentLeaderboard = false }: P
   return (
     <Flex
       w={isSmallScreen ? "220px" : "400px"}
-      mt={6}
+      mt={isSmallScreen ? 6 : "-100px"}
       alignItems="center"
       justifyContent="center"
       position="relative"

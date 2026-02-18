@@ -70,7 +70,7 @@ export const SidebarMenu = () => {
         w="100%"
       >
         {(!inGame ? mainMenuItems : inGameMenuItems).map((item) => (
-          <ContextMenuItem {...item} pulse={item.pulse} />
+          <ContextMenuItem {...item} nameKey={item.key} pulse={item.pulse} />
         ))}
 
         {inGame && (
@@ -88,6 +88,7 @@ export const SidebarMenu = () => {
                       <Box w="100%">
                         <ContextMenuItem
                           {...item}
+                          nameKey={item.key}
                           onClick={handleDailyMissionsClick}
                         />
                       </Box>
@@ -98,7 +99,11 @@ export const SidebarMenu = () => {
 
               return (
                 <Box key={item.key} w="100%">
-                  <ContextMenuItem {...item} onClick={item.onClick} />
+                  <ContextMenuItem
+                    {...item}
+                    nameKey={item.key}
+                    onClick={item.onClick}
+                  />
                 </Box>
               );
             })}
