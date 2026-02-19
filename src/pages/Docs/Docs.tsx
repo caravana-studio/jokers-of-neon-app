@@ -5,6 +5,7 @@ import { getUserCards } from "../../api/getUserCards";
 import { DelayedLoading } from "../../components/DelayedLoading";
 import { MobileCardHighlight } from "../../components/MobileCardHighlight";
 import { MODIFIERS_RARITY } from "../../data/modifiers";
+import { fetchCardsConfig } from "../../dojo/queries/getCardsConfig";
 import { useDojo } from "../../dojo/useDojo";
 import { Tab, TabPattern } from "../../patterns/tabs/TabPattern";
 import { useCardHighlight } from "../../providers/HighlightProvider/CardHighlightProvider";
@@ -25,7 +26,8 @@ export const DocsPage: React.FC<DocsProps> = ({ lastIndexTab = 0 }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [myCollection, setMyCollection] = useState<Collection[]>([]);
 
-  const { modCardsConfig } = useGameStore();
+  const { modCardsConfig, modId } = useGameStore();
+  const [docsModCardsConfig, setDocsModCardsConfig] = useState(modCardsConfig);
 
   const { isSmallScreen } = useResponsiveValues();
 
@@ -33,8 +35,35 @@ export const DocsPage: React.FC<DocsProps> = ({ lastIndexTab = 0 }) => {
 
   const {
     account: { account },
-    setup: { useBurnerAcc },
+    setup: { useBurnerAcc, client },
   } = useDojo();
+
+  useEffect(() => {
+    if (modCardsConfig) {
+      setDocsModCardsConfig(modCardsConfig);
+    }
+  }, [modCardsConfig]);
+
+  useEffect(() => {
+    if (modCardsConfig || !client || !modId) return;
+
+    let isMounted = true;
+    fetchCardsConfig(client, modId)
+      .then((config) => {
+        if (isMounted) {
+          setDocsModCardsConfig(config);
+        }
+      })
+      .catch(() => {
+        if (isMounted) {
+          setDocsModCardsConfig(undefined);
+        }
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [client, modCardsConfig, modId]);
 
   useEffect(() => {
     if (useBurnerAcc) {
@@ -47,6 +76,9 @@ export const DocsPage: React.FC<DocsProps> = ({ lastIndexTab = 0 }) => {
       });
     }
   }, [account.address, useBurnerAcc]);
+
+  const specialCardsIds = docsModCardsConfig?.specialCardsIds ?? [];
+  const rageCardsIds = docsModCardsConfig?.rageCardsIds ?? [];
 
   return (
     <DelayedLoading>
@@ -107,19 +139,19 @@ export const DocsPage: React.FC<DocsProps> = ({ lastIndexTab = 0 }) => {
                     {t("base-cards")}
                   </Heading>
                   <Text ml={2} fontSize="8px" color="gray.400">
-                    ({modCardsConfig?.specialCardsIds?.length ?? ""})
+                    ({specialCardsIds.length})
                   </Text>
                 </Flex>
               )}
             </Flex>
-            <DocCardsContent cardIds={modCardsConfig?.specialCardsIds ?? []} />
+            <DocCardsContent cardIds={specialCardsIds} />
           </Flex>
         </Tab>
         <Tab title={t("labels.modifier-cards")}>
           <DocsCardsRow cardIds={Object.keys(MODIFIERS_RARITY).map(Number)} />
         </Tab>
         <Tab title={t("labels.rage-cards")}>
-          <DocsCardsRow cardIds={modCardsConfig?.rageCardsIds ?? []} />
+          <DocsCardsRow cardIds={rageCardsIds} />
         </Tab>
         <Tab title={t("labels.loot-boxes")}>
           <DocsBoxesRow />

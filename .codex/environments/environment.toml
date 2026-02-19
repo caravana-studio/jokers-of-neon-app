@@ -23,6 +23,6 @@ icon = "run"
 command = "npm run dev"
 
 [[actions]]
-name = "run:https"
+name = "Run https"
 icon = "tool"
 command = "npm run dev:https"
