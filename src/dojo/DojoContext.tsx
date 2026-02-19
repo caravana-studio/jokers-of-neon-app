@@ -12,6 +12,7 @@ import { useAccountStore } from "./accountStore";
 import { SetupResult } from "./setup";
 import { controller } from "./controller/controller";
 import { useWallet } from "./WalletContext";
+import { rpcUrl } from "../config/cartridgeUrls";
 import { LoadingScreen } from "../pages/LoadingScreen/LoadingScreen";
 
 interface DojoAccount {
@@ -67,7 +68,7 @@ const useRpcProvider = () => {
   return useMemo(
     () =>
       new RpcProvider({
-        nodeUrl: import.meta.env.VITE_RPC_URL || "http://localhost:5050",
+        nodeUrl: rpcUrl,
       }),
     []
   );
