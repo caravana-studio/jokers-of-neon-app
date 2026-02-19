@@ -26,12 +26,9 @@ npm ci || npm install
 [[actions]]
 name = "Run https"
 icon = "run"
-<<<<<<< Updated upstream
 command = "npm run dev"
 
 [[actions]]
 name = "Run https"
 icon = "tool"
-=======
->>>>>>> Stashed changes
 command = "npm run dev:https"
