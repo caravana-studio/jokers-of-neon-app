@@ -365,7 +365,7 @@ const getCardCombinations = (cards: number[], size: number): number[][] => {
   return combinations;
 };
 
-const getCardsComposingPlay = (
+export const getCardsComposingPlay = (
   hand: Card[],
   preSelectedCards: number[],
   specialCards: Card[],
@@ -410,6 +410,7 @@ const getCardsComposingPlay = (
 export interface HandResult {
   play: Plays;
   isNeon: boolean;
+  cardsComposingPlay: number[];
 }
 
 export const checkHand = (
@@ -451,6 +452,7 @@ export const checkHand = (
 
   return {
     play,
-    isNeon
+    isNeon,
+    cardsComposingPlay,
   };
 };
