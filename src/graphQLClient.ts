@@ -1,7 +1,7 @@
 import { GraphQLClient } from "graphql-request";
+import { graphqlUrl } from "./config/cartridgeUrls";
 
-const endpoint =
-  import.meta.env.VITE_GRAPHQL_URL || "http://localhost:8080/graphql";
+const endpoint = graphqlUrl;
 
 const graphQLClient = new GraphQLClient(endpoint);
 
