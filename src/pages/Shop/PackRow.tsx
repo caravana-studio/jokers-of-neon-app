@@ -31,13 +31,16 @@ interface PackRowProps {
   price?: string;
 }
 
-const PACK_SIZES = [0, 3, 3, 4, 4, 5, 10];
+const PACK_SIZES: Record<number, number> = {
+  1: 3, 2: 3, 3: 4, 4: 4, 5: 5, 6: 10,
+  21: 3, 22: 3, 23: 4, 24: 4, 25: 5, 26: 10,
+};
 
 export const PackRow = ({ packId, packageId, price }: PackRowProps) => {
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "shop.packs",
   });
-  const isLimitedEdition = packId > 4;
+  const isLimitedEdition = [5, 6, 25, 26].includes(packId);
   const { isSmallScreen } = useResponsiveValues();
   const navigate = useNavigate();
   const toast = useToast();

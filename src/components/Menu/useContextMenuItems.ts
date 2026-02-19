@@ -106,7 +106,7 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
   const hasCollectorPacks =
     !loadingDistribution &&
     !!distribution?.packs?.some(
-      (pack) => pack.packId === 5 || pack.packId === 6,
+      (pack) => [5, 6, 25, 26].includes(pack.packId),
     );
   const collectorNotificationCount = hasCollectorPacks ? 1 : 0;
   const [hasSeenPlays, setHasSeenPlays] = useState(() => {
