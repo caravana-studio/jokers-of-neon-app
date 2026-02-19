@@ -7,22 +7,31 @@ script = '''
 set -e
 
 ENV_SRC="$HOME/.config/jokers-of-neon/.env"
+CERT_SRC="$HOME/.config/jokers-of-neon/.cert"
 
 # linkea el .env compartido si no existe en el worktree
 if [ -f "$ENV_SRC" ] && [ ! -e ".env" ]; then
   ln -s "$ENV_SRC" .env || cp "$ENV_SRC" .env
 fi
 
-# instala deps (mejor que npm i)
+# linkea la carpeta .cert si existe y no está en el repo
+if [ -d "$CERT_SRC" ] && [ ! -e ".cert" ]; then
+  ln -s "$CERT_SRC" .cert || cp -R "$CERT_SRC" .cert
+fi
+
+# instala deps
 npm ci || npm install
 '''
 
 [[actions]]
-name = "Run"
+name = "Run https"
 icon = "run"
+<<<<<<< Updated upstream
 command = "npm run dev"
 
 [[actions]]
 name = "Run https"
 icon = "tool"
+=======
+>>>>>>> Stashed changes
 command = "npm run dev:https"
