@@ -1028,7 +1028,7 @@
     "8": {
       "name": "Baú de Copas",
       "description": "Todas as cartas do naipe de copas, pode conter cartas especiais e modificadores.",
-      "details": "100% de chance de obter Ás de Copas\n55% de chance de obter uma carta de Copas\n30% de chance de obter carta de Copas Neon\n10% de chance de obter modificador de Copas\n5% de chance de obter especial 'Todas as cartas para Copas'\nTamanho do Baú 5"
+      "details": "100% de chance de obter Ás de Copas\n45% de chance de obter uma carta de Copas\n30% de chance de obter carta de Copas Neon\n10% de chance de obter modificador de Copas\n5% de chance de obter especial 'O amor está no ar' (A)\n5% de chance de obter especial 'Dado de Copas' (B)\n5% de chance de obter especial 'Copas Multiplicadas' (C)\nTamanho do Baú 5"
     },
     "9": {
       "name": "Baú de Aposta Especial",
@@ -1042,18 +1042,18 @@
     },
     "11": {
       "name": "Baú de Espadas",
-      "description": "Todas as cartas do naipe de espadas, pode conter cartas neon e modificadores.",
-      "details": "100% de chance de obter Ás de Espadas\n60% de chance de obter uma carta de Espadas\n30% de chance de obter carta de Espadas Neon\n10% de chance de obter modificador de Espadas\nTamanho do Baú 5"
+      "description": "Todas as cartas do naipe de espadas, pode conter cartas especiais, neon e modificadores.",
+      "details": "100% de chance de obter Ás de Espadas\n45% de chance de obter uma carta de Espadas\n30% de chance de obter carta de Espadas Neon\n10% de chance de obter modificador de Espadas\n5% de chance de obter especial 'Trio de Espadas' (A)\n5% de chance de obter especial 'Dado de Espadas' (B)\n5% de chance de obter especial 'Espadas Multiplicadas' (C)\nTamanho do Baú 5"
     },
     "12": {
       "name": "Baú de Ouros",
-      "description": "Todas as cartas do naipe de ouros, pode conter cartas neon e modificadores.",
-      "details": "100% de chance de obter Ás de Ouros\n60% de chance de obter uma carta de Ouros\n30% de chance de obter carta de Ouros Neon\n10% de chance de obter modificador de Ouros\nTamanho do Baú 5"
+      "description": "Todas as cartas do naipe de ouros, pode conter cartas especiais, neon e modificadores.",
+      "details": "100% de chance de obter Ás de Ouros\n45% de chance de obter uma carta de Ouros\n30% de chance de obter carta de Ouros Neon\n10% de chance de obter modificador de Ouros\n5% de chance de obter especial 'Mão da sorte' (C)\n5% de chance de obter especial 'Ouros Multiplicadas' (C)\n5% de chance de obter especial 'Dado de Ouros' (B)\nTamanho do Baú 5"
     },
     "13": {
       "name": "Baú de Paus",
-      "description": "Todas as cartas do naipe de paus, pode conter cartas neon e modificadores.",
-      "details": "100% de chance de obter Ás de Paus\n60% de chance de obter uma carta de Paus\n30% de chance de obter carta de Paus Neon\n10% de chance de obter modificador de Paus\nTamanho do Baú 5"
+      "description": "Todas as cartas do naipe de paus, pode conter cartas especiais, neon e modificadores.",
+      "details": "100% de chance de obter Ás de Paus\n50% de chance de obter uma carta de Paus\n30% de chance de obter carta de Paus Neon\n10% de chance de obter modificador de Paus\n5% de chance de obter especial 'Paus Multiplicadas' (C)\n5% de chance de obter especial 'Dado de Paus' (B)\nTamanho do Baú 5"
     }
   }
 }

@@ -1028,7 +1028,7 @@
     "8": {
       "name": "Caja de Corazones",
       "description": "Contiene cartas de corazones, puede contener cartas especiales y modificadores.",
-      "details": "100% de probabilidad de obtener As de Corazones\n55% de probabilidad de obtener cartas de Corazones\n30% de probabilidad de obtener cartas de Corazones de Neon\n10% de probabilidad de obtener un modificador de Corazones\n5% de probabilidad de obtener la carta especial 'El Amor está en el Aire'\nTamaño de la caja 5"
+      "details": "100% de probabilidad de obtener As de Corazones\n45% de probabilidad de obtener cartas de Corazones\n30% de probabilidad de obtener cartas de Corazones de Neon\n10% de probabilidad de obtener un modificador de Corazones\n5% de probabilidad de obtener la carta especial 'El Amor está en el Aire' (A)\n5% de probabilidad de obtener la carta especial 'Dado de Corazones' (B)\n5% de probabilidad de obtener la carta especial 'Corazones Multiplicados' (C)\nTamaño de la caja 5"
     },
     "9": {
       "name": "Caja de Apuesta Especial",
@@ -1042,18 +1042,18 @@
     },
     "11": {
       "name": "Caja de Picas",
-      "description": "Contiene cartas de picas, puede contener cartas de neón y modificadores.",
-      "details": "100% de probabilidad de obtener As de Picas\n60% de probabilidad de obtener cartas de Picas\n30% de probabilidad de obtener cartas de Picas de Neón\n10% de probabilidad de obtener un modificador de Picas\nTamaño de la caja 5"
+      "description": "Contiene cartas de picas, puede contener cartas especiales, de neón y modificadores.",
+      "details": "100% de probabilidad de obtener As de Picas\n45% de probabilidad de obtener cartas de Picas\n30% de probabilidad de obtener cartas de Picas de Neón\n10% de probabilidad de obtener un modificador de Picas\n5% de probabilidad de obtener la carta especial 'Trío de Picas' (A)\n5% de probabilidad de obtener la carta especial 'Dado de Picas' (B)\n5% de probabilidad de obtener la carta especial 'Picas Multiplicadas' (C)\nTamaño de la caja 5"
     },
     "12": {
       "name": "Caja de Diamantes",
-      "description": "Contiene cartas de diamantes, puede contener cartas de neón y modificadores.",
-      "details": "100% de probabilidad de obtener As de Diamantes\n60% de probabilidad de obtener cartas de Diamantes\n30% de probabilidad de obtener cartas de Diamantes de Neón\n10% de probabilidad de obtener un modificador de Diamantes\nTamaño de la caja 5"
+      "description": "Contiene cartas de diamantes, puede contener cartas especiales, de neón y modificadores.",
+      "details": "100% de probabilidad de obtener As de Diamantes\n45% de probabilidad de obtener cartas de Diamantes\n30% de probabilidad de obtener cartas de Diamantes de Neón\n10% de probabilidad de obtener un modificador de Diamantes\n5% de probabilidad de obtener la carta especial 'Mano de la Suerte' (C)\n5% de probabilidad de obtener la carta especial 'Diamantes Multiplicados' (C)\n5% de probabilidad de obtener la carta especial 'Dado de Diamantes' (B)\nTamaño de la caja 5"
     },
     "13": {
       "name": "Caja de Tréboles",
-      "description": "Contiene cartas de tréboles, puede contener cartas de neón y modificadores.",
-      "details": "100% de probabilidad de obtener As de Tréboles\n60% de probabilidad de obtener cartas de Tréboles\n30% de probabilidad de obtener cartas de Tréboles de Neón\n10% de probabilidad de obtener un modificador de Tréboles\nTamaño de la caja 5"
+      "description": "Contiene cartas de tréboles, puede contener cartas especiales, de neón y modificadores.",
+      "details": "100% de probabilidad de obtener As de Tréboles\n50% de probabilidad de obtener cartas de Tréboles\n30% de probabilidad de obtener cartas de Tréboles de Neón\n10% de probabilidad de obtener un modificador de Tréboles\n5% de probabilidad de obtener la carta especial 'Tréboles Multiplicados' (C)\n5% de probabilidad de obtener la carta especial 'Dado de Tréboles' (B)\nTamaño de la caja 5"
     }
   }
 }
