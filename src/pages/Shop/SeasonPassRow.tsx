@@ -175,10 +175,10 @@ const Fact = ({ number }: { number: number }) => {
     <Flex flexDir="column" gap={isSmallScreen ? 0.5 : 1.5}>
       <Text fontSize={isSmallScreen ? 15 : 26}>{t(`${number}-title`)}</Text>
       <Text fontSize={isSmallScreen ? 10 : 17} lineHeight={1}>
-        {t(`${number}-description-1`)}
+        {t(`${number}-description-1`, { season: SEASON_NUMBER })}
       </Text>
       <Text fontSize={isSmallScreen ? 10 : 17} lineHeight={1}>
-        {t(`${number}-description-2`)}
+        {t(`${number}-description-2`, { season: SEASON_NUMBER })}
       </Text>
     </Flex>
   );
