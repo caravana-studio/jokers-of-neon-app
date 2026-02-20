@@ -1,4 +1,4 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { useDroppable } from "@dnd-kit/core";
 import { AnimatedCard } from "../../components/AnimatedCard";
 import { CurrentPlay } from "../../components/CurrentPlay";
@@ -11,7 +11,13 @@ import { Card } from "../../types/Card";
 import { PlayButton } from "../Game/PlayButton";
 import { useAnimationStore } from "../../state/useAnimationStore";
 
-export const PracticePreselectedCardsSection = () => {
+interface PracticePreselectedCardsSectionProps {
+  onBackToSetup?: () => void;
+}
+
+export const PracticePreselectedCardsSection = ({
+  onBackToSetup,
+}: PracticePreselectedCardsSectionProps) => {
   const { discardAnimation, playAnimation } = useAnimationStore();
   const { preSelectedCards, togglePreselected, hand, getModifiers } =
     useCurrentHandStore();
@@ -38,7 +44,23 @@ export const PracticePreselectedCardsSection = () => {
         justifyContent={"center"}
         alignItems={"center"}
       >
-        <Box width="200px" />
+        <Box width="200px">
+          {onBackToSetup ? (
+            <Flex flexDir="column" w="100%" gap={[3, 4]}>
+              <Button
+                width={"100%"}
+                variant="defaultOutline"
+                onClick={onBackToSetup}
+                height={["30px", "32px"]}
+                borderRadius="12px"
+              >
+                <Text fontFamily="Orbitron" fontSize={[14, 16]}>
+                  Edit setup
+                </Text>
+              </Button>
+            </Flex>
+          ) : null}
+        </Box>
         <Box
           ref={setNodeRef}
           sx={{

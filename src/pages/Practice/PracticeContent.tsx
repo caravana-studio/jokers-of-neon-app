@@ -19,7 +19,11 @@ import { HandSection } from "../Game/HandSection";
 import { TopSection } from "../Game/TopSection";
 import { PracticePreselectedCardsSection } from "./PracticePreselectedCardsSection";
 
-export const PracticeContent = () => {
+interface PracticeContentProps {
+  onBackToSetup?: () => void;
+}
+
+export const PracticeContent = ({ onBackToSetup }: PracticeContentProps) => {
   const { isRageRound, gameLoading } = useGameStore();
   const {
     preSelectCard,
@@ -104,7 +108,9 @@ export const PracticeContent = () => {
                     justifyContent: "space-between",
                   }}
                 >
-                  <PracticePreselectedCardsSection />
+                  <PracticePreselectedCardsSection
+                    onBackToSetup={onBackToSetup}
+                  />
                 </Box>
                 <Box
                   pb={"60px"}

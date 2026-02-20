@@ -1,4 +1,5 @@
 import { Box, Heading } from "@chakra-ui/react";
+import { useState } from "react";
 import { RemoveScroll } from "react-remove-scroll";
 import { LevelUpFirstDiscartedHandAnimation } from "../../components/animations/LevelUpFirstDiscartedHandAnimation";
 import { SecondChanceCardAnimation } from "../../components/animations/SecondChanceCardAnimation";
@@ -7,11 +8,13 @@ import { DelayedLoading } from "../../components/DelayedLoading";
 import { useCardAnimations } from "../../providers/CardAnimationsProvider";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { PracticeContent } from "./PracticeContent";
+import { PracticeSetupStep } from "./PracticeSetupStep";
 
 export const PracticePage = () => {
   const { animateSecondChanceCard, animateSpecialCardDefault } =
     useCardAnimations();
   const { isSmallScreen } = useResponsiveValues();
+  const [showSetupStep, setShowSetupStep] = useState(true);
 
   if (isSmallScreen) {
     return (
@@ -29,6 +32,10 @@ export const PracticePage = () => {
     );
   }
 
+  if (showSetupStep) {
+    return <PracticeSetupStep onStart={() => setShowSetupStep(false)} />;
+  }
+
   return (
     <DelayedLoading ms={200}>
       <LevelUpFirstDiscartedHandAnimation />
@@ -40,7 +47,7 @@ export const PracticePage = () => {
           animatedImgPath={animateSpecialCardDefault.animatedImgPath}
         />
       )}
-      <PracticeContent />
+      <PracticeContent onBackToSetup={() => setShowSetupStep(true)} />
       <RemoveScroll>
         <></>
       </RemoveScroll>

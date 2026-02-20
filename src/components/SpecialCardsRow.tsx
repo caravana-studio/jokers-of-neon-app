@@ -36,10 +36,10 @@ export const SpecialCardsRow = () => {
 
   const { specialSlots } = useGameStore();
 
-  const lockedSlots =
-    specialSlots === maxSpecialCards ? 0 : Math.max(0, 5 - specialSlots);
-
-  const freeUnlockedSlots = Math.max(0, 5 - cards.length - lockedSlots);
+  const totalSlots = Math.max(5, maxSpecialCards);
+  const unlockedSlots = Math.min(totalSlots, Math.max(specialSlots, 0));
+  const lockedSlots = Math.max(0, totalSlots - unlockedSlots);
+  const freeUnlockedSlots = Math.max(0, unlockedSlots - cards.length);
 
   const visibleCards = cards.length + freeUnlockedSlots + lockedSlots;
 
