@@ -2176,7 +2176,7 @@ export function setupWorld(provider: DojoProvider) {
       throw error;
     }
   };
-	const build_practice_system_simulatePlay_calldata = (handCardIds: Array<BigNumberish>, playedCardsIndex: Array<BigNumberish>, specialCardIds: Array<BigNumberish>, rageIds: Array<BigNumberish>, pokerHandLevels: Array<[BigNumberish, BigNumberish, BigNumberish]>, powerUpIds: Array<BigNumberish>): DojoCall => {
+	const build_practice_system_simulatePlay_calldata = (handCardIds: Array<BigNumberish>, playedCardsIndex: Array<BigNumberish>, specialCardIds: Array<BigNumberish>, rageIds: Array<BigNumberish>, pokerHandLevels: Array<{ 0: BigNumberish; 1: BigNumberish; 2: BigNumberish }>, powerUpIds: Array<BigNumberish>): DojoCall => {
 		console.log('callData', [handCardIds, playedCardsIndex, specialCardIds, rageIds, pokerHandLevels, powerUpIds])
     return {
 			contractName: "practice_system",
@@ -2185,7 +2185,7 @@ export function setupWorld(provider: DojoProvider) {
 		};
 	};
 
-	const practice_system_simulatePlay = async (snAccount: Account | AccountInterface, handCardIds: Array<BigNumberish>, playedCardsIndex: Array<BigNumberish>, specialCardIds: Array<BigNumberish>, rageIds: Array<BigNumberish>, pokerHandLevels: Array<[BigNumberish, BigNumberish, BigNumberish]>, powerUpIds: Array<BigNumberish>) => {
+	const practice_system_simulatePlay = async (snAccount: Account | AccountInterface, handCardIds: Array<BigNumberish>, playedCardsIndex: Array<BigNumberish>, specialCardIds: Array<BigNumberish>, rageIds: Array<BigNumberish>, pokerHandLevels: Array<{ 0: BigNumberish; 1: BigNumberish; 2: BigNumberish }>, powerUpIds: Array<BigNumberish>) => {
 		try {
 			return await provider.execute(
 				snAccount,
