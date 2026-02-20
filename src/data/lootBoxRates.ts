@@ -324,6 +324,220 @@ export const PACK_RATES: Record<number, PackRatesData> = {
     },
   ],
 
+  // Hearts Pack (ID: 8)
+  // Specials: ALL_CARDS_TO_HEARTS (A 5%), RANDOM_MULTI_FOR_HEART (B 5%), MULTI_FOR_HEART (C 5%)
+  // Modifier: SUIT_HEARTS (10%), Neon Hearts (30%), Hearts cards (45%)
+  8: [
+    {
+      itemNumber: 1,
+      rates: [
+        { itemType: CardItemType.SPECIAL_A, percentage: 5.0 },
+        { itemType: CardItemType.SPECIAL_B, percentage: 5.0 },
+        { itemType: CardItemType.SPECIAL_C, percentage: 15.0 },
+        { itemType: CardItemType.NEON, percentage: 30.0 },
+        { itemType: CardItemType.TRADITIONAL, percentage: 45.0 },
+      ],
+    },
+    {
+      itemNumber: 2,
+      rates: [
+        { itemType: CardItemType.SPECIAL_A, percentage: 5.0 },
+        { itemType: CardItemType.SPECIAL_B, percentage: 5.0 },
+        { itemType: CardItemType.SPECIAL_C, percentage: 15.0 },
+        { itemType: CardItemType.NEON, percentage: 30.0 },
+        { itemType: CardItemType.TRADITIONAL, percentage: 45.0 },
+      ],
+    },
+    {
+      itemNumber: 3,
+      rates: [
+        { itemType: CardItemType.SPECIAL_A, percentage: 5.0 },
+        { itemType: CardItemType.SPECIAL_B, percentage: 5.0 },
+        { itemType: CardItemType.SPECIAL_C, percentage: 15.0 },
+        { itemType: CardItemType.NEON, percentage: 30.0 },
+        { itemType: CardItemType.TRADITIONAL, percentage: 45.0 },
+      ],
+    },
+    {
+      itemNumber: 4,
+      rates: [
+        { itemType: CardItemType.SPECIAL_A, percentage: 5.0 },
+        { itemType: CardItemType.SPECIAL_B, percentage: 5.0 },
+        { itemType: CardItemType.SPECIAL_C, percentage: 15.0 },
+        { itemType: CardItemType.NEON, percentage: 30.0 },
+        { itemType: CardItemType.TRADITIONAL, percentage: 45.0 },
+      ],
+    },
+    {
+      itemNumber: 5,
+      rates: [
+        { itemType: CardItemType.SPECIAL_A, percentage: 5.0 },
+        { itemType: CardItemType.SPECIAL_B, percentage: 5.0 },
+        { itemType: CardItemType.SPECIAL_C, percentage: 15.0 },
+        { itemType: CardItemType.NEON, percentage: 30.0 },
+        { itemType: CardItemType.TRADITIONAL, percentage: 45.0 },
+      ],
+    },
+  ],
+
+  // Spades Pack (ID: 11)
+  // Specials: SPADE_TRIO (A 5%), RANDOM_MULTI_FOR_SPADE (B 5%), MULTI_FOR_SPADE (C 5%)
+  // Modifier: SUIT_SPADES (10%), Neon Spades (30%), Spades cards (45%)
+  11: [
+    {
+      itemNumber: 1,
+      rates: [
+        { itemType: CardItemType.SPECIAL_A, percentage: 5.0 },
+        { itemType: CardItemType.SPECIAL_B, percentage: 5.0 },
+        { itemType: CardItemType.SPECIAL_C, percentage: 15.0 },
+        { itemType: CardItemType.NEON, percentage: 30.0 },
+        { itemType: CardItemType.TRADITIONAL, percentage: 45.0 },
+      ],
+    },
+    {
+      itemNumber: 2,
+      rates: [
+        { itemType: CardItemType.SPECIAL_A, percentage: 5.0 },
+        { itemType: CardItemType.SPECIAL_B, percentage: 5.0 },
+        { itemType: CardItemType.SPECIAL_C, percentage: 15.0 },
+        { itemType: CardItemType.NEON, percentage: 30.0 },
+        { itemType: CardItemType.TRADITIONAL, percentage: 45.0 },
+      ],
+    },
+    {
+      itemNumber: 3,
+      rates: [
+        { itemType: CardItemType.SPECIAL_A, percentage: 5.0 },
+        { itemType: CardItemType.SPECIAL_B, percentage: 5.0 },
+        { itemType: CardItemType.SPECIAL_C, percentage: 15.0 },
+        { itemType: CardItemType.NEON, percentage: 30.0 },
+        { itemType: CardItemType.TRADITIONAL, percentage: 45.0 },
+      ],
+    },
+    {
+      itemNumber: 4,
+      rates: [
+        { itemType: CardItemType.SPECIAL_A, percentage: 5.0 },
+        { itemType: CardItemType.SPECIAL_B, percentage: 5.0 },
+        { itemType: CardItemType.SPECIAL_C, percentage: 15.0 },
+        { itemType: CardItemType.NEON, percentage: 30.0 },
+        { itemType: CardItemType.TRADITIONAL, percentage: 45.0 },
+      ],
+    },
+    {
+      itemNumber: 5,
+      rates: [
+        { itemType: CardItemType.SPECIAL_A, percentage: 5.0 },
+        { itemType: CardItemType.SPECIAL_B, percentage: 5.0 },
+        { itemType: CardItemType.SPECIAL_C, percentage: 15.0 },
+        { itemType: CardItemType.NEON, percentage: 30.0 },
+        { itemType: CardItemType.TRADITIONAL, percentage: 45.0 },
+      ],
+    },
+  ],
+
+  // Diamonds Pack (ID: 12)
+  // Specials: LUCKY_HAND (C 5%), MULTI_FOR_DIAMOND (C 5%), RANDOM_MULTI_FOR_DIAMOND (B 5%)
+  // Modifier: SUIT_DIAMONDS (10%), Neon Diamonds (30%), Diamonds cards (45%)
+  12: [
+    {
+      itemNumber: 1,
+      rates: [
+        { itemType: CardItemType.SPECIAL_B, percentage: 5.0 },
+        { itemType: CardItemType.SPECIAL_C, percentage: 20.0 },
+        { itemType: CardItemType.NEON, percentage: 30.0 },
+        { itemType: CardItemType.TRADITIONAL, percentage: 45.0 },
+      ],
+    },
+    {
+      itemNumber: 2,
+      rates: [
+        { itemType: CardItemType.SPECIAL_B, percentage: 5.0 },
+        { itemType: CardItemType.SPECIAL_C, percentage: 20.0 },
+        { itemType: CardItemType.NEON, percentage: 30.0 },
+        { itemType: CardItemType.TRADITIONAL, percentage: 45.0 },
+      ],
+    },
+    {
+      itemNumber: 3,
+      rates: [
+        { itemType: CardItemType.SPECIAL_B, percentage: 5.0 },
+        { itemType: CardItemType.SPECIAL_C, percentage: 20.0 },
+        { itemType: CardItemType.NEON, percentage: 30.0 },
+        { itemType: CardItemType.TRADITIONAL, percentage: 45.0 },
+      ],
+    },
+    {
+      itemNumber: 4,
+      rates: [
+        { itemType: CardItemType.SPECIAL_B, percentage: 5.0 },
+        { itemType: CardItemType.SPECIAL_C, percentage: 20.0 },
+        { itemType: CardItemType.NEON, percentage: 30.0 },
+        { itemType: CardItemType.TRADITIONAL, percentage: 45.0 },
+      ],
+    },
+    {
+      itemNumber: 5,
+      rates: [
+        { itemType: CardItemType.SPECIAL_B, percentage: 5.0 },
+        { itemType: CardItemType.SPECIAL_C, percentage: 20.0 },
+        { itemType: CardItemType.NEON, percentage: 30.0 },
+        { itemType: CardItemType.TRADITIONAL, percentage: 45.0 },
+      ],
+    },
+  ],
+
+  // Clubs Pack (ID: 13)
+  // Specials: MULTI_FOR_CLUB (C 5%), RANDOM_MULTI_FOR_CLUB (B 5%)
+  // Modifier: SUIT_CLUBS (10%), Neon Clubs (30%), Clubs cards (50%)
+  13: [
+    {
+      itemNumber: 1,
+      rates: [
+        { itemType: CardItemType.SPECIAL_B, percentage: 5.0 },
+        { itemType: CardItemType.SPECIAL_C, percentage: 15.0 },
+        { itemType: CardItemType.NEON, percentage: 30.0 },
+        { itemType: CardItemType.TRADITIONAL, percentage: 50.0 },
+      ],
+    },
+    {
+      itemNumber: 2,
+      rates: [
+        { itemType: CardItemType.SPECIAL_B, percentage: 5.0 },
+        { itemType: CardItemType.SPECIAL_C, percentage: 15.0 },
+        { itemType: CardItemType.NEON, percentage: 30.0 },
+        { itemType: CardItemType.TRADITIONAL, percentage: 50.0 },
+      ],
+    },
+    {
+      itemNumber: 3,
+      rates: [
+        { itemType: CardItemType.SPECIAL_B, percentage: 5.0 },
+        { itemType: CardItemType.SPECIAL_C, percentage: 15.0 },
+        { itemType: CardItemType.NEON, percentage: 30.0 },
+        { itemType: CardItemType.TRADITIONAL, percentage: 50.0 },
+      ],
+    },
+    {
+      itemNumber: 4,
+      rates: [
+        { itemType: CardItemType.SPECIAL_B, percentage: 5.0 },
+        { itemType: CardItemType.SPECIAL_C, percentage: 15.0 },
+        { itemType: CardItemType.NEON, percentage: 30.0 },
+        { itemType: CardItemType.TRADITIONAL, percentage: 50.0 },
+      ],
+    },
+    {
+      itemNumber: 5,
+      rates: [
+        { itemType: CardItemType.SPECIAL_B, percentage: 5.0 },
+        { itemType: CardItemType.SPECIAL_C, percentage: 15.0 },
+        { itemType: CardItemType.NEON, percentage: 30.0 },
+        { itemType: CardItemType.TRADITIONAL, percentage: 50.0 },
+      ],
+    },
+  ],
+
   // Collector XL Pack (ID: 6)
   6: [
     {
