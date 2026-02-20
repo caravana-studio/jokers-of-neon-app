@@ -370,7 +370,7 @@
     },
     "10201": {
       "name": "Relatividad",
-      "description": "Convierte la Escalera jugada en el siguiente tipo de Escalera superior."
+      "description": "Convierte cada Escalera jugada en Escalera alta (10, J, Q, K, A)."
     },
     "10202": {
       "name": "Catalizador de Dinero",
