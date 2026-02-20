@@ -59,13 +59,17 @@ const toPokerHandLevels = (
         return null;
       }
 
-      return [pokerHandEnum, Number(play.multi), Number(play.points)] as [
-        number,
-        number,
-        number,
-      ];
+      // Use object instead of array so starknet.js serializes as tuple (flat)
+      // instead of as nested array (which adds a length prefix per element)
+      return {
+        0: pokerHandEnum,
+        1: Number(play.multi),
+        2: Number(play.points),
+      };
     })
-    .filter((tuple): tuple is [number, number, number] => tuple !== null);
+    .filter(
+      (tuple): tuple is { 0: number; 1: number; 2: number } => tuple !== null,
+    );
 
 export const PracticeGameContext =
   createContext<IGameContext>(gameProviderDefaults);

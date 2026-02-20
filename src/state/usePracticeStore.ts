@@ -8,6 +8,9 @@ import { getCardFromCardId } from "../dojo/utils/getCardFromCardId";
 import { Card } from "../types/Card";
 import { LevelPokerHand, PokerHand } from "../types/LevelPokerHand";
 import { PowerUp } from "../types/Powerup/PowerUp";
+import { C10, CA, CJ, CQ, D7, H7, H8, S8 } from "../utils/mocks/cardMocks";
+import { m5, p25 } from "../utils/mocks/powerUpMocks";
+import { MultipliedClubs } from "../utils/mocks/specialCardMocks";
 import { MOCKED_PLAYS } from "../utils/mocks/tutorialMocks";
 
 export const PRACTICE_MAX_HAND_CARDS = 8;
@@ -81,15 +84,9 @@ const clonePlay = (play: LevelPokerHand): LevelPokerHand => ({
   ...play,
 });
 
-const cloneSetupSelections = (
-  setup: PracticeSetupSelections,
-): PracticeSetupSelections => ({
-  handCardIds: [...setup.handCardIds],
-  specialCardIds: [...setup.specialCardIds],
-  powerUpIds: [...setup.powerUpIds],
-  rageCardIds: [...setup.rageCardIds],
-});
-
+const DEFAULT_HAND: Card[] = [H8, C10, CJ, CQ, CA, D7, H7, S8];
+const DEFAULT_SPECIALS: Card[] = [MultipliedClubs];
+const DEFAULT_POWER_UPS: PowerUp[] = [m5, p25];
 const DEFAULT_PLAYS: LevelPokerHand[] = MOCKED_PLAYS.map((play) => ({
   poker_hand: play.poker_hand as PokerHand,
   level: play.level,
