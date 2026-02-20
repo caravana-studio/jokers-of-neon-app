@@ -367,6 +367,62 @@
     "19903": {
       "name": "Redenção do Pântano",
       "description": "Ganha entre ^blue(+1)^ e ^blue(+5 pontos)^ (acumulativos) cada vez que descarta. Atualmente ^blue(+{{points}} pontos)^."
+    },
+    "10201": {
+      "name": "Relatividade",
+      "description": "Converte cada Sequência jogada em Sequência alta (10, J, Q, K, A)."
+    },
+    "10202": {
+      "name": "Catalisador de Dinheiro",
+      "description": "Adiciona ^violet(+1 multi)^ para cada ^yellow(1000 moedas)^ que você tiver."
+    },
+    "10203": {
+      "name": "Chama da Vida",
+      "description": "Adiciona ^blue(+15 pontos)^ para cada jogada e descarte restante."
+    },
+    "10204": {
+      "name": "Impermanência",
+      "description": "Aumenta o tamanho da mão em ^blue(+5)^, reduzindo ^blue(1)^ a cada rodada até chegar a 0."
+    },
+    "10205": {
+      "name": "Ciclo de Dinheiro",
+      "description": "Adiciona ^yellow(+50% de moedas)^ obtidas ao completar cada nível."
+    },
+    "10206": {
+      "name": "Valor Acidental",
+      "description": "Cada carta jogada que não pertence à jogada adiciona ^blue(+25 pontos)^ e ^violet(+1 multi)^."
+    },
+    "10207": {
+      "name": "Dualidade",
+      "description": "Adiciona ^blue(+300 pontos)^ se você jogar 2 ou menos cartas."
+    },
+    "10208": {
+      "name": "Doutrina Neon",
+      "description": "Cada carta jogada que pertence à jogada tem 30% de chance de se tornar uma carta neon."
+    },
+    "10209": {
+      "name": "Minimalismo",
+      "description": "Acumula ^blue(+5 pontos)^ cada vez que você joga 3 ou menos cartas. Atualmente ^blue(+{{points}} pontos)^."
+    },
+    "10210": {
+      "name": "Sinergia Neon",
+      "description": "Se ^blue(50%)^ ou mais das cartas jogadas são neon, todas as cartas jogadas se tornam neon."
+    },
+    "10211": {
+      "name": "Providência",
+      "description": "Os itens da loja têm ^yellow(30%)^ de chance de ser gratuitos."
+    },
+    "10212": {
+      "name": "Caçador Eficiente",
+      "description": "Reduz a pontuação necessária da rodada em ^blue(25%)^."
+    },
+    "10213": {
+      "name": "Carga Residual",
+      "description": "Acumula ^blue(25%)^ do valor de cada power-up jogado. Atualmente ^blue(+{{points}} pontos)^."
+    },
+    "10214": {
+      "name": "Compra Imortal",
+      "description": "A primeira mão que você descarta em cada rodada sobe de nível."
     }
   },
   "power-ups": {
