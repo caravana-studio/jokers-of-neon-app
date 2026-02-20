@@ -14,6 +14,13 @@
       "countdownLabel": "Termina en:",
       "dontShowAgain": "No mostrar de nuevo"
     },
+    "guestLoginModal": {
+      "title": "Inicia sesión para la experiencia completa",
+      "body": "El modo invitado es solo para probar el juego, te recomendamos iniciar sesión para tener acceso a coleccionar cartas y guardar tu progreso.",
+      "button": "Inicia sesión",
+      "welcomePack": "y obtén un pack de bienvenida gratis",
+      "dontShowAgain": "No mostrar esto de nuevo"
+    },
     "leaderboard-banner": {
       "title": "Clasificación",
       "button": "Clasificación completa"
@@ -102,6 +109,7 @@
     "deck": "Mazo",
     "plays": "Jugadas",
     "season": "Temporada",
+    "tournament": "Torneo",
     "more": "Más",
     "round": "Ronda",
     "rage": "Ronda de Furia",
@@ -111,7 +119,7 @@
     "title": "¿Primera vez jugando?",
     "description": "Te recomendamos un tutorial rápido para aprender lo básico. ¿Te gustaría empezar ahora?",
     "confirm-text": "Jugar Tutorial",
-    "cancel-text": "Saltar"
+    "cancel-text": "Saltar tutorial"
   },
   "versionModal": {
     "title": "Nueva versión disponible",

@@ -140,7 +140,7 @@
     "deck": {
       "tooltip": "Ver mazo",
       "title": "Mazo",
-      "burn-title": "Selecciona una carta para quemar",
+      "burn-title": "Selecciona cartas para quemar",
       "filter-title": "Filtrar por",
       "suit": {
         "club": "Tréboles",
@@ -156,7 +156,9 @@
       "btns": {
         "special-cards": "Ver cartas especiales",
         "back": "Volver al juego",
-        "burn": "Quemar carta"
+        "burn": "Quemar",
+        "burn-selected_one": "Quemar {{count}} carta",
+        "burn-selected_other": "Quemar {{count}} cartas"
       },
       "tabs": {
         "full-deck": "Mazo",
@@ -204,6 +206,12 @@
   },
   "rage-cards": {
     "no-cards": "En las rondas de furia, verás las cartas de furia aquí"
+  },
+  "rage-round-animation": {
+    "title": "RONDA DE FURIA",
+    "sacrificed-card": "Carta sacrificada",
+    "click-anywhere": "Toca en cualquier lugar para cerrar",
+    "auto-skip": "Saltar esta pantalla automáticamente"
   },
   "specials-box": {
     "specials-tooltip": "Cartas especiales",

@@ -140,7 +140,7 @@
     "deck": {
       "tooltip": "See deck",
       "title": "Deck",
-      "burn-title": "Select a card to burn",
+      "burn-title": "Select cards to burn",
       "filter-title": "Filter by",
       "suit": {
         "club": "Clubs",
@@ -156,7 +156,9 @@
       "btns": {
         "special-cards": "See special cards",
         "back": "Back to game",
-        "burn": "Burn card"
+        "burn": "Burn",
+        "burn-selected_one": "Burn {{count}} card",
+        "burn-selected_other": "Burn {{count}} cards"
       },
       "tabs": {
         "full-deck": "Full deck",
@@ -203,6 +205,12 @@
   },
   "rage-cards": {
     "no-cards": "On rage rounds, you will see the rage cards here"
+  },
+  "rage-round-animation": {
+    "title": "RAGE ROUND",
+    "sacrificed-card": "Sacrificed card",
+    "click-anywhere": "Click anywhere to close",
+    "auto-skip": "Auto-skip this screen"
   },
   "specials-box": {
     "specials-tooltip": "Special cards",

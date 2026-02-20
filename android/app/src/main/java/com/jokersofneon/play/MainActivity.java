@@ -6,6 +6,7 @@ import com.getcapacitor.community.audio.NativeAudio;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 import com.revenuecat.purchases.capacitor.PurchasesPlugin;
+import com.jokersofneon.play.AppsFlyerBridgePlugin;
 
 public class MainActivity extends BridgeActivity {
     @Override
@@ -15,6 +16,8 @@ public class MainActivity extends BridgeActivity {
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(getApplication());
         registerPlugin(PurchasesPlugin.class);
+        // AppsFlyer SDK for attribution and deep linking
+        registerPlugin(AppsFlyerBridgePlugin.class);
         super.onCreate(savedInstanceState);
     }
 }

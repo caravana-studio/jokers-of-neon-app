@@ -15,8 +15,9 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({
   isEnabled,
   onClick,
 }) => {
-  const { musicOn, toggleMusic } = useSettings();
-  const effectiveIsEnabled = isEnabled ?? musicOn;
+  const { musicOn, musicVolume, toggleMusic } = useSettings();
+  // Show as enabled only if musicOn AND volume > 0
+  const effectiveIsEnabled = isEnabled ?? (musicOn && musicVolume > 0);
   const effectiveOnClick = onClick ?? toggleMusic;
 
   const { isSmallScreen } = useResponsiveValues();

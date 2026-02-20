@@ -122,16 +122,14 @@ https://jokersofneon.onelink.me/2BD9?ref=username
 - `GET /api/referral/stats/:user_address` - Get statistics
 - `POST /api/referral/milestone` - Register milestones
 
-**Test Page:** `/referral-test`
+**Page:** `/referral`
 
 ## Environment Configuration
 
 Copy `.env_example` to `.env`. Key variables:
-- `VITE_RPC_URL` - Starknet RPC endpoint
-- `VITE_TORII_URL` - Torii indexer URL
-- `VITE_GRAPHQL_URL` - GraphQL endpoint
+- `VITE_SLOT_INSTANCE` - Cartridge slot instance (se derivan RPC/Torii/GraphQL)
 - `VITE_DOJO_NAMESPACE` - Dojo contract namespace
-- `VITE_DEV` - Enable dev features
+- `VITE_ENV` - Manifest/runtime environment (`prod` by default)
 
 ## Testing
 

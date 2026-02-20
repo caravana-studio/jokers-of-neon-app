@@ -1,5 +1,5 @@
-import { Box, Flex, Heading, Text } from "@chakra-ui/react";
-import { useState } from "react";
+import { Flex, Heading, Text } from "@chakra-ui/react";
+import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { CashSymbol } from "../../components/CashSymbol";
@@ -11,8 +11,8 @@ import { useGameStore } from "../../state/useGameStore";
 import { useShopStore } from "../../state/useShopStore";
 import { useDeckStore } from "../../state/useDeckStore";
 import { Card } from "../../types/Card";
+import { calculateBurnCost } from "../../utils/burnUtils";
 import { Deck } from "./Deck";
-import { BLUE_LIGHT, VIOLET } from "../../theme/colors";
 
 interface DeckPageContentMobileProps {
   state: {
@@ -26,32 +26,52 @@ export const DeckPageContentMobile = ({
   state,
 }: DeckPageContentMobileProps) => {
   const { t } = useTranslation("game", { keyPrefix: "game.deck" });
-  const [cardToBurn, setCardToBurn] = useState<Card>();
+  const [cardsToBurn, setCardsToBurn] = useState<Card[]>([]);
   const navigate = useNavigate();
-  const { burnCard } = useStore();
-  const { burnItem } = useShopStore();
+  const { burnCards } = useStore();
+  const { burnItem, locked } = useShopStore();
   const { cash } = useGameStore();
   const { currentLength, size } = useDeckStore();
 
   const handleCardSelect = (card: Card) => {
     if (!burnItem?.purchased) {
-      if (cardToBurn?.id === card.id) {
-        setCardToBurn(undefined);
-      } else {
-        setCardToBurn(card);
-      }
+      setCardsToBurn((prev) => {
+        const exists = prev.find((c) => c.id === card.id);
+        if (exists) {
+          return prev.filter((c) => c.id !== card.id);
+        }
+        return [...prev, card];
+      });
     }
   };
 
-  const handleBurnCard = (card: Card) => {
-    burnCard(card);
-    navigate("/store");
+  const handleBurnCards = async () => {
+    if (cardsToBurn.length > 0) {
+      await burnCards(cardsToBurn, totalCost);
+      navigate("/store");
+      setCardsToBurn([]);
+    }
   };
 
-  const effectiveCost: number =
-    burnItem?.discount_cost && burnItem.discount_cost !== 0
+  const regularCost: number = useMemo(() => {
+    return Number(burnItem?.cost ?? 0);
+  }, [burnItem]);
+
+  const firstCardCost: number = useMemo(() => {
+    return burnItem?.discount_cost && burnItem.discount_cost !== 0
       ? Number(burnItem.discount_cost)
-      : Number(burnItem?.cost);
+      : regularCost;
+  }, [burnItem, regularCost]);
+
+  const totalCost: number = useMemo(() => {
+    return calculateBurnCost(cardsToBurn.length, firstCardCost, regularCost);
+  }, [cardsToBurn.length, firstCardCost, regularCost]);
+
+  const burnButtonLabel = (
+    cardsToBurn.length > 0
+      ? t("btns.burn-selected", { count: cardsToBurn.length })
+      : t("btns.burn")
+  ).toUpperCase();
 
   return (
     <Flex
@@ -64,16 +84,16 @@ export const DeckPageContentMobile = ({
       flexShrink={1}
       minH={0}
     >
-      <Flex gap={2} alignItems="center" justifyContent="center" mb={1}>
-        <Heading size="sm">{t("title")}</Heading>
-        <Text
+      <Flex gap={2} alignItems="left" justifyContent="left" ml={6} mb={1}>
+        <Heading size={"sm"} fontSize={state.burn ? 13 : 15}>{t(state.burn ? "burn-title" : "title")}</Heading>
+        {!state.burn && <Text
           size="lg"
           color="blueLight"
           fontWeight={500}
           whiteSpace="nowrap"
         >
           ({currentLength}/{size})
-        </Text>
+        </Text>}
       </Flex>
       <MobileDecoration />
       {!state.inStore ? (
@@ -89,6 +109,7 @@ export const DeckPageContentMobile = ({
               inStore={state.inStore}
               burn={state.burn}
               onCardSelect={handleCardSelect}
+              selectedCards={cardsToBurn}
               inMap={state.map}
             />
           </Flex>
@@ -107,6 +128,7 @@ export const DeckPageContentMobile = ({
           inStore={state.inStore}
           burn={state.burn}
           onCardSelect={handleCardSelect}
+          selectedCards={cardsToBurn}
           inMap={state.map}
         />
       )}
@@ -114,20 +136,19 @@ export const DeckPageContentMobile = ({
         firstButton={
           state.burn
             ? {
-                onClick: () => {
-                  if (cardToBurn) handleBurnCard(cardToBurn);
-                },
+                onClick: handleBurnCards,
                 label: (
-                  <Flex gap={1}>
-                    {`${t("btns.burn").toUpperCase()} `}
+                  <Flex gap={1} alignItems="center">
+                    {burnButtonLabel}
                     <CashSymbol />
-                    {` ${effectiveCost}`}
+                    {totalCost}
                   </Flex>
                 ),
                 disabled:
-                  cardToBurn === undefined ||
-                  cash < effectiveCost ||
-                  burnItem?.purchased,
+                  cardsToBurn.length === 0 ||
+                  cash < totalCost ||
+                  burnItem?.purchased ||
+                  locked,
               }
             : undefined
         }

@@ -172,14 +172,14 @@ export const DynamicStorePage = () => {
                         sm: "space-between",
                       }}
                     >
-                      <Flex gap={2} alignItems=" center">
+                      <Flex gap={2} alignItems="center">
                         <Heading fontSize={{ base: "xs", sm: "sm" }}>
                           {t(`titles.${col.id}`)}
                         </Heading>
                         <DefaultInfo title={col.id} />
                       </Flex>
                       {col.id === "specials" && slotsLen != maxSpecialCards && (
-                        <Flex gap={isSmallScreen ? 2 : 8}>
+                        <Flex gap={isSmallScreen ? 2 : 8} alignItems="center">
                           <PriceBox
                             price={specialSlotItem?.cost ?? 0}
                             purchased={false}

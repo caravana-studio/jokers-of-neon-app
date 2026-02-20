@@ -85,6 +85,7 @@ export const ManagePage = () => {
         <MobileCardHighlight
           card={highlightedSpecialCard as Card}
           customBtn={sellSpecialButton}
+          showCumulativeProgress
         />
       )}
       {highlightedPowerup && (

@@ -14,6 +14,7 @@ import { useDojo } from "../dojo/useDojo";
 import { getLayoutedElements } from "../pages/Map/layout";
 import { NodeData, NodeType } from "../pages/Map/types";
 import { useGameStore } from "../state/useGameStore";
+import { useMapNavigationStore } from "../state/useMapNavigationStore";
 import { BLUE, VIOLET_LIGHT } from "../theme/colors";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import { getRageNodeData } from "../utils/getRageNodeData";
@@ -37,12 +38,6 @@ interface MapContextType {
   reachableNodes: string[];
   selectedNodeData: SelectedNodeData | undefined;
   setSelectedNodeData: (data: SelectedNodeData | undefined) => void;
-  isNodeTransactionPending: boolean;
-  setNodeTransactionPending: (pending: boolean) => void;
-  activeNodeId: string | null;
-  setActiveNodeId: (id: string | null) => void;
-  pulsingNodeId: string | null;
-  setPulsingNodeId: (id: string | null) => void;
 }
 
 const MapContext = createContext<MapContextType | undefined>(undefined);
@@ -53,29 +48,13 @@ interface MapProviderProps {
 
 export const MapProvider = ({ children }: MapProviderProps) => {
   const [nodes, setNodes] = useState<Node[]>([]);
-  const [edges, setEdges] = useState<Edge[]>([]);
+  const [baseEdges, setBaseEdges] = useState<Edge[]>([]);
   const [layoutReady, setLayoutReady] = useState(false);
   const [selectedNodeData, setSelectedNodeData] = useState<
     SelectedNodeData | undefined
   >();
-  const [isNodeTransactionPending, setNodeTransactionPending] = useState(false);
-  const [activeNodeId, setActiveNodeId] = useState<string | null>(null);
-  const [pulsingNodeId, setPulsingNodeId] = useState<string | null>(null);
 
   const { isSmallScreen } = useResponsiveValues();
-
-  const currentNode = useMemo(
-    () => nodes.find((n) => n.data?.current) ?? nodes[0],
-    [nodes]
-  );
-
-  const reachableNodes = useMemo(() => {
-    return currentNode && edges
-      ? edges
-          .filter((edge) => edge.target === currentNode.id)
-          .map((edge) => edge.source)
-      : [];
-  }, [edges, currentNode?.id]);
 
   const {
     setup: { client },
@@ -87,6 +66,60 @@ export const MapProvider = ({ children }: MapProviderProps) => {
   const isBossLevel = level === BOSS_LEVEL;
 
   const stateInMap = state === GameStateEnum.Map;
+
+  const currentNode = useMemo(
+    () => nodes.find((n) => n.data?.current) ?? nodes[0],
+    [nodes]
+  );
+
+  const reachableNodeIds = useMemo(() => {
+    if (!currentNode || baseEdges.length === 0) return [];
+    return baseEdges
+      .filter((edge) => edge.target === currentNode.id)
+      .map((edge) => edge.source);
+  }, [baseEdges, currentNode?.id]);
+
+  const activeNodeId = useMapNavigationStore((s) => s.activeNodeId);
+
+  // Calculate styled edges derivatively to avoid re-renders from setEdges
+  const styledEdges = useMemo(() => {
+    if (!currentNode || baseEdges.length === 0) return baseEdges;
+
+    return baseEdges.map((edge) => {
+      const sourceNode = nodes.find((n) => n.id === edge.source);
+      const targetNode = nodes.find((n) => n.id === edge.target);
+
+      const isEdgeToCurrentNode = targetNode?.id === currentNode.id;
+      const sourceVisited = Boolean(sourceNode?.data?.visited);
+      const targetVisited = Boolean(targetNode?.data?.visited);
+      const isCompletedPath = sourceVisited && targetVisited;
+
+      const visibleLine = isCompletedPath || (isEdgeToCurrentNode && stateInMap);
+      const shouldPulse = !isCompletedPath && visibleLine;
+
+      // When a node is actively selected, dim edges to other reachable nodes
+      const dimmedBySelection =
+        activeNodeId && visibleLine && shouldPulse && edge.source !== activeNodeId;
+
+      return {
+        ...edge,
+        data: {
+          ...edge.data,
+          shouldPulse: shouldPulse && !dimmedBySelection,
+        },
+        style: {
+          stroke: visibleLine && !dimmedBySelection
+            ? (shouldPulse ? VIOLET_LIGHT : BLUE)
+            : "#fff",
+          strokeWidth: 2,
+          strokeDasharray: visibleLine && !dimmedBySelection ? undefined : "5 5",
+          opacity: dimmedBySelection ? 0.12 : visibleLine ? 1 : 0.12,
+        },
+      };
+    });
+  }, [baseEdges, currentNode, nodes, stateInMap, reachableNodeIds, activeNodeId]);
+
+  const reachableNodes = reachableNodeIds;
 
   useEffect(() => {
     getMap(client, id).then((dataNodes) => {
@@ -124,45 +157,13 @@ export const MapProvider = ({ children }: MapProviderProps) => {
       getLayoutedElements(transformedNodes, calculatedEdges).then(
         ({ nodes: layoutedNodes, edges: layoutedEdges }) => {
           setNodes(layoutedNodes);
-          setEdges(layoutedEdges);
+          setBaseEdges(layoutedEdges);
           setLayoutReady(true);
         }
       );
     });
   }, []);
 
-  useEffect(() => {
-    if (!currentNode || edges.length === 0) return;
-
-    const updatedEdges = edges.map((edge) => {
-      const sourceNode = nodes.find((n) => n.id === edge.source);
-      const targetNode = nodes.find((n) => n.id === edge.target);
-
-      const isReachable = targetNode?.id === currentNode.id;
-      const sourceVisited = Boolean(sourceNode?.data?.visited);
-      const targetVisited = Boolean(targetNode?.data?.visited);
-      const isCompletedPath = sourceVisited && targetVisited;
-
-      const visibleLine = isCompletedPath || (isReachable && stateInMap);
-      const shouldPulse = !isCompletedPath && visibleLine;
-
-      return {
-        ...edge,
-        data: {
-          ...edge.data,
-          shouldPulse,
-        },
-        style: {
-          stroke: visibleLine ? (shouldPulse ? VIOLET_LIGHT : BLUE) : "#fff",
-          strokeWidth: 2,
-          strokeDasharray: visibleLine ? undefined : "5 5",
-          opacity: visibleLine ? 1 : 0.3,
-        },
-      };
-    });
-
-    setEdges(updatedEdges);
-  }, [currentNode, nodes]);
 
   const calculateEdges = (nodes: NodeData[]): Edge[] => {
     const edges: Edge[] = [];
@@ -192,14 +193,14 @@ export const MapProvider = ({ children }: MapProviderProps) => {
           id,
         })),
       ],
-      padding: 0.1,
+      padding: 0.2,
       duration: 750,
-      maxZoom: isSmallScreen ? 0.7 : 1.2,
+      maxZoom: isSmallScreen ? 0.84 : 1.44,
     });
   };
 
   const fitViewToFullMap = () => {
-    reactFlowInstance.fitView({ padding: 0.1 });
+    reactFlowInstance.fitView({ padding: 0.2 });
   };
 
   const fitViewToNode = (nodeId: string) => {
@@ -215,7 +216,7 @@ export const MapProvider = ({ children }: MapProviderProps) => {
     <MapContext.Provider
       value={{
         nodes,
-        edges,
+        edges: styledEdges,
         fitViewToCurrentNode,
         fitViewToFullMap,
         fitViewToNode,
@@ -224,12 +225,6 @@ export const MapProvider = ({ children }: MapProviderProps) => {
         reachableNodes,
         selectedNodeData,
         setSelectedNodeData,
-        isNodeTransactionPending,
-        setNodeTransactionPending,
-        activeNodeId,
-        setActiveNodeId,
-        pulsingNodeId,
-        setPulsingNodeId,
       }}
     >
       {children}

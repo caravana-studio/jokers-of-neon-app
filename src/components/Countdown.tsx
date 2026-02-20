@@ -28,9 +28,9 @@ const defaultFormatter: CountdownFormatter = ({ days, hours, minutes }) => {
   return `${dayPrefix}${hours}h ${minuteSuffix}`;
 };
 
-const getCountdownParts = (targetDate: Date): CountdownParts => {
+const getCountdownParts = (targetTime: number): CountdownParts => {
   const now = Date.now();
-  const diff = Math.max(targetDate.getTime() - now, 0);
+  const diff = Number.isFinite(targetTime) ? Math.max(targetTime - now, 0) : 0;
 
   const days = Math.floor(diff / DAY_IN_MS);
   const hours = Math.floor((diff % DAY_IN_MS) / HOUR_IN_MS);
@@ -52,12 +52,13 @@ export const Countdown = ({
   formatter,
   children,
 }: CountdownProps) => {
-  const [parts, setParts] = useState(() => getCountdownParts(targetDate));
+  const targetTime = targetDate.getTime();
+  const [parts, setParts] = useState(() => getCountdownParts(targetTime));
   const format = formatter ?? defaultFormatter;
 
   useEffect(() => {
     const tick = () => {
-      setParts(getCountdownParts(targetDate));
+      setParts(getCountdownParts(targetTime));
     };
 
     tick();
@@ -68,7 +69,7 @@ export const Countdown = ({
     return () => {
       window.clearInterval(intervalId);
     };
-  }, [targetDate, intervalMs]);
+  }, [targetTime, intervalMs]);
 
   const formatted = format(parts);
 

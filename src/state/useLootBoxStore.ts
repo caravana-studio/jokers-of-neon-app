@@ -27,7 +27,7 @@ export const useLootBoxStore = create<LootBoxStore>((set, get) => ({
     };
   });
 
-    set({ result, cardsToKeep: result });
+    set({ result, cardsToKeep: [] });
   },
 
   toggleCard: (card: Card) => {

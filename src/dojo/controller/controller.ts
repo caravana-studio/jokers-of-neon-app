@@ -2,11 +2,12 @@ import { SessionConnector } from "@cartridge/connector";
 import ControllerConnector from "@cartridge/connector/controller";
 import { AuthOptions } from "@cartridge/controller";
 import { constants, shortString } from "starknet";
+import { rpcUrl, slotInstance } from "../../config/cartridgeUrls";
 import { isNative, isNativeAndroid } from "../../utils/capacitorUtils";
 import { policies } from "./policies";
 
 const CHAIN =
-  import.meta.env.VITE_SLOT_INSTANCE ||
+  slotInstance ||
   import.meta.env.VITE_CHAIN ||
   "jokers-of-neon";
 
@@ -34,9 +35,7 @@ const defaultChainId =
     ? getChainId(CHAIN)
     : getSlotChainId(CHAIN);
 
-const isDev = import.meta.env.VITE_DEV === "true";
-
-const RPC_URL = import.meta.env.VITE_RPC_URL || "http://localhost:5050";
+const RPC_URL = rpcUrl;
 
 const signupOptions: AuthOptions = isNativeAndroid
   ? ["google", "discord", "password"]
@@ -57,8 +56,7 @@ if (CHAIN !== "mainnet" && CHAIN !== "sepolia") {
 }
 
 export const controller =
-  !isDev &&
-  (!isNative
+  !isNative
     ? new ControllerConnector(controllerOptions)
     : new SessionConnector({
         policies,
@@ -67,4 +65,4 @@ export const controller =
         redirectUrl: "jokers://open",
         disconnectRedirectUrl: "jokers://open",
         signupOptions,
-      }));
+      });

@@ -78,7 +78,9 @@ export const SpecialCards: React.FC<SpecialCardsProps> = ({
               .map((card) => card.card_id)
               .includes(card.card_id!);
 
-            const { name, description } = getCardData(card.card_id ?? 0);
+            const { name, description } = getCardData(card.card_id ?? 0, {
+              showCumulativeProgress: true,
+            });
             const preferredSkinId =
               card.card_id !== undefined ? getSkinFor(card.card_id) : 0;
             const skinSuffix = preferredSkinId > 0 ? `_sk${preferredSkinId}` : "";
@@ -139,7 +141,11 @@ export const SpecialCards: React.FC<SpecialCardsProps> = ({
           ))}
           {Array.from({ length: lockedSlots }).map((_, index) => (
             <Box mx={1.5} p={1}>
-              <LockedSlot scale={scale} key={`locked-${index}`} />
+              <LockedSlot
+                scale={scale}
+                showPrice={index === 0}
+                key={`locked-${index}`}
+              />
             </Box>
           ))}
         </FullScreenCardContainer>

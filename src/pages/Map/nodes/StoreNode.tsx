@@ -1,5 +1,5 @@
 import { Box, Tooltip } from "@chakra-ui/react";
-import { keyframes } from "@emotion/react";
+import { memo } from "react";
 import { useTranslation } from "react-i18next";
 import { Handle, Position } from "reactflow";
 import CachedImage from "../../../components/CachedImage";
@@ -8,27 +8,16 @@ import { useCustomNavigate } from "../../../hooks/useCustomNavigate";
 import { useMap } from "../../../providers/MapProvider";
 import { useStore } from "../../../providers/StoreProvider";
 import { useGameStore } from "../../../state/useGameStore";
+import { useMapNavigationStore } from "../../../state/useMapNavigationStore";
 import { BLUE, VIOLET } from "../../../theme/colors";
 import { useResponsiveValues } from "../../../theme/responsiveSettings";
 import { TooltipContent } from "../TooltipContent";
 import { NodeType } from "../types";
 import { HereSign } from "./HereSign";
 import { NodeClickPulse } from "./NodeClickPulse";
+import { getReachablePulseSx } from "./reachablePulseAnimation";
 import { useNodeNavigation } from "./useNodeNavigation";
-
-const reachablePulse = keyframes`
-  0% {
-    transform: scale(1);
-    opacity: 0.8;
-  }
-  70% {
-    transform: scale(1.6);
-    opacity: 0;
-  }
-  100% {
-    opacity: 0;
-  }
-`;
+import { useNodeReachability } from "./useNodeReachability";
 
 const getStoreItemsBasedOnShopId = (shopId: number) => {
   switch (shopId) {
@@ -49,22 +38,21 @@ const getStoreItemsBasedOnShopId = (shopId: number) => {
   }
 };
 
-const StoreNode = ({ data }: any) => {
+const StoreNode = memo(({ data }: any) => {
   const { t } = useTranslation("store", { keyPrefix: "config" });
   const { t: tMap } = useTranslation("map");
-  const { id: gameId } = useGameStore();
+  const { id: gameId, setShopId } = useGameStore();
   const navigate = useCustomNavigate();
   const { handleNodeNavigation } = useNodeNavigation();
 
-  const { reachableNodes, setSelectedNodeData, selectedNodeData, isNodeTransactionPending, activeNodeId, pulsingNodeId } = useMap();
+  const { setSelectedNodeData, selectedNodeData } = useMap();
+  const isNodeTransactionPending = useMapNavigationStore((s) => s.isNodeTransactionPending);
+  const pulsingNodeId = useMapNavigationStore((s) => s.pulsingNodeId);
   const { isSmallScreen } = useResponsiveValues();
 
-  const { state, setShopId } = useGameStore();
   const { refetch } = useStore();
 
-  const stateInMap = state === GameStateEnum.Map;
-  const isActiveNode = activeNodeId === data.id.toString();
-  const reachable = reachableNodes.includes(data.id.toString()) && stateInMap && (!isNodeTransactionPending || isActiveNode);
+  const { stateInMap, reachable } = useNodeReachability(data.id);
 
   const title = `${tMap('legend.nodes.shop.title')} ${t(`${data.shopId}.name`)}`;
   const content = t(
@@ -103,6 +91,7 @@ const StoreNode = ({ data }: any) => {
           color: "white",
           cursor: stateInMap && reachable ? "pointer" : "default",
           boxShadow: data.current ? `0px 0px 18px 6px ${BLUE}` : "none",
+          opacity: !data.visited && !data.current && !reachable ? 0.4 : 1,
           position: "relative",
         }}
         sx={{
@@ -120,20 +109,7 @@ const StoreNode = ({ data }: any) => {
             transform: "scale(1.2)",
           },
           ...(reachable && !data.current
-            ? {
-                "&::after": {
-                  content: '""',
-                  position: "absolute",
-                  inset: "-8px",
-                  borderRadius: "100%",
-                  border: `2px solid ${VIOLET}`,
-                  animation: `${reachablePulse} 1.8s ease-out infinite`,
-                  pointerEvents: "none",
-                  opacity: 0.8,
-                  zIndex: -1,
-                  transformOrigin: "center",
-                },
-              }
+            ? getReachablePulseSx("100%", "-8px")
             : {}),
         }}
         onClick={() => {
@@ -149,8 +125,7 @@ const StoreNode = ({ data }: any) => {
             });
           } else if (data.current && !stateInMap) {
             navigate(GameStateEnum.Store);
-          } else if (stateInMap && reachableNodes.includes(data.id.toString())) {
-            // Desktop: navigate with a single click
+          } else if (reachable) {
             handleNodeNavigation({
               nodeId: data.id,
               gameId,
@@ -180,6 +155,6 @@ const StoreNode = ({ data }: any) => {
       </Box>
     </Tooltip>
   );
-};
+});
 
 export default StoreNode;

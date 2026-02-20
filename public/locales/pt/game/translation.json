@@ -139,7 +139,7 @@
     "deck": {
       "tooltip": "Ver baralho",
       "title": "Baralho",
-      "burn-title": "Selecione uma carta para queimar",
+      "burn-title": "Selecione cartas para queimar",
       "filter-title": "Filtrar por",
       "suit": {
         "club": "Paus",
@@ -155,7 +155,9 @@
       "btns": {
         "special-cards": "Ver cartas especiais",
         "back": "Voltar ao jogo",
-        "burn": "Queimar carta"
+        "burn": "Queimar",
+        "burn-selected_one": "Queimar {{count}} carta",
+        "burn-selected_other": "Queimar {{count}} cartas"
       },
       "tabs": {
         "full-deck": "Baralho",
@@ -203,6 +205,12 @@
   },
   "rage-cards": {
     "no-cards": "Em rondas de rage, você verá as cartas de rage aqui"
+  },
+  "rage-round-animation": {
+    "title": "RODADA RAGE",
+    "sacrificed-card": "Carta sacrificada",
+    "click-anywhere": "Toque em qualquer lugar para fechar",
+    "auto-skip": "Pular esta tela automaticamente"
   },
   "specials-box": {
     "specials-tooltip": "Cartas especiais",

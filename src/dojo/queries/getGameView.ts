@@ -19,6 +19,7 @@ export const DEFAULT_GAME_VIEW: GameView = {
     cash: 0,
     available_rerolls: 0,
     seed: 0,
+    is_tournament: false,
     state: GameStateEnum.NotStarted,
     round: 0,
   },
@@ -50,10 +51,22 @@ export interface GameView {
     cash: number;
     available_rerolls: number;
     seed: number;
+    is_tournament: boolean;
     round: number;
   };
   round: Round;
 }
+
+const parseCairoBoolean = (value: unknown): boolean => {
+  if (typeof value === "boolean") return value;
+  if (typeof value === "number") return value !== 0;
+  if (typeof value === "bigint") return value !== 0n;
+  if (typeof value === "string") {
+    const normalized = value.trim().toLowerCase();
+    return normalized !== "" && normalized !== "0" && normalized !== "0x0" && normalized !== "false";
+  }
+  return Boolean(value);
+};
 
 interface StateCairo {
   Challenge: any;
@@ -120,6 +133,7 @@ export const getGameView = async (
           cash: Number(tx_result["0"].cash),
           available_rerolls: Number(tx_result["0"].available_rerolls),
           seed: Number(tx_result["0"].seed),
+          is_tournament: parseCairoBoolean(tx_result["0"]?.is_tournament),
           state: getState(tx_result["0"]?.state?.variant),
           round: Number(tx_result["0"]?.round),
         },

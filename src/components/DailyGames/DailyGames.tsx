@@ -20,7 +20,7 @@ export const DailyGames = () => {
   const navigate = useNavigate();
   const { seasonPassUnlocked } = useSeasonPass();
   const [availableLives, setAvailableLives] = useState(0);
-  const [totalSlots, setTotalSlots] = useState(seasonPassUnlocked ? 4 : 2);
+  const [totalSlots, setTotalSlots] = useState(seasonPassUnlocked ? 6 : 3);
   const [nextLiveIn, setNextLiveIn] = useState<Date | undefined>(undefined);
 
   const {
@@ -29,7 +29,7 @@ export const DailyGames = () => {
   } = useDojo();
 
   const { claimLives } = useGameActions();
-  
+
   const fetchPlayerLives = () => {
     getPlayerLives(client, { playerAddress: account.address }).then(
       (response) => {
@@ -40,7 +40,7 @@ export const DailyGames = () => {
         setTotalSlots(response.data.max_lives);
         response.data.next_live_timestamp &&
           setNextLiveIn(response.data.next_live_timestamp);
-      }
+      },
     );
   };
 
@@ -90,7 +90,11 @@ export const DailyGames = () => {
             ? t("you-have-1-live-left")
             : t("you-have-x-lives-left", { lives: availableLives })}
       </Text>
-      <Flex w="100%" justifyContent={"center"} gap={isSmallScreen ? 2 : 6}>
+      <Flex
+        w="100%"
+        justifyContent={"center"}
+        gap={isSmallScreen ? 2 : 6}
+      >
         {slots.map((unlockedPercentage, index) => (
           <DailyGame
             key={index}
@@ -106,8 +110,9 @@ export const DailyGames = () => {
             width={isSmallScreen ? "100px" : "200px"}
             ml={1}
             fontSize={isSmallScreen ? 10 : 15}
-            h={isSmallScreen ? "30px" : "50px"}
-            variant="solid"
+            h={isSmallScreen ? "30px" : "35px"}
+            variant={seasonPassUnlocked ? "secondarySolid" : "solid"}
+            mt={availableLives < totalSlots ? 1.5 : 0}
           >
             {t("new-game")}
           </Button>

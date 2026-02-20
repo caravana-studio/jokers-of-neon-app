@@ -9,6 +9,7 @@ import { useResponsiveValues } from "../theme/responsiveSettings";
 export const TestPage = () => {
   const { isSmallScreen } = useResponsiveValues();
   const navigate = useNavigate();
+
   return (
     <DelayedLoading ms={0}>
       <MobileDecoration />
@@ -18,9 +19,9 @@ export const TestPage = () => {
         )}
         <MenuBtn
           icon={Icons.STORE}
-          description={"Open external pack"}
-          label={"Open external pack"}
-          onClick={() => navigate("/external-pack")}
+          description={"Simulate pack opening (API)"}
+          label={"Simulate Packs"}
+          onClick={() => navigate("/test/simulate-packs")}
           arrowRight
           width={"18px"}
         />
@@ -62,9 +63,20 @@ export const TestPage = () => {
         )}
         <MenuBtn
           icon={Icons.LIST}
-          description={"Test referral system"}
-          label={"Referral Test"}
-          onClick={() => navigate("/referral-test")}
+          description={"Referral"}
+          label={"Referral"}
+          onClick={() => navigate("/referral")}
+          arrowRight
+          width={"18px"}
+        />
+        {isSmallScreen && (
+          <Divider borderColor="white" borderWidth="1px" my={2} />
+        )}
+        <MenuBtn
+          icon={Icons.TOURNAMENT}
+          description={"Tournament"}
+          label={"Tournament"}
+          onClick={() => navigate("/tournament")}
           arrowRight
           width={"18px"}
         />

@@ -8,6 +8,7 @@ import { ProfileContent } from "./ProfileContent";
 export const ProfilePage = () => {
   const {
     setup: { account, client },
+    accountType,
   } = useDojo();
 
   const loggedInUser = useUsername();
@@ -21,10 +22,11 @@ export const ProfilePage = () => {
         client,
         account.account.address,
         account.account,
-        loggedInUser
+        loggedInUser,
+        accountType
       );
     }
-  }, [client, account, loggedInUser, profileData?.profile.username]);
+  }, [client, account, loggedInUser, profileData?.profile.username, accountType]);
 
   return profileData !== null ? (
     <ProfileContent data={profileData} onUpdateAvatar={updateAvatar} />

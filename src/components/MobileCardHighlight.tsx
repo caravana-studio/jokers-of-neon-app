@@ -25,6 +25,7 @@ interface MobileCardHighlightProps {
   showExtraInfo?: boolean;
   isPack?: boolean;
   hidePrice?: boolean;
+  showCumulativeProgress?: boolean;
 }
 
 export const MobileCardHighlight = ({
@@ -34,12 +35,18 @@ export const MobileCardHighlight = ({
   isPack = false,
   customBtn,
   hidePrice = false,
+  showCumulativeProgress = false,
 }: MobileCardHighlightProps) => {
   const { onClose } = useCardHighlight();
 
   const { getCardData, getLootBoxData } = useCardData();
 
-  const getDataFn = isPack ? getLootBoxData : getCardData;
+  const getDataFn = isPack
+    ? () => getLootBoxData(card.card_id ?? 0)
+    : () =>
+        getCardData(card.card_id ?? 0, {
+          showCumulativeProgress,
+        });
   const {
     name,
     description,
@@ -49,7 +56,7 @@ export const MobileCardHighlight = ({
     rarity,
     temporaryPrice,
     details,
-  } = getDataFn(card.card_id ?? 0);
+  } = getDataFn();
 
   const { isSmallScreen } = useResponsiveValues();
 
@@ -139,9 +146,7 @@ export const MobileCardHighlight = ({
       backdropFilter="blur(5px)"
       backgroundColor=" rgba(0, 0, 0, 0.5)"
       gap={temporaryPrice ? 2 : 4}
-      onClick={() => {
-        onClose();
-      }}
+      onClick={handleBackdropClick}
     >
       {confirmationModalOpen && (
         <ConfirmationModal
@@ -178,7 +183,11 @@ export const MobileCardHighlight = ({
         position={"relative"}
         transform={`scale(${scale})`}
         transition="all 0.5s ease"
-        onClick={(e) => e.stopPropagation()}
+        onClick={(e) => {
+          if (e.target !== e.currentTarget) {
+            e.stopPropagation();
+          }
+        }}
       >
         {!animation ? (
           <CardImage3D card={card} hideTooltip small={false} />

@@ -64,28 +64,130 @@ interface AppsFlyerBridgePlugin {
   ): Promise<{ remove: () => void }>;
 }
 
-// Web stub for non-native platforms
+// =============================================================================
+// WEB IMPLEMENTATION (NO EXTERNAL SDK)
+// =============================================================================
+// AppsFlyer Web SDK (PBA) requires a separate Web Dev Key from the dashboard
+// and is loaded via CDN script tag. For our use case, we handle web referrals
+// directly without the external SDK - the native iOS/Android SDKs handle
+// real attribution, and web just needs to capture ?ref= parameters.
+
+const WEB_STORAGE_KEYS = {
+  DEVICE_ID: "appsflyer_web_device_id",
+  CUSTOMER_ID: "appsflyer_web_customer_id",
+} as const;
+
+/**
+ * Generate a persistent device ID for web platform
+ * Stored in localStorage to maintain consistency across sessions
+ */
+function getOrCreateWebDeviceId(): string {
+  let deviceId = localStorage.getItem(WEB_STORAGE_KEYS.DEVICE_ID);
+  if (!deviceId) {
+    // Generate a UUID-like identifier
+    deviceId = "web_" + crypto.randomUUID();
+    localStorage.setItem(WEB_STORAGE_KEYS.DEVICE_ID, deviceId);
+  }
+  return deviceId;
+}
+
+// Web implementation for non-native platforms
+// Handles referral tracking without external SDK dependency
 class AppsFlyerBridgeWeb implements Partial<AppsFlyerBridgePlugin> {
-  async setCustomerUserId(): Promise<void> {}
-  async logEvent(): Promise<void> {}
+  private listeners: Map<string, Set<(data: { data: string }) => void>> = new Map();
+
+  async setCustomerUserId(options: { customerUserId: string }): Promise<void> {
+    localStorage.setItem(WEB_STORAGE_KEYS.CUSTOMER_ID, options.customerUserId);
+  }
+
+  async logEvent(options: { eventName: string; eventValues?: Record<string, unknown> }): Promise<void> {
+    const { eventName, eventValues = {} } = options;
+
+    // Add web-specific context
+    const enrichedValues = {
+      ...eventValues,
+      platform: "web",
+      device_id: getOrCreateWebDeviceId(),
+      customer_id: localStorage.getItem(WEB_STORAGE_KEYS.CUSTOMER_ID) || undefined,
+      timestamp: new Date().toISOString(),
+    };
+
+    // Log locally for debugging (events are tracked via backend API for web)
+    console.log(`[AppsFlyer Web] Event: ${eventName}`, enrichedValues);
+  }
+
   async getAppsFlyerUID(): Promise<{ uid: string }> {
-    return { uid: "" };
+    // Web uses a generated persistent device ID
+    const uid = getOrCreateWebDeviceId();
+    return { uid };
   }
+
   async getDeviceId(): Promise<{ deviceId: string }> {
-    return { deviceId: "" };
+    const deviceId = getOrCreateWebDeviceId();
+    return { deviceId };
   }
-  async generateInviteUrl(): Promise<{ url: string }> {
-    return { url: "" };
+
+  async generateInviteUrl(options: GenerateInviteUrlOptions): Promise<{ url: string }> {
+    // Generate OneLink URL with referral code
+    const oneLinkBaseUrl = "https://jokersofneon.onelink.me/2BD9";
+    const url = `${oneLinkBaseUrl}?ref=${encodeURIComponent(options.referralCode)}`;
+    console.log("[AppsFlyer Web] Generated invite URL:", url);
+    return { url };
   }
-  async logInvite(): Promise<void> {}
-  async addListener(): Promise<{ remove: () => void }> {
-    return { remove: () => {} };
+
+  async logInvite(options: LogInviteOptions): Promise<void> {
+    // Log the invite event
+    await this.logEvent({
+      eventName: AppsFlyerEvents.REFERRAL_CODE_SHARED,
+      eventValues: {
+        referral_code: options.referralCode,
+        channel: options.channel || "web_share",
+      },
+    });
+  }
+
+  async addListener(
+    eventName: "conversionData" | "deepLink",
+    listenerFunc: (data: { data: string }) => void
+  ): Promise<{ remove: () => void }> {
+    // Store listeners for web referral handling
+    if (!this.listeners.has(eventName)) {
+      this.listeners.set(eventName, new Set());
+    }
+    this.listeners.get(eventName)!.add(listenerFunc);
+
+    console.log(`[AppsFlyer Web] Listener added for: ${eventName}`);
+
+    return {
+      remove: () => {
+        this.listeners.get(eventName)?.delete(listenerFunc);
+      },
+    };
+  }
+
+  // Method to emit events to listeners (used by web referral handling)
+  emitEvent(eventName: "conversionData" | "deepLink", data: { data: string }): void {
+    const eventListeners = this.listeners.get(eventName);
+    if (eventListeners) {
+      eventListeners.forEach((listener) => listener(data));
+    }
   }
 }
 
+// Create singleton instance for web
+const webBridgeInstance = new AppsFlyerBridgeWeb();
+
 const AppsFlyerBridge = registerPlugin<AppsFlyerBridgePlugin>("AppsFlyerBridge", {
-  web: () => Promise.resolve(new AppsFlyerBridgeWeb() as AppsFlyerBridgePlugin),
+  web: () => Promise.resolve(webBridgeInstance as AppsFlyerBridgePlugin),
 });
+
+// Export the web bridge instance for direct access (used by web referral handling)
+export const getWebBridgeInstance = (): AppsFlyerBridgeWeb | null => {
+  if (!Capacitor.isNativePlatform()) {
+    return webBridgeInstance;
+  }
+  return null;
+};
 
 // =============================================================================
 // CORE SDK FUNCTIONS
@@ -96,14 +198,11 @@ const isNative = () => Capacitor.isNativePlatform();
 /**
  * Set Customer User ID (CUID) - links AppsFlyer data to your user
  * Call this when user logs in or creates account
- * Note: This is optional and may not work on all devices
+ * Works on both native and web platforms
  */
 export async function setAppsFlyerCustomerUserId(userAddress: string): Promise<void> {
-  if (!isNative()) return;
-
   try {
     await AppsFlyerBridge.setCustomerUserId({ customerUserId: userAddress });
-    console.log("[AppsFlyer] CUID set:", userAddress);
   } catch {
     // Silent fail - CUID is optional for analytics
   }
@@ -111,16 +210,12 @@ export async function setAppsFlyerCustomerUserId(userAddress: string): Promise<v
 
 /**
  * Log a custom event to AppsFlyer
+ * Works on both native (via SDK) and web (via Web SDK or local logging)
  */
 export async function logAppsFlyerEvent(
   eventName: string,
   eventValues?: Record<string, unknown>
 ): Promise<void> {
-  if (!isNative()) {
-    console.log(`[AppsFlyer] Web - event: ${eventName}`, eventValues);
-    return;
-  }
-
   try {
     await AppsFlyerBridge.logEvent({ eventName, eventValues: eventValues ?? {} });
     console.log(`[AppsFlyer] Event: ${eventName}`, eventValues);
@@ -131,10 +226,9 @@ export async function logAppsFlyerEvent(
 
 /**
  * Get AppsFlyer UID - unique device identifier
+ * On web, returns a generated persistent device ID
  */
 export async function getAppsFlyerUID(): Promise<string | null> {
-  if (!isNative()) return null;
-
   try {
     const result = await AppsFlyerBridge.getAppsFlyerUID();
     return result.uid || null;
@@ -144,11 +238,9 @@ export async function getAppsFlyerUID(): Promise<string | null> {
 }
 
 /**
- * Get Device ID (IDFV on iOS, Android ID on Android)
+ * Get Device ID (IDFV on iOS, Android ID on Android, generated UUID on web)
  */
 export async function getDeviceId(): Promise<string | null> {
-  if (!isNative()) return null;
-
   try {
     const result = await AppsFlyerBridge.getDeviceId();
     return result.deviceId || null;

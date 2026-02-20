@@ -45,6 +45,7 @@ type GameStore = {
   availableRerolls: number;
   modId: string;
   isClassic: boolean;
+  isTournament: boolean;
   isRageRound: boolean;
   maxSpecialCards: number;
   maxPowerUpSlots: number;
@@ -108,6 +109,7 @@ type GameStore = {
   advanceLevel: () => void;
   fetchGameStoreForTutorial: () => void;
   setInBossRound: (inBossRound: boolean) => void;
+  setIsTournament: (isTournament: boolean) => void;
 };
 
 const doRefetchGameStore = async (client: any, gameId: number, set: any) => {
@@ -167,6 +169,7 @@ const doRefetchGameStore = async (client: any, gameId: number, set: any) => {
     availableRerolls: game.available_rerolls,
     modId: game.mod_id,
     isClassic: game.mod_id === CLASSIC_MOD_ID,
+    isTournament: game.is_tournament,
     totalScore: game.player_score,
     currentScore: round.current_score,
     specialCards,
@@ -204,6 +207,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   availableRerolls: 0,
   modId: "jokers_of_neon_classic",
   isClassic: true,
+  isTournament: false,
   maxSpecialCards: 7,
   maxPowerUpSlots: 4,
   powerUps: [],
@@ -236,7 +240,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   removeGameId: () => {
     localStorage.removeItem(GAME_ID);
-    set({ id: 0, state: GameStateEnum.NotSet });
+    set({ id: 0, state: GameStateEnum.NotSet, isTournament: false });
   },
 
   play: () => {
@@ -501,5 +505,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
   setInBossRound: (inBossRound) => {
     set({ inBossRound });
+  },
+
+  setIsTournament: (isTournament) => {
+    set({ isTournament });
   },
 }));

@@ -3,7 +3,11 @@ import { Plays } from "../../../enums/plays";
 import { ModifiersId } from "../../../enums/modifiersId";
 import { checkHand } from "../../checkHand";
 import {
+  H2,
+  H4,
   H7,
+  H10,
+  HJ,
   D7,
   C7,
   S7,
@@ -28,6 +32,10 @@ const D7N: Card = { ...D7, isNeon: true, card_id: 244, img: "244.png" };
 const C7N: Card = { ...C7, isNeon: true, card_id: 245, img: "245.png" };
 const S7N: Card = { ...S7, isNeon: true, card_id: 246, img: "246.png" };
 const H9N: Card = { ...H9, isNeon: true, card_id: 247, img: "247.png" };
+const H10N: Card = { ...H10, isNeon: true, card_id: 34, img: "34.png" };
+const H2N: Card = { ...H2, isNeon: true, card_id: 26, img: "26.png" };
+const H4N: Card = { ...H4, isNeon: true, card_id: 28, img: "28.png" };
+const HJN: Card = { ...HJ, isNeon: true, card_id: 35, img: "35.png" };
 
 const D10N: Card = { ...D10, isNeon: true, card_id: 248, img: "248.png" };
 const DJN: Card = { ...DJ, isNeon: true, card_id: 249, img: "249.png" };
@@ -75,6 +83,66 @@ test("checkHand should return neon for all-neon four of a kind", () => {
   expect(result.isNeon).toBe(true);
 });
 
+test("checkHand should return neon for four of a kind with extra non-neon card", () => {
+  const hand = withIdx([H7N, D7N, C7N, S7N, H9]);
+  const preSelectedCards = [0, 1, 2, 3, 4];
+
+  const result = checkHand(hand, preSelectedCards, [], {});
+
+  expect(result.play).toBe(Plays.FOUR_OF_A_KIND);
+  expect(result.isNeon).toBe(true);
+});
+
+test("checkHand should return neon for four of a kind with extra neon card", () => {
+  const hand = withIdx([H7N, D7N, C7N, S7N, H9N]);
+  const preSelectedCards = [0, 1, 2, 3, 4];
+
+  const result = checkHand(hand, preSelectedCards, [], {});
+
+  expect(result.play).toBe(Plays.FOUR_OF_A_KIND);
+  expect(result.isNeon).toBe(true);
+});
+
+test("checkHand should return neon for two pair with extra non-neon card", () => {
+  const hand = withIdx([H7N, D7N, H10N, D10N, H9]);
+  const preSelectedCards = [0, 1, 2, 3, 4];
+
+  const result = checkHand(hand, preSelectedCards, [], {});
+
+  expect(result.play).toBe(Plays.TWO_PAIR);
+  expect(result.isNeon).toBe(true);
+});
+
+test("checkHand should return neon for two pair with extra neon card", () => {
+  const hand = withIdx([H7N, D7N, H10N, D10N, H9N]);
+  const preSelectedCards = [0, 1, 2, 3, 4];
+
+  const result = checkHand(hand, preSelectedCards, [], {});
+
+  expect(result.play).toBe(Plays.TWO_PAIR);
+  expect(result.isNeon).toBe(true);
+});
+
+test("checkHand should return neon for all-neon flush", () => {
+  const hand = withIdx([H2N, H4N, H7N, H9N, HJN]);
+  const preSelectedCards = [0, 1, 2, 3, 4];
+
+  const result = checkHand(hand, preSelectedCards, [], {});
+
+  expect(result.play).toBe(Plays.FLUSH);
+  expect(result.isNeon).toBe(true);
+});
+
+test("checkHand should return non-neon for flush with one non-neon card", () => {
+  const hand = withIdx([H2N, H4N, H7N, H9N, HJ]);
+  const preSelectedCards = [0, 1, 2, 3, 4];
+
+  const result = checkHand(hand, preSelectedCards, [], {});
+
+  expect(result.play).toBe(Plays.FLUSH);
+  expect(result.isNeon).toBe(false);
+});
+
 test("checkHand should return non-neon for regular pair", () => {
   const hand = withIdx([H7, D7, H9]);
   const preSelectedCards = [0, 1, 2];
@@ -93,6 +161,26 @@ test("checkHand should return neon for all-neon pair", () => {
 
   expect(result.play).toBe(Plays.PAIR);
   expect(result.isNeon).toBe(true);
+});
+
+test("checkHand should return neon for a neon pair with an extra non-neon card", () => {
+  const hand = withIdx([H7N, D7N, H9]);
+  const preSelectedCards = [0, 1, 2];
+
+  const result = checkHand(hand, preSelectedCards, [], {});
+
+  expect(result.play).toBe(Plays.PAIR);
+  expect(result.isNeon).toBe(true);
+});
+
+test("checkHand should use only the highest card for high card neon status", () => {
+  const hand = withIdx([DK, H7N, H9N]);
+  const preSelectedCards = [0, 1, 2];
+
+  const result = checkHand(hand, preSelectedCards, [], {});
+
+  expect(result.play).toBe(Plays.HIGH_CARD);
+  expect(result.isNeon).toBe(false);
 });
 
 test("checkHand should handle jokers correctly - neon with jokers", () => {

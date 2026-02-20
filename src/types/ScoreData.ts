@@ -108,6 +108,7 @@ export interface CashEvent {
 export interface DailyMissionCompleted {
   player: string;
   dailyMissionId: string;
+  base_xp: number;
 }
 
 export interface LevelCompleteEvent {

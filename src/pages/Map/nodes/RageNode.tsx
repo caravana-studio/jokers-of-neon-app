@@ -1,6 +1,6 @@
 import { Box, Tooltip } from "@chakra-ui/react";
 import { keyframes } from "@emotion/react";
-import { useState } from "react";
+import { memo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Handle, Position } from "reactflow";
 import CachedImage from "../../../components/CachedImage";
@@ -10,27 +10,16 @@ import { useDojo } from "../../../dojo/useDojo";
 import { useCustomNavigate } from "../../../hooks/useCustomNavigate";
 import { useMap } from "../../../providers/MapProvider";
 import { useGameStore } from "../../../state/useGameStore";
-import { BLUE, VIOLET } from "../../../theme/colors";
+import { useMapNavigationStore } from "../../../state/useMapNavigationStore";
+import { BLUE } from "../../../theme/colors";
 import { useResponsiveValues } from "../../../theme/responsiveSettings";
 import { TooltipContent } from "../TooltipContent";
 import { NodeType } from "../types";
 import { HereSign } from "./HereSign";
-
-const reachablePulse = keyframes`
-  0% {
-    transform: scale(1);
-    opacity: 0.8;
-  }
-  70% {
-    transform: scale(1.4);
-    opacity: 0;
-  }
-  100% {
-    opacity: 0;
-  }
-`;
 import { NodeClickPulse } from "./NodeClickPulse";
+import { getReachablePulseSx } from "./reachablePulseAnimation";
 import { useNodeNavigation } from "./useNodeNavigation";
+import { useNodeReachability } from "./useNodeReachability";
 
 const bossPulse = keyframes`
   0% { transform: scale(1); opacity: 0.9; }
@@ -38,24 +27,22 @@ const bossPulse = keyframes`
   100% { transform: scale(1); opacity: 0.9; }
 `;
 
-const RageNode = ({ data }: any) => {
+const RageNode = memo(({ data }: any) => {
   const { t } = useTranslation("map", { keyPrefix: "rage" });
-  const { id: gameId, refetchGameStore } = useGameStore();
+  const { id: gameId, refetchGameStore, level } = useGameStore();
   const navigate = useCustomNavigate();
   const { handleNodeNavigation } = useNodeNavigation();
 
-  const { reachableNodes, setSelectedNodeData, selectedNodeData, isNodeTransactionPending, activeNodeId, pulsingNodeId } = useMap();
+  const { setSelectedNodeData, selectedNodeData } = useMap();
+  const isNodeTransactionPending = useMapNavigationStore((s) => s.isNodeTransactionPending);
+  const pulsingNodeId = useMapNavigationStore((s) => s.pulsingNodeId);
   const { isSmallScreen } = useResponsiveValues();
 
   const {
     setup: { client },
   } = useDojo();
 
-  const { state, level } = useGameStore();
-
-  const stateInMap = state === GameStateEnum.Map;
-  const isActiveNode = activeNodeId === data.id.toString();
-  const reachable = reachableNodes.includes(data.id.toString()) && stateInMap && (!isNodeTransactionPending || isActiveNode);
+  const { stateInMap, reachable } = useNodeReachability(data.id);
   const [isHovered, setIsHovered] = useState(false);
 
   const isBossLevel = data.isBossLevel;
@@ -103,24 +90,12 @@ const RageNode = ({ data }: any) => {
               ? "scale(1.2)"
               : "scale(1)",
           cursor: stateInMap && reachable ? "pointer" : "default",
+          opacity: !data.visited && !data.current && !reachable ? 0.4 : 1,
           position: "relative",
         }}
         sx={{
           ...(reachable && !data.current
-            ? {
-                "&::after": {
-                  content: '""',
-                  position: "absolute",
-                  inset: "-10px",
-                  borderRadius: "50%",
-                  border: `2px solid ${VIOLET}`,
-                  animation: `${reachablePulse} 1.8s ease-out infinite`,
-                  pointerEvents: "none",
-                  opacity: 0.8,
-                  zIndex: -1,
-                  transformOrigin: "center",
-                },
-              }
+            ? getReachablePulseSx("50%", "-10px")
             : {}),
         }}
         onClick={() => {
@@ -135,8 +110,7 @@ const RageNode = ({ data }: any) => {
             });
           } else if (data.current && !stateInMap) {
             navigate(GameStateEnum.Rage);
-          } else if (stateInMap && reachableNodes.includes(data.id.toString())) {
-            // Desktop: navigate with a single click
+          } else if (reachable) {
             handleNodeNavigation({
               nodeId: data.id,
               gameId,
@@ -183,6 +157,6 @@ const RageNode = ({ data }: any) => {
       </Box>
     </Tooltip>
   );
-};
+});
 
 export default RageNode;

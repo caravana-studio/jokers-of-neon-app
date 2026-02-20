@@ -13,6 +13,7 @@ interface ICardImage3DProps {
   card: Card;
   small?: boolean;
   hideTooltip?: boolean;
+  showCumulativeProgress?: boolean;
   height?: string;
   width?: string;
   layerCount?: number;
@@ -34,6 +35,7 @@ export const CardImage3D = ({
   card,
   small = false,
   hideTooltip = false,
+  showCumulativeProgress = false,
   height,
   width = "100%",
   layerCount = 4,
@@ -143,7 +145,10 @@ export const CardImage3D = ({
           plainImg
         )
       ) : (
-        <CardTooltip card={card}>
+        <CardTooltip
+          card={card}
+          showCumulativeProgress={showCumulativeProgress}
+        >
           {availableLayers[0] && !showPlain && shouldUse3dLayers
             ? layer0Img
             : plainImg}

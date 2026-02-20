@@ -5,6 +5,7 @@ import { useDojo } from "../../dojo/DojoContext";
 import { GameStateEnum } from "../../dojo/typescript/custom";
 import { useGetMyGames } from "../../queries/useGetMyGames";
 import { useShopDistribution } from "../../queries/useShopDistribution";
+import { useTournamentSettings } from "../../queries/useTournamentSettings";
 import { useGameStore } from "../../state/useGameStore";
 import { useSeasonProgressStore } from "../../state/useSeasonProgressStore";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
@@ -15,7 +16,9 @@ export const mainMenuUrls = [
   "/",
   "/my-collection",
   "/my-games",
+  "/tournament",
   "/profile",
+  "/docs",
   "/settings",
   "/leaderboard",
   "/gameover/:gameId",
@@ -33,7 +36,7 @@ export const gameUrls = [
   "/preview/:type",
   "/loot-box-cards-selection",
   "/manage",
-  "/docs",
+  "/docs-game",
   "/deck",
   "/plays",
   "/settings-game",
@@ -82,12 +85,16 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
   const { state } = useGameStore();
   const { isSmallScreen } = useResponsiveValues();
   const { data: games } = useGetMyGames();
+  const { tournament } = useTournamentSettings();
   const {
     account: { account },
   } = useDojo();
   const { distribution, loading: loadingDistribution } = useShopDistribution();
   const seasonNotificationCount = useSeasonProgressStore(
     (store) => store.unclaimedRewardsCount,
+  );
+  const tournamentEntries = useSeasonProgressStore(
+    (store) => store.tournamentEntries,
   );
   const lastUserAddress = useSeasonProgressStore(
     (store) => store.lastUserAddress,
@@ -99,7 +106,7 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
   const hasCollectorPacks =
     !loadingDistribution &&
     !!distribution?.packs?.some(
-      (pack) => pack.packId === 5 || pack.packId === 6,
+      (pack) => [5, 6, 25, 26].includes(pack.packId),
     );
   const collectorNotificationCount = hasCollectorPacks ? 1 : 0;
   const [hasSeenPlays, setHasSeenPlays] = useState(() => {
@@ -135,6 +142,9 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
   }, [hasSeenPlays, url]);
 
   const gamesCount = games?.length;
+  const isTournamentActive = Boolean(
+    tournament?.isActive && !tournament?.isFinished,
+  );
   const shouldPulsePlays =
     !hasSeenPlays &&
     (state === GameStateEnum.Round || state === GameStateEnum.Rage) &&
@@ -160,6 +170,18 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
         active: url === "/leaderboard",
         key: "leaderboard",
       },*/,
+      ...(isTournamentActive
+        ? [
+            {
+              icon: Icons.TOURNAMENT,
+              url: "/tournament",
+              active: url === "/tournament",
+              key: "tournament",
+              notificationCount:
+                tournamentEntries > 0 ? tournamentEntries : undefined,
+            },
+          ]
+        : []),
       {
         icon: Icons.JOKER,
         url: "/my-games",
@@ -190,6 +212,13 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
 
     if (!isSmallScreen) {
       items.push({
+        icon: Icons.LIST,
+        url: "/docs",
+        active: url === "/docs",
+        key: "docs",
+      });
+
+      items.push({
         icon: Icons.SETTINGS,
         url: "/settings",
         active: url === "/settings",
@@ -198,7 +227,14 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
     }
 
     return items;
-  }, [collectorNotificationCount, isSmallScreen, url, seasonNotificationCount]);
+  }, [
+    collectorNotificationCount,
+    isSmallScreen,
+    isTournamentActive,
+    seasonNotificationCount,
+    tournamentEntries,
+    url,
+  ]);
 
   const inGameMenuItems: MenuItem[] = [
     {
@@ -258,8 +294,8 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
     },
     {
       icon: Icons.LIST,
-      url: "/docs",
-      active: url === "/docs",
+      url: "/docs-game",
+      active: url === "/docs-game",
       key: "docs",
     },
     {

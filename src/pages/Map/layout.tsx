@@ -9,9 +9,10 @@ const layoutOptions = {
   "elk.spacing.nodeNode": "80",
   "elk.layered.spacing.nodeNodeBetweenLayers": "60",
   // "elk.layered.edgeRouting": "ORTHOGONAL",
-  "elk.layered.nodeAlignment.default": "CENTER", 
-  // "elk.layered.cycleBreaking.strategy": "DFS", 
-  // "elk.layered.nodePlacement.strategy": "BRANDES_KOEPF", 
+  "elk.layered.nodeAlignment.default": "CENTER",
+  "elk.contentAlignment": "H_CENTER V_CENTER",
+  // "elk.layered.cycleBreaking.strategy": "DFS",
+  // "elk.layered.nodePlacement.strategy": "BRANDES_KOEPF",
 };
 
 const getNodeDimensions = (node: Node) => {
@@ -74,10 +75,13 @@ export const getLayoutedElements = async (
 
   const layoutedGraph = await elk.layout(graph);
 
-  const layoutedNodes = nodes.map((node) => {
+  const positionedNodes = nodes.map((node) => {
     const layoutedNode = layoutedGraph.children?.find((n) => n.id === node.id);
+    const { width, height } = getNodeDimensions(node);
     return {
       ...node,
+      width,
+      height,
       position: {
         x: layoutedNode?.x ?? 0,
         y: layoutedNode?.y ?? 0,
@@ -85,5 +89,40 @@ export const getLayoutedElements = async (
     };
   });
 
-  return { nodes: layoutedNodes, edges };
+  // Center each layer horizontally around the same vertical axis
+  if (positionedNodes.length > 0) {
+    // Group nodes by layer (same y position)
+    const layers = new Map<number, typeof positionedNodes>();
+    for (const node of positionedNodes) {
+      const y = Math.round(node.position.y);
+      if (!layers.has(y)) layers.set(y, []);
+      layers.get(y)!.push(node);
+    }
+
+    // Find the global horizontal center from the widest layer
+    let globalMinX = Infinity;
+    let globalMaxX = -Infinity;
+    for (const node of positionedNodes) {
+      globalMinX = Math.min(globalMinX, node.position.x);
+      globalMaxX = Math.max(globalMaxX, node.position.x + (node.width ?? 0));
+    }
+    const globalCenterX = (globalMinX + globalMaxX) / 2;
+
+    // Shift each layer so its center aligns with the global center
+    for (const [, layerNodes] of layers) {
+      let layerMinX = Infinity;
+      let layerMaxX = -Infinity;
+      for (const node of layerNodes) {
+        layerMinX = Math.min(layerMinX, node.position.x);
+        layerMaxX = Math.max(layerMaxX, node.position.x + (node.width ?? 0));
+      }
+      const layerCenterX = (layerMinX + layerMaxX) / 2;
+      const shift = globalCenterX - layerCenterX;
+      for (const node of layerNodes) {
+        node.position.x += shift;
+      }
+    }
+  }
+
+  return { nodes: positionedNodes, edges };
 };

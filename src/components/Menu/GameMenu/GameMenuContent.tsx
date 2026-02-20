@@ -37,7 +37,7 @@ export const GameMenuContent: React.FC<GameMenuContentProps> = ({
 }) => {
   const iconWidth = "26px";
   const fontSize = "18px";
-  const { id } = useGameStore();
+  const { id, isTournament } = useGameStore();
 
   const touchStartX = useRef(0);
   const hideTutorialFF = useFeatureFlagEnabled("global", "hideTutorial");
@@ -71,8 +71,12 @@ export const GameMenuContent: React.FC<GameMenuContentProps> = ({
         onTouchEnd={handleTouchEnd}
       >
         <DrawerHeader>
-          <Flex alignItems="center">
-            <CachedImage src="/logos/jn.png" width="58px" />
+          <Flex alignItems="center" gap={2}>
+            {isTournament ? (
+              <CachedImage src="/tournament-entry.png" h="42px" />
+            ) : (
+              <CachedImage src="/logos/jn.png" width="58px" />
+            )}
             <Text fontFamily="Orbitron" fontSize={fontSize} fontWeight="100">
               {" "}
               · {id}
