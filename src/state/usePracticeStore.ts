@@ -84,6 +84,15 @@ const clonePlay = (play: LevelPokerHand): LevelPokerHand => ({
   ...play,
 });
 
+const cloneSetupSelections = (
+  setup: PracticeSetupSelections,
+): PracticeSetupSelections => ({
+  handCardIds: [...setup.handCardIds],
+  specialCardIds: [...setup.specialCardIds],
+  powerUpIds: [...setup.powerUpIds],
+  rageCardIds: [...setup.rageCardIds],
+});
+
 const DEFAULT_HAND: Card[] = [H8, C10, CJ, CQ, CA, D7, H7, S8];
 const DEFAULT_SPECIALS: Card[] = [MultipliedClubs];
 const DEFAULT_POWER_UPS: PowerUp[] = [m5, p25];
@@ -110,10 +119,10 @@ const buildHandCards = (handCardIds: number[]): Card[] => {
 };
 
 const buildSpecialCards = (specialCardIds: number[]): Card[] => {
-  return specialCardIds.map((cardId) => ({
-    ...getCardFromCardId(cardId, cardId),
-    id: `s-${cardId}`,
-    idx: cardId,
+  return specialCardIds.map((cardId, index) => ({
+    ...getCardFromCardId(cardId, index),
+    id: `s-${index}-${cardId}`,
+    idx: index,
     isSpecial: true,
     selling_price: 0,
   }));
