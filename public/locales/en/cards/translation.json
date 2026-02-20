@@ -806,7 +806,7 @@
     },
     "10201": {
       "name": "Relativity",
-      "description": "Converts your played Straight into the next higher Straight type."
+      "description": "Converts your played Straight into a high Straight (10, J, Q, K, A)."
     },
     "10202": {
       "name": "Cash Catalyst",
