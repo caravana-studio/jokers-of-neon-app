@@ -367,6 +367,62 @@
     "19903": {
       "name": "Redención del Pantano",
       "description": "Gana entre ^blue(+1)^ y ^blue(+5 puntos)^ (acumulativos) cada vez que descartas. Actualmente ^blue(+{{points}} puntos)^."
+    },
+    "10201": {
+      "name": "Relatividad",
+      "description": "Convierte cada Escalera jugada en Escalera alta (10, J, Q, K, A)."
+    },
+    "10202": {
+      "name": "Catalizador de Dinero",
+      "description": "Suma ^violet(+1 multi)^ por cada ^yellow(1000 monedas)^ que tengas."
+    },
+    "10203": {
+      "name": "Llama de Vida",
+      "description": "Suma ^blue(+15 puntos)^ por cada jugada y descarte restante."
+    },
+    "10204": {
+      "name": "Impermanencia",
+      "description": "Aumenta el tamaño de la mano en ^blue(+5)^, reduciéndose ^blue(1)^ cada ronda hasta llegar a 0."
+    },
+    "10205": {
+      "name": "Ciclo de Dinero",
+      "description": "Suma ^yellow(+50% de monedas obtenidas)^ al completar cada nivel."
+    },
+    "10206": {
+      "name": "Valor Accidental",
+      "description": "Cada carta jugada que no pertenece a la jugada suma ^blue(+25 puntos)^ y ^violet(+1 multi)^."
+    },
+    "10207": {
+      "name": "Dualidad",
+      "description": "Suma ^blue(+300 puntos)^ si juegas 2 cartas o menos."
+    },
+    "10208": {
+      "name": "Doctrina Neon",
+      "description": "Cada carta jugada que pertenece a la jugada tiene un 30% de probabilidad de convertirse en carta neon."
+    },
+    "10209": {
+      "name": "Minimalismo",
+      "description": "Acumula ^blue(+5 puntos)^ cada vez que juegas 3 cartas o menos. Actualmente ^blue(+{{points}} puntos)^."
+    },
+    "10210": {
+      "name": "Sinergia Neon",
+      "description": "Si el ^blue(50%)^ o más de las cartas jugadas son neon, todas las cartas jugadas se convierten en neon."
+    },
+    "10211": {
+      "name": "Providencia",
+      "description": "Los ítems de la tienda tienen un ^yellow(30%)^ de probabilidad de ser gratis."
+    },
+    "10212": {
+      "name": "Cazador Eficiente",
+      "description": "Reduce el puntaje requerido de la ronda en ^blue(25%)^."
+    },
+    "10213": {
+      "name": "Carga Residual",
+      "description": "Acumula el ^blue(25%)^ del valor de cada power-up jugado. Actualmente ^blue(+{{points}} puntos)^."
+    },
+    "10214": {
+      "name": "Robo Inmortal",
+      "description": "La primera mano que descartas en cada ronda sube de nivel."
     }
   },
   "power-ups": {
