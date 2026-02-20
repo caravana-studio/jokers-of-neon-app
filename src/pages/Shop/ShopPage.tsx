@@ -19,6 +19,11 @@ const PACK_PACKAGE_IDS: Record<number, string> = {
   4: "pack_legendary",
   3: "pack_epic",
   2: "pack_advanced",
+  26: "pack_collector_xl_s2",
+  25: "pack_collector_s2",
+  24: "pack_legendary_s2",
+  23: "pack_epic_s2",
+  22: "pack_advanced_s2",
 };
 
 const EARLY_ACCESS_VERSION = !!import.meta.env.VITE_EARLY_ACCESS_VERSION;
@@ -41,15 +46,19 @@ export const ShopPage = () => {
       ?.formattedPrice;
   };
   const { distribution, loading } = useShopDistribution();
-  const collectorPackIds = new Set([5, 6]);
+  const collectorPackIds = new Set([5, 6, 25, 26]);
   const hasCollectorPacks =
     !loading &&
     !!distribution?.packs?.some((pack) => collectorPackIds.has(pack.packId));
   const collectorBackground = distribution?.packs?.some(
-    (pack) => pack.packId === 6
+    (pack) => pack.packId === 6 || pack.packId === 26
   )
-    ? "/packs/bg/6.jpg"
-    : "/packs/bg/5.jpg";
+    ? distribution?.packs?.some((pack) => pack.packId === 26)
+      ? "/packs/bg/26.jpg"
+      : "/packs/bg/6.jpg"
+    : distribution?.packs?.some((pack) => pack.packId === 25)
+      ? "/packs/bg/25.jpg"
+      : "/packs/bg/5.jpg";
 
   const appType = useAppContext();
   const isShop = appType === AppType.SHOP;
