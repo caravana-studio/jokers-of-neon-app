@@ -1,7 +1,6 @@
 import { chakra } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { PoweredByPresentation } from "./PoweredBy";
 import { LogoPresentation } from "./LogoPresentation";
 
 const MotionBox = chakra(motion.div);
@@ -15,17 +14,10 @@ const OpeningScreenAnimation: React.FC<OpeningScreenAnimationProps> = ({
   onAnimationEnd,
   skipAnimation,
 }) => {
-  const [stage, setStage] = useState<"logo" | "poweredBy" | "end">("logo");
+  const [stage, setStage] = useState<"logo" | "end">("logo");
   const [logoVisibility, setLogoVisibility] = useState({
     text: false,
     logo: false,
-  });
-
-  const [poweredByVisibility, setPoweredByVisibility] = useState({
-    text: false,
-    logo1: false,
-    logo2: false,
-    logo3: false,
   });
 
   useEffect(() => {
@@ -52,40 +44,9 @@ const OpeningScreenAnimation: React.FC<OpeningScreenAnimationProps> = ({
       }, 4000);
 
       setTimeout(() => {
-        setStage("poweredBy");
-      }, 5000);
-    }
-
-    if (stage === "poweredBy") {
-      setTimeout(
-        () => setPoweredByVisibility((prev) => ({ ...prev, text: true })),
-        500
-      );
-      setTimeout(
-        () => setPoweredByVisibility((prev) => ({ ...prev, logo1: true })),
-        1000
-      );
-      setTimeout(
-        () => setPoweredByVisibility((prev) => ({ ...prev, logo2: true })),
-        1500
-      );
-      setTimeout(
-        () => setPoweredByVisibility((prev) => ({ ...prev, logo3: true })),
-        2000
-      );
-      setTimeout(() => {
-        setPoweredByVisibility({
-          text: false,
-          logo1: false,
-          logo2: false,
-          logo3: false,
-        });
-      }, 4000);
-
-      setTimeout(() => {
         setStage("end");
         onAnimationEnd();
-      }, 5000);
+      }, 6500);
     }
   }, [stage, onAnimationEnd, skipAnimation]);
 
@@ -94,14 +55,17 @@ const OpeningScreenAnimation: React.FC<OpeningScreenAnimationProps> = ({
       display={stage === "end" ? "none" : "flex"}
       alignItems="center"
       justifyContent="center"
-      h="100%"
-      w={"100%"}
+      h="100vh"
+      w="100vw"
+      position="fixed"
+      top={0}
+      left={0}
+      zIndex={20}
+      pointerEvents="none"
+      overflow="hidden"
     >
       {stage === "logo" && (
         <LogoPresentation visibleElements={logoVisibility} />
-      )}
-      {stage === "poweredBy" && (
-        <PoweredByPresentation visibleElements={poweredByVisibility} />
       )}
     </MotionBox>
   );
