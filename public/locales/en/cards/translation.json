@@ -858,7 +858,7 @@
     },
     "10214": {
       "name": "Undying Draw",
-      "description": "The first hand you discard each round levels up that hand type."
+      "description": "The first hand you discard each round is leveled up."
     }
   },
   "power-ups": {
