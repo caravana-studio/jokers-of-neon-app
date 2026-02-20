@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { MODIFIERS_RARITY } from "../data/modifiers";
 import { POWER_UP_KEYS } from "../data/powerups";
 import { SPECIALS_RARITY } from "../data/specialCards";
 import { CARDS_SUIT_DATA } from "../data/traditionalCards";
@@ -15,7 +16,8 @@ export const PRACTICE_MAX_POWER_UPS = 4;
 
 export const PRACTICE_AVAILABLE_HAND_CARD_IDS = Object.keys(CARDS_SUIT_DATA)
   .map(Number)
-  .filter((cardId) => cardId >= 0 && cardId < 300)
+  .filter((cardId) => cardId >= 0 && cardId < 300 && cardId !== 53 && cardId !== 253)
+  .concat(Object.keys(MODIFIERS_RARITY).map(Number))
   .sort((a, b) => a - b);
 
 export const PRACTICE_AVAILABLE_SPECIAL_CARD_IDS = Object.keys(SPECIALS_RARITY)

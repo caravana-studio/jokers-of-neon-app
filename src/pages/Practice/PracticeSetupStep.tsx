@@ -65,6 +65,7 @@ const SelectableGrid = ({
   selectedIds,
   max,
   type,
+  height = "220px",
   onToggle,
   onDeselectAll,
   onRandomize,
@@ -74,6 +75,7 @@ const SelectableGrid = ({
   selectedIds: number[];
   max: number;
   type: "card" | "powerup";
+  height?: string;
   onToggle: (id: number) => void;
   onDeselectAll: () => void;
   onRandomize: () => void;
@@ -101,7 +103,7 @@ const SelectableGrid = ({
         borderColor="whiteAlpha.300"
         borderRadius="12px"
         p={3}
-        height="220px"
+        height={height}
         overflowY="auto"
       >
         <Grid templateColumns="repeat(8, minmax(0, 1fr))" gap={2}>
@@ -192,6 +194,7 @@ export const PracticeSetupStep = ({ onStart }: PracticeSetupStepProps) => {
             selectedIds={setupSelections.handCardIds}
             max={PRACTICE_MAX_HAND_CARDS}
             type="card"
+            height="595px"
             onDeselectAll={() =>
               setSetupSelections({
                 handCardIds: [],
@@ -229,6 +232,7 @@ export const PracticeSetupStep = ({ onStart }: PracticeSetupStepProps) => {
             selectedIds={setupSelections.specialCardIds}
             max={PRACTICE_MAX_SPECIAL_CARDS}
             type="card"
+            height="360px"
             onDeselectAll={() =>
               setSetupSelections({
                 specialCardIds: [],
@@ -252,12 +256,18 @@ export const PracticeSetupStep = ({ onStart }: PracticeSetupStepProps) => {
               })
             }
           />
+          <PreviewRow
+            title="Selected specials"
+            ids={setupSelections.specialCardIds}
+            type="card"
+          />
           <SelectableGrid
             title="Power Ups"
             ids={PRACTICE_AVAILABLE_POWER_UP_IDS}
             selectedIds={setupSelections.powerUpIds}
             max={PRACTICE_MAX_POWER_UPS}
             type="powerup"
+            height="90px"
             onDeselectAll={() =>
               setSetupSelections({
                 powerUpIds: [],
@@ -280,11 +290,6 @@ export const PracticeSetupStep = ({ onStart }: PracticeSetupStepProps) => {
                 ),
               })
             }
-          />
-          <PreviewRow
-            title="Selected specials"
-            ids={setupSelections.specialCardIds}
-            type="card"
           />
           <PreviewRow
             title="Selected power ups"
