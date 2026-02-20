@@ -370,7 +370,7 @@
     },
     "10201": {
       "name": "Relatividade",
-      "description": "Converte a Sequência jogada no próximo tipo de Sequência superior."
+      "description": "Converte cada Sequência jogada em Sequência alta (10, J, Q, K, A)."
     },
     "10202": {
       "name": "Catalisador de Dinheiro",
