@@ -64,7 +64,7 @@ type WalletProviderProps = {
 
 export const WalletProvider = ({ children, value }: WalletProviderProps) => {
   const { connect, connectors } = useConnect();
-  const { lastGameId, isLoading } = useGetLastGameId();
+  // const { lastGameId, isLoading } = useGetLastGameId();
   const {
     account: controllerAccount,
     isConnected: isControllerConnected,
@@ -356,11 +356,33 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
             <button
               style={buttonStyles}
               className="login-button secondary"
-              disabled={isLoading}
+              // disabled={isLoading}
               onClick={() => {
                 logEvent("play_as_guest");
                 setConnectionStatus("connecting_burner");
-                const username = `joker_guest_${lastGameId + 1}`;
+                //TODO: REVERT THIIISSSS
+                //TODO: REVERT THIIISSSS
+                //TODO: REVERT THIIISSSS
+                //TODO: REVERT THIIISSSS
+                //TODO: REVERT THIIISSSS
+                //TODO: REVERT THIIISSSS
+                //TODO: REVERT THIIISSSS
+                //TODO: REVERT THIIISSSS
+                //TODO: REVERT THIIISSSS
+                //TODO: REVERT THIIISSSS
+                //TODO: REVERT THIIISSSS
+                //TODO: REVERT THIIISSSS
+                //TODO: REVERT THIIISSSS
+                //TODO: REVERT THIIISSSS
+                //TODO: REVERT THIIISSSS
+                //TODO: REVERT THIIISSSS
+                //TODO: REVERT THIIISSSS
+                //TODO: REVERT THIIISSSS
+                //TODO: REVERT THIIISSSS
+                //TODO: REVERT THIIISSSS
+                //TODO: REVERT THIIISSSS
+                //TODO: REVERT THIIISSSS
+                const username = `joker_guest_${560 + 1}`;
                 console.log("setting username: ", username);
 
                 localStorage.removeItem(GAME_ID);

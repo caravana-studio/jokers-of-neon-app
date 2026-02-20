@@ -2176,6 +2176,48 @@ export function setupWorld(provider: DojoProvider) {
       throw error;
     }
   };
+	const build_practice_system_simulatePlay_calldata = (handCardIds: Array<BigNumberish>, playedCardsIndex: Array<BigNumberish>, specialCardIds: Array<BigNumberish>, rageIds: Array<BigNumberish>, pokerHandLevels: Array<[BigNumberish, BigNumberish, BigNumberish]>, powerUpIds: Array<BigNumberish>): DojoCall => {
+		console.log('callData', [handCardIds, playedCardsIndex, specialCardIds, rageIds, pokerHandLevels, powerUpIds])
+    return {
+			contractName: "practice_system",
+			entrypoint: "simulate_play",
+			calldata: [handCardIds, playedCardsIndex, specialCardIds, rageIds, pokerHandLevels, powerUpIds],
+		};
+	};
+
+	const practice_system_simulatePlay = async (snAccount: Account | AccountInterface, handCardIds: Array<BigNumberish>, playedCardsIndex: Array<BigNumberish>, specialCardIds: Array<BigNumberish>, rageIds: Array<BigNumberish>, pokerHandLevels: Array<[BigNumberish, BigNumberish, BigNumberish]>, powerUpIds: Array<BigNumberish>) => {
+		try {
+			return await provider.execute(
+				snAccount,
+				build_practice_system_simulatePlay_calldata(handCardIds, playedCardsIndex, specialCardIds, rageIds, pokerHandLevels, powerUpIds),
+				DOJO_NAMESPACE,
+			);
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
+	const build_season_system_purchaseSeasonPass_calldata = (player: string, seasonId: BigNumberish): DojoCall => {
+		return {
+			contractName: "season_system",
+			entrypoint: "purchase_season_pass",
+			calldata: [player, seasonId],
+		};
+	};
+
+	const season_system_purchaseSeasonPass = async (snAccount: Account | AccountInterface, player: string, seasonId: BigNumberish) => {
+		try {
+			return await provider.execute(
+				snAccount,
+				build_season_system_purchaseSeasonPass_calldata(player, seasonId),
+				DOJO_NAMESPACE,
+			);
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
 
   return {
     action_system: {
@@ -2280,6 +2322,14 @@ export function setupWorld(provider: DojoProvider) {
       process: lose_process,
       buildProcessCalldata: build_lose_process_calldata,
     },
+		practice_system: {
+			simulatePlay: practice_system_simulatePlay,
+			buildSimulatePlayCalldata: build_practice_system_simulatePlay_calldata,
+		},
+		season_system: {
+			purchaseSeasonPass: season_system_purchaseSeasonPass,
+			buildPurchaseSeasonPassCalldata: build_season_system_purchaseSeasonPass_calldata,
+		},
     map_system: {
       advanceNode: map_system_advanceNode,
       buildAdvanceNodeCalldata: build_map_system_advanceNode_calldata,
