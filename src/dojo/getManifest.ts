@@ -28,7 +28,7 @@ const normalizeManifest = (manifest: any) => {
 const configuredManifestEnv = import.meta.env.VITE_ENV?.trim().toLowerCase();
 
 const getLocalManifest = (env: string) => {
-  if (env === "slot" || env === "dev" || env === "test") {
+  if (env === "local" || env === "slot" || env === "dev" || env === "test") {
     return manifestSlot;
   }
 
