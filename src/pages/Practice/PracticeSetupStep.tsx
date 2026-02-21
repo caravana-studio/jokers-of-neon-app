@@ -6,8 +6,11 @@ import {
   Grid,
   Heading,
   Text,
+  Tooltip,
 } from "@chakra-ui/react";
+import { ReactNode } from "react";
 import CachedImage from "../../components/CachedImage";
+import { useCardData } from "../../providers/CardDataProvider";
 import {
   PRACTICE_AVAILABLE_HAND_CARD_IDS,
   PRACTICE_AVAILABLE_POWER_UP_IDS,
@@ -17,6 +20,7 @@ import {
   PRACTICE_MAX_SPECIAL_CARDS,
   usePracticeStore,
 } from "../../state/usePracticeStore";
+import { colorizeText } from "../../utils/getTooltip";
 
 interface PracticeSetupStepProps {
   onStart: () => void;
@@ -66,6 +70,7 @@ const SelectableGrid = ({
   max,
   type,
   height = "220px",
+  getTooltipLabel,
   onToggle,
   onDeselectAll,
   onRandomize,
@@ -76,6 +81,7 @@ const SelectableGrid = ({
   max: number;
   type: "card" | "powerup";
   height?: string;
+  getTooltipLabel?: (id: number) => ReactNode;
   onToggle: (id: number) => void;
   onDeselectAll: () => void;
   onRandomize: () => void;
@@ -111,7 +117,7 @@ const SelectableGrid = ({
             const selected = selectedIds.includes(id);
             const src =
               type === "powerup" ? `/powerups/${id}.png` : `/Cards/${id}.png`;
-            return (
+            const content = (
               <Box
                 key={`${type}-${id}`}
                 borderRadius="8px"
@@ -138,6 +144,16 @@ const SelectableGrid = ({
                 </Text>
               </Box>
             );
+
+            if (getTooltipLabel) {
+              return (
+                <Tooltip key={`tooltip-${type}-${id}`} hasArrow label={getTooltipLabel(id)}>
+                  <Box>{content}</Box>
+                </Tooltip>
+              );
+            }
+
+            return content;
           })}
         </Grid>
       </Box>
@@ -168,6 +184,7 @@ const randomSubset = (values: number[], max: number) =>
   shuffle(values).slice(0, Math.min(max, values.length));
 
 export const PracticeSetupStep = ({ onStart }: PracticeSetupStepProps) => {
+  const { getCardData } = useCardData();
   const setupSelections = usePracticeStore((store) => store.setupSelections);
   const setSetupSelections = usePracticeStore((store) => store.setSetupSelections);
   const applySetupSelections = usePracticeStore(
@@ -233,6 +250,13 @@ export const PracticeSetupStep = ({ onStart }: PracticeSetupStepProps) => {
             max={PRACTICE_MAX_SPECIAL_CARDS}
             type="card"
             height="360px"
+            getTooltipLabel={(id) =>
+              colorizeText(
+                getCardData(id, {
+                  showCumulativeProgress: true,
+                }).description,
+              )
+            }
             onDeselectAll={() =>
               setSetupSelections({
                 specialCardIds: [],
