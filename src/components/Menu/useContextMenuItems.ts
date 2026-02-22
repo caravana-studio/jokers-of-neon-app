@@ -27,6 +27,7 @@ export const mainMenuUrls = [
 export const gameUrls = [
   "/map",
   "/demo",
+  "/practice",
   "/store",
   "/rewards",
   "/redirect",

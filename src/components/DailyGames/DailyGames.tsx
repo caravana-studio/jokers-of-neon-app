@@ -22,6 +22,7 @@ export const DailyGames = () => {
   const [availableLives, setAvailableLives] = useState(0);
   const [totalSlots, setTotalSlots] = useState(seasonPassUnlocked ? 6 : 3);
   const [nextLiveIn, setNextLiveIn] = useState<Date | undefined>(undefined);
+  const [isClaimingLives, setIsClaimingLives] = useState(true);
 
   const {
     setup: { client },
@@ -47,12 +48,14 @@ export const DailyGames = () => {
   useEffect(() => {
     fetchPlayerLives();
 
+    setIsClaimingLives(true);
     claimLives()
       .then((response) => {
         console.log("claimLives response", response);
         fetchPlayerLives();
       })
-      .catch(() => {});
+      .catch(() => {})
+      .finally(() => setIsClaimingLives(false));
   }, []);
 
   const RECHARGE_TIME = seasonPassUnlocked ? 4 : 8;
@@ -107,6 +110,7 @@ export const DailyGames = () => {
         {availableLives > 0 ? (
           <Button
             onClick={handleCreateGame}
+            isDisabled={isClaimingLives}
             width={isSmallScreen ? "100px" : "200px"}
             ml={1}
             fontSize={isSmallScreen ? 10 : 15}
