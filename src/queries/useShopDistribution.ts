@@ -19,26 +19,29 @@ type ShopDistributionResponse = Partial<
 
 const SHOP_DISTRIBUTION_URL =
   "https://jokersofneon.com/app/settings/shop.json";
+const FORCE_DEFAULTS_ON_SHOP =
+  String(import.meta.env.VITE_FORCE_DEFAULTS_ON_SHOP).toLowerCase() ===
+  "true";
 
 const DEFAULT_SHOP_DISTRIBUTIONS: Record<ShopEnvironment, ShopDistribution> = {
   android: {
-    season_pass: "season_pass",
+    season_pass: "season_pass_s2",
     packs: [],
   },
   ios: {
-    season_pass: "season_pass",
+    season_pass: "season_pass_s2",
     packs: [
-      { shopId: "pack_advanced", packId: 2 },
-      { shopId: "pack_epic", packId: 3 },
-      { shopId: "pack_legendary", packId: 4 },
+      { shopId: "pack_advanced_s2", packId: 22 },
+      { shopId: "pack_epic_s2", packId: 23 },
+      { shopId: "pack_legendary_s2", packId: 24 },
     ],
   },
   web: {
-    season_pass: "season_pass",
+    season_pass: "season_pass_s2",
     packs: [
-      { shopId: "pack_advanced", packId: 2 },
-      { shopId: "pack_epic", packId: 3 },
-      { shopId: "pack_legendary", packId: 4 },
+      { shopId: "pack_advanced_s2", packId: 22 },
+      { shopId: "pack_epic_s2", packId: 23 },
+      { shopId: "pack_legendary_s2", packId: 24 },
     ],
   },
 };
@@ -62,6 +65,12 @@ export const useShopDistribution = () => {
   useEffect(() => {
     const fetchShopDistribution = async () => {
       const environment = getEnvironment();
+      if (FORCE_DEFAULTS_ON_SHOP) {
+        setDistribution({ ...DEFAULT_SHOP_DISTRIBUTIONS[environment] });
+        setLoading(false);
+        return;
+      }
+
       try {
         const response = await fetch(SHOP_DISTRIBUTION_URL);
         if (!response.ok) {
