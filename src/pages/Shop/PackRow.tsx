@@ -40,6 +40,7 @@ export const PackRow = ({ packId, packageId, price }: PackRowProps) => {
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "shop.packs",
   });
+  const translationPackId = packId % 10;
   const isLimitedEdition = [5, 6, 25, 26].includes(packId);
   const { isSmallScreen } = useResponsiveValues();
   const navigate = useNavigate();
@@ -175,7 +176,7 @@ export const PackRow = ({ packId, packageId, price }: PackRowProps) => {
               display="inline-block"
               willChange={isLimitedEdition ? "transform, filter" : undefined}
             >
-              {t(`${packId}.name`)}
+              {t(`${translationPackId}.name`)}
             </Heading>
             <Heading
               fontSize={isSmallScreen ? 11 : 18}
@@ -201,10 +202,10 @@ export const PackRow = ({ packId, packageId, price }: PackRowProps) => {
               mb={isSmallScreen ? 3 : 6}
             >
               <Text fontSize={isSmallScreen ? 12 : 18} lineHeight={1}>
-                {t(`${packId}.description.1`)}
+                {t(`${translationPackId}.description.1`)}
               </Text>
               <Text fontSize={isSmallScreen ? 12 : 18} lineHeight={1}>
-                {t(`${packId}.description.2`)}
+                {t(`${translationPackId}.description.2`)}
               </Text>
               <Text fontSize={isSmallScreen ? 12 : 18} lineHeight={1}>
                 {t(`size`)}: {PACK_SIZES[packId]}
@@ -235,8 +236,8 @@ export const PackRow = ({ packId, packageId, price }: PackRowProps) => {
               )}
             </Flex>
             <NFTPackRateInfo
-              name={t(`${packId}.name`)}
-              details={t(`${packId}.description.1`)}
+              name={t(`${translationPackId}.name`)}
+              details={t(`${translationPackId}.description.1`)}
               packId={packId}
             />
             <Button

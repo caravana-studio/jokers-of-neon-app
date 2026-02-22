@@ -1,15 +1,17 @@
 import {
-    Button,
-    Flex,
-    Menu,
-    MenuButton,
-    MenuItem,
-    MenuList,
+  Button,
+  Flex,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
 } from "@chakra-ui/react";
+import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { useUsername } from "../../dojo/utils/useUsername";
 import { useLogout } from "../../hooks/useLogout";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
+import { isNative } from "../../utils/capacitorUtils";
 
 export const ControllerButton = () => {
   const { isSmallScreen } = useResponsiveValues();
@@ -20,11 +22,11 @@ export const ControllerButton = () => {
   return (
     <Flex
       position="absolute"
-      top={isSmallScreen ? "22px" : "50px"}
-      right={isSmallScreen ? 5 : "60px"}
+      top={isSmallScreen ? (isNative ? "50px" : "15px") : "40px"}
+      left={isMobile ? "70px" : "105px"}
       zIndex={100}
     >
-      <Menu placement="bottom-end">
+      <Menu placement="bottom-start">
         <MenuButton
           as={Button}
           textTransform="lowercase"

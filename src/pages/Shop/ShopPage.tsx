@@ -26,7 +26,11 @@ const PACK_PACKAGE_IDS: Record<number, string> = {
   22: "pack_advanced_s2",
 };
 
-const EARLY_ACCESS_VERSION = !!import.meta.env.VITE_EARLY_ACCESS_VERSION;
+const discountOnShopFromEnv = Number(import.meta.env.VITE_DISCOUNT_ON_SHOP);
+const DISCOUNT_ON_SHOP =
+  Number.isFinite(discountOnShopFromEnv) && discountOnShopFromEnv > 0
+    ? discountOnShopFromEnv
+    : 0;
 
 export const ShopPage = () => {
   const { isSmallScreen } = useResponsiveValues();
@@ -66,7 +70,7 @@ export const ShopPage = () => {
   return (
     <DelayedLoading loading={loading || loadingSeasonPass}>
       <MobileDecoration fadeToBlack />
-      {EARLY_ACCESS_VERSION && <DiscountSign percentage={30} />}
+      {DISCOUNT_ON_SHOP > 0 && <DiscountSign percentage={DISCOUNT_ON_SHOP} />}
       {hasCollectorPacks && (
         <CollectorPacksShopModal backgroundImage={collectorBackground} />
       )}
