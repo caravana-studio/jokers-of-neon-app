@@ -55,6 +55,7 @@ export const SeasonPassRow = ({ id, price, unlocked }: SeasonPassRowProps) => {
     keyPrefix: "shop.season-pass",
   });
   const { isSmallScreen } = useResponsiveValues();
+  const isSeason2 = SEASON_NUMBER === 2;
 
   const { purchaseSeasonPass } = useSeasonPass();
   const [isLoading, setIsLoading] = useState(false);
@@ -68,9 +69,24 @@ export const SeasonPassRow = ({ id, price, unlocked }: SeasonPassRowProps) => {
         flexDir={"column"}
         px={4}
         alignItems={"center"}
-        background="url(/shop/season-pass/bg.jpg)"
-        backgroundSize={"cover"}
-        backgroundPosition={"center"}
+        position="relative"
+        overflow="hidden"
+        _before={{
+          content: '""',
+          position: "absolute",
+          inset: 0,
+          backgroundImage: "url(/shop/season-pass/bg.jpg)",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          filter: isSeason2 ? "grayscale(1)" : "none",
+          zIndex: 0,
+        }}
+        sx={{
+          "> *": {
+            position: "relative",
+            zIndex: 1,
+          },
+        }}
       >
         <Flex position="relative" w={isSmallScreen ? "100%" : "600px"}>
           <CachedImage
@@ -126,7 +142,7 @@ export const SeasonPassRow = ({ id, price, unlocked }: SeasonPassRowProps) => {
             alignItems="center"
             pr={isSmallScreen ? 6 : 20}
           >
-            <SeasonPass rotate="-25deg" w={isSmallScreen ? "110px" : "230px"} />
+            <SeasonPass rotate="-25deg" w={isSmallScreen ? "110px" : "230px"} unlocked />
           </Flex>
           <Flex w="50%" flexDir={"column"} gap={isSmallScreen ? 4 : 6}>
             <Fact number={1} />
@@ -175,10 +191,10 @@ const Fact = ({ number }: { number: number }) => {
     <Flex flexDir="column" gap={isSmallScreen ? 0.5 : 1.5}>
       <Text fontSize={isSmallScreen ? 15 : 26}>{t(`${number}-title`)}</Text>
       <Text fontSize={isSmallScreen ? 10 : 17} lineHeight={1}>
-        {t(`${number}-description-1`)}
+        {t(`${number}-description-1`, { season: SEASON_NUMBER })}
       </Text>
       <Text fontSize={isSmallScreen ? 10 : 17} lineHeight={1}>
-        {t(`${number}-description-2`)}
+        {t(`${number}-description-2`, { season: SEASON_NUMBER })}
       </Text>
     </Flex>
   );

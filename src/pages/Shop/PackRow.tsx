@@ -31,13 +31,17 @@ interface PackRowProps {
   price?: string;
 }
 
-const PACK_SIZES = [0, 3, 3, 4, 4, 5, 10];
+const PACK_SIZES: Record<number, number> = {
+  1: 3, 2: 3, 3: 4, 4: 4, 5: 5, 6: 10,
+  21: 3, 22: 3, 23: 4, 24: 4, 25: 5, 26: 10,
+};
 
 export const PackRow = ({ packId, packageId, price }: PackRowProps) => {
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "shop.packs",
   });
-  const isLimitedEdition = packId > 4;
+  const translationPackId = packId % 10;
+  const isLimitedEdition = [5, 6, 25, 26].includes(packId);
   const { isSmallScreen } = useResponsiveValues();
   const navigate = useNavigate();
   const toast = useToast();
@@ -172,7 +176,7 @@ export const PackRow = ({ packId, packageId, price }: PackRowProps) => {
               display="inline-block"
               willChange={isLimitedEdition ? "transform, filter" : undefined}
             >
-              {t(`${packId}.name`)}
+              {t(`${translationPackId}.name`)}
             </Heading>
             <Heading
               fontSize={isSmallScreen ? 11 : 18}
@@ -198,10 +202,10 @@ export const PackRow = ({ packId, packageId, price }: PackRowProps) => {
               mb={isSmallScreen ? 3 : 6}
             >
               <Text fontSize={isSmallScreen ? 12 : 18} lineHeight={1}>
-                {t(`${packId}.description.1`)}
+                {t(`${translationPackId}.description.1`)}
               </Text>
               <Text fontSize={isSmallScreen ? 12 : 18} lineHeight={1}>
-                {t(`${packId}.description.2`)}
+                {t(`${translationPackId}.description.2`)}
               </Text>
               <Text fontSize={isSmallScreen ? 12 : 18} lineHeight={1}>
                 {t(`size`)}: {PACK_SIZES[packId]}
@@ -232,8 +236,8 @@ export const PackRow = ({ packId, packageId, price }: PackRowProps) => {
               )}
             </Flex>
             <NFTPackRateInfo
-              name={t(`${packId}.name`)}
-              details={t(`${packId}.description.1`)}
+              name={t(`${translationPackId}.name`)}
+              details={t(`${translationPackId}.description.1`)}
               packId={packId}
             />
             <Button

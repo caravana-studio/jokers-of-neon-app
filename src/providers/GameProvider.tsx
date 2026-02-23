@@ -48,6 +48,7 @@ import { filterOptimisticEventsFromPlayEvents } from "../utils/playEvents/filter
 import { filterSilentCardEventsFromPlayEvents } from "../utils/playEvents/filterSilentCardEventsFromPlayEvents.ts";
 import { useCardData } from "./CardDataProvider.tsx";
 import { gameProviderDefaults } from "./gameProviderDefaults.ts";
+import { PracticeGameContext } from "./PracticeGameProvider.tsx";
 import { useSettings } from "./SettingsProvider.tsx";
 import { TutorialGameContext } from "./TutorialGameProvider.tsx";
 
@@ -80,7 +81,12 @@ const GameContext = createContext<IGameContext>(gameProviderDefaults);
 export const useGameContext = () => {
   const location = useLocation();
   const inTutorial = location.pathname === "/tutorial";
-  const context = inTutorial ? TutorialGameContext : GameContext;
+  const inPractice = location.pathname === "/practice";
+  const context = inTutorial
+    ? TutorialGameContext
+    : inPractice
+      ? PracticeGameContext
+      : GameContext;
   return useContext(context);
 };
 
@@ -605,6 +611,10 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   };
 
   useEffect(() => {
+    if (location.pathname === "/practice") {
+      return;
+    }
+
     if (gameState === GameStateEnum.GameOver) {
       navigate(`/loose`);
     } else if (
@@ -614,7 +624,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       console.log("redirecting to store");
       navigate("/store");
     }
-  }, [gameState]);
+  }, [gameState, location.pathname, navigate]);
 
   useEffect(() => {
     refetchSpecialCardsData(modId, gameId, specialCards);

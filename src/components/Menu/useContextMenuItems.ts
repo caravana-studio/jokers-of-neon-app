@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Icons } from "../../constants/icons";
 import { useDojo } from "../../dojo/DojoContext";
 import { GameStateEnum } from "../../dojo/typescript/custom";
@@ -27,6 +27,7 @@ export const mainMenuUrls = [
 export const gameUrls = [
   "/map",
   "/demo",
+  "/practice",
   "/store",
   "/rewards",
   "/redirect",
@@ -81,6 +82,7 @@ interface MenuItem {
 
 export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
   const location = useLocation();
+  const navigate = useNavigate();
   const url = location.pathname;
   const { state } = useGameStore();
   const { isSmallScreen } = useResponsiveValues();
@@ -106,7 +108,7 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
   const hasCollectorPacks =
     !loadingDistribution &&
     !!distribution?.packs?.some(
-      (pack) => pack.packId === 5 || pack.packId === 6,
+      (pack) => [5, 6, 25, 26].includes(pack.packId),
     );
   const collectorNotificationCount = hasCollectorPacks ? 1 : 0;
   const [hasSeenPlays, setHasSeenPlays] = useState(() => {
@@ -236,10 +238,20 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
     url,
   ]);
 
+  const handleGoToCurrentGameState = () => {
+    if (state === GameStateEnum.Round || state === GameStateEnum.Rage) {
+      navigate("/demo", { state: { skipRageAnimation: true } });
+      return;
+    }
+
+    navigate("/redirect");
+  };
+
   const inGameMenuItems: MenuItem[] = [
     {
       icon: getIcon(state),
       url: "/redirect",
+      onClick: handleGoToCurrentGameState,
       disabled: state === GameStateEnum.Map,
       active: gameUrls.slice(1).some((gameUrl) => {
         if (gameUrl.includes(":")) {

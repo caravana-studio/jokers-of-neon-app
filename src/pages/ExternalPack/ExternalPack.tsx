@@ -112,6 +112,8 @@ export const ExternalPack = ({
   const locationState = location.state as ExternalPackProps | null;
   const packId =
     providedPackId ?? locationState?.packId ?? Number(params.packId ?? 1);
+  const normalizedPackId = packId % 10 || packId;
+  const isLimitedEditionPack = normalizedPackId > 4;
   const returnPath = returnTo ?? locationState?.returnTo ?? "/";
 
   const { t: tDocs } = useTranslation("docs");
@@ -308,26 +310,26 @@ export const ExternalPack = ({
                   textTransform="unset"
                   textShadow={"0 0 10px white"}
                 >
-                  {t(`shop.packs.${packId}.name`)}
+                  {t(`shop.packs.${normalizedPackId}.name`)}
                 </Heading>
                 <Text
                   size="l"
                   textTransform={"uppercase"}
                   fontWeight={600}
                   textShadow={"0 0 10px black"}
-                  color={packId > 4 ? "gold" : "white"}
+                  color={isLimitedEditionPack ? "gold" : "white"}
                 >
                   -{" "}
                   {t(
-                    `shop.packs.${packId > 4 ? "limited-edition" : "player-pack"}`,
+                    `shop.packs.${isLimitedEditionPack ? "limited-edition" : "player-pack"}`,
                   )}{" "}
                   -
                 </Text>
               </Flex>
               <NFTPackRateInfo
-                name={t(`shop.packs.${packId}.name`)}
+                name={t(`shop.packs.${normalizedPackId}.name`)}
                 details={t(
-                  `shop.packs.${packId > 4 ? "limited-edition" : "player-pack"}`,
+                  `shop.packs.${isLimitedEditionPack ? "limited-edition" : "player-pack"}`,
                 )}
                 packId={packId}
               />
@@ -456,7 +458,7 @@ export const ExternalPack = ({
                     width={extraPackWidth}
                     packWidth={packWidth}
                     step={step}
-                    color={packId > 3 ? "white" : "black"}
+                    color={normalizedPackId > 3 ? "white" : "black"}
                   />
                   <Flex
                     position="relative"
