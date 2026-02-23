@@ -40,9 +40,7 @@ export const LoadingScreen = forwardRef<
     },
     ref
   ) => {
-    const [visibleSpinner, setVisibleSpinner] = useState(false);
     const [isFadingOut, setIsFadingOut] = useState(false);
-    const [skipAnimation, setSkipAnimation] = useState(false);
 
     const progressBarRef = useRef<RealLoadingBarRef>(null);
 
@@ -75,13 +73,7 @@ export const LoadingScreen = forwardRef<
       if (!showPresentation) {
         onPresentationEnd();
       }
-    }, []);
-
-    const handleAnimationEnd = () => {
-      setSkipAnimation(true);
-      setVisibleSpinner(true);
-      onPresentationEnd();
-    };
+    }, [onPresentationEnd, showPresentation]);
 
     return (
       <Flex
@@ -96,22 +88,30 @@ export const LoadingScreen = forwardRef<
               <div>{t("error")}</div>
             ) : (
               <Flex
-                width={"80%"}
-                flexDirection={"column"}
-                gap={4}
+                width={"100%"}
+                height={"100%"}
+                position={"relative"}
                 justifyContent={"center"}
                 alignItems={"center"}
               >
                 {showPresentation && (
-                  <OpeningScreenAnimation
-                    skipAnimation={skipAnimation}
-                    onAnimationEnd={handleAnimationEnd}
-                  />
+                  <OpeningScreenAnimation onAnimationEnd={onPresentationEnd} />
                 )}
 
-                {(visibleSpinner || !showPresentation) && (
-                  <RealLoadingBar ref={progressBarRef} steps={steps} />
-                )}
+                <Flex
+                  width={showPresentation ? "100%" : "80%"}
+                  position={showPresentation ? "absolute" : "relative"}
+                  left={0}
+                  bottom={showPresentation ? 0 : undefined}
+                  px={showPresentation ? 3 : 0}
+                  zIndex={showPresentation ? 30 : 1}
+                >
+                  <RealLoadingBar
+                    ref={progressBarRef}
+                    steps={steps}
+                    showHint={!showPresentation}
+                  />
+                </Flex>
 
               </Flex>
             )}
@@ -119,19 +119,6 @@ export const LoadingScreen = forwardRef<
           <RemoveScroll>
             <></>
           </RemoveScroll>
-          {!skipAnimation && showPresentation && (
-            <div
-              style={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                width: "100%",
-                height: "100%",
-                cursor: "pointer",
-              }}
-              onClick={handleAnimationEnd}
-            />
-          )}
         </FadeInOut>
       </Flex>
     );

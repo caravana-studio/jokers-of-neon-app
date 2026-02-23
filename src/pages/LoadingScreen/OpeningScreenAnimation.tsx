@@ -1,58 +1,32 @@
 import { chakra } from "@chakra-ui/react";
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 import { LogoPresentation } from "./LogoPresentation";
 
 const MotionBox = chakra(motion.div);
 
 interface OpeningScreenAnimationProps {
   onAnimationEnd: () => void;
-  skipAnimation?: boolean;
 }
 
 const OpeningScreenAnimation: React.FC<OpeningScreenAnimationProps> = ({
   onAnimationEnd,
-  skipAnimation,
 }) => {
-  const [stage, setStage] = useState<"logo" | "end">("logo");
-  const [logoVisibility, setLogoVisibility] = useState({
-    text: false,
-    logo: false,
-  });
+  const hasFinishedRef = useRef(false);
 
   useEffect(() => {
-    if (skipAnimation) {
-      setStage("end");
+    const timer = setTimeout(() => {
+      if (hasFinishedRef.current) return;
+      hasFinishedRef.current = true;
       onAnimationEnd();
-      return;
-    }
+    }, 2000);
 
-    if (stage === "logo") {
-      setTimeout(
-        () => setLogoVisibility((prev) => ({ ...prev, logo: true })),
-        500
-      );
-      setTimeout(
-        () => setLogoVisibility((prev) => ({ ...prev, text: true })),
-        2000
-      );
-      setTimeout(() => {
-        setLogoVisibility({
-          text: false,
-          logo: false,
-        });
-      }, 4000);
-
-      setTimeout(() => {
-        setStage("end");
-        onAnimationEnd();
-      }, 6500);
-    }
-  }, [stage, onAnimationEnd, skipAnimation]);
+    return () => clearTimeout(timer);
+  }, [onAnimationEnd]);
 
   return (
     <MotionBox
-      display={stage === "end" ? "none" : "flex"}
+      display="flex"
       alignItems="center"
       justifyContent="center"
       h="100vh"
@@ -64,9 +38,7 @@ const OpeningScreenAnimation: React.FC<OpeningScreenAnimationProps> = ({
       pointerEvents="none"
       overflow="hidden"
     >
-      {stage === "logo" && (
-        <LogoPresentation visibleElements={logoVisibility} />
-      )}
+      <LogoPresentation />
     </MotionBox>
   );
 };

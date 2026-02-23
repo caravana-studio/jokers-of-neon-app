@@ -1,32 +1,8 @@
-import { Flex, Text, Image } from "@chakra-ui/react";
-import { motion } from "framer-motion";
+import { Flex, Heading, Image } from "@chakra-ui/react";
 import { isMobile } from "react-device-detect";
-import { useTranslation } from "react-i18next";
-import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 
-interface LogoPresentationProps {
-  visibleElements?: {
-    logo?: boolean;
-    text?: boolean;
-  };
-}
-
-export const LogoPresentation: React.FC<LogoPresentationProps> = ({
-  visibleElements = { text: false, logo: false },
-}) => {
-  const { t } = useTranslation("intermediate-screens", {
-    keyPrefix: "loading-screen",
-  });
-
-  const [hasShownLogo, setHasShownLogo] = useState(false);
-
-  useEffect(() => {
-    if (visibleElements.logo) {
-      setHasShownLogo(true);
-    }
-  }, [visibleElements.logo]);
-
-  const showBoss = hasShownLogo && !visibleElements.logo;
+export const LogoPresentation: React.FC = () => {
 
   return (
     <Flex
@@ -58,16 +34,16 @@ export const LogoPresentation: React.FC<LogoPresentationProps> = ({
           display: "flex",
           justifyContent: "center",
         }}
-        initial={{ y: "100%" }}
-        animate={{ y: showBoss ? "0%" : "100%" }}
-        transition={{ duration: 0.65, ease: "easeOut" }}
+        initial={{ y: "20%", opacity: 0 }}
+        animate={{ y: "0%", opacity: 1 }}
+        transition={{ duration: 0.5, ease: "easeOut", delay: 0.1 }}
       >
         <Image
           src="/loading-screen/loading-boss.png"
           alt="Loading boss"
-          width={isMobile ? "72vw" : "46vw"}
-          maxWidth="740px"
-          maxH="80vh"
+          width={isMobile ? "100vw" : "56vw"}
+          maxWidth="900px"
+          maxH="90vh"
           objectFit="contain"
         />
       </motion.div>
@@ -77,40 +53,22 @@ export const LogoPresentation: React.FC<LogoPresentationProps> = ({
           position: "absolute",
           left: 0,
           right: 0,
-          bottom: isMobile ? "11vh" : "12vh",
-          zIndex: 2,
+          bottom: isMobile ? "18vh" : "20vh",
+          zIndex: 4,
           display: "flex",
-          flexDirection: "column",
           justifyContent: "center",
-          alignItems: "center",
-          textAlign: "center",
-          gap: "16px",
         }}
-        initial={{ y: "100%", opacity: 0 }}
-        animate={{
-          y: visibleElements.logo ? "0%" : "100%",
-          opacity: visibleElements.logo || visibleElements.text ? 1 : 0,
-        }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
+        initial={{ y: 16, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.6, ease: "easeOut", delay: 1.05 }}
       >
         <Image
-          width={isMobile ? "44vw" : "28vw"}
-          maxWidth="360px"
-          src="/logos/caravana-logo.png"
-          alt="Caravana logo"
+          src="/logos/logo.png"
+          alt="Jokers of Neon"
+          width={isMobile ? "70vw" : "50vw"}
+          maxWidth="520px"
+          objectFit="contain"
         />
-        <motion.div
-          initial={{ y: 18, opacity: 0 }}
-          animate={{
-            y: visibleElements.text ? 0 : 18,
-            opacity: visibleElements.text ? 1 : 0,
-          }}
-          transition={{ duration: 0.45, ease: "easeOut" }}
-        >
-          <Text color="white" fontSize={isMobile ? "1.2rem" : "2.2rem"}>
-            {t("presents")}
-          </Text>
-        </motion.div>
       </motion.div>
 
       <motion.div
@@ -118,12 +76,28 @@ export const LogoPresentation: React.FC<LogoPresentationProps> = ({
           position: "absolute",
           left: 0,
           right: 0,
+          bottom: isMobile ? "16.8vh" : "18.9vh",
+          zIndex: 4,
+          display: "flex",
+          justifyContent: "center",
+        }}
+        initial={{ y: 12, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.6, ease: "easeOut", delay: 1.45 }}
+      >
+        <Heading variant="italic" size={isMobile ? "sm" : "lg"}>
+          SEASON 2
+        </Heading>
+      </motion.div>
+
+      <div
+        style={{
+          position: "absolute",
+          left: 0,
+          right: 0,
           bottom: 0,
           zIndex: 3,
         }}
-        initial={{ y: "100%" }}
-        animate={{ y: "0%" }}
-        transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
       >
         <Image
           src="/loading-screen/loading-top.png"
@@ -131,7 +105,7 @@ export const LogoPresentation: React.FC<LogoPresentationProps> = ({
           width="100%"
           objectFit="cover"
         />
-      </motion.div>
+      </div>
     </Flex>
   );
 };
