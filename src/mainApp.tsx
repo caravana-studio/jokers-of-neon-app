@@ -17,7 +17,6 @@ import { APP_VERSION } from "./constants/version";
 import { DojoProvider } from "./dojo/DojoContext.tsx";
 import { setup } from "./dojo/setup.ts";
 import { WalletProvider } from "./dojo/WalletContext.tsx";
-import { FeatureFlagProvider } from "./featureManagement/FeatureFlagProvider.tsx";
 import localI18n from "./i18n.ts";
 import "./index.css";
 import { initDatadogRum } from "./monitoring/datadogRum.ts";
@@ -116,23 +115,21 @@ async function init() {
             <I18nextProvider i18n={localI18n} defaultNS={undefined}>
               <QueryClientProvider client={queryClient}>
                 <ChakraBaseProvider theme={theme}>
-                  <FeatureFlagProvider>
-                    <WalletProvider value={setupResult}>
-                      <DojoProvider value={setupResult}>
-                        <BrowserRouter>
-                          <DatadogUserContext />
-                          <Toaster />
-                          <SettingsProvider
-                            introSongPath={"music/intro-track.mp3"}
-                            baseSongPath={"music/game-track.mp3"}
-                            rageSongPath={"music/rage_soundtrack.mp3"}
-                          >
-                            <App />
-                          </SettingsProvider>
-                        </BrowserRouter>
-                      </DojoProvider>
-                    </WalletProvider>
-                  </FeatureFlagProvider>
+                  <WalletProvider value={setupResult}>
+                    <DojoProvider value={setupResult}>
+                      <BrowserRouter>
+                        <DatadogUserContext />
+                        <Toaster />
+                        <SettingsProvider
+                          introSongPath={"music/intro-track.mp3"}
+                          baseSongPath={"music/game-track.mp3"}
+                          rageSongPath={"music/rage_soundtrack.mp3"}
+                        >
+                          <App />
+                        </SettingsProvider>
+                      </BrowserRouter>
+                    </DojoProvider>
+                  </WalletProvider>
                 </ChakraBaseProvider>
               </QueryClientProvider>
             </I18nextProvider>
