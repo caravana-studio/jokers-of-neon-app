@@ -1028,7 +1028,7 @@
     "8": {
       "name": "Hearts loot box",
       "description": "All hearts suited cards, can contain special cards and modifiers.",
-      "details": "100% chance of getting Ace of Hearts\n45% chance of getting a traditional Heart card\n30% chance of getting Neon Heart card\n10% chance of getting Heart Suit modifier\n5% chance of getting 'Love is in the air' special card (A)\n5% chance of getting 'Dice of Hearts' special card (B)\n5% chance of getting 'Multiplied Hearts' special card (C)\nLoot box size 5"
+      "details": "100% chance of getting Ace of Hearts\n54% chance of getting a traditional Heart card\n30% chance of getting Neon Heart card\n10% chance of getting Heart Suit modifier\n2% chance of getting 'Love is in the air' special card (A)\n2% chance of getting 'Dice of Hearts' special card (B)\n2% chance of getting 'Multiplied Hearts' special card (C)\nLoot box size 5"
     },
     "9": {
       "name": "Special Bet loot box",
@@ -1043,17 +1043,17 @@
     "11": {
       "name": "Spades loot box",
       "description": "All spades suited cards, can contain special cards, neon cards and modifiers.",
-      "details": "100% chance of getting Ace of Spades\n45% chance of getting a traditional Spade card\n30% chance of getting Neon Spade card\n10% chance of getting Spade Suit modifier\n5% chance of getting 'Spade Trio' special card (A)\n5% chance of getting 'Dice of Spades' special card (B)\n5% chance of getting 'Multiplied Spades' special card (C)\nLoot box size 5"
+      "details": "100% chance of getting Ace of Spades\n54% chance of getting a traditional Spade card\n30% chance of getting Neon Spade card\n10% chance of getting Spade Suit modifier\n2% chance of getting 'Spade Trio' special card (A)\n2% chance of getting 'Dice of Spades' special card (B)\n2% chance of getting 'Multiplied Spades' special card (C)\nLoot box size 5"
     },
     "12": {
       "name": "Diamonds loot box",
       "description": "All diamonds suited cards, can contain special cards, neon cards and modifiers.",
-      "details": "100% chance of getting Ace of Diamonds\n45% chance of getting a traditional Diamond card\n30% chance of getting Neon Diamond card\n10% chance of getting Diamond Suit modifier\n5% chance of getting 'Lucky hand' special card (C)\n5% chance of getting 'Multiplied Diamonds' special card (C)\n5% chance of getting 'Dice of Diamonds' special card (B)\nLoot box size 5"
+      "details": "100% chance of getting Ace of Diamonds\n54% chance of getting a traditional Diamond card\n30% chance of getting Neon Diamond card\n10% chance of getting Diamond Suit modifier\n2% chance of getting 'Lucky hand' special card (C)\n2% chance of getting 'Multiplied Diamonds' special card (C)\n2% chance of getting 'Dice of Diamonds' special card (B)\nLoot box size 5"
     },
     "13": {
       "name": "Clubs loot box",
       "description": "All clubs suited cards, can contain special cards, neon cards and modifiers.",
-      "details": "100% chance of getting Ace of Clubs\n50% chance of getting a traditional Club card\n30% chance of getting Neon Club card\n10% chance of getting Club Suit modifier\n5% chance of getting 'Multiplied Clubs' special card (C)\n5% chance of getting 'Dice of Clubs' special card (B)\nLoot box size 5"
+      "details": "100% chance of getting Ace of Clubs\n56% chance of getting a traditional Club card\n30% chance of getting Neon Club card\n10% chance of getting Club Suit modifier\n2% chance of getting 'Multiplied Clubs' special card (C)\n2% chance of getting 'Dice of Clubs' special card (B)\nLoot box size 5"
     }
   }
 }
