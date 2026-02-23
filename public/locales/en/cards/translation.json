@@ -987,6 +987,10 @@
     "20025": {
       "name": "Buzzkiller",
       "description": "Your most-played hand does not count this round."
+    },
+    "20026": {
+      "name": "Blackout",
+      "description": "Two of your current special cards get silenced for this round"
     }
   },
   "lootBoxes": {
