@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { LevelUpPlayEvent } from "../utils/discardEvents/getLevelUpPlayEvent";
+import { LevelUpPlayEvent } from "../types/ScoreData";
 
 type AnimationStore = {
   playAnimation: boolean;

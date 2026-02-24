@@ -11,7 +11,7 @@ import {
 import { ArrowRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { animated, config, useSpring } from "react-spring";
+import { animated, useSpring } from "react-spring";
 import { useAnimationStore } from "../../state/useAnimationStore";
 
 import { PLAYS_DATA } from "../../constants/plays";
@@ -55,30 +55,23 @@ export const LevelUpFirstDiscartedHandAnimation = () => {
 
         setShowAnimationHeading(false);
         setShowAnimationText(false);
+        setNewDataText(false);
         setLevelUpHand(undefined);
       }
     },
   });
 
   const arrowSpring = useSpring({
-    from: { x: -1000, opacity: 0, scale: 0.5 },
+    from: { x: -40, opacity: 0 },
+    delay: 400,
     to: async (next) => {
       if (showNewDataText) {
         await next({
           x: 0,
           opacity: 1,
-          scale: 1,
-          config: config.wobbly,
+          config: { duration: 200 },
         });
-        await next({
-          x: 0,
-          scale: 1,
-          config: { tension: 100 },
-        });
-
-        await new Promise((resolve) => setTimeout(resolve, 600));
-
-        await new Promise((resolve) => setTimeout(resolve, 1800));
+        await new Promise((resolve) => setTimeout(resolve, 2700));
         await next({ x: 1000, opacity: 0, config: { duration: 200 } });
       }
     },
@@ -96,6 +89,7 @@ export const LevelUpFirstDiscartedHandAnimation = () => {
         // Reset animation state
         setShowAnimationHeading(false);
         setShowAnimationText(false);
+        setNewDataText(false);
         setLevelUpHand(undefined);
       }
     },
@@ -116,19 +110,27 @@ export const LevelUpFirstDiscartedHandAnimation = () => {
   useEffect(() => {
     if (levelUpHand) {
       setShowAnimationHeading(true);
-      setTimeout(() => {
+      setShowAnimationText(false);
+      setNewDataText(false);
+
+      const showTextTimer = setTimeout(() => {
         setShowAnimationText(true);
       }, 500);
-      setTimeout(() => {
+      const showNewDataTimer = setTimeout(() => {
         setNewDataText(true);
       }, 500);
 
       const timer = setTimeout(() => {
         setShowAnimationHeading(false);
         setShowAnimationText(false);
+        setNewDataText(false);
         setLevelUpHand(undefined);
       }, 7000);
-      return () => clearTimeout(timer);
+      return () => {
+        clearTimeout(showTextTimer);
+        clearTimeout(showNewDataTimer);
+        clearTimeout(timer);
+      };
     }
   }, [levelUpHand]);
 
@@ -162,7 +164,7 @@ export const LevelUpFirstDiscartedHandAnimation = () => {
                   backgroundColor={blue}
                   borderRadius={4}
                   width={isSmallScreen ? "40px" : "60px"}
-                  fontSize={isSmallScreen ? "1rem" : "2rem"}
+                  fontSize={isSmallScreen ? "0.85rem" : "1.5rem"}
                   mr={1}
                   boxShadow={
                     isSmallScreen
@@ -170,6 +172,11 @@ export const LevelUpFirstDiscartedHandAnimation = () => {
                       : `0px 0px 10px 10px ${blue}`
                   }
                   fontWeight="400"
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                  textAlign="center"
+                  lineHeight={1}
                 >
                   {!showNewDataText
                     ? levelUpHand?.old_points.toString()
@@ -182,7 +189,7 @@ export const LevelUpFirstDiscartedHandAnimation = () => {
                   backgroundColor="neonPink"
                   borderRadius={4}
                   width={isSmallScreen ? "40px" : "60px"}
-                  fontSize={isSmallScreen ? "1rem" : "2rem"}
+                  fontSize={isSmallScreen ? "0.85rem" : "1.5rem"}
                   ml={1}
                   boxShadow={
                     isSmallScreen
@@ -190,6 +197,11 @@ export const LevelUpFirstDiscartedHandAnimation = () => {
                       : `0px 0px 10px 10px ${violet}`
                   }
                   fontWeight="400"
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                  textAlign="center"
+                  lineHeight={1}
                 >
                   {!showNewDataText
                     ? levelUpHand?.old_multi.toString()
@@ -229,7 +241,7 @@ export const LevelUpFirstDiscartedHandAnimation = () => {
               </animated.div>
 
               <animated.div style={textSpring}>
-                <Text fontSize={{ base: "2rem", sm: "4rem" }}>
+                <Text fontSize={{ base: "2rem", sm: "4rem" }} textTransform="uppercase">
                   {tPlays(`${PLAYS_DATA[levelUpHand?.hand]?.name}.name`)}
                 </Text>
               </animated.div>
@@ -242,7 +254,7 @@ export const LevelUpFirstDiscartedHandAnimation = () => {
                 {showNewDataText && (
                   <Box
                     display={"flex"}
-                    alignContent={"baseline"}
+                    alignItems={"center"}
                     justifyContent={"center"}
                   >
                     <animated.div
@@ -251,7 +263,7 @@ export const LevelUpFirstDiscartedHandAnimation = () => {
                       }}
                     >
                       <ArrowRight
-                        size={isSmallScreen ? 30 : 35}
+                        size={isSmallScreen ? 22 : 26}
                         color="white"
                       />
                     </animated.div>

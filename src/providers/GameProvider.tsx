@@ -149,7 +149,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const { fetchDeck } = useDeckStore();
 
-  const { setPlayAnimation, setDiscardAnimation } = useAnimationStore();
+  const { setPlayAnimation, setDiscardAnimation, setLevelUpHand } =
+    useAnimationStore();
 
   const { getCardData } = useCardData();
 
@@ -325,6 +326,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       setPlayIsNeon,
       setAnimatedCard,
       setAnimatedPowerUp,
+      setLevelUpHand,
       pointsSound,
       acumSound,
       negativeMultiSound,

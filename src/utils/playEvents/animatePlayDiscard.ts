@@ -18,6 +18,7 @@ interface AnimatePlayConfig {
   setPlayIsNeon: (isNeon: boolean) => void;
   setAnimatedCard: (card: any) => void;
   setAnimatedPowerUp: (powerUp: any) => void;
+  setLevelUpHand?: (event: PlayEvents["levelUpPlayEvent"]) => void;
   pointsSound: (pitchIndex?: number) => void;
   acumSound: () => void;
   negativeMultiSound: () => void;
@@ -87,6 +88,9 @@ export const animatePlayDiscard = (config: AnimatePlayConfig): number => {
   } = config;
 
   if (!playEvents) return 0;
+  if (playEvents.levelUpPlayEvent && config.setLevelUpHand) {
+    config.setLevelUpHand(playEvents.levelUpPlayEvent);
+  }
 
   const sharedPitchState = config.pitchState ?? { index: 0 };
   const getNextPitchIndex = () => {

@@ -9,6 +9,7 @@ import {
   scoreEventFilter,
   specialScoreEventFilter,
 } from "../scoreEventFilter";
+import { getLevelUpPlayEvent } from "../discardEvents/getLevelUpPlayEvent";
 import { sortCardPlayEvents } from "../sortCardPlayEvents";
 import { suitOrNeonEventFilter } from "../suitOrNeonEventFilter";
 import { getCardActivateEvent } from "./getCardActivateEvent";
@@ -33,6 +34,7 @@ export const getPlayEvents = (events: DojoEvent[]): PlayEvents => {
       (event) => event.keys[1] === PLAY_GAME_OVER_EVENT_KEY
     ),
     levelPassed: getLevelPassedEvent(events),
+    levelUpPlayEvent: getLevelUpPlayEvent(events),
     detailEarned: getDetailEarnedEvent(events),
     neonPlayEvent: getNeonPlayEvent(events),
     cards: getCardsFromEvents(events),

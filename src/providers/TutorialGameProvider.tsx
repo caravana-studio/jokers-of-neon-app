@@ -66,7 +66,8 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
     resetSpecials,
     setState,
   } = useGameStore();
-  const { setPlayAnimation, setDiscardAnimation } = useAnimationStore();
+  const { setPlayAnimation, setDiscardAnimation, setLevelUpHand } =
+    useAnimationStore();
   const { setAnimatedCard, setAnimatedPowerUp } = useCardAnimations();
   const { sfxVolume } = useSettings();
   const { play: preselectCardSound } = useAudio(preselectedCardSfx, sfxVolume);
@@ -131,6 +132,7 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
       setPlayIsNeon,
       setAnimatedCard,
       setAnimatedPowerUp,
+      setLevelUpHand,
       pointsSound,
       acumSound,
       negativeMultiSound: emptyFn,

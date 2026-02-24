@@ -19,6 +19,7 @@ export enum DojoEvents {
   SPECIAL_CASH = "SpecialCashEvent",
   SECOND_CHANCE = "SecondChanceEvent",
   DESTROYED_SPECIAL_CARD = "DestroyedSpecialCardEvent",
+  POKER_HAND_LEVEL_UP = "PokerHandLevelUpEvent",
   LEVEL_UP_HAND = "LevelUpHandEvent",
   MODIFIER_CARD_NEON = "ModifierCardNeonEvent",
   SPECIAL_NEON_CARD = "SpecialNeonCardEvent",
