@@ -22,6 +22,7 @@ export interface Card {
   temporary?: boolean;
   remaining?: number;
   isNeon?: boolean;
+  silenced?: boolean;
   discount_cost?: number;
   temporary_discount_cost?: number;
   temporary_price?: number;

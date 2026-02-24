@@ -64,7 +64,7 @@ export const MobileCardHighlight = ({
   const { changeModifierCard, sellSpecialCard } = useGameContext();
   const [loading, setLoading] = useState(false);
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
-  const { t } = useTranslation(["game", "docs"]);
+  const { t } = useTranslation(["game", "docs", "cards"]);
   const [duration, setDuration] = useState(Duration.PERMANENT);
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -196,9 +196,32 @@ export const MobileCardHighlight = ({
           <LootBox boxId={card.card_id ?? 0} />
         )}
       </Flex>
-      <Text textAlign="center" size="xl" fontSize={isSmallScreen ? "14px" : "17px"} width={"65%"}>
-        {colorizeText(description)}
-      </Text>
+      <Flex
+        textAlign="center"
+        direction="column"
+        alignItems="center"
+        gap={1}
+        width={"65%"}
+      >
+        {card.silenced && (
+          <Text
+            size="xl"
+            fontSize={isSmallScreen ? "14px" : "17px"}
+            color="red.400"
+            fontWeight={700}
+            textTransform="uppercase"
+          >
+            {t("silenced", { ns: "cards" })}
+          </Text>
+        )}
+        <Text
+          textAlign="center"
+          size="xl"
+          fontSize={isSmallScreen ? "14px" : "17px"}
+        >
+          {colorizeText(description)}
+        </Text>
+      </Flex>
       {showExtraInfo && (
         <>
           {rarity && (
