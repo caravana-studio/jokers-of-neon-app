@@ -9,6 +9,7 @@ import { useGameContext } from "../providers/GameProvider";
 import { useCardHighlight } from "../providers/HighlightProvider/CardHighlightProvider";
 import { Card } from "../types/Card";
 import { colorizeText } from "../utils/getTooltip";
+import { hasPriceValue } from "../utils/pricing";
 import { CardImage3D } from "./CardImage3D";
 import { CashSymbol } from "./CashSymbol";
 import { ConfirmationModal } from "./ConfirmationModal";
@@ -145,7 +146,7 @@ export const MobileCardHighlight = ({
       alignItems={"center"}
       backdropFilter="blur(5px)"
       backgroundColor=" rgba(0, 0, 0, 0.5)"
-      gap={temporaryPrice ? 2 : 4}
+      gap={hasPriceValue(temporaryPrice) ? 2 : 4}
       onClick={handleBackdropClick}
     >
       {confirmationModalOpen && (
@@ -206,8 +207,8 @@ export const MobileCardHighlight = ({
             </Text>
           )}
           {isPack && <LootBoxRateInfo name={name} details={details} />}
-          {(price && !hidePrice) &&
-            (temporaryPrice ? (
+          {hasPriceValue(price) && !hidePrice &&
+            (hasPriceValue(temporaryPrice) ? (
               <DurationSwitcher
                 flexDir="column"
                 price={price}

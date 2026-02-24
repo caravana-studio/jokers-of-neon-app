@@ -60,6 +60,7 @@ export const StorePreviewComponent = ({
 }: IStorePreviewComponentDesktop) => {
   const navigate = useNavigate();
   const { t } = useTranslation(["store"]);
+  const freeLabel = t("store.labels.free").toUpperCase();
 
   return (
     <>
@@ -229,7 +230,7 @@ export const StorePreviewComponent = ({
               <Box flex={1} alignItems={"end"} display={"flex"} flexDir={"row"}>
                 <Flex flexDirection={"column"} gap={5}>
                   <Flex gap={3}>
-                    {temporalPrice &&
+                    {temporalPrice !== undefined &&
                     duration !== undefined &&
                     onDurationChange ? (
                       <DurationSwitcher
@@ -249,7 +250,7 @@ export const StorePreviewComponent = ({
                           {t("store.preview-card.title.price")}
                         </Heading>
                         <Flex gap={1} alignItems="center" justifyContent={"center"}>
-                          {!discountPrice && <CashSymbol />}
+                          {!discountPrice && price !== 0 && <CashSymbol />}
                           <Heading
                             fontSize={{ base: "sm", sm: "lg" }}
                             variant="italic"
@@ -257,10 +258,10 @@ export const StorePreviewComponent = ({
                               discountPrice ? "line-through" : "none"
                             }
                           >
-                            {price}
+                            {price === 0 ? freeLabel : price}
                           </Heading>
                         </Flex>
-                        {discountPrice !== 0 && (
+                        {discountPrice !== undefined && discountPrice > 0 && (
                           <Flex gap={1} alignItems="center" justifyContent={"center"}>
                             <CashSymbol />
                             <Heading

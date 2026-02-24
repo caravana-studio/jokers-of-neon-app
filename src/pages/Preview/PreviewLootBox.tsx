@@ -16,6 +16,7 @@ import { useGameStore } from "../../state/useGameStore.ts";
 import { useShopStore } from "../../state/useShopStore.ts";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 import { colorizeText } from "../../utils/getTooltip.tsx";
+import { getEffectivePrice } from "../../utils/pricing.ts";
 import { MobileCoins } from "../store/Coins.tsx";
 
 export const PreviewLootBox = () => {
@@ -36,9 +37,8 @@ export const PreviewLootBox = () => {
   const { name, description, details } = getLootBoxData(card.card_id ?? 0);
   const lootBoxRef = useRef<LootBoxRef>(null);
 
-  const notEnoughCash =
-    !card.price ||
-    (pack.discount_cost ? cash < pack.discount_cost : cash < card.price);
+  const effectivePrice = getEffectivePrice(card.price, pack.discount_cost);
+  const notEnoughCash = cash < effectivePrice;
 
   const onBuyClick = () => {
     navigate("/open-loot-box", {

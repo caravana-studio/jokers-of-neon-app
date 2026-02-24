@@ -14,6 +14,7 @@ import { useGameStore } from "../../state/useGameStore.ts";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 import { getTemporalCardText } from "../../utils/getTemporalCardText.ts";
 import { useShopStore } from "../../state/useShopStore.ts";
+import { getEffectivePrice } from "../../utils/pricing.ts";
 
 const PreviewCard = () => {
   const { state } = useLocation();
@@ -41,17 +42,14 @@ const PreviewCard = () => {
   const { cash, specialSlots, specialCards } = useGameStore();
   const { name, description } = getCardData(card.card_id ?? 0);
 
+  const permanentPrice = getEffectivePrice(card.price, card.discount_cost);
+  const temporalPrice = getEffectivePrice(
+    card.temporary_price,
+    card.temporary_discount_cost
+  );
   const notEnoughCash =
-    (duration === Duration.PERMANENT &&
-      (!card.price ||
-        (card.discount_cost
-          ? cash < card.discount_cost
-          : cash < card.price))) ||
-    (duration === Duration.TEMPORAL &&
-      (!card.temporary_price ||
-        (card.temporary_discount_cost
-          ? cash < card.temporary_discount_cost
-          : cash < card.temporary_price)));
+    (duration === Duration.PERMANENT && cash < permanentPrice) ||
+    (duration === Duration.TEMPORAL && cash < temporalPrice);
 
   const noSpaceForSpecialCards =
     card.isSpecial && specialCards.length >= specialSlots;

@@ -176,7 +176,7 @@ export const TiltCard = ({
             </Box>
           </CardTooltip>
 
-          {!onDeck && card.price && (
+          {!onDeck && card.price !== undefined && card.price !== null && (
             <PriceBox
               price={card.price}
               purchased={purchased}

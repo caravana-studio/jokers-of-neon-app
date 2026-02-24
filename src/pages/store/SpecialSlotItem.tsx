@@ -46,7 +46,7 @@ export const SpecialSlotItem = ({}: ISpecialSlotItem) => {
             src="/store/slot-icon.png"
             alt="slot-icon"
           />
-          {price && (
+          {price !== undefined && price !== null && (
             <PriceBox
               price={Number(price)}
               purchased={Boolean(purchased)}

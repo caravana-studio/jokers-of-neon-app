@@ -12,6 +12,7 @@ import { useStore } from "../../providers/StoreProvider.tsx";
 import { useGameStore } from "../../state/useGameStore.ts";
 import { useShopStore } from "../../state/useShopStore.ts";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
+import { getEffectivePrice } from "../../utils/pricing.ts";
 
 export const PreviewPowerUp = () => {
   const { state } = useLocation();
@@ -33,11 +34,8 @@ export const PreviewPowerUp = () => {
   const name = powerUpData?.name;
   const description = powerUpData?.description;
 
-  const notEnoughCash =
-    !powerUp.cost ||
-    (powerUp?.discount_cost
-      ? cash < Number(powerUp?.discount_cost ?? 0)
-      : cash < Number(powerUp.cost));
+  const effectivePrice = getEffectivePrice(powerUp.cost, powerUp?.discount_cost);
+  const notEnoughCash = cash < effectivePrice;
 
   const noSpace = powerUps.filter((p) => !!p).length >= maxPowerUpSlots;
 

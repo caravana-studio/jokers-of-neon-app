@@ -12,6 +12,7 @@ import { useGameStore } from "../../../state/useGameStore";
 import { useShopStore } from "../../../state/useShopStore";
 import { GREY_LINE } from "../../../theme/colors";
 import theme from "../../../theme/theme";
+import { getEffectivePrice, hasPriceValue } from "../../../utils/pricing";
 
 export const LootBoxesMobile = () => {
   const { packs } = useShopStore();
@@ -62,9 +63,8 @@ const PackView = ({ pack }: { pack: BlisterPackItem }) => {
   };
 
   const lootBoxRef = useRef<LootBoxRef>(null);
-  const notEnoughCash =
-    !card.price ||
-    (pack.discount_cost ? cash < pack.discount_cost : cash < card.price);
+  const effectivePrice = getEffectivePrice(card.price, pack.discount_cost);
+  const notEnoughCash = cash < effectivePrice;
 
   const { getLootBoxData } = useCardData();
 
@@ -153,7 +153,7 @@ const PackView = ({ pack }: { pack: BlisterPackItem }) => {
           </Flex>
 
           <Flex alignItems={"baseline"} justifyContent={"space-between"}>
-            {card.price && (
+            {hasPriceValue(card.price) && (
               <PriceBox
                 price={card.price}
                 purchased={pack.purchased}
