@@ -138,7 +138,7 @@ export const LevelUpFirstDiscartedHandAnimation = () => {
     <Table
       sx={{
         borderCollapse: "separate",
-        marginBottom: 4,
+        marginBottom: 0,
         borderSpacing: 0,
       }}
       width="100%"
@@ -246,7 +246,7 @@ export const LevelUpFirstDiscartedHandAnimation = () => {
                 </Text>
               </animated.div>
 
-              <Flex gap={isSmallScreen ? 3 : 0}>
+              <Flex gap={isSmallScreen ? 3 : 0} alignItems="center">
                 <animated.div style={oldLevelSpring}>
                   {tableData(false)}
                 </animated.div>
@@ -260,6 +260,7 @@ export const LevelUpFirstDiscartedHandAnimation = () => {
                     <animated.div
                       style={{
                         ...arrowSpring,
+                        margin: isSmallScreen ? "0 6px" : "0 10px",
                       }}
                     >
                       <ArrowRight
