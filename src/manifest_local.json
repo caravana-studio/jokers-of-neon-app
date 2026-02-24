@@ -33,8 +33,8 @@
   },
   "contracts": [
     {
-      "address": "0x397535ffec186676d7b93026658ab8a78ac576692688b241c8797c7bd8a70a6",
-      "class_hash": "0x25ea47b5a4ec587dfe1b4948b656067cf7b311c10a35f98c2dc67c3a0ecd561",
+      "address": "0x53a3807e3aa8498243a1147a9a46e36314f04cd3d1520a861ae0f33662a800a",
+      "class_hash": "0x70e42f6d6e42af909e820e70433d514d073d9abcb68b4eb2469dcee0864ca11",
       "init_calldata": [],
       "tag": "jokers_of_neon_core-action_system",
       "selector": "0x7818a1d55aa438edfc913a34975c6fdf37d2b250f797fb51ba10872bea762f2",
@@ -66,8 +66,8 @@
       ]
     },
     {
-      "address": "0x7b9677fbf141ce7ac4f7e3202e65c9fd1eb68bf0ebbf1953a60982beaa269db",
-      "class_hash": "0x29e7bf412c2272e268205ab8849b32cfcba35f1f09bb1b1dc078e936ebd9ab",
+      "address": "0x38634437804b5d37cf1473ee44c9d2495a5044aa47e5da0bd50103e17878c45",
+      "class_hash": "0x60091c55111fed0207527d28b2ee396316d66a7aafc18422c94dae60c681c6",
       "init_calldata": [],
       "tag": "jokers_of_neon_core-converter",
       "selector": "0x511cda0ff878c3ddac5076352f886ce0c271551d4c60df58449b306a6372f2d",
@@ -133,8 +133,8 @@
       ]
     },
     {
-      "address": "0x6fd40f07fb0e769a0ac46f959e7c88c8715e5913c348ac1f0d3feaa74261286",
-      "class_hash": "0x35298c4e4d3e39287f0186332aa6adf5facacb7497d2127e795631b928b8952",
+      "address": "0x2368b9705b664334e5947606abc5598779fcb8d858b9ebd9440ff52ed9b3d5c",
+      "class_hash": "0x21f670e163789810435493c82897ce9bb3b771ae5d1d9f9f390469e3bba1732",
       "init_calldata": [],
       "tag": "jokers_of_neon_core-level_up_play",
       "selector": "0x6b47670ba8da1afea7389d2892498a05fa2227d7df40a584c02bec8d57c634c",
@@ -181,8 +181,8 @@
       ]
     },
     {
-      "address": "0x597b5add792758c76269f3de1a9d2ea5a76102c116e4f5e90e238f126b375eb",
-      "class_hash": "0x60b3cc0a55b522215db2620a6feb9d3de20b238f2611cc2b4fc95b058757fd4",
+      "address": "0x4db04474fd931cd19cd2361acdde862475306fc40ffb49066d69ea94e6729c2",
+      "class_hash": "0x66f0b295451a6b024dd214839e50b8408b6034145f14929166857f2ef7f2a70",
       "init_calldata": [],
       "tag": "jokers_of_neon_core-map_system",
       "selector": "0x71f0e07009ce93b04a0eacd60f84a5157e9c87953b46a14467df64cee04e4bf",
@@ -259,8 +259,8 @@
       ]
     },
     {
-      "address": "0x72ce5d47d7cfda8ccb333d166a9fd44cc4a8470eb554bfea8fa36f889669c57",
-      "class_hash": "0x7f41e36a2892573eb5912bf2fa4896660d0a457584325ba569ce2966d262a24",
+      "address": "0x4706fb103d133eacecc3aae50d985ff81fe524412038dcb5e7bb2aa44b8a862",
+      "class_hash": "0x24071095d9d1be37adccd939280cb9bbbb26723eb28363b84b089569c01b80a",
       "init_calldata": [],
       "tag": "jokers_of_neon_core-play_system",
       "selector": "0xe9b7c6dea9cc75259c88fa913fc033e0a7c5945c64b850cd2b6950e36cb008",
@@ -2558,12 +2558,17 @@
           "key": false
         },
         {
+          "name": "rewards_special_card",
+          "type": "core::integer::u32",
+          "key": false
+        },
+        {
           "name": "total",
           "type": "core::integer::u32",
           "key": false
         }
       ],
-      "class_hash": "0x3ec3df34fa926015193c0be1f2df691721bb1619fcca20b65bc0ca80942b4c6",
+      "class_hash": "0x345b102ac3551db0db97b877b9ee8120d8398b25f04da987414e087f2f7a733",
       "tag": "jokers_of_neon_core-DetailEarnedEvent",
       "selector": "0x19b2d7a7521745b98fb7f302823ffdf3bf8006634aa73105f7a51b8da5f8de7"
     },
@@ -2906,6 +2911,53 @@
       "class_hash": "0xe97b343ad74397441eb515487c18c39723627c1ea5cccfa5d67715c2839ac4",
       "tag": "jokers_of_neon_core-PlayWinGameEvent",
       "selector": "0xd119c9da5a2d4aa2e71dad4aa1c378e5a8ccf7bb8c3396adf285c6c26c6b8"
+    },
+    {
+      "members": [
+        {
+          "name": "game_id",
+          "type": "core::integer::u64",
+          "key": true
+        },
+        {
+          "name": "poker_hand",
+          "type": "jokers_of_neon_lib::models::data::poker_hand::PokerHand",
+          "key": false
+        },
+        {
+          "name": "old_level",
+          "type": "core::integer::u8",
+          "key": false
+        },
+        {
+          "name": "new_level",
+          "type": "core::integer::u8",
+          "key": false
+        },
+        {
+          "name": "old_multi",
+          "type": "core::integer::u32",
+          "key": false
+        },
+        {
+          "name": "new_multi",
+          "type": "core::integer::u32",
+          "key": false
+        },
+        {
+          "name": "old_points",
+          "type": "core::integer::u32",
+          "key": false
+        },
+        {
+          "name": "new_points",
+          "type": "core::integer::u32",
+          "key": false
+        }
+      ],
+      "class_hash": "0x667897feb4854a8045a1c872272ce9dfe597262f61a07f1791a9559a7407ffe",
+      "tag": "jokers_of_neon_core-PokerHandLevelUpEvent",
+      "selector": "0x711e3a9a2593d32b3815a426c107d70a4d1a26277a7de660342a63564f3a5d1"
     },
     {
       "members": [
@@ -5760,6 +5812,10 @@
           "type": "core::integer::u32"
         },
         {
+          "name": "rewards_special_card",
+          "type": "core::integer::u32"
+        },
+        {
           "name": "total",
           "type": "core::integer::u32"
         }
@@ -5807,6 +5863,10 @@
         },
         {
           "name": "rerolls",
+          "type": "core::integer::u32"
+        },
+        {
+          "name": "rewards_special_card",
           "type": "core::integer::u32"
         },
         {
@@ -6321,6 +6381,78 @@
     },
     {
       "type": "struct",
+      "name": "jokers_of_neon_core::models::events::PokerHandLevelUpEvent",
+      "members": [
+        {
+          "name": "game_id",
+          "type": "core::integer::u64"
+        },
+        {
+          "name": "poker_hand",
+          "type": "jokers_of_neon_lib::models::data::poker_hand::PokerHand"
+        },
+        {
+          "name": "old_level",
+          "type": "core::integer::u8"
+        },
+        {
+          "name": "new_level",
+          "type": "core::integer::u8"
+        },
+        {
+          "name": "old_multi",
+          "type": "core::integer::u32"
+        },
+        {
+          "name": "new_multi",
+          "type": "core::integer::u32"
+        },
+        {
+          "name": "old_points",
+          "type": "core::integer::u32"
+        },
+        {
+          "name": "new_points",
+          "type": "core::integer::u32"
+        }
+      ]
+    },
+    {
+      "type": "struct",
+      "name": "jokers_of_neon_core::models::events::PokerHandLevelUpEventValue",
+      "members": [
+        {
+          "name": "poker_hand",
+          "type": "jokers_of_neon_lib::models::data::poker_hand::PokerHand"
+        },
+        {
+          "name": "old_level",
+          "type": "core::integer::u8"
+        },
+        {
+          "name": "new_level",
+          "type": "core::integer::u8"
+        },
+        {
+          "name": "old_multi",
+          "type": "core::integer::u32"
+        },
+        {
+          "name": "new_multi",
+          "type": "core::integer::u32"
+        },
+        {
+          "name": "old_points",
+          "type": "core::integer::u32"
+        },
+        {
+          "name": "new_points",
+          "type": "core::integer::u32"
+        }
+      ]
+    },
+    {
+      "type": "struct",
       "name": "jokers_of_neon_core::models::events::PowerUpEvent",
       "members": [
         {
@@ -6490,6 +6622,12 @@
     {
       "type": "event",
       "name": "jokers_of_neon_core::models::events::e_PlayWinGameEvent::Event",
+      "kind": "enum",
+      "variants": []
+    },
+    {
+      "type": "event",
+      "name": "jokers_of_neon_core::models::events::e_PokerHandLevelUpEvent::Event",
       "kind": "enum",
       "variants": []
     },
