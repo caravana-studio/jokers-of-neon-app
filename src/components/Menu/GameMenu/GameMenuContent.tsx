@@ -11,7 +11,6 @@ import {
   Box,
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
-import { useFeatureFlagEnabled } from "../../../featureManagement/useFeatureFlagEnabled";
 import { ControllerIcon } from "../../../icons/ControllerIcon";
 import { useGameStore } from "../../../state/useGameStore";
 import CachedImage from "../../CachedImage";
@@ -40,7 +39,6 @@ export const GameMenuContent: React.FC<GameMenuContentProps> = ({
   const { id, isTournament } = useGameStore();
 
   const touchStartX = useRef(0);
-  const hideTutorialFF = useFeatureFlagEnabled("global", "hideTutorial");
 
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.touches[0].clientX;

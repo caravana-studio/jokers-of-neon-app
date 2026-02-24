@@ -987,6 +987,10 @@
     "20025": {
       "name": "Aguafiestas",
       "description": "Tu mano más jugada no cuenta en esta ronda."
+    },
+    "20026": {
+      "name": "Blackout",
+      "description": "Dos de tus cartas especiales actuales quedan silenciadas durante esta ronda"
     }
   },
   "lootBoxes": {

@@ -987,6 +987,10 @@
     "20025": {
       "name": "Estraga-prazer",
       "description": "Sua mão mais jogada não conta nesta rodada."
+    },
+    "20026": {
+      "name": "Blackout",
+      "description": "Duas das suas cartas especiais atuais ficam silenciadas nesta rodada"
     }
   },
   "lootBoxes": {

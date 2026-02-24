@@ -8,7 +8,6 @@ import {
 import { useLocation, useNavigate } from "react-router-dom";
 import { AccountInterface } from "starknet";
 import { createGame } from "../api/createGame.ts";
-import { SKIP_IN_GAME_TUTORIAL } from "../constants/localStorage";
 import {
   acumSfx,
   clearLevel,
@@ -23,7 +22,6 @@ import { GameStateEnum } from "../dojo/typescript/custom.ts";
 import { useDojo } from "../dojo/useDojo.tsx";
 import { useGameActions } from "../dojo/useGameActions.tsx";
 import { useUsername } from "../dojo/utils/useUsername.tsx";
-import { useFeatureFlagEnabled } from "../featureManagement/useFeatureFlagEnabled.ts";
 import { useAudio } from "../hooks/useAudio.tsx";
 import { usePitchedAudio } from "../hooks/usePitchedAudio.tsx";
 import { useCustomToast } from "../hooks/useCustomToast.tsx";
@@ -154,11 +152,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const { setPlayAnimation, setDiscardAnimation } = useAnimationStore();
 
   const { getCardData } = useCardData();
-
-  const hideTutorialFF = useFeatureFlagEnabled("global", "hideTutorial");
-
-  const showTutorial =
-    !localStorage.getItem(SKIP_IN_GAME_TUTORIAL) && !hideTutorialFF;
 
   const { refetchSpecialCardsData } = useCardData();
 
