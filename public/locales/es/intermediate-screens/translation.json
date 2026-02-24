@@ -236,6 +236,7 @@
       "level-bonus": "Bonus del nivel",
       "discards-left": "{{discards}} descartes",
       "hands-left": "{{hands}} manos",
+      "special-card-bonus": "Bono de carta especial",
       "rage": "{{cards}} Ronda(s) de Furia vencida(s)",
       "total": "Total",
       "final-score": "- Puntuación final: {{score}} -",
