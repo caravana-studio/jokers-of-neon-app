@@ -144,6 +144,7 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
       addCash: emptyFn,
       changeCardsSuit: emptyFn,
       changeCardsNeon: emptyFn,
+      changeCardsRank: (_cardChanges) => {},
       setAnimation: setPlayAnimation,
       setPreSelectionLocked:
         useCurrentHandStore.getState().setPreSelectionLocked,

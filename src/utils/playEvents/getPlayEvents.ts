@@ -11,7 +11,7 @@ import {
 } from "../scoreEventFilter";
 import { getLevelUpPlayEvent } from "../discardEvents/getLevelUpPlayEvent";
 import { sortCardPlayEvents } from "../sortCardPlayEvents";
-import { suitOrNeonEventFilter } from "../suitOrNeonEventFilter";
+import { converterEventFilter } from "../converterEventFilter";
 import { getCardActivateEvent } from "./getCardActivateEvent";
 import { getCardPlayEvents } from "./getCardPlayEvents";
 import { getDetailEarnedEvent } from "./getDetailEarnedEvent";
@@ -26,8 +26,11 @@ const SECOND_CHANCE_EVENT_KEY = getEventKey(DojoEvents.SECOND_CHANCE);
 
 export const getPlayEvents = (events: DojoEvent[]): PlayEvents => {
   const cardPlayEvents = getCardPlayEvents(events);
-  console.log('cardPlayEvents', cardPlayEvents)
-  console.log('cardPlayEvents.filter(suitOrNeonEventFilter)', cardPlayEvents.filter(suitOrNeonEventFilter))
+  console.log("Card Play Events:", cardPlayEvents);
+  const cardPlayChangeEvents = cardPlayEvents
+    .filter(converterEventFilter)
+    .sort(sortCardPlayEvents);
+
   const playEvents: PlayEvents = {
     play: getHandEvent(events),
     gameOver: !!events.find(
@@ -44,7 +47,7 @@ export const getPlayEvents = (events: DojoEvent[]): PlayEvents => {
     ),
     powerUpEvents: getPowerUpEvents(events),
     acumulativeEvents: cardPlayEvents.filter(acumEventFilter),
-    cardPlayChangeEvents: cardPlayEvents.filter(suitOrNeonEventFilter),
+    cardPlayChangeEvents,
     cardPlayEvents: [
       ...cardPlayEvents.filter(scoreEventFilter).filter(cardScoreEventFilter),
       ...cardPlayEvents

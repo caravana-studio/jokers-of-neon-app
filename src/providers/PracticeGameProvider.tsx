@@ -280,6 +280,7 @@ export const PracticeGameProvider = ({ children }: { children: ReactNode }) => {
         addMulti: gameStore.addMulti,
         changeCardsSuit: handStore.changeCardsSuit,
         changeCardsNeon: handStore.changeCardsNeon,
+        changeCardsRank: handStore.changeCardsRank,
         setAnimation: setPlayAnimation,
         setPreSelectionLocked: handStore.setPreSelectionLocked,
         clearPreSelection,

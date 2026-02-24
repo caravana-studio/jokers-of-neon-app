@@ -143,6 +143,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     syncMaxPreSelectedCards,
     changeCardsSuit,
     changeCardsNeon,
+    changeCardsRank,
     setPlayIsNeon,
     setCardTransformationLock,
   } = useCurrentHandStore();
@@ -334,6 +335,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       setMulti,
       changeCardsSuit,
       changeCardsNeon,
+      changeCardsRank,
       setAnimation,
       setPreSelectionLocked,
       clearPreSelection,
