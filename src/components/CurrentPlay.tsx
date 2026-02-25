@@ -51,17 +51,25 @@ export const CurrentPlay = () => {
         specialCards,
         preSelectedModifiers
       );
+      const isDebuffedResult = debuffedPlayerHands.includes(result.play);
       setPreSelectedPlay(result.play);
       setPlayIsNeon(result.isNeon);
       if (plays?.length != 0) {
-        isDebuffedPlay ? resetMultiPoints() : setMultiAndPoints(result.play);
+        isDebuffedResult ? resetMultiPoints() : setMultiAndPoints(result.play);
       }
     } else {
       setPreSelectedPlay(Plays.NONE);
       setPlayIsNeon(false);
       resetMultiPoints();
     }
-  }, [preSelectedCards, preSelectedModifiers, isDebuffedPlay]);
+  }, [
+    preSelectedCards,
+    preSelectedModifiers,
+    hand,
+    specialCards,
+    plays,
+    debuffedPlayerHands,
+  ]);
 
   return (
     <Flex

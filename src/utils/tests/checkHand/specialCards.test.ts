@@ -99,6 +99,14 @@ test("Flush with AllCardsToHearts and a joker should work", () => {
   );
 });
 
+test("Flush with AllCardsToHearts should not work when card is silenced", () => {
+  expect(
+    testCheckHand([H2, H4, H6, D10, S3], [
+      { ...AllCardsToHearts, silenced: true },
+    ])
+  ).toBe(Plays.HIGH_CARD);
+});
+
 test("Flush with EasyFlush and AllCardsToHearts should work", () => {
   expect(testCheckHand([H2, H3, H4, D10], [EasyFlush, AllCardsToHearts])).toBe(
     Plays.FLUSH
@@ -248,6 +256,14 @@ test("Straight flush should become royal flush with StraightToHighStraight", () 
   expect(
     testCheckHand([D6, D7, D8, D9, D10], [StraightToHighStraight])
   ).toBe(Plays.ROYAL_FLUSH);
+});
+
+test("Straight flush should not become royal flush when StraightToHighStraight is silenced", () => {
+  expect(
+    testCheckHand([D6, D7, D8, D9, D10], [
+      { ...StraightToHighStraight, silenced: true },
+    ])
+  ).toBe(Plays.STRAIGHT_FLUSH);
 });
 
 test("Straight flush with AllCardsToHearts should become royal flush with StraightToHighStraight", () => {
