@@ -92,14 +92,98 @@ interface EffectiveCardState {
   isNeon: boolean;
 }
 
+const isCardEffectivelyNeonForRankConverter = ({
+  card,
+  cardIdx,
+  preSelectedModifiers,
+  cardsByIdx,
+}: {
+  card: Card;
+  cardIdx: number;
+  preSelectedModifiers: { [key: number]: number[] };
+  cardsByIdx: Map<number, Card>;
+}): boolean => {
+  const baseIsNeon =
+    card.isNeon === true ||
+    (card.card_id !== undefined && card.card_id >= 200 && card.card_id < 300);
+  if (baseIsNeon) {
+    return true;
+  }
+
+  const modifiers = preSelectedModifiers[cardIdx] ?? [];
+  return modifiers.some((modifierIdx) => {
+    const modifierCard = cardsByIdx.get(modifierIdx);
+    return modifierCard?.card_id === ModifiersId.NEON_MODIFIER;
+  });
+};
+
+const getNeonSynergyConvertedCardIndexes = ({
+  preSelectedCards,
+  preSelectedModifiers,
+  cardsByIdx,
+  hasActiveNeonSynergy,
+}: {
+  preSelectedCards: number[];
+  preSelectedModifiers: { [key: number]: number[] };
+  cardsByIdx: Map<number, Card>;
+  hasActiveNeonSynergy: boolean;
+}): Set<number> => {
+  if (!hasActiveNeonSynergy) {
+    return new Set<number>();
+  }
+
+  const selectedCards = preSelectedCards
+    .map((cardIdx) => ({
+      cardIdx,
+      card: cardsByIdx.get(cardIdx),
+    }))
+    .filter(
+      (item): item is { cardIdx: number; card: Card } => item.card !== undefined
+    );
+
+  if (selectedCards.length === 0) {
+    return new Set<number>();
+  }
+
+  const neonCardsCount = selectedCards.filter(({ card, cardIdx }) =>
+    isCardEffectivelyNeonForRankConverter({
+      card,
+      cardIdx,
+      preSelectedModifiers,
+      cardsByIdx,
+    })
+  ).length;
+
+  const meetsThreshold = neonCardsCount > 0 && neonCardsCount * 2 >= selectedCards.length;
+  if (!meetsThreshold) {
+    return new Set<number>();
+  }
+
+  return new Set(
+    selectedCards
+      .filter(
+        ({ card, cardIdx }) =>
+          !isCardEffectivelyNeonForRankConverter({
+            card,
+            cardIdx,
+            preSelectedModifiers,
+            cardsByIdx,
+          })
+      )
+      .map(({ cardIdx }) => cardIdx)
+  );
+};
+
 const getEffectiveCardStateForRankConverter = ({
   card,
   modifierCards,
   hasActiveAllToHearts,
+  neonSynergyConvertedCardIndexes,
 }: {
   card: Card;
   modifierCards: Card[];
   hasActiveAllToHearts: boolean;
+  neonSynergyConvertedCardIndexes: Set<number>;
 }): EffectiveCardState => {
   let suit = getCardSuit(card);
   let value = getCardValue(card);
@@ -129,6 +213,10 @@ const getEffectiveCardStateForRankConverter = ({
       suit = modifierSuit;
     }
   });
+
+  if (neonSynergyConvertedCardIndexes.has(card.idx)) {
+    isNeon = true;
+  }
 
   if (
     hasActiveAllToHearts &&
@@ -189,6 +277,16 @@ export const buildStraightToHighStraightOptimisticEvents = ({
     (card) =>
       card.card_id === specialCardIds.ALL_TO_HEARTS && card.silenced !== true
   );
+  const hasActiveNeonSynergy = specialCards.some(
+    (card) =>
+      card.card_id === specialCardIds.NEON_SYNERGY && card.silenced !== true
+  );
+  const neonSynergyConvertedCardIndexes = getNeonSynergyConvertedCardIndexes({
+    preSelectedCards,
+    preSelectedModifiers,
+    cardsByIdx,
+    hasActiveNeonSynergy,
+  });
 
   const rankChanges = orderedCardsComposingPlay.reduce<CardPlayEventValue[]>(
     (acc, cardIdx, position) => {
@@ -210,6 +308,7 @@ export const buildStraightToHighStraightOptimisticEvents = ({
         card,
         modifierCards,
         hasActiveAllToHearts,
+        neonSynergyConvertedCardIndexes,
       });
 
       if (

@@ -464,6 +464,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         specialCards,
         preSelectedModifiers,
         silentCardIndexes: nonAnimatedCardIndexes,
+        changeEvents: optimisticCardPlayChangeEvents,
       });
       optimisticPowerUpEvents = buildOptimisticPowerUpEvents({
         preSelectedPowerUps,

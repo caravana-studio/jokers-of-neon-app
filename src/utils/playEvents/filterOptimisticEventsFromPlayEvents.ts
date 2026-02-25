@@ -30,15 +30,8 @@ const getOptimisticConverterDedupKeys = (event: CardPlayEvent): string[] => {
     return [];
   }
 
-  const specialSignature = event.specials
-    .map((special) => special.idx)
-    .sort((a, b) => a - b)
-    .join("|");
-
   return event.hand.map((handItem) => {
-    const quantitySignature =
-      event.eventType === EventTypeEnum.Rank ? `:${handItem.quantity}` : "";
-    return `converter:${event.eventType}:${specialSignature}:${handItem.idx}${quantitySignature}`;
+    return `converter:${event.eventType}:${handItem.idx}`;
   });
 };
 
@@ -87,11 +80,18 @@ export const filterOptimisticEventsFromPlayEvents = (
   const hasCardChangeEventsToFilter =
     (playEvents.cardPlayChangeEvents?.length ?? 0) > 0 &&
     optimisticCardPlayChangeEvents.length > 0;
+  const hasNeonPlayEventToFilter =
+    playEvents.neonPlayEvent !== undefined &&
+    (optimisticCardPlayEvents.length > 0 ||
+      optimisticCardPlayChangeEvents.some(
+        (event) => event.eventType === EventTypeEnum.Neon
+      ));
 
   if (
     !hasCardEventsToFilter &&
     !hasPowerUpEventsToFilter &&
-    !hasCardChangeEventsToFilter
+    !hasCardChangeEventsToFilter &&
+    !hasNeonPlayEventToFilter
   ) {
     return playEvents;
   }
@@ -126,6 +126,9 @@ export const filterOptimisticEventsFromPlayEvents = (
   optimisticCardPlayChangeEvents.forEach((event) => {
     countOptimisticEvents(getOptimisticConverterDedupKeys(event));
   });
+  const optimisticConverterEventTypes = new Set(
+    optimisticCardPlayChangeEvents.map((event) => event.eventType)
+  );
 
   const filteredCardPlayEvents = playEvents.cardPlayEvents?.filter((event) => {
     const dedupKey = getOptimisticScoreDedupKey(event);
@@ -143,12 +146,19 @@ export const filterOptimisticEventsFromPlayEvents = (
 
   const filteredCardPlayChangeEvents = playEvents.cardPlayChangeEvents?.filter(
     (event) => {
+      const eventTypeAlreadyAnimatedOptimistically =
+        optimisticConverterEventTypes.has(event.eventType);
       const dedupKeys = getOptimisticConverterDedupKeys(event);
       if (dedupKeys.length === 0) {
-        return true;
+        return !eventTypeAlreadyAnimatedOptimistically;
       }
 
-      return !consumeCounterKeys(optimisticEventsCounter, dedupKeys);
+      const wasDedupedByKey = consumeCounterKeys(optimisticEventsCounter, dedupKeys);
+      if (wasDedupedByKey) {
+        return false;
+      }
+
+      return !eventTypeAlreadyAnimatedOptimistically;
     }
   );
 
@@ -157,5 +167,6 @@ export const filterOptimisticEventsFromPlayEvents = (
     cardPlayEvents: filteredCardPlayEvents,
     powerUpEvents: filteredPowerUpEvents,
     cardPlayChangeEvents: filteredCardPlayChangeEvents,
+    neonPlayEvent: hasNeonPlayEventToFilter ? undefined : playEvents.neonPlayEvent,
   };
 };

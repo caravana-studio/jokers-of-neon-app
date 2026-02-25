@@ -4,11 +4,13 @@ import { ModifiersId } from "../../../enums/modifiersId";
 import { Card } from "../../../types/Card";
 import { PlayEvents } from "../../../types/ScoreData";
 import { buildOptimisticCardPlayEvents } from "../../playEvents/buildOptimisticCardPlayEvents";
+import { buildOptimisticConverterCardPlayChangeEvents } from "../../playEvents/buildOptimisticConverterCardPlayChangeEvents";
 import { buildOptimisticPowerUpEvents } from "../../playEvents/buildOptimisticPowerUpEvents";
 import { filterOptimisticEventsFromPlayEvents } from "../../playEvents/filterOptimisticEventsFromPlayEvents";
 import { filterSilentCardEventsFromPlayEvents } from "../../playEvents/filterSilentCardEventsFromPlayEvents";
-import { C9, D7, H7, JOKER1, JOKER2 } from "../../mocks/cardMocks";
+import { C9, D6, D7, D8, D9, H7, JOKER1, JOKER2, S10 } from "../../mocks/cardMocks";
 import { WildcardModifier } from "../../mocks/modifierMocks";
+import { StraightToHighStraight } from "../../mocks/specialCardMocks";
 
 const withIdx = (cards: Card[]): Card[] =>
   cards.map((card, index) => ({
@@ -258,6 +260,53 @@ test("buildOptimisticCardPlayEvents does not score cards with wildcard modifier"
   ]);
 });
 
+test("buildOptimisticCardPlayEvents scores straight-to-high-straight with converted card values", () => {
+  const hand = [D6, D7, D8, D9, S10];
+  const preSelectedCards = [D6.idx, D7.idx, D8.idx, D9.idx, S10.idx];
+  const changeEvents = buildOptimisticConverterCardPlayChangeEvents({
+    hand,
+    preSelectedCards,
+    specialCards: [StraightToHighStraight],
+    preSelectedModifiers: {},
+  });
+
+  const events = buildOptimisticCardPlayEvents({
+    hand,
+    preSelectedCards,
+    specialCards: [StraightToHighStraight],
+    preSelectedModifiers: {},
+    changeEvents,
+  });
+
+  expect(events).toEqual([
+    {
+      hand: [{ idx: D6.idx, quantity: 10 }],
+      specials: [],
+      eventType: EventTypeEnum.Point,
+    },
+    {
+      hand: [{ idx: D7.idx, quantity: 10 }],
+      specials: [],
+      eventType: EventTypeEnum.Point,
+    },
+    {
+      hand: [{ idx: D8.idx, quantity: 10 }],
+      specials: [],
+      eventType: EventTypeEnum.Point,
+    },
+    {
+      hand: [{ idx: D9.idx, quantity: 10 }],
+      specials: [],
+      eventType: EventTypeEnum.Point,
+    },
+    {
+      hand: [{ idx: S10.idx, quantity: 11 }],
+      specials: [],
+      eventType: EventTypeEnum.Point,
+    },
+  ]);
+});
+
 test("filterOptimisticEventsFromPlayEvents removes only duplicated optimistic effects", () => {
   const optimisticEvents = [
     {
@@ -314,6 +363,39 @@ test("filterOptimisticEventsFromPlayEvents removes only duplicated optimistic ef
       eventType: EventTypeEnum.Multi,
     },
   ]);
+});
+
+test("filterOptimisticEventsFromPlayEvents deduplicates converted straight card scores", () => {
+  const hand = [D6, D7, D8, D9, S10];
+  const preSelectedCards = [D6.idx, D7.idx, D8.idx, D9.idx, S10.idx];
+  const changeEvents = buildOptimisticConverterCardPlayChangeEvents({
+    hand,
+    preSelectedCards,
+    specialCards: [StraightToHighStraight],
+    preSelectedModifiers: {},
+  });
+  const optimisticEvents = buildOptimisticCardPlayEvents({
+    hand,
+    preSelectedCards,
+    specialCards: [StraightToHighStraight],
+    preSelectedModifiers: {},
+    changeEvents,
+  });
+
+  const backendPlayEvents: PlayEvents = {
+    play: { points: 0, multi: 1 },
+    gameOver: false,
+    cards: [],
+    score: 0,
+    cardPlayEvents: optimisticEvents,
+  };
+
+  const filtered = filterOptimisticEventsFromPlayEvents(
+    backendPlayEvents,
+    optimisticEvents
+  );
+
+  expect(filtered.cardPlayEvents).toEqual([]);
 });
 
 test("buildOptimisticPowerUpEvents maps selected powerups into point/multi events", () => {
@@ -414,6 +496,156 @@ test("filterOptimisticEventsFromPlayEvents deduplicates optimistic converter cha
       eventType: EventTypeEnum.Neon,
     },
   ]);
+});
+
+test("filterOptimisticEventsFromPlayEvents deduplicates converter changes even when backend omits specials", () => {
+  const playEvents: PlayEvents = {
+    play: { points: 0, multi: 1 },
+    gameOver: false,
+    cards: [],
+    score: 0,
+    cardPlayChangeEvents: [
+      {
+        hand: [{ idx: 4, quantity: 0 }],
+        specials: [],
+        eventType: EventTypeEnum.Neon,
+      },
+    ],
+  };
+
+  const filtered = filterOptimisticEventsFromPlayEvents(playEvents, [], [], [
+    {
+      hand: [{ idx: 4, quantity: 0 }],
+      specials: [{ idx: 10210, quantity: 1 }],
+      eventType: EventTypeEnum.Neon,
+    },
+  ]);
+
+  expect(filtered.cardPlayChangeEvents).toEqual([]);
+});
+
+test("filterOptimisticEventsFromPlayEvents deduplicates rank converter changes even when backend quantity differs", () => {
+  const playEvents: PlayEvents = {
+    play: { points: 0, multi: 1 },
+    gameOver: false,
+    cards: [],
+    score: 0,
+    cardPlayChangeEvents: [
+      {
+        hand: [{ idx: 7, quantity: 248 }],
+        specials: [],
+        eventType: EventTypeEnum.Rank,
+      },
+    ],
+  };
+
+  const filtered = filterOptimisticEventsFromPlayEvents(playEvents, [], [], [
+    {
+      hand: [{ idx: 7, quantity: 48 }],
+      specials: [{ idx: 10201, quantity: 1 }],
+      eventType: EventTypeEnum.Rank,
+    },
+  ]);
+
+  expect(filtered.cardPlayChangeEvents).toEqual([]);
+});
+
+test("filterOptimisticEventsFromPlayEvents suppresses backend converter events of a type already animated optimistically", () => {
+  const playEvents: PlayEvents = {
+    play: { points: 0, multi: 1 },
+    gameOver: false,
+    cards: [],
+    score: 0,
+    cardPlayChangeEvents: [
+      {
+        hand: [{ idx: 3, quantity: 0 }],
+        specials: [],
+        eventType: EventTypeEnum.Neon,
+      },
+      {
+        hand: [{ idx: 5, quantity: 0 }],
+        specials: [],
+        eventType: EventTypeEnum.Neon,
+      },
+      {
+        hand: [{ idx: 7, quantity: 0 }],
+        specials: [],
+        eventType: EventTypeEnum.Heart,
+      },
+    ],
+  };
+
+  const filtered = filterOptimisticEventsFromPlayEvents(playEvents, [], [], [
+    {
+      hand: [{ idx: 3, quantity: 0 }],
+      specials: [{ idx: 10210, quantity: 1 }],
+      eventType: EventTypeEnum.Neon,
+    },
+  ]);
+
+  expect(filtered.cardPlayChangeEvents).toEqual([
+    {
+      hand: [{ idx: 7, quantity: 0 }],
+      specials: [],
+      eventType: EventTypeEnum.Heart,
+    },
+  ]);
+});
+
+test("filterOptimisticEventsFromPlayEvents removes backend neonPlayEvent when optimistic card scoring is active", () => {
+  const playEvents: PlayEvents = {
+    play: { points: 0, multi: 1 },
+    gameOver: false,
+    cards: [],
+    score: 0,
+    neonPlayEvent: {
+      neon_cards_idx: [3, 4],
+      points: 20,
+      multi: 2,
+    },
+  };
+
+  const filtered = filterOptimisticEventsFromPlayEvents(
+    playEvents,
+    [
+      {
+        hand: [{ idx: 3, quantity: 14 }],
+        specials: [],
+        eventType: EventTypeEnum.Point,
+      },
+    ]
+  );
+
+  expect(filtered.neonPlayEvent).toBeUndefined();
+});
+
+test("filterOptimisticEventsFromPlayEvents removes backend neonPlayEvent when optimistic neon converter is active", () => {
+  const playEvents: PlayEvents = {
+    play: { points: 0, multi: 1 },
+    gameOver: false,
+    cards: [],
+    score: 0,
+    neonPlayEvent: {
+      neon_cards_idx: [9],
+      points: 20,
+      multi: 2,
+    },
+  };
+
+  const filtered = filterOptimisticEventsFromPlayEvents(
+    playEvents,
+    [],
+    [],
+    [
+      {
+        hand: [{ idx: 9, quantity: 0 }],
+        specials: [{ idx: 10210, quantity: 1 }],
+        eventType: EventTypeEnum.Neon,
+      },
+    ]
+  );
+
+  expect(filtered.neonPlayEvent).toBeUndefined();
 });
 
 test("filterSilentCardEventsFromPlayEvents removes silent cards from animated events", () => {

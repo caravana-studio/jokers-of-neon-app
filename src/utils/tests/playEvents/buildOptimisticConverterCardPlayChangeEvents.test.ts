@@ -172,3 +172,59 @@ test("buildOptimisticConverterCardPlayChangeEvents orders events by converter pr
     specialCardIds.STRAIGHT_TO_HIGH_STRAIGHT
   );
 });
+
+test("buildOptimisticConverterCardPlayChangeEvents keeps neon conversion when straight-to-high-straight and neon-synergy are both active", () => {
+  const neonD8 = {
+    ...D8,
+    id: "219",
+    img: "219.png",
+    idx: D8.idx,
+    card_id: 219,
+    isNeon: true,
+  };
+  const neonD9 = {
+    ...D9,
+    id: "220",
+    img: "220.png",
+    idx: D9.idx,
+    card_id: 220,
+    isNeon: true,
+  };
+  const neonS10 = {
+    ...S10,
+    id: "247",
+    img: "247.png",
+    idx: S10.idx,
+    card_id: 247,
+    isNeon: true,
+  };
+
+  const events = buildOptimisticConverterCardPlayChangeEvents({
+    hand: [D6, D7, neonD8, neonD9, neonS10],
+    preSelectedCards: [D6.idx, D7.idx, D8.idx, D9.idx, S10.idx],
+    specialCards: [StraightToHighStraight, NeonSynergy],
+    preSelectedModifiers: {},
+  });
+
+  expect(events).toEqual([
+    {
+      hand: [
+        { idx: D6.idx, quantity: 0 },
+        { idx: D7.idx, quantity: 0 },
+      ],
+      specials: [{ idx: NeonSynergy.idx, quantity: 1 }],
+      eventType: EventTypeEnum.Neon,
+    },
+    {
+      hand: [
+        { idx: D6.idx, quantity: 221 },
+        { idx: D7.idx, quantity: 222 },
+        { idx: D8.idx, quantity: 223 },
+        { idx: D9.idx, quantity: 224 },
+        { idx: S10.idx, quantity: 251 },
+      ],
+      specials: [{ idx: StraightToHighStraight.idx, quantity: 1 }],
+      eventType: EventTypeEnum.Rank,
+    },
+  ]);
+});
