@@ -129,6 +129,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     advanceLevel,
     refetchDebuffedPlayerHands,
     refetchSpecialCards,
+    refetchPlays,
     setIsTournament,
   } = useGameStore();
 
@@ -308,6 +309,9 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     fetchDeck(client, gameId, getCardData);
     refetchDebuffedPlayerHands(client, gameId);
     refetchSpecialCardsData(modId, gameId, specialCards);
+    if (response.levelUpPlayEvent) {
+      refetchPlays(client, gameId);
+    }
     if (response.levelPassed && response.detailEarned) {
       response.levelPassed.level_passed > 0 && advanceLevel();
       response.detailEarned.rerolls &&
