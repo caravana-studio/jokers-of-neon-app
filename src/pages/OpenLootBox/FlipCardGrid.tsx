@@ -52,6 +52,7 @@ export const FlipCardGrid = ({
       >
         {cards.map((card, index) => {
           const isSelected = cardsToKeep.some((c) => c.idx === card.idx);
+          const cardOpacity = animationRunning ? 1 : isSelected ? 1 : 0.5;
 
           return (
             <Flex
@@ -64,7 +65,8 @@ export const FlipCardGrid = ({
                 p={1}
                 zIndex={1}
                 borderRadius={{ base: "7px", sm: "12px", md: "15px" }}
-                opacity={isSelected || cardsToKeep.length === 0 ? 1 : 0.5}
+                opacity={cardOpacity}
+                transition="opacity 0.35s ease"
                 boxShadow={
                   !animationRunning && isSelected
                     ? `0px 0px 15px 12px ${BLUE}`

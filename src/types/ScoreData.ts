@@ -6,6 +6,7 @@ export interface PlayEvents {
   play: MultiPoints;
   gameOver: boolean;
   levelPassed?: LevelPassedEvent;
+  levelUpPlayEvent?: LevelUpPlayEvent;
   detailEarned?: DetailEarned;
   neonPlayEvent?: NeonPlayEvent;
   cards: Card[];
@@ -34,6 +35,16 @@ export interface LevelPassedEvent {
   player_score: number;
   round: number;
   level_passed: number;
+}
+
+export interface LevelUpPlayEvent {
+  hand: number;
+  old_level: number;
+  old_points: number;
+  old_multi: number;
+  level: number;
+  points: number;
+  multi: number;
 }
 
 export interface LevelEvent {
@@ -96,6 +107,7 @@ export interface DetailEarned {
   rage_card_defeated: number;
   rage_card_defeated_cash: number;
   rerolls: number;
+  rewards_special_card: number;
   total: number;
 }
 

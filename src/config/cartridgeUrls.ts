@@ -7,6 +7,8 @@ const DEFAULT_ENV = "prod";
 
 const configuredEnv = import.meta.env.VITE_ENV?.trim().toLowerCase() || DEFAULT_ENV;
 const configuredSlotInstance = import.meta.env.VITE_SLOT_INSTANCE?.trim() || undefined;
+let slotSource: "version-api" | "env" | "default" =
+  configuredSlotInstance ? "env" : "default";
 
 const getBaseUrl = (slot: string | undefined) =>
   slot ? `https://api.cartridge.gg/x/${slot}` : undefined;
@@ -41,11 +43,23 @@ export const preloadSlotInstance = async () => {
 
       if (slotFromApi) {
         slotInstance = slotFromApi;
+        slotSource = "version-api";
       }
 
       rpcUrl = getRpcUrl(slotInstance);
       toriiUrl = getToriiUrl(slotInstance);
       graphqlUrl = getGraphqlUrl(slotInstance);
+
+      console.info("[CONFIG-LOG] Slot configuration resolved", {
+        env: configuredEnv,
+        source: slotSource,
+        slotInstance: slotInstance ?? null,
+      });
+      console.info("[CONFIG-LOG] Endpoint configuration resolved", {
+        rpcUrl,
+        toriiUrl,
+        graphqlUrl,
+      });
     })();
   }
 

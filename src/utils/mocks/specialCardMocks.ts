@@ -22,6 +22,14 @@ export const AllCardsToHearts: Card = {
   isSpecial: true,
 };
 
+export const StraightToHighStraight: Card = {
+  img: "10201.png",
+  id: "10201",
+  idx: 10201,
+  card_id: 10201,
+  isSpecial: true,
+};
+
 export const MultipliedClubs: Card = {
   img: "10001.png",
   id: "10001",

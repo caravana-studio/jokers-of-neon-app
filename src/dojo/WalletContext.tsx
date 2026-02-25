@@ -64,7 +64,7 @@ type WalletProviderProps = {
 
 export const WalletProvider = ({ children, value }: WalletProviderProps) => {
   const { connect, connectors } = useConnect();
-  const { lastGameId, isLoading } = useGetLastGameId();
+  const { lastGameId, isLoading, error: lastGameIdError } = useGetLastGameId();
   const {
     account: controllerAccount,
     isConnected: isControllerConnected,
@@ -118,6 +118,9 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
   const onSuccessCallback = useRef<
     ((payload: SwitchSuccessPayload) => void) | null
   >(null);
+  const fallbackGuestIdRef = useRef<number>(
+    Math.floor(Math.random() * (100000 - 50000 + 1)) + 50000
+  );
 
   useEffect(() => {
     logEvent("open_wallet_page");
@@ -360,7 +363,10 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
               onClick={() => {
                 logEvent("play_as_guest");
                 setConnectionStatus("connecting_burner");
-                const username = `joker_guest_${lastGameId + 1}`;
+                const guestId = lastGameIdError
+                  ? fallbackGuestIdRef.current
+                  : lastGameId + 1;
+                const username = `joker_guest_${guestId}`;
                 console.log("setting username: ", username);
 
                 localStorage.removeItem(GAME_ID);

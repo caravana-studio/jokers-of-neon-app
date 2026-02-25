@@ -56,9 +56,21 @@ export const CardTooltip = ({
           </Flex>
           <Divider />
           <Flex my={2}>
-            <Text fontSize="15px" textAlign="justify">
-              {colorizeText(description)}
-            </Text>
+            <Flex direction="column" gap={1}>
+              {card.silenced && (
+                <Text
+                  fontSize="15px"
+                  color="red.400"
+                  fontWeight={700}
+                  textTransform="uppercase"
+                >
+                  {t("silenced")}
+                </Text>
+              )}
+              <Text fontSize="15px" textAlign="justify">
+                {colorizeText(description)}
+              </Text>
+            </Flex>
           </Flex>
           {creator && inDocs && (
             <>

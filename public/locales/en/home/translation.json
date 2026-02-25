@@ -65,6 +65,11 @@
     "xp": "XP",
     "address": "Address",
     "points": "Points",
+    "sections": {
+      "daily": "Daily",
+      "weekly": "Weekly",
+      "season": "Season"
+    },
     "see-prizes": "See prizes",
     "prizes": {
       "basic": "{{count}} Basic pack",
@@ -111,6 +116,9 @@
     "season": "Season",
     "tournament": "Tournament",
     "more": "More",
+    "back": "Back to home",
+    "docs": "Card list",
+    "daily-missions": "Daily missions",
     "round": "Round",
     "rage": "Rage round",
     "shop": "Shop"

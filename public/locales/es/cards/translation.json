@@ -1,5 +1,6 @@
 {
   "activated": "Activada",
+  "silenced": "SILENCIADA",
   "by": "por",
   "modifiers": {
     "608": {
@@ -322,7 +323,7 @@
     },
     "10106": {
       "name": "Círculo de la Fortuna",
-      "description": "Lanza un número aleatorio entre 0 y 36; si es par, el resultado en ^blue(puntos x2)^; si es impar, el resultado en ^yellow(monedas x2)^; si es 0, suma ^blue(+300 puntos)^."
+      "description": "Lanza un número aleatorio entre 0 y 36; si es par, el resultado en ^blue(puntos x5)^; si es impar, el resultado en ^yellow(monedas x10)^; si es 0, suma ^blue(+300 puntos)^."
     },
     "10107": {
       "name": "Bendición de Hestia",
@@ -334,7 +335,7 @@
     },
     "10109": {
       "name": "Comodín Colgado",
-      "description": "Si tu mano contiene un Comodín, tiene un 25% de probabilidad de acumular ^blue(+10 puntos)^. Actualmente ^blue(+{{points}} puntos)^."
+      "description": "Por cada Comodín en tu jugada, 20% de chance de acumular ^blue(+10 puntos)^. Actualmente ^blue(+{{points}} puntos)^."
     },
     "10110": {
       "name": "Sacrificio Especial",
@@ -398,7 +399,7 @@
     },
     "10208": {
       "name": "Doctrina Neon",
-      "description": "Cada carta jugada que pertenece a la jugada tiene un 30% de probabilidad de convertirse en carta neon."
+      "description": "Las cartas jugadas tienen 30% de chance de convertirse en cartas neon."
     },
     "10209": {
       "name": "Minimalismo",
@@ -410,7 +411,7 @@
     },
     "10211": {
       "name": "Providencia",
-      "description": "Los ítems de la tienda tienen un ^yellow(30%)^ de probabilidad de ser gratis."
+      "description": "Los ítems de la tienda tienen un ^yellow(20%)^ de probabilidad de ser gratis."
     },
     "10212": {
       "name": "Cazador Eficiente",
@@ -418,7 +419,7 @@
     },
     "10213": {
       "name": "Carga Residual",
-      "description": "Acumula el ^blue(25%)^ del valor de cada power-up jugado. Actualmente ^blue(+{{points}} puntos)^."
+      "description": "Acumula el ^blue(10%)^ del valor de cada power-up jugado. Actualmente ^blue(+{{points}} puntos)^."
     },
     "10214": {
       "name": "Robo Inmortal",
@@ -987,6 +988,10 @@
     "20025": {
       "name": "Aguafiestas",
       "description": "Tu mano más jugada no cuenta en esta ronda."
+    },
+    "20026": {
+      "name": "Blackout",
+      "description": "Dos de tus cartas especiales actuales quedan silenciadas durante esta ronda"
     }
   },
   "lootBoxes": {

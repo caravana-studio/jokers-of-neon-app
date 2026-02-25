@@ -29,6 +29,7 @@ export const LEADERBOARD_QUERY = gql`
           id
           round
           is_tournament
+          owner
         }
       }
     }
@@ -53,9 +54,10 @@ interface GameEdge {
     player_score: number;
     level: number;
     player_name: string;
-    id: number;
+    id: string | number;
     round: number;
     is_tournament: boolean;
+    owner: string;
   };
 }
 
@@ -69,6 +71,33 @@ interface GameTournamentEdge {
 }
 
 type GameTournamentResponse = Record<string, { edges?: GameTournamentEdge[] }>;
+
+export interface LeaderboardQueryOptions {
+  startGameId?: number | null;
+  endGameId?: number | null;
+  enabled?: boolean;
+}
+
+const parseGameId = (value?: string | number | null): number | null => {
+  if (value === null || value === undefined) {
+    return null;
+  }
+
+  if (typeof value === "number") {
+    return Number.isFinite(value) ? value : null;
+  }
+
+  const normalized = value.trim();
+  if (!normalized) {
+    return null;
+  }
+
+  const parsed = normalized.startsWith("0x")
+    ? parseInt(normalized, 16)
+    : Number(normalized);
+
+  return Number.isFinite(parsed) ? parsed : null;
+};
 
 const fetchGameIsTournament = async (
   gameId?: number
@@ -100,8 +129,26 @@ const fetchGraphQLData = async (
   filterLoggedInPlayers: boolean,
   gameId?: number,
   isTournament: boolean = false,
-  startCountingAtGameId: number = 0
+  startCountingAtGameId: number = 0,
+  startGameId?: number | null,
+  endGameId?: number | null
 ) => {
+  const normalizedStartGameId =
+    startGameId !== null &&
+    startGameId !== undefined &&
+    Number.isFinite(startGameId)
+      ? Math.max(0, Math.floor(startGameId))
+      : undefined;
+  const normalizedEndGameId =
+    endGameId !== null && endGameId !== undefined && Number.isFinite(endGameId)
+      ? Math.max(0, Math.floor(endGameId))
+      : undefined;
+
+  const effectiveStartCountingAtGameId = Math.max(
+    startCountingAtGameId,
+    normalizedStartGameId !== undefined ? normalizedStartGameId - 1 : 0
+  );
+
   const resolvedIsTournament =
     gameId !== undefined ? await fetchGameIsTournament(gameId) : null;
   const effectiveIsTournament = resolvedIsTournament ?? isTournament;
@@ -110,11 +157,30 @@ const fetchGraphQLData = async (
     LEADERBOARD_QUERY,
     {
       isTournament: effectiveIsTournament,
-      startCountingAtGameId,
+      startCountingAtGameId: effectiveStartCountingAtGameId,
     }
   );
 
-  const edges = rawData?.[QUERY_FIELD_NAME]?.edges ?? [];
+  const edges = (rawData?.[QUERY_FIELD_NAME]?.edges ?? []).filter((edge) => {
+    const parsedGameId = parseGameId(edge.node.id);
+
+    if (parsedGameId === null) {
+      return false;
+    }
+
+    if (
+      normalizedStartGameId !== undefined &&
+      parsedGameId < normalizedStartGameId
+    ) {
+      return false;
+    }
+
+    if (normalizedEndGameId !== undefined && parsedGameId > normalizedEndGameId) {
+      return false;
+    }
+
+    return true;
+  });
 
   const processedEntries = await Promise.all(
     edges
@@ -126,6 +192,7 @@ const fetchGraphQLData = async (
           player_score: edge.node.player_score,
           level: edge.node.level,
           round: edge.node.round,
+          wallet: edge.node.owner,
         };
       })
   );
@@ -133,20 +200,22 @@ const fetchGraphQLData = async (
   const leaderboardMap = new Map<
     string,
     {
-      id: number;
+      id: string | number;
       player_name: string;
       player_score: number;
       level: number;
       round: number;
+      wallet: string;
     }
   >();
 
   let currentGameEntry: {
-    id: number;
+    id: string | number;
     player_name: string;
     player_score: number;
     level: number;
     round: number;
+    wallet: string;
   } | null = null;
 
   processedEntries.forEach((entry) => {
@@ -201,7 +270,8 @@ const fetchGraphQLData = async (
 export const useGetLeaderboard = (
   gameId?: number,
   filterLoggedInPlayers = true,
-  isTournament = false
+  isTournament = false,
+  options?: LeaderboardQueryOptions
 ) => {
   const { tournament, loading: tournamentLoading } = useTournamentSettings();
   const startCountingAtGameId =
@@ -210,17 +280,26 @@ export const useGetLeaderboard = (
     0;
 
   const queryResponse = useQuery(
-    [LEADERBOARD_QUERY_KEY, gameId, isTournament, startCountingAtGameId],
+    [
+      LEADERBOARD_QUERY_KEY,
+      gameId,
+      isTournament,
+      startCountingAtGameId,
+      options?.startGameId ?? null,
+      options?.endGameId ?? null,
+    ],
     () =>
       fetchGraphQLData(
         filterLoggedInPlayers,
         gameId,
         isTournament,
-        startCountingAtGameId
+        startCountingAtGameId,
+        options?.startGameId,
+        options?.endGameId
       ),
     {
       refetchOnWindowFocus: false,
-      enabled: !tournamentLoading,
+      enabled: !tournamentLoading && (options?.enabled ?? true),
     }
   );
 

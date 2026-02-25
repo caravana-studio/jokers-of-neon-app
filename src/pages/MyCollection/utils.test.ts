@@ -83,15 +83,42 @@ describe('fillCollections', () => {
 
     const result = fillCollections(input);
 
-    // Collections should be sorted
-    expect(result[0].id).toBe(1);
-    expect(result[1].id).toBe(99);
+    // Collections should be sorted by id, even when other categories are auto-added
+    const resultCollectionIds = result.map(collection => collection.id);
+    const sortedCollectionIds = [...resultCollectionIds].sort((a, b) => a - b);
+    expect(resultCollectionIds).toEqual(sortedCollectionIds);
+
+    // Input collections should be present
+    const season1 = result.find(collection => collection.id === 1);
+    const season99 = result.find(collection => collection.id === 99);
+    expect(season1).toBeDefined();
+    expect(season99).toBeDefined();
 
     // Cards within collections should be sorted
-    expect(result[0].cards[0].id).toBe(10101);
-    expect(result[0].cards[1].id).toBe(10102);
-    expect(result[1].cards[0].id).toBe(19901);
-    expect(result[1].cards[1].id).toBe(19902);
+    const season1CardIds = season1!.cards.map(card => card.id);
+    const season99CardIds = season99!.cards.map(card => card.id);
+    expect(season1CardIds).toEqual([...season1CardIds].sort((a, b) => a - b));
+    expect(season99CardIds).toEqual([...season99CardIds].sort((a, b) => a - b));
+
+    // Cards provided in the input should still be included
+    expect(season1CardIds).toContain(10101);
+    expect(season1CardIds).toContain(10102);
+    expect(season99CardIds).toContain(19901);
+    expect(season99CardIds).toContain(19902);
+  });
+
+  it('should include category 2 when 102xx cards exist in SPECIALS_RARITY', () => {
+    const result = fillCollections([]);
+    const category2 = result.find(collection => collection.id === 2);
+
+    const expectedCategory2Cards = Object.keys(SPECIALS_RARITY)
+      .filter(id => id.startsWith('102'))
+      .map(id => parseInt(id, 10))
+      .sort((a, b) => a - b);
+
+    expect(expectedCategory2Cards.length).toBeGreaterThan(0);
+    expect(category2).toBeDefined();
+    expect(category2?.cards.map(card => card.id)).toEqual(expectedCategory2Cards);
   });
 
   it('should create missing collections with all their cards (only for categories <= 25)', () => {

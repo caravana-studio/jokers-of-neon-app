@@ -28,6 +28,7 @@ export const RewardsPage = () => {
     rage_card_defeated: 1,
     rage_card_defeated_cash: 250,
     rerolls: 2,
+    rewards_special_card: 0,
     total: 2050,
     level_passed: 3,
   };

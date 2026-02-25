@@ -25,12 +25,16 @@ export const DurationSwitcher = ({
   flexDir,
 }: DurationSwitcherProps) => {
   const { t } = useTranslation("store", { keyPrefix: "store.preview-card" });
+  const { t: tLabels } = useTranslation("store", { keyPrefix: "store.labels" });
   const { isSmallScreen } = useResponsiveValues();
   const discountPriceFontSize = isSmallScreen ? 8 : 12;
   const priceFontSize = isSmallScreen ? 12 : 18;
   const discountPriceLineHeight = isSmallScreen ? 0.5 : 0.7;
   const priceLineHeight = isSmallScreen ? 1 : 1.2;
   const computedFlexDir = flexDir || (isSmallScreen ? "column" : "row-reverse");
+  const freeLabel = tLabels("free").toUpperCase();
+  const isPermanentFree = (price ?? 0) === 0;
+  const isTemporalFree = (temporalPrice ?? 0) === 0;
   return (
     <Flex
       gap={isSmallScreen ? 0 : 4}
@@ -62,7 +66,7 @@ export const DurationSwitcher = ({
           <Tab>
             <Flex flexDir="column" gap={1}>
               <Flex gap={1} justifyContent={"center"} alignItems="center">
-                {!discountPrice && <CashSymbol />}
+                {!discountPrice && !isPermanentFree && <CashSymbol />}
                 <Text
                   sx={{
                     textDecoration: discountPrice ? "line-through" : "none",
@@ -74,7 +78,7 @@ export const DurationSwitcher = ({
                       : priceLineHeight,
                   }}
                 >
-                  {price}
+                  {isPermanentFree ? freeLabel : price}
                 </Text>
               </Flex>
               {discountPrice && discountPrice > 0 ? (
@@ -92,7 +96,7 @@ export const DurationSwitcher = ({
           <Tab>
             <Flex flexDir="column" gap={1}>
               <Flex gap={1} justifyContent={"center"} alignItems="center">
-                {!discountPrice && <CashSymbol />}
+                {!temporalDiscountPrice && !isTemporalFree && <CashSymbol />}
                 <Text
                   sx={{
                     textDecoration: temporalDiscountPrice
@@ -106,7 +110,7 @@ export const DurationSwitcher = ({
                       : priceLineHeight,
                   }}
                 >
-                  {temporalPrice}
+                  {isTemporalFree ? freeLabel : temporalPrice}
                 </Text>
               </Flex>
               {temporalDiscountPrice && temporalDiscountPrice > 0 ? (

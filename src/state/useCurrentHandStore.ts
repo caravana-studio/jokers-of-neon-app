@@ -6,6 +6,8 @@ import { Plays } from "../enums/plays";
 import { SortBy } from "../enums/sortBy";
 import { Suits } from "../enums/suits";
 import { Card } from "../types/Card";
+import { CardPlayEventValue } from "../types/ScoreData";
+import { CARDS_SUIT_DATA } from "../data/traditionalCards";
 import { changeCardNeon } from "../utils/cardTransformation/changeCardNeon";
 import { changeCardSuit } from "../utils/cardTransformation/changeCardSuit";
 import { sortCards } from "../utils/sortCards";
@@ -35,6 +37,7 @@ type CurrentHandStore = {
   syncMaxPreSelectedCards: (rageCards: Card[]) => void;
   changeCardsSuit: (cardIndexes: number[], suit: Suits) => void;
   changeCardsNeon: (cardIndexes: number[]) => void;
+  changeCardsRank: (cardChanges: CardPlayEventValue[]) => void;
   addModifier: (cardIdx: number, modifierIdx: number) => void;
   setPlayIsNeon: (isNeon: boolean) => void;
   setCardTransformationLock: (locked: boolean) => void;
@@ -196,6 +199,34 @@ export const useCurrentHandStore = create<CurrentHandStore>((set, get) => ({
         }
         return card;
       });
+      return { hand: newHand };
+    });
+  },
+
+  changeCardsRank: (cardChanges: CardPlayEventValue[]) => {
+    set((state) => {
+      const cardIdByIndex = new Map(
+        cardChanges.map((cardChange) => [cardChange.idx, cardChange.quantity])
+      );
+
+      const newHand = state.hand.map((card) => {
+        const nextCardId = cardIdByIndex.get(card.idx);
+        if (nextCardId === undefined) {
+          return card;
+        }
+
+        const normalizedCardData = CARDS_SUIT_DATA[nextCardId % 200];
+
+        return {
+          ...card,
+          card_id: nextCardId,
+          img: `${nextCardId}.png`,
+          suit: normalizedCardData?.suit ?? card.suit,
+          value: normalizedCardData?.card ?? card.value,
+          isNeon: nextCardId >= 200 && nextCardId < 300,
+        };
+      });
+
       return { hand: newHand };
     });
   },

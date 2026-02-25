@@ -29,6 +29,17 @@ export const TestPage = () => {
           <Divider borderColor="white" borderWidth="1px" my={2} />
         )}
         <MenuBtn
+          icon={Icons.ROUND}
+          description={"Practice play simulation"}
+          label={"Practice"}
+          onClick={() => navigate("/practice")}
+          arrowRight
+          width={"18px"}
+        />
+        {isSmallScreen && (
+          <Divider borderColor="white" borderWidth="1px" my={2} />
+        )}
+        <MenuBtn
           icon={Icons.LIST}
           description={"Vibration"}
           label={"Vibration"}

@@ -22,13 +22,13 @@
       "unlocked": "DESBLOQUEADO",
       "facts": {
         "1-title": "Recompensas exclusivas",
-        "1-description-1": "Progressando através da temporada 1 dá mais recompensas.",
+        "1-description-1": "Progressando através da temporada {{season}} dá mais recompensas.",
         "1-description-2": "Todas as suas recompensas são transferíveis.",
         "2-title": "Mais jogos por dia",
         "2-description-1": "Você pode jogar 6 jogos de Jokers por dia em vez de 3.",
         "2-description-2": "Cada jogo se recarga cada 4 horas em vez de 8.",
         "3-title": "Descontos em packs",
-        "3-description-1": "20% de desconto em cada pack de temporada 1 que compras.",
+        "3-description-1": "20% de desconto em cada pack de temporada {{season}} que compras.",
         "3-description-2": ""
       }
     },
@@ -236,6 +236,7 @@
       "level-bonus": "Bônus de nível",
       "discards-left": "{{discards}} Descartes",
       "hands-left": "{{hands}} Mãos",
+      "special-card-bonus": "Bônus de carta especial",
       "rage": "{{cards}} Rage vencidas",
       "total": "total",
       "final-score": "- Pontuação final: {{score}} -",

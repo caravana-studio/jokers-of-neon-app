@@ -27,9 +27,11 @@ const normalizeManifest = (manifest: any) => {
 
 const configuredManifestEnv = import.meta.env.VITE_ENV?.trim().toLowerCase();
 
-const getLocalManifest = (env: string) => {
-  if (env === "slot" || env === "dev" || env === "test") {
-    return manifestSlot;
+const getLocalManifest = (
+  env: string
+): { manifest: any; file: "manifest_slot.json" | "manifest_mainnet.json" } => {
+  if (env === "local" || env === "slot" || env === "dev" || env === "test") {
+    return { manifest: manifestSlot, file: "manifest_slot.json" };
   }
 
   if (env !== "mainnet" && env !== "prod") {
@@ -38,12 +40,23 @@ const getLocalManifest = (env: string) => {
     );
   }
 
-  return manifestMainnet;
+  return { manifest: manifestMainnet, file: "manifest_mainnet.json" };
 };
 
 const manifestEnv = configuredManifestEnv || DEFAULT_MANIFEST_ENV;
-let resolvedManifest = normalizeManifest(getLocalManifest(manifestEnv));
+const initialLocalManifest = getLocalManifest(manifestEnv);
+let resolvedManifest = normalizeManifest(initialLocalManifest.manifest);
 let preloadManifestPromise: Promise<void> | null = null;
+let manifestSource: { source: "local" | "remote"; detail: string } = {
+  source: "local",
+  detail: initialLocalManifest.file,
+};
+
+console.info("[CONFIG-LOG] Manifest configuration initialized", {
+  env: manifestEnv,
+  source: manifestSource.source,
+  detail: manifestSource.detail,
+});
 
 export const preloadManifest = async () => {
   if (!preloadManifestPromise) {
@@ -59,11 +72,27 @@ export const preloadManifest = async () => {
 
         const manifestFromApi = await response.json();
         resolvedManifest = normalizeManifest(manifestFromApi);
+        manifestSource = { source: "remote", detail: manifestUrl };
+        console.info("[CONFIG-LOG] Manifest configuration resolved", {
+          env: manifestEnv,
+          source: manifestSource.source,
+          detail: manifestSource.detail,
+        });
       } catch (error) {
         console.warn(
           `[manifest] Failed to fetch "${manifestUrl}". Using local "${manifestEnv}" fallback.`,
           error
         );
+        const fallbackLocalManifest = getLocalManifest(manifestEnv);
+        manifestSource = {
+          source: "local",
+          detail: fallbackLocalManifest.file,
+        };
+        console.info("[CONFIG-LOG] Manifest configuration resolved", {
+          env: manifestEnv,
+          source: manifestSource.source,
+          detail: manifestSource.detail,
+        });
       }
     })();
   }
@@ -72,3 +101,4 @@ export const preloadManifest = async () => {
 };
 
 export const getManifest = () => resolvedManifest;
+export const getManifestSource = () => manifestSource;

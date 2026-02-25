@@ -65,6 +65,11 @@
     "xp": "XP",
     "address": "Dirección",
     "see-prizes": "Ver premios",
+    "sections": {
+      "daily": "Diario",
+      "weekly": "Semanal",
+      "season": "Temporada"
+    },
     "points": "Puntos",
     "prizes": {
       "basic": "{{count}} pack Básico",
@@ -111,6 +116,9 @@
     "season": "Temporada",
     "tournament": "Torneo",
     "more": "Más",
+    "back": "Volver al inicio",
+    "docs": "Lista de cartas",
+    "daily-missions": "Misiones diarias",
     "round": "Ronda",
     "rage": "Ronda de Furia",
     "shop": "Tienda"

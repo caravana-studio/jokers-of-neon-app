@@ -1,4 +1,4 @@
-import { Flex, Text } from "@chakra-ui/react";
+import { Flex, Text, Tooltip } from "@chakra-ui/react";
 import { keyframes } from "@emotion/react";
 import { FC, ReactSVGElement, SVGProps } from "react";
 import { useTranslation } from "react-i18next";
@@ -49,7 +49,7 @@ export const ContextMenuItem = ({
   const badgeFontSize = isSmallScreen ? "8px" : "9px";
   const { t } = useTranslation("home", { keyPrefix: "menu" });
   const pulseAnimation = `${pulseKeyframes} 1.6s ease-in-out infinite`;
-  return (
+  const content = (
     <Link
       style={{
         height: "100%",
@@ -130,4 +130,14 @@ export const ContextMenuItem = ({
       </Flex>
     </Link>
   );
+
+  if (!isSmallScreen && nameKey) {
+    return (
+      <Tooltip label={t(nameKey)} placement="right">
+        {content}
+      </Tooltip>
+    );
+  }
+
+  return content;
 };

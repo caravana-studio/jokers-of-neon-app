@@ -6,9 +6,10 @@ import { ProgressBar } from "../CompactRoundData/ProgressBar";
 export interface BaseLoadingBarProps {
   progress: number;
   currentStageText: string;
+  showHint?: boolean;
 }
 
-export const BaseLoadingBar = ({ progress }: BaseLoadingBarProps) => {
+export const BaseLoadingBar = ({ progress, showHint = true }: BaseLoadingBarProps) => {
   const hint = useLoadingHints();
 
   return (
@@ -21,22 +22,24 @@ export const BaseLoadingBar = ({ progress }: BaseLoadingBarProps) => {
       flexDirection="column"
       gap={2}
     >
-      <Flex
-        minH="45px"
-        justifyContent={"center"}
-        alignItems={"center"}
-        w="100%"
-        mb={4}
-      >
-        <Heading
-          zIndex={2}
-          fontSize={isMobile ? "sm" : "md"}
-          textAlign="center"
-          letterSpacing={1.2}
+      {showHint && (
+        <Flex
+          minH="45px"
+          justifyContent={"center"}
+          alignItems={"center"}
+          w="100%"
+          mb={4}
         >
-          {hint}
-        </Heading>
-      </Flex>
+          <Heading
+            zIndex={2}
+            fontSize={isMobile ? "sm" : "md"}
+            textAlign="center"
+            letterSpacing={1.2}
+          >
+            {hint}
+          </Heading>
+        </Flex>
+      )}
       <ProgressBar progress={Math.round(progress)} />
     </Flex>
   );

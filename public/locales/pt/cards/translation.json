@@ -1,5 +1,6 @@
 {
   "activated": "Activado",
+  "silenced": "SILENCIADA",
   "by": "por",
   "modifiers": {
     "608": {
@@ -322,7 +323,7 @@
     },
     "10106": {
       "name": "Círculo da Sorte",
-      "description": "Rola um número aleatório entre 0 e 36; se for par, o resultado é ^blue(pontos x2)^; se for ímpar, o resultado é ^yellow(moedas x2)^; se for 0, ganhe ^blue(+300 pontos)^."
+      "description": "Rola um número aleatório entre 0 e 36; se for par, o resultado é ^blue(pontos x5)^; se for ímpar, o resultado é ^yellow(moedas x10)^; se for 0, ganhe ^blue(+300 pontos)^."
     },
     "10107": {
       "name": "Bênção de Héstia",
@@ -334,7 +335,7 @@
     },
     "10109": {
       "name": "Joker Pendurado",
-      "description": "Se sua mão contiver um Joker, tem 25% de chance de acumular ^blue(+10 pontos)^. Atualmente ^blue(+{{points}} pontos)^."
+      "description": "Para cada Joker na sua jogada, 20% de chance de acumular ^blue(+10 pontos)^. Atualmente ^blue(+{{points}} pontos)^."
     },
     "10110": {
       "name": "Sacrifício Especial",
@@ -398,7 +399,7 @@
     },
     "10208": {
       "name": "Doutrina Neon",
-      "description": "Cada carta jogada que pertence à jogada tem 30% de chance de se tornar uma carta neon."
+      "description": "As cartas jogadas têm 30% de chance de se tornarem cartas neon."
     },
     "10209": {
       "name": "Minimalismo",
@@ -410,7 +411,7 @@
     },
     "10211": {
       "name": "Providência",
-      "description": "Os itens da loja têm ^yellow(30%)^ de chance de ser gratuitos."
+      "description": "Os itens da loja têm ^yellow(20%)^ de chance de ser gratuitos."
     },
     "10212": {
       "name": "Caçador Eficiente",
@@ -418,7 +419,7 @@
     },
     "10213": {
       "name": "Carga Residual",
-      "description": "Acumula ^blue(25%)^ do valor de cada power-up jogado. Atualmente ^blue(+{{points}} pontos)^."
+      "description": "Acumula ^blue(10%)^ do valor de cada power-up jogado. Atualmente ^blue(+{{points}} pontos)^."
     },
     "10214": {
       "name": "Compra Imortal",
@@ -987,6 +988,10 @@
     "20025": {
       "name": "Estraga-prazer",
       "description": "Sua mão mais jogada não conta nesta rodada."
+    },
+    "20026": {
+      "name": "Blackout",
+      "description": "Duas das suas cartas especiais atuais ficam silenciadas nesta rodada"
     }
   },
   "lootBoxes": {

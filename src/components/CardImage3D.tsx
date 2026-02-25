@@ -1,10 +1,12 @@
 import { ReactNode, useEffect, useRef, useState } from "react";
 import Tilt from "react-parallax-tilt";
 import { TILT_OPTIONS } from "../constants/visualProps";
+import { GameStateEnum } from "../dojo/typescript/custom";
 import { useGameStore } from "../state/useGameStore";
 import { useSkinPreferencesStore } from "../state/useSkinPreferencesStore";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import { Card } from "../types/Card";
+import { BrokenCard } from "./BrokenCard";
 import CachedImage from "./CachedImage";
 import { CardTooltip } from "./CardTooltip";
 import { TemporalBadge } from "./TemporalBadge";
@@ -83,9 +85,12 @@ export const CardImage3D = ({
   const borderRadius = small ? { base: "5px", sm: "8px" } : "20px";
 
   const { isSmallScreen } = useResponsiveValues();
-  const { isClassic } = useGameStore();
+  const { isClassic, state } = useGameStore();
+  const showSilencedEffect = Boolean(
+    card.isSpecial && card.silenced && state === GameStateEnum.Rage
+  );
 
-  const showPlain = (isSmallScreen && small) || !isClassic;
+  const showPlain = (isSmallScreen && small) || !isClassic || showSilencedEffect;
 
   const calculatedHeight = height ?? "100%";
   const plainImageSrc =
@@ -170,6 +175,8 @@ export const CardImage3D = ({
         width={width}
         height={calculatedHeight}
       />
+
+      {showSilencedEffect && <BrokenCard onDeck={false} isPack={false} isSpecial />}
 
       {card.temporary && card.remaining && (
         <TemporalBadge

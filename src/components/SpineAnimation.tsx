@@ -9,6 +9,7 @@ import {
 } from "react";
 import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
+import { hasPriceValue } from "../utils/pricing";
 import { PriceBox } from "./PriceBox";
 import { PurchasedLbl } from "./PurchasedLbl";
 
@@ -207,7 +208,7 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
           position="bottom"
           fontSize={isMobile ? 7 : 14 * scale}
         />
-        {price && (
+        {hasPriceValue(price) && (
           <Box
             sx={{
               position: "absolute",

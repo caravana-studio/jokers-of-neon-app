@@ -18,6 +18,7 @@ interface AnimatePlayConfig {
   setPlayIsNeon: (isNeon: boolean) => void;
   setAnimatedCard: (card: any) => void;
   setAnimatedPowerUp: (powerUp: any) => void;
+  setLevelUpHand?: (event: PlayEvents["levelUpPlayEvent"]) => void;
   pointsSound: (pitchIndex?: number) => void;
   acumSound: () => void;
   negativeMultiSound: () => void;
@@ -27,6 +28,7 @@ interface AnimatePlayConfig {
   addMulti: (multi: number) => void;
   changeCardsSuit: (cardIndexes: number[], suit: Suits) => void;
   changeCardsNeon: (cardIndexes: number[]) => void;
+  changeCardsRank?: (cardChanges: CardPlayEvent["hand"]) => void;
   setAnimation: (playing: boolean) => void;
   setPreSelectionLocked: (locked: boolean) => void;
   clearPreSelection: () => void;
@@ -63,6 +65,7 @@ export const animatePlayDiscard = (config: AnimatePlayConfig): number => {
     setMulti,
     changeCardsNeon,
     changeCardsSuit,
+    changeCardsRank,
     setAnimation,
     setPreSelectionLocked,
     clearPreSelection,
@@ -87,6 +90,9 @@ export const animatePlayDiscard = (config: AnimatePlayConfig): number => {
   } = config;
 
   if (!playEvents) return 0;
+  if (playEvents.levelUpPlayEvent && config.setLevelUpHand) {
+    config.setLevelUpHand(playEvents.levelUpPlayEvent);
+  }
 
   const sharedPitchState = config.pitchState ?? { index: 0 };
   const getNextPitchIndex = () => {
@@ -102,17 +108,30 @@ export const animatePlayDiscard = (config: AnimatePlayConfig): number => {
       key: string;
       suit?: Suits;
       isNeon: boolean;
+      isRank: boolean;
       handIndexes: number[];
+      rankChanges: CardPlayEvent["hand"];
       special_idx?: number;
     }[] = [];
     const groupMap = new Map<string, (typeof groups)[number]>();
 
-    events.forEach((event) => {
+    events.forEach((event, eventIndex) => {
       const isNeon = event.eventType === EventTypeEnum.Neon;
+      const isRank = event.eventType === EventTypeEnum.Rank;
       const suit = eventTypeToSuit(event.eventType);
-      const key = isNeon ? "neon" : `suit:${suit}`;
+      const specialIndexes = Array.from(
+        new Set(event.specials.map((special) => special.idx))
+      ).sort((a, b) => a - b);
+      const special_idx =
+        specialIndexes.length === 1 ? specialIndexes[0] : undefined;
+      const converterKey = isNeon ? "neon" : isRank ? "rank" : `suit:${suit}`;
+      // Group by converter special first so each special animates independently.
+      const specialKey =
+        specialIndexes.length
+          ? `special:${specialIndexes.join("|")}`
+          : `special:none:${eventIndex}`;
+      const key = `${specialKey}:${converterKey}`;
       const handIndexes = event.hand.map((card) => card.idx);
-      const special_idx = event.specials[0]?.idx;
 
       let group = groupMap.get(key);
       if (!group) {
@@ -120,7 +139,9 @@ export const animatePlayDiscard = (config: AnimatePlayConfig): number => {
           key,
           suit,
           isNeon,
+          isRank,
           handIndexes: [],
+          rankChanges: [],
           special_idx,
         };
         groupMap.set(key, group);
@@ -128,6 +149,9 @@ export const animatePlayDiscard = (config: AnimatePlayConfig): number => {
       }
 
       group.handIndexes.push(...handIndexes);
+      if (isRank) {
+        group.rankChanges.push(...event.hand);
+      }
       if (group.special_idx === undefined && special_idx !== undefined) {
         group.special_idx = special_idx;
       }
@@ -135,6 +159,15 @@ export const animatePlayDiscard = (config: AnimatePlayConfig): number => {
 
     groups.forEach((group) => {
       group.handIndexes = Array.from(new Set(group.handIndexes));
+      if (group.isRank) {
+        const latestRankByIndex = new Map<number, number>();
+        group.rankChanges.forEach((rankChange) => {
+          latestRankByIndex.set(rankChange.idx, rankChange.quantity);
+        });
+        group.rankChanges = Array.from(latestRankByIndex.entries()).map(
+          ([idx, quantity]) => ({ idx, quantity })
+        );
+      }
     });
 
     return groups;
@@ -201,6 +234,14 @@ export const animatePlayDiscard = (config: AnimatePlayConfig): number => {
               animationIndex: 200 + index,
             });
             changeCardsNeon(group.handIndexes);
+          } else if (group.isRank) {
+            setAnimatedCard({
+              suit: 5,
+              special_idx: group.special_idx,
+              idx: group.handIndexes,
+              animationIndex: 200 + index,
+            });
+            changeCardsRank?.(group.rankChanges);
           } else {
             setAnimatedCard({
               suit: group.suit,

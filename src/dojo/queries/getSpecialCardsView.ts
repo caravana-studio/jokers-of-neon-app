@@ -6,7 +6,6 @@ export const getSpecialCardsView = async (
 ): Promise<Card[]> => {
   try {
     let tx_result: any = await client.game_views.getSpecialCards(gameId);
-
     return getSpecialCards(tx_result);
   } catch (e) {
     console.error("error getting specials view", e);
@@ -19,6 +18,7 @@ interface SpecialCardDojo {
   game_id: BigInt;
   idx: BigInt;
   is_temporary: boolean;
+  is_silenced: boolean;
   remaining: BigInt;
   selling_price: BigInt;
 }
@@ -35,6 +35,7 @@ const getSpecialCards = (specialCards: SpecialCardDojo[]) => {
       temporary: card?.is_temporary,
       remaining: Number(card?.remaining),
       selling_price: Number(card?.selling_price),
+      silenced: card?.is_silenced,
     };
   });
 };

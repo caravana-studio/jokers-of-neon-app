@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import type { Prize } from "./useTournamentSettings";
 
 interface ApiXpEvent {
   multiplier?: number;
@@ -10,6 +11,13 @@ interface ApiSeason {
   number?: number;
   finishDate?: string;
   "xp-event"?: ApiXpEvent;
+  "daily-prizes"?: ApiPrize[];
+  "weekly-prizes"?: ApiPrize[];
+  "season-prizes"?: ApiPrize[];
+}
+
+interface ApiPrize extends Prize {
+  position: string;
 }
 
 export interface XpEvent {
@@ -22,12 +30,18 @@ export interface Season {
   number: number;
   finishDate: Date | null;
   xpEvent: XpEvent | null;
+  dailyPrizes: Record<number, Prize>;
+  weeklyPrizes: Record<number, Prize>;
+  seasonPrizes: Record<number, Prize>;
 }
 
 const defaultSeason: Season = {
   number: 1,
   finishDate: null,
   xpEvent: null,
+  dailyPrizes: {},
+  weeklyPrizes: {},
+  seasonPrizes: {},
 };
 
 const parseDateOrNull = (date?: string) => {
@@ -51,6 +65,31 @@ const parseXpEvent = (event?: ApiXpEvent): XpEvent | null => {
   };
 };
 
+const parsePrizes = (prizes?: ApiPrize[]): Record<number, Prize> => {
+  const parsedPrizes: Record<number, Prize> = {};
+
+  prizes?.forEach((prize) => {
+    if (prize.position.includes("-")) {
+      const [start, end] = prize.position.split("-").map((value) => parseInt(value, 10));
+      if (!Number.isFinite(start) || !Number.isFinite(end)) {
+        return;
+      }
+
+      for (let position = start; position <= end; position += 1) {
+        parsedPrizes[position] = prize;
+      }
+      return;
+    }
+
+    const position = parseInt(prize.position, 10);
+    if (Number.isFinite(position) && position > 0) {
+      parsedPrizes[position] = prize;
+    }
+  });
+
+  return parsedPrizes;
+};
+
 export const useSeason = () => {
   const [season, setSeason] = useState<Season | null>(null);
   const [loading, setLoading] = useState(true);
@@ -72,6 +111,9 @@ export const useSeason = () => {
           number: data.number ?? 0,
           finishDate: parseDateOrNull(data.finishDate),
           xpEvent: parseXpEvent(data["xp-event"]),
+          dailyPrizes: parsePrizes(data["daily-prizes"]),
+          weeklyPrizes: parsePrizes(data["weekly-prizes"]),
+          seasonPrizes: parsePrizes(data["season-prizes"]),
         });
       } catch (err) {
         console.error(
