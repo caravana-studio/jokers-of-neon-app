@@ -166,12 +166,13 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
         url: "/my-collection",
         active: url === "/my-collection",
         key: "collection",
-      } /*       {
+      },
+      {
         icon: Icons.LEADERBOARD,
         url: "/leaderboard",
         active: url === "/leaderboard",
         key: "leaderboard",
-      },*/,
+      },
       ...(isTournamentActive
         ? [
             {

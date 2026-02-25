@@ -70,12 +70,18 @@ export const getPrizeText = (t: TFunction, prize: Prize | undefined) => {
 
 interface LeaderboardProps {
   seePrizes?: boolean;
+  prizes?: Record<number, Prize>;
   lines?: number;
   gameId?: number;
   filterLoggedInPlayers?: boolean;
   hidePodium?: boolean;
   mb?: string;
   isTournamentLeaderboard?: boolean;
+  startGameId?: number | null;
+  endGameId?: number | null;
+  queryEnabled?: boolean;
+  fullWidth?: boolean;
+  compactSpacing?: boolean;
 }
 export const Leaderboard = ({
   gameId,
@@ -84,7 +90,13 @@ export const Leaderboard = ({
   hidePodium = false,
   mb = "",
   seePrizes = false,
+  prizes,
   isTournamentLeaderboard,
+  startGameId,
+  endGameId,
+  queryEnabled,
+  fullWidth = false,
+  compactSpacing = false,
 }: LeaderboardProps) => {
   const { t } = useTranslation("home", { keyPrefix: "leaderboard" });
   const { isSmallScreen } = useResponsiveValues();
@@ -95,6 +107,11 @@ export const Leaderboard = ({
     gameId,
     filterLoggedInPlayers,
     isTournament,
+    {
+      startGameId,
+      endGameId,
+      enabled: queryEnabled,
+    }
   );
 
   const actualPlayer = fullLeaderboard?.find(
@@ -107,14 +124,17 @@ export const Leaderboard = ({
   const currentPlayerIsInReducedLeaderboard = leaderboard?.some(
     (leader) => signedHexToNumber(leader.id.toString()) === gameId,
   );
+  const shouldReserveRowForCurrentPlayer =
+    Boolean(actualPlayer) && !currentPlayerIsInReducedLeaderboard;
+  const leaderboardPrizes = prizes ?? tournament?.prizes;
 
   return (
     <Box
-      w={isSmallScreen ? "100%" : "60%"}
-      overflowY="auto"
-      flexGrow={1}
-      mt={isSmallScreen ? 2 : "20px"}
-      mb={isSmallScreen ? 8 : "70px"}
+      w={fullWidth || isSmallScreen ? "100%" : "60%"}
+      overflowY={compactSpacing ? "visible" : "auto"}
+      flexGrow={compactSpacing ? 0 : 1}
+      mt={compactSpacing ? 2 : isSmallScreen ? 2 : "20px"}
+      mb={compactSpacing ? 0 : isSmallScreen ? 8 : "70px"}
       px={[1, 2, 4, 8]}
     >
       {username && TESTERS.includes(username) && (
@@ -148,18 +168,21 @@ export const Leaderboard = ({
             <Tbody>
               {leaderboard
                 .filter((_, index) => {
-                  const limit = !currentPlayerIsInReducedLeaderboard
+                  const limit = shouldReserveRowForCurrentPlayer
                     ? lines - 1
                     : lines;
                   return index < limit;
                 })
                 .map((leader) => {
                   const isCurrentPlayer = username === leader.player_name;
+                  const isCurrentGame =
+                    gameId !== undefined &&
+                    signedHexToNumber(leader.id.toString()) === gameId;
                   return (
                     <CustomTr
                       key={leader.id}
-                      highlighted={gameId === leader.id || isCurrentPlayer}
-                      sx={gameId === leader.id ? CURRENT_LEADER_STYLES : {}}
+                      highlighted={isCurrentGame || isCurrentPlayer}
+                      sx={isCurrentGame ? CURRENT_LEADER_STYLES : {}}
                     >
                       <Td
                         w={isSmallScreen ? "50px" : "70px"}
@@ -181,7 +204,7 @@ export const Leaderboard = ({
                           >
                             {getPrizeText(
                               t,
-                              tournament?.prizes[leader.position],
+                              leaderboardPrizes?.[leader.position],
                             )}
                           </Text>
                         </Td>
@@ -200,14 +223,14 @@ export const Leaderboard = ({
                             lineHeight="1.2"
                           >
                             {t("level")}
-                            {gameId === leader.id ? (
+                            {isCurrentGame ? (
                               <RollingNumber n={leader.level} />
                             ) : (
                               leader.level
                             )}
                             {" - "}
                             {t("round")}
-                            {gameId === leader.id ? (
+                            {isCurrentGame ? (
                               <RollingNumber n={leader.round} />
                             ) : (
                               leader.round

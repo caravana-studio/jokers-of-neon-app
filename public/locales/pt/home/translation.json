@@ -65,6 +65,11 @@
     "xp": "XP",
     "address": "Endereço",
     "points": "Pontos",
+    "sections": {
+      "daily": "Diário",
+      "weekly": "Semanal",
+      "season": "Temporada"
+    },
     "see-prizes": "Ver prêmios",
     "prizes": {
       "basic": "{{count}} pack Básico",
@@ -111,6 +116,9 @@
     "plays": "Jogadas",
     "tournament": "Torneio",
     "more": "Mais",
+    "back": "Voltar ao início",
+    "docs": "Lista de cartas",
+    "daily-missions": "Missões diárias",
     "round": "Rodada",
     "rage": "Rodada de raiva",
     "shop": "Loja"
