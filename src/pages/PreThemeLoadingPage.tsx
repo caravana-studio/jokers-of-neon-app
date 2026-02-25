@@ -14,7 +14,6 @@ export const PreThemeLoadingPage = ({children} : PropsWithChildren) => {
         alignItems: "center",
         fontFamily: "Orbitron",
         fontSize: 30,
-        letterSpacing: "0.25em",
         background: `url(bg/home-bg.jpg)`,
         backgroundSize: "cover",
         backgroundPosition: "center",

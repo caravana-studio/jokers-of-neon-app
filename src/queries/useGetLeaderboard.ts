@@ -29,6 +29,7 @@ export const LEADERBOARD_QUERY = gql`
           id
           round
           is_tournament
+          owner
         }
       }
     }
@@ -56,6 +57,7 @@ interface GameEdge {
     id: number;
     round: number;
     is_tournament: boolean;
+    owner: string;
   };
 }
 
@@ -126,6 +128,7 @@ const fetchGraphQLData = async (
           player_score: edge.node.player_score,
           level: edge.node.level,
           round: edge.node.round,
+          wallet: edge.node.owner,
         };
       })
   );
@@ -138,6 +141,7 @@ const fetchGraphQLData = async (
       player_score: number;
       level: number;
       round: number;
+      wallet: string;
     }
   >();
 
@@ -147,6 +151,7 @@ const fetchGraphQLData = async (
     player_score: number;
     level: number;
     round: number;
+    wallet: string;
   } | null = null;
 
   processedEntries.forEach((entry) => {

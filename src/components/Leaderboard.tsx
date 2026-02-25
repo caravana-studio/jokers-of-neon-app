@@ -1,5 +1,7 @@
 import {
   Box,
+  Button,
+  Flex,
   Spinner,
   SystemStyleObject,
   Table,
@@ -11,6 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { TFunction } from "i18next";
 import { useTranslation } from "react-i18next";
+import { TESTERS } from "../constants/testers.ts";
 import { useUsername } from "../dojo/utils/useUsername.tsx";
 import { useGetLeaderboard } from "../queries/useGetLeaderboard";
 import {
@@ -114,6 +117,18 @@ export const Leaderboard = ({
       mb={isSmallScreen ? 8 : "70px"}
       px={[1, 2, 4, 8]}
     >
+      {username && TESTERS.includes(username) && (
+        <Flex zIndex={999} position={"absolute"} top={isSmallScreen ? "85px" : "150px"} left={isSmallScreen ? "30px" : "90px"}>
+          <Button
+            size="xs"
+            fontSize={[8, 12]}
+            m={2}
+            onClick={() => console.log(fullLeaderboard)}
+          >
+            Log leaders
+          </Button>
+        </Flex>
+      )}
       {isLoading && <Spinner />}
       {leaderboard && (
         <TableContainer overflowX="hidden" overflowY="auto" mb={mb}>

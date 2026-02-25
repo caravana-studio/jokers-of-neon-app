@@ -11,12 +11,13 @@ export interface RealLoadingBarRef {
 interface RealLoadingBarProps {
   steps: LoadingProgress[];
   isOpen?: boolean;
+  showHint?: boolean;
 }
 
 export const RealLoadingBar = forwardRef<
   RealLoadingBarRef,
   RealLoadingBarProps
->(({ steps, isOpen = true }, ref) => {
+>(({ steps, isOpen = true, showHint = true }, ref) => {
   const [currentStep, setCurrentStep] = useState(0);
 
   useImperativeHandle(ref, () => ({
@@ -42,6 +43,10 @@ export const RealLoadingBar = forwardRef<
   if (!isOpen) return null;
 
   return (
-    <BaseLoadingBar progress={progress} currentStageText={currentStageText} />
+    <BaseLoadingBar
+      progress={progress}
+      currentStageText={currentStageText}
+      showHint={showHint}
+    />
   );
 });
