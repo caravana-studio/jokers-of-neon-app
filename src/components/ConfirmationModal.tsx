@@ -58,12 +58,17 @@ export const ConfirmationModal = ({
             </Text>
           </Flex>
         </ModalBody>
-        <ModalFooter justifyContent="center" mt={2}>
+        <ModalFooter justifyContent="center" mt={2} gap={3}>
           <Button
             variant="defaultOutline"
             size="sm"
             fontSize={[10, 12]}
             w={isSmallScreen ? "50%" : "auto"}
+            whiteSpace="normal"
+            wordBreak="break-word"
+            textAlign="center"
+            h="auto"
+            py={2}
             onClick={onCancel ?? close}
           >
             {cancelText ?? t("confirmation-modal.close")}
@@ -73,9 +78,13 @@ export const ConfirmationModal = ({
             boxShadow={`0px 0px 10px 6px ${NEON_PINK}`}
             size="sm"
             onClick={onConfirm}
-            ml={5}
             fontSize={[10, 12]}
             w={isSmallScreen ? "50%" : "auto"}
+            whiteSpace="normal"
+            wordBreak="break-word"
+            textAlign="center"
+            h="auto"
+            py={2}
           >
             {confirmText ?? t("confirmation-modal.confirm")}
           </Button>
