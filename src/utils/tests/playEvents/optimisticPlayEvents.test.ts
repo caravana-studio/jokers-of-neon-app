@@ -371,7 +371,7 @@ test("filterOptimisticEventsFromPlayEvents deduplicates optimistic powerups too"
   expect(filtered.powerUpEvents).toEqual([{ idx: 2, points: 50, multi: 0 }]);
 });
 
-test("filterSilentCardEventsFromPlayEvents removes silent cards from animated events", () => {
+test("filterSilentCardEventsFromPlayEvents keeps converter effects and removes score effects for silent cards", () => {
   const playEvents: PlayEvents = {
     play: { points: 0, multi: 1 },
     gameOver: false,
@@ -413,7 +413,13 @@ test("filterSilentCardEventsFromPlayEvents removes silent cards from animated ev
     points: 20,
     multi: 1,
   });
-  expect(filtered.cardPlayChangeEvents).toEqual([]);
+  expect(filtered.cardPlayChangeEvents).toEqual([
+    {
+      hand: [{ idx: 0, quantity: 1 }],
+      specials: [],
+      eventType: EventTypeEnum.Neon,
+    },
+  ]);
   expect(filtered.cardPlayEvents).toEqual([
     {
       hand: [{ idx: 1, quantity: 7 }],
