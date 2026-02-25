@@ -34,14 +34,19 @@ import { APP_URL, isNative } from "../../utils/capacitorUtils";
 import { getFirebasePushToken } from "../../utils/notifications/firebasePush";
 import { registerPushNotifications } from "../../utils/notifications/registerPushNotifications";
 import { getMajor, getMinor, getPatch } from "../../utils/versionUtils";
+import { useProfileStore } from "../../state/useProfileStore";
 
 export const NewHome = () => {
   const { t } = useTranslation(["home"]);
+  const { t: tCommon } = useTranslation("intermediate-screens", {
+    keyPrefix: "common",
+  });
   const { isSmallScreen } = useResponsiveValues();
   const { settings, loading } = useDistributionSettings();
   const navigate = useNavigate();
   const { prepareNewGame, executeCreateGame } = useGameContext();
   const { data: games } = useGetMyGames();
+  const { fetchProfileData } = useProfileStore();
 
   const [isTutorialModalOpen, setTutorialModalOpen] = useState(false);
   const [isVersionModalOpen, setVersionModalOpen] = useState(false);
@@ -50,7 +55,7 @@ export const NewHome = () => {
 
   const banners = settings?.home?.banners || [];
   const {
-    setup: { useBurnerAcc, switchToController },
+    setup: { useBurnerAcc, switchToController, client },
     account,
   } = useDojo();
 
@@ -148,6 +153,18 @@ export const NewHome = () => {
     switchToController();
   };
 
+  const handleLoginClick = () => {
+    switchToController((newUsername) => {
+      fetchProfileData(
+        client,
+        newUsername.account.address,
+        newUsername.account,
+        newUsername.username,
+        "controller"
+      );
+    });
+  };
+
   const handleOpenGuestLoginModal = () => {
     setGuestLoginModalOpen(true);
   };
@@ -235,7 +252,7 @@ export const NewHome = () => {
                   yOffset={-800}
                 />
               </Flex>
-              {(!useBurnerAcc || isSmallScreen) && (
+              {
                 <Flex
                   w={isSmallScreen ? "auto" : "200px"}
                   flexDir={isSmallScreen ? "column" : "row"}
@@ -246,12 +263,28 @@ export const NewHome = () => {
                   gap={isSmallScreen ? 1.5 : 0}
                 >
                   {!useBurnerAcc && <ProfileTile />}
+                  {useBurnerAcc && (
+                    <Button
+                      size="xs"
+                      onClick={handleLoginClick}
+                      rightIcon={
+                        <img
+                          src={Icons.CARTRIDGE}
+                          width={"14px"}
+                          style={{ marginLeft: "2px" }}
+                        />
+                      }
+                    >
+                      {tCommon("login")}
+                    </Button>
+                  )}
                   {isSmallScreen && (
                     <Flex
                       alignItems="center"
                       gap={1}
                       cursor="pointer"
                       onClick={handleSettingsClick}
+                      mt={useBurnerAcc ? 1 : 0}
                     >
                       <IconComponent
                         icon={Icons.SETTINGS}
@@ -261,7 +294,7 @@ export const NewHome = () => {
                     </Flex>
                   )}
                 </Flex>
-              )}
+              }
             </Flex>
             <Flex
               flexDir={"column"}
