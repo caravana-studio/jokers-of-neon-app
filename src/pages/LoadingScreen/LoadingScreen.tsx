@@ -1,6 +1,7 @@
 import { Flex } from "@chakra-ui/react";
 import {
   forwardRef,
+  useCallback,
   useEffect,
   useImperativeHandle,
   useRef,
@@ -14,6 +15,7 @@ import {
   RealLoadingBar,
   RealLoadingBarRef,
 } from "../../components/LoadingProgressBar/RealLoadingBar";
+import { SEASON_NUMBER } from "../../constants/season";
 import { LoadingScreenHandle } from "../../types/LoadingProgress";
 import { PreThemeLoadingPage } from "../PreThemeLoadingPage";
 import OpeningScreenAnimation from "./OpeningScreenAnimation";
@@ -40,8 +42,9 @@ export const LoadingScreen = forwardRef<
     },
     ref
   ) => {
-    const [visibleSpinner, setVisibleSpinner] = useState(false);
+    const isSeason2 = SEASON_NUMBER === 2;
     const [isFadingOut, setIsFadingOut] = useState(false);
+    const [visibleSpinner, setVisibleSpinner] = useState(false);
     const [skipAnimation, setSkipAnimation] = useState(false);
 
     const progressBarRef = useRef<RealLoadingBarRef>(null);
@@ -75,13 +78,22 @@ export const LoadingScreen = forwardRef<
       if (!showPresentation) {
         onPresentationEnd();
       }
-    }, []);
+    }, [onPresentationEnd, showPresentation]);
 
-    const handleAnimationEnd = () => {
+    const handleAnimationEnd = useCallback(() => {
+      if (!isSeason2) {
+        setVisibleSpinner(true);
+      }
+      onPresentationEnd();
+    }, [isSeason2, onPresentationEnd]);
+
+    const handleSkipPresentation = useCallback(() => {
       setSkipAnimation(true);
       setVisibleSpinner(true);
       onPresentationEnd();
-    };
+    }, [onPresentationEnd]);
+
+    const shouldShowSpinner = isSeason2 || visibleSpinner || !showPresentation;
 
     return (
       <Flex
@@ -96,9 +108,9 @@ export const LoadingScreen = forwardRef<
               <div>{t("error")}</div>
             ) : (
               <Flex
-                width={"80%"}
-                flexDirection={"column"}
-                gap={4}
+                width={"100%"}
+                height={"100%"}
+                position={"relative"}
                 justifyContent={"center"}
                 alignItems={"center"}
               >
@@ -109,17 +121,29 @@ export const LoadingScreen = forwardRef<
                   />
                 )}
 
-                {(visibleSpinner || !showPresentation) && (
-                  <RealLoadingBar ref={progressBarRef} steps={steps} />
+                {shouldShowSpinner && (
+                  <Flex
+                    width={showPresentation && isSeason2 ? "100%" : "80%"}
+                    position={showPresentation && isSeason2 ? "absolute" : "relative"}
+                    left={0}
+                    bottom={showPresentation && isSeason2 ? 0 : undefined}
+                    px={showPresentation && isSeason2 ? 3 : 0}
+                    zIndex={showPresentation && isSeason2 ? 30 : 1}
+                  >
+                    <RealLoadingBar
+                      ref={progressBarRef}
+                      steps={steps}
+                      showHint={!showPresentation || !isSeason2}
+                    />
+                  </Flex>
                 )}
-
               </Flex>
             )}
           </PreThemeLoadingPage>
           <RemoveScroll>
             <></>
           </RemoveScroll>
-          {!skipAnimation && showPresentation && (
+          {!isSeason2 && !skipAnimation && showPresentation && (
             <div
               style={{
                 position: "absolute",
@@ -128,8 +152,9 @@ export const LoadingScreen = forwardRef<
                 width: "100%",
                 height: "100%",
                 cursor: "pointer",
+                zIndex: 50,
               }}
-              onClick={handleAnimationEnd}
+              onClick={handleSkipPresentation}
             />
           )}
         </FadeInOut>

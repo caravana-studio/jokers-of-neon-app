@@ -8,15 +8,16 @@ import {
 } from "@starknet-react/core";
 import React from "react";
 import { num } from "starknet";
+import { rpcUrl, slotInstance } from "../config/cartridgeUrls";
 import { controller, getSlotChainId } from "../dojo/controller/controller";
 
 function rpc() {
   return {
-    nodeUrl: import.meta.env.VITE_RPC_URL,
+    nodeUrl: rpcUrl,
   };
 }
 
-const SLOT_INSTANCE = import.meta.env.VITE_SLOT_INSTANCE
+const SLOT_INSTANCE = slotInstance;
 
 const slot: Chain = SLOT_INSTANCE && {
   id: num.toBigInt(getSlotChainId(SLOT_INSTANCE)),
@@ -24,10 +25,10 @@ const slot: Chain = SLOT_INSTANCE && {
   network: "jokers-of-neon",
   rpcUrls: {
     default: {
-      http: [import.meta.env.VITE_RPC_URL],
+      http: [rpcUrl],
     },
     public: {
-      http: [import.meta.env.VITE_RPC_URL],
+      http: [rpcUrl],
     },
   },
   nativeCurrency: {

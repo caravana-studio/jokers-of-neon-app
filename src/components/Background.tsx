@@ -98,6 +98,9 @@ const bgConfig: Record<string, { bg: BackgroundType; decoration?: boolean }> = {
   tutorial: {
     bg: BackgroundType.Game,
   },
+  practice: {
+    bg: BackgroundType.Game,
+  },
   preview: {
     bg: BackgroundType.Store,
   },

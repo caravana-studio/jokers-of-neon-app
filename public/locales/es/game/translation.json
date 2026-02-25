@@ -207,6 +207,12 @@
   "rage-cards": {
     "no-cards": "En las rondas de furia, verás las cartas de furia aquí"
   },
+  "rage-round-animation": {
+    "title": "RONDA DE FURIA",
+    "sacrificed-card": "Carta sacrificada",
+    "click-anywhere": "Toca en cualquier lugar para cerrar",
+    "auto-skip": "Saltar esta pantalla automáticamente"
+  },
   "specials-box": {
     "specials-tooltip": "Cartas especiales",
     "rage-tooltip": "Cartas de furia"

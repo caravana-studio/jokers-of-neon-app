@@ -12,6 +12,9 @@ const PITCH_VARIANTS = 18;
 interface AnimatePlayConfig {
   playEvents: PlayEvents;
   playAnimationDuration: number;
+  pitchState?: {
+    index: number;
+  };
   setPlayIsNeon: (isNeon: boolean) => void;
   setAnimatedCard: (card: any) => void;
   setAnimatedPowerUp: (powerUp: any) => void;
@@ -46,7 +49,7 @@ interface AnimatePlayConfig {
   clearLevelSound: () => void;
 }
 
-export const animatePlayDiscard = (config: AnimatePlayConfig) => {
+export const animatePlayDiscard = (config: AnimatePlayConfig): number => {
   const {
     playEvents,
     playAnimationDuration,
@@ -83,13 +86,12 @@ export const animatePlayDiscard = (config: AnimatePlayConfig) => {
     clearLevelSound,
   } = config;
 
-  if (!playEvents) return;
+  if (!playEvents) return 0;
 
-  // Pitch counter for incremental pitch effect on scoring sounds
-  let pitchIndex = 0;
+  const sharedPitchState = config.pitchState ?? { index: 0 };
   const getNextPitchIndex = () => {
-    const index = Math.min(pitchIndex, PITCH_VARIANTS - 1);
-    pitchIndex++;
+    const index = Math.min(sharedPitchState.index, PITCH_VARIANTS - 1);
+    sharedPitchState.index++;
     return index;
   };
 
@@ -461,4 +463,6 @@ export const animatePlayDiscard = (config: AnimatePlayConfig) => {
     handleGameEnd();
     setCardTransformationLock(false);
   }, ALL_CARDS_DURATION + playDuration);
+
+  return ALL_CARDS_DURATION + playDuration;
 };

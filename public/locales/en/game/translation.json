@@ -206,6 +206,12 @@
   "rage-cards": {
     "no-cards": "On rage rounds, you will see the rage cards here"
   },
+  "rage-round-animation": {
+    "title": "RAGE ROUND",
+    "sacrificed-card": "Sacrificed card",
+    "click-anywhere": "Click anywhere to close",
+    "auto-skip": "Auto-skip this screen"
+  },
   "specials-box": {
     "specials-tooltip": "Special cards",
     "rage-tooltip": "Rage cards"

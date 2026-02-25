@@ -206,6 +206,12 @@
   "rage-cards": {
     "no-cards": "Em rondas de rage, você verá as cartas de rage aqui"
   },
+  "rage-round-animation": {
+    "title": "RODADA RAGE",
+    "sacrificed-card": "Carta sacrificada",
+    "click-anywhere": "Toque em qualquer lugar para fechar",
+    "auto-skip": "Pular esta tela automaticamente"
+  },
   "specials-box": {
     "specials-tooltip": "Cartas especiais",
     "rage-tooltip": "Cartas de rage"

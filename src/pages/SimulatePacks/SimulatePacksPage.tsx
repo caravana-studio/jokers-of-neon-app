@@ -5,7 +5,7 @@ import { BLUE } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { SimulatePackRow } from "./SimulatePackRow";
 
-const PACK_IDS = [1, 2, 3, 4, 5, 6];
+const PACK_IDS = [1, 2, 3, 4, 5, 6, 21, 22, 23, 24, 25, 26];
 
 export const SimulatePacksPage = () => {
   const { isSmallScreen } = useResponsiveValues();

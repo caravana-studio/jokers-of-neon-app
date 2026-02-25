@@ -26,6 +26,7 @@ import { OpenLootBox } from "./pages/OpenLootBox/Stages/OpenLootBox";
 import { OpenLootBoxCardSelection } from "./pages/OpenLootBox/Stages/OpenLootBoxCardSelection";
 import { PlaysLayout } from "./pages/Plays/PlaysLayout";
 import { PreviewPage } from "./pages/Preview/PreviewPage";
+import { PracticePage } from "./pages/Practice/PracticePage";
 import { ProfilePage } from "./pages/Profile/ProfilePage";
 import { PurchasingPackPage } from "./pages/PurchasingPackPage";
 import { Redirect } from "./pages/Redirect";
@@ -40,6 +41,7 @@ import { ReferralPage } from "./pages/ReferralPage";
 import { SimulatePacksPage } from "./pages/SimulatePacks/SimulatePacksPage";
 import { CardHighlightProvider } from "./providers/HighlightProvider/CardHighlightProvider";
 import { PowerupHighlightProvider } from "./providers/HighlightProvider/PowerupHighlightProvider";
+import { PracticeGameProvider } from "./providers/PracticeGameProvider";
 import { StoreProvider } from "./providers/StoreProvider";
 import TutorialGameProvider from "./providers/TutorialGameProvider";
 import { LoginGate } from "./utils/LoginGate";
@@ -241,6 +243,16 @@ export const AppRoutes = () => {
           </TutorialGameProvider>
         }
       />
+      <Route
+        path="/practice"
+        element={
+          <PracticeGameProvider>
+            <AnimatedPage>
+              <PracticePage />
+            </AnimatedPage>
+          </PracticeGameProvider>
+        }
+      />
       <Route path="/redirect" element={<Redirect />} />
       <Route
         path="/preview/:type"
@@ -379,6 +391,16 @@ export const AppRoutes = () => {
       />
       <Route
         path="/docs"
+        element={
+          <CardHighlightProvider>
+            <AnimatedPage>
+              <DocsPage lastIndexTab={0} />
+            </AnimatedPage>
+          </CardHighlightProvider>
+        }
+      />
+      <Route
+        path="/docs-game"
         element={
           <CardHighlightProvider>
             <AnimatedPage>
