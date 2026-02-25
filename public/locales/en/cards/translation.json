@@ -835,7 +835,7 @@
     },
     "10208": {
       "name": "Neon Doctrine",
-      "description": "Each played card belonging to the hand has a 30% chance to become a neon card."
+      "description": "Each played card has a 30% chance to become a neon card."
     },
     "10209": {
       "name": "Minimalism",
