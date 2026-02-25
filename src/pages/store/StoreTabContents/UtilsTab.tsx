@@ -11,6 +11,7 @@ import theme from "../../../theme/theme";
 import { BurnComponent } from "../../DynamicStore/storeComponents/BurnComponent";
 import { SpecialSlotItem } from "../SpecialSlotItem";
 import LevelUpTable from "../StoreElements/LevelUpTable";
+import { getEffectivePrice } from "../../../utils/pricing";
 
 export const UtilsTab = () => {
   const { t } = useTranslation(["store"]);
@@ -24,11 +25,11 @@ export const UtilsTab = () => {
 
   const visible = specialSlots < maxSpecialCards;
 
-  const notEnoughCashSlot =
-    !specialSlotItem?.cost ||
-    (specialSlotItem?.discount_cost
-      ? cash < Number(specialSlotItem?.discount_cost ?? 0)
-      : cash < Number(specialSlotItem.cost));
+  const slotEffectivePrice = getEffectivePrice(
+    specialSlotItem?.cost,
+    specialSlotItem?.discount_cost
+  );
+  const notEnoughCashSlot = cash < slotEffectivePrice;
 
   const effectiveCost: number =
     burnItem?.discount_cost && burnItem.discount_cost !== 0

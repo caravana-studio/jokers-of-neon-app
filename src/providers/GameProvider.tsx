@@ -15,6 +15,7 @@ import {
   discardSfx,
   negativeMultiSfx,
 } from "../constants/sfx.ts";
+import { CONVERTER_SPECIAL_CARD_IDS_SET } from "../constants/specialCardIds.ts";
 
 // Number of pitch variants for scoring sounds (points_0.mp3 to points_17.mp3)
 const PITCH_VARIANTS = 18;
@@ -31,7 +32,7 @@ import { useCurrentHandStore } from "../state/useCurrentHandStore.ts";
 import { useDeckStore } from "../state/useDeckStore.ts";
 import { useGameStore } from "../state/useGameStore.ts";
 import { Card } from "../types/Card";
-import { PlayEvents } from "../types/ScoreData";
+import { CardPlayEvent, PlayEvents, PowerUpScore } from "../types/ScoreData";
 import { logEvent } from "../utils/analytics.ts";
 import { getPlayAnimationDuration } from "../utils/getPlayAnimationDuration.ts";
 import { isCardSilent } from "../utils/isCardSilent.ts";
@@ -128,6 +129,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     advanceLevel,
     refetchDebuffedPlayerHands,
     refetchSpecialCards,
+    refetchPlays,
     setIsTournament,
   } = useGameStore();
 
@@ -143,13 +145,15 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     syncMaxPreSelectedCards,
     changeCardsSuit,
     changeCardsNeon,
+    changeCardsRank,
     setPlayIsNeon,
     setCardTransformationLock,
   } = useCurrentHandStore();
 
   const { fetchDeck } = useDeckStore();
 
-  const { setPlayAnimation, setDiscardAnimation } = useAnimationStore();
+  const { setPlayAnimation, setDiscardAnimation, setLevelUpHand } =
+    useAnimationStore();
 
   const { getCardData } = useCardData();
 
@@ -305,6 +309,9 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     fetchDeck(client, gameId, getCardData);
     refetchDebuffedPlayerHands(client, gameId);
     refetchSpecialCardsData(modId, gameId, specialCards);
+    if (response.levelUpPlayEvent) {
+      refetchPlays(client, gameId);
+    }
     if (response.levelPassed && response.detailEarned) {
       response.levelPassed.level_passed > 0 && advanceLevel();
       response.detailEarned.rerolls &&
@@ -325,6 +332,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       setPlayIsNeon,
       setAnimatedCard,
       setAnimatedPowerUp,
+      setLevelUpHand,
       pointsSound,
       acumSound,
       negativeMultiSound,
@@ -332,6 +340,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       setMulti,
       changeCardsSuit,
       changeCardsNeon,
+      changeCardsRank,
       setAnimation,
       setPreSelectionLocked,
       clearPreSelection,
@@ -428,39 +437,52 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     }
 
     const playPitchState = { index: 0 };
+    const hasActiveConverterSpecial = specialCards.some((specialCard) => {
+      const specialCardId = specialCard.card_id;
+      return (
+        specialCardId !== undefined &&
+        CONVERTER_SPECIAL_CARD_IDS_SET.has(specialCardId)
+      );
+    });
+    const shouldUseOptimisticPlay = !hasActiveConverterSpecial;
 
-    const optimisticCardPlayEvents = buildOptimisticCardPlayEvents({
-      hand,
-      preSelectedCards,
-      specialCards,
-      preSelectedModifiers,
-      silentCardIndexes: nonAnimatedCardIndexes,
-    });
-    const optimisticPowerUpEvents = buildOptimisticPowerUpEvents({
-      preSelectedPowerUps,
-      powerUps,
-    });
+    let optimisticCardPlayEvents: CardPlayEvent[] = [];
+    let optimisticPowerUpEvents: PowerUpScore[] = [];
 
-    const optimisticAnimation = animateOptimisticCardPlay({
-      events: optimisticCardPlayEvents,
-      powerUpEvents: optimisticPowerUpEvents,
-      playAnimationDuration,
-      pitchState: playPitchState,
-      setAnimatedCard,
-      setAnimatedPowerUp,
-      pointsSound,
-      negativeMultiSound,
-      addPoints,
-      addMulti,
-    });
+    if (shouldUseOptimisticPlay) {
+      optimisticCardPlayEvents = buildOptimisticCardPlayEvents({
+        hand,
+        preSelectedCards,
+        specialCards,
+        preSelectedModifiers,
+        silentCardIndexes: nonAnimatedCardIndexes,
+      });
+      optimisticPowerUpEvents = buildOptimisticPowerUpEvents({
+        preSelectedPowerUps,
+        powerUps,
+      });
 
-    activeOptimisticAnimationRef.current = optimisticAnimation;
-    playAnimationQueueRef.current = optimisticAnimation.done;
-    optimisticAnimation.done.finally(() => {
-      if (activeOptimisticAnimationRef.current === optimisticAnimation) {
-        activeOptimisticAnimationRef.current = null;
-      }
-    });
+      const optimisticAnimation = animateOptimisticCardPlay({
+        events: optimisticCardPlayEvents,
+        powerUpEvents: optimisticPowerUpEvents,
+        playAnimationDuration,
+        pitchState: playPitchState,
+        setAnimatedCard,
+        setAnimatedPowerUp,
+        pointsSound,
+        negativeMultiSound,
+        addPoints,
+        addMulti,
+      });
+
+      activeOptimisticAnimationRef.current = optimisticAnimation;
+      playAnimationQueueRef.current = optimisticAnimation.done;
+      optimisticAnimation.done.finally(() => {
+        if (activeOptimisticAnimationRef.current === optimisticAnimation) {
+          activeOptimisticAnimationRef.current = null;
+        }
+      });
+    }
 
     setPreSelectionLocked(true);
     statePlay();
@@ -468,11 +490,13 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     play(gameId, preSelectedCards, preSelectedModifiers, preSelectedPowerUps)
       .then((response) => {
         if (response) {
-          const dedupedResponse = filterOptimisticEventsFromPlayEvents(
-            response,
-            optimisticCardPlayEvents,
-            optimisticPowerUpEvents
-          );
+          const dedupedResponse = shouldUseOptimisticPlay
+            ? filterOptimisticEventsFromPlayEvents(
+                response,
+                optimisticCardPlayEvents,
+                optimisticPowerUpEvents
+              )
+            : response;
           const filteredResponse = filterSilentCardEventsFromPlayEvents(
             dedupedResponse,
             nonAnimatedCardIndexes

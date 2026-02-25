@@ -9,6 +9,7 @@ import { useStore } from "../../providers/StoreProvider.tsx";
 import { useGameStore } from "../../state/useGameStore.ts";
 import { useShopStore } from "../../state/useShopStore.ts";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
+import { getEffectivePrice } from "../../utils/pricing.ts";
 
 export const PreviewSlot = () => {
   const navigate = useNavigate();
@@ -24,11 +25,8 @@ export const PreviewSlot = () => {
 
   const imgSize = isSmallScreen ? "200px" : "auto";
 
-  const notEnoughCash =
-    !price ||
-    (specialSlotItem?.discount_cost
-      ? cash < Number(specialSlotItem?.discount_cost ?? 0)
-      : cash < Number(price));
+  const effectivePrice = getEffectivePrice(price, specialSlotItem?.discount_cost);
+  const notEnoughCash = cash < effectivePrice;
 
   const handleBuyClick = () => {
     buySpecialSlot();

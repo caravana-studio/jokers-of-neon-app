@@ -76,6 +76,7 @@ export const TiltCard = ({
 
   const modifiedCard = useTransformedCard(card);
   const isSilent = useIsSilent(modifiedCard);
+  const isSpecialSilenced = Boolean(card.isSpecial && card.silenced);
   const isDebuffed = useIsDebuffed(modifiedCard);
   const storeSkinId = useSkinPreferencesStore((store) =>
     card.card_id !== undefined ? store.getSkinFor(card.card_id) : 0
@@ -153,7 +154,7 @@ export const TiltCard = ({
               />
 
               {!disableBroken &&
-                (isSilent || isDebuffed) &&
+                (isSilent || isSpecialSilenced || isDebuffed) &&
                 state === GameStateEnum.Rage && (
                   <BrokenCard onDeck={onDeck} isPack={isPack} />
                 )}
@@ -176,7 +177,7 @@ export const TiltCard = ({
             </Box>
           </CardTooltip>
 
-          {!onDeck && card.price && (
+          {!onDeck && card.price !== undefined && card.price !== null && (
             <PriceBox
               price={card.price}
               purchased={purchased}

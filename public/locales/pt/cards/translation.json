@@ -1,5 +1,6 @@
 {
   "activated": "Activado",
+  "silenced": "SILENCIADA",
   "by": "por",
   "modifiers": {
     "608": {
@@ -398,7 +399,7 @@
     },
     "10208": {
       "name": "Doutrina Neon",
-      "description": "Cada carta jogada que pertence à jogada tem 30% de chance de se tornar uma carta neon."
+      "description": "Cada carta jogada tem 30% de chance de se tornar uma carta neon."
     },
     "10209": {
       "name": "Minimalismo",

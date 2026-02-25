@@ -236,6 +236,7 @@
       "level-bonus": "Level bonus",
       "discards-left": "{{discards}} Discards left",
       "hands-left": "{{hands}} Hands left",
+      "special-card-bonus": "Special card bonus",
       "rage": "{{cards}} Rage defeated",
       "rerolls": "rerolls",
       "total": "total",

@@ -3,9 +3,10 @@ import { Box } from "@chakra-ui/react";
 interface BrokenCardProps {
   onDeck: boolean;
   isPack: boolean;
+  isSpecial?: boolean;
 }
 
-export const BrokenCard: React.FC<BrokenCardProps> = ({ onDeck, isPack }) => {
+export const BrokenCard: React.FC<BrokenCardProps> = ({ onDeck, isPack, isSpecial }) => {
   return (
     <>
       <Box
@@ -14,10 +15,10 @@ export const BrokenCard: React.FC<BrokenCardProps> = ({ onDeck, isPack }) => {
         left={0}
         w="100%"
         h="100%"
-        backgroundColor={onDeck ? "" : "rgba(0,0,0,0.3)"}
+        backgroundColor={onDeck ? "" : isSpecial ? "rgba(255,255,255,0.3)" : "rgba(0,0,0,0.3)"}
         backgroundImage={'url("/broken.png")'}
         backgroundSize="cover"
-        borderRadius={isPack ? {} : { base: "5px", sm: "8px" }}
+        borderRadius={isPack ? {} : { base: "5%", sm: "8px" }}
         pointerEvents="none"
       />
     </>

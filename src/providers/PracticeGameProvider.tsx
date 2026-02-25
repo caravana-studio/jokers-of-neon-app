@@ -84,7 +84,7 @@ export const PracticeGameProvider = ({ children }: { children: ReactNode }) => {
   } = useDojo();
 
   const { sfxVolume, animationSpeed } = useSettings();
-  const { setPlayAnimation } = useAnimationStore();
+  const { setPlayAnimation, setLevelUpHand } = useAnimationStore();
 
   const {
     setAnimatedCard,
@@ -270,6 +270,7 @@ export const PracticeGameProvider = ({ children }: { children: ReactNode }) => {
         setPlayIsNeon: handStore.setPlayIsNeon,
         setAnimatedCard,
         setAnimatedPowerUp,
+        setLevelUpHand,
         pointsSound,
         acumSound,
         negativeMultiSound,
@@ -279,6 +280,7 @@ export const PracticeGameProvider = ({ children }: { children: ReactNode }) => {
         addMulti: gameStore.addMulti,
         changeCardsSuit: handStore.changeCardsSuit,
         changeCardsNeon: handStore.changeCardsNeon,
+        changeCardsRank: handStore.changeCardsRank,
         setAnimation: setPlayAnimation,
         setPreSelectionLocked: handStore.setPreSelectionLocked,
         clearPreSelection,

@@ -12,7 +12,8 @@ export const SPECIALS_PRICE: Record<RARITY, number> = {
 
 export const SPECIALS_CREATORS: Record<number, string> = {
   10014: "nico_n44",
-  10080: "dub_zn"
+  10080: "dub_zn",
+  10201: "dpotsdobeck",
 }
 
 export const SPECIALS_RARITY: Record<number, RARITY> = {
@@ -106,4 +107,4 @@ export const SKINS_RARITY: Record<number, RARITY> = {
   101: RARITY.B
 }
 
-export const SPECIALS_CUMULATIVE = [10054, 10072, 10101, 10107, 10109, 10110, 10111, 10113, 10114, 19903];
+export const SPECIALS_CUMULATIVE = [10054, 10072, 10101, 10107, 10109, 10110, 10111, 10113, 10114, 19903, 10209, 10213];

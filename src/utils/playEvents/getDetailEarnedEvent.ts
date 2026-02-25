@@ -24,7 +24,14 @@ export const getDetailEarnedEvent = (
   const rage_card_defeated_cash =
     getNumberValueFromEvent(detailEarnedEvent, 11) ?? 0;
   const rerolls = getNumberValueFromEvent(detailEarnedEvent, 12) ?? 0;
-  const total = getNumberValueFromEvent(detailEarnedEvent, 13) ?? 0;
+
+  // Backward-compatible parser:
+  // old event shape: [.., rerolls, total]
+  // new event shape: [.., rerolls, rewards_special_card, total]
+  const valueAt13 = getNumberValueFromEvent(detailEarnedEvent, 13);
+  const valueAt14 = getNumberValueFromEvent(detailEarnedEvent, 14);
+  const rewards_special_card = valueAt14 !== undefined ? valueAt13 ?? 0 : 0;
+  const total = valueAt14 ?? valueAt13 ?? 0;
 
   return {
     round_defeat,
@@ -36,6 +43,7 @@ export const getDetailEarnedEvent = (
     rage_card_defeated,
     rage_card_defeated_cash,
     rerolls,
+    rewards_special_card,
     total,
   };
 };

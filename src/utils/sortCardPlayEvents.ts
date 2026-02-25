@@ -7,14 +7,15 @@ const EVENT_TYPE_PRIORITY: Record<EventTypeEnum, number> = {
   [EventTypeEnum.Heart]: 2,
   [EventTypeEnum.Diamond]: 3,
   [EventTypeEnum.Neon]: 4,
-  [EventTypeEnum.Joker]: 5,
-  [EventTypeEnum.Wild]: 6,
-  [EventTypeEnum.Point]: 7,
-  [EventTypeEnum.AcumPoint]: 8,
-  [EventTypeEnum.Multi]: 9,
-  [EventTypeEnum.AcumMulti]: 10,
-  [EventTypeEnum.Cash]: 11,
-  [EventTypeEnum.AcumCash]: 12,
+  [EventTypeEnum.Rank]: 5,
+  [EventTypeEnum.Joker]: 6,
+  [EventTypeEnum.Wild]: 7,
+  [EventTypeEnum.Point]: 8,
+  [EventTypeEnum.AcumPoint]: 9,
+  [EventTypeEnum.Multi]: 10,
+  [EventTypeEnum.AcumMulti]: 11,
+  [EventTypeEnum.Cash]: 12,
+  [EventTypeEnum.AcumCash]: 13,
 };
 
 const getEventPriority = (event: CardPlayEvent) =>

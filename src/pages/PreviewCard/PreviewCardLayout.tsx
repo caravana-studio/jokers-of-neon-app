@@ -25,6 +25,7 @@ import { useCustomNavigate } from "../../hooks/useCustomNavigate.tsx";
 import { useCardData } from "../../providers/CardDataProvider.tsx";
 import { useGameStore } from "../../state/useGameStore.ts";
 import { useShopStore } from "../../state/useShopStore.ts";
+import { getEffectivePrice } from "../../utils/pricing.ts";
 
 const SIZE_MULTIPLIER = 2;
 const { white, neonGreen } = theme.colors;
@@ -58,7 +59,8 @@ const PreviewCardLayout = () => {
 
   const { name, description, details } = getCardData(card.card_id ?? 0);
 
-  const notEnoughCash = !card.price || cash < card.price;
+  const effectivePrice = getEffectivePrice(card.price, card.discount_cost);
+  const notEnoughCash = cash < effectivePrice;
   const noSpaceForSpecialCards =
     card.isSpecial && specialCards.length >= specialSlots;
 

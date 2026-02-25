@@ -1,5 +1,6 @@
 import { Flex } from "@chakra-ui/react";
 import { isMobile } from "react-device-detect";
+import { useTranslation } from "react-i18next";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import { CashSymbol } from "./CashSymbol";
 
@@ -23,9 +24,12 @@ export const PriceBox = ({
   discountFontSize,
 }: IPriceBoxProps) => {
   const { isSmallScreen } = useResponsiveValues();
+  const { t } = useTranslation("store", { keyPrefix: "store.labels" });
   const finalFontSize = fontSize ?? (isMobile ? 15 : 20);
   const finalDiscountFontSize = discountFontSize ?? (isMobile ? 12 : 15);
   const powerUpBottom = isSmallScreen ? 40 : 20;
+  const isFreePrice = price === 0;
+  const freeLabel = t("free").toUpperCase();
 
   return (
     <Flex
@@ -62,8 +66,8 @@ export const PriceBox = ({
         justifyContent="center"
         alignItems="center"
       >
-        {!discountPrice && <CashSymbol />}
-        {price}
+        {!discountPrice && !isFreePrice && <CashSymbol />}
+        {isFreePrice ? freeLabel : price}
       </Flex>
 
       {discountPrice > 0 && (

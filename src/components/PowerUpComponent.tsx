@@ -6,6 +6,7 @@ import { BACKGROUND_BLUE, GREY_LINE } from "../theme/colors";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import { PowerUp } from "../types/Powerup/PowerUp";
 import { colorizeText } from "../utils/getTooltip";
+import { hasPriceValue } from "../utils/pricing";
 import { AnimatedPowerUp } from "./AnimatedPowerUp";
 import CachedImage from "./CachedImage";
 import { PriceBox } from "./PriceBox";
@@ -35,8 +36,8 @@ export const PowerUpComponent = ({
   const { powerUpIsPreselected } = useGameStore();
   const calculatedIsActive =
     isActive ?? (powerUp && powerUpIsPreselected(powerUp.idx));
-  const price = inStore && powerUp?.cost;
-  const discount_cost = inStore && powerUp?.discount_cost;
+  const price = inStore ? powerUp?.cost : undefined;
+  const discount_cost = inStore ? powerUp?.discount_cost : undefined;
   const purchased = inStore && powerUp?.purchased;
   const { cardScale, isSmallScreen } = useResponsiveValues();
 
@@ -60,7 +61,7 @@ export const PowerUpComponent = ({
       opacity={purchased ? 0.3 : 1}
       onClick={onClick}
     >
-      {price && (
+      {hasPriceValue(price) && (
         <PriceBox
           price={Number(price)}
           purchased={Boolean(purchased)}

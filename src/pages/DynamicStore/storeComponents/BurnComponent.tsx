@@ -65,7 +65,7 @@ export const BurnComponent = ({}: IBurnItem) => {
             topOffset={"50%"}
           />
         </Flex>
-        {price && (
+        {price !== undefined && price !== null && (
           <PriceBox
             price={Number(price)}
             purchased={Boolean(purchased)}

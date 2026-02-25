@@ -106,6 +106,7 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
     rage_card_defeated,
     rage_card_defeated_cash,
     rerolls,
+    rewards_special_card,
     total,
   } = roundRewards;
 
@@ -113,20 +114,12 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
     keyPrefix: "rewards-details.labels",
   });
 
-  const labels = [
-    t("base"),
-    t("level-bonus"),
-    t("hands-left", { hands: hands_left }),
-    t("discards-left", { discards: discard_left }),
-  ];
-
-  if (rerolls) {
-    labels.push(t("rerolls", { rerolls: rerolls }));
-  }
-
-  if (rage_card_defeated && rage_card_defeated_cash) {
-    labels.push(t("rage", { cards: rage_card_defeated }));
-  }
+  const baseLabel = t("base");
+  const handsLeftLabel = t("hands-left", { hands: hands_left });
+  const discardsLeftLabel = t("discards-left", { discards: discard_left });
+  const rerollsLabel = t("rerolls", { rerolls: rerolls });
+  const rageLabel = t("rage", { cards: rage_card_defeated });
+  const specialCardBonusLabel = t("special-card-bonus");
 
   const { navigateToMap } = useMapNavigate();
   const { isSmallScreen } = useResponsiveValues();
@@ -162,7 +155,10 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
   );
 
   const rewardLines =
-    3 + (rage_card_defeated_cash > 0 ? 1 : 0) + (rerolls > 0 ? 1 : 0);
+    3 +
+    (rewards_special_card > 0 ? 1 : 0) +
+    (rage_card_defeated_cash > 0 ? 1 : 0) +
+    (rerolls > 0 ? 1 : 0);
 
   if (isNavigating) {
     return (
@@ -223,32 +219,40 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
         >
           <RewardItem
             skip={skip}
-            label={labels[0]}
+            label={baseLabel}
             value={round_defeat}
             rollingDelay={DELAY_START * 1000 + 500}
           />
           <RewardItem
             skip={skip}
-            label={labels[2]}
+            label={handsLeftLabel}
             value={hands_left_cash}
             rollingDelay={(DELAY_START + STAGGER) * 1000}
           />
           <RewardItem
             skip={skip}
-            label={labels[3]}
+            label={discardsLeftLabel}
             value={discard_left_cash}
             rollingDelay={(DELAY_START + STAGGER) * 1000}
           />
+          {rewards_special_card > 0 && (
+            <RewardItem
+              skip={skip}
+              label={specialCardBonusLabel}
+              value={rewards_special_card}
+              rollingDelay={(DELAY_START + STAGGER) * 1000}
+            />
+          )}
           {rage_card_defeated_cash > 0 && (
             <RewardItem
               skip={skip}
-              label={labels[5]}
+              label={rageLabel}
               value={rage_card_defeated_cash}
               rollingDelay={(DELAY_START + STAGGER) * 1000}
             />
           )}
           {rerolls > 0 && (
-            <RewardItem skip={skip} label={labels[4]} value={rerolls} reroll />
+            <RewardItem skip={skip} label={rerollsLabel} value={rerolls} reroll />
           )}
 
           <Flex

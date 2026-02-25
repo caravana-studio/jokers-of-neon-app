@@ -1,5 +1,6 @@
 {
   "activated": "Activada",
+  "silenced": "SILENCIADA",
   "by": "por",
   "modifiers": {
     "608": {
@@ -398,7 +399,7 @@
     },
     "10208": {
       "name": "Doctrina Neon",
-      "description": "Cada carta jugada que pertenece a la jugada tiene un 30% de probabilidad de convertirse en carta neon."
+      "description": "Cada carta jugada tiene un 30% de probabilidad de convertirse en carta neon."
     },
     "10209": {
       "name": "Minimalismo",
