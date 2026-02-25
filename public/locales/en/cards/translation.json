@@ -759,7 +759,7 @@
     },
     "10106": {
       "name": "Circle of Fortune",
-      "description": "Rolls a random number between 0 and 36; if even, result on ^blue(points x2)^; if odd, result on ^yellow(cash x2)^; if 0, ^blue(+300 points)^."
+      "description": "Rolls a random number between 0 and 36; if even, result on ^blue(points x5)^; if odd, result on ^yellow(cash x10)^; if 0, ^blue(+300 points)^."
     },
     "10107": {
       "name": "Hestia Blessing",
@@ -771,7 +771,7 @@
     },
     "10109": {
       "name": "Hanged Joker",
-      "description": "If your hand contains a joker, it has a 25% chance to accumulate ^blue(+10 points)^. Currently ^blue(+{{points}} points)^."
+      "description": "For each joker in your play, 20% chance to accumulate ^blue(+10 points)^. Currently ^blue(+{{points}} points)^."
     },
     "10110": {
       "name": "Special Sacrifice",
@@ -835,7 +835,7 @@
     },
     "10208": {
       "name": "Neon Doctrine",
-      "description": "Each played card has a 30% chance to become a neon card."
+      "description": "Played cards have a 30% chance to become neon cards."
     },
     "10209": {
       "name": "Minimalism",
@@ -847,7 +847,7 @@
     },
     "10211": {
       "name": "Providence",
-      "description": "Shop items have a ^yellow(30%)^ chance to be free."
+      "description": "Shop items have a ^yellow(20%)^ chance to be free."
     },
     "10212": {
       "name": "Efficient Hunter",
@@ -855,7 +855,7 @@
     },
     "10213": {
       "name": "Residual Charge",
-      "description": "Accumulates ^blue(25%)^ of the value of each power-up played. Currently ^blue(+{{points}} points)^."
+      "description": "Accumulates ^blue(10%)^ of the value of each power-up played. Currently ^blue(+{{points}} points)^."
     },
     "10214": {
       "name": "Undying Draw",
