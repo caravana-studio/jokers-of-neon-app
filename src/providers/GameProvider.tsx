@@ -15,7 +15,6 @@ import {
   discardSfx,
   negativeMultiSfx,
 } from "../constants/sfx.ts";
-import { CONVERTER_SPECIAL_CARD_IDS_SET } from "../constants/specialCardIds.ts";
 
 // Number of pitch variants for scoring sounds (points_0.mp3 to points_17.mp3)
 const PITCH_VARIANTS = 18;
@@ -42,6 +41,11 @@ import {
 } from "../utils/playEvents/animateOptimisticCardPlay.ts";
 import { animatePlayDiscard } from "../utils/playEvents/animatePlayDiscard.ts";
 import { buildOptimisticCardPlayEvents } from "../utils/playEvents/buildOptimisticCardPlayEvents.ts";
+import {
+  buildOptimisticConverterCardPlayChangeEvents,
+  canOptimisticallyBuildConverterEvents,
+  getActiveConverterSpecialCards,
+} from "../utils/playEvents/buildOptimisticConverterCardPlayChangeEvents.ts";
 import { buildOptimisticPowerUpEvents } from "../utils/playEvents/buildOptimisticPowerUpEvents.ts";
 import { filterOptimisticEventsFromPlayEvents } from "../utils/playEvents/filterOptimisticEventsFromPlayEvents.ts";
 import { filterSilentCardEventsFromPlayEvents } from "../utils/playEvents/filterSilentCardEventsFromPlayEvents.ts";
@@ -437,19 +441,23 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     }
 
     const playPitchState = { index: 0 };
-    const hasActiveConverterSpecial = specialCards.some((specialCard) => {
-      const specialCardId = specialCard.card_id;
-      return (
-        specialCardId !== undefined &&
-        CONVERTER_SPECIAL_CARD_IDS_SET.has(specialCardId)
-      );
-    });
-    const shouldUseOptimisticPlay = !hasActiveConverterSpecial;
+    const activeConverterSpecialCards = getActiveConverterSpecialCards(specialCards);
+    const shouldUseOptimisticPlay =
+      activeConverterSpecialCards.length === 0 ||
+      canOptimisticallyBuildConverterEvents(activeConverterSpecialCards);
 
+    let optimisticCardPlayChangeEvents: CardPlayEvent[] = [];
     let optimisticCardPlayEvents: CardPlayEvent[] = [];
     let optimisticPowerUpEvents: PowerUpScore[] = [];
 
     if (shouldUseOptimisticPlay) {
+      optimisticCardPlayChangeEvents =
+        buildOptimisticConverterCardPlayChangeEvents({
+          hand,
+          preSelectedCards,
+          specialCards,
+          preSelectedModifiers,
+        });
       optimisticCardPlayEvents = buildOptimisticCardPlayEvents({
         hand,
         preSelectedCards,
@@ -463,6 +471,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       });
 
       const optimisticAnimation = animateOptimisticCardPlay({
+        changeEvents: optimisticCardPlayChangeEvents,
         events: optimisticCardPlayEvents,
         powerUpEvents: optimisticPowerUpEvents,
         playAnimationDuration,
@@ -473,6 +482,10 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         negativeMultiSound,
         addPoints,
         addMulti,
+        changeCardsSuit,
+        changeCardsNeon,
+        changeCardsRank,
+        setCardTransformationLock,
       });
 
       activeOptimisticAnimationRef.current = optimisticAnimation;
@@ -494,7 +507,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             ? filterOptimisticEventsFromPlayEvents(
                 response,
                 optimisticCardPlayEvents,
-                optimisticPowerUpEvents
+                optimisticPowerUpEvents,
+                optimisticCardPlayChangeEvents
               )
             : response;
           const filteredResponse = filterSilentCardEventsFromPlayEvents(

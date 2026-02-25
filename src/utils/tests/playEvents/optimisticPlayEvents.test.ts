@@ -371,6 +371,51 @@ test("filterOptimisticEventsFromPlayEvents deduplicates optimistic powerups too"
   expect(filtered.powerUpEvents).toEqual([{ idx: 2, points: 50, multi: 0 }]);
 });
 
+test("filterOptimisticEventsFromPlayEvents deduplicates optimistic converter changes too", () => {
+  const playEvents: PlayEvents = {
+    play: { points: 0, multi: 1 },
+    gameOver: false,
+    cards: [],
+    score: 0,
+    cardPlayChangeEvents: [
+      {
+        hand: [{ idx: 0, quantity: 0 }],
+        specials: [{ idx: 10014, quantity: 1 }],
+        eventType: EventTypeEnum.Heart,
+      },
+      {
+        hand: [{ idx: 1, quantity: 0 }],
+        specials: [{ idx: 10014, quantity: 1 }],
+        eventType: EventTypeEnum.Heart,
+      },
+      {
+        hand: [{ idx: 9, quantity: 0 }],
+        specials: [{ idx: 10210, quantity: 1 }],
+        eventType: EventTypeEnum.Neon,
+      },
+    ],
+  };
+
+  const filtered = filterOptimisticEventsFromPlayEvents(playEvents, [], [], [
+    {
+      hand: [
+        { idx: 0, quantity: 0 },
+        { idx: 1, quantity: 0 },
+      ],
+      specials: [{ idx: 10014, quantity: 1 }],
+      eventType: EventTypeEnum.Heart,
+    },
+  ]);
+
+  expect(filtered.cardPlayChangeEvents).toEqual([
+    {
+      hand: [{ idx: 9, quantity: 0 }],
+      specials: [{ idx: 10210, quantity: 1 }],
+      eventType: EventTypeEnum.Neon,
+    },
+  ]);
+});
+
 test("filterSilentCardEventsFromPlayEvents removes silent cards from animated events", () => {
   const playEvents: PlayEvents = {
     play: { points: 0, multi: 1 },
