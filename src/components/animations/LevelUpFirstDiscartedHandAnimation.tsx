@@ -154,7 +154,11 @@ export const LevelUpFirstDiscartedHandAnimation = () => {
               justifyContent="center"
               gap={isSmallScreen ? 3 : 5}
             >
-              <Text size="xl">
+              <Text
+                whiteSpace="nowrap"
+                lineHeight={1}
+                fontSize={isSmallScreen ? 13 : "xl"}
+              >
                 {t("level") + " "}
                 {!showNewDataText ? levelUpHand?.old_level : levelUpHand?.level}
               </Text>
@@ -224,7 +228,7 @@ export const LevelUpFirstDiscartedHandAnimation = () => {
           left={0}
           width="100%"
           height="100%"
-          zIndex={10}
+          zIndex={2000}
           justifyContent="center"
           alignItems="center"
           flexDirection="column"
