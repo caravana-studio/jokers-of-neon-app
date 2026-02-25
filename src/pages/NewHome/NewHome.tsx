@@ -252,7 +252,7 @@ export const NewHome = () => {
                   yOffset={-800}
                 />
               </Flex>
-              {(!useBurnerAcc || isSmallScreen) && (
+              {
                 <Flex
                   w={isSmallScreen ? "auto" : "200px"}
                   flexDir={isSmallScreen ? "column" : "row"}
@@ -263,7 +263,7 @@ export const NewHome = () => {
                   gap={isSmallScreen ? 1.5 : 0}
                 >
                   {!useBurnerAcc && <ProfileTile />}
-                  {useBurnerAcc && isSmallScreen && (
+                  {useBurnerAcc && (
                     <Button
                       size="xs"
                       onClick={handleLoginClick}
@@ -294,7 +294,7 @@ export const NewHome = () => {
                     </Flex>
                   )}
                 </Flex>
-              )}
+              }
             </Flex>
             <Flex
               flexDir={"column"}
