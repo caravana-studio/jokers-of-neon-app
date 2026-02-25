@@ -12,7 +12,8 @@ export const SPECIALS_PRICE: Record<RARITY, number> = {
 
 export const SPECIALS_CREATORS: Record<number, string> = {
   10014: "nico_n44",
-  10080: "dub_zn"
+  10080: "dub_zn",
+  10201: "dpotsdobeck",
 }
 
 export const SPECIALS_RARITY: Record<number, RARITY> = {

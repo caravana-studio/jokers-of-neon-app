@@ -42,6 +42,7 @@ import {
   AllCardsToHearts,
   EasyFlush,
   EasyStraight,
+  StraightToHighStraight,
 } from "../../mocks/specialCardMocks";
 
 test("Flush with EasyFlush should work", () => {
@@ -241,4 +242,31 @@ test("Straight ace flush should work with easy straight", () => {
   expect(testCheckHand([H2, H3, HA, H4, JOKER1], [EasyStraight])).toBe(
     Plays.STRAIGHT_FLUSH
   );
+});
+
+test("Straight flush should become royal flush with StraightToHighStraight", () => {
+  expect(
+    testCheckHand([D6, D7, D8, D9, D10], [StraightToHighStraight])
+  ).toBe(Plays.ROYAL_FLUSH);
+});
+
+test("Straight flush with AllCardsToHearts should become royal flush with StraightToHighStraight", () => {
+  expect(
+    testCheckHand(
+      [D6, D7, D8, D9, S10],
+      [AllCardsToHearts, StraightToHighStraight]
+    )
+  ).toBe(Plays.ROYAL_FLUSH);
+});
+
+test("Straight should remain straight with StraightToHighStraight", () => {
+  expect(
+    testCheckHand([D6, D7, D8, D9, S10], [StraightToHighStraight])
+  ).toBe(Plays.STRAIGHT);
+});
+
+test("Flush should remain flush with StraightToHighStraight", () => {
+  expect(
+    testCheckHand([H2, H3, H4, H9, HJ], [StraightToHighStraight])
+  ).toBe(Plays.FLUSH);
 });

@@ -13,6 +13,9 @@ const evaluateHand = (
   preSelectedModifiers: { [key: number]: number[] }
 ): Plays => {
   const specialAllCardsToHearts = specialCards.some((s) => s.card_id === specialCardIds.ALL_TO_HEARTS);
+  const specialStraightToHighStraight = specialCards.some(
+    (s) => s.card_id === specialCardIds.STRAIGHT_TO_HIGH_STRAIGHT
+  );
   const easyFlush = specialCards.some((s) => s.card_id === specialCardIds.EASY_FLUSH);
   const easyStraight = specialCards.some((s) => s.card_id === specialCardIds.EASY_STRAIGHT);
 
@@ -199,6 +202,10 @@ const evaluateHand = (
   const isPlayStraight = isStraight();
 
   if (isFlush && isPlayStraight) {
+    if (specialStraightToHighStraight && cardsData.length >= 5) {
+      return Plays.ROYAL_FLUSH;
+    }
+
     let royalCards = [
       Cards.TEN,
       Cards.JACK,

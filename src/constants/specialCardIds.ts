@@ -3,6 +3,7 @@ export const specialCardIds = {
   EASY_FLUSH: 10009,
   EASY_STRAIGHT: 10008,
   SPECIAL_CARDS_BLOCKS_SUIT_CHANGE: 10014,
+  STRAIGHT_TO_HIGH_STRAIGHT: 10201,
 };
 
 // Special cards that can transform played cards (suit/neon/rank).
