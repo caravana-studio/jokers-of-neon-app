@@ -1,5 +1,4 @@
 import { SEASON_NUMBER } from "../constants/season";
-import { PackType } from "../enums/packTypes";
 import { RewardStatus } from "../enums/rewardStatus";
 import { IReward, IStep } from "../pages/SeasonProgression/types";
 
@@ -66,16 +65,17 @@ const parseReward = (
     return undefined;
   }
 
-  const tournamentEntries = rewards.filter(
+  const parsedRewards = rewards
+    .map((packId) => Number(packId))
+    .filter((packId) => Number.isFinite(packId));
+
+  const tournamentEntries = parsedRewards.filter(
     (packId) => packId === TOURNAMENT_ENTRY_PACK_ID
   ).length;
 
-  const packs = rewards
-    .filter(
-      (packId) =>
-        packId !== TOURNAMENT_ENTRY_PACK_ID && packId in PackType
-    )
-    .map((packId) => packId as PackType);
+  const packs = parsedRewards.filter(
+    (packId) => packId !== TOURNAMENT_ENTRY_PACK_ID && packId > 0
+  );
 
   if (packs.length === 0 && tournamentEntries === 0) {
     return undefined;

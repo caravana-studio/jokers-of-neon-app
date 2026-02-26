@@ -81,13 +81,13 @@ export const XpLeaderboard = ({ lines = 100, mb = "" }: XpLeaderboardProps) => {
                         <Text color={"white"}>
                         {entry.playerName || formatAddress(entry.address)}
                       </Text>
-                      {entry.hasSeasonPass && (
+                      {/* {entry.hasSeasonPass && (
                         <SeasonPass
                           w={isSmallScreen ? "14px" : "25px"}
                           rotate="0deg"
                           unlocked={false}
                         />
-                      )}
+                      )} */}
                       </Flex>
                     </Td>
 {/*                     <Td maxW="150px" p="12px 20px" whiteSpace="normal">

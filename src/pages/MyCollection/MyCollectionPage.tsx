@@ -19,6 +19,19 @@ import { BLUE } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import CollectionGrid from "./Collection";
 import { Collection } from "./types";
+
+const sortSpecialCollections = (collections: Collection[]): Collection[] => {
+  const seasons = collections
+    .filter((collection) => collection.id < 25)
+    .sort((a, b) => b.id - a.id);
+
+  const specialCollections = collections
+    .filter((collection) => collection.id >= 25)
+    .sort((a, b) => a.id - b.id);
+
+  return [...seasons, ...specialCollections];
+};
+
 export const MyCollectionPage = () => {
   const { isSmallScreen } = useResponsiveValues();
   const {
@@ -64,7 +77,7 @@ export const MyCollectionPage = () => {
     if (account?.address) {
       getUserCards(account.address).then((data) => {
         setIsLoading(false);
-        setMyCollection(data.specials);
+        setMyCollection(sortSpecialCollections(data.specials));
         setTraditionalCollection(data.traditionals);
         setNeonCollection(data.neons);
       });

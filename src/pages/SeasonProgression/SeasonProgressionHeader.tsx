@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Clock } from "../../components/Clock";
 import { SeasonPassBuyButton } from "../../components/SeasonPass/SeasonPassBuyButton";
 import { SeasonPassUnlocked } from "../../components/SeasonPass/SeasonPassUnlocked";
+import { SEASON_NUMBER } from "../../constants/season";
 import { useSeasonPass } from "../../providers/SeasonPassProvider";
 import { useSeason } from "../../queries/useSeason";
 import { BLUE } from "../../theme/colors";
@@ -23,7 +24,7 @@ export const SeasonProgressionHeader = ({
   const { seasonPassUnlocked } = useSeasonPass();
   const { season } = useSeason();
 
-  const seasonNumber = season?.number ?? 1;
+  const seasonNumber = SEASON_NUMBER;
   const seasonFinishDate = season?.finishDate;
   return (
     <Flex

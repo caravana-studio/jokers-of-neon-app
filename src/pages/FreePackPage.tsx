@@ -7,9 +7,12 @@ import { getUserCards } from "../api/getUserCards";
 import { DelayedLoading } from "../components/DelayedLoading";
 import { SimulatedLoadingBar } from "../components/LoadingProgressBar/SimulatedLoadingProgressBar";
 import { MobileDecoration } from "../components/MobileDecoration";
+import { SEASON_NUMBER } from "../constants/season";
 import { useDojo } from "../dojo/useDojo";
 import { LoadingProgress } from "../types/LoadingProgress";
 import { ExternalPack, SimplifiedCard } from "./ExternalPack/ExternalPack";
+
+const FALLBACK_FREE_PACK_ID = SEASON_NUMBER === 2 ? 21 : 1;
 
 export const FreePackPage = () => {
   const {
@@ -22,6 +25,7 @@ export const FreePackPage = () => {
   const navigate = useNavigate();
 
   const [mintedCards, setMintedCards] = useState<SimplifiedCard[]>([]);
+  const [freePackId, setFreePackId] = useState<number>(FALLBACK_FREE_PACK_ID);
   const [ownedCardIds, setOwnedCardIds] = useState<string[]>([]);
   const hasClaimedRef = useRef<boolean>(false);
 
@@ -35,8 +39,19 @@ export const FreePackPage = () => {
         setOwnedCardIds(data.ownedCardIds ?? []);
         return claimFreePack(account.address);
       })
-      .then((mintedCards) => {
-        setMintedCards(mintedCards);
+      .then((claimedCards) => {
+        const resolvedPackId = Number(claimedCards[0]?.pack_id);
+        setFreePackId(
+          Number.isFinite(resolvedPackId) && resolvedPackId > 0
+            ? resolvedPackId
+            : FALLBACK_FREE_PACK_ID
+        );
+        setMintedCards(
+          claimedCards.map((card) => ({
+            card_id: card.card_id,
+            skin_id: card.skin_id,
+          }))
+        );
       })
       .catch((e) => {
         console.error("Error claiming free pack:", e);
@@ -60,7 +75,11 @@ export const FreePackPage = () => {
   ];
 
   return mintedCards?.length > 0 ? (
-    <ExternalPack initialCards={mintedCards} ownedCardIds={ownedCardIds} />
+    <ExternalPack
+      initialCards={mintedCards}
+      ownedCardIds={ownedCardIds}
+      packId={freePackId}
+    />
   ) : (
     <DelayedLoading ms={0}>
       <MobileDecoration />
