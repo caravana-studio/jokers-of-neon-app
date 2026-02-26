@@ -13,6 +13,7 @@ import { DeleteAccBtn } from "../../components/Menu/Buttons/DeleteAccBtn";
 import { LogoutMenuBtn } from "../../components/Menu/Buttons/Logout/LogoutMenuBtn";
 import { MenuBtn } from "../../components/Menu/Buttons/MenuBtn";
 import { MobileDecoration } from "../../components/MobileDecoration";
+import { ControllerIcon } from "../../icons/ControllerIcon";
 import { ProfileStats } from "./ProfileStats";
 
 export const ProfileContent = ({
@@ -123,7 +124,6 @@ export const ProfileContent = ({
             {isSmallScreen && (
               <Divider borderColor="white" borderWidth="1px" my={2} />
             )}
-            {/* 
             {!setup.useBurnerAcc && (
               <>
                 {isSmallScreen && (
@@ -131,7 +131,7 @@ export const ProfileContent = ({
                 )}
                 <ControllerIcon width={btnWidth} label={true} arrowRight />
               </>
-            )} */}
+            )}
           </Flex>
         </Flex>
       </Flex>
