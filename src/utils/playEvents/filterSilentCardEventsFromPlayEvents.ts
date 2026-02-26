@@ -1,4 +1,5 @@
 import { PlayEvents } from "../../types/ScoreData";
+import { converterEventFilter } from "../converterEventFilter";
 
 export const filterSilentCardEventsFromPlayEvents = (
   playEvents: PlayEvents,
@@ -11,14 +12,18 @@ export const filterSilentCardEventsFromPlayEvents = (
   const cardPlayEvents = playEvents.cardPlayEvents
     ?.map((event) => ({
       ...event,
-      hand: event.hand.filter((handEvent) => !silentCardIndexes.has(handEvent.idx)),
+      hand: converterEventFilter(event)
+        ? event.hand
+        : event.hand.filter((handEvent) => !silentCardIndexes.has(handEvent.idx)),
     }))
     .filter((event) => event.hand.length > 0 || event.specials.length > 0);
 
   const cardPlayChangeEvents = playEvents.cardPlayChangeEvents
     ?.map((event) => ({
       ...event,
-      hand: event.hand.filter((handEvent) => !silentCardIndexes.has(handEvent.idx)),
+      hand: converterEventFilter(event)
+        ? event.hand
+        : event.hand.filter((handEvent) => !silentCardIndexes.has(handEvent.idx)),
     }))
     .filter((event) => event.hand.length > 0);
 
@@ -41,4 +46,3 @@ export const filterSilentCardEventsFromPlayEvents = (
         : undefined,
   };
 };
-
