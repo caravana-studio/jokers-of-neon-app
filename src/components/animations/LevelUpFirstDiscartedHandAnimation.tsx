@@ -9,7 +9,7 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import { ArrowRight } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { animated, useSpring } from "react-spring";
 import { useAnimationStore } from "../../state/useAnimationStore";
@@ -22,6 +22,7 @@ export const LevelUpFirstDiscartedHandAnimation = () => {
   const [showAnimationHeading, setShowAnimationHeading] = useState(false);
   const [showAnimationText, setShowAnimationText] = useState(false);
   const [showNewDataText, setNewDataText] = useState(false);
+  const [isSkipping, setIsSkipping] = useState(false);
   const { levelUpHand, setLevelUpHand } = useAnimationStore();
   const { isSmallScreen } = useResponsiveValues();
   const { blue, violet } = theme.colors;
@@ -30,6 +31,14 @@ export const LevelUpFirstDiscartedHandAnimation = () => {
   const { t } = useTranslation("game", {
     keyPrefix: "animations.labels",
   });
+
+  const resetAnimationState = useCallback(() => {
+    setShowAnimationHeading(false);
+    setShowAnimationText(false);
+    setNewDataText(false);
+    setIsSkipping(false);
+    setLevelUpHand(undefined);
+  }, [setLevelUpHand]);
 
   const headingSpring = useSpring({
     from: { x: -1000, opacity: 0 },
@@ -107,8 +116,16 @@ export const LevelUpFirstDiscartedHandAnimation = () => {
     config: { duration: 200 },
   });
 
+  const overlaySkipSpring = useSpring({
+    from: { x: 0, opacity: 1 },
+    to: isSkipping
+      ? { x: 1000, opacity: 0, config: { duration: 200 } }
+      : { x: 0, opacity: 1, config: { duration: 0 } },
+  });
+
   useEffect(() => {
     if (levelUpHand) {
+      setIsSkipping(false);
       setShowAnimationHeading(true);
       setShowAnimationText(false);
       setNewDataText(false);
@@ -121,10 +138,7 @@ export const LevelUpFirstDiscartedHandAnimation = () => {
       }, 500);
 
       const timer = setTimeout(() => {
-        setShowAnimationHeading(false);
-        setShowAnimationText(false);
-        setNewDataText(false);
-        setLevelUpHand(undefined);
+        resetAnimationState();
       }, 7000);
       return () => {
         clearTimeout(showTextTimer);
@@ -132,7 +146,22 @@ export const LevelUpFirstDiscartedHandAnimation = () => {
         clearTimeout(timer);
       };
     }
-  }, [levelUpHand]);
+  }, [levelUpHand, resetAnimationState]);
+
+  const handleSkipAnimation = () => {
+    if (!levelUpHand || isSkipping) return;
+
+    setIsSkipping(true);
+
+    // Keep content visible while the overlay performs the right fade-out.
+    setShowAnimationHeading(true);
+    setShowAnimationText(true);
+    setNewDataText(true);
+
+    setTimeout(() => {
+      resetAnimationState();
+    }, 200);
+  };
 
   const tableData = (showNewDataText: boolean) => (
     <Table
@@ -222,65 +251,68 @@ export const LevelUpFirstDiscartedHandAnimation = () => {
   return (
     <>
       {showAnimationHeading && (
-        <Flex
-          position="fixed"
-          top={0}
-          left={0}
-          width="100%"
-          height="100%"
-          zIndex={2000}
-          justifyContent="center"
-          alignItems="center"
-          flexDirection="column"
-          backdropFilter="blur(5px)"
-          backgroundColor=" rgba(0, 0, 0, 0.5)"
-          gap={3}
-        >
-          {levelUpHand && (
-            <>
-              <animated.div style={headingSpring}>
-                <Heading fontSize={isSmallScreen ? "1rem" : "2rem"}>
-                  {t("head") + " "}
-                </Heading>
-              </animated.div>
-
-              <animated.div style={textSpring}>
-                <Text fontSize={{ base: "2rem", sm: "4rem" }} textTransform="uppercase">
-                  {tPlays(`${PLAYS_DATA[levelUpHand?.hand]?.name}.name`)}
-                </Text>
-              </animated.div>
-
-              <Flex gap={isSmallScreen ? 3 : 0} alignItems="center">
-                <animated.div style={oldLevelSpring}>
-                  {tableData(false)}
+        <animated.div style={overlaySkipSpring}>
+          <Flex
+            position="fixed"
+            top={0}
+            left={0}
+            width="100%"
+            height="100%"
+            zIndex={2000}
+            justifyContent="center"
+            alignItems="center"
+            flexDirection="column"
+            backdropFilter="blur(5px)"
+            backgroundColor=" rgba(0, 0, 0, 0.5)"
+            gap={3}
+            onClick={handleSkipAnimation}
+          >
+            {levelUpHand && (
+              <>
+                <animated.div style={headingSpring}>
+                  <Heading fontSize={isSmallScreen ? "1rem" : "2rem"}>
+                    {t("head") + " "}
+                  </Heading>
                 </animated.div>
 
-                {showNewDataText && (
-                  <Box
-                    display={"flex"}
-                    alignItems={"center"}
-                    justifyContent={"center"}
-                  >
-                    <animated.div
-                      style={{
-                        ...arrowSpring,
-                        margin: isSmallScreen ? "0 6px" : "0 10px",
-                      }}
+                <animated.div style={textSpring}>
+                  <Text fontSize={{ base: "2rem", sm: "4rem" }} textTransform="uppercase">
+                    {tPlays(`${PLAYS_DATA[levelUpHand?.hand]?.name}.name`)}
+                  </Text>
+                </animated.div>
+
+                <Flex gap={isSmallScreen ? 3 : 0} alignItems="center">
+                  <animated.div style={oldLevelSpring}>
+                    {tableData(false)}
+                  </animated.div>
+
+                  {showNewDataText && (
+                    <Box
+                      display={"flex"}
+                      alignItems={"center"}
+                      justifyContent={"center"}
                     >
-                      <ArrowRight
-                        size={isSmallScreen ? 22 : 26}
-                        color="white"
-                      />
-                    </animated.div>
-                    <animated.div style={newLevelSpring}>
-                      {tableData(true)}
-                    </animated.div>
-                  </Box>
-                )}
-              </Flex>
-            </>
-          )}
-        </Flex>
+                      <animated.div
+                        style={{
+                          ...arrowSpring,
+                          margin: isSmallScreen ? "0 6px" : "0 10px",
+                        }}
+                      >
+                        <ArrowRight
+                          size={isSmallScreen ? 22 : 26}
+                          color="white"
+                        />
+                      </animated.div>
+                      <animated.div style={newLevelSpring}>
+                        {tableData(true)}
+                      </animated.div>
+                    </Box>
+                  )}
+                </Flex>
+              </>
+            )}
+          </Flex>
+        </animated.div>
       )}
     </>
   );
