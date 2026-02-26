@@ -19,4 +19,7 @@ export const BOXES_RARITY: Record<number, { rarity: RARITY; size: number }> = {
   8: { size: 5, rarity: RARITY.C },
   9: { size: 3, rarity: RARITY.C },
   10: { size: 5, rarity: RARITY.A },
+  11: { size: 5, rarity: RARITY.C },
+  12: { size: 5, rarity: RARITY.C },
+  13: { size: 5, rarity: RARITY.C },
 };

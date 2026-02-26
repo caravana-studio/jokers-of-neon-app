@@ -1,4 +1,3 @@
-import { PackType } from "../../enums/packTypes";
 import { RewardStatus } from "../../enums/rewardStatus";
 
 export interface IStep {
@@ -9,7 +8,7 @@ export interface IStep {
 }
 
 export interface IReward {
-  packs: PackType[];
+  packs: number[];
   tournamentEntries: number;
   status: RewardStatus;
 }
