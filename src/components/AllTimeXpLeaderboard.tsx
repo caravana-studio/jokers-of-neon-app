@@ -1,27 +1,14 @@
-import {
-  Box,
-  Flex,
-  Spinner,
-  SystemStyleObject,
-  Table,
-  TableContainer,
-  Tbody,
-  Td,
-  Text,
-  Tr,
-} from "@chakra-ui/react";
+import { Box, Flex, Spinner, Table, TableContainer, Tbody, Td, Text } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
-import { useGetXpLeaderboard } from "../queries/useGetXpLeaderboard";
+import { useDojo } from "../dojo/DojoContext";
+import { useGetAllTimeXpLeaderboard } from "../queries/useGetAllTimeXpLeaderboard";
 import { VIOLET_LIGHT } from "../theme/colors";
 import { useResponsiveValues } from "../theme/responsiveSettings";
-import { SeasonPass } from "./SeasonPass/SeasonPass";
-import { useDojo } from "../dojo/DojoContext";
 import { CustomTr } from "./Leaderboard";
 
-interface XpLeaderboardProps {
+interface AllTimeXpLeaderboardProps {
   lines?: number;
   mb?: string;
-  seasonId: number;
   fullWidth?: boolean;
   compactSpacing?: boolean;
 }
@@ -31,16 +18,15 @@ const formatAddress = (address: string) => {
   return `${address.slice(0, 6)}...${address.slice(-4)}`;
 };
 
-export const XpLeaderboard = ({
+export const AllTimeXpLeaderboard = ({
   lines = 100,
   mb = "",
-  seasonId,
   fullWidth = false,
   compactSpacing = false,
-}: XpLeaderboardProps) => {
+}: AllTimeXpLeaderboardProps) => {
   const { t } = useTranslation("home", { keyPrefix: "leaderboard" });
   const { isSmallScreen } = useResponsiveValues();
-  const { data: leaderboard, isLoading } = useGetXpLeaderboard(seasonId);
+  const { data: leaderboard, isLoading } = useGetAllTimeXpLeaderboard();
   const {
     account: { account },
   } = useDojo();
@@ -76,6 +62,7 @@ export const XpLeaderboard = ({
                 const isCurrentUser =
                   entry.address?.toLowerCase?.() === currentAddress;
                 const textColor = isCurrentUser ? "white !important" : VIOLET_LIGHT;
+
                 return (
                   <CustomTr key={entry.address} highlighted={isCurrentUser}>
                     <Td
@@ -89,27 +76,8 @@ export const XpLeaderboard = ({
                         <Text color={"white"}>
                           {entry.playerName || formatAddress(entry.address)}
                         </Text>
-                        {entry.hasSeasonPass && (
-                          <SeasonPass
-                            w={isSmallScreen ? "14px" : "25px"}
-                            rotate="0deg"
-                            unlocked={false}
-                            seasonNumber={seasonId}
-                          />
-                        )}
                       </Flex>
                     </Td>
-{/*                     <Td maxW="150px" p="12px 20px" whiteSpace="normal">
-                      <Text
-                        color={textColor}
-                        overflowWrap="break-word"
-                        wordBreak="normal"
-                        whiteSpace="normal"
-                      >
-                        {t("level")}
-                        {entry.level}
-                      </Text>
-                    </Td> */}
                     <Td maxW="150px" p="12px 20px" whiteSpace="normal">
                       <Text
                         color={textColor}
@@ -117,7 +85,7 @@ export const XpLeaderboard = ({
                         wordBreak="normal"
                         whiteSpace="normal"
                       >
-                        {entry.seasonXp} {t("xp")}
+                        {entry.totalXp} {t("xp")}
                       </Text>
                     </Td>
                   </CustomTr>
