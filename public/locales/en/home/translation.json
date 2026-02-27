@@ -68,7 +68,8 @@
     "sections": {
       "daily": "Daily",
       "weekly": "Weekly",
-      "season": "Season"
+      "season": "Season",
+      "all-time": "All Time"
     },
     "see-prizes": "See prizes",
     "prizes": {

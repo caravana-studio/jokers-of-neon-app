@@ -6,14 +6,18 @@ import mainnetGraphQLClient from "../mainnetGraphQLClient";
 export const XP_LEADERBOARD_QUERY_KEY = "xp-leaderboard";
 
 const XP_LEADERBOARD_QUERY = gql`
-  query {
-    jokersOfNeonProfile20SeasonProgressModels(first: 10000) {
+  query ($seasonId: u32!) {
+    jokersOfNeonProfile20SeasonProgressModels(
+      first: 10000
+      where: { season_idEQ: $seasonId }
+    ) {
       edges {
         node {
           level
           season_xp
           address
           has_season_pass
+          season_id
         }
       }
     }
@@ -51,9 +55,21 @@ type XpLeaderboardResponse = {
   };
 };
 
-const fetchXpLeaderboard = async () => {
+const normalizeSeasonId = (seasonId: number) => {
+  if (!Number.isFinite(seasonId) || seasonId < 1) {
+    return 1;
+  }
+
+  return Math.floor(seasonId);
+};
+
+const fetchXpLeaderboard = async (seasonId: number) => {
+  const normalizedSeasonId = normalizeSeasonId(seasonId);
   const rawData: XpLeaderboardResponse = await mainnetGraphQLClient.request(
-    XP_LEADERBOARD_QUERY
+    XP_LEADERBOARD_QUERY,
+    {
+      seasonId: normalizedSeasonId,
+    }
   );
 
   const edges =
@@ -62,7 +78,7 @@ const fetchXpLeaderboard = async () => {
     rawData?.jokersOfNeonProfile20GameDataModels?.edges ?? [];
 
   const blockedUsernames = new Set(["test111"]);
-  const guestNamePattern = /^joker_guest_\d+$/i;
+  const excludedNamePattern = /^(joker_guest_\d+|chichilo\d+|burner\d+)$/i;
 
   const ownerToPlayerName = new Map<string, string>();
   gameDataEdges.forEach((edge) => {
@@ -89,10 +105,10 @@ const fetchXpLeaderboard = async () => {
         blockedUsernames.has(normalizedName ?? "") ||
         blockedUsernames.has(normalizedAddress ?? "");
       const hasValidName = Boolean(entry.playerName);
-      const isGuest = Boolean(
-        normalizedName && guestNamePattern.test(normalizedName)
+      const isExcludedByPattern = Boolean(
+        normalizedName && excludedNamePattern.test(normalizedName)
       );
-      return entry.address && hasValidName && !isBlocked && !isGuest;
+      return entry.address && hasValidName && !isBlocked && !isExcludedByPattern;
     });
 
   const sorted = processed.sort((a, b) => {
@@ -113,9 +129,11 @@ const fetchXpLeaderboard = async () => {
   }));
 };
 
-export const useGetXpLeaderboard = () => {
-  const queryResponse = useQuery([XP_LEADERBOARD_QUERY_KEY], () =>
-    fetchXpLeaderboard()
+export const useGetXpLeaderboard = (seasonId: number) => {
+  const normalizedSeasonId = normalizeSeasonId(seasonId);
+
+  const queryResponse = useQuery([XP_LEADERBOARD_QUERY_KEY, normalizedSeasonId], () =>
+    fetchXpLeaderboard(normalizedSeasonId)
   );
 
   return {

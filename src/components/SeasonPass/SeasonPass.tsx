@@ -6,14 +6,21 @@ interface SeasonPassProps {
   w?: string;
   rotate?: string;
   unlocked?: boolean;
+  seasonNumber?: number;
 }
 
 export const SeasonPass = ({
   w = "50px",
   rotate = "0deg",
   unlocked = false,
+  seasonNumber,
 }: SeasonPassProps) => {
-  const seasonImageNumber = SEASON_NUMBER > 0 ? SEASON_NUMBER : 1;
+  const seasonImageNumber =
+    Number.isFinite(seasonNumber) && (seasonNumber ?? 0) > 0
+      ? Number(seasonNumber)
+      : SEASON_NUMBER > 0
+        ? SEASON_NUMBER
+        : 1;
   const shadowColor = seasonImageNumber === 2 ? "rgba(255, 255, 255, 0.7)" : VIOLET;
 
   return (

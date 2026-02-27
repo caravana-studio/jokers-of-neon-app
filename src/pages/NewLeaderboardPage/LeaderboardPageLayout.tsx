@@ -1,13 +1,16 @@
-import { Flex } from "@chakra-ui/react";
-import { ReactNode, useState } from "react";
+import { Button, Flex, Heading } from "@chakra-ui/react";
+import { ReactNode, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { AllTimeXpLeaderboard } from "../../components/AllTimeXpLeaderboard";
 import { Clock } from "../../components/Clock";
 import { DelayedLoading } from "../../components/DelayedLoading";
 import { PositionedDiscordLink } from "../../components/DiscordLink";
 import { Leaderboard } from "../../components/Leaderboard";
 import { XpLeaderboard } from "../../components/XpLeaderboard";
+import { SEASON_NUMBER } from "../../constants/season";
 import { Tab, TabPattern } from "../../patterns/tabs/TabPattern";
 import { useTournamentSettings } from "../../queries/useTournamentSettings";
+import { VIOLET } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { GameLeaderboardTab } from "./GameLeaderboardTab";
 import { Podium } from "./Podium";
@@ -24,7 +27,14 @@ export const LeaderboardPageLayout = ({
   const { t } = useTranslation("home", { keyPrefix: "leaderboard" });
   const { isSmallScreen } = useResponsiveValues();
   const [seePrizes, setSeePrizes] = useState(false);
+  const currentSeason = Math.max(1, Math.floor(SEASON_NUMBER));
+  const [selectedXpSeason, setSelectedXpSeason] = useState(currentSeason);
   const isTournamentActive = Boolean(tournament?.isActive);
+
+  const seasonOptions = useMemo(
+    () => Array.from({ length: currentSeason }, (_, index) => index + 1),
+    [currentSeason]
+  );
 
   const tabs = [
     ...(isTournamentActive
@@ -102,18 +112,120 @@ export const LeaderboardPageLayout = ({
         h="100%"
         flexDir="column"
         alignItems="center"
-        justifyContent="center"
       >
         <Flex flexDir="column" w="70%" h="100%" alignItems={"center"}>
           <Flex
             minH={0}
             flexGrow={1}
-            flexDir="column"
+            flexDir={isSmallScreen ? "column" : "row"}
             w="100%"
-            alignItems={"center"}
-            justifyContent={"center"}
+            gap={4}
+            overflow="hidden"
+            pb={isSmallScreen ? "100px" : "200px"}
           >
-            <XpLeaderboard lines={100} mb={isSmallScreen ? "100px" : "200px"} />
+            <Flex flex={1} minH={0} flexDir="column" overflow="hidden">
+              <Flex
+                px={isSmallScreen ? 2 : 6}
+                pt={2}
+                pb={2}
+                alignItems="center"
+                gap={3}
+                flexWrap="wrap"
+              >
+                <Heading variant="italic" fontSize={isSmallScreen ? "sm" : "md"}>
+                  {t("sections.season")}
+                </Heading>
+                <Flex
+                  role="radiogroup"
+                  aria-label={t("sections.season")}
+                  alignItems="center"
+                  gap={2}
+                  flexWrap="wrap"
+                >
+                  {seasonOptions.map((seasonId) => (
+                    <Button
+                      key={seasonId}
+                      variant={
+                        seasonId === selectedXpSeason ? "secondarySolid" : "ghost"
+                      }
+                      size={isSmallScreen ? "xs" : "sm"}
+                      minW={isSmallScreen ? "28px" : "32px"}
+                      px={2}
+                      border={seasonId === selectedXpSeason ? "none" : "1px solid"}
+                      borderColor={seasonId === selectedXpSeason ? "transparent" : "white"}
+                      borderRadius="7px"
+                      color="white"
+                      bg={seasonId === selectedXpSeason ? undefined : "transparent"}
+                      boxShadow={
+                        seasonId === selectedXpSeason
+                          ? `0px 0px 8px 2px ${VIOLET}`
+                          : "none"
+                      }
+                      _hover={{
+                        bg:
+                          seasonId === selectedXpSeason
+                            ? undefined
+                            : "transparent",
+                        boxShadow:
+                          seasonId === selectedXpSeason
+                            ? `0px 0px 8px 2px ${VIOLET}`
+                            : `0px 0px 6px 1px ${VIOLET}`,
+                        border:
+                          seasonId === selectedXpSeason
+                            ? "none"
+                            : "1px solid white",
+                        borderColor: seasonId === selectedXpSeason ? "transparent" : "white",
+                      }}
+                      _active={{
+                        bg:
+                          seasonId === selectedXpSeason
+                            ? undefined
+                            : "transparent",
+                        boxShadow:
+                          seasonId === selectedXpSeason
+                            ? `0px 0px 8px 2px ${VIOLET}`
+                            : `0px 0px 6px 1px ${VIOLET}`,
+                        border:
+                          seasonId === selectedXpSeason
+                            ? "none"
+                            : "1px solid white",
+                        borderColor: seasonId === selectedXpSeason ? "transparent" : "white",
+                      }}
+                      aria-pressed={seasonId === selectedXpSeason}
+                      onClick={() => {
+                        setSelectedXpSeason(seasonId);
+                      }}
+                    >
+                      {seasonId}
+                    </Button>
+                  ))}
+                </Flex>
+              </Flex>
+              <Flex flex={1} minH={0} overflowY="auto">
+                <XpLeaderboard
+                  lines={100}
+                  mb="0"
+                  seasonId={selectedXpSeason}
+                  fullWidth
+                  compactSpacing
+                />
+              </Flex>
+            </Flex>
+            <Flex flex={1} minH={0} flexDir="column" overflow="hidden">
+              <Flex px={isSmallScreen ? 2 : 6} pt={isSmallScreen ? 0 : 2} pb={2}>
+                <Heading variant="italic" fontSize={isSmallScreen ? "sm" : "md"}>
+                  {t("sections.all-time")}
+                </Heading>
+              </Flex>
+              <Flex flex={1} minH={0} overflowY="auto">
+                <AllTimeXpLeaderboard
+                  lines={100}
+                  mb="0"
+                  fullWidth
+                  compactSpacing
+                />
+              </Flex>
+            </Flex>
           </Flex>
         </Flex>
       </Flex>
