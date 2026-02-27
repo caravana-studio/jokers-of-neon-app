@@ -58,10 +58,22 @@ const I18N_NAMESPACES = [
 
 const progressBarRef = createRef<LoadingScreenHandle>();
 
-const BYPASS_MOBILE_BROWSER_RULE = import.meta.env
-  .VITE_BYPASS_MOBILE_BROWSER_RULE;
+const parseBooleanEnv = (value: unknown): boolean =>
+  typeof value === "string" ? value.toLowerCase() === "true" : false;
 
-const BYPASS_MAINTENANCE = import.meta.env.VITE_BYPASS_MAINTENANCE;
+const BYPASS_MOBILE_BROWSER_RULE = parseBooleanEnv(
+  import.meta.env.VITE_BYPASS_MOBILE_BROWSER_RULE
+);
+
+const BYPASS_MAINTENANCE = parseBooleanEnv(import.meta.env.VITE_BYPASS_MAINTENANCE);
+const MAINTENANCE_BYPASS_QUERY_PARAM = "bypassMaintenance";
+
+const shouldBypassMaintenanceFromUrl = (): boolean => {
+  if (typeof window === "undefined") return false;
+  return new URLSearchParams(window.location.search).has(
+    MAINTENANCE_BYPASS_QUERY_PARAM
+  );
+};
 
 initDatadogRum();
 registerAppUrlOpenListener();
@@ -146,7 +158,11 @@ async function init() {
     fetchVersion().then((data) => {
       const version = data.version;
       // If the maintenance flag is set, block the app
-      if (data.maintenance && !BYPASS_MAINTENANCE) {
+      if (
+        data.maintenance &&
+        !BYPASS_MAINTENANCE &&
+        !shouldBypassMaintenanceFromUrl()
+      ) {
         return root.render(
           <I18nextProvider i18n={localI18n} defaultNS={undefined}>
             <Maintenance />
