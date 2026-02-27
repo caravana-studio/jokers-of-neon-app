@@ -10,22 +10,24 @@ const getPxForStepNumber = (stepNumber: number): number => {
   return stepNumber * STEP_HEIGHT - STEP_HEIGHT / 2;
 };
 function calculateProgress(steps: IStep[], playerProgress: number): number {
+  const MIN_PROGRESS = 20;
+
   if (playerProgress === 0) {
     return 0;
   }
   for (let i = 0; i < steps.length; i++) {
     if (steps[i].xp === playerProgress) {
-      return getPxForStepNumber(i + 1);
+      return Math.max(MIN_PROGRESS, getPxForStepNumber(i + 1));
     } else if (steps[i].xp > playerProgress) {
       const previousXp = steps[i - 1]?.xp ?? 0;
       const currentXp = steps[i].xp;
       const difference =
         ((playerProgress - previousXp) / (currentXp - previousXp)) *
         STEP_HEIGHT;
-      return getPxForStepNumber(i) + difference;
+      return Math.max(MIN_PROGRESS, getPxForStepNumber(i) + difference);
     }
   }
-  return steps.length * STEP_HEIGHT;
+  return Math.max(MIN_PROGRESS, steps.length * STEP_HEIGHT);
 }
 
 interface SeasonProgressionContentProps {
@@ -42,7 +44,6 @@ export const SeasonProgressionContent = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const stepRefs = useRef<(HTMLDivElement | null)[]>([]);
   const hasAutoScrolled = useRef(false);
-
   useEffect(() => {
     const container = containerRef.current;
     if (!container || !steps.length || hasAutoScrolled.current) {
