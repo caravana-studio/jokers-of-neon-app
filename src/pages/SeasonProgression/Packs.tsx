@@ -39,8 +39,6 @@ export const Packs = ({ reward, claiming }: PacksProps) => {
   const xOffset = isSmallScreen ? 5 : 10;
   const yOffset = isSmallScreen ? 3 : 7;
 
-  console.log('reward.packs', reward.packs);
-
   return reward.tournamentEntries > 0 ? (
     <Flex flexDir="column" gap={2}>
       {claiming ? (
