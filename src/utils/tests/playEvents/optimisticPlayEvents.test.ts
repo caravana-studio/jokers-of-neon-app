@@ -398,6 +398,55 @@ test("filterOptimisticEventsFromPlayEvents deduplicates converted straight card 
   expect(filtered.cardPlayEvents).toEqual([]);
 });
 
+test("filterOptimisticEventsFromPlayEvents suppresses backend base score events when converter changed quantities", () => {
+  const optimisticEvents = [
+    {
+      hand: [{ idx: D6.idx, quantity: 10 }],
+      specials: [],
+      eventType: EventTypeEnum.Point,
+    },
+    {
+      hand: [{ idx: D7.idx, quantity: 10 }],
+      specials: [],
+      eventType: EventTypeEnum.Point,
+    },
+  ];
+
+  const backendPlayEvents: PlayEvents = {
+    play: { points: 0, multi: 1 },
+    gameOver: false,
+    cards: [],
+    score: 0,
+    cardPlayEvents: [
+      {
+        hand: [{ idx: D6.idx, quantity: 6 }],
+        specials: [],
+        eventType: EventTypeEnum.Point,
+      },
+      {
+        hand: [{ idx: D7.idx, quantity: 7 }],
+        specials: [],
+        eventType: EventTypeEnum.Point,
+      },
+    ],
+  };
+
+  const filtered = filterOptimisticEventsFromPlayEvents(
+    backendPlayEvents,
+    optimisticEvents,
+    [],
+    [
+      {
+        hand: [{ idx: D6.idx, quantity: 21 }],
+        specials: [{ idx: StraightToHighStraight.idx, quantity: 1 }],
+        eventType: EventTypeEnum.Rank,
+      },
+    ]
+  );
+
+  expect(filtered.cardPlayEvents).toEqual([]);
+});
+
 test("buildOptimisticPowerUpEvents maps selected powerups into point/multi events", () => {
   const optimisticPowerUps = buildOptimisticPowerUpEvents({
     preSelectedPowerUps: [0, 1],

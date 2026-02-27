@@ -97,6 +97,7 @@ export const filterOptimisticEventsFromPlayEvents = (
   }
 
   const optimisticEventsCounter = new Map<string, number>();
+  const optimisticScoreEventTypesByIdx = new Set<string>();
 
   const countOptimisticEvent = (dedupKey: string | undefined) => {
     if (!dedupKey) {
@@ -115,6 +116,16 @@ export const filterOptimisticEventsFromPlayEvents = (
 
   optimisticCardPlayEvents.forEach((event) => {
     countOptimisticEvent(getOptimisticScoreDedupKey(event));
+    const handItem = event.hand[0];
+    if (
+      handItem &&
+      event.hand.length === 1 &&
+      event.specials.length === 0 &&
+      (event.eventType === EventTypeEnum.Point ||
+        event.eventType === EventTypeEnum.Multi)
+    ) {
+      optimisticScoreEventTypesByIdx.add(`${event.eventType}:${handItem.idx}`);
+    }
   });
 
   optimisticPowerUpEvents.forEach((event) => {
@@ -136,7 +147,25 @@ export const filterOptimisticEventsFromPlayEvents = (
       return true;
     }
 
-    return !consumeCounterKey(optimisticEventsCounter, dedupKey);
+    const wasDedupedByKey = consumeCounterKey(optimisticEventsCounter, dedupKey);
+    if (wasDedupedByKey) {
+      return false;
+    }
+
+    // Some backend flows emit base score events with pre-conversion quantities.
+    // When converters were animated optimistically, suppress same card/type scores
+    // even if quantity differs.
+    if (optimisticCardPlayChangeEvents.length > 0) {
+      const handItem = event.hand[0];
+      if (
+        handItem &&
+        optimisticScoreEventTypesByIdx.has(`${event.eventType}:${handItem.idx}`)
+      ) {
+        return false;
+      }
+    }
+
+    return true;
   });
 
   const filteredPowerUpEvents = playEvents.powerUpEvents?.filter((event) => {

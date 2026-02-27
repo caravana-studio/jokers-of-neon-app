@@ -15,8 +15,23 @@ import { useCurrentHandStore } from "../state/useCurrentHandStore";
 import { useGameStore } from "../state/useGameStore";
 import { usePracticeStore } from "../state/usePracticeStore";
 import { PokerHand } from "../types/LevelPokerHand";
+import { CardPlayEvent, PowerUpScore } from "../types/ScoreData";
 import { getPlayAnimationDuration } from "../utils/getPlayAnimationDuration";
+import { isCardSilent } from "../utils/isCardSilent";
+import {
+  OptimisticAnimationController,
+  animateOptimisticCardPlay,
+} from "../utils/playEvents/animateOptimisticCardPlay";
 import { animatePlayDiscard } from "../utils/playEvents/animatePlayDiscard";
+import { buildOptimisticCardPlayEvents } from "../utils/playEvents/buildOptimisticCardPlayEvents";
+import {
+  buildOptimisticConverterCardPlayChangeEvents,
+  canOptimisticallyBuildConverterEvents,
+  getActiveConverterSpecialCards,
+} from "../utils/playEvents/buildOptimisticConverterCardPlayChangeEvents";
+import { buildOptimisticPowerUpEvents } from "../utils/playEvents/buildOptimisticPowerUpEvents";
+import { filterOptimisticEventsFromPlayEvents } from "../utils/playEvents/filterOptimisticEventsFromPlayEvents";
+import { filterSilentCardEventsFromPlayEvents } from "../utils/playEvents/filterSilentCardEventsFromPlayEvents";
 import { getPlayEvents } from "../utils/playEvents/getPlayEvents";
 import {
   failedTransactionToast,
@@ -221,6 +236,69 @@ export const PracticeGameProvider = ({ children }: { children: ReactNode }) => {
       );
 
     const pokerHandLevels = toPokerHandLevels(scenario.plays);
+    const handByIdx = new Map(handStore.hand.map((card) => [card.idx, card]));
+    const nonAnimatedCardIndexes = new Set(
+      handStore.preSelectedCards.filter((cardIdx) => {
+        const card = handByIdx.get(cardIdx);
+        if (!card) {
+          return false;
+        }
+
+        return isCardSilent(card, gameStore.rageCards);
+      }),
+    );
+    const activeConverterSpecialCards = getActiveConverterSpecialCards(
+      gameStore.specialCards,
+    );
+    const shouldUseOptimisticPlay =
+      activeConverterSpecialCards.length === 0 ||
+      canOptimisticallyBuildConverterEvents(activeConverterSpecialCards);
+    const playPitchState = { index: 0 };
+
+    let optimisticCardPlayChangeEvents: CardPlayEvent[] = [];
+    let optimisticCardPlayEvents: CardPlayEvent[] = [];
+    let optimisticPowerUpEvents: PowerUpScore[] = [];
+    let optimisticAnimation: OptimisticAnimationController | null = null;
+
+    if (shouldUseOptimisticPlay) {
+      optimisticCardPlayChangeEvents =
+        buildOptimisticConverterCardPlayChangeEvents({
+          hand: handStore.hand,
+          preSelectedCards: handStore.preSelectedCards,
+          specialCards: gameStore.specialCards,
+          preSelectedModifiers: handStore.preSelectedModifiers,
+        });
+      optimisticCardPlayEvents = buildOptimisticCardPlayEvents({
+        hand: handStore.hand,
+        preSelectedCards: handStore.preSelectedCards,
+        specialCards: gameStore.specialCards,
+        preSelectedModifiers: handStore.preSelectedModifiers,
+        silentCardIndexes: nonAnimatedCardIndexes,
+        changeEvents: optimisticCardPlayChangeEvents,
+      });
+      optimisticPowerUpEvents = buildOptimisticPowerUpEvents({
+        preSelectedPowerUps: gameStore.preSelectedPowerUps,
+        powerUps: gameStore.powerUps,
+      });
+
+      optimisticAnimation = animateOptimisticCardPlay({
+        changeEvents: optimisticCardPlayChangeEvents,
+        events: optimisticCardPlayEvents,
+        powerUpEvents: optimisticPowerUpEvents,
+        playAnimationDuration,
+        pitchState: playPitchState,
+        setAnimatedCard,
+        setAnimatedPowerUp,
+        pointsSound,
+        negativeMultiSound,
+        addPoints: gameStore.addPoints,
+        addMulti: gameStore.addMulti,
+        changeCardsSuit: handStore.changeCardsSuit,
+        changeCardsNeon: handStore.changeCardsNeon,
+        changeCardsRank: handStore.changeCardsRank,
+        setCardTransformationLock: handStore.setCardTransformationLock,
+      });
+    }
 
     handStore.setPreSelectionLocked(true);
     gameStore.play();
@@ -256,6 +334,7 @@ export const PracticeGameProvider = ({ children }: { children: ReactNode }) => {
       updateTransactionToast(transactionHash, tx.isSuccess());
 
       if (!tx.isSuccess()) {
+        optimisticAnimation?.cancel();
         gameStore.rollbackPlay();
         handStore.setPreSelectionLocked(false);
         clearPreSelection();
@@ -263,10 +342,27 @@ export const PracticeGameProvider = ({ children }: { children: ReactNode }) => {
       }
 
       const resolvedPlayEvents = getPlayEvents(tx.value.events);
+      const dedupedResponse = shouldUseOptimisticPlay
+        ? filterOptimisticEventsFromPlayEvents(
+            resolvedPlayEvents,
+            optimisticCardPlayEvents,
+            optimisticPowerUpEvents,
+            optimisticCardPlayChangeEvents,
+          )
+        : resolvedPlayEvents;
+      const filteredResponse = filterSilentCardEventsFromPlayEvents(
+        dedupedResponse,
+        nonAnimatedCardIndexes,
+      );
+
+      if (optimisticAnimation) {
+        await optimisticAnimation.done;
+      }
 
       animatePlayDiscard({
-        playEvents: resolvedPlayEvents,
+        playEvents: filteredResponse,
         playAnimationDuration,
+        pitchState: playPitchState,
         setPlayIsNeon: handStore.setPlayIsNeon,
         setAnimatedCard,
         setAnimatedPowerUp,
@@ -304,6 +400,7 @@ export const PracticeGameProvider = ({ children }: { children: ReactNode }) => {
       });
     } catch (error) {
       console.error("Error simulating play", error);
+      optimisticAnimation?.cancel();
       failedTransactionToast();
       gameStore.rollbackPlay();
       handStore.setPreSelectionLocked(false);
