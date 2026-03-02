@@ -114,6 +114,7 @@ export const ExternalPack = ({
     providedPackId ?? locationState?.packId ?? Number(params.packId ?? 1);
   const normalizedPackId = packId % 10 || packId;
   const isLimitedEditionPack = normalizedPackId > 4;
+  const shouldUseMonochromeBackground = packId === 25 || packId === 26;
   const returnPath = returnTo ?? locationState?.returnTo ?? "/";
 
   const { t: tDocs } = useTranslation("docs");
@@ -141,6 +142,11 @@ export const ExternalPack = ({
   const packHeight = useMemo(
     () => (isSmallScreen ? 405 : 472),
     [isSmallScreen],
+  );
+  const packArtHeight = useMemo(() => packWidth * 1.5, [packWidth]);
+  const packArtOffsetY = useMemo(
+    () => (packHeight - packArtHeight) / 2,
+    [packArtHeight, packHeight],
   );
 
   const [obtainedCards, setObtainedCards] = useState<SimplifiedCard[]>(
@@ -266,6 +272,23 @@ export const ExternalPack = ({
             rarity ?? RARITY.C,
             isSkinned,
           )}
+          filter={shouldUseMonochromeBackground ? "grayscale(1)" : undefined}
+        />
+      )}
+
+      {shouldUseMonochromeBackground && (
+        <Flex
+          position="fixed"
+          inset={0}
+          zIndex={2}
+          pointerEvents="none"
+          opacity={step < 3 ? 1 : 0}
+          transition="opacity 0.8s ease"
+          backdropFilter="grayscale(1)"
+          sx={{
+            WebkitBackdropFilter: "grayscale(1)",
+            willChange: "opacity",
+          }}
         />
       )}
 
@@ -286,7 +309,13 @@ export const ExternalPack = ({
           )}
         </Button>
       )}
-      <Flex flexDirection={"column"} width={"100%"} height={"100%"}>
+      <Flex
+        flexDirection={"column"}
+        width={"100%"}
+        height={"100%"}
+        position="relative"
+        zIndex={3}
+      >
         <MobileDecoration />
         <Flex
           flexDirection={"column"}
@@ -445,6 +474,8 @@ export const ExternalPack = ({
                 display: "flex",
                 alignItems: "stretch",
                 position: "relative",
+                width: "100%",
+                height: "100%",
               }}
             >
               {/* Step < 2 → normal pack + overlay cutout */}
@@ -461,24 +492,32 @@ export const ExternalPack = ({
                     color={normalizedPackId > 3 ? "white" : "black"}
                   />
                   <Flex
-                    position="relative"
-                    h="100%"
-                    w="100%"
+                    position="absolute"
+                    top={`${packArtOffsetY}px`}
+                    left={0}
+                    h={`${packArtHeight}px`}
+                    w={`${packWidth}px`}
                     animation={
                       step === 0 ? `${packGlowAnimation} 1s ease-in-out infinite` : "none"
                     }
                   >
-                    <Flex position="relative" h="100%" w="100%" overflow="hidden">
+                    <Flex
+                      position="relative"
+                      h="100%"
+                      w="100%"
+                      overflow="hidden"
+                      animation={
+                        step === 0
+                          ? `${packAnimation} 3s ease-in-out infinite`
+                          : "none"
+                      }
+                    >
                       <CachedImage
                         src={`/packs/${packId}.png`}
                         h="100%"
                         w="100%"
-                        objectFit="contain"
-                        animation={
-                          step === 0
-                            ? `${packAnimation} 3s ease-in-out infinite`
-                            : "none"
-                        }
+                        objectFit="fill"
+                        display="block"
                       />
                       <Flex
                         position="absolute"
@@ -488,11 +527,12 @@ export const ExternalPack = ({
                         animation={`${packShineAnimation} 2.8s ease-in-out infinite`}
                         pointerEvents="none"
                         mixBlendMode="screen"
+                        willChange="background-position, opacity"
                         sx={{
                           WebkitMaskImage: `url(/packs/${packId}.png)`,
                           maskImage: `url(/packs/${packId}.png)`,
-                          WebkitMaskSize: "contain",
-                          maskSize: "contain",
+                          WebkitMaskSize: "100% 100%",
+                          maskSize: "100% 100%",
                           WebkitMaskRepeat: "no-repeat",
                           maskRepeat: "no-repeat",
                           WebkitMaskPosition: "center",
