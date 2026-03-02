@@ -141,7 +141,18 @@
     "my-xp": "Mi XP",
     "claim": "RECLAMAR",
     "tournament-entry": "Entrada de torneo",
-    "claiming-in-progress": "Reclamando..."
+    "claiming-in-progress": "Reclamando...",
+    "intro": {
+      "summary": "Como carrego XP?",
+      "learn-more": "Mostre como",
+      "popup-title": "Como o XP impulsiona sua temporada",
+      "points": {
+        "1": "As missões diárias na Home dão XP e reiniciam todos os dias. Cada missão mostra exatamente quanta XP está valendo.",
+        "2": "Completar níveis diariamente também concede XP. A primeira vitória do dia paga mais do que a segunda, e a recompensa continua caindo depois disso.",
+        "3": "Quanto mais alto for o nível concluído, maior será a recompensa de XP.",
+        "4": "XP é o combustível da trilha de temporada que aparece nesta tela. Acumule o suficiente para liberar packs com cartas da temporada e entradas para o torneio final, onde estão os maiores prêmios."
+      }
+    }
   },
   "map": {
     "level": "NÍVEL"
