@@ -488,6 +488,7 @@ export const ExternalPack = ({
                         animation={`${packShineAnimation} 2.8s ease-in-out infinite`}
                         pointerEvents="none"
                         mixBlendMode="screen"
+                        willChange="background-position, opacity"
                         sx={{
                           WebkitMaskImage: `url(/packs/${packId}.png)`,
                           maskImage: `url(/packs/${packId}.png)`,
