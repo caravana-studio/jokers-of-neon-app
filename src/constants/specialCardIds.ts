@@ -1,5 +1,6 @@
 export const specialCardIds = {
   ALL_TO_HEARTS: 10014,
+  NEON_SYNERGY: 10210,
   EASY_FLUSH: 10009,
   EASY_STRAIGHT: 10008,
   SPECIAL_CARDS_BLOCKS_SUIT_CHANGE: 10014,
@@ -7,7 +8,8 @@ export const specialCardIds = {
 };
 
 // Special cards that can transform played cards (suit/neon/rank).
-// When any of these are active, play events must be driven by backend events.
+// Optimistic play can run only when every active converter is deterministic
+// and has behavior implemented in the client.
 export const CONVERTER_SPECIAL_CARD_IDS = [
   specialCardIds.ALL_TO_HEARTS,
   10025, // Neon Synergy
