@@ -142,6 +142,11 @@ export const ExternalPack = ({
     () => (isSmallScreen ? 405 : 472),
     [isSmallScreen],
   );
+  const packArtHeight = useMemo(() => packWidth * 1.5, [packWidth]);
+  const packArtOffsetY = useMemo(
+    () => (packHeight - packArtHeight) / 2,
+    [packArtHeight, packHeight],
+  );
 
   const [obtainedCards, setObtainedCards] = useState<SimplifiedCard[]>(
     initialCardsSource ?? [],
@@ -445,6 +450,8 @@ export const ExternalPack = ({
                 display: "flex",
                 alignItems: "stretch",
                 position: "relative",
+                width: "100%",
+                height: "100%",
               }}
             >
               {/* Step < 2 → normal pack + overlay cutout */}
@@ -461,24 +468,32 @@ export const ExternalPack = ({
                     color={normalizedPackId > 3 ? "white" : "black"}
                   />
                   <Flex
-                    position="relative"
-                    h="100%"
-                    w="100%"
+                    position="absolute"
+                    top={`${packArtOffsetY}px`}
+                    left={0}
+                    h={`${packArtHeight}px`}
+                    w={`${packWidth}px`}
                     animation={
                       step === 0 ? `${packGlowAnimation} 1s ease-in-out infinite` : "none"
                     }
                   >
-                    <Flex position="relative" h="100%" w="100%" overflow="hidden">
+                    <Flex
+                      position="relative"
+                      h="100%"
+                      w="100%"
+                      overflow="hidden"
+                      animation={
+                        step === 0
+                          ? `${packAnimation} 3s ease-in-out infinite`
+                          : "none"
+                      }
+                    >
                       <CachedImage
                         src={`/packs/${packId}.png`}
                         h="100%"
                         w="100%"
-                        objectFit="contain"
-                        animation={
-                          step === 0
-                            ? `${packAnimation} 3s ease-in-out infinite`
-                            : "none"
-                        }
+                        objectFit="fill"
+                        display="block"
                       />
                       <Flex
                         position="absolute"
@@ -492,8 +507,8 @@ export const ExternalPack = ({
                         sx={{
                           WebkitMaskImage: `url(/packs/${packId}.png)`,
                           maskImage: `url(/packs/${packId}.png)`,
-                          WebkitMaskSize: "contain",
-                          maskSize: "contain",
+                          WebkitMaskSize: "100% 100%",
+                          maskSize: "100% 100%",
                           WebkitMaskRepeat: "no-repeat",
                           maskRepeat: "no-repeat",
                           WebkitMaskPosition: "center",
