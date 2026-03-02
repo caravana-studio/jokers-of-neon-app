@@ -114,6 +114,7 @@ export const ExternalPack = ({
     providedPackId ?? locationState?.packId ?? Number(params.packId ?? 1);
   const normalizedPackId = packId % 10 || packId;
   const isLimitedEditionPack = normalizedPackId > 4;
+  const shouldUseMonochromeBackground = packId === 25 || packId === 26;
   const returnPath = returnTo ?? locationState?.returnTo ?? "/";
 
   const { t: tDocs } = useTranslation("docs");
@@ -271,6 +272,23 @@ export const ExternalPack = ({
             rarity ?? RARITY.C,
             isSkinned,
           )}
+          filter={shouldUseMonochromeBackground ? "grayscale(1)" : undefined}
+        />
+      )}
+
+      {shouldUseMonochromeBackground && (
+        <Flex
+          position="fixed"
+          inset={0}
+          zIndex={2}
+          pointerEvents="none"
+          opacity={step < 3 ? 1 : 0}
+          transition="opacity 0.8s ease"
+          backdropFilter="grayscale(1)"
+          sx={{
+            WebkitBackdropFilter: "grayscale(1)",
+            willChange: "opacity",
+          }}
         />
       )}
 
@@ -291,7 +309,13 @@ export const ExternalPack = ({
           )}
         </Button>
       )}
-      <Flex flexDirection={"column"} width={"100%"} height={"100%"}>
+      <Flex
+        flexDirection={"column"}
+        width={"100%"}
+        height={"100%"}
+        position="relative"
+        zIndex={3}
+      >
         <MobileDecoration />
         <Flex
           flexDirection={"column"}
