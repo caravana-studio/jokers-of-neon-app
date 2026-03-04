@@ -15,6 +15,7 @@ export const CurrentPlay = () => {
     playIsNeon,
     setPlayIsNeon,
     preSelectedCards,
+    preSelectionLocked,
     hand,
     preSelectedModifiers,
   } = useCurrentHandStore();
@@ -44,6 +45,10 @@ export const CurrentPlay = () => {
   };
 
   useEffect(() => {
+    if (preSelectionLocked) {
+      return;
+    }
+
     if (preSelectedCards.length > 0) {
       const result = checkHand(
         hand,
@@ -64,6 +69,7 @@ export const CurrentPlay = () => {
     }
   }, [
     preSelectedCards,
+    preSelectionLocked,
     preSelectedModifiers,
     hand,
     specialCards,
