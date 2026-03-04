@@ -1,7 +1,7 @@
 /* @vitest-environment jsdom */
 
 import { ChakraProvider } from "@chakra-ui/react";
-import { act, cleanup, render, waitFor } from "@testing-library/react";
+import { act, cleanup, render } from "@testing-library/react";
 import { afterEach, expect, test, vi } from "vitest";
 import { Plays } from "../enums/plays";
 import { PokerHandEnum } from "../types/LevelPokerHand";
@@ -45,6 +45,16 @@ afterEach(() => {
   useCurrentHandStore.setState(currentHandStoreSnapshot);
 });
 
+const renderCurrentPlay = async () => {
+  await act(async () => {
+    render(
+      <ChakraProvider>
+        <CurrentPlay />
+      </ChakraProvider>
+    );
+  });
+};
+
 test("CurrentPlay does not reset counters while a play is locked", async () => {
   useGameStore.setState({
     points: 0,
@@ -62,16 +72,10 @@ test("CurrentPlay does not reset counters while a play is locked", async () => {
     playIsNeon: false,
   });
 
-  render(
-    <ChakraProvider>
-      <CurrentPlay />
-    </ChakraProvider>
-  );
+  await renderCurrentPlay();
 
-  await waitFor(() => {
-    expect(useGameStore.getState().points).toBe(80);
-    expect(useGameStore.getState().multi).toBe(2);
-  });
+  expect(useGameStore.getState().points).toBe(80);
+  expect(useGameStore.getState().multi).toBe(2);
 
   act(() => {
     useGameStore.getState().addPoints(25);
@@ -101,16 +105,10 @@ test("CurrentPlay keeps recalculating counters when the play is not locked", asy
     playIsNeon: false,
   });
 
-  render(
-    <ChakraProvider>
-      <CurrentPlay />
-    </ChakraProvider>
-  );
+  await renderCurrentPlay();
 
-  await waitFor(() => {
-    expect(useGameStore.getState().points).toBe(50);
-    expect(useGameStore.getState().multi).toBe(1);
-  });
+  expect(useGameStore.getState().points).toBe(50);
+  expect(useGameStore.getState().multi).toBe(1);
 
   act(() => {
     useCurrentHandStore.setState({
@@ -118,8 +116,6 @@ test("CurrentPlay keeps recalculating counters when the play is not locked", asy
     });
   });
 
-  await waitFor(() => {
-    expect(useGameStore.getState().points).toBe(80);
-    expect(useGameStore.getState().multi).toBe(2);
-  });
+  expect(useGameStore.getState().points).toBe(80);
+  expect(useGameStore.getState().multi).toBe(2);
 });
