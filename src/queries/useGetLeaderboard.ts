@@ -2,7 +2,7 @@ import { gql } from "graphql-tag";
 import { useQuery } from "react-query";
 import { decodeString } from "../dojo/utils/decodeString";
 import mainnetGraphQLClient from "../mainnetGraphQLClient";
-import { signedHexToNumber } from "../utils/signedHexToNumber";
+import { normalizeGameId } from "../utils/normalizeGameId";
 import { snakeToCamel } from "../utils/snakeToCamel";
 import { useTournamentSettings } from "./useTournamentSettings";
 
@@ -42,7 +42,12 @@ const GAME_TOURNAMENT_QUERY = gql`
       edges {
         node {
           id
+          player_score
+          level
+          player_name
+          round
           is_tournament
+          owner
         }
       }
     }
@@ -64,10 +69,7 @@ interface GameEdge {
 type LeaderboardResponse = Record<string, { edges: GameEdge[] }>;
 
 interface GameTournamentEdge {
-  node: {
-    id: number;
-    is_tournament: boolean;
-  };
+  node: GameEdge["node"];
 }
 
 type GameTournamentResponse = Record<string, { edges?: GameTournamentEdge[] }>;
@@ -99,10 +101,21 @@ const parseGameId = (value?: string | number | null): number | null => {
   return Number.isFinite(parsed) ? parsed : null;
 };
 
-const fetchGameIsTournament = async (
-  gameId?: number
-): Promise<boolean | null> => {
-  if (gameId === undefined || Number.isNaN(gameId)) {
+const mapLeaderboardEntry = (node: GameEdge["node"]) => ({
+  id: node.id,
+  player_name: decodeString(node.player_name ?? ""),
+  player_score: node.player_score,
+  level: node.level,
+  round: node.round,
+  wallet: node.owner,
+  isTournament: node.is_tournament,
+});
+
+const fetchGameNode = async (
+  gameId?: string | number
+): Promise<GameEdge["node"] | null> => {
+  const normalizedGameId = normalizeGameId(gameId);
+  if (!normalizedGameId) {
     return null;
   }
 
@@ -110,16 +123,13 @@ const fetchGameIsTournament = async (
     const rawData: GameTournamentResponse = await mainnetGraphQLClient.request(
       GAME_TOURNAMENT_QUERY,
       {
-        gameId: gameId.toString(),
+        gameId: normalizedGameId,
       }
     );
 
-    const node = rawData?.[QUERY_FIELD_NAME]?.edges?.[0]?.node;
-    if (typeof node?.is_tournament === "boolean") {
-      return node.is_tournament;
-    }
+    return rawData?.[QUERY_FIELD_NAME]?.edges?.[0]?.node ?? null;
   } catch (error) {
-    console.error("Failed to fetch game tournament flag", error);
+    console.error("Failed to fetch current game data", error);
   }
 
   return null;
@@ -127,7 +137,7 @@ const fetchGameIsTournament = async (
 
 const fetchGraphQLData = async (
   filterLoggedInPlayers: boolean,
-  gameId?: number,
+  gameId?: string | number,
   isTournament: boolean = false,
   startCountingAtGameId: number = 0,
   startGameId?: number | null,
@@ -149,9 +159,10 @@ const fetchGraphQLData = async (
     normalizedStartGameId !== undefined ? normalizedStartGameId - 1 : 0
   );
 
-  const resolvedIsTournament =
-    gameId !== undefined ? await fetchGameIsTournament(gameId) : null;
-  const effectiveIsTournament = resolvedIsTournament ?? isTournament;
+  const normalizedCurrentGameId = normalizeGameId(gameId);
+  const currentGameNode =
+    gameId !== undefined ? await fetchGameNode(gameId) : null;
+  const effectiveIsTournament = currentGameNode?.is_tournament ?? isTournament;
 
   const rawData: LeaderboardResponse = await mainnetGraphQLClient.request(
     LEADERBOARD_QUERY,
@@ -185,16 +196,7 @@ const fetchGraphQLData = async (
   const processedEntries = await Promise.all(
     edges
       .filter((edge) => edge.node.player_score > 0)
-      .map(async (edge) => {
-        return {
-          id: edge.node.id,
-          player_name: decodeString(edge.node.player_name ?? ""),
-          player_score: edge.node.player_score,
-          level: edge.node.level,
-          round: edge.node.round,
-          wallet: edge.node.owner,
-        };
-      })
+      .map(async (edge) => mapLeaderboardEntry(edge.node))
   );
 
   const leaderboardMap = new Map<
@@ -206,6 +208,7 @@ const fetchGraphQLData = async (
       level: number;
       round: number;
       wallet: string;
+      isTournament: boolean;
     }
   >();
 
@@ -216,12 +219,17 @@ const fetchGraphQLData = async (
     level: number;
     round: number;
     wallet: string;
+    isTournament: boolean;
   } | null = null;
 
-  processedEntries.forEach((entry) => {
-    const playerId = signedHexToNumber(entry.id.toString());
+  if (currentGameNode) {
+    currentGameEntry = mapLeaderboardEntry(currentGameNode);
+  }
 
-    if (playerId === gameId) {
+  processedEntries.forEach((entry) => {
+    const playerId = normalizeGameId(entry.id);
+
+    if (playerId && playerId === normalizedCurrentGameId) {
       currentGameEntry = entry;
     }
 
@@ -240,7 +248,10 @@ const fetchGraphQLData = async (
 
   if (
     currentGameEntry &&
-    !leaderboardArray.some((entry) => entry.id === currentGameEntry!.id)
+    !leaderboardArray.some(
+      (entry) =>
+        normalizeGameId(entry.id) === normalizeGameId(currentGameEntry!.id)
+    )
   ) {
     leaderboardArray.push(currentGameEntry);
   }
@@ -268,7 +279,7 @@ const fetchGraphQLData = async (
 };
 
 export const useGetLeaderboard = (
-  gameId?: number,
+  gameId?: string | number,
   filterLoggedInPlayers = true,
   isTournament = false,
   options?: LeaderboardQueryOptions

@@ -8,6 +8,7 @@ export const GameOverLoggedIn = () => {
     gameId,
     congratulationsMsj,
     actualPlayer,
+    canShareOnX,
     t,
     onShareClick,
     onSecondButtonClick,
@@ -25,13 +26,17 @@ export const GameOverLoggedIn = () => {
       isLoading={isLoading}
       leaderboardFilterLoggedInPlayers={true}
       loggedIn
-      firstButton={{
-        onClick: () => {
-          onShareClick();
-        },
-        label: t("game-over.btn.gameOver-share-btn").toUpperCase(),
-        icon: <FontAwesomeIcon fontSize={12} icon={faXTwitter} />,
-      }}
+      firstButton={
+        canShareOnX
+          ? {
+              onClick: () => {
+                onShareClick();
+              },
+              label: t("game-over.btn.gameOver-share-btn").toUpperCase(),
+              icon: <FontAwesomeIcon fontSize={12} icon={faXTwitter} />,
+            }
+          : undefined
+      }
       secondButton={{
         onClick: () => {
           onSecondButtonClick();

@@ -10,7 +10,7 @@ import { MobileDecoration } from "../../components/MobileDecoration";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 
 interface GameOverContentProps {
-  gameId: number;
+  gameId: string | number;
   congratulationsMsj: string;
   actualPlayerPosition?: number;
   t: (key: string, options?: Record<string, any>) => string;
