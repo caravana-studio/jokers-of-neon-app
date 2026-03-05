@@ -139,9 +139,9 @@ export const PACK_RATES: Record<number, PackRatesData> = {
       rates: [
         { itemType: CardItemType.TRADITIONAL, percentage: 0.0 },
         { itemType: CardItemType.JOKER, percentage: 5.0 },
-        { itemType: CardItemType.NEON, percentage: 83.0 },
+        { itemType: CardItemType.NEON, percentage: 63.0 },
         { itemType: CardItemType.NEON_JOKER, percentage: 2.0 },
-        { itemType: CardItemType.SPECIAL_C, percentage: 8.0 },
+        { itemType: CardItemType.SPECIAL_C, percentage: 28.0 },
         { itemType: CardItemType.SPECIAL_B, percentage: 1.9 },
         { itemType: CardItemType.SPECIAL_A, percentage: 0.1 },
         { itemType: CardItemType.SPECIAL_S, percentage: 0.0 },
@@ -173,10 +173,10 @@ export const PACK_RATES: Record<number, PackRatesData> = {
     {
       itemNumber: 3,
       rates: [
-        { itemType: CardItemType.NEON, percentage: 48.0 },
-        { itemType: CardItemType.NEON_JOKER, percentage: 2.0 },
-        { itemType: CardItemType.SPECIAL_C, percentage: 40.0 },
-        { itemType: CardItemType.SPECIAL_B, percentage: 7.0 },
+        { itemType: CardItemType.NEON, percentage: 0.0 },
+        { itemType: CardItemType.NEON_JOKER, percentage: 0.0 },
+        { itemType: CardItemType.SPECIAL_C, percentage: 70.0 },
+        { itemType: CardItemType.SPECIAL_B, percentage: 27.0 },
         { itemType: CardItemType.SPECIAL_A, percentage: 2.9 },
         { itemType: CardItemType.SPECIAL_S, percentage: 0.1 },
       ],
@@ -216,11 +216,11 @@ export const PACK_RATES: Record<number, PackRatesData> = {
     {
       itemNumber: 4,
       rates: [
-        { itemType: CardItemType.NEON, percentage: 21.0 },
-        { itemType: CardItemType.NEON_JOKER, percentage: 4.0 },
+        { itemType: CardItemType.NEON, percentage: 0.0 },
+        { itemType: CardItemType.NEON_JOKER, percentage: 0.0 },
         { itemType: CardItemType.SPECIAL_C, percentage: 47.0 },
-        { itemType: CardItemType.SPECIAL_B, percentage: 15.0 },
-        { itemType: CardItemType.SPECIAL_A, percentage: 10.0 },
+        { itemType: CardItemType.SPECIAL_B, percentage: 35.0 },
+        { itemType: CardItemType.SPECIAL_A, percentage: 15.0 },
         { itemType: CardItemType.SPECIAL_S, percentage: 3.0 },
       ],
     },
@@ -248,10 +248,10 @@ export const PACK_RATES: Record<number, PackRatesData> = {
     {
       itemNumber: 3,
       rates: [
-        { itemType: CardItemType.NEON, percentage: 48.0 },
-        { itemType: CardItemType.NEON_JOKER, percentage: 2.0 },
-        { itemType: CardItemType.SPECIAL_C, percentage: 40.0 },
-        { itemType: CardItemType.SPECIAL_B, percentage: 7.0 },
+        { itemType: CardItemType.NEON, percentage: 0.0 },
+        { itemType: CardItemType.NEON_JOKER, percentage: 0.0 },
+        { itemType: CardItemType.SPECIAL_C, percentage: 70.0 },
+        { itemType: CardItemType.SPECIAL_B, percentage: 27.0 },
         { itemType: CardItemType.SPECIAL_A, percentage: 2.9 },
         { itemType: CardItemType.SPECIAL_S, percentage: 0.1 },
       ],
@@ -259,8 +259,8 @@ export const PACK_RATES: Record<number, PackRatesData> = {
     {
       itemNumber: 4,
       rates: [
-        { itemType: CardItemType.SPECIAL_B, percentage: 60.0 },
-        { itemType: CardItemType.SPECIAL_A, percentage: 30.0 },
+        { itemType: CardItemType.SPECIAL_B, percentage: 50.0 },
+        { itemType: CardItemType.SPECIAL_A, percentage: 40.0 },
         { itemType: CardItemType.SPECIAL_S, percentage: 10.0 },
       ],
     },
@@ -679,9 +679,9 @@ export const PACK_RATES: Record<number, PackRatesData> = {
       rates: [
         { itemType: CardItemType.TRADITIONAL, percentage: 0.0 },
         { itemType: CardItemType.JOKER, percentage: 5.0 },
-        { itemType: CardItemType.NEON, percentage: 83.0 },
+        { itemType: CardItemType.NEON, percentage: 63.0 },
         { itemType: CardItemType.NEON_JOKER, percentage: 2.0 },
-        { itemType: CardItemType.SPECIAL_C, percentage: 8.0 },
+        { itemType: CardItemType.SPECIAL_C, percentage: 28.0 },
         { itemType: CardItemType.SPECIAL_B, percentage: 1.9 },
         { itemType: CardItemType.SPECIAL_A, percentage: 0.1 },
         { itemType: CardItemType.SPECIAL_S, percentage: 0.0 },
@@ -713,10 +713,10 @@ export const PACK_RATES: Record<number, PackRatesData> = {
     {
       itemNumber: 3,
       rates: [
-        { itemType: CardItemType.NEON, percentage: 48.0 },
-        { itemType: CardItemType.NEON_JOKER, percentage: 2.0 },
-        { itemType: CardItemType.SPECIAL_C, percentage: 40.0 },
-        { itemType: CardItemType.SPECIAL_B, percentage: 7.0 },
+        { itemType: CardItemType.NEON, percentage: 0.0 },
+        { itemType: CardItemType.NEON_JOKER, percentage: 0.0 },
+        { itemType: CardItemType.SPECIAL_C, percentage: 70.0 },
+        { itemType: CardItemType.SPECIAL_B, percentage: 27.0 },
         { itemType: CardItemType.SPECIAL_A, percentage: 2.9 },
         { itemType: CardItemType.SPECIAL_S, percentage: 0.1 },
       ],
@@ -756,11 +756,11 @@ export const PACK_RATES: Record<number, PackRatesData> = {
     {
       itemNumber: 4,
       rates: [
-        { itemType: CardItemType.NEON, percentage: 21.0 },
-        { itemType: CardItemType.NEON_JOKER, percentage: 4.0 },
+        { itemType: CardItemType.NEON, percentage: 0.0 },
+        { itemType: CardItemType.NEON_JOKER, percentage: 0.0 },
         { itemType: CardItemType.SPECIAL_C, percentage: 47.0 },
-        { itemType: CardItemType.SPECIAL_B, percentage: 15.0 },
-        { itemType: CardItemType.SPECIAL_A, percentage: 10.0 },
+        { itemType: CardItemType.SPECIAL_B, percentage: 35.0 },
+        { itemType: CardItemType.SPECIAL_A, percentage: 15.0 },
         { itemType: CardItemType.SPECIAL_S, percentage: 3.0 },
       ],
     },
@@ -788,10 +788,10 @@ export const PACK_RATES: Record<number, PackRatesData> = {
     {
       itemNumber: 3,
       rates: [
-        { itemType: CardItemType.NEON, percentage: 48.0 },
-        { itemType: CardItemType.NEON_JOKER, percentage: 2.0 },
-        { itemType: CardItemType.SPECIAL_C, percentage: 40.0 },
-        { itemType: CardItemType.SPECIAL_B, percentage: 7.0 },
+        { itemType: CardItemType.NEON, percentage: 0.0 },
+        { itemType: CardItemType.NEON_JOKER, percentage: 0.0 },
+        { itemType: CardItemType.SPECIAL_C, percentage: 70.0 },
+        { itemType: CardItemType.SPECIAL_B, percentage: 27.0 },
         { itemType: CardItemType.SPECIAL_A, percentage: 2.9 },
         { itemType: CardItemType.SPECIAL_S, percentage: 0.1 },
       ],
@@ -799,8 +799,8 @@ export const PACK_RATES: Record<number, PackRatesData> = {
     {
       itemNumber: 4,
       rates: [
-        { itemType: CardItemType.SPECIAL_B, percentage: 60.0 },
-        { itemType: CardItemType.SPECIAL_A, percentage: 30.0 },
+        { itemType: CardItemType.SPECIAL_B, percentage: 50.0 },
+        { itemType: CardItemType.SPECIAL_A, percentage: 40.0 },
         { itemType: CardItemType.SPECIAL_S, percentage: 10.0 },
       ],
     },
