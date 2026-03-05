@@ -92,7 +92,9 @@ const DailyLeaderboardSection = ({
         mb="0"
         isTournamentLeaderboard={false}
         startGameId={dailyRange?.startGameId}
+        endGameId={dailyRange?.endGameId}
         queryEnabled={dailyRangeQuery.isSuccess && hasDailyRange}
+        showGameId
         seePrizes={seePrizes}
         prizes={prizes}
         fullWidth

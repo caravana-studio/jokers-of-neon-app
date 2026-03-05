@@ -57,6 +57,12 @@ const fetchGameIdRange = async (
     headers["X-API-Key"] = apiKey;
   }
 
+  console.log("[useGameIdRange] Request", {
+    startDate,
+    endDate,
+    url: `${baseUrl}/api/stats/game-id-range?${params.toString()}`,
+  });
+
   const response = await fetch(`${baseUrl}/api/stats/game-id-range?${params}`, {
     method: "GET",
     headers,
@@ -64,6 +70,13 @@ const fetchGameIdRange = async (
 
   if (!response.ok) {
     const errorDetails = await response.text().catch(() => "");
+    console.error("[useGameIdRange] Error response", {
+      startDate,
+      endDate,
+      status: response.status,
+      statusText: response.statusText,
+      errorDetails,
+    });
     throw new Error(
       `fetchGameIdRange: ${response.status} ${response.statusText}${
         errorDetails ? ` - ${errorDetails}` : ""
@@ -74,12 +87,17 @@ const fetchGameIdRange = async (
   const json: GameIdRangeApiResponse = await response.json();
 
   if (!json.success || !json.data) {
+    console.error("[useGameIdRange] Invalid payload", {
+      startDate,
+      endDate,
+      payload: json,
+    });
     throw new Error(
       "fetchGameIdRange: API responded without a valid range payload"
     );
   }
 
-  return {
+  const gameIdRange = {
     startGameId: toGameIdNumber(json.data.start_game_id),
     endGameId: toGameIdNumber(json.data.end_game_id),
     dateRange: {
@@ -87,6 +105,14 @@ const fetchGameIdRange = async (
       end: json.data.date_range?.end ?? null,
     },
   };
+
+  console.log("[useGameIdRange] Response", {
+    startDate,
+    endDate,
+    gameIdRange,
+  });
+
+  return gameIdRange;
 };
 
 export const useGameIdRange = (

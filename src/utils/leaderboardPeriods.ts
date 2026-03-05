@@ -58,6 +58,7 @@ const getCurrentGameDayWindow = (now: Date) => {
 export const getCurrentGameLeaderboardPeriods = (now = new Date()) => {
   const { start: currentGameDayStart, end: nextDailyReset } =
     getCurrentGameDayWindow(now);
+  const previousGameDayStart = new Date(currentGameDayStart.getTime() - DAY_IN_MS);
 
   const currentWeekDay = currentGameDayStart.getUTCDay();
   const daysSinceMonday = (currentWeekDay + 6) % 7;
@@ -68,7 +69,7 @@ export const getCurrentGameLeaderboardPeriods = (now = new Date()) => {
 
   return {
     daily: {
-      date: formatUtcDate(currentGameDayStart),
+      date: formatUtcDate(previousGameDayStart),
       resetAt: nextDailyReset,
     },
     weekly: {

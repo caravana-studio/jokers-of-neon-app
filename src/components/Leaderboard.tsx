@@ -82,7 +82,23 @@ interface LeaderboardProps {
   queryEnabled?: boolean;
   fullWidth?: boolean;
   compactSpacing?: boolean;
+  showGameId?: boolean;
 }
+
+const formatLeaderboardPlayerName = (
+  playerName: string,
+  gameId: string | number,
+  showGameId = false
+) => {
+  if (!showGameId) {
+    return playerName;
+  }
+
+  const normalizedGameId = normalizeGameId(gameId);
+
+  return normalizedGameId ? `${playerName} (ID: ${normalizedGameId})` : playerName;
+};
+
 export const Leaderboard = ({
   gameId,
   lines = 11,
@@ -97,6 +113,7 @@ export const Leaderboard = ({
   queryEnabled,
   fullWidth = false,
   compactSpacing = false,
+  showGameId = false,
 }: LeaderboardProps) => {
   const { t } = useTranslation("home", { keyPrefix: "leaderboard" });
   const { isSmallScreen } = useResponsiveValues();
@@ -191,7 +208,13 @@ export const Leaderboard = ({
                         #{leader.position}
                       </Td>
                       <Td color={"white !important"}>
-                        <Text>{leader.player_name}</Text>
+                        <Text>
+                          {formatLeaderboardPlayerName(
+                            leader.player_name,
+                            leader.id,
+                            showGameId
+                          )}
+                        </Text>
                       </Td>
                       {seePrizes ? (
                         <Td maxW="150px" p="12px 20px" whiteSpace="normal">
@@ -252,7 +275,13 @@ export const Leaderboard = ({
                   </Tr>
                   <CustomTr highlighted key={actualPlayer.position}>
                     <Td>#{actualPlayer.position}</Td>
-                    <Td>{actualPlayer.player_name}</Td>
+                    <Td>
+                      {formatLeaderboardPlayerName(
+                        actualPlayer.player_name,
+                        actualPlayer.id,
+                        showGameId
+                      )}
+                    </Td>
                     {/*                     <Td isNumeric>
                       <RollingNumber n={actualPlayer.player_score} />
                     </Td> */}
