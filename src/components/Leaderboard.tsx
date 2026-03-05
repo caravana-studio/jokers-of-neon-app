@@ -62,7 +62,7 @@ export const getPrizeText = (t: TFunction, prize: Prize | undefined) => {
   prize.packs.advanced &&
     prizeArray.push(t(`prizes.advanced`, { count: prize.packs.advanced }));
   prize.packs.base &&
-    prizeArray.push(t(`prizes.base`, { count: prize.packs.base }));
+    prizeArray.push(t(`prizes.basic`, { count: prize.packs.base }));
   prize.seasonPass && prizeArray.push(t(`prizes.seasonPass`));
 
   return prizeArray.join(" + ");
