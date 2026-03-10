@@ -79,7 +79,7 @@ export interface IGameContext {
 const stringTournamentId = import.meta.env.VITE_TOURNAMENT_ID;
 const tournamentId = stringTournamentId && Number(stringTournamentId);
 
-const GameContext = createContext<IGameContext>(gameProviderDefaults);
+export const GameContext = createContext<IGameContext>(gameProviderDefaults);
 
 export const useGameContext = () => {
   const location = useLocation();

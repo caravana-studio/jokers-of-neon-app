@@ -9,6 +9,7 @@ import { DelayedLoading } from "../components/DelayedLoading";
 import { MobileDecoration } from "../components/MobileDecoration";
 import { PinkBox } from "../components/PinkBox";
 import { RewardItem } from "../components/RewardsDetail";
+import { isMockGameApiMode } from "../config/gameMode";
 import { BOSS_LEVEL } from "../constants/general";
 import { PLAYS_DATA } from "../constants/plays";
 import {
@@ -19,6 +20,10 @@ import { useDojo } from "../dojo/useDojo";
 import { Plays } from "../enums/plays";
 import { useMapNavigate } from "../hooks/useMapNavigate";
 import { useGameStore } from "../state/useGameStore";
+import { useProgressStore } from "../state/roguelike/useProgressStore";
+import { useRoguelikeUiStore } from "../state/roguelike/useRoguelikeUiStore";
+import { useRunStore } from "../state/roguelike/useRunStore";
+import { useRoguelikeRuntimeStore } from "../state/roguelike/useRoguelikeRuntimeStore";
 import { BLUE_LIGHT, VIOLET_LIGHT } from "../theme/colors";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import { formatNumber } from "../utils/formatNumber";
@@ -58,6 +63,16 @@ const SummaryDetail = ({ win }: SummaryPageProps) => {
   const [animationEnded, setAnimationEnded] = useState(false);
   const [isNavigating, setIsNavigating] = useState(false);
   const { totalScore, level, round, id: gameId } = useGameStore();
+  const removeGameId = useGameStore((state) => state.removeGameId);
+  const activeRun = useRunStore((state) => state.activeRun);
+  const endRun = useRunStore((state) => state.endRun);
+  const clearRun = useRunStore((state) => state.clearRun);
+  const pendingUnlocksCount = useProgressStore(
+    (state) => state.profile?.pendingUnlocks.length ?? 0
+  );
+  const unlockToShow = useRoguelikeUiStore((state) => state.unlockToShow);
+  const runtimeRound = useRoguelikeRuntimeStore((state) => state.round);
+  const resetRuntime = useRoguelikeRuntimeStore((state) => state.reset);
   const [gameTracker, setGameTracker] = useState(DEFAULT_TRACKER_VIEW);
 
   useEffect(() => {
@@ -144,11 +159,40 @@ const SummaryDetail = ({ win }: SummaryPageProps) => {
       <PinkBox
         title={title}
         button={win ? t("endless-mode") : t("continue-btn")}
-        onClick={() => {
+        onClick={async () => {
           if (win) {
             setIsNavigating(true);
             navigateToMap();
           } else {
+            if (isMockGameApiMode) {
+              if (activeRun) {
+                await endRun({
+                  result: "LOSS",
+                  highestRoundReached: Math.max(
+                    activeRun.highestRoundReached,
+                    runtimeRound
+                  ),
+                });
+              }
+
+              const hasPendingUnlock =
+                (useProgressStore.getState().profile?.pendingUnlocks.length ?? 0) > 0 ||
+                useRoguelikeUiStore.getState().unlockToShow !== null ||
+                pendingUnlocksCount > 0 ||
+                unlockToShow !== null;
+
+              clearRun();
+              resetRuntime();
+              removeGameId();
+              navigate(
+                hasPendingUnlock ? "/roguelike/post-run" : "/",
+                hasPendingUnlock
+                  ? { replace: true, state: { nextPath: "/" } }
+                  : { replace: true }
+              );
+              return;
+            }
+
             navigate(`/gameover/${gameId}`);
           }
         }}

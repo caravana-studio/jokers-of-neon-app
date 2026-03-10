@@ -3,6 +3,7 @@ import { memo } from "react";
 import { useTranslation } from "react-i18next";
 import { Handle, Position } from "reactflow";
 import CachedImage from "../../../components/CachedImage";
+import { isMockGameApiMode } from "../../../config/gameMode";
 import { GameStateEnum } from "../../../dojo/typescript/custom";
 import { useDojo } from "../../../dojo/useDojo";
 import { useCustomNavigate } from "../../../hooks/useCustomNavigate";
@@ -39,7 +40,9 @@ const RoundNode = memo(({ data }: any) => {
   const title = t("name");
 
   const refetchAndNavigate = async () => {
-    await refetchGameStore(client, gameId);
+    if (!isMockGameApiMode) {
+      await refetchGameStore(client, gameId);
+    }
     navigate(GameStateEnum.Round);
   };
 
@@ -102,6 +105,7 @@ const RoundNode = memo(({ data }: any) => {
               id: data.id,
               title: title,
               nodeType: NodeType.ROUND,
+              optionId: data.optionId,
             });
           } else if (data.current && !stateInMap) {
             navigate(GameStateEnum.Round);

@@ -1,8 +1,9 @@
 import { Button, Flex, Heading } from "@chakra-ui/react";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { DelayedLoading } from "../../components/DelayedLoading";
+import { isMockGameApiMode } from "../../config/gameMode";
 import { DefaultInfo } from "../../components/Info/DefaultInfo";
 import { MobileBottomBar } from "../../components/MobileBottomBar";
 import { MobileDecoration } from "../../components/MobileDecoration";
@@ -15,6 +16,9 @@ import { useRedirectByGameState } from "../../hooks/useRedirectByGameState";
 import { useGameContext } from "../../providers/GameProvider";
 import { useStore } from "../../providers/StoreProvider";
 import { useGameStore } from "../../state/useGameStore";
+import { useProgressStore } from "../../state/roguelike/useProgressStore";
+import { useRoguelikeRuntimeStore } from "../../state/roguelike/useRoguelikeRuntimeStore";
+import { isBurnUnlocked } from "../../state/roguelike/mockShopRules";
 import { useShopStore } from "../../state/useShopStore";
 import { BLUE } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
@@ -45,6 +49,8 @@ export const DynamicStorePage = () => {
   const { setLoading } = useStore();
   const { specialSlotItem } = useShopStore();
   const { shopId } = useGameStore();
+  const profile = useProgressStore((state) => state.profile);
+  const unlockedSystems = profile?.unlockedSystems ?? [];
   const store = storesConfig.find(
     (s) => s.id === SHOP_ID_MAP[shopId as keyof typeof SHOP_ID_MAP]
   );
@@ -55,8 +61,35 @@ export const DynamicStorePage = () => {
 
   const { isSmallScreen } = useResponsiveValues();
 
-  const distribution =
-    store?.distribution[isSmallScreen ? "mobile" : "desktop"];
+  const distribution = useMemo(() => {
+    const source = store?.distribution[isSmallScreen ? "mobile" : "desktop"];
+    if (!source) {
+      return undefined;
+    }
+
+    const burnUnlocked = !isMockGameApiMode || isBurnUnlocked(unlockedSystems);
+    if (burnUnlocked) {
+      return source;
+    }
+
+    const filteredRows = source.rows
+      .map((row) => {
+        const columns = row.columns.filter((column) => column.id !== "burn");
+        if (columns.length === 1) {
+          return {
+            ...row,
+            columns: [{ ...columns[0], width: 100 }],
+          };
+        }
+        return { ...row, columns };
+      })
+      .filter((row) => row.columns.length > 0);
+
+    return {
+      ...source,
+      rows: filteredRows,
+    };
+  }, [store, isSmallScreen, unlockedSystems]);
   const navigate = useNavigate();
   const customNavigate = useCustomNavigate();
   const { onShopSkip } = useGameContext();
@@ -64,12 +97,22 @@ export const DynamicStorePage = () => {
   const slotsLen = specialSlots;
 
   const { skipShop } = useShopActions();
+  const leaveShopToMap = useRoguelikeRuntimeStore((state) => state.leaveShopToMap);
 
   const { nextLevelButton, nextLevelButtonProps } = useNextLevelButton();
 
   useRedirectByGameState();
 
   const handleNextLevelClick = () => {
+    if (isMockGameApiMode) {
+      setLoading(true);
+      leaveShopToMap();
+      useGameStore.setState({ state: GameStateEnum.Map });
+      setLoading(false);
+      navigate("/map");
+      return;
+    }
+
     setLoading(true);
     onShopSkip();
     skipShop(gameId).then((response): void => {

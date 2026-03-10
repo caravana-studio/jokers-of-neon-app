@@ -3,12 +3,16 @@ import { memo } from "react";
 import { useTranslation } from "react-i18next";
 import { Handle, Position } from "reactflow";
 import CachedImage from "../../../components/CachedImage";
+import { isMockGameApiMode } from "../../../config/gameMode";
 import { GameStateEnum } from "../../../dojo/typescript/custom";
+import { UnlockableSystem } from "../../../domain/roguelike/types";
 import { useCustomNavigate } from "../../../hooks/useCustomNavigate";
 import { useMap } from "../../../providers/MapProvider";
+import { useProgressStore } from "../../../state/roguelike/useProgressStore";
 import { useStore } from "../../../providers/StoreProvider";
 import { useGameStore } from "../../../state/useGameStore";
 import { useMapNavigationStore } from "../../../state/useMapNavigationStore";
+import { getMockShopItemCounts, StoreItemCounts } from "../../../state/roguelike/mockShopRules";
 import { BLUE, VIOLET } from "../../../theme/colors";
 import { useResponsiveValues } from "../../../theme/responsiveSettings";
 import { TooltipContent } from "../TooltipContent";
@@ -38,10 +42,21 @@ const getStoreItemsBasedOnShopId = (shopId: number) => {
   }
 };
 
+const toStoreTranslationValues = (counts: StoreItemCounts) => ({
+  traditionals: counts.traditionals ?? 0,
+  modifiers: counts.modifiers ?? 0,
+  specials: counts.specials ?? 0,
+  powerups: counts.powerups ?? 0,
+  lootboxes: counts.lootboxes ?? 0,
+  levelups: counts.levelups ?? 0,
+});
+
 const StoreNode = memo(({ data }: any) => {
   const { t } = useTranslation("store", { keyPrefix: "config" });
   const { t: tMap } = useTranslation("map");
   const { id: gameId, setShopId } = useGameStore();
+  const profile = useProgressStore((state) => state.profile);
+  const unlockedSystems: UnlockableSystem[] = profile?.unlockedSystems ?? [];
   const navigate = useCustomNavigate();
   const { handleNodeNavigation } = useNodeNavigation();
 
@@ -55,9 +70,12 @@ const StoreNode = memo(({ data }: any) => {
   const { stateInMap, reachable } = useNodeReachability(data.id);
 
   const title = `${tMap('legend.nodes.shop.title')} ${t(`${data.shopId}.name`)}`;
+  const counts = isMockGameApiMode
+    ? getMockShopItemCounts(data.shopId, unlockedSystems)
+    : getStoreItemsBasedOnShopId(data.shopId);
   const content = t(
     `${data.shopId}.content`,
-    getStoreItemsBasedOnShopId(data.shopId)
+    toStoreTranslationValues(counts)
   );
 
   const refetchAndNavigate = async () => {
@@ -122,6 +140,7 @@ const StoreNode = memo(({ data }: any) => {
               content: content,
               nodeType: NodeType.STORE,
               shopId: data.shopId,
+              optionId: data.optionId,
             });
           } else if (data.current && !stateInMap) {
             navigate(GameStateEnum.Store);

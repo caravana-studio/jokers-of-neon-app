@@ -139,6 +139,10 @@ export const NewHome = () => {
     }
   };
 
+  const handleRoguelikePocClick = () => {
+    navigate("/roguelike");
+  };
+
   const handleCloseTutorialModal = () => {
     setTutorialModalOpen(false);
   };
@@ -318,13 +322,16 @@ export const NewHome = () => {
           </Flex>
         </Flex>
         {!isSmallScreen && (
-          <Flex position="absolute" bottom="90px">
+          <Flex position="absolute" bottom="90px" gap={2}>
             <Button
               onClick={handlePlayClick}
-              w="300px"
+              w="260px"
               variant="secondarySolid"
             >
               {games && games.length > 0 ? t("my-games") : t("play")}
+            </Button>
+            <Button onClick={handleRoguelikePocClick} w="200px">
+              Roguelike PoC
             </Button>
           </Flex>
         )}
@@ -333,6 +340,10 @@ export const NewHome = () => {
             firstButton={{
               label: games && games.length > 0 ? t("my-games") : t("play"),
               onClick: handlePlayClick,
+            }}
+            secondButton={{
+              label: "PoC",
+              onClick: handleRoguelikePocClick,
             }}
           />
         )}

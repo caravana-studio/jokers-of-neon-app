@@ -4,6 +4,7 @@ import { memo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Handle, Position } from "reactflow";
 import CachedImage from "../../../components/CachedImage";
+import { isMockGameApiMode } from "../../../config/gameMode";
 import { BOSS_LEVEL } from "../../../constants/general";
 import { GameStateEnum } from "../../../dojo/typescript/custom";
 import { useDojo } from "../../../dojo/useDojo";
@@ -50,7 +51,9 @@ const RageNode = memo(({ data }: any) => {
   const content = `${t("power", { power: data.rageData.power })}`;
 
   const refetchAndNavigate = async () => {
-    await refetchGameStore(client, gameId);
+    if (!isMockGameApiMode) {
+      await refetchGameStore(client, gameId);
+    }
     navigate(GameStateEnum.Rage);
   };
 
@@ -107,6 +110,7 @@ const RageNode = memo(({ data }: any) => {
               title,
               content,
               nodeType: NodeType.RAGE,
+              optionId: data.optionId,
             });
           } else if (data.current && !stateInMap) {
             navigate(GameStateEnum.Rage);

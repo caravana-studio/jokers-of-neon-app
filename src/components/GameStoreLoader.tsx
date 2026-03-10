@@ -1,5 +1,6 @@
 import { Flex, Spinner } from "@chakra-ui/react";
 import { PropsWithChildren, useEffect, useState } from "react";
+import { isMockGameApiMode } from "../config/gameMode";
 import { GameStateEnum } from "../dojo/typescript/custom";
 import { useDojo } from "../dojo/useDojo";
 import { useCardData } from "../providers/CardDataProvider";
@@ -18,6 +19,11 @@ export const GameStoreLoader = ({ children }: PropsWithChildren) => {
   const { getCardData } = useCardData();
 
   useEffect(() => {
+    if (isMockGameApiMode) {
+      setIsLoading(false);
+      return;
+    }
+
     if (client && gameId) {
       if (state === GameStateEnum.NotSet) {
         const allPromises = [

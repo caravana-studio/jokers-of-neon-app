@@ -22,6 +22,11 @@ import { MyGames } from "./pages/MyGames/MyGames";
 import { Tournament } from "./pages/MyGames/Tournament";
 import { NewHome } from "./pages/NewHome/NewHome";
 import { NewLeaderboardPage } from "./pages/NewLeaderboardPage/NewLeaderboardPage";
+import { PostRunUnlockView } from "./pages/Roguelike/PostRunUnlockView";
+import { PrepareRunView } from "./pages/Roguelike/PrepareRunView";
+import { RoguelikeHome } from "./pages/Roguelike/RoguelikeHome";
+import { RoguelikeRewardsPage } from "./pages/Roguelike/RoguelikeRewardsPage";
+import { RoguelikeRunView } from "./pages/Roguelike/RoguelikeRunView";
 import { OpenLootBox } from "./pages/OpenLootBox/Stages/OpenLootBox";
 import { OpenLootBoxCardSelection } from "./pages/OpenLootBox/Stages/OpenLootBoxCardSelection";
 import { PlaysLayout } from "./pages/Plays/PlaysLayout";
@@ -42,12 +47,16 @@ import { SimulatePacksPage } from "./pages/SimulatePacks/SimulatePacksPage";
 import { CardHighlightProvider } from "./providers/HighlightProvider/CardHighlightProvider";
 import { PowerupHighlightProvider } from "./providers/HighlightProvider/PowerupHighlightProvider";
 import { PracticeGameProvider } from "./providers/PracticeGameProvider";
+import { RoguelikeRoundProvider } from "./providers/RoguelikeRoundProvider";
 import { StoreProvider } from "./providers/StoreProvider";
 import TutorialGameProvider from "./providers/TutorialGameProvider";
+import { RoguelikeBootstrap } from "./pages/Roguelike/components/RoguelikeBootstrap";
+import { isMockGameApiMode } from "./config/gameMode";
 import { LoginGate } from "./utils/LoginGate";
 
 export const AppRoutes = () => {
   const location = useLocation();
+  const isMockMode = isMockGameApiMode;
 
   return (
     <Routes location={location} key={location.pathname}>
@@ -56,6 +65,54 @@ export const AppRoutes = () => {
         element={
           <AnimatedPage>
             <NewHome />
+          </AnimatedPage>
+        }
+      />
+      <Route
+        path="/roguelike"
+        element={
+          <AnimatedPage>
+            <RoguelikeBootstrap>
+              <RoguelikeHome />
+            </RoguelikeBootstrap>
+          </AnimatedPage>
+        }
+      />
+      <Route
+        path="/roguelike/prepare"
+        element={
+          <AnimatedPage>
+            <RoguelikeBootstrap>
+              <PrepareRunView />
+            </RoguelikeBootstrap>
+          </AnimatedPage>
+        }
+      />
+      <Route
+        path="/roguelike/run"
+        element={
+          <AnimatedPage>
+            <RoguelikeBootstrap>
+              <RoguelikeRunView />
+            </RoguelikeBootstrap>
+          </AnimatedPage>
+        }
+      />
+      <Route
+        path="/roguelike/shop"
+        element={
+          <AnimatedPage>
+            <Navigate to="/store" replace />
+          </AnimatedPage>
+        }
+      />
+      <Route
+        path="/roguelike/post-run"
+        element={
+          <AnimatedPage>
+            <RoguelikeBootstrap>
+              <PostRunUnlockView />
+            </RoguelikeBootstrap>
           </AnimatedPage>
         }
       />
@@ -151,9 +208,17 @@ export const AppRoutes = () => {
         path="/demo"
         element={
           <AnimatedPage>
-            <GameStoreLoader>
-              <GamePage />
-            </GameStoreLoader>
+            {isMockMode ? (
+              <RoguelikeBootstrap>
+                <RoguelikeRoundProvider>
+                  <GamePage />
+                </RoguelikeRoundProvider>
+              </RoguelikeBootstrap>
+            ) : (
+              <GameStoreLoader>
+                <GamePage />
+              </GameStoreLoader>
+            )}
           </AnimatedPage>
         }
       />
@@ -177,9 +242,15 @@ export const AppRoutes = () => {
         path="/rewards"
         element={
           <AnimatedPage>
-            <GameStoreLoader>
-              <RewardsPage />
-            </GameStoreLoader>
+            {isMockMode ? (
+              <RoguelikeBootstrap>
+                <RoguelikeRewardsPage />
+              </RoguelikeBootstrap>
+            ) : (
+              <GameStoreLoader>
+                <RewardsPage />
+              </GameStoreLoader>
+            )}
           </AnimatedPage>
         }
       />
@@ -222,15 +293,29 @@ export const AppRoutes = () => {
       <Route
         path="/store"
         element={
-          <StoreProvider>
-            <AnimatedPage>
-              <GameStoreLoader>
-                <ShopStoreLoader>
-                  <DynamicStorePage />
-                </ShopStoreLoader>
-              </GameStoreLoader>
-            </AnimatedPage>
-          </StoreProvider>
+          <AnimatedPage>
+            {isMockMode ? (
+              <RoguelikeBootstrap>
+                <RoguelikeRoundProvider>
+                  <StoreProvider>
+                    <GameStoreLoader>
+                      <ShopStoreLoader>
+                        <DynamicStorePage />
+                      </ShopStoreLoader>
+                    </GameStoreLoader>
+                  </StoreProvider>
+                </RoguelikeRoundProvider>
+              </RoguelikeBootstrap>
+            ) : (
+              <StoreProvider>
+                <GameStoreLoader>
+                  <ShopStoreLoader>
+                    <DynamicStorePage />
+                  </ShopStoreLoader>
+                </GameStoreLoader>
+              </StoreProvider>
+            )}
+          </AnimatedPage>
         }
       />
       <Route
@@ -380,13 +465,25 @@ export const AppRoutes = () => {
       <Route
         path="/map"
         element={
-          <StoreProvider>
-            <AnimatedPage>
-              <GameStoreLoader>
-                <MapPage />
-              </GameStoreLoader>
-            </AnimatedPage>
-          </StoreProvider>
+          <AnimatedPage>
+            {isMockMode ? (
+              <RoguelikeBootstrap>
+                <RoguelikeRoundProvider>
+                  <StoreProvider>
+                    <GameStoreLoader>
+                      <MapPage />
+                    </GameStoreLoader>
+                  </StoreProvider>
+                </RoguelikeRoundProvider>
+              </RoguelikeBootstrap>
+            ) : (
+              <StoreProvider>
+                <GameStoreLoader>
+                  <MapPage />
+                </GameStoreLoader>
+              </StoreProvider>
+            )}
+          </AnimatedPage>
         }
       />
       <Route

@@ -9,11 +9,11 @@ import { useTranslation } from "react-i18next";
 import { MobileBottomBar } from "../../components/MobileBottomBar";
 import { MobileDecoration } from "../../components/MobileDecoration";
 import { useBackToGameButton } from "../../components/useBackToGameButton";
+import { isMockGameApiMode } from "../../config/gameMode";
 import { GameStateEnum } from "../../dojo/typescript/custom";
 import { useDojo } from "../../dojo/useDojo";
 import { useCustomNavigate } from "../../hooks/useCustomNavigate";
 import { useMap } from "../../providers/MapProvider";
-import { useStore } from "../../providers/StoreProvider";
 import { useGameStore } from "../../state/useGameStore";
 import { useMapNavigationStore } from "../../state/useMapNavigationStore";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
@@ -62,7 +62,6 @@ export const Map = () => {
   const navigate = useCustomNavigate();
   const { backToGameButtonProps, backToGameButton } = useBackToGameButton();
   const { handleNodeNavigation } = useNodeNavigation();
-  const { refetch: refetchStore } = useStore();
   const hasInitialFitView = useRef(false);
 
   useEffect(() => {
@@ -88,7 +87,9 @@ export const Map = () => {
   );
 
   const refetchAndNavigate = async (state: GameStateEnum) => {
-    await refetchGameStore(client, gameId);
+    if (!isMockGameApiMode) {
+      await refetchGameStore(client, gameId);
+    }
     navigate(state);
   };
 
@@ -106,7 +107,6 @@ export const Map = () => {
         case NodeType.STORE:
           if (selectedNodeData.shopId) {
             setShopId(selectedNodeData.shopId);
-            refetchStore();
           }
           navigate(GameStateEnum.Store);
           break;
@@ -119,6 +119,8 @@ export const Map = () => {
       nodeId: selectedNodeData.id,
       gameId,
       onNavigate: navigateToNode,
+      optionId: selectedNodeData.optionId,
+      shopId: selectedNodeData.shopId,
     });
   };
 

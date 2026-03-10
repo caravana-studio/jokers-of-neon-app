@@ -2,6 +2,7 @@ import { GameStateEnum } from "../dojo/typescript/custom";
 import { useDojo } from "../dojo/useDojo";
 import { useGameStore } from "../state/useGameStore";
 import { useMapNavigationStore } from "../state/useMapNavigationStore";
+import { isMockGameApiMode } from "../config/gameMode";
 import { useCustomNavigate } from "./useCustomNavigate";
 
 export const useMapNavigate = () => {
@@ -13,7 +14,9 @@ export const useMapNavigate = () => {
   } = useDojo();
 
   const navigateToMap = async () => {
-    await refetchGameStore(client, gameId);
+    if (!isMockGameApiMode) {
+      await refetchGameStore(client, gameId);
+    }
     // Reset map navigation state to ensure nodes are clickable
     setNodeTransactionPending(false);
     setActiveNodeId(null);

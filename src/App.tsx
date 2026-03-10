@@ -10,6 +10,7 @@ import { createProfile, fetchProfile } from "./api/profile";
 import { AppRoutes } from "./AppRoutes";
 import { Background } from "./components/Background";
 import { Layout } from "./components/Layout";
+import { RoguelikeProgressDebugOverlay } from "./components/RoguelikeProgressDebugOverlay";
 import { useDojo } from "./dojo/DojoContext";
 import { useGameActions } from "./dojo/useGameActions";
 import { useUsername } from "./dojo/utils/useUsername";
@@ -116,6 +117,7 @@ function App() {
                           <AnimatePresence mode="wait">
                             <AppRoutes />
                           </AnimatePresence>
+                          <RoguelikeProgressDebugOverlay />
                         </Layout>
                       </BackgroundAnimationProvider>
                     </Background>

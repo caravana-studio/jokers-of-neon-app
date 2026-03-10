@@ -7,12 +7,14 @@ import {
   useState,
 } from "react";
 import { Edge, Node, useReactFlow } from "reactflow";
+import { isMockGameApiMode } from "../config/gameMode";
 import { BOSS_LEVEL } from "../constants/general";
 import { getMap } from "../dojo/queries/getMap";
 import { GameStateEnum } from "../dojo/typescript/custom";
 import { useDojo } from "../dojo/useDojo";
 import { getLayoutedElements } from "../pages/Map/layout";
 import { NodeData, NodeType } from "../pages/Map/types";
+import { useRoguelikeRuntimeStore } from "../state/roguelike/useRoguelikeRuntimeStore";
 import { useGameStore } from "../state/useGameStore";
 import { useMapNavigationStore } from "../state/useMapNavigationStore";
 import { BLUE, VIOLET_LIGHT } from "../theme/colors";
@@ -25,6 +27,7 @@ export interface SelectedNodeData {
   content?: string;
   nodeType: NodeType;
   shopId?: number;
+  optionId?: string;
 }
 
 interface MapContextType {
@@ -45,6 +48,116 @@ const MapContext = createContext<MapContextType | undefined>(undefined);
 interface MapProviderProps {
   children: ReactNode;
 }
+
+type MapSourceNode = NodeData & { optionId?: string };
+
+const mapOptionTypeToNodeType = (type: "ROUND" | "STORE" | "RAGE"): NodeType => {
+  if (type === "STORE") {
+    return NodeType.STORE;
+  }
+
+  if (type === "RAGE") {
+    return NodeType.RAGE;
+  }
+
+  return NodeType.ROUND;
+};
+
+const encodeRageNodeData = (round: number, power: number): number => {
+  return round * Math.pow(2, 32) + power;
+};
+
+const ROOT_NODE_ID = 1;
+const getLaneOptionNodeId = (laneIndex: number, optionIndex: number): number => {
+  return 1000 + laneIndex * 100 + optionIndex;
+};
+
+const buildMockMapNodes = (): MapSourceNode[] => {
+  const runtime = useRoguelikeRuntimeStore.getState();
+  const lanes = runtime.mapLanes;
+  const currentLaneIndex = runtime.currentMapLaneIndex;
+
+  const rootNode: MapSourceNode = {
+    id: ROOT_NODE_ID,
+    nodeType: runtime.round % 3 === 0 ? NodeType.RAGE : NodeType.ROUND,
+    data:
+      runtime.round % 3 === 0
+        ? encodeRageNodeData(runtime.round, Math.max(1, runtime.level * 8))
+        : runtime.round,
+    children: [],
+    visited: true,
+    current: currentLaneIndex === 0,
+    last: false,
+  };
+
+  const optionNodes: MapSourceNode[] = [];
+  let hasCurrentNode = rootNode.current ?? false;
+
+  lanes.forEach((lane, laneIndex) => {
+    const previousNodeIds =
+      laneIndex === 0
+        ? [ROOT_NODE_ID]
+        : (() => {
+            const previousLane = lanes[laneIndex - 1];
+            const allPreviousIds = previousLane.options.map((_, optionIndex) =>
+              getLaneOptionNodeId(laneIndex - 1, optionIndex)
+            );
+
+            if (!previousLane.selectedOptionId) {
+              return allPreviousIds;
+            }
+
+            const selectedPreviousIndex = previousLane.options.findIndex(
+              (option) => option.id === previousLane.selectedOptionId
+            );
+
+            if (selectedPreviousIndex < 0) {
+              return allPreviousIds;
+            }
+
+            return [getLaneOptionNodeId(laneIndex - 1, selectedPreviousIndex)];
+          })();
+
+    lane.options.forEach((option, optionIndex) => {
+      const optionNodeId = getLaneOptionNodeId(laneIndex, optionIndex);
+      const isSelected = lane.selectedOptionId === option.id;
+      const isCurrent = currentLaneIndex > 0 &&
+        laneIndex === currentLaneIndex - 1 &&
+        isSelected;
+
+      if (isCurrent) {
+        hasCurrentNode = true;
+      }
+
+      const targetRound =
+        option.targetRound ?? runtime.round + Math.max(1, Math.floor((laneIndex + 1) / 2));
+      const targetLevel =
+        option.targetLevel ?? Math.max(1, Math.ceil(targetRound / 3));
+
+      optionNodes.push({
+        id: optionNodeId,
+        nodeType: mapOptionTypeToNodeType(option.type),
+        data:
+          option.type === "STORE"
+            ? option.shopId ?? 1
+            : option.type === "RAGE"
+              ? encodeRageNodeData(targetRound, Math.max(1, targetLevel * 10))
+              : targetRound,
+        children: previousNodeIds,
+        visited: isSelected,
+        current: isCurrent,
+        last: option.type === "RAGE",
+        optionId: option.id,
+      });
+    });
+  });
+
+  if (!hasCurrentNode) {
+    rootNode.current = true;
+  }
+
+  return [rootNode, ...optionNodes];
+};
 
 export const MapProvider = ({ children }: MapProviderProps) => {
   const [nodes, setNodes] = useState<Node[]>([]);
@@ -122,10 +235,16 @@ export const MapProvider = ({ children }: MapProviderProps) => {
   const reachableNodes = reachableNodeIds;
 
   useEffect(() => {
-    getMap(client, id).then((dataNodes) => {
+    let cancelled = false;
+
+    const loadMap = async () => {
+      const dataNodes: MapSourceNode[] = isMockGameApiMode
+        ? buildMockMapNodes()
+        : await getMap(client, id);
+
       const transformedNodes = dataNodes.map((node, index) => {
         const isFirstNode = index === 0;
-        const shouldBeFinalRage = isFirstNode && level >= 2;
+        const shouldBeFinalRage = !isMockGameApiMode && isFirstNode && level >= 2;
 
         const nodeType = shouldBeFinalRage
           ? NodeType.RAGE
@@ -146,6 +265,7 @@ export const MapProvider = ({ children }: MapProviderProps) => {
               nodeType === NodeType.RAGE
                 ? getRageNodeData(node.data)
                 : undefined,
+            optionId: node.optionId,
             isBossLevel,
             isFirstNode,
           },
@@ -153,19 +273,28 @@ export const MapProvider = ({ children }: MapProviderProps) => {
       });
 
       const calculatedEdges = calculateEdges(dataNodes);
-
-      getLayoutedElements(transformedNodes, calculatedEdges).then(
-        ({ nodes: layoutedNodes, edges: layoutedEdges }) => {
-          setNodes(layoutedNodes);
-          setBaseEdges(layoutedEdges);
-          setLayoutReady(true);
-        }
+      const { nodes: layoutedNodes, edges: layoutedEdges } = await getLayoutedElements(
+        transformedNodes,
+        calculatedEdges
       );
-    });
-  }, []);
 
+      if (cancelled) {
+        return;
+      }
 
-  const calculateEdges = (nodes: NodeData[]): Edge[] => {
+      setNodes(layoutedNodes);
+      setBaseEdges(layoutedEdges);
+      setLayoutReady(true);
+    };
+
+    void loadMap();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [client, id, level, isBossLevel]);
+
+  const calculateEdges = (nodes: Array<{ id: number; children: number[] }>): Edge[] => {
     const edges: Edge[] = [];
     nodes.forEach((node) => {
       node.children.forEach((childId) => {
@@ -207,7 +336,7 @@ export const MapProvider = ({ children }: MapProviderProps) => {
     reactFlowInstance.fitView({
       nodes: [{ id: nodeId }],
       padding: 0.3,
-      duration: 3500,
+      duration: 700,
       maxZoom: 3,
     });
   };

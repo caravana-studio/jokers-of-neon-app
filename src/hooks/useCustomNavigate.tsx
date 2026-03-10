@@ -1,4 +1,5 @@
 import { useNavigate as useRouterNavigate } from "react-router-dom";
+import { isMockGameApiMode } from "../config/gameMode";
 import { stateToPageMap } from "../constants/redirectConfig";
 import { GameStateEnum } from "../dojo/typescript/custom";
 import { useDojo } from "../dojo/useDojo";
@@ -25,7 +26,7 @@ export const useCustomNavigate = () => {
       resetRage();
     }
     const targetPath = stateToPageMap[state];
-    if (targetPath === "/store") {
+    if (!isMockGameApiMode && targetPath === "/store") {
       refetchSpecialCards(client, gameId);
     }
     navigate(targetPath);

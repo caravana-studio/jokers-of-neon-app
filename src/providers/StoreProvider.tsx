@@ -1,11 +1,19 @@
 import { PropsWithChildren, createContext, useContext } from "react";
 
+import { isMockGameApiMode } from "../config/gameMode";
 import { buySfx, levelUpSfx, rerollSfx } from "../constants/sfx.ts";
 import { BlisterPackItem } from "../dojo/typescript/models.gen";
 import { useDojo } from "../dojo/useDojo.tsx";
 import { useShopActions } from "../dojo/useShopActions";
 import { useAudio } from "../hooks/useAudio.tsx";
 import { useDeckStore } from "../state/useDeckStore.ts";
+import { useRoguelikeRuntimeStore } from "../state/roguelike/useRoguelikeRuntimeStore";
+import {
+  buildMockDynamicShopState,
+  buildMockDynamicShopStateForReroll,
+} from "../state/roguelike/mockDynamicStore";
+import { useProgressStore } from "../state/roguelike/useProgressStore";
+import { useRunStore } from "../state/roguelike/useRunStore";
 import { useGameStore } from "../state/useGameStore.ts";
 import { useShopStore } from "../state/useShopStore.ts";
 import { Card } from "../types/Card";
@@ -124,7 +132,52 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
   } = useShopActions();
 
   const fetchShopItems = async () => {
+    if (isMockGameApiMode) {
+      const activeRun = useRunStore.getState().activeRun;
+      const currentGameState = useGameStore.getState();
+      const unlockedSystems =
+        useProgressStore.getState().profile?.unlockedSystems ?? [];
+      const runId = activeRun?.runId ?? `mock-run-${currentGameState.id || 0}`;
+      const runNumber = activeRun?.runNumber ?? 1;
+      const safeShopId = currentGameState.shopId > 0 ? currentGameState.shopId : 1;
+
+      const mockState = buildMockDynamicShopState({
+        gameId: currentGameState.id || runNumber,
+        runId,
+        shopId: safeShopId,
+        unlockedSystems,
+      });
+
+      useShopStore.setState({
+        ...mockState,
+        loadedItems: true,
+        loading: false,
+        rerolling: false,
+        locked: false,
+      });
+      return;
+    }
+
     await refetchShopStore(client, gameId);
+  };
+
+  const setMockCash = (nextCash: number) => {
+    const safeCash = Math.max(0, nextCash);
+    useGameStore.getState().setCash(safeCash);
+    void useRunStore.getState().syncRunGold(safeCash);
+
+    useRoguelikeRuntimeStore.getState().updateCash(safeCash);
+  };
+
+  const trySpendMockCash = (cost: number): boolean => {
+    const safeCost = Math.max(0, cost);
+    const currentCash = useGameStore.getState().cash;
+    if (currentCash < safeCost) {
+      return false;
+    }
+
+    setMockCash(currentCash - safeCost);
+    return true;
   };
 
   const stateBuyCard = (card: Card) => {
@@ -148,6 +201,42 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
   };
 
   const buyCard = (card: Card): Promise<boolean> => {
+    if (isMockGameApiMode) {
+      buySound();
+      setLocked(true);
+      stateBuyCard(card);
+
+      const cost = card?.discount_cost ? card.discount_cost : card?.price ?? 0;
+      const gameState = useGameStore.getState();
+
+      if (card.isSpecial && gameState.specialCards.length >= gameState.specialSlots) {
+        stateRollbackBuyCard(card);
+        setLocked(false);
+        return Promise.resolve(false);
+      }
+
+      if (!trySpendMockCash(cost)) {
+        stateRollbackBuyCard(card);
+        setLocked(false);
+        return Promise.resolve(false);
+      }
+
+      if (card.isSpecial) {
+        useGameStore.setState((state) => {
+          if (state.specialCards.some((entry) => entry.idx === card.idx)) {
+            return {};
+          }
+
+          return {
+            specialCards: [...state.specialCards, { ...card }],
+          };
+        });
+      }
+
+      setLocked(false);
+      return Promise.resolve(true);
+    }
+
     buySound();
     setLocked(true);
     stateBuyCard(card);
@@ -176,6 +265,33 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
   };
 
   const buyPowerUp = (powerUp: PowerUp): Promise<boolean> => {
+    if (isMockGameApiMode) {
+      buySound();
+      setLocked(true);
+      stateBuyPowerUp(powerUp.idx);
+
+      const cost = powerUp?.discount_cost
+        ? powerUp.discount_cost
+        : powerUp?.cost ?? 0;
+      const gameState = useGameStore.getState();
+      const occupiedSlots = gameState.powerUps.filter((item) => item !== null).length;
+      const noSlotsAvailable = occupiedSlots >= gameState.maxPowerUpSlots;
+
+      if (noSlotsAvailable || !trySpendMockCash(cost)) {
+        rollbackBuyPowerUp(powerUp.idx);
+        setLocked(false);
+        return Promise.resolve(false);
+      }
+
+      addPowerUp({
+        ...powerUp,
+        purchased: true,
+      });
+
+      setLocked(false);
+      return Promise.resolve(true);
+    }
+
     buySound();
     setLocked(true);
     stateBuyPowerUp(powerUp.idx);
@@ -205,6 +321,25 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
   };
 
   const burnCards = (cards: Card[], totalCost: number): Promise<boolean> => {
+    if (isMockGameApiMode) {
+      buySound();
+      setLocked(true);
+
+      if (!trySpendMockCash(totalCost)) {
+        setLocked(false);
+        return Promise.resolve(false);
+      }
+
+      useShopStore.setState((state) => ({
+        burnItem: state.burnItem
+          ? { ...state.burnItem, purchased: true }
+          : state.burnItem,
+      }));
+
+      setLocked(false);
+      return Promise.resolve(true);
+    }
+
     buySound();
     setLocked(true);
 
@@ -236,6 +371,46 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     card: Card,
     isTemporal: boolean
   ): Promise<boolean> => {
+    if (isMockGameApiMode) {
+      buySound();
+      setLocked(true);
+      stateBuyCard(card);
+
+      const regularCost = card?.discount_cost
+        ? card.discount_cost
+        : card?.price ?? 0;
+      const temporalCost = card?.temporary_discount_cost
+        ? card.temporary_discount_cost
+        : card?.temporary_price ?? 0;
+      const cost = isTemporal ? temporalCost : regularCost;
+      const gameState = useGameStore.getState();
+
+      if (gameState.specialCards.length >= gameState.specialSlots || !trySpendMockCash(cost)) {
+        stateRollbackBuyCard(card);
+        setLocked(false);
+        return Promise.resolve(false);
+      }
+
+      useGameStore.setState((state) => {
+        if (state.specialCards.some((entry) => entry.idx === card.idx)) {
+          return {};
+        }
+
+        return {
+          specialCards: [
+            ...state.specialCards,
+            {
+              ...card,
+              temporary: isTemporal,
+            },
+          ],
+        };
+      });
+
+      setLocked(false);
+      return Promise.resolve(true);
+    }
+
     buySound();
     setLocked(true);
     stateBuyCard(card);
@@ -272,6 +447,21 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
   };
 
   const buyPack = (pack: BlisterPackItem): Promise<boolean> => {
+    if (isMockGameApiMode) {
+      buySound();
+      setLocked(true);
+
+      const cost = pack?.discount_cost ? pack.discount_cost : pack?.cost ?? 0;
+      if (!trySpendMockCash(cost)) {
+        setLocked(false);
+        return Promise.resolve(false);
+      }
+
+      buyBlisterPack(Number(pack.idx));
+      setLocked(false);
+      return Promise.resolve(true);
+    }
+
     const cost = pack?.discount_cost ? pack.discount_cost : pack?.cost ?? 0;
     removeCash(cost);
     buyBlisterPack(Number(pack.idx));
@@ -292,6 +482,10 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
   };
 
   const selectCardsFromPack = (cardIndices: number[]): Promise<boolean> => {
+    if (isMockGameApiMode) {
+      return Promise.resolve(cardIndices.length > 0);
+    }
+
     const promise = dojoSelectCardsFromPack(gameId, cardIndices)
       .then(async ({ success }) => {
         refetchSpecialCards(client, gameId);
@@ -305,6 +499,52 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
   };
 
   const reroll = () => {
+    if (isMockGameApiMode) {
+      setRerolling(true);
+      rerollSound();
+      setLocked(true);
+      stateReroll();
+
+      const activeRun = useRunStore.getState().activeRun;
+      const gameState = useGameStore.getState();
+      const unlockedSystems =
+        useProgressStore.getState().profile?.unlockedSystems ?? [];
+      const runId = activeRun?.runId ?? `mock-run-${gameState.id || 0}`;
+      const runNumber = activeRun?.runNumber ?? 1;
+      const safeShopId = gameState.shopId > 0 ? gameState.shopId : 1;
+
+      const mockState = buildMockDynamicShopStateForReroll({
+        gameId: gameState.id || runNumber,
+        runId,
+        shopId: safeShopId,
+        unlockedSystems,
+      });
+
+      useShopStore.setState({
+        ...mockState,
+        loadedItems: true,
+        loading: false,
+        rerolling: true,
+        locked: true,
+      });
+
+      const promise = Promise.resolve(true);
+      promise
+        .then(() => {
+          setTimeout(() => {
+            setRerolling(false);
+            setLocked(false);
+          }, 200);
+        })
+        .catch(() => {
+          rollbackReroll();
+          setRerolling(false);
+          setLocked(false);
+        });
+
+      return promise;
+    }
+
     setRerolling(true);
     rerollSound();
     setLocked(true);
@@ -328,6 +568,35 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
   };
 
   const levelUpPlay = (item: PokerHandItem): Promise<boolean> => {
+    if (isMockGameApiMode) {
+      levelUpHandSound();
+      setLocked(true);
+      buyPokerHand(item.idx);
+
+      const cost = item?.discount_cost ? item.discount_cost : item?.cost ?? 0;
+      if (!trySpendMockCash(cost)) {
+        rollbackBuyPokerHand(item.idx);
+        setLocked(false);
+        return Promise.resolve(false);
+      }
+
+      useGameStore.setState((state) => ({
+        plays: state.plays.map((play) =>
+          play.poker_hand.toString() === item.poker_hand
+            ? {
+                ...play,
+                level: item.level,
+                points: item.points,
+                multi: item.multi,
+              }
+            : play
+        ),
+      }));
+
+      setLocked(false);
+      return Promise.resolve(true);
+    }
+
     levelUpHandSound();
     setLocked(true);
     buyPokerHand(item.idx);
@@ -356,6 +625,26 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
   };
 
   const buySpecialSlot = (): Promise<boolean> => {
+    if (isMockGameApiMode) {
+      setLocked(true);
+      buySlotSpecialCard();
+
+      const gameState = useGameStore.getState();
+      const cost = specialSlotItem?.discount_cost
+        ? specialSlotItem.discount_cost
+        : specialSlotItem?.cost ?? 0;
+
+      if (gameState.specialSlots >= gameState.maxSpecialCards || !trySpendMockCash(cost)) {
+        rollbackBuySlotSpecialCard();
+        setLocked(false);
+        return Promise.resolve(false);
+      }
+
+      addSpecialSlot();
+      setLocked(false);
+      return Promise.resolve(true);
+    }
+
     setLocked(true);
     buySlotSpecialCard();
     const cost = specialSlotItem?.discount_cost
