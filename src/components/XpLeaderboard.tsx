@@ -21,6 +21,9 @@ import { CustomTr } from "./Leaderboard";
 interface XpLeaderboardProps {
   lines?: number;
   mb?: string;
+  seasonId: number;
+  fullWidth?: boolean;
+  compactSpacing?: boolean;
 }
 
 const formatAddress = (address: string) => {
@@ -28,10 +31,16 @@ const formatAddress = (address: string) => {
   return `${address.slice(0, 6)}...${address.slice(-4)}`;
 };
 
-export const XpLeaderboard = ({ lines = 100, mb = "" }: XpLeaderboardProps) => {
+export const XpLeaderboard = ({
+  lines = 100,
+  mb = "",
+  seasonId,
+  fullWidth = false,
+  compactSpacing = false,
+}: XpLeaderboardProps) => {
   const { t } = useTranslation("home", { keyPrefix: "leaderboard" });
   const { isSmallScreen } = useResponsiveValues();
-  const { data: leaderboard, isLoading } = useGetXpLeaderboard();
+  const { data: leaderboard, isLoading } = useGetXpLeaderboard(seasonId);
   const {
     account: { account },
   } = useDojo();
@@ -39,12 +48,11 @@ export const XpLeaderboard = ({ lines = 100, mb = "" }: XpLeaderboardProps) => {
 
   return (
     <Box
-      w={isSmallScreen ? "100%" : "60%"}
+      w={fullWidth || isSmallScreen ? "100%" : "60%"}
       overflowY="auto"
       flexGrow={1}
-      mt={isSmallScreen ? 2 : "20px"}
-      mb={isSmallScreen ? 8 : "70px"}
-      px={[1, 2, 4, 8]}
+      mt={compactSpacing ? 0 : isSmallScreen ? 2 : "20px"}
+      mb={compactSpacing ? 0 : isSmallScreen ? 8 : "70px"}
     >
       {isLoading && <Spinner />}
       {leaderboard && (
@@ -79,15 +87,16 @@ export const XpLeaderboard = ({ lines = 100, mb = "" }: XpLeaderboardProps) => {
                     <Td color={"white !important"}>
                       <Flex alignItems="center" gap={2}>
                         <Text color={"white"}>
-                        {entry.playerName || formatAddress(entry.address)}
-                      </Text>
-                      {/* {entry.hasSeasonPass && (
-                        <SeasonPass
-                          w={isSmallScreen ? "14px" : "25px"}
-                          rotate="0deg"
-                          unlocked={false}
-                        />
-                      )} */}
+                          {entry.playerName || formatAddress(entry.address)}
+                        </Text>
+                        {entry.hasSeasonPass && (
+                          <SeasonPass
+                            w={isSmallScreen ? "14px" : "25px"}
+                            rotate="0deg"
+                            unlocked={false}
+                            seasonNumber={seasonId}
+                          />
+                        )}
                       </Flex>
                     </Td>
 {/*                     <Td maxW="150px" p="12px 20px" whiteSpace="normal">

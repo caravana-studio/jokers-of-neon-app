@@ -7,11 +7,13 @@ import { Intensity } from "../../../types/intensity";
 interface GalaxyBackgroundProps {
   opacity?: number;
   intensity?: Intensity;
+  filter?: string;
 }
 
 export const GalaxyBackground = ({
   opacity = 1,
   intensity = Intensity.MEDIUM,
+  filter,
 }: GalaxyBackgroundProps) => {
   return (
     <Flex
@@ -25,6 +27,7 @@ export const GalaxyBackground = ({
       zIndex={1}
       pointerEvents="none"
       backgroundColor="black"
+      filter={filter}
     >
       <Galaxy
         mouseRepulsion={false}

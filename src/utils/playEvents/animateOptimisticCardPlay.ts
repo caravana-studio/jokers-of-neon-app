@@ -1,9 +1,12 @@
 import { EventTypeEnum } from "../../dojo/typescript/custom";
+import { Suits } from "../../enums/suits";
 import { CardPlayEvent, PowerUpScore } from "../../types/ScoreData";
+import { eventTypeToSuit } from "./eventTypeToSuit";
 
 const PITCH_VARIANTS = 18;
 
 interface AnimateOptimisticCardPlayConfig {
+  changeEvents?: CardPlayEvent[];
   events: CardPlayEvent[];
   powerUpEvents?: PowerUpScore[];
   playAnimationDuration: number;
@@ -16,6 +19,10 @@ interface AnimateOptimisticCardPlayConfig {
   negativeMultiSound: () => void;
   addPoints: (points: number) => void;
   addMulti: (multi: number) => void;
+  changeCardsSuit?: (cardIndexes: number[], suit: Suits) => void;
+  changeCardsNeon?: (cardIndexes: number[]) => void;
+  changeCardsRank?: (cardChanges: CardPlayEvent["hand"]) => void;
+  setCardTransformationLock?: (locked: boolean) => void;
 }
 
 export interface OptimisticAnimationController {
@@ -25,6 +32,7 @@ export interface OptimisticAnimationController {
 }
 
 export const animateOptimisticCardPlay = ({
+  changeEvents = [],
   events,
   powerUpEvents = [],
   playAnimationDuration,
@@ -35,8 +43,12 @@ export const animateOptimisticCardPlay = ({
   negativeMultiSound,
   addPoints,
   addMulti,
+  changeCardsSuit,
+  changeCardsNeon,
+  changeCardsRank,
+  setCardTransformationLock,
 }: AnimateOptimisticCardPlayConfig): OptimisticAnimationController => {
-  const totalEventsLength = events.length + powerUpEvents.length;
+  const totalEventsLength = changeEvents.length + events.length + powerUpEvents.length;
 
   if (!totalEventsLength) {
     return {
@@ -72,12 +84,73 @@ export const animateOptimisticCardPlay = ({
     isCompleted = true;
     timeouts.forEach((timeoutId) => clearTimeout(timeoutId));
     timeouts.clear();
+    setCardTransformationLock?.(false);
     if (clearAnimatedState) {
       setAnimatedCard(undefined);
       setAnimatedPowerUp?.(undefined);
     }
     resolveDone();
   };
+
+  changeEvents.forEach((event, index) => {
+    const timeoutId = setTimeout(() => {
+      if (isCompleted) {
+        return;
+      }
+
+      const handIndexes = event.hand.map((handEvent) => handEvent.idx);
+      if (handIndexes.length === 0) {
+        return;
+      }
+
+      const specialIndexes = Array.from(
+        new Set(event.specials.map((special) => special.idx))
+      ).sort((a, b) => a - b);
+      const special_idx =
+        specialIndexes.length === 1 ? specialIndexes[0] : undefined;
+
+      const isNeon = event.eventType === EventTypeEnum.Neon;
+      const isRank = event.eventType === EventTypeEnum.Rank;
+      const suit = eventTypeToSuit(event.eventType);
+
+      if (!isNeon && !isRank && suit === undefined) {
+        return;
+      }
+
+      pointsSound(getNextPitchIndex());
+      setCardTransformationLock?.(true);
+
+      if (isNeon) {
+        setAnimatedCard({
+          isNeon: true,
+          special_idx,
+          idx: handIndexes,
+          animationIndex: 200 + index,
+        });
+        changeCardsNeon?.(handIndexes);
+      } else if (isRank) {
+        setAnimatedCard({
+          suit: 5,
+          special_idx,
+          idx: handIndexes,
+          animationIndex: 200 + index,
+        });
+        changeCardsRank?.(event.hand);
+      } else {
+        setAnimatedCard({
+          suit,
+          special_idx,
+          idx: handIndexes,
+          animationIndex: 200 + index,
+        });
+        if (suit !== undefined) {
+          changeCardsSuit?.(handIndexes, suit);
+        }
+      }
+    }, playAnimationDuration * index);
+
+    timeouts.add(timeoutId);
+  });
 
   events.forEach((event, index) => {
     const timeoutId = setTimeout(() => {
@@ -114,7 +187,7 @@ export const animateOptimisticCardPlay = ({
         });
         addMulti(quantity);
       }
-    }, playAnimationDuration * index);
+    }, playAnimationDuration * (changeEvents.length + index));
 
     timeouts.add(timeoutId);
   });
@@ -149,7 +222,7 @@ export const animateOptimisticCardPlay = ({
         pointsSound(getNextPitchIndex());
         addMulti(multi);
       }
-    }, (events.length + index) * playAnimationDuration);
+    }, (changeEvents.length + events.length + index) * playAnimationDuration);
 
     timeouts.add(timeoutId);
   });

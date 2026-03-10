@@ -15,7 +15,6 @@ export interface StepProps {
 
 export const Step = forwardRef<HTMLDivElement, StepProps>(
   ({ step, refetch }, ref) => {
-    console.log('step', step);
     return (
       <Flex ref={ref} h={`${STEP_HEIGHT}px`} w="100%" borderBottom={`1px solid ${BLUE}`}>
         <StepIcons step={step} />

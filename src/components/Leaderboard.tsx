@@ -23,7 +23,7 @@ import {
 import { VIOLET_LIGHT } from "../theme/colors.tsx";
 import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
 import { formatNumber } from "../utils/formatNumber.ts";
-import { signedHexToNumber } from "../utils/signedHexToNumber.ts";
+import { normalizeGameId } from "../utils/normalizeGameId.ts";
 import { RollingNumber } from "./RollingNumber";
 
 const CURRENT_LEADER_STYLES = {
@@ -62,7 +62,7 @@ export const getPrizeText = (t: TFunction, prize: Prize | undefined) => {
   prize.packs.advanced &&
     prizeArray.push(t(`prizes.advanced`, { count: prize.packs.advanced }));
   prize.packs.base &&
-    prizeArray.push(t(`prizes.base`, { count: prize.packs.base }));
+    prizeArray.push(t(`prizes.basic`, { count: prize.packs.base }));
   prize.seasonPass && prizeArray.push(t(`prizes.seasonPass`));
 
   return prizeArray.join(" + ");
@@ -72,7 +72,7 @@ interface LeaderboardProps {
   seePrizes?: boolean;
   prizes?: Record<number, Prize>;
   lines?: number;
-  gameId?: number;
+  gameId?: string | number;
   filterLoggedInPlayers?: boolean;
   hidePodium?: boolean;
   mb?: string;
@@ -115,14 +115,14 @@ export const Leaderboard = ({
   );
 
   const actualPlayer = fullLeaderboard?.find(
-    (player) => signedHexToNumber(player.id.toString()) === gameId,
+    (player) => normalizeGameId(player.id) === normalizeGameId(gameId),
   );
 
   const username = useUsername();
 
   const leaderboard = fullLeaderboard?.slice(hidePodium ? 3 : 0, lines);
   const currentPlayerIsInReducedLeaderboard = leaderboard?.some(
-    (leader) => signedHexToNumber(leader.id.toString()) === gameId,
+    (leader) => normalizeGameId(leader.id) === normalizeGameId(gameId),
   );
   const shouldReserveRowForCurrentPlayer =
     Boolean(actualPlayer) && !currentPlayerIsInReducedLeaderboard;
@@ -177,7 +177,7 @@ export const Leaderboard = ({
                   const isCurrentPlayer = username === leader.player_name;
                   const isCurrentGame =
                     gameId !== undefined &&
-                    signedHexToNumber(leader.id.toString()) === gameId;
+                    normalizeGameId(leader.id) === normalizeGameId(gameId);
                   return (
                     <CustomTr
                       key={leader.id}

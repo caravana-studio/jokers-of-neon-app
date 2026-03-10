@@ -141,7 +141,18 @@
     "my-xp": "My XP",
     "claim": "CLAIM",
     "tournament-entry": "Tournament entry",
-    "claiming-in-progress": "Claiming in progress..."
+    "claiming-in-progress": "Claiming in progress...",
+    "intro": {
+      "summary": "How do I charge up XP?",
+      "learn-more": "Show me how",
+      "popup-title": "How XP powers your season run",
+      "points": {
+        "1": "Daily missions on Home pay XP and reset every day. Each mission shows exactly how much XP is on the line.",
+        "2": "Clearing levels each day also grants XP. The first clear of the day pays more than the second, and the payout keeps tapering after that.",
+        "3": "The higher the level you clear, the bigger the XP payout.",
+        "4": "XP is the fuel for the season track on this screen. Stack enough of it to unlock packs with season cards and tournament entries for the season finale, where the biggest prizes drop."
+      }
+    }
   },
   "map": {
     "level": "LEVEL"

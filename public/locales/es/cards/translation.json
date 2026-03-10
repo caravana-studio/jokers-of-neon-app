@@ -411,7 +411,7 @@
     },
     "10211": {
       "name": "Providencia",
-      "description": "Los ítems de la tienda tienen un ^yellow(20%)^ de probabilidad de ser gratis."
+      "description": "Los ítems de la tienda tienen un ^yellow(15%)^ de probabilidad de ser gratis."
     },
     "10212": {
       "name": "Cazador Eficiente",

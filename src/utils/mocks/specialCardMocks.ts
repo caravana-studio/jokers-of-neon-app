@@ -30,6 +30,14 @@ export const StraightToHighStraight: Card = {
   isSpecial: true,
 };
 
+export const NeonSynergy: Card = {
+  img: "10210.png",
+  id: "10210",
+  idx: 10210,
+  card_id: 10210,
+  isSpecial: true,
+};
+
 export const MultipliedClubs: Card = {
   img: "10001.png",
   id: "10001",

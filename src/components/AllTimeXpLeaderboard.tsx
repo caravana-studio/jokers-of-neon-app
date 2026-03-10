@@ -1,0 +1,100 @@
+import { Box, Flex, Spinner, Table, TableContainer, Tbody, Td, Text } from "@chakra-ui/react";
+import { useTranslation } from "react-i18next";
+import { useDojo } from "../dojo/DojoContext";
+import { useGetAllTimeXpLeaderboard } from "../queries/useGetAllTimeXpLeaderboard";
+import { VIOLET_LIGHT } from "../theme/colors";
+import { useResponsiveValues } from "../theme/responsiveSettings";
+import { CustomTr } from "./Leaderboard";
+
+interface AllTimeXpLeaderboardProps {
+  lines?: number;
+  mb?: string;
+  fullWidth?: boolean;
+  compactSpacing?: boolean;
+}
+
+const formatAddress = (address: string) => {
+  if (address.length <= 10) return address;
+  return `${address.slice(0, 6)}...${address.slice(-4)}`;
+};
+
+export const AllTimeXpLeaderboard = ({
+  lines = 100,
+  mb = "",
+  fullWidth = false,
+  compactSpacing = false,
+}: AllTimeXpLeaderboardProps) => {
+  const { t } = useTranslation("home", { keyPrefix: "leaderboard" });
+  const { isSmallScreen } = useResponsiveValues();
+  const { data: leaderboard, isLoading } = useGetAllTimeXpLeaderboard();
+  const {
+    account: { account },
+  } = useDojo();
+  const currentAddress = account?.address?.toLowerCase?.();
+
+  return (
+    <Box
+      w={fullWidth || isSmallScreen ? "100%" : "60%"}
+      overflowY="auto"
+      flexGrow={1}
+      mt={compactSpacing ? 0 : isSmallScreen ? 2 : "20px"}
+      mb={compactSpacing ? 0 : isSmallScreen ? 8 : "70px"}
+    >
+      {isLoading && <Spinner />}
+      {leaderboard && (
+        <TableContainer overflowX="hidden" overflowY="auto" mb={mb}>
+          <Table
+            w="100%"
+            variant="leaderboard"
+            sx={{
+              borderCollapse: "separate",
+              borderSpacing: "0 5px",
+              tableLayout: "fixed",
+              "& td": {
+                border: "none",
+                padding: 0,
+                overflow: "hidden",
+              },
+            }}
+          >
+            <Tbody>
+              {leaderboard.slice(0, lines).map((entry) => {
+                const isCurrentUser =
+                  entry.address?.toLowerCase?.() === currentAddress;
+                const textColor = isCurrentUser ? "white !important" : VIOLET_LIGHT;
+
+                return (
+                  <CustomTr key={entry.address} highlighted={isCurrentUser}>
+                    <Td
+                      w={isSmallScreen ? "50px" : "70px"}
+                      color={isCurrentUser ? "white !important" : VIOLET_LIGHT}
+                    >
+                      #{entry.position}
+                    </Td>
+                    <Td color={"white !important"}>
+                      <Flex alignItems="center" gap={2}>
+                        <Text color={"white"}>
+                          {entry.playerName || formatAddress(entry.address)}
+                        </Text>
+                      </Flex>
+                    </Td>
+                    <Td maxW="150px" p="12px 20px" whiteSpace="normal">
+                      <Text
+                        color={textColor}
+                        overflowWrap="break-word"
+                        wordBreak="normal"
+                        whiteSpace="normal"
+                      >
+                        {entry.totalXp} {t("xp")}
+                      </Text>
+                    </Td>
+                  </CustomTr>
+                );
+              })}
+            </Tbody>
+          </Table>
+        </TableContainer>
+      )}
+    </Box>
+  );
+};

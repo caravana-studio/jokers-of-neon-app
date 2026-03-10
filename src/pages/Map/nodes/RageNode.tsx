@@ -134,7 +134,7 @@ const RageNode = memo(({ data }: any) => {
 
         <Box zIndex={1}>
           <CachedImage
-            src={`/map/icons/rage/${data.last ? ((isBossLevel && !data.isFirstNode) || (data.isFirstNode && level === BOSS_LEVEL + 1) ? "boss-s1" : "final") : "intermediate"}-${stateInMap && reachable ? "violet" : data.visited || data.current ? "blue" : "off"}${data.current || (isHovered && (data.visited || reachable)) ? "-bordered" : ""}.png`}
+            src={`/map/icons/rage/${data.last ? ((isBossLevel && !data.isFirstNode) || (data.isFirstNode && level === BOSS_LEVEL + 1) ? "boss" : "final") : "intermediate"}-${stateInMap && reachable ? "violet" : data.visited || data.current ? "blue" : "off"}${data.current || (isHovered && (data.visited || reachable)) ? "-bordered" : ""}.png`}
             alt="rage"
             animation={
               isBossLevel && data.last

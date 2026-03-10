@@ -12,6 +12,7 @@ interface BuildOptimisticCardPlayEventsParams {
   specialCards: Card[];
   preSelectedModifiers: { [key: number]: number[] };
   silentCardIndexes?: Set<number>;
+  changeEvents?: CardPlayEvent[];
 }
 
 const getCardValue = (card: Card): Cards | undefined => {
@@ -27,7 +28,14 @@ const getCardValue = (card: Card): Cards | undefined => {
     return undefined;
   }
 
-  return CARDS_SUIT_DATA[card.card_id]?.card;
+  return (
+    CARDS_SUIT_DATA[card.card_id]?.card ??
+    CARDS_SUIT_DATA[card.card_id % 200]?.card
+  );
+};
+
+const getCardValueFromCardId = (cardId: number): Cards | undefined => {
+  return CARDS_SUIT_DATA[cardId]?.card ?? CARDS_SUIT_DATA[cardId % 200]?.card;
 };
 
 const getCardBasePoints = (cardValue?: Cards): number => {
@@ -60,9 +68,24 @@ const getCardBasePoints = (cardValue?: Cards): number => {
 
 const cardIsNeon = (
   card: Card,
+  cardIdx: number,
+  rankConvertedCardId: number | undefined,
+  neonConvertedCardIndexes: Set<number>,
   preSelectedModifiers: { [key: number]: number[] },
   cardsByIdx: Map<number, Card>
 ) => {
+  if (neonConvertedCardIndexes.has(cardIdx)) {
+    return true;
+  }
+
+  if (
+    rankConvertedCardId !== undefined &&
+    rankConvertedCardId >= 200 &&
+    rankConvertedCardId < 300
+  ) {
+    return true;
+  }
+
   if (card.isNeon) {
     return true;
   }
@@ -100,6 +123,7 @@ export const buildOptimisticCardPlayEvents = ({
   specialCards,
   preSelectedModifiers,
   silentCardIndexes,
+  changeEvents = [],
 }: BuildOptimisticCardPlayEventsParams): CardPlayEvent[] => {
   if (preSelectedCards.length === 0) {
     return [];
@@ -112,6 +136,24 @@ export const buildOptimisticCardPlayEvents = ({
     preSelectedModifiers
   );
   const cardsByIdx = new Map(hand.map((card) => [card.idx, card]));
+  const rankConvertedCardIdsByIdx = new Map<number, number>();
+  const neonConvertedCardIndexes = new Set<number>();
+
+  changeEvents.forEach((event) => {
+    if (event.eventType === EventTypeEnum.Rank) {
+      event.hand.forEach((item) => {
+        rankConvertedCardIdsByIdx.set(item.idx, item.quantity);
+      });
+      return;
+    }
+
+    if (event.eventType === EventTypeEnum.Neon) {
+      event.hand.forEach((item) => {
+        neonConvertedCardIndexes.add(item.idx);
+      });
+    }
+  });
+
   const preselectedOrderByIdx = new Map(
     preSelectedCards.map((cardIdx, position) => [cardIdx, position])
   );
@@ -142,8 +184,19 @@ export const buildOptimisticCardPlayEvents = ({
       return;
     }
 
-    const isNeon = cardIsNeon(card, preSelectedModifiers, cardsByIdx);
-    const cardValue = getCardValue(card);
+    const rankConvertedCardId = rankConvertedCardIdsByIdx.get(cardIdx);
+    const isNeon = cardIsNeon(
+      card,
+      cardIdx,
+      rankConvertedCardId,
+      neonConvertedCardIndexes,
+      preSelectedModifiers,
+      cardsByIdx
+    );
+    const cardValue =
+      rankConvertedCardId !== undefined
+        ? getCardValueFromCardId(rankConvertedCardId)
+        : getCardValue(card);
     const basePoints = getCardBasePoints(cardValue);
     const points = isNeon ? basePoints * 2 : basePoints;
 

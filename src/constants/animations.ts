@@ -48,14 +48,18 @@ export const packShineAnimation = keyframes`
   15% {
     opacity: 0;
   }
-  45% {
+  42% {
     opacity: 0.65;
   }
-  60% {
-    opacity: 0.35;
+  56% {
+    opacity: 0.3;
+  }
+  68% {
+    background-position: 92% 8%;
+    opacity: 0;
   }
   100% {
-    background-position: 130% -30%;
+    background-position: 92% 8%;
     opacity: 0;
   }
 `;
