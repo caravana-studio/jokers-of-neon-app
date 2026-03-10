@@ -203,6 +203,11 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const playAnimationQueueRef = useRef<Promise<void>>(Promise.resolve());
   const activeOptimisticAnimationRef =
     useRef<OptimisticAnimationController | null>(null);
+  const latestPathRef = useRef(location.pathname);
+
+  useEffect(() => {
+    latestPathRef.current = location.pathname;
+  }, [location.pathname]);
 
   const resetLevel = () => {
     setRoundRewards(undefined);
@@ -320,6 +325,12 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       response.levelPassed.level_passed > 0 && advanceLevel();
       response.detailEarned.rerolls &&
         addRerolls(response.detailEarned.rerolls);
+    }
+
+    if (latestPathRef.current !== "/demo") {
+      refetchGameStore(client, gameId).catch((error) => {
+        console.error("Error refetching game state after background action", error);
+      });
     }
   };
 
