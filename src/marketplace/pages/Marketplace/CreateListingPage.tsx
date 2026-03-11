@@ -115,6 +115,17 @@ const popIn = keyframes`
   100% { opacity: 1; transform: scale(1); }
 `;
 
+function normalizePriceInput(value: string): string {
+  const cleaned = value.replace(",", ".").replace(/[^0-9.]/g, "");
+  const [whole, ...fractionalParts] = cleaned.split(".");
+
+  if (fractionalParts.length === 0) {
+    return whole;
+  }
+
+  return `${whole}.${fractionalParts.join("")}`;
+}
+
 const STEP_LABEL: Record<string, string> = {
   approving: "APPROVING NFT...",
   signing:   "SIGN ORDER...",
@@ -148,7 +159,12 @@ function CardListingPreview({
   const rarityLabel = RARITY_LABELS[card.rarity] ?? "Common";
   const rarityColor = RARITY_COLORS[card.rarity] ?? "#999";
   const prices = usePrices();
-  const usdLabel = formatUsd(toUsd(price, selectedToken.symbol, prices));
+  const normalizedPrice = normalizePriceInput(price).trim();
+  const parsedPrice = Number.parseFloat(normalizedPrice);
+  const hasValidPrice = Number.isFinite(parsedPrice) && parsedPrice > 0;
+  const usdLabel = hasValidPrice
+    ? formatUsd(toUsd(normalizedPrice, selectedToken.symbol, prices))
+    : null;
 
   // Show success modal, then redirect after 4s
   useEffect(() => {
@@ -158,7 +174,8 @@ function CardListingPreview({
   const handleConfirm = async () => {
     closeConfirm();
     if (status === "error") reset();
-    const priceWei = parseTokenAmount(price, selectedToken.decimals);
+    if (!hasValidPrice) return;
+    const priceWei = parseTokenAmount(normalizedPrice, selectedToken.decimals);
     await create(card, paymentToken, priceWei, expiryDays);
   };
 
@@ -278,12 +295,11 @@ function CardListingPreview({
               <SectionLabel>Listing Price</SectionLabel>
               <HStack mt={3} spacing={3}>
                 <Input
-                  type="number"
+                  type="text"
+                  inputMode="decimal"
                   placeholder="0.00"
                   value={price}
-                  onChange={(e) => setPrice(e.target.value)}
-                  step="0.001"
-                  min="0"
+                  onChange={(e) => setPrice(normalizePriceInput(e.target.value))}
                   fontFamily="Orbitron"
                   fontSize={16}
                   color="white"
@@ -371,7 +387,7 @@ function CardListingPreview({
           onClick={openConfirm}
           isLoading={isProcessing}
           loadingText={STEP_LABEL[status] ?? "PROCESSING..."}
-          isDisabled={!price || parseFloat(price) <= 0 || status === "done"}
+          isDisabled={!hasValidPrice || status === "done"}
         >
           {status === "error" ? "RETRY" : "LIST FOR SALE"}
         </Button>
@@ -439,16 +455,24 @@ function CardListingPreview({
               {/* Details */}
               <VStack spacing={1} align="stretch" px={1}>
                 <HStack justify="space-between">
-                  <Text fontFamily="Oxanium" fontSize={12} color="whiteAlpha.500">Rarity</Text>
-                  <Badge bg={rarityColor} color="white" fontSize={10} px={2} borderRadius="full">{rarityLabel}</Badge>
+                  <Text fontFamily="Oxanium" fontSize={14} color="whiteAlpha.900">
+                    Rarity
+                  </Text>
+                  <Badge bg={rarityColor} color="white" fontSize={12} px={3} py={1} borderRadius="full">
+                    {rarityLabel}
+                  </Badge>
                 </HStack>
                 <HStack justify="space-between">
-                  <Text fontFamily="Oxanium" fontSize={12} color="whiteAlpha.500">Expires in</Text>
-                  <Text fontFamily="Orbitron" fontSize={12} color="white">{expiryDays} day{expiryDays !== 1 ? "s" : ""}</Text>
+                  <Text fontFamily="Oxanium" fontSize={14} color="whiteAlpha.900">
+                    Expires in
+                  </Text>
+                  <Text fontFamily="Orbitron" fontSize={14} color="whiteAlpha.950">
+                    {expiryDays} day{expiryDays !== 1 ? "s" : ""}
+                  </Text>
                 </HStack>
               </VStack>
 
-              <Text fontFamily="Oxanium" fontSize={11} color="whiteAlpha.400" textAlign="center">
+              <Text fontFamily="Oxanium" fontSize={14} color="whiteAlpha.900" textAlign="center">
                 This will trigger two transactions: approve NFT + sign order
               </Text>
             </VStack>

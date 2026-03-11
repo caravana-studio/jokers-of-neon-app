@@ -157,7 +157,7 @@ export function BuyButton({ listing, onSuccess }: BuyButtonProps) {
                 py={4}
                 gap={1}
               >
-                <Text fontFamily="Oxanium" fontSize={12} color="whiteAlpha.500" textTransform="uppercase" letterSpacing="0.1em">
+                <Text fontFamily="Oxanium" fontSize={14} color="whiteAlpha.900" textTransform="uppercase" letterSpacing="0.1em">
                   You will pay
                 </Text>
                 <HStack spacing={2} align="center">
@@ -173,13 +173,13 @@ export function BuyButton({ listing, onSuccess }: BuyButtonProps) {
                   <TokenIcon symbol={symbol} size="26px" />
                 </HStack>
                 {usdLabel && (
-                  <Text fontFamily="Oxanium" fontSize={14} color="whiteAlpha.600" fontStyle="italic">
+                  <Text fontFamily="Oxanium" fontSize={14} color="whiteAlpha.800" fontStyle="italic">
                     {usdLabel}
                   </Text>
                 )}
               </Flex>
 
-              <Text fontFamily="Oxanium" fontSize={11} color="whiteAlpha.400" textAlign="center">
+              <Text fontFamily="Oxanium" fontSize={14} color="whiteAlpha.900" textAlign="center">
                 This will trigger two transactions: approve + fill order
               </Text>
             </VStack>
