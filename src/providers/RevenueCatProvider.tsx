@@ -32,6 +32,7 @@ import { getRevenueCatApiKey } from "../utils/getRevenueCatApiKey";
 import { registerMilestone } from "../utils/appsflyerReferral";
 
 const FIRST_PURCHASE_KEY = "referral_first_purchase_tracked";
+const ANON_RC_USER = "jokers_anon_guest";
 
 const forceWebPayments = import.meta.env.VITE_FORCE_WEB_PAYMENTS
 const isNative = forceWebPayments ? false : realNative;
@@ -288,14 +289,13 @@ export const RevenueCatProvider = ({ children }: PropsWithChildren) => {
   const address = dojoAddress || starknetAddress || null;
   const accountType = dojoCtx?.accountType ?? null;
 
-  const userId = address;
+  const userId = address ?? ANON_RC_USER;
   const [offerings, setOfferings] =
     useState<RevenueCatFormattedOfferings | null>(null);
   const [loading, setLoading] = useState(false);
   const [purchasesClient, setPurchasesClient] =
     useState<PurchasesClient | null>(isNative ? CapacitorPurchases : null);
   const purchasesRef = useRef<PurchasesClient | null>(purchasesClient);
-  const hasConfiguredRef = useRef(false);
   const lastUsernameRef = useRef<string | null>(null);
 
   useEffect(() => {
@@ -303,7 +303,7 @@ export const RevenueCatProvider = ({ children }: PropsWithChildren) => {
   }, [purchasesClient]);
 
   const fetchOfferings = useCallback(async () => {
-    if (!purchasesRef.current || !hasConfiguredRef.current) {
+    if (!purchasesRef.current) {
       return;
     }
 
@@ -327,7 +327,7 @@ export const RevenueCatProvider = ({ children }: PropsWithChildren) => {
   }, []);
 
   const configureRevenueCat = useCallback(async () => {
-    if (!userId || hasConfiguredRef.current) {
+    if (lastUsernameRef.current === userId) {
       return;
     }
 
@@ -351,7 +351,6 @@ export const RevenueCatProvider = ({ children }: PropsWithChildren) => {
         setPurchasesClient(purchasesInstance);
       }
 
-      hasConfiguredRef.current = true;
       lastUsernameRef.current = userId;
       await fetchOfferings();
     } catch (error) {
@@ -362,20 +361,8 @@ export const RevenueCatProvider = ({ children }: PropsWithChildren) => {
   }, [fetchOfferings, userId]);
 
   useEffect(() => {
-    if (!userId) {
-      return;
-    }
-
-    if (!hasConfiguredRef.current) {
-      configureRevenueCat();
-      return;
-    }
-
-    if (lastUsernameRef.current !== userId) {
-      lastUsernameRef.current = userId;
-      fetchOfferings();
-    }
-  }, [configureRevenueCat, fetchOfferings, userId]);
+    void configureRevenueCat();
+  }, [configureRevenueCat]);
 
   const purchasePackage = useCallback(
     async (

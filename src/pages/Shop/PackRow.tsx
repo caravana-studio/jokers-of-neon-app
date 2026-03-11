@@ -7,6 +7,7 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
+import { useConnect } from "@starknet-react/core";
 import { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -60,6 +61,7 @@ export const PackRow = ({
   const dojoCtx = useContext(DojoContext);
   const account = dojoCtx?.account.account ?? null;
   const username = useUsername();
+  const { connectors, connect } = useConnect();
   const { purchasePackageById, offerings } = useRevenueCat();
   const { buy: buyWithCrypto, status: cryptoStatus } = useCryptoPurchase();
   const { priceAtoms, priceUsdc } = useShopPrice(packId);
@@ -118,11 +120,10 @@ export const PackRow = ({
     }
 
     if (!account?.address) {
-      toast({
-        status: "error",
-        title: t("purchase-error-title"),
-        description: t("purchase-error-no-account"),
-      });
+      const connector = connectors[0];
+      if (connector) {
+        connect({ connector });
+      }
       return;
     }
 
@@ -182,11 +183,10 @@ export const PackRow = ({
     }
 
     if (!account?.address) {
-      toast({
-        status: "error",
-        title: t("purchase-error-title"),
-        description: t("purchase-error-no-account"),
-      });
+      const connector = connectors[0];
+      if (connector) {
+        connect({ connector });
+      }
       return;
     }
 
