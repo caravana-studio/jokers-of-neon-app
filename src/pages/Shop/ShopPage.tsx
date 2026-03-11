@@ -86,7 +86,7 @@ export const ShopPage = () => {
           borderBottom={`1px solid ${BLUE}`}
           height={isSmallScreen ? "60px" : "140px"}
           pt={isSmallScreen ? "25px" : "70px"}
-          px={isSmallScreen ? "15px" : "30px"}
+          px={isShop ? 0 : isSmallScreen ? "15px" : "30px"}
           pb={3}
         >
           {!isShop && (
@@ -102,12 +102,13 @@ export const ShopPage = () => {
         <Flex
           flexDir={seasonPassUnlocked ? "column-reverse" : "column"}
           gap={2}
-          my={2}
+          my={isShop ? 0 : 2}
         >
           <SeasonPassRow
             price={seasonPassPrice}
             id={distribution?.season_pass ?? "season_pass"}
             unlocked={seasonPassUnlocked}
+            fullBleed={isShop}
           />
           <Box>
             {distribution?.packs?.map((pack) => {
@@ -116,6 +117,7 @@ export const ShopPage = () => {
                   packId={pack.packId}
                   packageId={pack.shopId}
                   price={getPackPrice(pack.packId)}
+                  fullBleed={isShop}
                 />
               );
             })}

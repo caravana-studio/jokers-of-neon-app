@@ -4,6 +4,7 @@ import {
   Heading,
   Spinner,
   Text,
+  useDisclosure,
   useToast,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
@@ -20,15 +21,21 @@ import {
 } from "../../constants/animations";
 import { useDojo } from "../../dojo/DojoContext";
 import { useUsername } from "../../dojo/utils/useUsername";
+import { useCryptoPurchase } from "../../marketplace/hooks/useCryptoPurchase";
+import { useShopPrice } from "../../marketplace/hooks/useShopPrice";
+import { useUSDCBalance } from "../../marketplace/hooks/useUSDCBalance";
 import { useRevenueCat } from "../../providers/RevenueCatProvider";
 import { listenForPurchase } from "../../queries/listenForPurchase";
 import { BLUE } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
+import { isNative } from "../../utils/capacitorUtils";
+import { PaymentMethodModal } from "./PaymentMethodModal";
 
 interface PackRowProps {
   packId: number;
   packageId: string;
   price?: string;
+  fullBleed?: boolean;
 }
 
 const PACK_SIZES: Record<number, number> = {
@@ -36,7 +43,12 @@ const PACK_SIZES: Record<number, number> = {
   21: 3, 22: 3, 23: 4, 24: 4, 25: 5, 26: 10,
 };
 
-export const PackRow = ({ packId, packageId, price }: PackRowProps) => {
+export const PackRow = ({
+  packId,
+  packageId,
+  price,
+  fullBleed = false,
+}: PackRowProps) => {
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "shop.packs",
   });
@@ -50,9 +62,24 @@ export const PackRow = ({ packId, packageId, price }: PackRowProps) => {
   } = useDojo();
   const username = useUsername();
   const { purchasePackageById, offerings } = useRevenueCat();
+  const { buy: buyWithCrypto, status: cryptoStatus } = useCryptoPurchase();
+  const { priceAtoms, priceUsdc } = useShopPrice(packId);
+  const { balanceRaw } = useUSDCBalance();
+  const paymentMethodModal = useDisclosure();
   const [isPurchasing, setIsPurchasing] = useState(false);
-  const isBuyDisabled = isPurchasing || !price;
   const [ownedCardIds, setOwnedCardIds] = useState<string[]>([]);
+  const isCryptoPurchasing = ["transferring", "confirming", "submitting"].includes(
+    cryptoStatus,
+  );
+  const hasFiatOption = Boolean(price);
+  const hasCryptoOption = !isNative && priceAtoms !== undefined && priceAtoms > 0n;
+  const hasEnoughUsdc =
+    balanceRaw !== undefined && priceAtoms !== undefined
+      ? balanceRaw >= priceAtoms
+      : true;
+  const isInsufficientUsdc = hasCryptoOption && !hasEnoughUsdc;
+  const isBuyDisabled =
+    isPurchasing || isCryptoPurchasing || (!hasFiatOption && !hasCryptoOption);
 
   useEffect(() => {
     if (!account?.address) {
@@ -77,8 +104,17 @@ export const PackRow = ({ packId, packageId, price }: PackRowProps) => {
     };
   }, [account?.address]);
 
-  const handlePurchase = async () => {
-    if (isPurchasing) {
+  const handleFiatPurchase = async () => {
+    if (isPurchasing || isCryptoPurchasing) {
+      return;
+    }
+
+    if (!price) {
+      toast({
+        status: "error",
+        title: t("purchase-error-title"),
+        description: t("purchase-error-no-package"),
+      });
       return;
     }
 
@@ -141,6 +177,117 @@ export const PackRow = ({ packId, packageId, price }: PackRowProps) => {
     }
   };
 
+  const handleCryptoPurchase = async () => {
+    if (isPurchasing || isCryptoPurchasing) {
+      return;
+    }
+
+    if (!account?.address) {
+      toast({
+        status: "error",
+        title: t("purchase-error-title"),
+        description: t("purchase-error-no-account"),
+      });
+      return;
+    }
+
+    if (!priceAtoms) {
+      toast({
+        status: "error",
+        title: t("purchase-error-title"),
+        description: t("purchase-error-no-package"),
+      });
+      return;
+    }
+
+    if (isInsufficientUsdc) {
+      toast({
+        status: "error",
+        title: t("purchase-error-title"),
+        description: t("insufficient-usdc", {
+          defaultValue: "Insufficient USDC balance.",
+        }),
+      });
+      return;
+    }
+
+    try {
+      const result = await buyWithCrypto(packId, priceAtoms, packageId);
+      const mintedCards = (result.mintedCards ?? []).map((card) => ({
+        card_id: card.card_id,
+        skin_id: card.skin_id,
+      }));
+
+      if (mintedCards.length === 0) {
+        toast({
+          status: "success",
+          title: t("purchase-success-title", {
+            defaultValue: "Purchase completed",
+          }),
+          description: t("purchase-success-description", {
+            defaultValue:
+              "Your pack purchase is processing and can take a few minutes to appear.",
+          }),
+        });
+        navigate("/shop");
+        return;
+      }
+
+      navigate(`/external-pack/${packId}`, {
+        state: {
+          initialCards: mintedCards,
+          packId,
+          returnTo: "/shop",
+          ownedCardIds,
+        },
+      });
+    } catch (error: unknown) {
+      if (
+        typeof error === "object" &&
+        error !== null &&
+        "userCancelled" in error
+      ) {
+        return;
+      }
+
+      console.error("Failed to purchase pack with crypto", error);
+      toast({
+        status: "error",
+        title: t("purchase-error-title"),
+        description: t("purchase-error-description"),
+      });
+    }
+  };
+
+  const handlePurchaseClick = () => {
+    if (isBuyDisabled) return;
+
+    if (isNative) {
+      void handleFiatPurchase();
+      return;
+    }
+
+    if (hasFiatOption && hasCryptoOption) {
+      paymentMethodModal.onOpen();
+      return;
+    }
+
+    if (hasFiatOption) {
+      void handleFiatPurchase();
+      return;
+    }
+
+    if (hasCryptoOption) {
+      void handleCryptoPurchase();
+    }
+  };
+
+  const buyLabel = hasFiatOption
+    ? `${t("buy")} · ${price}`
+    : hasCryptoOption && priceUsdc
+      ? `${t("buy")} · ${priceUsdc} USDC`
+      : t("buy");
+
   return (
     <>
       <Flex
@@ -148,7 +295,7 @@ export const PackRow = ({ packId, packageId, price }: PackRowProps) => {
         borderTop={`1px solid ${BLUE}`}
         py="50px"
         flexDir={"column"}
-        px={4}
+        px={fullBleed ? 0 : 4}
         alignItems={"center"}
         background={`url(/packs/bg/${packId}.jpg)`}
         backgroundSize={"cover"}
@@ -256,9 +403,13 @@ export const PackRow = ({ packId, packageId, price }: PackRowProps) => {
               willChange={
                 isBuyDisabled || !isLimitedEdition ? undefined : "box-shadow"
               }
-              onClick={handlePurchase}
+              onClick={handlePurchaseClick}
             >
-              {isBuyDisabled ? <Spinner size="xs" /> : `${t("buy")} · ${price}`}
+              {isPurchasing || isCryptoPurchasing ? (
+                <Spinner size="xs" />
+              ) : (
+                buyLabel
+              )}
             </Button>
           </Flex>
           <Flex
@@ -283,6 +434,46 @@ export const PackRow = ({ packId, packageId, price }: PackRowProps) => {
           </Flex>
         </Flex>
       </Flex>
+      <PaymentMethodModal
+        isOpen={paymentMethodModal.isOpen}
+        onClose={paymentMethodModal.onClose}
+        onFiatSelect={() => {
+          paymentMethodModal.onClose();
+          void handleFiatPurchase();
+        }}
+        onCryptoSelect={() => {
+          paymentMethodModal.onClose();
+          void handleCryptoPurchase();
+        }}
+        fiatLabel={
+          hasFiatOption
+            ? `${t("pay-with-card", { defaultValue: "Pay with card" })} · ${price}`
+            : t("pay-with-card", { defaultValue: "Pay with card" })
+        }
+        cryptoLabel={
+          hasCryptoOption && priceUsdc
+            ? `${t("pay-with-crypto", { defaultValue: "Pay with crypto" })} · ${priceUsdc} USDC`
+            : t("pay-with-crypto", { defaultValue: "Pay with crypto" })
+        }
+        title={t("payment-method-title", {
+          defaultValue: "Choose payment method",
+        })}
+        description={t("payment-method-description", {
+          defaultValue:
+            "You can complete your purchase with card or crypto.",
+        })}
+        fiatDisabled={!hasFiatOption || isPurchasing || isCryptoPurchasing}
+        cryptoDisabled={
+          !hasCryptoOption || isInsufficientUsdc || isPurchasing || isCryptoPurchasing
+        }
+        cryptoDisabledReason={
+          isInsufficientUsdc
+            ? t("insufficient-usdc", {
+                defaultValue: "Insufficient USDC balance.",
+              })
+            : undefined
+        }
+      />
     </>
   );
 };

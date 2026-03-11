@@ -1,13 +1,26 @@
-import { Button, Flex, Heading, Spinner, Text } from "@chakra-ui/react";
+import {
+  Button,
+  Flex,
+  Heading,
+  Spinner,
+  Text,
+  useDisclosure,
+  useToast,
+} from "@chakra-ui/react";
 import { keyframes } from "@emotion/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import CachedImage from "../../components/CachedImage";
 import { SeasonPass } from "../../components/SeasonPass/SeasonPass";
 import { SEASON_NUMBER } from "../../constants/season";
+import { useCryptoPurchase } from "../../marketplace/hooks/useCryptoPurchase";
+import { useShopPrice } from "../../marketplace/hooks/useShopPrice";
+import { useUSDCBalance } from "../../marketplace/hooks/useUSDCBalance";
 import { useSeasonPass } from "../../providers/SeasonPassProvider";
 import { BLUE, VIOLET_LIGHT } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
+import { isNative } from "../../utils/capacitorUtils";
+import { PaymentMethodModal } from "./PaymentMethodModal";
 
 const coinPulse = keyframes`
   0% {
@@ -48,9 +61,15 @@ interface SeasonPassRowProps {
   price?: string;
   id: string;
   unlocked: boolean;
+  fullBleed?: boolean;
 }
 
-export const SeasonPassRow = ({ id, price, unlocked }: SeasonPassRowProps) => {
+export const SeasonPassRow = ({
+  id,
+  price,
+  unlocked,
+  fullBleed = false,
+}: SeasonPassRowProps) => {
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "shop.season-pass",
   });
@@ -58,7 +77,119 @@ export const SeasonPassRow = ({ id, price, unlocked }: SeasonPassRowProps) => {
   const isSeason2 = SEASON_NUMBER === 2;
 
   const { purchaseSeasonPass } = useSeasonPass();
+  const { buy: buyWithCrypto, status: cryptoStatus } = useCryptoPurchase();
+  const { priceAtoms, priceUsdc } = useShopPrice(id);
+  const { balanceRaw } = useUSDCBalance();
+  const paymentMethodModal = useDisclosure();
+  const toast = useToast();
   const [isLoading, setIsLoading] = useState(false);
+  const isCryptoPurchasing = ["transferring", "confirming", "submitting"].includes(
+    cryptoStatus,
+  );
+  const hasFiatOption = Boolean(price);
+  const hasCryptoOption = !isNative && priceAtoms !== undefined && priceAtoms > 0n;
+  const hasEnoughUsdc =
+    balanceRaw !== undefined && priceAtoms !== undefined
+      ? balanceRaw >= priceAtoms
+      : true;
+  const isInsufficientUsdc = hasCryptoOption && !hasEnoughUsdc;
+  const isButtonDisabled =
+    unlocked ||
+    isLoading ||
+    isCryptoPurchasing ||
+    (!hasFiatOption && !hasCryptoOption);
+
+  const handleFiatPurchase = async () => {
+    if (isLoading || isCryptoPurchasing || unlocked) return;
+    if (!price) return;
+
+    try {
+      setIsLoading(true);
+      await purchaseSeasonPass();
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleCryptoPurchase = async () => {
+    if (isLoading || isCryptoPurchasing || unlocked) return;
+    if (!priceAtoms) return;
+
+    if (isInsufficientUsdc) {
+      toast({
+        status: "error",
+        title: t("purchase-error-title", {
+          defaultValue: "Purchase failed",
+        }),
+        description: t("insufficient-usdc", {
+          defaultValue: "Insufficient USDC balance.",
+        }),
+      });
+      return;
+    }
+
+    try {
+      await buyWithCrypto(id, priceAtoms, id);
+      toast({
+        status: "success",
+        title: t("crypto-success-title", {
+          defaultValue: "Season pass purchased",
+        }),
+        description: t("crypto-success-description", {
+          defaultValue:
+            "Your season pass purchase is processing and can take a few minutes to appear in-game.",
+        }),
+      });
+    } catch (error: unknown) {
+      if (
+        typeof error === "object" &&
+        error !== null &&
+        "userCancelled" in error
+      ) {
+        return;
+      }
+
+      toast({
+        status: "error",
+        title: t("purchase-error-title", {
+          defaultValue: "Purchase failed",
+        }),
+        description: t("purchase-error-description", {
+          defaultValue:
+            "We couldn't complete your purchase. Please try again.",
+        }),
+      });
+    }
+  };
+
+  const handleButtonClick = () => {
+    if (isButtonDisabled) return;
+
+    if (isNative) {
+      void handleFiatPurchase();
+      return;
+    }
+
+    if (hasFiatOption && hasCryptoOption) {
+      paymentMethodModal.onOpen();
+      return;
+    }
+
+    if (hasFiatOption) {
+      void handleFiatPurchase();
+      return;
+    }
+
+    if (hasCryptoOption) {
+      void handleCryptoPurchase();
+    }
+  };
+
+  const buttonLabel = hasFiatOption
+    ? `${t("buy")} · ${price}`
+    : hasCryptoOption && priceUsdc
+      ? `${t("buy")} · ${priceUsdc} USDC`
+      : t("buy");
 
   return (
     <>
@@ -67,7 +198,7 @@ export const SeasonPassRow = ({ id, price, unlocked }: SeasonPassRowProps) => {
         borderTop={`1px solid ${BLUE}`}
         py={isSmallScreen ? "50px" : "120px"}
         flexDir={"column"}
-        px={4}
+        px={fullBleed ? 0 : 4}
         alignItems={"center"}
         position="relative"
         overflow="hidden"
@@ -158,25 +289,58 @@ export const SeasonPassRow = ({ id, price, unlocked }: SeasonPassRowProps) => {
           fontSize={isSmallScreen ? 13 : 18}
           mt={isSmallScreen ? 2 : 6}
           h={isSmallScreen ? "30px" : "50px"}
-          isDisabled={isLoading || !price || unlocked}
-          onClick={() => {
-            setIsLoading(true);
-            purchaseSeasonPass()
-              .then(() => setIsLoading(false))
-              .catch(() => setIsLoading(false));
-          }}
+          isDisabled={isButtonDisabled}
+          onClick={handleButtonClick}
         >
-          {isLoading || !price ? (
+          {isLoading || isCryptoPurchasing ? (
             <Spinner size="xs" />
           ) : unlocked ? (
             t("unlocked")
           ) : (
-            <>
-              {t("buy")} · {price}
-            </>
+            buttonLabel
           )}
         </Button>
       </Flex>
+      <PaymentMethodModal
+        isOpen={paymentMethodModal.isOpen}
+        onClose={paymentMethodModal.onClose}
+        onFiatSelect={() => {
+          paymentMethodModal.onClose();
+          void handleFiatPurchase();
+        }}
+        onCryptoSelect={() => {
+          paymentMethodModal.onClose();
+          void handleCryptoPurchase();
+        }}
+        fiatLabel={
+          hasFiatOption
+            ? `${t("pay-with-card", { defaultValue: "Pay with card" })} · ${price}`
+            : t("pay-with-card", { defaultValue: "Pay with card" })
+        }
+        cryptoLabel={
+          hasCryptoOption && priceUsdc
+            ? `${t("pay-with-crypto", { defaultValue: "Pay with crypto" })} · ${priceUsdc} USDC`
+            : t("pay-with-crypto", { defaultValue: "Pay with crypto" })
+        }
+        title={t("payment-method-title", {
+          defaultValue: "Choose payment method",
+        })}
+        description={t("payment-method-description", {
+          defaultValue:
+            "You can complete your purchase with card or crypto.",
+        })}
+        fiatDisabled={!hasFiatOption || isLoading || isCryptoPurchasing}
+        cryptoDisabled={
+          !hasCryptoOption || isInsufficientUsdc || isLoading || isCryptoPurchasing
+        }
+        cryptoDisabledReason={
+          isInsufficientUsdc
+            ? t("insufficient-usdc", {
+                defaultValue: "Insufficient USDC balance.",
+              })
+            : undefined
+        }
+      />
     </>
   );
 };
