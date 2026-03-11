@@ -82,7 +82,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           <Link to="/">
             <Box
               as="img"
-              src="/jn.png"
+              src="/logos/jn.png"
               alt="Jokers of Neon"
               h="26px"
               cursor="pointer"

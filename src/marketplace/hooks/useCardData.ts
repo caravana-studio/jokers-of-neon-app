@@ -24,7 +24,7 @@ function notify() {
 
 function load() {
   if (promise) return;
-  promise = fetch("/data/cards-en.json")
+  promise = fetch("/locales/en/cards/translation.json")
     .then((r) => r.json())
     .then((json: CardsJson) => {
       data = json;
