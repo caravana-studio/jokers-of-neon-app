@@ -10,12 +10,12 @@ import {
 import { Suits } from "../../enums/suits";
 import { GREY_MEDIUM } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
-import { getTableData } from "./DeckPreviewTableUtils";
+import { useTableData } from "./DeckPreviewTableUtils";
 import { PreviewTableColumnHeader } from "./PreviewTableColumnHeader";
 import { PreviewTableRowHeader } from "./PreviewTableRowHeader";
 
 export const DeckPreviewTable = () => {
-  const tableData = getTableData();
+  const tableData = useTableData();
   const columnHeaders = tableData.columnHeaders;
   const rowHeaders = tableData.rowHeaders;
   const rows = tableData.cells;

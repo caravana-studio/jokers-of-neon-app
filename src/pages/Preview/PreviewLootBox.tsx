@@ -25,17 +25,16 @@ export const PreviewLootBox = () => {
   const { card, pack } = state || {};
   const { isSmallScreen } = useResponsiveValues();
   const { t } = useTranslation("store", { keyPrefix: "store.preview-card" });
+  const { locked } = useShopStore();
+  const { getLootBoxData } = useCardData();
+  const { cash, setState, removeCash } = useGameStore();
+  const lootBoxRef = useRef<LootBoxRef>(null);
 
-  if (!card) {
+  if (!card || !pack) {
     return <p>Card not found.</p>;
   }
 
-  const { locked } = useShopStore();
-  const { getLootBoxData } = useCardData();
-
-  const { cash, setState, removeCash } = useGameStore();
   const { name, description, details } = getLootBoxData(card.card_id ?? 0);
-  const lootBoxRef = useRef<LootBoxRef>(null);
 
   const effectivePrice = getEffectivePrice(card.price, pack.discount_cost);
   const notEnoughCash = cash < effectivePrice;

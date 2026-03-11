@@ -1,8 +1,9 @@
-import { FC, ReactSVGElement, SVGProps } from "react";
+import { FC, ReactSVGElement, SVGProps, useMemo } from "react";
 import { Icons } from "../../constants/icons";
 import { Cards } from "../../enums/cards";
 import { Suits } from "../../enums/suits";
 import { useDeckStore } from "../../state/useDeckStore";
+import { Card } from "../../types/Card";
 
 interface ColumnHeader {
   cardValue?: Cards;
@@ -50,9 +51,7 @@ const cardSuitsMap: Map<Suits, string | FC<SVGProps<ReactSVGElement>>> =
     [Suits.JOKER, Icons.JOKER],
   ]);
 
-const getTableData = (): TableData => {
-  const { unusedCards } = useDeckStore();
-
+const buildTableData = (unusedCards: Card[]): TableData => {
   const columnHeaders = Array.from(cardValuesMap.keys()).map((cardValue) => ({
     cardValue,
     quantity: unusedCards.filter((card) => card.card === cardValue).length,
@@ -76,10 +75,15 @@ const getTableData = (): TableData => {
   return { columnHeaders: columnHeaders, rowHeaders: rowHeaders, cells: cells };
 };
 
+const useTableData = (): TableData => {
+  const { unusedCards } = useDeckStore();
+
+  return useMemo(() => buildTableData(unusedCards), [unusedCards]);
+};
+
 export {
-  cardSuitsMap, cardValuesMap, getTableData,
+  cardSuitsMap, cardValuesMap, useTableData,
   type ColumnHeader,
   type RowHeader,
   type TableData
 };
-

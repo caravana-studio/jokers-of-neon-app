@@ -7,10 +7,11 @@ export const PreviewTableColumnHeader: React.FC<ColumnHeader> = ({
   cardValue,
   quantity,
 }) => {
+  const { isSmallScreen } = useResponsiveValues();
+
   if (!cardValue) return null;
 
   const cardValueContent = cardValuesMap.get(cardValue);
-  const { isSmallScreen } = useResponsiveValues();
 
   return (
     <Flex

@@ -8,12 +8,13 @@ export const PreviewTableRowHeader: React.FC<RowHeader> = ({
   cardSuit,
   quantity,
 }) => {
+  const { isSmallScreen } = useResponsiveValues();
+
   if (!cardSuit) return null;
 
   const Icon = cardSuitsMap.get(cardSuit);
   if (!Icon) return null;
 
-  const { isSmallScreen } = useResponsiveValues();
   const iconSize = isSmallScreen ? "9px" : "14px";
 
   return (

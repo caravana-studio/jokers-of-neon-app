@@ -28,18 +28,16 @@ const PreviewCard = () => {
   });
 
   const { isSmallScreen } = useResponsiveValues();
+  const { buyCard, buySpecialCardItem } = useStore();
+  const { locked } = useShopStore();
+  const { getCardData } = useCardData();
+  const { cash, specialSlots, specialCards } = useGameStore();
   const [duration, setDuration] = useState(Duration.PERMANENT);
 
   if (!card) {
     return <p>Card not found.</p>;
   }
 
-  const { buyCard, buySpecialCardItem } = useStore();
-  const { locked } = useShopStore();
-
-  const { getCardData } = useCardData();
-
-  const { cash, specialSlots, specialCards } = useGameStore();
   const { name, description } = getCardData(card.card_id ?? 0);
 
   const permanentPrice = getEffectivePrice(card.price, card.discount_cost);
