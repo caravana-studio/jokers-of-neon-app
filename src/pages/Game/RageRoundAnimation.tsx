@@ -18,6 +18,7 @@ import { useTranslation } from "react-i18next";
 import { CardImage3D } from "../../components/CardImage3D";
 import CachedImage from "../../components/CachedImage";
 import { AUTO_SKIP_RAGE_ROUND_SCREEN } from "../../constants/localStorage";
+import { CARD_HEIGHT, CARD_WIDTH } from "../../constants/visualProps";
 import { useCardData } from "../../providers/CardDataProvider";
 import { useAnimationStore } from "../../state/useAnimationStore";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
@@ -30,6 +31,7 @@ const TITLE_DELAY_MS = 0;
 const CARDS_DELAY_MS = 260;
 const DESCRIPTION_DELAY_MS = 520;
 const FOOTER_DELAY_MS = 780;
+const CARD_ASPECT_RATIO = CARD_WIDTH / CARD_HEIGHT;
 
 export const RageRoundAnimation = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -94,9 +96,7 @@ export const RageRoundAnimation = () => {
       ? Math.max(viewportWidth - 32, 260)
       : Math.max(Math.min(viewportWidth * 0.8, 980), 640);
     const cardHeightPx = isSmallScreen ? 138 : 218;
-    const estimatedCardWidthPx = Math.round(
-      cardHeightPx * (isSmallScreen ? 0.72 : 0.74)
-    );
+    const estimatedCardWidthPx = Math.round(cardHeightPx * CARD_ASPECT_RATIO);
     const baseGapPx = isSmallScreen ? 10 : 14;
     const rawRowWidthPx =
       cardsCount * estimatedCardWidthPx + (cardsCount - 1) * baseGapPx;
@@ -415,9 +415,7 @@ export const RageRoundAnimation = () => {
                         hideTooltip
                         small
                         height={`${rageCardsLayout.cardHeightPx}px`}
-                        width={
-                          isSmallScreen ? `${rageCardsLayout.cardWidthPx}px` : "auto"
-                        }
+                        width={`${rageCardsLayout.cardWidthPx}px`}
                       />
                     </Box>
                   </Flex>
