@@ -1,16 +1,19 @@
 import {
-  Box,
   Button,
+  Flex,
+  Heading,
   HStack,
   Modal,
   ModalBody,
   ModalCloseButton,
   ModalContent,
+  ModalHeader,
   ModalOverlay,
   Text,
-  VStack,
+  Tooltip,
 } from "@chakra-ui/react";
 import { useEffect, useRef } from "react";
+import { NEON_PINK } from "../../theme/colors";
 
 interface PaymentMethodModalProps {
   isOpen: boolean;
@@ -103,64 +106,42 @@ export const PaymentMethodModal = ({
     <Modal
       isOpen={isOpen}
       onClose={handleClose}
-      isCentered
-      size="sm"
-      motionPreset="scale"
       blockScrollOnMount={false}
       preserveScrollBarGap={false}
       returnFocusOnClose={false}
     >
-      <ModalOverlay backdropFilter="blur(8px)" bg="rgba(0,0,0,0.75)" />
-      <ModalContent
-        bg="rgba(6,38,64,0.86)"
-        border="1px solid rgba(32,198,237,0.4)"
-        borderRadius="24px"
-        boxShadow="0 0 36px rgba(32,198,237,0.2)"
-        mx={4}
-      >
+      <ModalOverlay bg="rgba(0, 0, 0, 0.6)" />
+      <ModalContent p={3} mx={4} maxW="560px">
         <ModalCloseButton color="whiteAlpha.900" />
-        <ModalBody pt={7} pb={6}>
-          <VStack spacing={5} align="stretch">
-            <Text
-              fontFamily="Orbitron"
-              fontSize={20}
-              color="neonGreen"
-              textTransform="uppercase"
-              letterSpacing="0.08em"
-              textAlign="center"
-              textShadow="0 0 10px rgba(32,198,237,0.45)"
-            >
-              {title}
-            </Text>
-            <Text
-              color="whiteAlpha.800"
-              fontSize="sm"
-              textAlign="center"
-              fontFamily="Oxanium"
-            >
+        <ModalHeader pb={2}>
+          <Heading size="m" textAlign="center" variant="neonWhite">
+            {title}
+          </Heading>
+        </ModalHeader>
+        <ModalBody pt={0} pb={6}>
+          <Flex gap={4} flexDirection="column">
+            <Text size="md" textAlign="center">
               {description}
             </Text>
             <Button
-              variant="solid"
+              variant="secondarySolid"
               onClick={() => handleSelect(onFiatSelect)}
               isDisabled={fiatDisabled}
-              minH="56px"
+              w="100%"
+              h="auto"
+              py={3}
               textTransform="none"
-              px={4}
-              boxShadow="0 0 18px rgba(10,154,241,0.35)"
+              px={5}
+              boxShadow={`0px 0px 10px 6px ${NEON_PINK}`}
             >
               <HStack w="full" justify="space-between" spacing={2}>
-                <Text
-                  fontFamily="Oxanium"
-                  fontSize={16}
-                  fontWeight={700}
-                >
+                <Text fontFamily="Oxanium" fontSize={18} fontWeight={700}>
                   {fiatParts.left}
                 </Text>
                 {fiatParts.right ? (
                   <Text
                     fontFamily="Oxanium"
-                    fontSize={16}
+                    fontSize={18}
                     fontWeight={700}
                     whiteSpace="nowrap"
                   >
@@ -169,48 +150,42 @@ export const PaymentMethodModal = ({
                 ) : null}
               </HStack>
             </Button>
-            <Button
-              variant="outlineSecondaryGlow"
-              onClick={() => handleSelect(onCryptoSelect)}
-              isDisabled={cryptoDisabled}
-              minH="56px"
-              textTransform="none"
-              px={4}
+            <Tooltip
+              label={cryptoDisabledReason ?? ""}
+              hasArrow
+              shouldWrapChildren
+              isDisabled={!(cryptoDisabled && cryptoDisabledReason)}
             >
-              <HStack w="full" justify="space-between" spacing={2}>
-                <Text
-                  fontFamily="Oxanium"
-                  fontSize={16}
-                  fontWeight={700}
+              <Flex w="100%">
+                <Button
+                  variant="defaultOutline"
+                  onClick={() => handleSelect(onCryptoSelect)}
+                  isDisabled={cryptoDisabled}
+                  w="100%"
+                  h="auto"
+                  py={3}
+                  textTransform="none"
+                  px={5}
                 >
-                  {cryptoParts.left}
-                </Text>
-                {cryptoParts.right ? (
-                  <Text
-                    fontFamily="Oxanium"
-                    fontSize={16}
-                    fontWeight={700}
-                    whiteSpace="nowrap"
-                  >
-                    {cryptoParts.right}
-                  </Text>
-                ) : null}
-              </HStack>
-            </Button>
-            {cryptoDisabled && cryptoDisabledReason ? (
-              <Box
-                bg="rgba(255,179,0,0.12)"
-                border="1px solid rgba(255,179,0,0.35)"
-                borderRadius="10px"
-                px={3}
-                py={2}
-              >
-                <Text color="orange.200" fontSize="xs" fontFamily="Oxanium">
-                  {cryptoDisabledReason}
-                </Text>
-              </Box>
-            ) : null}
-          </VStack>
+                  <HStack w="full" justify="space-between" spacing={2}>
+                    <Text fontFamily="Oxanium" fontSize={18} fontWeight={700}>
+                      {cryptoParts.left}
+                    </Text>
+                    {cryptoParts.right ? (
+                      <Text
+                        fontFamily="Oxanium"
+                        fontSize={18}
+                        fontWeight={700}
+                        whiteSpace="nowrap"
+                      >
+                        {cryptoParts.right}
+                      </Text>
+                    ) : null}
+                  </HStack>
+                </Button>
+              </Flex>
+            </Tooltip>
+          </Flex>
         </ModalBody>
       </ModalContent>
     </Modal>
