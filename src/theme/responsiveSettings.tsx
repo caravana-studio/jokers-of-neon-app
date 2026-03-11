@@ -37,7 +37,8 @@ export const useResponsiveValues = () => {
 
   const getBaseScaleForAspectRatio = (
     ratio: number,
-    scales: { [key: string]: number }
+    scales: { [key: string]: number },
+    isDesktopViewport: boolean
   ): number => {
     const aspectScaleEntries = Object.entries(scales)
       .map(([key, scale]) => {
@@ -48,12 +49,13 @@ export const useResponsiveValues = () => {
           diff: Math.abs(width / height - ratio),
         };
       })
+      .filter((entry) => !isDesktopViewport || entry.scale >= 1)
       .sort((a, b) => a.diff - b.diff)
-      .slice(0, 3);
+      .slice(0, 4);
 
     if (!aspectScaleEntries.length) return 1;
 
-    const epsilon = 0.002;
+    const epsilon = isDesktopViewport ? 0.01 : 0.002;
 
     let weightedScale = 0;
     let totalWeight = 0;
@@ -69,18 +71,23 @@ export const useResponsiveValues = () => {
 
   useEffect(() => {
     const handleResize = throttle(() => {
+      const isDesktopViewport = window.innerWidth >= 1024;
       const newAspectRatio = window.innerWidth / window.innerHeight;
-      const baseScale = getBaseScaleForAspectRatio(newAspectRatio, baseScales);
+      const baseScale = getBaseScaleForAspectRatio(
+        newAspectRatio,
+        baseScales,
+        isDesktopViewport
+      );
 
       const widthScale = window.innerWidth / 1920;
       const heightScale = window.innerHeight / 1080;
       const minViewportScale = Math.min(widthScale, heightScale);
       const areaViewportScale = Math.sqrt(widthScale * heightScale);
 
-      // In desktop we blend min-dimension and area scale to avoid abrupt jumps.
+      // In desktop prioritize actual viewport size over aspect-only scaling.
       const viewportScale =
-        window.innerWidth >= 1024
-          ? minViewportScale * 0.85 + areaViewportScale * 0.15
+        isDesktopViewport
+          ? minViewportScale * 0.6 + areaViewportScale * 0.4
           : minViewportScale;
 
       const calculatedCardScale = baseScale * viewportScale;
