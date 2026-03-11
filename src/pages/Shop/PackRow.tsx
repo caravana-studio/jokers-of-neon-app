@@ -7,7 +7,7 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { getUserCards } from "../../api/getUserCards";
@@ -19,7 +19,7 @@ import {
   packAnimation,
   shopPackGlowAnimation,
 } from "../../constants/animations";
-import { useDojo } from "../../dojo/DojoContext";
+import { DojoContext } from "../../dojo/DojoContext";
 import { useUsername } from "../../dojo/utils/useUsername";
 import { useCryptoPurchase } from "../../marketplace/hooks/useCryptoPurchase";
 import { useShopPrice } from "../../marketplace/hooks/useShopPrice";
@@ -57,9 +57,8 @@ export const PackRow = ({
   const { isSmallScreen } = useResponsiveValues();
   const navigate = useNavigate();
   const toast = useToast();
-  const {
-    account: { account },
-  } = useDojo();
+  const dojoCtx = useContext(DojoContext);
+  const account = dojoCtx?.account.account ?? null;
   const username = useUsername();
   const { purchasePackageById, offerings } = useRevenueCat();
   const { buy: buyWithCrypto, status: cryptoStatus } = useCryptoPurchase();

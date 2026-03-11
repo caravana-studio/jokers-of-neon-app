@@ -25,8 +25,8 @@ import {
   useRef,
   useState,
 } from "react";
-import { useDojo } from "../dojo/DojoContext";
-import { useUsername } from "../dojo/utils/useUsername";
+import { useAccount } from "@starknet-react/core";
+import { DojoContext } from "../dojo/DojoContext";
 import { isNative as realNative } from "../utils/capacitorUtils";
 import { getRevenueCatApiKey } from "../utils/getRevenueCatApiKey";
 import { registerMilestone } from "../utils/appsflyerReferral";
@@ -282,14 +282,13 @@ const normalizeOfferings = (
 };
 
 export const RevenueCatProvider = ({ children }: PropsWithChildren) => {
-  const usernameFromHook = useUsername();
-  const {
-    account: { account },
-    setup: { accountType },
-  } = useDojo();
+  const dojoCtx = useContext(DojoContext);
+  const { address: starknetAddress } = useAccount();
+  const dojoAddress = dojoCtx?.account?.account?.address ?? null;
+  const address = dojoAddress || starknetAddress || null;
+  const accountType = dojoCtx?.accountType ?? null;
 
-  const userId =
-    usernameFromHook && account?.address ? `${usernameFromHook},${account.address}` : null;
+  const userId = address;
   const [offerings, setOfferings] =
     useState<RevenueCatFormattedOfferings | null>(null);
   const [loading, setLoading] = useState(false);
@@ -328,7 +327,7 @@ export const RevenueCatProvider = ({ children }: PropsWithChildren) => {
   }, []);
 
   const configureRevenueCat = useCallback(async () => {
-    if (!userId || !usernameFromHook || !account?.address || hasConfiguredRef.current) {
+    if (!userId || hasConfiguredRef.current) {
       return;
     }
 
@@ -456,23 +455,23 @@ export const RevenueCatProvider = ({ children }: PropsWithChildren) => {
       const result = await purchasePackage(resolvedPackage, options);
 
       // Track milestones for pack purchases (not season pass - that's handled in SeasonPassProvider)
-      if (!isSeasonPass && account?.address) {
+      if (!isSeasonPass && address) {
         // Register pack purchase milestone
-        registerMilestone(account.address, "pack_purchased", undefined, accountType, usernameFromHook)
+        registerMilestone(address, "pack_purchased", undefined, accountType, null)
           .catch((e) => console.error("Error registering pack purchase milestone", e));
 
         // Track first purchase milestone (only once per user)
         const hasTrackedFirstPurchase = localStorage.getItem(FIRST_PURCHASE_KEY);
         if (!hasTrackedFirstPurchase) {
           localStorage.setItem(FIRST_PURCHASE_KEY, "true");
-          registerMilestone(account.address, "first_purchase", undefined, accountType, usernameFromHook)
+          registerMilestone(address, "first_purchase", undefined, accountType, null)
             .catch((e) => console.error("Error registering first purchase milestone", e));
         }
       }
 
       return result;
     },
-    [offerings, purchasePackage, account?.address, accountType, usernameFromHook]
+    [offerings, purchasePackage, address, accountType]
   );
 
   const value = useMemo<RevenueCatContextValue>(

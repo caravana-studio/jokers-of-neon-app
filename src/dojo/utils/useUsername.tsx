@@ -1,12 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { LOGGED_USER } from "../../constants/localStorage";
 import { controller } from "../controller/controller";
-import { useDojo } from "../DojoContext";
+import { DojoContext } from "../DojoContext";
 
 export const useUsername = () => {
   const [username, setUsername] = useState<string | null>(null);
-  const { setup } = useDojo();
-  const isUsingBurner = setup?.useBurnerAcc;
+  const dojoCtx = useContext(DojoContext);
+  const isUsingBurner = dojoCtx?.useBurnerAcc;
 
   useEffect(() => {
     if (!isUsingBurner && controller) {
@@ -16,7 +16,7 @@ export const useUsername = () => {
         }
       });
     }
-  }, [controller, setup?.useBurnerAcc, setup.accountType]);
+  }, [controller, dojoCtx?.useBurnerAcc, dojoCtx?.accountType]);
 
   return isUsingBurner ? window.localStorage.getItem(LOGGED_USER) : username;
 };
