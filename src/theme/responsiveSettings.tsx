@@ -37,44 +37,58 @@ export const useResponsiveValues = () => {
 
   const getBaseScaleForAspectRatio = (
     ratio: number,
-    scales: { [key: string]: number }
+    scales: { [key: string]: number },
+    isDesktopViewport: boolean
   ): number => {
-    for (const key in scales) {
-      const [width, height] = key.split(":").map(Number);
-      const aspectRatio = width / height;
+    const aspectScaleEntries = Object.entries(scales)
+      .map(([key, scale]) => {
+        const [width, height] = key.split(":").map(Number);
 
-      if (aspectRatio === ratio) return scales[key];
-    }
+        return {
+          scale,
+          diff: Math.abs(width / height - ratio),
+        };
+      })
+      .filter((entry) => !isDesktopViewport || entry.scale >= 1)
+      .sort((a, b) => a.diff - b.diff)
+      .slice(0, 4);
 
-    // If no exact match is found, find the closest match by comparing absolute differences
-    let closestKey = "";
-    let closestDiff = Infinity;
+    if (!aspectScaleEntries.length) return 1;
 
-    Object.keys(scales).forEach((key) => {
-      const [width, height] = key.split(":").map(Number);
-      const aspectRatio = width / height;
+    const epsilon = isDesktopViewport ? 0.01 : 0.002;
 
-      const diff = Math.abs(aspectRatio - ratio);
+    let weightedScale = 0;
+    let totalWeight = 0;
 
-      if (diff < closestDiff) {
-        closestDiff = diff;
-        closestKey = key;
-      }
+    aspectScaleEntries.forEach(({ scale, diff }) => {
+      const weight = 1 / (diff + epsilon);
+      weightedScale += scale * weight;
+      totalWeight += weight;
     });
 
-    // If no closest match, return 1
-    return scales[closestKey] || 1;
+    return totalWeight ? weightedScale / totalWeight : 1;
   };
 
   useEffect(() => {
     const handleResize = throttle(() => {
+      const isDesktopViewport = window.innerWidth >= 1024;
       const newAspectRatio = window.innerWidth / window.innerHeight;
-      const baseScale = getBaseScaleForAspectRatio(newAspectRatio, baseScales);
-
-      const viewportScale = Math.min(
-        window.innerWidth / 1920,
-        window.innerHeight / 1080
+      const baseScale = getBaseScaleForAspectRatio(
+        newAspectRatio,
+        baseScales,
+        isDesktopViewport
       );
+
+      const widthScale = window.innerWidth / 1920;
+      const heightScale = window.innerHeight / 1080;
+      const minViewportScale = Math.min(widthScale, heightScale);
+      const areaViewportScale = Math.sqrt(widthScale * heightScale);
+
+      // In desktop prioritize actual viewport size over aspect-only scaling.
+      const viewportScale =
+        isDesktopViewport
+          ? minViewportScale * 0.6 + areaViewportScale * 0.4
+          : minViewportScale;
 
       const calculatedCardScale = baseScale * viewportScale;
       setCardScale(calculatedCardScale);
@@ -87,6 +101,7 @@ export const useResponsiveValues = () => {
 
     return () => {
       window.removeEventListener("resize", handleResize);
+      handleResize.cancel();
     };
   }, []);
 
