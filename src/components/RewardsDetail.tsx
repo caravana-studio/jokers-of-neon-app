@@ -1,4 +1,4 @@
-import { Box, Flex, Heading, Spinner } from "@chakra-ui/react";
+import { Box, Flex, Heading } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -160,23 +160,17 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
     (rage_card_defeated_cash > 0 ? 1 : 0) +
     (rerolls > 0 ? 1 : 0);
 
-  if (isNavigating) {
-    return (
-      <Flex
-        position="fixed"
-        top={0}
-        left={0}
-        w="100vw"
-        h="100vh"
-        justifyContent="center"
-        alignItems="center"
-        bg="blackAlpha.700"
-        zIndex={1000}
-      >
-        <Spinner size="xl" color="white" />
-      </Flex>
-    );
-  }
+  const handleContinue = async () => {
+    if (isNavigating) return;
+
+    setIsNavigating(true);
+
+    try {
+      await navigateToMap();
+    } catch {
+      setIsNavigating(false);
+    }
+  };
 
   return (
     <Flex
@@ -192,10 +186,7 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
       <PinkBox
         title={title}
         button={playerWon ? t("endless-mode") : t("continue-btn")}
-        onClick={() => {
-          setIsNavigating(true);
-          navigateToMap();
-        }}
+        onClick={handleContinue}
         actionHidden={!animationEnded}
         glowIntensity={level_passed ? (playerWon ? 1.5 : 1) : 0}
       >
