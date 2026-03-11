@@ -70,7 +70,7 @@ export const SpecialCardsRow = () => {
         width={visibleCards > 5 ? "97%" : visibleCards > 6 ? "95%" : "100%"}
         alignItems={isSmallScreen ? "center" : "inherit"}
         columnGap={3}
-        pr={hasSevenSpecialCards ? 1 : 0}
+        pr={hasSevenSpecialCards ? 3 : 0}
         pb={isSmallScreen ? 0 : 4}
       >
         {cards.map((card) => {
