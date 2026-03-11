@@ -305,11 +305,9 @@ export const SeasonPassRow = ({
         isOpen={paymentMethodModal.isOpen}
         onClose={paymentMethodModal.onClose}
         onFiatSelect={() => {
-          paymentMethodModal.onClose();
           void handleFiatPurchase();
         }}
         onCryptoSelect={() => {
-          paymentMethodModal.onClose();
           void handleCryptoPurchase();
         }}
         fiatLabel={
