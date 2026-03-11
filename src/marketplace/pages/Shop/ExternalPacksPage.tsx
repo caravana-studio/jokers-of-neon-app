@@ -27,7 +27,7 @@ export function ExternalPacksPage() {
   const location = useLocation();
   const isSmall = useBreakpointValue({ base: true, md: false }) ?? false;
   const packId: number | undefined = location.state?.packId;
-  const mintedCards: MintedCard[] | undefined = location.state?.mintedCards;
+  const mintedCards: MintedCard[] | undefined = location.state?.mintedCards ?? location.state?.initialCards;
 
   const [step, setStep] = useState(0);
   const [allCardsSeen, setAllCardsSeen] = useState(false);

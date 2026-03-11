@@ -1,13 +1,17 @@
 import { Box, Flex, Heading, Spinner, VStack } from "@chakra-ui/react";
+import { PackRow } from "../../../pages/Shop/PackRow";
+import { SeasonPassRow } from "../../../pages/Shop/SeasonPassRow";
+import { useRevenueCat } from "../../../providers/RevenueCatProvider";
+import { useSeasonPass } from "../../../providers/SeasonPassProvider";
 import { useShopDistribution } from "../../hooks/useShopDistribution";
 import { CollectorPacksShopModal } from "../../components/CollectorPacksShopModal";
-import { PackRow } from "./PackRow";
-import { SeasonPassRow } from "./SeasonPassRow";
 
 const COLLECTOR_IDS = new Set([5, 6, 25, 26]);
 
 export function ShopPage() {
   const { distribution, loading } = useShopDistribution();
+  const { offerings } = useRevenueCat();
+  const { seasonPassUnlocked } = useSeasonPass();
 
   if (loading) {
     return (
@@ -20,9 +24,11 @@ export function ShopPage() {
   const hasCollectorPacks = distribution?.packs?.some((p) => COLLECTOR_IDS.has(p.packId));
   const collectorBackground = distribution?.packs?.some((p) => p.packId === 26)
     ? "/packs/bg/26.jpg"
-    : distribution?.packs?.some((p) => p.packId === 25)
-      ? "/packs/bg/25.jpg"
-      : "/packs/bg/25.jpg";
+    : "/packs/bg/25.jpg";
+
+  const getPackPrice = (shopId: string) =>
+    offerings?.packs?.find((p) => p.id === shopId)?.formattedPrice;
+  const seasonPassPrice = offerings?.seasonPass?.formattedPrice;
 
   return (
     <>
@@ -31,7 +37,6 @@ export function ShopPage() {
       <VStack spacing={5} align="stretch">
         <Heading size="l" variant="neonGreen">Shop</Heading>
 
-        {/* Full-width breakout: always fills viewport regardless of parent max-width */}
         <Box
           position="relative"
           left="50%"
@@ -40,13 +45,20 @@ export function ShopPage() {
           overflowX="hidden"
         >
           {distribution?.season_pass && (
-            <SeasonPassRow productId={distribution.season_pass} />
+            <SeasonPassRow
+              price={seasonPassPrice}
+              id={distribution.season_pass}
+              unlocked={seasonPassUnlocked}
+              fullBleed
+            />
           )}
           {distribution?.packs?.map((pack) => (
             <PackRow
               key={pack.packId}
               packId={pack.packId}
-              shopId={pack.shopId}
+              packageId={pack.shopId}
+              price={getPackPrice(pack.shopId)}
+              fullBleed
             />
           ))}
         </Box>

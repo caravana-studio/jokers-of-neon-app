@@ -3,7 +3,8 @@ import { AnimatePresence } from "framer-motion";
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import theme from "./theme/theme";
 import { StarknetProvider } from "./providers/StarknetProvider";
-import { RevenueCatProvider } from "./providers/RevenueCatProvider";
+import { RevenueCatProvider } from "../providers/RevenueCatProvider";
+import { SeasonPassProvider } from "../providers/SeasonPassProvider";
 import { MarketplaceProvider } from "./providers/MarketplaceProvider";
 import { BrowseListingsPage } from "./pages/Marketplace/BrowseListingsPage";
 import { CardDetailPage } from "./pages/Marketplace/CardDetailPage";
@@ -25,6 +26,7 @@ function AppRoutes() {
         <Route path="/my-listings" element={<AnimatedPage><MyListingsPage /></AnimatedPage>} />
         <Route path="/shop" element={<AnimatedPage><ShopPage /></AnimatedPage>} />
         <Route path="/external-packs" element={<AnimatedPage><ExternalPacksPage /></AnimatedPage>} />
+        <Route path="/external-pack/:packId" element={<AnimatedPage><ExternalPacksPage /></AnimatedPage>} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </AnimatePresence>
@@ -36,6 +38,7 @@ export default function App() {
     <ChakraProvider theme={theme}>
       <StarknetProvider>
         <RevenueCatProvider>
+          <SeasonPassProvider>
           <MarketplaceProvider>
             <BrowserRouter>
               <Layout>
@@ -43,6 +46,7 @@ export default function App() {
               </Layout>
             </BrowserRouter>
           </MarketplaceProvider>
+          </SeasonPassProvider>
         </RevenueCatProvider>
       </StarknetProvider>
     </ChakraProvider>
