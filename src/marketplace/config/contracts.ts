@@ -19,7 +19,7 @@ export const STARKNET_RPC_URL =
 
 export const CHAIN = import.meta.env.VITE_CHAIN || "mainnet";
 
-export const API_URL = import.meta.env.VITE_GAME_API_URL || "http://localhost:3001";
+export const API_URL = (import.meta.env.VITE_GAME_API_URL || "http://localhost:3001").replace(/\/$/, "");
 
 export const GAME_API_URL =
   import.meta.env.VITE_GAME_API_URL || "http://localhost:3001";
