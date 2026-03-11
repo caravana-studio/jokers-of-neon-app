@@ -34,10 +34,13 @@ const SeasonPassContext = createContext<SeasonPassContextValue>({
 export const SeasonPassProvider = ({ children }: PropsWithChildren) => {
   const dojoCtx = useContext(DojoContext);
   const { address: starknetAddress } = useAccount();
-  const dojoAddress = dojoCtx?.account?.account?.address ?? null;
+  // Use || (not ??) so empty-string address ("" from shopFallbackAccount) is treated as null
+  const dojoAddress = dojoCtx?.account?.account?.address || null;
   const accountType = dojoCtx?.accountType ?? null;
   const username = null;
-  const userAddress = dojoAddress || starknetAddress || null;
+  // When inside DojoProvider, only use the dojo address (starknet autoConnect can provide
+  // an address before the user has explicitly logged in, which would trigger premature fetches)
+  const userAddress = dojoCtx ? dojoAddress : (starknetAddress || null);
   const { offerings, purchasePackageById } = useRevenueCat();
   const [isPurchasing, setIsPurchasing] = useState(false);
   const seasonPassUnlocked = useSeasonProgressStore(
