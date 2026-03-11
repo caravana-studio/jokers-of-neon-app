@@ -187,6 +187,8 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
         title={title}
         button={playerWon ? t("endless-mode") : t("continue-btn")}
         onClick={handleContinue}
+        buttonIsLoading={isNavigating}
+        buttonIsDisabled={isNavigating}
         actionHidden={!animationEnded}
         glowIntensity={level_passed ? (playerWon ? 1.5 : 1) : 0}
       >
