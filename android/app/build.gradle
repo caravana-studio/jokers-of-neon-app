@@ -82,6 +82,9 @@ dependencies {
     // AppsFlyer SDK for attribution and deep linking
     implementation 'com.appsflyer:af-android-sdk:6.15.2'
     implementation 'com.android.installreferrer:installreferrer:2.2'
+
+    // Google Play Age Signals API (US states + Brazil rollout)
+    implementation 'com.google.android.play:age-signals:0.0.3'
 }
 
 apply from: 'capacitor.build.gradle'
