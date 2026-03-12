@@ -13,7 +13,7 @@ import { MyListingsPage } from "./pages/Marketplace/MyListingsPage";
 import { ShopPage } from "./pages/Shop/ShopPage";
 import { ExternalPacksPage } from "./pages/Shop/ExternalPacksPage";
 import { Layout } from "./components/Layout";
-import { AnimatedPage } from "./components/AnimatedPage";
+import { AnimatedPage } from "../components/AnimatedPage";
 
 function AppRoutes() {
   const location = useLocation();

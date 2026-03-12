@@ -3,8 +3,8 @@ import { PackRow } from "../../../pages/Shop/PackRow";
 import { SeasonPassRow } from "../../../pages/Shop/SeasonPassRow";
 import { useRevenueCat } from "../../../providers/RevenueCatProvider";
 import { useSeasonPass } from "../../../providers/SeasonPassProvider";
-import { useShopDistribution } from "../../hooks/useShopDistribution";
-import { CollectorPacksShopModal } from "../../components/CollectorPacksShopModal";
+import { useShopDistribution } from "../../../queries/useShopDistribution";
+import { CollectorPacksShopModal } from "../../../components/CollectorPacksShopModal";
 
 const COLLECTOR_IDS = new Set([5, 6, 25, 26]);
 
