@@ -24,6 +24,7 @@ const STANDARD_DECK_IDS = [
 ];
 
 const STARTING_HAND_SIZE = 8;
+const RAGE_SUIT_SILENCE_CARD_IDS = [20001, 20002, 20003, 20004];
 
 const PLAYS_DATA: LevelPokerHand[] = MOCKED_PLAYS.map((play) => ({
   poker_hand: play.poker_hand as PokerHandEnum,
@@ -66,6 +67,7 @@ interface RoguelikeRuntimeState {
   remainingPlays: number;
   remainingDiscards: number;
   cash: number;
+  rageCardIds: number[];
   handCardIds: number[];
   drawPileIds: number[];
   discardPileIds: number[];
@@ -75,6 +77,7 @@ interface RoguelikeRuntimeState {
   currentMapLaneIndex: number;
   mapLaneType: RoguelikeMapLaneType;
   currentShopId: number | null;
+  shopVisitId: number;
   lastPlay: Plays;
 
   reset: () => void;
@@ -194,6 +197,16 @@ const hashString = (input: string): number => {
   }
 
   return Math.abs(hash);
+};
+
+const pickRageCardId = (
+  runId: string,
+  round: number,
+  existingCount: number
+): number => {
+  const seed = hashString(`${runId}:rage:${round}:${existingCount}`);
+  const index = seed % RAGE_SUIT_SILENCE_CARD_IDS.length;
+  return RAGE_SUIT_SILENCE_CARD_IDS[index];
 };
 
 const getUnlockedSystemsFromProgress = (): UnlockableSystem[] => {
@@ -425,6 +438,7 @@ const createEmptyState = () => ({
   remainingPlays: 3,
   remainingDiscards: 3,
   cash: 10,
+  rageCardIds: [],
   handCardIds: [],
   drawPileIds: [],
   discardPileIds: [],
@@ -434,6 +448,7 @@ const createEmptyState = () => ({
   currentMapLaneIndex: 0,
   mapLaneType: null,
   currentShopId: null,
+  shopVisitId: 0,
   lastPlay: Plays.NONE,
 });
 
@@ -575,6 +590,7 @@ export const useRoguelikeRuntimeStore = create<RoguelikeRuntimeState>((set, get)
       remainingPlays: run.remainingPlays,
       remainingDiscards: run.remainingDiscards,
       cash: run.gold,
+      rageCardIds: [],
       handCardIds: openingHand,
       drawPileIds: drawPile,
       discardPileIds: [],
@@ -584,6 +600,7 @@ export const useRoguelikeRuntimeStore = create<RoguelikeRuntimeState>((set, get)
       currentMapLaneIndex: 0,
       mapLaneType: null,
       currentShopId: null,
+      shopVisitId: 0,
       lastPlay: Plays.NONE,
     });
 
@@ -826,6 +843,7 @@ export const useRoguelikeRuntimeStore = create<RoguelikeRuntimeState>((set, get)
       set({
         phase: "SHOP",
         currentShopId: option.shopId ?? 1,
+        shopVisitId: state.shopVisitId + 1,
         mapLanes: nextMapLanes,
         currentMapLaneIndex: nextLaneIndex,
         mapOptions: nextLane?.options ?? [],
@@ -841,6 +859,17 @@ export const useRoguelikeRuntimeStore = create<RoguelikeRuntimeState>((set, get)
     const nextRound = option.targetRound ?? state.round + 1;
     const nextLevel =
       option.targetLevel ?? Math.max(1, Math.ceil(nextRound / 3));
+    const nextRageCardIds =
+      option.type === "RAGE"
+        ? [
+            ...state.rageCardIds,
+            pickRageCardId(
+              state.runId ?? "run",
+              nextRound,
+              state.rageCardIds.length
+            ),
+          ]
+        : state.rageCardIds;
 
     set({
       phase: "ROUND",
@@ -850,6 +879,7 @@ export const useRoguelikeRuntimeStore = create<RoguelikeRuntimeState>((set, get)
       currentScore: 0,
       remainingPlays: state.totalPlays,
       remainingDiscards: state.totalDiscards,
+      rageCardIds: nextRageCardIds,
       rewards: null,
       mapLanes: nextMapLanes,
       currentMapLaneIndex: nextLaneIndex,

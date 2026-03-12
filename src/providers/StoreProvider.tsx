@@ -11,6 +11,8 @@ import { useRoguelikeRuntimeStore } from "../state/roguelike/useRoguelikeRuntime
 import {
   buildMockDynamicShopState,
   buildMockDynamicShopStateForReroll,
+  isMockShopItemPurchased,
+  markMockShopItemPurchased,
 } from "../state/roguelike/mockDynamicStore";
 import { useProgressStore } from "../state/roguelike/useProgressStore";
 import { useRunStore } from "../state/roguelike/useRunStore";
@@ -140,11 +142,13 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
       const runId = activeRun?.runId ?? `mock-run-${currentGameState.id || 0}`;
       const runNumber = activeRun?.runNumber ?? 1;
       const safeShopId = currentGameState.shopId > 0 ? currentGameState.shopId : 1;
+      const visitId = useRoguelikeRuntimeStore.getState().shopVisitId;
 
       const mockState = buildMockDynamicShopState({
         gameId: currentGameState.id || runNumber,
         runId,
         shopId: safeShopId,
+        visitId,
         unlockedSystems,
       });
 
@@ -180,6 +184,16 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     return true;
   };
 
+  const getMockShopContext = () => {
+    const activeRun = useRunStore.getState().activeRun;
+    const gameState = useGameStore.getState();
+    const runId = activeRun?.runId ?? `mock-run-${gameState.id || 0}`;
+    const safeShopId = gameState.shopId > 0 ? gameState.shopId : 1;
+    const visitId = useRoguelikeRuntimeStore.getState().shopVisitId;
+
+    return { runId, shopId: safeShopId, visitId };
+  };
+
   const stateBuyCard = (card: Card) => {
     if (card.isSpecial) {
       buySpecialCard(card.idx);
@@ -202,6 +216,20 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
 
   const buyCard = (card: Card): Promise<boolean> => {
     if (isMockGameApiMode) {
+      const { runId, shopId, visitId } = getMockShopContext();
+      if (
+        card.purchased ||
+        isMockShopItemPurchased({
+          runId,
+          shopId,
+          visitId,
+          kind: "CARD",
+          idx: card.idx,
+        })
+      ) {
+        return Promise.resolve(false);
+      }
+
       buySound();
       setLocked(true);
       stateBuyCard(card);
@@ -232,6 +260,14 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
           };
         });
       }
+
+      markMockShopItemPurchased({
+        runId,
+        shopId,
+        visitId,
+        kind: "CARD",
+        idx: card.idx,
+      });
 
       setLocked(false);
       return Promise.resolve(true);
@@ -266,6 +302,20 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
 
   const buyPowerUp = (powerUp: PowerUp): Promise<boolean> => {
     if (isMockGameApiMode) {
+      const { runId, shopId, visitId } = getMockShopContext();
+      if (
+        powerUp.purchased ||
+        isMockShopItemPurchased({
+          runId,
+          shopId,
+          visitId,
+          kind: "POWER_UP",
+          idx: powerUp.idx,
+        })
+      ) {
+        return Promise.resolve(false);
+      }
+
       buySound();
       setLocked(true);
       stateBuyPowerUp(powerUp.idx);
@@ -286,6 +336,14 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
       addPowerUp({
         ...powerUp,
         purchased: true,
+      });
+
+      markMockShopItemPurchased({
+        runId,
+        shopId,
+        visitId,
+        kind: "POWER_UP",
+        idx: powerUp.idx,
       });
 
       setLocked(false);
@@ -322,6 +380,19 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
 
   const burnCards = (cards: Card[], totalCost: number): Promise<boolean> => {
     if (isMockGameApiMode) {
+      const { runId, shopId, visitId } = getMockShopContext();
+      if (
+        burnItem?.purchased ||
+        isMockShopItemPurchased({
+          runId,
+          shopId,
+          visitId,
+          kind: "BURN",
+        })
+      ) {
+        return Promise.resolve(false);
+      }
+
       buySound();
       setLocked(true);
 
@@ -335,6 +406,13 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
           ? { ...state.burnItem, purchased: true }
           : state.burnItem,
       }));
+
+      markMockShopItemPurchased({
+        runId,
+        shopId,
+        visitId,
+        kind: "BURN",
+      });
 
       setLocked(false);
       return Promise.resolve(true);
@@ -372,6 +450,20 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     isTemporal: boolean
   ): Promise<boolean> => {
     if (isMockGameApiMode) {
+      const { runId, shopId, visitId } = getMockShopContext();
+      if (
+        card.purchased ||
+        isMockShopItemPurchased({
+          runId,
+          shopId,
+          visitId,
+          kind: "CARD",
+          idx: card.idx,
+        })
+      ) {
+        return Promise.resolve(false);
+      }
+
       buySound();
       setLocked(true);
       stateBuyCard(card);
@@ -405,6 +497,14 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
             },
           ],
         };
+      });
+
+      markMockShopItemPurchased({
+        runId,
+        shopId,
+        visitId,
+        kind: "CARD",
+        idx: card.idx,
       });
 
       setLocked(false);
@@ -448,6 +548,20 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
 
   const buyPack = (pack: BlisterPackItem): Promise<boolean> => {
     if (isMockGameApiMode) {
+      const { runId, shopId, visitId } = getMockShopContext();
+      if (
+        pack.purchased ||
+        isMockShopItemPurchased({
+          runId,
+          shopId,
+          visitId,
+          kind: "PACK",
+          idx: Number(pack.idx),
+        })
+      ) {
+        return Promise.resolve(false);
+      }
+
       buySound();
       setLocked(true);
 
@@ -458,6 +572,13 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
       }
 
       buyBlisterPack(Number(pack.idx));
+      markMockShopItemPurchased({
+        runId,
+        shopId,
+        visitId,
+        kind: "PACK",
+        idx: Number(pack.idx),
+      });
       setLocked(false);
       return Promise.resolve(true);
     }
@@ -512,11 +633,13 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
       const runId = activeRun?.runId ?? `mock-run-${gameState.id || 0}`;
       const runNumber = activeRun?.runNumber ?? 1;
       const safeShopId = gameState.shopId > 0 ? gameState.shopId : 1;
+      const visitId = useRoguelikeRuntimeStore.getState().shopVisitId;
 
       const mockState = buildMockDynamicShopStateForReroll({
         gameId: gameState.id || runNumber,
         runId,
         shopId: safeShopId,
+        visitId,
         unlockedSystems,
       });
 
@@ -569,6 +692,20 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
 
   const levelUpPlay = (item: PokerHandItem): Promise<boolean> => {
     if (isMockGameApiMode) {
+      const { runId, shopId, visitId } = getMockShopContext();
+      if (
+        item.purchased ||
+        isMockShopItemPurchased({
+          runId,
+          shopId,
+          visitId,
+          kind: "POKER_HAND",
+          idx: item.idx,
+        })
+      ) {
+        return Promise.resolve(false);
+      }
+
       levelUpHandSound();
       setLocked(true);
       buyPokerHand(item.idx);
@@ -592,6 +729,14 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
             : play
         ),
       }));
+
+      markMockShopItemPurchased({
+        runId,
+        shopId,
+        visitId,
+        kind: "POKER_HAND",
+        idx: item.idx,
+      });
 
       setLocked(false);
       return Promise.resolve(true);
@@ -626,6 +771,18 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
 
   const buySpecialSlot = (): Promise<boolean> => {
     if (isMockGameApiMode) {
+      const { runId, shopId, visitId } = getMockShopContext();
+      if (
+        isMockShopItemPurchased({
+          runId,
+          shopId,
+          visitId,
+          kind: "SPECIAL_SLOT",
+        })
+      ) {
+        return Promise.resolve(false);
+      }
+
       setLocked(true);
       buySlotSpecialCard();
 
@@ -641,6 +798,12 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
       }
 
       addSpecialSlot();
+      markMockShopItemPurchased({
+        runId,
+        shopId,
+        visitId,
+        kind: "SPECIAL_SLOT",
+      });
       setLocked(false);
       return Promise.resolve(true);
     }

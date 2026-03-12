@@ -8,6 +8,7 @@ import {
   negativeMultiSfx,
 } from "../constants/sfx";
 import { isMockGameApiMode } from "../config/gameMode";
+import { getRageCards } from "../dojo/queries/getRageCards";
 import { GameStateEnum } from "../dojo/typescript/custom";
 import { useAudio } from "../hooks/useAudio";
 import { usePitchedAudio } from "../hooks/usePitchedAudio";
@@ -87,13 +88,19 @@ export const RoguelikeRoundProvider = ({ children }: { children: ReactNode }) =>
 
   const syncHandStoreFromRuntime = useCallback((clearSelection = true) => {
     const runtime = useRoguelikeRuntimeStore.getState();
+    const activeRageCards =
+      runtime.round % 3 === 0 ? getRageCards(runtime.rageCardIds) : [];
+    const handCards = runtime
+      .getHandCards()
+      .filter((card) => card.card_id !== 9999)
+      .map((card) => ({
+        ...card,
+        silenced: isCardSilent(card, activeRageCards),
+      }));
 
     useCurrentHandStore.setState((state) => ({
       ...state,
-      hand: sortCards(
-        runtime.getHandCards().filter((card) => card.card_id !== 9999),
-        state.sortBy
-      ),
+      hand: sortCards(handCards, state.sortBy),
       ...(clearSelection
         ? {
             preSelectedCards: [],
@@ -109,10 +116,13 @@ export const RoguelikeRoundProvider = ({ children }: { children: ReactNode }) =>
 
   const syncGameStoreFromRuntime = useCallback((options?: { keepCurrentScore?: boolean }) => {
     const runtime = useRoguelikeRuntimeStore.getState();
+    const activeRageCards =
+      runtime.round % 3 === 0 ? getRageCards(runtime.rageCardIds) : [];
+    const isRageRound = activeRageCards.length > 0;
 
     const gameStateByPhase: Record<typeof runtime.phase, GameStateEnum> = {
       IDLE: GameStateEnum.NotSet,
-      ROUND: GameStateEnum.Round,
+      ROUND: isRageRound ? GameStateEnum.Rage : GameStateEnum.Round,
       REWARDS: GameStateEnum.Reward,
       MAP: GameStateEnum.Map,
       SHOP: GameStateEnum.Store,
@@ -137,10 +147,10 @@ export const RoguelikeRoundProvider = ({ children }: { children: ReactNode }) =>
       cash: runtime.cash,
       roundRewards: runtime.rewards ?? undefined,
       specialCards: [],
-      rageCards: [],
+      rageCards: activeRageCards,
       debuffedPlayerHands: [],
-      isRageRound: runtime.round % 3 === 0,
-      inBossRound: runtime.round % 3 === 0,
+      isRageRound,
+      inBossRound: isRageRound,
       availableRerolls: 1,
       maxSpecialCards: 7,
       specialSlots: 2,

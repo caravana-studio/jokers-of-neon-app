@@ -6,6 +6,7 @@ import { useGameStore } from "../state/useGameStore";
 import { useRunStore } from "../state/roguelike/useRunStore";
 import { buildMockDynamicShopState } from "../state/roguelike/mockDynamicStore";
 import { useProgressStore } from "../state/roguelike/useProgressStore";
+import { useRoguelikeRuntimeStore } from "../state/roguelike/useRoguelikeRuntimeStore";
 import { useShopStore } from "../state/useShopStore";
 
 export const ShopStoreLoader = ({ children }: PropsWithChildren) => {
@@ -15,6 +16,7 @@ export const ShopStoreLoader = ({ children }: PropsWithChildren) => {
   const { id: gameId, shopId } = useGameStore();
   const activeRun = useRunStore((state) => state.activeRun);
   const profile = useProgressStore((state) => state.profile);
+  const shopVisitId = useRoguelikeRuntimeStore((state) => state.shopVisitId);
   const { loading, setLoading, refetchShopStore, loadedItems } = useShopStore();
 
   useEffect(() => {
@@ -27,6 +29,7 @@ export const ShopStoreLoader = ({ children }: PropsWithChildren) => {
         gameId: gameId || runNumber,
         runId,
         shopId: safeShopId,
+        visitId: shopVisitId,
         unlockedSystems: profile?.unlockedSystems ?? [],
       });
 
@@ -56,6 +59,7 @@ export const ShopStoreLoader = ({ children }: PropsWithChildren) => {
     client,
     gameId,
     shopId,
+    shopVisitId,
     activeRun?.runId,
     activeRun?.runNumber,
     profile?.unlockedSystems,

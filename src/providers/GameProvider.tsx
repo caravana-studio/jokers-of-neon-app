@@ -647,7 +647,12 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       return;
     }
 
-    if (gameState === GameStateEnum.GameOver) {
+    const gameplayPaths = new Set(["/demo", "/map", "/store", "/rewards", "/win"]);
+
+    if (
+      gameState === GameStateEnum.GameOver &&
+      gameplayPaths.has(location.pathname)
+    ) {
       navigate(`/loose`);
     } else if (
       gameState === GameStateEnum.Store &&

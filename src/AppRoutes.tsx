@@ -25,7 +25,6 @@ import { NewLeaderboardPage } from "./pages/NewLeaderboardPage/NewLeaderboardPag
 import { PostRunUnlockView } from "./pages/Roguelike/PostRunUnlockView";
 import { PrepareRunView } from "./pages/Roguelike/PrepareRunView";
 import { RoguelikeHome } from "./pages/Roguelike/RoguelikeHome";
-import { RoguelikeRewardsPage } from "./pages/Roguelike/RoguelikeRewardsPage";
 import { RoguelikeRunView } from "./pages/Roguelike/RoguelikeRunView";
 import { OpenLootBox } from "./pages/OpenLootBox/Stages/OpenLootBox";
 import { OpenLootBoxCardSelection } from "./pages/OpenLootBox/Stages/OpenLootBoxCardSelection";
@@ -242,15 +241,9 @@ export const AppRoutes = () => {
         path="/rewards"
         element={
           <AnimatedPage>
-            {isMockMode ? (
-              <RoguelikeBootstrap>
-                <RoguelikeRewardsPage />
-              </RoguelikeBootstrap>
-            ) : (
-              <GameStoreLoader>
-                <RewardsPage />
-              </GameStoreLoader>
-            )}
+            <GameStoreLoader>
+              <RewardsPage />
+            </GameStoreLoader>
           </AnimatedPage>
         }
       />
