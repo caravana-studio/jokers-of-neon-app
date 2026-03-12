@@ -9,6 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { keyframes } from "@emotion/react";
 import { useState } from "react";
+import { useAccount, useConnect } from "@starknet-react/core";
 import { useTranslation } from "react-i18next";
 import CachedImage from "../../components/CachedImage";
 import { SeasonPass } from "../../components/SeasonPass/SeasonPass";
@@ -77,6 +78,8 @@ export const SeasonPassRow = ({
   const isSeason2 = SEASON_NUMBER === 2;
 
   const { purchaseSeasonPass } = useSeasonPass();
+  const { connectors, connect } = useConnect();
+  const { address: starknetAddress } = useAccount();
   const { buy: buyWithCrypto, status: cryptoStatus } = useCryptoPurchase();
   const { priceAtoms, priceUsdc } = useShopPrice(id);
   const { balanceRaw } = useUSDCBalance();
@@ -164,6 +167,14 @@ export const SeasonPassRow = ({
 
   const handleButtonClick = () => {
     if (isButtonDisabled) return;
+
+    if (!starknetAddress) {
+      const connector = connectors[0];
+      if (connector) {
+        connect({ connector });
+      }
+      return;
+    }
 
     if (isNative) {
       void handleFiatPurchase();

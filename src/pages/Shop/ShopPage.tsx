@@ -77,8 +77,8 @@ export const ShopPage = () => {
       <Flex
         flexDir={"column"}
         w="100%"
-        h="100%"
-        overflowY={"auto"}
+        h={isShop ? "auto" : "100%"}
+        overflowY={isShop ? "visible" : "auto"}
         overflowX={"hidden"}
       >
         <Flex

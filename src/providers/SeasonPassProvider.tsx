@@ -38,9 +38,9 @@ export const SeasonPassProvider = ({ children }: PropsWithChildren) => {
   const dojoAddress = dojoCtx?.account?.account?.address || null;
   const accountType = dojoCtx?.accountType ?? null;
   const username = null;
-  // When inside DojoProvider, only use the dojo address (starknet autoConnect can provide
-  // an address before the user has explicitly logged in, which would trigger premature fetches)
-  const userAddress = dojoCtx ? dojoAddress : (starknetAddress || null);
+  // Fall back to starknetAddress so marketplace connector login works
+  // (dojoAddress stays null after marketplace login since DojoProvider isn't updated)
+  const userAddress = dojoAddress || starknetAddress || null;
   const { offerings, purchasePackageById } = useRevenueCat();
   const [isPurchasing, setIsPurchasing] = useState(false);
   const seasonPassUnlocked = useSeasonProgressStore(

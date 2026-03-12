@@ -33,7 +33,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
   }, [status]);
 
   return (
-    <Box minH="100vh" position="relative" overflowX="hidden">
+    <Box h="100dvh" position="relative" overflowX="hidden" overflowY="auto">
       {/* Video background */}
       <Box
         as="video"

@@ -1,4 +1,4 @@
-import { Box, Flex, Heading, Spinner, VStack } from "@chakra-ui/react";
+import { Box, Flex, Spinner } from "@chakra-ui/react";
 import { PackRow } from "../../../pages/Shop/PackRow";
 import { SeasonPassRow } from "../../../pages/Shop/SeasonPassRow";
 import { useRevenueCat } from "../../../providers/RevenueCatProvider";
@@ -34,35 +34,25 @@ export function ShopPage() {
     <>
       {hasCollectorPacks && <CollectorPacksShopModal backgroundImage={collectorBackground} />}
 
-      <VStack spacing={5} align="stretch">
-        <Heading size="l" variant="neonGreen">Shop</Heading>
-
-        <Box
-          position="relative"
-          left="50%"
-          transform="translateX(-50%)"
-          width="100vw"
-          overflowX="hidden"
-        >
-          {distribution?.season_pass && (
-            <SeasonPassRow
-              price={seasonPassPrice}
-              id={distribution.season_pass}
-              unlocked={seasonPassUnlocked}
-              fullBleed
-            />
-          )}
-          {distribution?.packs?.map((pack) => (
-            <PackRow
-              key={pack.packId}
-              packId={pack.packId}
-              packageId={pack.shopId}
-              price={getPackPrice(pack.shopId)}
-              fullBleed
-            />
-          ))}
-        </Box>
-      </VStack>
+      <Box>
+        {distribution?.season_pass && (
+          <SeasonPassRow
+            price={seasonPassPrice}
+            id={distribution.season_pass}
+            unlocked={seasonPassUnlocked}
+            fullBleed
+          />
+        )}
+        {distribution?.packs?.map((pack) => (
+          <PackRow
+            key={pack.packId}
+            packId={pack.packId}
+            packageId={pack.shopId}
+            price={getPackPrice(pack.shopId)}
+            fullBleed
+          />
+        ))}
+      </Box>
     </>
   );
 }

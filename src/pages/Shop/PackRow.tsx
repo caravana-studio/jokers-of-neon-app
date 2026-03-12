@@ -7,7 +7,7 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import { useConnect } from "@starknet-react/core";
+import { useAccount, useConnect } from "@starknet-react/core";
 import { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -62,6 +62,7 @@ export const PackRow = ({
   const account = dojoCtx?.account.account ?? null;
   const username = useUsername();
   const { connectors, connect } = useConnect();
+  const { address: starknetAddress } = useAccount();
   const { purchasePackageById, offerings } = useRevenueCat();
   const { buy: buyWithCrypto, status: cryptoStatus } = useCryptoPurchase();
   const { priceAtoms, priceUsdc } = useShopPrice(packId);
@@ -119,14 +120,6 @@ export const PackRow = ({
       return;
     }
 
-    if (!account?.address) {
-      const connector = connectors[0];
-      if (connector) {
-        connect({ connector });
-      }
-      return;
-    }
-
     try {
       setIsPurchasing(true);
       const availablePackageIds = Object.keys(
@@ -179,14 +172,6 @@ export const PackRow = ({
 
   const handleCryptoPurchase = async () => {
     if (isPurchasing || isCryptoPurchasing) {
-      return;
-    }
-
-    if (!account?.address) {
-      const connector = connectors[0];
-      if (connector) {
-        connect({ connector });
-      }
       return;
     }
 
@@ -260,6 +245,14 @@ export const PackRow = ({
 
   const handlePurchaseClick = () => {
     if (isBuyDisabled) return;
+
+    if (!starknetAddress) {
+      const connector = connectors[0];
+      if (connector) {
+        connect({ connector });
+      }
+      return;
+    }
 
     if (isNative) {
       void handleFiatPurchase();
