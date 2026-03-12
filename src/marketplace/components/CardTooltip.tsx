@@ -2,7 +2,7 @@ import { Divider, Flex, Text, Tooltip } from "@chakra-ui/react";
 import { PropsWithChildren, useEffect, useState } from "react";
 import { subscribeCardData, getCardEntry } from "../hooks/useCardData";
 import { RARITY_COLORS } from "../types/marketplace";
-import { colorizeText } from "../utils/colorizeText";
+import { colorizeText } from "../../utils/getTooltip";
 
 const CATEGORY_LABELS: Record<number, string> = {
   1: "C",
