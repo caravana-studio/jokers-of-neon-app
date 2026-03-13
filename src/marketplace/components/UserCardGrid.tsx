@@ -11,6 +11,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { CardImage } from "./CardImage";
 import { CardTooltip } from "./CardTooltip";
+import { MARKETPLACE_CARD_GRID_TEMPLATE_COLUMNS } from "./cardGridLayout";
 import { SkinBadge, SKIN_NAME_COLOR } from "./SkinBadge";
 import { useCardName } from "../hooks/useCardName";
 import { RARITY_LABELS, RARITY_COLORS } from "../types/marketplace";
@@ -227,7 +228,7 @@ export function CardSection({
           </Text>
         </Flex>
       )}
-      <SimpleGrid columns={{ base: 2, sm: 3, md: 4, lg: 5 }} spacing={4}>
+      <SimpleGrid templateColumns={MARKETPLACE_CARD_GRID_TEMPLATE_COLUMNS} spacing={4}>
         {groups.map((group) => (
           <CardGridItem
             key={`${group.card.cardId}-${group.card.skinId}`}

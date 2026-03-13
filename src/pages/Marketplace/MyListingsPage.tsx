@@ -15,6 +15,7 @@ import { useAccount } from "@starknet-react/core";
 import { CallData } from "starknet";
 import { getSellerListings, cancelListing } from "../../marketplace/api/marketplace";
 import { MARKETPLACE_CONTRACT_ADDRESS } from "../../marketplace/config/contracts";
+import { MARKETPLACE_CARD_GRID_TEMPLATE_COLUMNS } from "../../marketplace/components/cardGridLayout";
 import { parseStarknetError } from "../../marketplace/utils/parseStarknetError";
 import { MyListingCard } from "../../marketplace/components/MyListingCard";
 import type { Listing, ListingStatus } from "../../marketplace/types/marketplace";
@@ -156,7 +157,7 @@ export function MyListingsPage() {
             : t("myListings.noStatusListings", { status: activeTab })}
         </Text>
       ) : (
-        <SimpleGrid columns={{ base: 2, sm: 3, md: 4, lg: 5 }} spacing={4}>
+        <SimpleGrid templateColumns={MARKETPLACE_CARD_GRID_TEMPLATE_COLUMNS} spacing={4}>
           {displayed.map((listing) => (
             <MyListingCard
               key={listing.id}

@@ -14,6 +14,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useListings } from "../../marketplace/hooks/useListings";
 import { ListingCard } from "../../marketplace/components/ListingCard";
+import { MARKETPLACE_CARD_GRID_TEMPLATE_COLUMNS } from "../../marketplace/components/cardGridLayout";
 import { FilterLabel, FilterBarContainer, filterSelectStyles, filterInputStyles } from "../../marketplace/components/FilterBar";
 import { RARITY_LABELS } from "../../marketplace/types/marketplace";
 
@@ -140,7 +141,7 @@ export function BrowseListingsPage() {
           {nameSearch ? t("browse.noMatch", { query: nameSearch }) : t("browse.noListings")}
         </Text>
       ) : (
-        <SimpleGrid columns={{ base: 2, sm: 3, md: 4, lg: 5 }} spacing={4}>
+        <SimpleGrid templateColumns={MARKETPLACE_CARD_GRID_TEMPLATE_COLUMNS} spacing={4}>
           {displayed.map((listing) => (
             <ListingCard key={listing.id} listing={listing} />
           ))}
