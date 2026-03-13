@@ -37,7 +37,22 @@ export function Layout({ children }: { children: React.ReactNode }) {
   }, [status]);
 
   return (
-    <Box h="100dvh" position="relative" overflowX="hidden" overflowY="auto">
+    <Box
+      h="100dvh"
+      w="100%"
+      position="relative"
+      overflowX="hidden"
+      overflowY="auto"
+      sx={{
+        scrollbarWidth: "none",
+        msOverflowStyle: "none",
+        "&::-webkit-scrollbar": {
+          width: "0px",
+          height: "0px",
+          display: "none",
+        },
+      }}
+    >
       {/* Video background */}
       <Box
         as="video"
