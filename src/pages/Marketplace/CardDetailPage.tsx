@@ -11,18 +11,18 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { getListing } from "../../api/marketplace";
-import { CardImage } from "../../components/CardImage";
-import { SkinBadge } from "../../components/SkinBadge";
-import { BuyButton } from "../../components/BuyButton";
-import { formatTokenAmount } from "../../utils/formatPrice";
-import { useUsername } from "../../hooks/useUsername";
-import { RARITY_LABELS, RARITY_COLORS } from "../../types/marketplace";
-import { PAYMENT_TOKENS } from "../../config/contracts";
-import { useMarketplace } from "../../providers/MarketplaceProvider";
-import { usePrices, toUsd, formatUsd } from "../../hooks/usePrices";
-import { TokenIcon } from "../../components/TokenIcon";
-import type { Listing } from "../../types/marketplace";
+import { getListing } from "../../marketplace/api/marketplace";
+import { CardImage } from "../../marketplace/components/CardImage";
+import { SkinBadge } from "../../marketplace/components/SkinBadge";
+import { BuyButton } from "../../marketplace/components/BuyButton";
+import { formatTokenAmount } from "../../marketplace/utils/formatPrice";
+import { useUsername } from "../../marketplace/hooks/useUsername";
+import { RARITY_LABELS, RARITY_COLORS } from "../../marketplace/types/marketplace";
+import { PAYMENT_TOKENS } from "../../marketplace/config/contracts";
+import { useMarketplace } from "../../marketplace/providers/MarketplaceProvider";
+import { usePrices, toUsd, formatUsd } from "../../marketplace/hooks/usePrices";
+import { TokenIcon } from "../../marketplace/components/TokenIcon";
+import type { Listing } from "../../marketplace/types/marketplace";
 
 function getTokenSymbol(address: string): string {
   const token = PAYMENT_TOKENS.find(

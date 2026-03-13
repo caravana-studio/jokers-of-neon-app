@@ -24,23 +24,23 @@ import { keyframes } from "@emotion/react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAccount } from "@starknet-react/core";
-import { useUserCards } from "../../hooks/useUserCards";
-import { useCreateListing } from "../../hooks/useCreateListing";
-import { usePrices, toUsd, formatUsd } from "../../hooks/usePrices";
-import { getSellerListings } from "../../api/marketplace";
-import { CardImage } from "../../components/CardImage";
-import { SkinBadge, SKIN_NAME_COLOR } from "../../components/SkinBadge";
+import { useUserCards } from "../../marketplace/hooks/useUserCards";
+import { useCreateListing } from "../../marketplace/hooks/useCreateListing";
+import { usePrices, toUsd, formatUsd } from "../../marketplace/hooks/usePrices";
+import { getSellerListings } from "../../marketplace/api/marketplace";
+import { CardImage } from "../../marketplace/components/CardImage";
+import { SkinBadge, SKIN_NAME_COLOR } from "../../marketplace/components/SkinBadge";
 
 const SKIN_SEASON_LABEL: Record<number, string> = {
   2: "Season 1",
   3: "Season 2",
 };
-import { groupCards, CardGridItem, CardSection } from "../../components/UserCardGrid";
-import { RARITY_LABELS, RARITY_COLORS } from "../../types/marketplace";
-import { cardImageUrl, parseTokenAmount, formatTokenAmount } from "../../utils/formatPrice";
-import { PAYMENT_TOKENS } from "../../config/contracts";
-import { TokenIcon } from "../../components/TokenIcon";
-import type { UserCard } from "../../types/marketplace";
+import { groupCards, CardGridItem, CardSection } from "../../marketplace/components/UserCardGrid";
+import { RARITY_LABELS, RARITY_COLORS } from "../../marketplace/types/marketplace";
+import { cardImageUrl, parseTokenAmount, formatTokenAmount } from "../../marketplace/utils/formatPrice";
+import { PAYMENT_TOKENS } from "../../marketplace/config/contracts";
+import { TokenIcon } from "../../marketplace/components/TokenIcon";
+import type { UserCard } from "../../marketplace/types/marketplace";
 
 // ─── Section label with white glow underline (matches store preview) ──────────
 function SectionLabel({ children }: { children: string }) {

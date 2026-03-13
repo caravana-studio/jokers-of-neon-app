@@ -2,10 +2,10 @@ import { Button, Flex, Text, useBreakpointValue } from "@chakra-ui/react";
 import { keyframes } from "@emotion/react";
 import { useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import type { MintedCard } from "../../hooks/useCryptoPurchase";
-import { cardImageUrl } from "../../utils/formatPrice";
-import PackTear from "./PackTear";
-import { SplitPackOnce } from "./SplitPackOnce";
+import type { MintedCard } from "../../marketplace/hooks/useCryptoPurchase";
+import { cardImageUrl } from "../../marketplace/utils/formatPrice";
+import PackTear from "../ExternalPack/PackTear";
+import { SplitPackOnce } from "../ExternalPack/SplitPackOnce";
 import Stack, { Intensity } from "./CardStack/Stack";
 
 const packFloat = keyframes`

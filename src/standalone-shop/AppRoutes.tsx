@@ -2,10 +2,10 @@ import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import "../App.scss";
 
 import { AnimatedPage } from "../components/AnimatedPage";
-import { BrowseListingsPage } from "../marketplace/pages/Marketplace/BrowseListingsPage";
-import { CardDetailPage } from "../marketplace/pages/Marketplace/CardDetailPage";
-import { CreateListingPage } from "../marketplace/pages/Marketplace/CreateListingPage";
-import { MyListingsPage } from "../marketplace/pages/Marketplace/MyListingsPage";
+import { BrowseListingsPage } from "../pages/Marketplace/BrowseListingsPage";
+import { CardDetailPage } from "../pages/Marketplace/CardDetailPage";
+import { CreateListingPage } from "../pages/Marketplace/CreateListingPage";
+import { MyListingsPage } from "../pages/Marketplace/MyListingsPage";
 import { ExternalPack } from "../pages/ExternalPack/ExternalPack";
 import { PurchasingPackPage } from "../pages/PurchasingPackPage";
 import { ShopPage } from "../pages/Shop/ShopPage";

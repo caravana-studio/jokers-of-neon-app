@@ -11,10 +11,10 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { useListings } from "../../hooks/useListings";
-import { ListingCard } from "../../components/ListingCard";
-import { FilterLabel, FilterBarContainer, filterSelectStyles, filterInputStyles } from "../../components/FilterBar";
-import { RARITY_LABELS } from "../../types/marketplace";
+import { useListings } from "../../marketplace/hooks/useListings";
+import { ListingCard } from "../../marketplace/components/ListingCard";
+import { FilterLabel, FilterBarContainer, filterSelectStyles, filterInputStyles } from "../../marketplace/components/FilterBar";
+import { RARITY_LABELS } from "../../marketplace/types/marketplace";
 
 export function BrowseListingsPage() {
   const { listings, total, loading, loadingMore, error, filter, setFilter, loadMore, hasMore } =

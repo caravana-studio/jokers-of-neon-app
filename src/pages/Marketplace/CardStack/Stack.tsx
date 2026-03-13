@@ -1,6 +1,6 @@
 import { motion, useMotionValue, useReducedMotion, useTransform } from "framer-motion";
 import React, { useEffect, useRef, useState } from "react";
-import "./Stack.css";
+import "../../ExternalPack/CardStack/Stack.css";
 
 export enum Intensity {
   LOW = 0,

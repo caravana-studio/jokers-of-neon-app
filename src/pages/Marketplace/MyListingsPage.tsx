@@ -12,11 +12,11 @@ import {
 import { useEffect, useState, useCallback } from "react";
 import { useAccount } from "@starknet-react/core";
 import { CallData } from "starknet";
-import { getSellerListings, cancelListing } from "../../api/marketplace";
-import { MARKETPLACE_CONTRACT_ADDRESS } from "../../config/contracts";
-import { parseStarknetError } from "../../utils/parseStarknetError";
-import { MyListingCard } from "../../components/MyListingCard";
-import type { Listing, ListingStatus } from "../../types/marketplace";
+import { getSellerListings, cancelListing } from "../../marketplace/api/marketplace";
+import { MARKETPLACE_CONTRACT_ADDRESS } from "../../marketplace/config/contracts";
+import { parseStarknetError } from "../../marketplace/utils/parseStarknetError";
+import { MyListingCard } from "../../marketplace/components/MyListingCard";
+import type { Listing, ListingStatus } from "../../marketplace/types/marketplace";
 
 type FilterTab = "all" | ListingStatus;
 
