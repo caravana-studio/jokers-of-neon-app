@@ -1,5 +1,5 @@
 import { extendTheme } from "@chakra-ui/react";
-import { buttonTheme } from "./button";
+import { buttonTheme } from "../../theme/button";
 import {
   BACKGROUND_BLUE,
   BLUE,
@@ -15,17 +15,17 @@ import {
   SPADES,
   VIOLET,
   VIOLET_LIGHT,
-} from "./colors";
-import { drawerTheme } from "./drawer";
-import { headingTheme } from "./heading";
-import { inputTheme } from "./input";
-import { menuTheme } from "./menu";
-import { modalTheme } from "./modal";
-import { tableTheme } from "./table";
-import { switchTheme } from "./switch";
-import { tabsTheme } from "./tabs";
-import { textTheme } from "./text";
-import { tooltipTheme } from "./tooltip";
+} from "../../theme/colors";
+import { drawerTheme } from "../../theme/drawer";
+import { headingTheme } from "../../theme/heading";
+import { inputTheme } from "../../theme/input";
+import { menuTheme } from "../../theme/menu";
+import { modalTheme } from "../../theme/modal";
+import { tableTheme } from "../../theme/table";
+import { switchTheme } from "../../theme/switch";
+import { tabsTheme } from "../../theme/tabs";
+import { textTheme } from "../../theme/text";
+import { tooltipTheme } from "../../theme/tooltip";
 
 const theme = extendTheme({
   colors: {
