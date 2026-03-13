@@ -8,9 +8,11 @@ import {
   Tooltip,
   VStack,
 } from "@chakra-ui/react";
+import { useTranslation } from "react-i18next";
 import { CardImage } from "./CardImage";
 import { CardTooltip } from "./CardTooltip";
 import { SkinBadge, SKIN_NAME_COLOR } from "./SkinBadge";
+import { useCardName } from "../hooks/useCardName";
 import { RARITY_LABELS, RARITY_COLORS } from "../types/marketplace";
 import { cardImageUrl } from "../utils/formatPrice";
 import type { UserCard } from "../types/marketplace";
@@ -50,7 +52,9 @@ export function CardGridItem({
   isNonMarketable: boolean;
   onSelect: (card: UserCard) => void;
 }) {
+  const { t } = useTranslation("marketplace");
   const { card, copies } = group;
+  const cardName = useCardName(card.cardId, card.cardName ?? `Card #${card.cardId}`);
   const rarityLabel = RARITY_LABELS[card.rarity] || "Common";
   const rarityColor = RARITY_COLORS[card.rarity] || "#555";
   const nameColor = SKIN_NAME_COLOR[card.skinId] ?? "white";
@@ -97,12 +101,12 @@ export function CardGridItem({
           mb="1%"
           style={{ textShadow: nameGlow }}
         >
-          {card.cardName ?? `Card #${card.cardId}`}
+          {cardName}
         </Text>
 
         {/* Image with overlays */}
         <Box position="relative" w="90%">
-          <CardTooltip cardId={card.cardId} cardName={card.cardName ?? `Card #${card.cardId}`} rarity={card.rarity}>
+          <CardTooltip cardId={card.cardId} cardName={cardName} rarity={card.rarity}>
             <CardImage
               imageUrl={cardImageUrl(card.cardId, card.skinId)}
               rarity={card.rarity}
@@ -175,7 +179,7 @@ export function CardGridItem({
   if (isNonMarketable) {
     return (
       <Tooltip
-        label="This card is not transferable."
+        label={t("sell.notTransferableTooltip")}
         placement="top"
         bg="black"
         color="white"

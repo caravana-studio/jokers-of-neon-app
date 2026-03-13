@@ -87,6 +87,7 @@
     "noMarketableCards": "No marketable cards in your wallet.",
     "hasNonMarketable": "You have cards that can't be listed.",
     "showNonMarketable": "Non marketable",
+    "notTransferableTooltip": "This card is not transferable.",
     "noCards": "No cards in your wallet",
     "apiKeyMissing": "Game API key not configured.",
     "apiKeyHint": "Add VITE_GAME_API_KEY to web/.env",

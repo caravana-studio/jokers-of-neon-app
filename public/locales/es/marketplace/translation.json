@@ -87,6 +87,7 @@
     "noMarketableCards": "No tienes cartas comerciables en tu wallet.",
     "hasNonMarketable": "Tienes cartas que no pueden listarse.",
     "showNonMarketable": "No comerciables",
+    "notTransferableTooltip": "Esta carta no es transferible.",
     "noCards": "No hay cartas en tu wallet",
     "apiKeyMissing": "La clave de API del juego no está configurada.",
     "apiKeyHint": "Agrega VITE_GAME_API_KEY a web/.env",

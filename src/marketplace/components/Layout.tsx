@@ -73,7 +73,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         justify="space-between"
         px={{ base: 4, md: 8 }}
         py={3}
-        bg="rgba(6, 38, 64, 0.9)"
+        bg="gray.900"
         backdropFilter="blur(12px)"
         borderBottom="1px solid"
         borderColor="rgba(32, 198, 237, 0.25)"
@@ -148,41 +148,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
         </HStack>
 
         <HStack spacing={2}>
-          {/* Language switcher */}
-          <Menu>
-            <MenuButton
-              as={Box}
-              w="32px"
-              h="32px"
-              borderRadius="full"
-              border="2px solid"
-              borderColor="whiteAlpha.300"
-              overflow="hidden"
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-              cursor="pointer"
-              _hover={{ borderColor: "whiteAlpha.600" }}
-              flexShrink={0}
-            >
-              <CircleFlagLanguage width="28px" languageCode={currentLanguage === "pt" ? "pt" : currentLanguage === "es" ? "es" : "en-us"} />
-            </MenuButton>
-            <MenuList bg="gray.900" borderColor="whiteAlpha.300" borderRadius="xl" py={2} minW="150px">
-              <MenuItem height="40px" fontSize={14} onClick={() => i18n.changeLanguage("en")} gap={3} bg="transparent" _hover={{ bg: "whiteAlpha.100" }} px={4}>
-                <CircleFlagLanguage width="24px" languageCode="en-us" />
-                <Text fontWeight="medium">English</Text>
-              </MenuItem>
-              <MenuItem height="40px" fontSize={14} onClick={() => i18n.changeLanguage("es")} gap={3} bg="transparent" _hover={{ bg: "whiteAlpha.100" }} px={4}>
-                <CircleFlagLanguage width="24px" languageCode="es" />
-                <Text fontWeight="medium">Español</Text>
-              </MenuItem>
-              <MenuItem height="40px" fontSize={14} onClick={() => i18n.changeLanguage("pt")} gap={3} bg="transparent" _hover={{ bg: "whiteAlpha.100" }} px={4}>
-                <CircleFlagLanguage width="24px" languageCode="pt" />
-                <Text fontWeight="medium">Português</Text>
-              </MenuItem>
-            </MenuList>
-          </Menu>
-
           {status === "connected" && address ? (
             <HStack spacing={2}>
               <Button
@@ -217,6 +182,41 @@ export function Layout({ children }: { children: React.ReactNode }) {
               {t("auth.connect")}
             </Button>
           )}
+
+          {/* Language switcher */}
+          <Menu>
+            <MenuButton
+              as={Box}
+              w="32px"
+              h="32px"
+              borderRadius="full"
+              border="2px solid"
+              borderColor="whiteAlpha.300"
+              overflow="hidden"
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              cursor="pointer"
+              _hover={{ borderColor: "whiteAlpha.600" }}
+              flexShrink={0}
+            >
+              <CircleFlagLanguage width="28px" languageCode={currentLanguage === "pt" ? "pt" : currentLanguage === "es" ? "es" : "en-us"} />
+            </MenuButton>
+            <MenuList bg="gray.900" borderColor="whiteAlpha.300" borderRadius="xl" py={2} minW="150px">
+              <MenuItem height="40px" fontSize={14} onClick={() => i18n.changeLanguage("en")} gap={3} bg="transparent" _hover={{ bg: "whiteAlpha.100" }} px={4}>
+                <CircleFlagLanguage width="24px" languageCode="en-us" />
+                <Text fontWeight="medium">English</Text>
+              </MenuItem>
+              <MenuItem height="40px" fontSize={14} onClick={() => i18n.changeLanguage("es")} gap={3} bg="transparent" _hover={{ bg: "whiteAlpha.100" }} px={4}>
+                <CircleFlagLanguage width="24px" languageCode="es" />
+                <Text fontWeight="medium">Español</Text>
+              </MenuItem>
+              <MenuItem height="40px" fontSize={14} onClick={() => i18n.changeLanguage("pt")} gap={3} bg="transparent" _hover={{ bg: "whiteAlpha.100" }} px={4}>
+                <CircleFlagLanguage width="24px" languageCode="pt" />
+                <Text fontWeight="medium">Português</Text>
+              </MenuItem>
+            </MenuList>
+          </Menu>
         </HStack>
       </Flex>
 
@@ -227,7 +227,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         justify="center"
         gap={1}
         py={2}
-        bg="rgba(6, 38, 64, 0.9)"
+        bg="gray.900"
         backdropFilter="blur(12px)"
         borderBottom="1px solid"
         borderColor="rgba(32, 198, 237, 0.15)"
