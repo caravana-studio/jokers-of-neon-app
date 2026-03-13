@@ -5,7 +5,7 @@ import {
   USDC_ADDRESS,
   SHOP_CONTRACT_ADDRESS,
   SHOP_TREASURY_ADDRESS,
-  GAME_API_URL,
+  API_URL,
   MARKETPLACE_API_KEY,
 } from "../config/contracts";
 
@@ -27,6 +27,8 @@ export interface MintedCard {
 export interface CryptoPurchaseResult {
   txHash: string;
   mintedCards?: MintedCard[];
+  deliveryPending?: boolean;
+  apiError?: string;
 }
 
 export function useCryptoPurchase() {
@@ -94,24 +96,47 @@ export function useCryptoPurchase() {
 
       // Notify API to deliver purchased item
       setStatus("submitting");
-      const apiPayload = { tx_hash: txHash, product_id: apiProductId ?? productId.toString(), address };
-      console.log("[useCryptoPurchase] calling API:", GAME_API_URL, apiPayload);
-      const response = await fetch(`${GAME_API_URL}/api/purchase/crypto`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-API-Key": MARKETPLACE_API_KEY,
-        },
-        body: JSON.stringify(apiPayload),
-      });
+      const apiPayload = {
+        tx_hash: txHash,
+        product_id: apiProductId ?? productId.toString(),
+        address,
+      };
+      const requestUrl = `${API_URL}/api/purchase/crypto`;
+      console.log("[useCryptoPurchase] calling API:", requestUrl, apiPayload);
 
-      const responseData = await response.json().catch(() => ({}));
-      if (!response.ok) {
-        throw new Error((responseData as any).error || `API error: ${response.status}`);
+      let mintedCards: MintedCard[] | undefined;
+      let deliveryPending = false;
+      let apiError: string | undefined;
+
+      try {
+        const response = await fetch(requestUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-API-Key": MARKETPLACE_API_KEY,
+          },
+          body: JSON.stringify(apiPayload),
+        });
+
+        const responseData = await response.json().catch(() => ({}));
+        if (!response.ok) {
+          throw new Error(
+            (responseData as any).error || `API error: ${response.status}`
+          );
+        }
+
+        mintedCards = (responseData as any).minted_cards;
+      } catch (apiErr: any) {
+        deliveryPending = true;
+        apiError = apiErr?.message || "Post-purchase processing failed";
+        console.error(
+          "[useCryptoPurchase] confirmed on-chain purchase but API post-processing failed:",
+          apiErr
+        );
       }
 
       setStatus("done");
-      return { txHash, mintedCards: (responseData as any).minted_cards };
+      return { txHash, mintedCards, deliveryPending, apiError };
     } catch (err: any) {
       console.error("[useCryptoPurchase] error:", err);
       setStatus("error");

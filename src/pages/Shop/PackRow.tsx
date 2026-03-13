@@ -12,6 +12,7 @@ import { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { getUserCards } from "../../api/getUserCards";
+import { getUserCards as getMarketplaceUserCards } from "../../marketplace/api/userCards";
 import CachedImage from "../../components/CachedImage";
 import { NFTPackRateInfo } from "../../components/Info/NFTPackRateInfo";
 import {
@@ -22,6 +23,7 @@ import {
 } from "../../constants/animations";
 import { DojoContext } from "../../dojo/DojoContext";
 import { useUsername } from "../../dojo/utils/useUsername";
+import type { UserCard as MarketplaceUserCard } from "../../marketplace/types/marketplace";
 import { useCryptoPurchase } from "../../marketplace/hooks/useCryptoPurchase";
 import { useShopPrice } from "../../marketplace/hooks/useShopPrice";
 import { useUSDCBalance } from "../../marketplace/hooks/useUSDCBalance";
@@ -43,6 +45,20 @@ const PACK_SIZES: Record<number, number> = {
   1: 3, 2: 3, 3: 4, 4: 4, 5: 5, 6: 10,
   21: 3, 22: 3, 23: 4, 24: 4, 25: 5, 26: 10,
 };
+
+const PACK_INVENTORY_POLL_ATTEMPTS = 6;
+const PACK_INVENTORY_POLL_DELAY_MS = 1500;
+
+const wait = (ms: number) =>
+  new Promise((resolve) => window.setTimeout(resolve, ms));
+
+const toMintedCards = (cards: MarketplaceUserCard[]) =>
+  cards.map((card) => ({
+    card_id: card.cardId,
+    rarity: card.rarity,
+    skin_id: card.skinId,
+    marketable: card.marketable,
+  }));
 
 export const PackRow = ({
   packId,
@@ -105,6 +121,48 @@ export const PackRow = ({
       cancelled = true;
     };
   }, [account?.address]);
+
+  const resolveMintedCardsFromInventoryDiff = async (
+    beforeCards: MarketplaceUserCard[],
+    expectedCount: number,
+  ) => {
+    if (!starknetAddress) {
+      return [];
+    }
+
+    const previousTokenIds = new Set(beforeCards.map((card) => card.tokenId));
+
+    for (let attempt = 0; attempt < PACK_INVENTORY_POLL_ATTEMPTS; attempt += 1) {
+      if (attempt > 0) {
+        await wait(PACK_INVENTORY_POLL_DELAY_MS);
+      }
+
+      try {
+        const currentCards = await getMarketplaceUserCards(starknetAddress);
+        const newCards = currentCards
+          .filter((card) => !previousTokenIds.has(card.tokenId))
+          .sort((left, right) => {
+            const leftTokenId = BigInt(left.tokenId);
+            const rightTokenId = BigInt(right.tokenId);
+            if (leftTokenId === rightTokenId) return 0;
+            return leftTokenId > rightTokenId ? 1 : -1;
+          });
+
+        if (newCards.length > 0) {
+          return toMintedCards(
+            expectedCount > 0 ? newCards.slice(0, expectedCount) : newCards,
+          );
+        }
+      } catch (error) {
+        console.error(
+          "[PackRow] failed to resolve purchased pack cards from inventory diff",
+          error,
+        );
+      }
+    }
+
+    return [];
+  };
 
   const handleFiatPurchase = async () => {
     if (isPurchasing || isCryptoPurchasing) {
@@ -196,8 +254,34 @@ export const PackRow = ({
     }
 
     try {
+      const prePurchaseCards = starknetAddress
+        ? await getMarketplaceUserCards(starknetAddress).catch((error) => {
+            console.error(
+              "[PackRow] failed to snapshot inventory before crypto purchase",
+              error,
+            );
+            return [];
+          })
+        : [];
+
       const result = await buyWithCrypto(packId, priceAtoms, packageId);
-      const mintedCards = (result.mintedCards ?? []).map((card) => ({
+      const fallbackMintedCards =
+        (result.mintedCards?.length ?? 0) > 0 || prePurchaseCards.length === 0
+          ? []
+          : await resolveMintedCardsFromInventoryDiff(
+              prePurchaseCards,
+              PACK_SIZES[packId] ?? 0,
+            );
+
+      const resolvedMintedCards = [
+        ...(
+          ((result.mintedCards?.length ?? 0) > 0
+            ? result.mintedCards
+            : fallbackMintedCards) ?? []
+        ),
+      ];
+
+      const mintedCards = resolvedMintedCards.map((card) => ({
         card_id: card.card_id,
         skin_id: card.skin_id,
       }));
