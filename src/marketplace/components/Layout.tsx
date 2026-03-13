@@ -1,19 +1,15 @@
-import { Box, Flex, Button, HStack, Text } from "@chakra-ui/react";
+import { Box, Flex, Button, HStack, Text, Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
 import { Link, useLocation } from "react-router-dom";
 import { useAccount, useConnect, useDisconnect } from "@starknet-react/core";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { CircleFlagLanguage } from "react-circle-flags";
 import { truncateAddress } from "../utils/formatPrice";
 import { BetaBanner } from "./BetaBanner";
 import { controller } from "../../dojo/controller/controller";
 
-const NAV_ITEMS = [
-  { label: "Browse", path: "/" },
-  { label: "Sell", path: "/sell" },
-  { label: "My Listings", path: "/my-listings" },
-  { label: "Shop", path: "/shop" },
-];
-
 export function Layout({ children }: { children: React.ReactNode }) {
+  const { t, i18n } = useTranslation("marketplace");
   const { address, status } = useAccount();
   const { connect, connectors } = useConnect();
   const { disconnect } = useDisconnect();
@@ -21,6 +17,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const isFullBleedRoute = location.pathname === "/shop";
   const [username, setUsername] = useState<string | null>(null);
   const [isHoveringUser, setIsHoveringUser] = useState(false);
+  const currentLanguage = i18n.language.substring(0, 2);
+
+  const NAV_ITEMS = [
+    { label: t("nav.browse"), path: "/" },
+    { label: t("nav.sell"), path: "/sell" },
+    { label: t("nav.myListings"), path: "/my-listings" },
+    { label: t("nav.shop"), path: "/shop" },
+  ];
 
   useEffect(() => {
     if (status === "connected") {
@@ -143,7 +147,42 @@ export function Layout({ children }: { children: React.ReactNode }) {
           </HStack>
         </HStack>
 
-        <Box>
+        <HStack spacing={2}>
+          {/* Language switcher */}
+          <Menu>
+            <MenuButton
+              as={Box}
+              w="32px"
+              h="32px"
+              borderRadius="full"
+              border="2px solid"
+              borderColor="whiteAlpha.300"
+              overflow="hidden"
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              cursor="pointer"
+              _hover={{ borderColor: "whiteAlpha.600" }}
+              flexShrink={0}
+            >
+              <CircleFlagLanguage width="28px" languageCode={currentLanguage === "pt" ? "pt" : currentLanguage === "es" ? "es" : "en-us"} />
+            </MenuButton>
+            <MenuList bg="gray.900" borderColor="whiteAlpha.300" borderRadius="xl" py={2} minW="150px">
+              <MenuItem height="40px" fontSize={14} onClick={() => i18n.changeLanguage("en")} gap={3} bg="transparent" _hover={{ bg: "whiteAlpha.100" }} px={4}>
+                <CircleFlagLanguage width="24px" languageCode="en-us" />
+                <Text fontWeight="medium">English</Text>
+              </MenuItem>
+              <MenuItem height="40px" fontSize={14} onClick={() => i18n.changeLanguage("es")} gap={3} bg="transparent" _hover={{ bg: "whiteAlpha.100" }} px={4}>
+                <CircleFlagLanguage width="24px" languageCode="es" />
+                <Text fontWeight="medium">Español</Text>
+              </MenuItem>
+              <MenuItem height="40px" fontSize={14} onClick={() => i18n.changeLanguage("pt")} gap={3} bg="transparent" _hover={{ bg: "whiteAlpha.100" }} px={4}>
+                <CircleFlagLanguage width="24px" languageCode="pt" />
+                <Text fontWeight="medium">Português</Text>
+              </MenuItem>
+            </MenuList>
+          </Menu>
+
           {status === "connected" && address ? (
             <HStack spacing={2}>
               <Button
@@ -155,7 +194,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 color={isHoveringUser ? "red.300" : undefined}
                 borderColor={isHoveringUser ? "red.300" : undefined}
               >
-                {isHoveringUser ? "DISCONNECT" : (username ?? truncateAddress(address))}
+                {isHoveringUser ? t("auth.disconnect") : (username ?? truncateAddress(address))}
               </Button>
               <Button
                 size="sm"
@@ -166,7 +205,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 px={3}
                 _hover={{ bg: "rgba(251,203,74,0.12)" }}
               >
-                PROFILE
+                {t("auth.profile")}
               </Button>
             </HStack>
           ) : (
@@ -175,10 +214,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
               variant="solid"
               onClick={() => connectors[0] && connect({ connector: connectors[0] })}
             >
-              Connect
+              {t("auth.connect")}
             </Button>
           )}
-        </Box>
+        </HStack>
       </Flex>
 
       {/* Mobile nav */}
