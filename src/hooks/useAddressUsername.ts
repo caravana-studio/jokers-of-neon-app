@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { truncateAddress } from "../utils/formatPrice";
+import { truncateAddress } from "../marketplace/utils/formatPrice";
 
 const cache = new Map<string, string>();
 const pending = new Map<string, Promise<string>>();
@@ -33,7 +33,7 @@ function resolveUsername(address: string): Promise<string> {
   return p;
 }
 
-export function useUsername(address?: string): string {
+export function useAddressUsername(address?: string): string {
   const [display, setDisplay] = useState<string>(() =>
     address ? (cache.get(address.toLowerCase()) ?? truncateAddress(address, 6)) : ""
   );

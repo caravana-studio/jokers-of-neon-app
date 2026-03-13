@@ -16,7 +16,7 @@ import { CardImage } from "../../marketplace/components/CardImage";
 import { SkinBadge } from "../../marketplace/components/SkinBadge";
 import { BuyButton } from "../../marketplace/components/BuyButton";
 import { formatTokenAmount } from "../../marketplace/utils/formatPrice";
-import { useUsername } from "../../marketplace/hooks/useUsername";
+import { useAddressUsername } from "../../hooks/useAddressUsername";
 import { RARITY_LABELS, RARITY_COLORS } from "../../marketplace/types/marketplace";
 import { PAYMENT_TOKENS } from "../../marketplace/config/contracts";
 import { useMarketplace } from "../../marketplace/providers/MarketplaceProvider";
@@ -65,7 +65,7 @@ export function CardDetailPage() {
   const [listing, setListing] = useState<Listing | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const sellerName = useUsername(listing?.seller_address);
+  const sellerName = useAddressUsername(listing?.seller_address);
 
   useEffect(() => {
     if (!id) return;
