@@ -11,6 +11,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { CardImage } from "./CardImage";
 import { CardTooltip } from "./CardTooltip";
+import { AutoFitCardTitle } from "./AutoFitCardTitle";
 import { MARKETPLACE_CARD_GRID_TEMPLATE_COLUMNS } from "./cardGridLayout";
 import { SkinBadge, SKIN_NAME_COLOR } from "./SkinBadge";
 import { useCardName } from "../hooks/useCardName";
@@ -90,20 +91,18 @@ export function CardGridItem({
     >
       <VStack spacing={2} align="center">
         {/* Card name — top */}
-        <Text
-          fontFamily="Orbitron"
-          fontSize={{ base: 13, md: 15 }}
+        <AutoFitCardTitle
           color={nameColor}
-          textTransform="uppercase"
-          textAlign="center"
-          noOfLines={1}
-          w="100%"
           mt="2%"
           mb="1%"
-          style={{ textShadow: nameGlow }}
+          maxFontSizeBase={13}
+          maxFontSizeMd={15}
+          minFontSizeBase={9}
+          minFontSizeMd={10}
+          textShadow={nameGlow}
         >
           {cardName}
-        </Text>
+        </AutoFitCardTitle>
 
         {/* Image with overlays */}
         <Box position="relative" w="90%">

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { CardImage } from "./CardImage";
 import { CardTooltip } from "./CardTooltip";
 import { SkinBadge, SKIN_NAME_COLOR } from "./SkinBadge";
+import { AutoFitCardTitle } from "./AutoFitCardTitle";
 import { formatTokenAmount } from "../utils/formatPrice";
 import { useAddressUsername } from "../../hooks/useAddressUsername";
 import { useCardName } from "../hooks/useCardName";
@@ -15,7 +16,6 @@ import type { Listing } from "../types/marketplace";
 interface ListingCardProps {
   listing: Listing;
 }
-
 
 function getTokenSymbol(address: string): string {
   const token = PAYMENT_TOKENS.find(
@@ -38,6 +38,9 @@ export function ListingCard({ listing }: ListingCardProps) {
   const sellerName = useAddressUsername(listing.seller_address);
   const cardName = useCardName(listing.card_id, listing.card_name);
   const nameColor = SKIN_NAME_COLOR[listing.skin_id] ?? "white";
+  const nameGlow = SKIN_NAME_COLOR[listing.skin_id]
+    ? `0 0 8px ${SKIN_NAME_COLOR[listing.skin_id]}, 0 0 20px ${SKIN_NAME_COLOR[listing.skin_id]}70`
+    : "0 0 10px rgba(255,255,255,0.7)";
   const hoverGlowColor = SKIN_BORDER_COLOR[listing.skin_id] ?? RARITY_COLORS[listing.rarity] ?? "#555";
 
   return (
@@ -59,19 +62,14 @@ export function ListingCard({ listing }: ListingCardProps) {
         <VStack spacing={2} align="center">
 
           {/* Card name — top */}
-          <Text
-            fontFamily="Orbitron"
-            fontSize={{ base: 15, md: 17 }}
-            color="white"
-            textTransform="uppercase"
-            textAlign="center"
-            marginTop="2%"
-            marginBottom="2%"
-            w="100%"
-            textShadow="0 0 12px rgba(255,255,255,0.9), 0 0 24px rgba(255,255,255,0.4)"
+          <AutoFitCardTitle
+            color={nameColor}
+            mt="2%"
+            mb="2%"
+            textShadow={nameGlow}
           >
             {cardName}
-          </Text>
+          </AutoFitCardTitle>
 
           {/* Card image */}
           <CardTooltip cardId={listing.card_id} cardName={listing.card_name} rarity={listing.rarity}>

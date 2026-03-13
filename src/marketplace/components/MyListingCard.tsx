@@ -2,6 +2,7 @@ import { Box, Text, VStack, Flex, Badge, Button } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { AutoFitCardTitle } from "./AutoFitCardTitle";
 import { CardImage } from "./CardImage";
 import { CardTooltip } from "./CardTooltip";
 import { SkinBadge, SKIN_NAME_COLOR } from "./SkinBadge";
@@ -125,20 +126,18 @@ export function MyListingCard({ listing, onCancel, isCancelling }: MyListingCard
       <VStack spacing={2} align="center">
 
         {/* Card name — top */}
-        <Text
-          fontFamily="Orbitron"
-          fontSize={{ base: 13, md: 15 }}
+        <AutoFitCardTitle
           color={nameColor}
-          textTransform="uppercase"
-          textAlign="center"
-          noOfLines={1}
-          w="100%"
           mt="2%"
           mb="1%"
-          style={{ textShadow: nameGlow }}
+          maxFontSizeBase={13}
+          maxFontSizeMd={15}
+          minFontSizeBase={9}
+          minFontSizeMd={10}
+          textShadow={nameGlow}
         >
           {cardName}
-        </Text>
+        </AutoFitCardTitle>
 
         {/* Image with status overlay */}
         <Box position="relative" w="90%">
