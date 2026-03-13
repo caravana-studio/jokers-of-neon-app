@@ -5,6 +5,7 @@ import { CardTooltip } from "./CardTooltip";
 import { SkinBadge, SKIN_NAME_COLOR } from "./SkinBadge";
 import { formatTokenAmount } from "../utils/formatPrice";
 import { useAddressUsername } from "../../hooks/useAddressUsername";
+import { useCardName } from "../hooks/useCardName";
 import { TokenIcon } from "./TokenIcon";
 import { RARITY_LABELS, RARITY_COLORS } from "../types/marketplace";
 import { PAYMENT_TOKENS } from "../config/contracts";
@@ -35,6 +36,7 @@ export function ListingCard({ listing }: ListingCardProps) {
   const prices = usePrices();
   const usdLabel = formatUsd(toUsd(formatTokenAmount(listing.price), symbol, prices));
   const sellerName = useAddressUsername(listing.seller_address);
+  const cardName = useCardName(listing.card_id, listing.card_name);
   const nameColor = SKIN_NAME_COLOR[listing.skin_id] ?? "white";
   const hoverGlowColor = SKIN_BORDER_COLOR[listing.skin_id] ?? RARITY_COLORS[listing.rarity] ?? "#555";
 
@@ -68,7 +70,7 @@ export function ListingCard({ listing }: ListingCardProps) {
             w="100%"
             textShadow="0 0 12px rgba(255,255,255,0.9), 0 0 24px rgba(255,255,255,0.4)"
           >
-            {listing.card_name}
+            {cardName}
           </Text>
 
           {/* Card image */}

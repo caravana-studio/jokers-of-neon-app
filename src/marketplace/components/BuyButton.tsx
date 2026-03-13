@@ -17,6 +17,7 @@ import {
 } from "@chakra-ui/react";
 import { keyframes } from "@emotion/react";
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { useAccount, useBalance } from "@starknet-react/core";
 import { useBuyNow } from "../hooks/useBuyNow";
 import { CardImage } from "./CardImage";
@@ -45,6 +46,7 @@ const popIn = keyframes`
 `;
 
 export function BuyButton({ listing, onSuccess }: BuyButtonProps) {
+  const { t } = useTranslation("marketplace");
   const { address, status: walletStatus } = useAccount();
   const { buy, status, error } = useBuyNow();
   const { isOpen: isConfirmOpen, onOpen: openConfirm, onClose: closeConfirm } = useDisclosure();
@@ -81,7 +83,7 @@ export function BuyButton({ listing, onSuccess }: BuyButtonProps) {
   if (walletStatus !== "connected") {
     return (
       <Button size="md" variant="solid" isDisabled>
-        Connect Wallet to Buy
+        {t("auth.connectToBuy")}
       </Button>
     );
   }
@@ -89,7 +91,7 @@ export function BuyButton({ listing, onSuccess }: BuyButtonProps) {
   if (isSeller) {
     return (
       <Button size="md" variant="defaultOutline" isDisabled>
-        Your Listing
+        {t("buy.yourListing")}
       </Button>
     );
   }
@@ -98,7 +100,7 @@ export function BuyButton({ listing, onSuccess }: BuyButtonProps) {
     <>
       <VStack spacing={2}>
         <Tooltip
-          label="Insufficient balance"
+          label={t("buy.insufficientBalance")}
           isDisabled={!hasInsufficientBalance}
           hasArrow
         >
@@ -108,14 +110,14 @@ export function BuyButton({ listing, onSuccess }: BuyButtonProps) {
             onClick={openConfirm}
             isLoading={isProcessing}
             loadingText={
-              status === "approving" ? "APPROVING..." :
-              status === "buying" ? "BUYING..." :
-              "CONFIRMING..."
+              status === "approving" ? t("buy.approving") :
+              status === "buying" ? t("buy.buying") :
+              t("buy.confirming")
             }
             isDisabled={hasInsufficientBalance || status === "done"}
             w="100%"
           >
-            BUY NOW
+            {t("buy.buyNow")}
           </Button>
         </Tooltip>
         {error && (
@@ -131,7 +133,7 @@ export function BuyButton({ listing, onSuccess }: BuyButtonProps) {
         <ModalContent p={3} mx={4}>
           <ModalHeader pb={2}>
             <Heading size="m" textAlign="center" variant="neonWhite">
-              Confirm Purchase
+              {t("buy.confirmTitle")}
             </Heading>
           </ModalHeader>
           <ModalBody>
@@ -158,7 +160,7 @@ export function BuyButton({ listing, onSuccess }: BuyButtonProps) {
                 gap={1}
               >
                 <Text fontFamily="Oxanium" fontSize={14} color="whiteAlpha.900" textTransform="uppercase" letterSpacing="0.1em">
-                  You will pay
+                  {t("buy.willPay")}
                 </Text>
                 <HStack spacing={2} align="center">
                   <Text
@@ -180,17 +182,17 @@ export function BuyButton({ listing, onSuccess }: BuyButtonProps) {
               </Flex>
 
               <Text fontFamily="Oxanium" fontSize={14} color="whiteAlpha.900" textAlign="center">
-                This will trigger two transactions: approve + fill order
+                {t("buy.confirmNotice")}
               </Text>
             </VStack>
           </ModalBody>
 
           <ModalFooter justifyContent="center" mt={2} gap={3}>
             <Button variant="defaultOutline" size="sm" onClick={closeConfirm}>
-              Cancel
+              {t("buy.confirmCancel")}
             </Button>
             <Button variant="secondarySolid" size="sm" onClick={handleConfirm}>
-              Confirm
+              {t("buy.confirmSubmit")}
             </Button>
           </ModalFooter>
         </ModalContent>
@@ -202,7 +204,7 @@ export function BuyButton({ listing, onSuccess }: BuyButtonProps) {
         <ModalContent p={3} mx={4}>
           <ModalHeader pb={2}>
             <Heading size="m" textAlign="center" variant="neonWhite">
-              Purchase Complete
+              {t("buy.successTitle")}
             </Heading>
           </ModalHeader>
           <ModalBody>
@@ -262,7 +264,7 @@ export function BuyButton({ listing, onSuccess }: BuyButtonProps) {
               size="sm"
               onClick={closeSuccess}
             >
-              Close
+              {t("buy.close")}
             </Button>
           </ModalFooter>
         </ModalContent>

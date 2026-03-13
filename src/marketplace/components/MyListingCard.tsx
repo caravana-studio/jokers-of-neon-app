@@ -1,10 +1,12 @@
 import { Box, Text, VStack, Flex, Badge, Button } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { CardImage } from "./CardImage";
 import { CardTooltip } from "./CardTooltip";
 import { SkinBadge, SKIN_NAME_COLOR } from "./SkinBadge";
 import { formatTokenAmount } from "../utils/formatPrice";
+import { useCardName } from "../hooks/useCardName";
 import { RARITY_LABELS, RARITY_COLORS } from "../types/marketplace";
 import { PAYMENT_TOKENS } from "../config/contracts";
 import { usePrices, toUsd, formatUsd } from "../hooks/usePrices";
@@ -29,20 +31,21 @@ const SKIN_BORDER_COLOR: Record<number, string> = {
   3: "#8A8A8A",
 };
 
-const STATUS_BADGE: Record<string, { label: string; bg: string }> = {
-  active:    { label: "ACTIVE",    bg: "#16a34a" },
-  filled:    { label: "FILLED",    bg: "#3182CE" },
-  cancelled: { label: "CANCELLED", bg: "#555555" },
-  expired:   { label: "EXPIRED",   bg: "#555555" },
+const STATUS_BADGE_BG: Record<string, string> = {
+  active:    "#16a34a",
+  filled:    "#3182CE",
+  cancelled: "#555555",
+  expired:   "#555555",
 };
 
 function useCountdown(expirationTimestamp: number): string {
+  const { t } = useTranslation("marketplace");
   const [label, setLabel] = useState("");
 
   useEffect(() => {
     const update = () => {
       const diff = expirationTimestamp - Math.floor(Date.now() / 1000);
-      if (diff <= 0) { setLabel("Expired"); return; }
+      if (diff <= 0) { setLabel(t("myListings.expired")); return; }
       const d = Math.floor(diff / 86400);
       const h = Math.floor((diff % 86400) / 3600);
       const m = Math.floor((diff % 3600) / 60);
@@ -54,17 +57,18 @@ function useCountdown(expirationTimestamp: number): string {
     update();
     const id = setInterval(update, 1000);
     return () => clearInterval(id);
-  }, [expirationTimestamp]);
+  }, [expirationTimestamp, t]);
 
   return label;
 }
 
 function StatusLine({ listing }: { listing: Listing }) {
+  const { t } = useTranslation("marketplace");
   const countdown = useCountdown(listing.expiration);
 
-  if (listing.status === "filled")    return <Text fontSize={13} color="#3182CE" fontFamily="Oxanium">Filled</Text>;
-  if (listing.status === "cancelled") return <Text fontSize={13} color="whiteAlpha.400" fontFamily="Oxanium">Cancelled</Text>;
-  if (listing.status === "expired")   return <Text fontSize={13} color="whiteAlpha.400" fontFamily="Oxanium">Expired</Text>;
+  if (listing.status === "filled")    return <Text fontSize={13} color="#3182CE" fontFamily="Oxanium">{t("myListings.statusLineFilled")}</Text>;
+  if (listing.status === "cancelled") return <Text fontSize={13} color="whiteAlpha.400" fontFamily="Oxanium">{t("myListings.statusLineCancelled")}</Text>;
+  if (listing.status === "expired")   return <Text fontSize={13} color="whiteAlpha.400" fontFamily="Oxanium">{t("myListings.statusLineExpired")}</Text>;
 
   return (
     <Text fontSize={14} color="whiteAlpha.700" fontFamily="Oxanium">
@@ -74,13 +78,22 @@ function StatusLine({ listing }: { listing: Listing }) {
 }
 
 export function MyListingCard({ listing, onCancel, isCancelling }: MyListingCardProps) {
+  const { t } = useTranslation("marketplace");
   const symbol = getTokenSymbol(listing.payment_token);
+  const cardName = useCardName(listing.card_id, listing.card_name);
   const rarityLabel = RARITY_LABELS[listing.rarity] || "Common";
   const rarityColor = RARITY_COLORS[listing.rarity] || "#555";
   const prices = usePrices();
   const usdLabel = formatUsd(toUsd(formatTokenAmount(listing.price), symbol, prices));
   const isTerminal = listing.status !== "active";
-  const statusBadge = STATUS_BADGE[listing.status] ?? STATUS_BADGE.expired;
+  const STATUS_BADGE_LABEL: Record<string, string> = {
+    active:    t("myListings.statusActive"),
+    filled:    t("myListings.statusFilled"),
+    cancelled: t("myListings.statusCancelled"),
+    expired:   t("myListings.statusExpired"),
+  };
+  const statusBadgeBg = STATUS_BADGE_BG[listing.status] ?? STATUS_BADGE_BG.expired;
+  const statusBadgeLabel = STATUS_BADGE_LABEL[listing.status] ?? STATUS_BADGE_LABEL.expired;
 
   const nameColor = isTerminal ? "whiteAlpha.500" : (SKIN_NAME_COLOR[listing.skin_id] ?? "white");
   const nameGlow = !isTerminal && SKIN_NAME_COLOR[listing.skin_id]
@@ -124,7 +137,7 @@ export function MyListingCard({ listing, onCancel, isCancelling }: MyListingCard
           mb="1%"
           style={{ textShadow: nameGlow }}
         >
-          {listing.card_name}
+          {cardName}
         </Text>
 
         {/* Image with status overlay */}
@@ -150,7 +163,7 @@ export function MyListingCard({ listing, onCancel, isCancelling }: MyListingCard
             zIndex={1}
           >
             <Badge
-              bg={statusBadge.bg}
+              bg={statusBadgeBg}
               color="white"
               fontSize={10}
               px={3}
@@ -158,7 +171,7 @@ export function MyListingCard({ listing, onCancel, isCancelling }: MyListingCard
               borderRadius="full"
               boxShadow={listing.status === "active" ? "0 0 8px #16a34a88" : undefined}
             >
-              {statusBadge.label}
+              {statusBadgeLabel}
             </Badge>
           </Box>
         </Box>
@@ -207,7 +220,7 @@ export function MyListingCard({ listing, onCancel, isCancelling }: MyListingCard
               onCancel(listing);
             }}
           >
-            Cancel
+            {t("myListings.cancel")}
           </Button>
         )}
       </VStack>

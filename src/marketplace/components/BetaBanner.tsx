@@ -1,9 +1,11 @@
 import { Box, Flex, Text, IconButton, Link } from "@chakra-ui/react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const STORAGE_KEY = "marketplace_beta_banner_dismissed";
 
 export function BetaBanner() {
+  const { t } = useTranslation("marketplace");
   const [visible, setVisible] = useState(
     () => localStorage.getItem(STORAGE_KEY) !== "true"
   );
@@ -46,9 +48,9 @@ export function BetaBanner() {
           flex={1}
         >
           <Text as="span" color="#ff934b" fontWeight="bold">
-            Beta — use at your own risk.{" "}
+            {t("beta.warning")}{" "}
           </Text>
-          This marketplace is in early access. By using this tool you agree to Jokers of Neon's{" "}
+          {t("beta.description")}{" "}
           <Link
             href="https://jokersofneon.com/terms-and-conditions"
             isExternal
@@ -56,14 +58,14 @@ export function BetaBanner() {
             textDecoration="underline"
             _hover={{ color: "white" }}
           >
-            Terms and Conditions
+            {t("beta.terms")}
           </Link>
           .
         </Text>
 
         {/* Close */}
         <IconButton
-          aria-label="Dismiss"
+          aria-label={t("beta.dismiss")}
           icon={<Text fontSize={14} lineHeight={1}>✕</Text>}
           size="xs"
           variant="ghost"

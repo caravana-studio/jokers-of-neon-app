@@ -10,6 +10,7 @@ import {
   SimpleGrid,
 } from "@chakra-ui/react";
 import { useEffect, useState, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import { useAccount } from "@starknet-react/core";
 import { CallData } from "starknet";
 import { getSellerListings, cancelListing } from "../../marketplace/api/marketplace";
@@ -20,14 +21,16 @@ import type { Listing, ListingStatus } from "../../marketplace/types/marketplace
 
 type FilterTab = "all" | ListingStatus;
 
-const TABS: { key: FilterTab; label: string }[] = [
-  { key: "all",       label: "All" },
-  { key: "active",    label: "Active" },
-  { key: "filled",    label: "Filled" },
-  { key: "cancelled", label: "Cancelled" },
-];
-
 export function MyListingsPage() {
+  const { t } = useTranslation("marketplace");
+
+  const TABS: { key: FilterTab; label: string }[] = [
+    { key: "all",       label: t("myListings.tabAll") },
+    { key: "active",    label: t("myListings.tabActive") },
+    { key: "filled",    label: t("myListings.tabFilled") },
+    { key: "cancelled", label: t("myListings.tabCancelled") },
+  ];
+
   const { account, address, status: walletStatus } = useAccount();
   const [listings, setListings] = useState<Listing[]>([]);
   const [loading, setLoading] = useState(false);
@@ -80,9 +83,9 @@ export function MyListingsPage() {
   if (walletStatus !== "connected") {
     return (
       <VStack py={20} spacing={4}>
-        <Heading size="m">Connect Your Wallet</Heading>
+        <Heading size="m">{t("auth.connectWallet")}</Heading>
         <Text color="whiteAlpha.600" fontFamily="Oxanium">
-          Connect your wallet to view your listings
+          {t("auth.connectToView")}
         </Text>
       </VStack>
     );
@@ -96,7 +99,7 @@ export function MyListingsPage() {
   return (
     <VStack spacing={6} align="stretch">
       <Heading size="l" variant="neonGreen">
-        My Listings
+        {t("myListings.title")}
       </Heading>
 
       {/* Status filter tabs */}
@@ -143,14 +146,14 @@ export function MyListingsPage() {
       ) : error ? (
         <Text color="red.400" textAlign="center" py={10} fontFamily="Oxanium">
           {error.includes("Failed to fetch")
-            ? "Could not connect to the API. Check VITE_GAME_API_URL."
+            ? t("myListings.errorApi")
             : error}
         </Text>
       ) : displayed.length === 0 ? (
         <Text color="whiteAlpha.600" textAlign="center" py={10} fontFamily="Oxanium">
           {activeTab === "all"
-            ? "You have no listings"
-            : `No ${activeTab} listings`}
+            ? t("myListings.noListings")
+            : t("myListings.noStatusListings", { status: activeTab })}
         </Text>
       ) : (
         <SimpleGrid columns={{ base: 2, sm: 3, md: 4, lg: 5 }} spacing={4}>

@@ -11,12 +11,14 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useListings } from "../../marketplace/hooks/useListings";
 import { ListingCard } from "../../marketplace/components/ListingCard";
 import { FilterLabel, FilterBarContainer, filterSelectStyles, filterInputStyles } from "../../marketplace/components/FilterBar";
 import { RARITY_LABELS } from "../../marketplace/types/marketplace";
 
 export function BrowseListingsPage() {
+  const { t } = useTranslation("marketplace");
   const { listings, total, loading, loadingMore, error, filter, setFilter, loadMore, hasMore } =
     useListings();
 
@@ -31,7 +33,7 @@ export function BrowseListingsPage() {
   return (
     <VStack spacing={5} align="stretch">
       <Heading size="l" variant="neonGreen">
-        Marketplace
+        {t("browse.title")}
       </Heading>
 
       {/* Filter bar */}
@@ -44,10 +46,10 @@ export function BrowseListingsPage() {
         >
           {/* Name search */}
           <Box flex={{ base: "unset", sm: 1 }} minW="160px">
-            <FilterLabel>Search</FilterLabel>
+            <FilterLabel>{t("browse.filter.search")}</FilterLabel>
             <Input
               {...filterInputStyles}
-              placeholder="Card name..."
+              placeholder={t("browse.filter.searchPlaceholder")}
               value={nameSearch}
               onChange={(e) => setNameSearch(e.target.value)}
             />
@@ -55,7 +57,7 @@ export function BrowseListingsPage() {
 
           {/* Rarity */}
           <Box minW="130px">
-            <FilterLabel>Rarity</FilterLabel>
+            <FilterLabel>{t("browse.filter.rarity")}</FilterLabel>
             <Select
               {...filterSelectStyles}
               value={filter.rarity ?? ""}
@@ -63,7 +65,7 @@ export function BrowseListingsPage() {
                 setFilter({ rarity: e.target.value ? Number(e.target.value) : undefined })
               }
             >
-              <option value="" style={{ background: "#0a0a0a" }}>All</option>
+              <option value="" style={{ background: "#0a0a0a" }}>{t("browse.filter.all")}</option>
               {Object.entries(RARITY_LABELS).map(([val, label]) => (
                 <option key={val} value={val} style={{ background: "#0a0a0a" }}>
                   {label}
@@ -74,22 +76,22 @@ export function BrowseListingsPage() {
 
           {/* Sort */}
           <Box minW="140px">
-            <FilterLabel>Sort by</FilterLabel>
+            <FilterLabel>{t("browse.filter.sortBy")}</FilterLabel>
             <Select
               {...filterSelectStyles}
               value={filter.sort ?? "newest"}
               onChange={(e) => setFilter({ sort: e.target.value as any })}
             >
-              <option value="newest" style={{ background: "#0a0a0a" }}>Newest</option>
-              <option value="oldest" style={{ background: "#0a0a0a" }}>Oldest</option>
-              <option value="price_asc" style={{ background: "#0a0a0a" }}>Price ↑</option>
-              <option value="price_desc" style={{ background: "#0a0a0a" }}>Price ↓</option>
+              <option value="newest" style={{ background: "#0a0a0a" }}>{t("browse.filter.newest")}</option>
+              <option value="oldest" style={{ background: "#0a0a0a" }}>{t("browse.filter.oldest")}</option>
+              <option value="price_asc" style={{ background: "#0a0a0a" }}>{t("browse.filter.priceAsc")}</option>
+              <option value="price_desc" style={{ background: "#0a0a0a" }}>{t("browse.filter.priceDesc")}</option>
             </Select>
           </Box>
 
           {/* Min price */}
           <Box minW="100px">
-            <FilterLabel>Min Price (USD)</FilterLabel>
+            <FilterLabel>{t("browse.filter.minPrice")}</FilterLabel>
             <Input
               {...filterInputStyles}
               type="number"
@@ -101,7 +103,7 @@ export function BrowseListingsPage() {
 
           {/* Max price */}
           <Box minW="100px">
-            <FilterLabel>Max Price (USD)</FilterLabel>
+            <FilterLabel>{t("browse.filter.maxPrice")}</FilterLabel>
             <Input
               {...filterInputStyles}
               type="number"
@@ -116,8 +118,8 @@ export function BrowseListingsPage() {
       {/* Result count */}
       <Text fontSize={14} color="whiteAlpha.600" fontFamily="Oxanium">
         {nameSearch
-          ? `${displayed.length} of ${listings.length} loaded · ${total} total`
-          : `${listings.length} of ${total} listing${total !== 1 ? "s" : ""}`}
+          ? t("browse.countFiltered", { shown: displayed.length, loaded: listings.length, total })
+          : t(total !== 1 ? "browse.count_plural" : "browse.count", { shown: listings.length, total })}
       </Text>
 
       {/* Grid */}
@@ -129,13 +131,13 @@ export function BrowseListingsPage() {
         <VStack py={10} spacing={2}>
           <Text color="red.400" textAlign="center" fontFamily="Oxanium">
             {error.includes("Failed to fetch")
-              ? "Could not connect to the API. Check VITE_GAME_API_URL."
+              ? t("browse.errorApi")
               : error}
           </Text>
         </VStack>
       ) : displayed.length === 0 ? (
         <Text color="whiteAlpha.600" textAlign="center" py={10} fontFamily="Oxanium">
-          {nameSearch ? `No listings match "${nameSearch}"` : "No listings found"}
+          {nameSearch ? t("browse.noMatch", { query: nameSearch }) : t("browse.noListings")}
         </Text>
       ) : (
         <SimpleGrid columns={{ base: 2, sm: 3, md: 4, lg: 5 }} spacing={4}>
@@ -154,9 +156,9 @@ export function BrowseListingsPage() {
             px={8}
             onClick={loadMore}
             isLoading={loadingMore}
-            loadingText="Loading..."
+            loadingText={t("browse.loading")}
           >
-            Load More ({total - listings.length} remaining)
+            {t("browse.loadMore", { remaining: total - listings.length })}
           </Button>
         </Flex>
       )}

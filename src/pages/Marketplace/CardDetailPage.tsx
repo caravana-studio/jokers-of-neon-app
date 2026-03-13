@@ -11,6 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { getListing } from "../../marketplace/api/marketplace";
 import { CardImage } from "../../marketplace/components/CardImage";
 import { SkinBadge } from "../../marketplace/components/SkinBadge";
@@ -21,6 +22,7 @@ import { RARITY_LABELS, RARITY_COLORS } from "../../marketplace/types/marketplac
 import { PAYMENT_TOKENS } from "../../marketplace/config/contracts";
 import { useMarketplace } from "../../marketplace/providers/MarketplaceProvider";
 import { usePrices, toUsd, formatUsd } from "../../marketplace/hooks/usePrices";
+import { useCardName } from "../../marketplace/hooks/useCardName";
 import { TokenIcon } from "../../marketplace/components/TokenIcon";
 import type { Listing } from "../../marketplace/types/marketplace";
 
@@ -58,6 +60,7 @@ function SectionLabel({ children }: { children: string }) {
 }
 
 export function CardDetailPage() {
+  const { t } = useTranslation("marketplace");
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { feeBps } = useMarketplace();
@@ -66,6 +69,7 @@ export function CardDetailPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const sellerName = useAddressUsername(listing?.seller_address);
+  const cardName = useCardName(listing?.card_id, listing?.card_name ?? "");
 
   useEffect(() => {
     if (!id) return;
@@ -91,7 +95,7 @@ export function CardDetailPage() {
           {error || "Listing not found"}
         </Text>
         <Button size="sm" variant="outline" onClick={() => navigate("/")}>
-          Back to Marketplace
+          {t("detail.back")}
         </Button>
       </VStack>
     );
@@ -142,7 +146,7 @@ export function CardDetailPage() {
           noOfLines={1}
           maxW={{ base: "60%", sm: "70%" }}
         >
-          DETAILS
+          {t("detail.title")}
         </Text>
       </Flex>
 
@@ -174,12 +178,12 @@ export function CardDetailPage() {
           <Flex flexDirection="column" flex={1} gap={5} w="100%">
             {/* Title */}
             <Heading size={{ base: "sm", sm: "l" }} variant="italic" color="white">
-              {listing.card_name ?? `Token #${listing.token_id}`}
+              {cardName || `Token #${listing.token_id}`}
             </Heading>
 
             {/* Rarity */}
             <Box>
-              <SectionLabel>Rarity</SectionLabel>
+              <SectionLabel>{t("detail.rarity")}</SectionLabel>
               <HStack mt={3} spacing={2}>
                 <Badge
                   bg={rarityColor}
@@ -197,7 +201,7 @@ export function CardDetailPage() {
 
             {/* Price */}
             <Box>
-              <SectionLabel>Price</SectionLabel>
+              <SectionLabel>{t("detail.price")}</SectionLabel>
               <HStack mt={3} spacing={3} align="baseline">
                 <Text
                   fontFamily="Orbitron"
@@ -219,11 +223,11 @@ export function CardDetailPage() {
 
             {/* Details */}
             <Box>
-              <SectionLabel>Details</SectionLabel>
+              <SectionLabel>{t("detail.details")}</SectionLabel>
               <VStack mt={3} spacing={2} align="stretch">
                 <HStack justify="space-between">
                   <Text color="whiteAlpha.500" fontFamily="Oxanium" fontSize={{ base: "sm", md: "md" }}>
-                    Seller
+                    {t("detail.seller")}
                   </Text>
                   <Text color="white" fontFamily="Orbitron" fontSize={{ base: "sm", md: "md" }}>
                     {sellerName}
@@ -231,7 +235,7 @@ export function CardDetailPage() {
                 </HStack>
                 <HStack justify="space-between">
                   <Text color="whiteAlpha.500" fontFamily="Oxanium" fontSize={{ base: "sm", md: "md" }}>
-                    Token ID
+                    {t("detail.tokenId")}
                   </Text>
                   <Text color="white" fontFamily="Orbitron" fontSize={{ base: "sm", md: "md" }}>
                     #{listing.token_id}
@@ -239,7 +243,7 @@ export function CardDetailPage() {
                 </HStack>
                 <HStack justify="space-between">
                   <Text color="whiteAlpha.500" fontFamily="Oxanium" fontSize={{ base: "sm", md: "md" }}>
-                    Expires
+                    {t("detail.expires")}
                   </Text>
                   <Text color="white" fontFamily="Orbitron" fontSize={{ base: "sm", md: "md" }}>
                     {expiresDate}
@@ -247,7 +251,7 @@ export function CardDetailPage() {
                 </HStack>
                 <HStack justify="space-between">
                   <Text color="whiteAlpha.500" fontFamily="Oxanium" fontSize={{ base: "sm", md: "md" }}>
-                    Marketplace Fee
+                    {t("detail.fee")}
                   </Text>
                   <Text color="white" fontFamily="Orbitron" fontSize={{ base: "sm", md: "md" }}>
                     {feePercent}%
@@ -290,7 +294,7 @@ export function CardDetailPage() {
           px={6}
           onClick={() => navigate("/")}
         >
-          Back
+          {t("detail.back")}
         </Button>
       </HStack>
     </Flex>

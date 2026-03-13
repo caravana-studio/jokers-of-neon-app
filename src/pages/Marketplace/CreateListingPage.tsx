@@ -22,6 +22,7 @@ import {
 } from "@chakra-ui/react";
 import { keyframes } from "@emotion/react";
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useAccount } from "@starknet-react/core";
 import { useUserCards } from "../../marketplace/hooks/useUserCards";
@@ -38,6 +39,7 @@ const SKIN_SEASON_LABEL: Record<number, string> = {
 import { groupCards, CardGridItem, CardSection } from "../../marketplace/components/UserCardGrid";
 import { RARITY_LABELS, RARITY_COLORS } from "../../marketplace/types/marketplace";
 import { cardImageUrl, parseTokenAmount, formatTokenAmount } from "../../marketplace/utils/formatPrice";
+import { useCardName } from "../../marketplace/hooks/useCardName";
 import { PAYMENT_TOKENS } from "../../marketplace/config/contracts";
 import { TokenIcon } from "../../marketplace/components/TokenIcon";
 import type { UserCard } from "../../marketplace/types/marketplace";
@@ -70,12 +72,6 @@ function SectionLabel({ children }: { children: string }) {
 }
 
 // ─── Expiry toggle buttons ─────────────────────────────────────────────────────
-const EXPIRY_OPTIONS = [
-  { label: "1 Day", value: 1 },
-  { label: "7 Days", value: 7 },
-  { label: "30 Days", value: 30 },
-];
-
 function ExpiryPicker({
   value,
   onChange,
@@ -83,6 +79,12 @@ function ExpiryPicker({
   value: number;
   onChange: (v: number) => void;
 }) {
+  const { t } = useTranslation("marketplace");
+  const EXPIRY_OPTIONS = [
+    { label: t("sell.expiry1Day"), value: 1 },
+    { label: t("sell.expiry7Days"), value: 7 },
+    { label: t("sell.expiry30Days"), value: 30 },
+  ];
   return (
     <HStack spacing={2}>
       {EXPIRY_OPTIONS.map((opt) => {
@@ -126,11 +128,6 @@ function normalizePriceInput(value: string): string {
   return `${whole}.${fractionalParts.join("")}`;
 }
 
-const STEP_LABEL: Record<string, string> = {
-  approving: "APPROVING NFT...",
-  signing:   "SIGN ORDER...",
-  submitting: "SUBMITTING...",
-};
 
 // ─── Selected card detail + listing form (store-preview style) ────────────────
 function CardListingPreview({
@@ -142,6 +139,13 @@ function CardListingPreview({
   onBack: () => void;
   onSuccess: () => void;
 }) {
+  const { t } = useTranslation("marketplace");
+  const cardName = useCardName(card.cardId, card.cardName ?? `Card #${card.cardId}`);
+  const STEP_LABEL: Record<string, string> = {
+    approving:  t("sell.approving"),
+    signing:    t("sell.signing"),
+    submitting: t("sell.submitting"),
+  };
   const [price, setPrice] = useState("");
   const [paymentToken, setPaymentToken] = useState<string>(PAYMENT_TOKENS[0].address);
   const [expiryDays, setExpiryDays] = useState(7);
@@ -213,7 +217,7 @@ function CardListingPreview({
           letterSpacing="0.15em"
           textShadow="0 0 12px rgba(255,255,255,0.8), 0 0 24px rgba(255,255,255,0.4)"
         >
-          Create Listing
+          {t("sell.title")}
         </Text>
       </Flex>
 
@@ -255,26 +259,26 @@ function CardListingPreview({
               color={titleColor}
               style={{ textShadow: titleGlow }}
             >
-              {card.cardName ?? `Card #${card.cardId}`}
+              {cardName}
               {SKIN_SEASON_LABEL[card.skinId] && ` - ${SKIN_SEASON_LABEL[card.skinId]}`}
             </Heading>
 
             {/* Type */}
             <Box>
-              <SectionLabel>Type</SectionLabel>
+              <SectionLabel>{t("sell.type")}</SectionLabel>
               <Text
                 color="neonGreen"
                 fontFamily="Oxanium"
                 fontSize={{ base: "md", md: "lg" }}
                 mt={3}
               >
-                {card.isSpecial ? "Special" : "Traditional"}
+                {card.isSpecial ? t("sell.typeSpecial") : t("sell.typeTraditional")}
               </Text>
             </Box>
 
             {/* Rarity & skin */}
             <Box>
-              <SectionLabel>Rarity</SectionLabel>
+              <SectionLabel>{t("sell.rarity")}</SectionLabel>
               <HStack mt={3} spacing={2}>
                 <Badge
                   bg={rarityColor}
@@ -292,7 +296,7 @@ function CardListingPreview({
 
             {/* Price */}
             <Box>
-              <SectionLabel>Listing Price</SectionLabel>
+              <SectionLabel>{t("sell.listingPrice")}</SectionLabel>
               <HStack mt={3} spacing={3}>
                 <Input
                   type="text"
@@ -363,7 +367,7 @@ function CardListingPreview({
 
             {/* Expiry */}
             <Box>
-              <SectionLabel>Expires In</SectionLabel>
+              <SectionLabel>{t("sell.expiresIn")}</SectionLabel>
               <Box mt={3}>
                 <ExpiryPicker value={expiryDays} onChange={setExpiryDays} />
               </Box>
@@ -386,10 +390,10 @@ function CardListingPreview({
           px={8}
           onClick={openConfirm}
           isLoading={isProcessing}
-          loadingText={STEP_LABEL[status] ?? "PROCESSING..."}
+          loadingText={STEP_LABEL[status] ?? t("sell.processing")}
           isDisabled={!hasValidPrice || status === "done"}
         >
-          {status === "error" ? "RETRY" : "LIST FOR SALE"}
+          {status === "error" ? t("sell.retry") : t("sell.listForSale")}
         </Button>
         <Button
           size="md"
@@ -398,7 +402,7 @@ function CardListingPreview({
           onClick={onBack}
           isDisabled={isProcessing}
         >
-          Cancel
+          {t("sell.cancel")}
         </Button>
       </HStack>
 
@@ -408,7 +412,7 @@ function CardListingPreview({
         <ModalContent p={3} mx={4}>
           <ModalHeader pb={2}>
             <Heading size="m" textAlign="center" variant="neonWhite">
-              Confirm Listing
+              {t("sell.confirmTitle")}
             </Heading>
           </ModalHeader>
           <ModalBody>
@@ -422,7 +426,7 @@ function CardListingPreview({
                 noOfLines={2}
                 style={{ textShadow: titleGlow }}
               >
-                {card.cardName}
+                {cardName}
                 {SKIN_SEASON_LABEL[card.skinId] && ` - ${SKIN_SEASON_LABEL[card.skinId]}`}
               </Text>
 
@@ -437,7 +441,7 @@ function CardListingPreview({
                 gap={1}
               >
                 <Text fontFamily="Oxanium" fontSize={12} color="whiteAlpha.500" textTransform="uppercase" letterSpacing="0.1em">
-                  Listing price
+                  {t("sell.confirmListingPrice")}
                 </Text>
                 <HStack spacing={2} align="center">
                   <Text fontFamily="Orbitron" fontSize={32} color="neonGreen" fontWeight="bold" lineHeight={1}>
@@ -456,7 +460,7 @@ function CardListingPreview({
               <VStack spacing={1} align="stretch" px={1}>
                 <HStack justify="space-between">
                   <Text fontFamily="Oxanium" fontSize={14} color="whiteAlpha.900">
-                    Rarity
+                    {t("sell.confirmRarity")}
                   </Text>
                   <Badge bg={rarityColor} color="white" fontSize={12} px={3} py={1} borderRadius="full">
                     {rarityLabel}
@@ -464,25 +468,25 @@ function CardListingPreview({
                 </HStack>
                 <HStack justify="space-between">
                   <Text fontFamily="Oxanium" fontSize={14} color="whiteAlpha.900">
-                    Expires in
+                    {t("sell.confirmExpiresIn")}
                   </Text>
                   <Text fontFamily="Orbitron" fontSize={14} color="whiteAlpha.950">
-                    {expiryDays} day{expiryDays !== 1 ? "s" : ""}
+                    {expiryDays} {expiryDays !== 1 ? t("sell.confirmDays") : t("sell.confirmDay")}
                   </Text>
                 </HStack>
               </VStack>
 
               <Text fontFamily="Oxanium" fontSize={14} color="whiteAlpha.900" textAlign="center">
-                This will trigger two transactions: approve NFT + sign order
+                {t("sell.confirmNotice")}
               </Text>
             </VStack>
           </ModalBody>
           <ModalFooter justifyContent="center" mt={2} gap={3}>
             <Button variant="defaultOutline" size="sm" onClick={closeConfirm}>
-              Cancel
+              {t("sell.confirmCancel")}
             </Button>
             <Button variant="secondarySolid" size="sm" onClick={handleConfirm}>
-              Confirm
+              {t("sell.confirmSubmit")}
             </Button>
           </ModalFooter>
         </ModalContent>
@@ -494,7 +498,7 @@ function CardListingPreview({
         <ModalContent p={3} mx={4}>
           <ModalHeader pb={2}>
             <Heading size="m" textAlign="center" variant="neonWhite">
-              Listed!
+              {t("sell.successTitle")}
             </Heading>
           </ModalHeader>
           <ModalBody>
@@ -521,7 +525,7 @@ function CardListingPreview({
                 textAlign="center"
                 style={{ textShadow: titleGlow }}
               >
-                {card.cardName}
+                {cardName}
                 {SKIN_SEASON_LABEL[card.skinId] && ` - ${SKIN_SEASON_LABEL[card.skinId]}`}
               </Text>
 
@@ -543,7 +547,7 @@ function CardListingPreview({
           </ModalBody>
           <ModalFooter justifyContent="center" mt={2} gap={3}>
             <Button variant="secondarySolid" size="sm" onClick={() => { closeSuccess(); onSuccess(); }}>
-              My Listings
+              {t("sell.myListings")}
             </Button>
           </ModalFooter>
         </ModalContent>
@@ -556,6 +560,7 @@ function CardListingPreview({
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 export function CreateListingPage() {
+  const { t } = useTranslation("marketplace");
   const { status: walletStatus, address } = useAccount();
   const { cards, loading, error } = useUserCards();
   const [selectedCard, setSelectedCard] = useState<UserCard | null>(null);
@@ -588,9 +593,9 @@ export function CreateListingPage() {
   if (walletStatus !== "connected") {
     return (
       <VStack py={20} spacing={4}>
-        <Heading size="m">Connect Your Wallet</Heading>
+        <Heading size="m">{t("auth.connectWallet")}</Heading>
         <Text color="whiteAlpha.600" fontFamily="Oxanium">
-          Connect your wallet to list cards for sale
+          {t("auth.connectToList")}
         </Text>
       </VStack>
     );
@@ -643,7 +648,7 @@ export function CreateListingPage() {
     <VStack spacing={6} align="stretch">
       <Flex align="center" justify="space-between" wrap="wrap" gap={3}>
         <Heading size="l" variant="neonGreen">
-          Select a Card to Sell
+          {t("sell.selectCard")}
         </Heading>
         {hasNonMarketable && (
           <FormControl display="flex" alignItems="center" gap={2} w="auto">
@@ -663,7 +668,7 @@ export function CreateListingPage() {
               cursor="pointer"
               userSelect="none"
             >
-              Non Marketable
+              {t("sell.nonMarketable")}
             </FormLabel>
           </FormControl>
         )}
@@ -678,16 +683,16 @@ export function CreateListingPage() {
           {error.includes("GAME_API_KEY") ? (
             <>
               <Text color="yellow.400" textAlign="center" fontFamily="Oxanium">
-                Game API key not configured.
+                {t("sell.apiKeyMissing")}
               </Text>
               <Text color="whiteAlpha.500" textAlign="center" fontSize={11} fontFamily="Oxanium">
-                Add <code>VITE_GAME_API_KEY</code> to <code>web/.env</code>
+                {t("sell.apiKeyHint")}
               </Text>
             </>
           ) : (
             <Text color="red.400" textAlign="center" fontFamily="Oxanium">
               {error.includes("Failed to fetch")
-                ? "Could not connect to the game API. Check VITE_GAME_API_URL"
+                ? t("sell.errorApi")
                 : error}
             </Text>
           )}
@@ -695,11 +700,11 @@ export function CreateListingPage() {
       ) : displayCards.length === 0 && !showAll ? (
         <VStack py={10} spacing={2}>
           <Text color="whiteAlpha.600" textAlign="center" fontFamily="Oxanium">
-            No marketable cards in your wallet.
+            {t("sell.noMarketableCards")}
           </Text>
           {hasNonMarketable && (
             <Text color="whiteAlpha.400" textAlign="center" fontSize={11} fontFamily="Oxanium">
-              You have cards that can't be listed.{" "}
+              {t("sell.hasNonMarketable")}{" "}
               <Box
                 as="span"
                 color="neonGreen"
@@ -707,14 +712,14 @@ export function CreateListingPage() {
                 textDecoration="underline"
                 onClick={() => setShowAll(true)}
               >
-                Non marketable
+                {t("sell.showNonMarketable")}
               </Box>
             </Text>
           )}
         </VStack>
       ) : cards.length === 0 ? (
         <Text color="whiteAlpha.600" textAlign="center" py={10} fontFamily="Oxanium">
-          No cards in your wallet
+          {t("sell.noCards")}
         </Text>
       ) : (
         <VStack spacing={10} align="stretch">
@@ -722,7 +727,7 @@ export function CreateListingPage() {
           {allSpecials.length > 0 && (
             <Box>
               <Flex align="center" gap={3} mb={3} wrap="wrap">
-                <Heading size="m" variant="neonPink">Special Cards</Heading>
+                <Heading size="m" variant="neonPink">{t("sell.specialCards")}</Heading>
                 <Box flex={1} h="1px" bg="whiteAlpha.200" />
                 <Text fontSize={13} color="whiteAlpha.700" fontFamily="Oxanium">
                   {allSpecials.length} type{allSpecials.length !== 1 ? "s" : ""}
@@ -736,7 +741,7 @@ export function CreateListingPage() {
                   {availableCategories.length > 1 && (
                     <HStack spacing={2} align="center">
                       <Text fontSize={11} color="whiteAlpha.600" fontFamily="Orbitron" textTransform="uppercase" mr={1}>
-                        Category
+                        {t("sell.categoryLabel")}
                       </Text>
                       <Badge
                         bg={filterCategory === null ? "#A144B2" : "whiteAlpha.100"}
@@ -745,7 +750,7 @@ export function CreateListingPage() {
                         cursor="pointer"
                         onClick={() => setFilterCategory(null)}
                       >
-                        All
+                        {t("browse.filter.all")}
                       </Badge>
                       {availableCategories.map(({ key, label, color }) => (
                         <Badge
@@ -766,7 +771,7 @@ export function CreateListingPage() {
                   {availableRarities.length > 1 && (
                     <HStack spacing={2} align="center">
                       <Text fontSize={11} color="whiteAlpha.600" fontFamily="Orbitron" textTransform="uppercase" mr={1}>
-                        Rarity
+                        {t("sell.rarityLabel")}
                       </Text>
                       <Badge
                         bg={filterRarity === null ? "#A144B2" : "whiteAlpha.100"}
@@ -775,7 +780,7 @@ export function CreateListingPage() {
                         cursor="pointer"
                         onClick={() => setFilterRarity(null)}
                       >
-                        All
+                        {t("browse.filter.all")}
                       </Badge>
                       {availableRarities.map((r) => (
                         <Badge
@@ -804,7 +809,7 @@ export function CreateListingPage() {
           )}
 
           <CardSection
-            title="Traditional Cards"
+            title={t("sell.traditionalCards")}
             groups={traditionalGroups}
             listedTokenIds={listedTokenIds}
             onSelect={handleSelect}
