@@ -1,8 +1,8 @@
 import { Divider, Flex, Text, Tooltip } from "@chakra-ui/react";
-import { PropsWithChildren, useEffect, useState } from "react";
-import { subscribeCardData, getCardEntry } from "../hooks/useCardData";
-import { RARITY_COLORS } from "../types/marketplace";
+import { PropsWithChildren } from "react";
+import { useTranslation } from "react-i18next";
 import { colorizeText } from "../../utils/getTooltip";
+import { RARITY_COLORS } from "../types/marketplace";
 
 const CATEGORY_LABELS: Record<number, string> = {
   1: "C",
@@ -12,10 +12,23 @@ const CATEGORY_LABELS: Record<number, string> = {
   5: "SS",
 };
 
-// Strip trailing "Currently ..." clauses that contain unresolved {{template}} variables.
-// These are only meaningful in-game (cumulative progress) and make no sense in the marketplace.
+function sectionForId(cardId: number): string | null {
+  if (cardId < 100) return "traditionalCards";
+  if (cardId >= 200 && cardId < 300) return "neonCards";
+  if (cardId >= 600 && cardId < 700) return "modifiers";
+  if (cardId >= 10000 && cardId < 20000) return "specials";
+  if (cardId >= 20000 && cardId < 30000) return "rageCards";
+  return null;
+}
+
+// Strip trailing cumulative-progress clauses that only make sense in-game.
 function stripCumulativeClause(desc: string): string {
-  return desc.replace(/\s*Currently\s[^.]*\{\{[^}]*\}\}[^.]*\.?/g, "").trim();
+  return desc
+    .replace(
+      /\s*(?:Currently(?:\s+at)?|Actualmente|Atualmente)\s[^.]*\{\{[^}]*\}\}[^.]*\.?/gi,
+      "",
+    )
+    .trim();
 }
 
 interface CardTooltipProps extends PropsWithChildren {
@@ -25,16 +38,18 @@ interface CardTooltipProps extends PropsWithChildren {
 }
 
 export function CardTooltip({ cardId, cardName, rarity, children }: CardTooltipProps) {
-  const [, setTick] = useState(0);
-
-  useEffect(() => {
-    return subscribeCardData(() => setTick((t) => t + 1));
-  }, []);
-
-  const entry = getCardEntry(cardId);
+  const { t } = useTranslation("cards");
+  const section = sectionForId(cardId);
   const rarityColor = RARITY_COLORS[rarity] ?? "#999";
-  const categoryLabel = CATEGORY_LABELS[rarity] ?? "";
-  const description = stripCumulativeClause(entry?.description ?? "");
+  const translatedName = section
+    ? t(`${section}.${cardId}.name`, { defaultValue: cardName })
+    : cardName;
+  const description = section
+    ? stripCumulativeClause(
+        t(`${section}.${cardId}.description`, { defaultValue: "" }),
+      )
+    : "";
+  const rarityLabel = CATEGORY_LABELS[rarity] ?? "";
 
   return (
     <Tooltip
@@ -45,7 +60,7 @@ export function CardTooltip({ cardId, cardName, rarity, children }: CardTooltipP
           {/* Header: name + category letter */}
           <Flex justify="space-between" align="baseline" mb={1}>
             <Text fontSize="16px" lineHeight="18px" fontFamily="Orbitron" fontWeight="bold">
-              {cardName}
+              {translatedName}
             </Text>
             <Text
               fontSize="16px"
@@ -56,7 +71,7 @@ export function CardTooltip({ cardId, cardName, rarity, children }: CardTooltipP
               ml={2}
               flexShrink={0}
             >
-              {categoryLabel}
+              {rarityLabel}
             </Text>
           </Flex>
           <Divider borderColor="whiteAlpha.400" />
