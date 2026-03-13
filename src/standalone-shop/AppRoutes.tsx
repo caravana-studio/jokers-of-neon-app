@@ -9,6 +9,7 @@ import { MyListingsPage } from "../pages/Marketplace/MyListingsPage";
 import { ExternalPack } from "../pages/ExternalPack/ExternalPack";
 import { PurchasingPackPage } from "../pages/PurchasingPackPage";
 import { ShopPage } from "../pages/Shop/ShopPage";
+import { TermsPage } from "../pages/Marketplace/TermsPage";
 
 export const AppRoutes = () => {
   const location = useLocation();
@@ -72,6 +73,14 @@ export const AppRoutes = () => {
         }
       />
       <Route path="/external-packs" element={<Navigate to="/shop" replace />} />
+      <Route
+        path="/terms"
+        element={
+          <AnimatedPage>
+            <TermsPage />
+          </AnimatedPage>
+        }
+      />
       <Route
         path="*"
         element={<Navigate to="/" replace />}

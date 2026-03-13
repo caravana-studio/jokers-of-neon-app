@@ -1,6 +1,7 @@
-import { Box, Flex, Text, IconButton, Link } from "@chakra-ui/react";
+import { Box, Flex, Text, IconButton } from "@chakra-ui/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Link as RouterLink } from "react-router-dom";
 
 const STORAGE_KEY = "marketplace_beta_banner_dismissed";
 
@@ -51,15 +52,12 @@ export function BetaBanner() {
             {t("beta.warning")}{" "}
           </Text>
           {t("beta.description")}{" "}
-          <Link
-            href="https://jokersofneon.com/terms-and-conditions"
-            isExternal
-            color="#20c6ed"
-            textDecoration="underline"
-            _hover={{ color: "white" }}
+          <RouterLink
+            to="/terms"
+            style={{ color: "#20c6ed", textDecoration: "underline" }}
           >
             {t("beta.terms")}
-          </Link>
+          </RouterLink>
           .
         </Text>
 

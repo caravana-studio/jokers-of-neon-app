@@ -132,5 +132,16 @@
     "description": "This marketplace is in early access. By using this tool you agree to Jokers of Neon's",
     "terms": "Terms and Conditions",
     "dismiss": "Dismiss"
+  },
+  "terms": {
+    "modalTitle": "Marketplace Terms of Use",
+    "accept": "Accept",
+    "decline": "Decline",
+    "checkboxLabel": "I have read and accept the Terms of Use",
+    "declineWarning": "By declining, your wallet will be disconnected.",
+    "pageTitle": "TERMS OF USE",
+    "back": "Back",
+    "effectiveDate": "Effective Date",
+    "betaNotice": "Beta Version — early access"
   }
 }

@@ -132,5 +132,16 @@
     "description": "Este mercado está em acesso antecipado. Ao usar esta ferramenta você concorda com os",
     "terms": "Termos e Condições",
     "dismiss": "Fechar"
+  },
+  "terms": {
+    "modalTitle": "Termos de Uso do Marketplace",
+    "accept": "Aceitar",
+    "decline": "Recusar",
+    "checkboxLabel": "Li e aceito os Termos de Uso",
+    "declineWarning": "Ao recusar, sua carteira será desconectada.",
+    "pageTitle": "TERMOS DE USO",
+    "back": "Voltar",
+    "effectiveDate": "Data de Vigência",
+    "betaNotice": "Versão Beta — acesso antecipado"
   }
 }

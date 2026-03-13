@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { CircleFlagLanguage } from "react-circle-flags";
 import { truncateAddress } from "../utils/formatPrice";
 import { BetaBanner } from "./BetaBanner";
+import { TermsAcceptanceModal } from "./TermsAcceptanceModal";
 import { controller } from "../../dojo/controller/controller";
 
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -296,6 +297,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         {children}
       </Box>
 
+      <TermsAcceptanceModal />
       <BetaBanner />
     </Box>
   );

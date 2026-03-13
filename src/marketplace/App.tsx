@@ -12,6 +12,7 @@ import { CreateListingPage } from "../pages/Marketplace/CreateListingPage";
 import { MyListingsPage } from "../pages/Marketplace/MyListingsPage";
 import { ShopPage } from "../pages/Marketplace/ShopPage";
 import { ExternalPacksPage } from "../pages/Marketplace/ExternalPacksPage";
+import { TermsPage } from "../pages/Marketplace/TermsPage";
 import { Layout } from "./components/Layout";
 import { AnimatedPage } from "../components/AnimatedPage";
 
@@ -27,6 +28,7 @@ function AppRoutes() {
         <Route path="/shop" element={<AnimatedPage><ShopPage /></AnimatedPage>} />
         <Route path="/external-packs" element={<AnimatedPage><ExternalPacksPage /></AnimatedPage>} />
         <Route path="/external-pack/:packId" element={<AnimatedPage><ExternalPacksPage /></AnimatedPage>} />
+        <Route path="/terms" element={<AnimatedPage><TermsPage /></AnimatedPage>} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </AnimatePresence>
