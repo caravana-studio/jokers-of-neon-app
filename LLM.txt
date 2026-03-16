@@ -1,0 +1,521 @@
+JOKERS OF NEON - LLM REFERENCE
+Generated from repo source data.
+
+GAME OBJECTIVE
+- Reach each round target score by playing poker hands and progress through level maps.
+- Build stronger decks by buying cards, modifiers, specials, power-ups, and loot boxes in stores.
+- Survive escalating difficulty, including Rage rounds with temporary debuffs.
+- Source summary: README + tutorials + in-game localization.
+
+CORE LOOP
+- Round: play/discard from hand to reach target score.
+- If target is reached: go to map/store and invest coins in upgrades.
+- If target is not reached and no hands remain: run ends.
+- README notes a classic setup of 5 hands + 5 discards per round at run start.
+
+POKER HAND TYPES
+- key=RoyalFlush | name=Royal flush | description=Highest straight flush
+- key=StraightFlush | name=Straight flush | description=Straight of the same suit
+- key=FiveOfAKind | name=Five of a kind | description=Five cards of the same rank
+- key=FourOfAKind | name=Four of a kind | description=Four cards of the same rank
+- key=FullHouse | name=Full house | description=Three of a kind and a pair
+- key=Straight | name=Straight | description=Five consecutive cards
+- key=Flush | name=Flush | description=Five cards of the same suit
+- key=ThreeOfAKind | name=Three of a kind | description=Three cards of the same rank
+- key=TwoPair | name=Two pair | description=Two pairs of cards of different rank
+- key=OnePair | name=Pair | description=Two cards of the same rank
+- key=HighCard | name=High card | description=Cards that are not consecutive and of different suits
+
+CARD IMAGE RULES
+- Base card image URL pattern: https://jokersofneon.com/cards/{id}.png
+- Skin image URL pattern: https://jokersofneon.com/cards/{id}_sk{skin_number}.png
+- Note: app bundle also includes local assets under public/Cards and powerups under public/powerups.
+
+CARD TYPES
+- Traditional cards: ids 0-53 (includes Joker 52 and Wildcard 53).
+- Neon cards: ids 200-253 (neon variants + neon joker/wild).
+- Modifier cards: ids 608-613 (change suit/type behavior of a target card).
+- Power-ups: ids 800-807 (single-use points or multi boosts).
+- Special cards: primarily ids 10000-10214 plus 19901-19903 (global effects; permanent or temporary).
+- Rage cards: ids 20001-20026 subset (round debuffs/challenges).
+- Loot boxes: ids 1-13 (random reward containers).
+
+RARITY TIERS
+- C=Common, B=Rare, A=Epic, S=Legendary, SS=Mythic (from docs localization).
+
+PRICING SNAPSHOT
+- Special card sell pricing by rarity: C:1000, B:1750, A:3500, S:5000, SS:7000
+- Modifier sell pricing by rarity: B:300, A:750, S:1000, C:0, SS:0
+- Loot box sell pricing by rarity: C:750, B:1500, A:2000, S:0, SS:0
+- Power-up base costs by tier: B:100, A:200, S:350, SS:500
+- Power-up computed sell values by tier: B:50, A:50, S:100, SS:150
+
+TRADITIONAL CARDS
+- id=0 | name=2 of Clubs | effect=Scores +2 points | image=https://jokersofneon.com/cards/0.png
+- id=1 | name=3 of Clubs | effect=Scores +3 points | image=https://jokersofneon.com/cards/1.png
+- id=2 | name=4 of Clubs | effect=Scores +4 points | image=https://jokersofneon.com/cards/2.png
+- id=3 | name=5 of Clubs | effect=Scores +5 points | image=https://jokersofneon.com/cards/3.png
+- id=4 | name=6 of Clubs | effect=Scores +6 points | image=https://jokersofneon.com/cards/4.png
+- id=5 | name=7 of Clubs | effect=Scores +7 points | image=https://jokersofneon.com/cards/5.png
+- id=6 | name=8 of Clubs | effect=Scores +8 points | image=https://jokersofneon.com/cards/6.png
+- id=7 | name=9 of Clubs | effect=Scores +9 points | image=https://jokersofneon.com/cards/7.png
+- id=8 | name=10 of Clubs | effect=Scores +10 points | image=https://jokersofneon.com/cards/8.png
+- id=9 | name=Jack of Clubs | effect=Scores +10 points | image=https://jokersofneon.com/cards/9.png
+- id=10 | name=Queen of Clubs | effect=Scores +10 points | image=https://jokersofneon.com/cards/10.png
+- id=11 | name=King of Clubs | effect=Scores +10 points | image=https://jokersofneon.com/cards/11.png
+- id=12 | name=Ace of Clubs | effect=Scores +11 points | image=https://jokersofneon.com/cards/12.png
+- id=13 | name=2 of Diamonds | effect=Scores +2 points | image=https://jokersofneon.com/cards/13.png
+- id=14 | name=3 of Diamonds | effect=Scores +3 points | image=https://jokersofneon.com/cards/14.png
+- id=15 | name=4 of Diamonds | effect=Scores +4 points | image=https://jokersofneon.com/cards/15.png
+- id=16 | name=5 of Diamonds | effect=Scores +5 points | image=https://jokersofneon.com/cards/16.png
+- id=17 | name=6 of Diamonds | effect=Scores +6 points | image=https://jokersofneon.com/cards/17.png
+- id=18 | name=7 of Diamonds | effect=Scores +7 points | image=https://jokersofneon.com/cards/18.png
+- id=19 | name=8 of Diamonds | effect=Scores +8 points | image=https://jokersofneon.com/cards/19.png
+- id=20 | name=9 of Diamonds | effect=Scores +9 points | image=https://jokersofneon.com/cards/20.png
+- id=21 | name=10 of Diamonds | effect=Scores +10 points | image=https://jokersofneon.com/cards/21.png
+- id=22 | name=Jack of Diamonds | effect=Scores +10 points | image=https://jokersofneon.com/cards/22.png
+- id=23 | name=Queen of Diamonds | effect=Scores +10 points | image=https://jokersofneon.com/cards/23.png
+- id=24 | name=King of Diamonds | effect=Scores +10 points | image=https://jokersofneon.com/cards/24.png
+- id=25 | name=Ace of Diamonds | effect=Scores +11 points | image=https://jokersofneon.com/cards/25.png
+- id=26 | name=2 of Hearts | effect=Scores +2 points | image=https://jokersofneon.com/cards/26.png
+- id=27 | name=3 of Hearts | effect=Scores +3 points | image=https://jokersofneon.com/cards/27.png
+- id=28 | name=4 of Hearts | effect=Scores +4 points | image=https://jokersofneon.com/cards/28.png
+- id=29 | name=5 of Hearts | effect=Scores +5 points | image=https://jokersofneon.com/cards/29.png
+- id=30 | name=6 of Hearts | effect=Scores +6 points | image=https://jokersofneon.com/cards/30.png
+- id=31 | name=7 of Hearts | effect=Scores +7 points | image=https://jokersofneon.com/cards/31.png
+- id=32 | name=8 of Hearts | effect=Scores +8 points | image=https://jokersofneon.com/cards/32.png
+- id=33 | name=9 of Hearts | effect=Scores +9 points | image=https://jokersofneon.com/cards/33.png
+- id=34 | name=10 of Hearts | effect=Scores +10 points | image=https://jokersofneon.com/cards/34.png
+- id=35 | name=Jack of Hearts | effect=Scores +10 points | image=https://jokersofneon.com/cards/35.png
+- id=36 | name=Queen of Hearts | effect=Scores +10 points | image=https://jokersofneon.com/cards/36.png
+- id=37 | name=King of Hearts | effect=Scores +10 points | image=https://jokersofneon.com/cards/37.png
+- id=38 | name=Ace of Hearts | effect=Scores +11 points | image=https://jokersofneon.com/cards/38.png
+- id=39 | name=2 of Spades | effect=Scores +2 points | image=https://jokersofneon.com/cards/39.png
+- id=40 | name=3 of Spades | effect=Scores +3 points | image=https://jokersofneon.com/cards/40.png
+- id=41 | name=4 of Spades | effect=Scores +4 points | image=https://jokersofneon.com/cards/41.png
+- id=42 | name=5 of Spades | effect=Scores +5 points | image=https://jokersofneon.com/cards/42.png
+- id=43 | name=6 of Spades | effect=Scores +6 points | image=https://jokersofneon.com/cards/43.png
+- id=44 | name=7 of Spades | effect=Scores +7 points | image=https://jokersofneon.com/cards/44.png
+- id=45 | name=8 of Spades | effect=Scores +8 points | image=https://jokersofneon.com/cards/45.png
+- id=46 | name=9 of Spades | effect=Scores +9 points | image=https://jokersofneon.com/cards/46.png
+- id=47 | name=10 of Spades | effect=Scores +10 points | image=https://jokersofneon.com/cards/47.png
+- id=48 | name=Jack of Spades | effect=Scores +10 points | image=https://jokersofneon.com/cards/48.png
+- id=49 | name=Queen of Spades | effect=Scores +10 points | image=https://jokersofneon.com/cards/49.png
+- id=50 | name=King of Spades | effect=Scores +10 points | image=https://jokersofneon.com/cards/50.png
+- id=51 | name=Ace of Spades | effect=Scores +11 points | image=https://jokersofneon.com/cards/51.png
+- id=52 | name=Joker | effect=Substitutes any traditional card. +100 points and +1 multi | image=https://jokersofneon.com/cards/52.png
+- id=53 | name=Wilcard | effect=Substitutes any traditional card | image=https://jokersofneon.com/cards/53.png
+
+NEON CARDS
+- id=200 | name=2 of neon Clubs | effect=Scores +4 points and +1 multi | image=https://jokersofneon.com/cards/200.png
+- id=201 | name=3 of neon Clubs | effect=Scores +6 points and +1 multi | image=https://jokersofneon.com/cards/201.png
+- id=202 | name=4 of neon Clubs | effect=Scores +8 points and +1 multi | image=https://jokersofneon.com/cards/202.png
+- id=203 | name=5 of neon Clubs | effect=Scores +10 points and +1 multi | image=https://jokersofneon.com/cards/203.png
+- id=204 | name=6 of neon Clubs | effect=Scores +12 points and +1 multi | image=https://jokersofneon.com/cards/204.png
+- id=205 | name=7 of neon Clubs | effect=Scores +14 points and +1 multi | image=https://jokersofneon.com/cards/205.png
+- id=206 | name=8 of neon Clubs | effect=Scores +16 points and +1 multi | image=https://jokersofneon.com/cards/206.png
+- id=207 | name=9 of neon Clubs | effect=Scores +18 points and +1 multi | image=https://jokersofneon.com/cards/207.png
+- id=208 | name=10 of neon Clubs | effect=Scores +20 points and +1 multi | image=https://jokersofneon.com/cards/208.png
+- id=209 | name=Jack of neon Clubs | effect=Scores +20 points and +1 multi | image=https://jokersofneon.com/cards/209.png
+- id=210 | name=Queen of neon Clubs | effect=Scores +20 points and +1 multi | image=https://jokersofneon.com/cards/210.png
+- id=211 | name=King of neon Clubs | effect=Scores +20 points and +1 multi | image=https://jokersofneon.com/cards/211.png
+- id=212 | name=Ace of neon Clubs | effect=Scores +22 points and +1 multi | image=https://jokersofneon.com/cards/212.png
+- id=213 | name=2 of neon Diamonds | effect=Scores +4 points and +1 multi | image=https://jokersofneon.com/cards/213.png
+- id=214 | name=3 of neon Diamonds | effect=Scores +6 points and +1 multi | image=https://jokersofneon.com/cards/214.png
+- id=215 | name=4 of neon Diamonds | effect=Scores +8 points and +1 multi | image=https://jokersofneon.com/cards/215.png
+- id=216 | name=5 of neon Diamonds | effect=Scores +10 points and +1 multi | image=https://jokersofneon.com/cards/216.png
+- id=217 | name=6 of neon Diamonds | effect=Scores +12 points and +1 multi | image=https://jokersofneon.com/cards/217.png
+- id=218 | name=7 of neon Diamonds | effect=Scores +14 points and +1 multi | image=https://jokersofneon.com/cards/218.png
+- id=219 | name=8 of neon Diamonds | effect=Scores +16 points and +1 multi | image=https://jokersofneon.com/cards/219.png
+- id=220 | name=9 of neon Diamonds | effect=Scores +18 points and +1 multi | image=https://jokersofneon.com/cards/220.png
+- id=221 | name=10 of neon Diamonds | effect=Scores +20 points and +1 multi | image=https://jokersofneon.com/cards/221.png
+- id=222 | name=Jack of neon Diamonds | effect=Scores +20 points and +1 multi | image=https://jokersofneon.com/cards/222.png
+- id=223 | name=Queen of neon Diamonds | effect=Scores +20 points and +1 multi | image=https://jokersofneon.com/cards/223.png
+- id=224 | name=King of neon Diamonds | effect=Scores +20 points and +1 multi | image=https://jokersofneon.com/cards/224.png
+- id=225 | name=Ace of neon Diamonds | effect=Scores +22 points and +1 multi | image=https://jokersofneon.com/cards/225.png
+- id=226 | name=2 of neon Hearts | effect=Scores +4 points and +1 multi | image=https://jokersofneon.com/cards/226.png
+- id=227 | name=3 of neon Hearts | effect=Scores +6 points and +1 multi | image=https://jokersofneon.com/cards/227.png
+- id=228 | name=4 of neon Hearts | effect=Scores +8 points and +1 multi | image=https://jokersofneon.com/cards/228.png
+- id=229 | name=5 of neon Hearts | effect=Scores +10 points and +1 multi | image=https://jokersofneon.com/cards/229.png
+- id=230 | name=6 of neon Hearts | effect=Scores +12 points and +1 multi | image=https://jokersofneon.com/cards/230.png
+- id=231 | name=7 of neon Hearts | effect=Scores +14 points and +1 multi | image=https://jokersofneon.com/cards/231.png
+- id=232 | name=8 of neon Hearts | effect=Scores +16 points and +1 multi | image=https://jokersofneon.com/cards/232.png
+- id=233 | name=9 of neon Hearts | effect=Scores +18 points and +1 multi | image=https://jokersofneon.com/cards/233.png
+- id=234 | name=10 of neon Hearts | effect=Scores +20 points and +1 multi | image=https://jokersofneon.com/cards/234.png
+- id=235 | name=Jack of neon Hearts | effect=Scores +20 points and +1 multi | image=https://jokersofneon.com/cards/235.png
+- id=236 | name=Queen of neon Hearts | effect=Scores +20 points and +1 multi | image=https://jokersofneon.com/cards/236.png
+- id=237 | name=King of neon Hearts | effect=Scores +20 points and +1 multi | image=https://jokersofneon.com/cards/237.png
+- id=238 | name=Ace of neon Hearts | effect=Scores +22 points and +1 multi | image=https://jokersofneon.com/cards/238.png
+- id=239 | name=2 of neon Spades | effect=Scores +4 points and +1 multi | image=https://jokersofneon.com/cards/239.png
+- id=240 | name=3 of neon Spades | effect=Scores +6 points and +1 multi | image=https://jokersofneon.com/cards/240.png
+- id=241 | name=4 of neon Spades | effect=Scores +8 points and +1 multi | image=https://jokersofneon.com/cards/241.png
+- id=242 | name=5 of neon Spades | effect=Scores +10 points and +1 multi | image=https://jokersofneon.com/cards/242.png
+- id=243 | name=6 of neon Spades | effect=Scores +12 points and +1 multi | image=https://jokersofneon.com/cards/243.png
+- id=244 | name=7 of neon Spades | effect=Scores +14 points and +1 multi | image=https://jokersofneon.com/cards/244.png
+- id=245 | name=8 of neon Spades | effect=Scores +16 points and +1 multi | image=https://jokersofneon.com/cards/245.png
+- id=246 | name=9 of neon Spades | effect=Scores +18 points and +1 multi | image=https://jokersofneon.com/cards/246.png
+- id=247 | name=10 of neon Spades | effect=Scores +20 points and +1 multi | image=https://jokersofneon.com/cards/247.png
+- id=248 | name=Jack of neon Spades | effect=Scores +20 points and +1 multi | image=https://jokersofneon.com/cards/248.png
+- id=249 | name=Queen of neon Spades | effect=Scores +20 points and +1 multi | image=https://jokersofneon.com/cards/249.png
+- id=250 | name=King of neon Spades | effect=Scores +20 points and +1 multi | image=https://jokersofneon.com/cards/250.png
+- id=251 | name=Ace of neon Spades | effect=Scores +22 points and +1 multi | image=https://jokersofneon.com/cards/251.png
+- id=252 | name=Joker of Neon | effect=Substitutes any traditional card. +200 points and +2 multi | image=https://jokersofneon.com/cards/252.png
+- id=253 | name=Wildcard of Neon | effect=Substitutes any neon card | image=https://jokersofneon.com/cards/253.png
+
+MODIFIER CARDS
+- id=608 | name=Change to Clubs | effect=The modified card will be considered as a Clubs card | rarity=B | image=https://jokersofneon.com/cards/608.png
+- id=609 | name=Change to Diamonds | effect=The modified card will be considered as a Diamonds card | rarity=B | image=https://jokersofneon.com/cards/609.png
+- id=610 | name=Change to Hearts | effect=The modified card will be considered as a Hearts card | rarity=B | image=https://jokersofneon.com/cards/610.png
+- id=611 | name=Change to Spades | effect=The modified card will be considered as a Spades card | rarity=B | image=https://jokersofneon.com/cards/611.png
+- id=612 | name=Change to Neon | effect=The modified card will be considered as a Neon card | rarity=S | image=https://jokersofneon.com/cards/612.png
+- id=613 | name=Wildcard | effect=The modified card will be considered as a Wildcard | rarity=A | image=https://jokersofneon.com/cards/613.png
+
+SPECIAL CARDS
+- id=10000 | name=Multiplied Hearts | effect=Adds +2 multi for every played Heart suited card | rarity=C | image=https://jokersofneon.com/cards/10000.png
+- id=10001 | name=Multiplied Clubs | effect=Adds +2 multi for every played Clubs suited card | rarity=C | image=https://jokersofneon.com/cards/10001.png
+- id=10002 | name=Multiplied Diamonds | effect=Adds +2 multi for every played Diamonds suited card | rarity=C | image=https://jokersofneon.com/cards/10002.png
+- id=10003 | name=Multiplied Spades | effect=Adds +2 multi for every played Spades suited card | rarity=C | image=https://jokersofneon.com/cards/10003.png
+- id=10004 | name=Pair Booster | effect=Level up the PAIR hand by 6 levels. Granting +60 points and +6 multi additional | rarity=C | image=https://jokersofneon.com/cards/10004.png
+- id=10005 | name=Two Pair Booster | effect=Level up the TWO PAIR hand by 5 levels. Granting +100 points and +5 multi additional | rarity=C | image=https://jokersofneon.com/cards/10005.png
+- id=10006 | name=Straight Booster | effect=Level up the STRAIGHT hand by 4 levels. Granting +100 points and +8 multi additional | rarity=B | image=https://jokersofneon.com/cards/10006.png
+- id=10007 | name=Flush Booster | effect=Level up the FLUSH hand by 4 levels. Granting +100 points and +8 multi additional | rarity=B | image=https://jokersofneon.com/cards/10007.png
+- id=10008 | name=Easy Straight | effect=Straight hand can be done with 4 cards | image=https://jokersofneon.com/cards/10008.png
+- id=10009 | name=Easy Flush | effect=Flush hand can be done with 4 cards | image=https://jokersofneon.com/cards/10009.png
+- id=10010 | name=Joker Booster | effect=All played Jokers scores double points and double multi | rarity=S | image=https://jokersofneon.com/cards/10010.png
+- id=10011 | name=Power-up Booster | effect=All played Power-ups scores double points and double multi | rarity=S | image=https://jokersofneon.com/cards/10011.png
+- id=10012 | name=Figures Booster | effect=All played FIGURES cards scores +50 points | rarity=A | image=https://jokersofneon.com/cards/10012.png
+- id=10013 | name=Multiplied Aces | effect=Adds +5 multi for every played Ace card | rarity=B | image=https://jokersofneon.com/cards/10013.png
+- id=10014 | name=Love is in the air | effect=All played cards are considered Heart suited | rarity=A | creator=nico_n44 | image=https://jokersofneon.com/cards/10014.png
+- id=10015 | name=The hand thief | effect=Adds +1 hands and +1 discards to the round | rarity=A | image=https://jokersofneon.com/cards/10015.png
+- id=10016 | name=Extra help | effect=Increase hand size by 2 | rarity=S | image=https://jokersofneon.com/cards/10016.png
+- id=10017 | name=Lucky 7 | effect=All 7s scores +77 points | rarity=A | image=https://jokersofneon.com/cards/10017.png
+- id=10018 | name=Neon bonus | effect=All Neon cards scores +20 points. Neon plays are leveled up by 2 extra levels. | rarity=B | image=https://jokersofneon.com/cards/10018.png
+- id=10019 | name=Deadline | effect=When playing your last hand, increase the play level 10 times | rarity=S | image=https://jokersofneon.com/cards/10019.png
+- id=10020 | name=Initial advantage | effect=The first played hand scores +100 points and +10 multi | rarity=A | image=https://jokersofneon.com/cards/10020.png
+- id=10021 | name=Lucky hand | effect=Adds +50 cash for every Diamond suited card played | rarity=C | image=https://jokersofneon.com/cards/10021.png
+- id=10022 | name=Discard mastery | effect=Adds +10 multi if you have no discards left | rarity=B | image=https://jokersofneon.com/cards/10022.png
+- id=10023 | name=Second chance | effect=When you lose, this card gets destroyed but you can continue playing | rarity=S | image=https://jokersofneon.com/cards/10023.png
+- id=10024 | name=Guardian's shield | effect=Blocks all rage cards for 1 round. Gets destroyed afterwards | image=https://jokersofneon.com/cards/10024.png
+- id=10025 | name=Neon synergy | effect=If more than 50% of the played cards are neon, all the other cards get converted to neon | image=https://jokersofneon.com/cards/10025.png
+- id=10026 | name=Neon Doctrine | effect=Convert two played cards into neon cards. | image=https://jokersofneon.com/cards/10026.png
+- id=10031 | name=Shortcut | effect=Reduces the points needed to beat the round by 20% | image=https://jokersofneon.com/cards/10031.png
+- id=10032 | name=Lucky Payday | effect=Get extra +500 cash for every Joker in hand at the end of the round | rarity=B | image=https://jokersofneon.com/cards/10032.png
+- id=10033 | name=Mirror effect | effect=Repeats the effect of the special card in the left | image=https://jokersofneon.com/cards/10033.png
+- id=10034 | name=Loot boxes on sale | effect=Loot boxes have 30% discount | image=https://jokersofneon.com/cards/10034.png
+- id=10035 | name=Bonus Picks | effect=2 extra special card options in the store | image=https://jokersofneon.com/cards/10035.png
+- id=10036 | name=Joker's drop | effect=Get +500 cash every time you discard a Joker | rarity=C | image=https://jokersofneon.com/cards/10036.png
+- id=10037 | name=Extra drops | effect=Adds 2 discards | rarity=A | image=https://jokersofneon.com/cards/10037.png
+- id=10038 | name=Extra draws | effect=Adds 2 plays | rarity=A | image=https://jokersofneon.com/cards/10038.png
+- id=10039 | name=Scaling factor | effect=Upgrade all your hands by 2 levels | rarity=B | image=https://jokersofneon.com/cards/10039.png
+- id=10040 | name=Wild deuces | effect=All 2s are considered wildcards | rarity=B | image=https://jokersofneon.com/cards/10040.png
+- id=10041 | name=Undying Draw | effect=First discarded hand gets leveled up | image=https://jokersofneon.com/cards/10041.png
+- id=10042 | name=Shielded Start | effect=Protects your first played hand from all negative effects | image=https://jokersofneon.com/cards/10042.png
+- id=10043 | name=Full House Booster | effect=Level up the FULL HOUSE hand by 4 levels. Granting +100 points and +8 multi additional | rarity=B | image=https://jokersofneon.com/cards/10043.png
+- id=10044 | name=Three of a Kind Booster | effect=Level up the THREE OF A KIND hand by 4 levels. Granting +80 points and +4 multi additional | rarity=B | image=https://jokersofneon.com/cards/10044.png
+- id=10045 | name=Four of a Kind Booster | effect=Level up the FOUR OF A KIND hand by 3 levels. Granting +90 points and +6 multi additional | rarity=A | image=https://jokersofneon.com/cards/10045.png
+- id=10046 | name=Five of a Kind Booster | effect=Level up the FIVE OF A KIND hand by 3 levels. Granting +105 points and +9 multi additional | rarity=A | image=https://jokersofneon.com/cards/10046.png
+- id=10047 | name=Dice of Hearts | effect=Rolls a number between -2 and 6 to add to the multi for each played Hearts suited card. | rarity=B | image=https://jokersofneon.com/cards/10047.png
+- id=10048 | name=Dice of Clubs | effect=Rolls a number between -2 and 6 to add to the multi for each played Clubs suited card. | rarity=B | image=https://jokersofneon.com/cards/10048.png
+- id=10049 | name=Dice of Diamonds | effect=Rolls a number between -2 and 6 to add to the multi for each played Diamonds suited card. | rarity=B | image=https://jokersofneon.com/cards/10049.png
+- id=10050 | name=Dice of Spades | effect=Rolls a number between -2 and 6 to add to the multi for each played Spades suited card. | rarity=B | image=https://jokersofneon.com/cards/10050.png
+- id=10051 | name=Special Multiplier | effect=Adds +3 multi for each active special card | rarity=A | image=https://jokersofneon.com/cards/10051.png
+- id=10053 | name=Fury Reset | effect=Allows rerolling Rage cards once per round. Costs 500 per Rage card in the round. | image=https://jokersofneon.com/cards/10053.png
+- id=10054 | name=Skip Bonus | effect=Gain +25 points (stacking) for each loot box skipped (opened without selecting a card). Currently +{{points}} points. | image=https://jokersofneon.com/cards/10054.png
+- id=10056 | name=Slot Saver | effect=Earn +100 points for each unlocked but empty card slot. | rarity=A | image=https://jokersofneon.com/cards/10056.png
+- id=10059 | name=Club Keeper | effect=Earn +10 points for each Club card in your deck. | image=https://jokersofneon.com/cards/10059.png
+- id=10060 | name=Spade Trio | effect=If your hand contains at least 3 Spade cards, adds +100 points and +3 multi. | rarity=B | image=https://jokersofneon.com/cards/10060.png
+- id=10061 | name=Twos Matter | effect=Adds +30 points for every 2 held in your hand. | rarity=C | image=https://jokersofneon.com/cards/10061.png
+- id=10062 | name=Hand of modifiers | effect=Adds +5 multi for each modifier card held in your hand. | image=https://jokersofneon.com/cards/10062.png
+- id=10064 | name=Quad Multiplier | effect=+4 multi for every 4 card held in your hand. | rarity=A | image=https://jokersofneon.com/cards/10064.png
+- id=10065 | name=Jackpot | effect=Adds +30 points for every Jack held in your hand. | rarity=B | image=https://jokersofneon.com/cards/10065.png
+- id=10066 | name=Cash loop | effect=Earn +50% rewards after each level. | image=https://jokersofneon.com/cards/10066.png
+- id=10067 | name=Specials Hunter | effect=Double the probability on finding A and S specials cards on the store. | image=https://jokersofneon.com/cards/10067.png
+- id=10068 | name=King's Faith | effect=Each King played has a 50% of chance to grant +100 cash. Each King held in hand has a 25% chance to score +100 points. | rarity=B | image=https://jokersofneon.com/cards/10068.png
+- id=10069 | name=Arithmomania | effect=If the sum of the cards you played is even, adds +7 multi. If it's odd, adds +100 points. | rarity=B | image=https://jokersofneon.com/cards/10069.png
+- id=10070 | name=Black and Red | effect=Heart and Diamond suited cards add double points. Club and Spade suited cards add +1 multi. | rarity=A | image=https://jokersofneon.com/cards/10070.png
+- id=10071 | name=Worthless Jokers | effect=Jokers score 0 points and 0 multi. Every other card scores +1 multi. | image=https://jokersofneon.com/cards/10071.png
+- id=10072 | name=Rising Ladder | effect=Gain +10 points (stacking) for every straight played. Currently at +{{points}} points. | rarity=S | image=https://jokersofneon.com/cards/10072.png
+- id=10073 | name=Relativity | effect=Converts any straight into a 10-Ace straight (the higher possible straight). | image=https://jokersofneon.com/cards/10073.png
+- id=10074 | name=Wildcard Booster | effect=Each Wildcard grants +100 points. | rarity=B | image=https://jokersofneon.com/cards/10074.png
+- id=10079 | name=Rainbow | effect=Adds +200 points and +5 multi if your play includes all four suits. | rarity=A | image=https://jokersofneon.com/cards/10079.png
+- id=10080 | name=Queens Fortune | effect=Each Queen that scores has a 50% chance to grant +150 cash. | rarity=B | creator=dub_zn | image=https://jokersofneon.com/cards/10080.png
+- id=10101 | name=Faded Poster | effect=Starts at +100 points, loses 10 points per play until it reaches 10 points. Currently +{{points}} points. | rarity=C | image=https://jokersofneon.com/cards/10101.png | skins=2:https://jokersofneon.com/cards/10101_sk2.png
+- id=10102 | name=Tamer of Chances | effect=Swap one discard for one play. | rarity=C | image=https://jokersofneon.com/cards/10102.png
+- id=10103 | name=Blackjack | effect=If card values sum under 21, adds +21 points; if exactly 21, adds +21 multi. | rarity=C | image=https://jokersofneon.com/cards/10103.png
+- id=10104 | name=Point Juggler | effect=Discarded cards give their value ×10 points. | rarity=C | image=https://jokersofneon.com/cards/10104.png | skins=2:https://jokersofneon.com/cards/10104_sk2.png
+- id=10105 | name=Deck Collector | effect=Earn +1 points for every card in your deck. | rarity=C | image=https://jokersofneon.com/cards/10105.png | skins=2:https://jokersofneon.com/cards/10105_sk2.png
+- id=10106 | name=Circle of Fortune | effect=Rolls a random number between 0 and 36; if even, result on points x5; if odd, result on cash x10; if 0, +300 points. | rarity=B | image=https://jokersofneon.com/cards/10106.png
+- id=10107 | name=Hestia Blessing | effect=Burned cards accumulate their points; if it's a Joker, +1 multi is accumulated. Currently +{{points}} points +{{multi}} multi. | rarity=A | image=https://jokersofneon.com/cards/10107.png | skins=101:https://jokersofneon.com/cards/10107_sk101.png
+- id=10108 | name=Suit Roulette | effect=Choose a random suit each play; adds +5 multi for each card of that suit played. | rarity=B | image=https://jokersofneon.com/cards/10108.png
+- id=10109 | name=Hanged Joker | effect=For each joker in your play, 20% chance to accumulate +10 points. Currently +{{points}} points. | rarity=B | image=https://jokersofneon.com/cards/10109.png | skins=2:https://jokersofneon.com/cards/10109_sk2.png
+- id=10110 | name=Special Sacrifice | effect=Gain +1 multi (stacking) for every special card sold. Currently +{{multi}} multi. | rarity=A | image=https://jokersofneon.com/cards/10110.png | skins=2:https://jokersofneon.com/cards/10110_sk2.png
+- id=10111 | name=High Roller | effect=Each High Card played has a 50% chance to gain +1 multi (stacking). Currently +{{multi}} multi. | rarity=B | image=https://jokersofneon.com/cards/10111.png | skins=2:https://jokersofneon.com/cards/10111_sk2.png
+- id=10112 | name=Efficient Play | effect=Earn +10 multi and +50 points when playing 3 or fewer cards. | rarity=A | image=https://jokersofneon.com/cards/10112.png
+- id=10113 | name=Rage Breaker | effect=Gain +3 multi (stacking) for each Rage defeated. Currently +{{multi}} multi. | rarity=S | image=https://jokersofneon.com/cards/10113.png | skins=2:https://jokersofneon.com/cards/10113_sk2.png
+- id=10114 | name=Burning Rewards | effect=Gain +15 points (stacking) for each card burned from your deck. Currently +{{points}} points. | rarity=S | image=https://jokersofneon.com/cards/10114.png | skins=2:https://jokersofneon.com/cards/10114_sk2.png
+- id=10201 | name=Relativity | effect=Converts your played Straight into a high Straight (10, J, Q, K, A). | rarity=C | creator=dpotsdobeck | image=https://jokersofneon.com/cards/10201.png
+- id=10202 | name=Cash Catalyst | effect=Adds +1 multi for every 1000 cash you have. | rarity=C | image=https://jokersofneon.com/cards/10202.png | skins=3:https://jokersofneon.com/cards/10202_sk3.png
+- id=10203 | name=Lifeflame | effect=Adds +15 points for each remaining play and discard. | rarity=C | image=https://jokersofneon.com/cards/10203.png | skins=3:https://jokersofneon.com/cards/10203_sk3.png
+- id=10204 | name=Impermanence | effect=Grants +5 hand size, decreasing by 1 each round until it reaches 0. | rarity=B | image=https://jokersofneon.com/cards/10204.png
+- id=10205 | name=Cash Loop | effect=Adds +50% cash rewards after completing each level. | rarity=B | image=https://jokersofneon.com/cards/10205.png
+- id=10206 | name=Accidental Value | effect=Each played card not belonging to the hand adds +25 points and +1 multi. | rarity=C | image=https://jokersofneon.com/cards/10206.png | skins=3:https://jokersofneon.com/cards/10206_sk3.png
+- id=10207 | name=Duality | effect=Adds +300 points if you play 2 or fewer cards. | rarity=B | image=https://jokersofneon.com/cards/10207.png
+- id=10208 | name=Neon Doctrine | effect=Played cards have a 30% chance to become neon cards. | rarity=B | image=https://jokersofneon.com/cards/10208.png | skins=3:https://jokersofneon.com/cards/10208_sk3.png
+- id=10209 | name=Minimalism | effect=Gains +5 points (stacking) each time you play 3 or fewer cards. Currently +{{points}} points. | rarity=A | image=https://jokersofneon.com/cards/10209.png
+- id=10210 | name=Neon Synergy | effect=If 50% or more of the played cards are neon, all played cards become neon. | rarity=A | image=https://jokersofneon.com/cards/10210.png | skins=3:https://jokersofneon.com/cards/10210_sk3.png
+- id=10211 | name=Providence | effect=Shop items have a 15% chance to be free. | rarity=A | image=https://jokersofneon.com/cards/10211.png
+- id=10212 | name=Efficient Hunter | effect=Reduces the required round score by 25%. | rarity=A | image=https://jokersofneon.com/cards/10212.png | skins=3:https://jokersofneon.com/cards/10212_sk3.png
+- id=10213 | name=Residual Charge | effect=Accumulates 10% of the value of each power-up played. Currently +{{points}} points. | rarity=S | image=https://jokersofneon.com/cards/10213.png | skins=3:https://jokersofneon.com/cards/10213_sk3.png
+- id=10214 | name=Undying Draw | effect=The first hand you discard each round is leveled up. | rarity=S | image=https://jokersofneon.com/cards/10214.png | skins=3:https://jokersofneon.com/cards/10214_sk3.png
+- id=19901 | name=Lucky Cashback | effect=50% chance to add +150 cash when playing or discarding. | rarity=C | image=https://jokersofneon.com/cards/19901.png
+- id=19902 | name=Resonant Multiplier | effect=For every card with a value under 5, adds multi equal to its value. | rarity=B | image=https://jokersofneon.com/cards/19902.png
+- id=19903 | name=Swamp Redemption | effect=Gains between +1 and +5 points (stacking) each time you discard. Currently +{{points}} points. | rarity=S | image=https://jokersofneon.com/cards/19903.png
+
+RAGE CARDS
+- id=20001 | name=Broken Hearts | effect=Heart suited cards will not score during this round | rarity=C | image=https://jokersofneon.com/cards/20001.png
+- id=20002 | name=Broken Clubs | effect=Club suited cards will not score during this round | rarity=C | image=https://jokersofneon.com/cards/20002.png
+- id=20003 | name=Broken Diamonds | effect=Diamond suited cards will not score during this round | rarity=C | image=https://jokersofneon.com/cards/20003.png
+- id=20004 | name=Broken Spades | effect=Spade suited cards will not score during this round | rarity=C | image=https://jokersofneon.com/cards/20004.png
+- id=20005 | name=Broken Jokers | effect=Jokers will not score during this round | rarity=B | image=https://jokersofneon.com/cards/20005.png
+- id=20006 | name=Diminished Hold | effect=Your hand will be reduced by 2 cards during this round | rarity=A | image=https://jokersofneon.com/cards/20006.png
+- id=20007 | name=Zero Waste | effect=You have no discards during this round | rarity=S | image=https://jokersofneon.com/cards/20007.png
+- id=20008 | name=Unexpected Sacrifice | effect=One of your special cards got sacrificed | image=https://jokersofneon.com/cards/20008.png
+- id=20009 | name=Strategic Quartet | effect=You can only play up to 4 cards during this round | rarity=S | image=https://jokersofneon.com/cards/20009.png
+- id=20010 | name=Dynamic Tactics | effect=The same hand cannot be played twice | image=https://jokersofneon.com/cards/20010.png
+- id=20011 | name=Balanced Trade-off | effect=A poker play is worth double, another half | image=https://jokersofneon.com/cards/20011.png
+- id=20012 | name=Broken Figures | effect=Figures (Jack, Queen and King) will not score during this round | rarity=C | image=https://jokersofneon.com/cards/20012.png
+- id=20013 | name=Broken Modifiers | effect=Modifiers will not work during this round | image=https://jokersofneon.com/cards/20013.png
+- id=20014 | name=Last Words | effect=Silence the most repeated card in the deck | image=https://jokersofneon.com/cards/20014.png
+- id=20015 | name=Greedy Trap | effect=Deduct 200 for each hand played and 100 for each discard | image=https://jokersofneon.com/cards/20015.png
+- id=20016 | name=The Hand Leech | effect=2 hands less to play | rarity=B | image=https://jokersofneon.com/cards/20016.png
+- id=20017 | name=Spider’s Snare | effect=Special cards have no effect on the first hand played | image=https://jokersofneon.com/cards/20017.png
+- id=20018 | name=Perpetual Curse | effect=Silence a random card in each hand played | image=https://jokersofneon.com/cards/20018.png
+- id=20020 | name=Double Trouble | effect=You have to make double points in this round | rarity=B | image=https://jokersofneon.com/cards/20020.png
+- id=20021 | name=Betraying the Weak | effect=Cards with a value of 5 or less will not score during this round | rarity=C | image=https://jokersofneon.com/cards/20021.png
+- id=20022 | name=Locked Plays | effect=You can only play one hand type in this round | rarity=B | image=https://jokersofneon.com/cards/20022.png
+- id=20023 | name=Punched Ticket | effect=You can't play the same hand twice in this round | rarity=S | image=https://jokersofneon.com/cards/20023.png
+- id=20025 | name=Buzzkiller | effect=Your most-played hand does not count this round. | image=https://jokersofneon.com/cards/20025.png
+- id=20026 | name=Blackout | effect=Two of your current special cards get silenced for this round | image=https://jokersofneon.com/cards/20026.png
+
+POWER-UPS (ITEM CARDS)
+- id=800 | name=+25 Points | effect_text=Scores +25 additional points | effect_points=25 | effect_multi=0 | tier=B | base_cost=100 | sell_value=50 | image=https://jokersofneon.com/cards/800.png | app_image=/powerups/800.png
+- id=801 | name=50 Points | effect_text=Scores +50 additional points | effect_points=50 | effect_multi=0 | tier=A | base_cost=200 | sell_value=50 | image=https://jokersofneon.com/cards/801.png | app_image=/powerups/801.png
+- id=802 | name=+75 Points | effect_text=Scores +75 additional points | effect_points=75 | effect_multi=0 | tier=S | base_cost=350 | sell_value=100 | image=https://jokersofneon.com/cards/802.png | app_image=/powerups/802.png
+- id=803 | name=+100 Points | effect_text=Scores +100 additional points | effect_points=100 | effect_multi=0 | tier=SS | base_cost=500 | sell_value=150 | image=https://jokersofneon.com/cards/803.png | app_image=/powerups/803.png
+- id=804 | name=+3 multi | effect_text=Adds +3 to the multi | effect_points=0 | effect_multi=3 | tier=B | base_cost=100 | sell_value=50 | image=https://jokersofneon.com/cards/804.png | app_image=/powerups/804.png
+- id=805 | name=+5 multi | effect_text=Adds +5 to the multi | effect_points=0 | effect_multi=5 | tier=A | base_cost=200 | sell_value=50 | image=https://jokersofneon.com/cards/805.png | app_image=/powerups/805.png
+- id=806 | name=+7 multi | effect_text=Adds +7 to the multi | effect_points=0 | effect_multi=7 | tier=S | base_cost=350 | sell_value=100 | image=https://jokersofneon.com/cards/806.png | app_image=/powerups/806.png
+- id=807 | name=10 multi | effect_text=Adds +10 to the multi | effect_points=0 | effect_multi=10 | tier=SS | base_cost=500 | sell_value=150 | image=https://jokersofneon.com/cards/807.png | app_image=/powerups/807.png
+
+SKIN CATALOG (EXPLICIT ASSETS FOUND)
+- base_id=10101 | base_name=Faded Poster | skins=2 | urls=10101_sk2:https://jokersofneon.com/cards/10101_sk2.png
+- base_id=10104 | base_name=Point Juggler | skins=2 | urls=10104_sk2:https://jokersofneon.com/cards/10104_sk2.png
+- base_id=10105 | base_name=Deck Collector | skins=2 | urls=10105_sk2:https://jokersofneon.com/cards/10105_sk2.png
+- base_id=10107 | base_name=Hestia Blessing | skins=101 | urls=10107_sk101:https://jokersofneon.com/cards/10107_sk101.png
+- base_id=10109 | base_name=Hanged Joker | skins=2 | urls=10109_sk2:https://jokersofneon.com/cards/10109_sk2.png
+- base_id=10110 | base_name=Special Sacrifice | skins=2 | urls=10110_sk2:https://jokersofneon.com/cards/10110_sk2.png
+- base_id=10111 | base_name=High Roller | skins=2 | urls=10111_sk2:https://jokersofneon.com/cards/10111_sk2.png
+- base_id=10113 | base_name=Rage Breaker | skins=2 | urls=10113_sk2:https://jokersofneon.com/cards/10113_sk2.png
+- base_id=10114 | base_name=Burning Rewards | skins=2 | urls=10114_sk2:https://jokersofneon.com/cards/10114_sk2.png
+- base_id=10202 | base_name=Cash Catalyst | skins=3 | urls=10202_sk3:https://jokersofneon.com/cards/10202_sk3.png
+- base_id=10203 | base_name=Lifeflame | skins=3 | urls=10203_sk3:https://jokersofneon.com/cards/10203_sk3.png
+- base_id=10206 | base_name=Accidental Value | skins=3 | urls=10206_sk3:https://jokersofneon.com/cards/10206_sk3.png
+- base_id=10208 | base_name=Neon Doctrine | skins=3 | urls=10208_sk3:https://jokersofneon.com/cards/10208_sk3.png
+- base_id=10210 | base_name=Neon Synergy | skins=3 | urls=10210_sk3:https://jokersofneon.com/cards/10210_sk3.png
+- base_id=10212 | base_name=Efficient Hunter | skins=3 | urls=10212_sk3:https://jokersofneon.com/cards/10212_sk3.png
+- base_id=10213 | base_name=Residual Charge | skins=3 | urls=10213_sk3:https://jokersofneon.com/cards/10213_sk3.png
+- base_id=10214 | base_name=Undying Draw | skins=3 | urls=10214_sk3:https://jokersofneon.com/cards/10214_sk3.png
+
+LOOT BOXES
+- id=1 | name=Basic loot box | description=Contains mostly traditional cards and modifiers | details=2% chance of getting a special card | 5% chance of getting a modifier card | 4% chance of getting a Joker | 1% chance of getting a Neon Joker | 88% chance of getting a traditional card | Loot box size 5 | image=https://jokersofneon.com/cards/1.png | size=5 | rarity=C | sell_price=750
+- id=2 | name=Advanced loot box | description=Can contain a special card or joker | details=4% chance of getting a special card | 10% chance of getting a modifier card | 8% chance of getting a Joker | 2% chance of getting a Neon Joker | 76% chance of getting a traditional card | Loot box size 5 | image=https://jokersofneon.com/cards/2.png | size=5 | rarity=B | sell_price=1500
+- id=3 | name=Jokers loot box | description=More chances of getting a Joker | details=15% chance of getting a Joker | 1% chance of getting a Neon Joker | 84% chance of getting a traditional card | Loot box size 5 | image=https://jokersofneon.com/cards/3.png | size=3 | rarity=B | sell_price=1500
+- id=4 | name=Specials loot box | description=More chances of getting a special card | details=25% chance of getting a special card | 15% chance of getting a modifier | 60% chance of getting a traditional card | Loot box size 3 | image=https://jokersofneon.com/cards/4.png | size=3 | rarity=A | sell_price=2000
+- id=5 | name=Modifiers loot box | description=Contains mostly modifiers | details=50% chance of getting a modifier | 50% chance of getting a traditional card | Loot box size 5 | image=https://jokersofneon.com/cards/5.png | size=5 | rarity=B | sell_price=1500
+- id=6 | name=Figures loot box | description=Contains mostly figure cards | details=70% chance of getting a figure | 30% chance of getting other traditional cards | Loot box size 5 | image=https://jokersofneon.com/cards/6.png | size=5 | rarity=C | sell_price=750
+- id=7 | name=The Deceitful Joker loot box | description=1 guaranteed Joker | details=1 guaranteed Joker | 9% chance of getting a Joker | 1% chance of getting a Neon Joker | 90% chance of getting a traditional card | Loot box size 4 | image=https://jokersofneon.com/cards/7.png | size=4 | rarity=A | sell_price=2000
+- id=8 | name=Hearts loot box | description=All hearts suited cards, can contain special cards and modifiers. | details=100% chance of getting Ace of Hearts | 54% chance of getting a traditional Heart card | 30% chance of getting Neon Heart card | 10% chance of getting Heart Suit modifier | 2% chance of getting 'Love is in the air' special card (A) | 2% chance of getting 'Dice of Hearts' special card (B) | 2% chance of getting 'Multiplied Hearts' special card (C) | Loot box size 5 | image=https://jokersofneon.com/cards/8.png | size=5 | rarity=C | sell_price=750
+- id=9 | name=Special Bet loot box | description=Small loot box with chances of getting a special card or modifier | details=5% chance of getting a special card | 10% chance of getting a modifier | 85% chance of getting a traditional card | Loot box size 3 | image=https://jokersofneon.com/cards/9.png | size=3 | rarity=C | sell_price=750
+- id=10 | name=Neon loot box | description=An exclusive loot box filled with neon cards | details=97% chance of getting a neon card | 3% chance of getting a Neon Joker | Loot box size 5 | image=https://jokersofneon.com/cards/10.png | size=5 | rarity=A | sell_price=2000
+- id=11 | name=Spades loot box | description=All spades suited cards, can contain special cards, neon cards and modifiers. | details=100% chance of getting Ace of Spades | 54% chance of getting a traditional Spade card | 30% chance of getting Neon Spade card | 10% chance of getting Spade Suit modifier | 2% chance of getting 'Spade Trio' special card (A) | 2% chance of getting 'Dice of Spades' special card (B) | 2% chance of getting 'Multiplied Spades' special card (C) | Loot box size 5 | image=https://jokersofneon.com/cards/11.png | size=5 | rarity=C | sell_price=750
+- id=12 | name=Diamonds loot box | description=All diamonds suited cards, can contain special cards, neon cards and modifiers. | details=100% chance of getting Ace of Diamonds | 54% chance of getting a traditional Diamond card | 30% chance of getting Neon Diamond card | 10% chance of getting Diamond Suit modifier | 2% chance of getting 'Lucky hand' special card (C) | 2% chance of getting 'Multiplied Diamonds' special card (C) | 2% chance of getting 'Dice of Diamonds' special card (B) | Loot box size 5 | image=https://jokersofneon.com/cards/12.png | size=5 | rarity=C | sell_price=750
+- id=13 | name=Clubs loot box | description=All clubs suited cards, can contain special cards, neon cards and modifiers. | details=100% chance of getting Ace of Clubs | 56% chance of getting a traditional Club card | 30% chance of getting Neon Club card | 10% chance of getting Club Suit modifier | 2% chance of getting 'Multiplied Clubs' special card (C) | 2% chance of getting 'Dice of Clubs' special card (B) | Loot box size 5 | image=https://jokersofneon.com/cards/13.png | size=5 | rarity=C | sell_price=750
+
+LOOT BOX PROBABILITY MATRIX (PACK_RATES from src/data/lootBoxRates.ts)
+- Format: pack_id -> item_slot -> item_type:percentage
+- pack_id=1
+  item_slot=1 | Traditional:96.0%, Joker:2.0%, Neon:2.0%, Neon Joker:0.0%, Special C:0.0%, Special B:0.0%, Special A:0.0%, Special S:0.0%
+  item_slot=2 | Traditional:55.0%, Joker:2.0%, Neon:42.9%, Neon Joker:0.1%, Special C:0.0%, Special B:0.0%, Special A:0.0%, Special S:0.0%
+  item_slot=3 | Traditional:0.0%, Joker:5.0%, Neon:63.0%, Neon Joker:2.0%, Special C:28.0%, Special B:1.9%, Special A:0.1%, Special S:0.0%
+- pack_id=2
+  item_slot=1 | Traditional:96.0%, Joker:2.0%, Neon:2.0%
+  item_slot=2 | Joker:5.0%, Neon:83.0%, Neon Joker:2.0%, Special C:8.0%, Special B:1.9%, Special A:0.1%
+  item_slot=3 | Neon:0.0%, Neon Joker:0.0%, Special C:70.0%, Special B:27.0%, Special A:2.9%, Special S:0.1%
+- pack_id=3
+  item_slot=1 | Traditional:96.0%, Joker:2.0%, Neon:2.0%
+  item_slot=2 | Traditional:60.0%, Joker:2.0%, Neon:37.9%, Neon Joker:0.1%
+  item_slot=3 | Neon:76.9%, Neon Joker:2.0%, Special C:15.0%, Special B:5.0%, Special A:1.0%, Special S:0.1%
+  item_slot=4 | Neon:0.0%, Neon Joker:0.0%, Special C:47.0%, Special B:35.0%, Special A:15.0%, Special S:3.0%
+- pack_id=4
+  item_slot=1 | Traditional:96.0%, Joker:2.0%, Neon:2.0%
+  item_slot=2 | Traditional:55.0%, Joker:2.0%, Neon:42.9%, Neon Joker:0.1%
+  item_slot=3 | Neon:0.0%, Neon Joker:0.0%, Special C:70.0%, Special B:27.0%, Special A:2.9%, Special S:0.1%
+  item_slot=4 | Special B:50.0%, Special A:40.0%, Special S:10.0%
+- pack_id=5
+  item_slot=1 | Traditional:50.0%, Joker:20.0%, Neon:10.0%, Neon Joker:10.0%, Special C:5.0%, Special B:5.0%
+  item_slot=2 | Joker:30.0%, Neon:20.0%, Neon Joker:20.0%, Special C:10.0%, Special B:10.0%, Special A:5.0%, Special S:5.0%
+  item_slot=3 | Neon:20.0%, Neon Joker:30.0%, Special C:10.0%, Special B:20.0%, Special A:10.0%, Special S:10.0%
+  item_slot=4 | Special A:30.0%, Special S:10.0%, Skin Special C:39.9%, Skin Special B:17.0%, Skin Special A:3.0%, Skin Special S:0.1%
+  item_slot=5 | Skin Special C:30.0%, Skin Special B:30.0%, Skin Special A:30.0%, Skin Special S:10.0%
+- pack_id=6
+  item_slot=1 | Traditional:50.0%, Joker:20.0%, Neon:10.0%, Neon Joker:10.0%, Special C:5.0%, Special B:5.0%
+  item_slot=2 | Joker:30.0%, Neon:20.0%, Neon Joker:20.0%, Special C:10.0%, Special B:10.0%, Special A:5.0%, Special S:5.0%
+  item_slot=3 | Joker:30.0%, Neon:20.0%, Neon Joker:20.0%, Special C:10.0%, Special B:10.0%, Special A:5.0%, Special S:5.0%
+  item_slot=4 | Neon:20.0%, Neon Joker:30.0%, Special C:10.0%, Special B:20.0%, Special A:10.0%, Special S:10.0%
+  item_slot=5 | Neon:20.0%, Neon Joker:30.0%, Special C:10.0%, Special B:20.0%, Special A:10.0%, Special S:10.0%
+  item_slot=6 | Neon:20.0%, Neon Joker:30.0%, Special C:10.0%, Special B:20.0%, Special A:10.0%, Special S:10.0%
+  item_slot=7 | Skin Special C:39.9%, Skin Special B:17.0%, Skin Special A:3.0%, Skin Special S:0.1%
+  item_slot=8 | Skin Special C:39.9%, Skin Special B:17.0%, Skin Special A:3.0%, Skin Special S:0.1%
+  item_slot=9 | Skin Special C:30.0%, Skin Special B:30.0%, Skin Special A:30.0%, Skin Special S:10.0%
+  item_slot=10 | Skin Special C:30.0%, Skin Special B:30.0%, Skin Special A:30.0%, Skin Special S:10.0%
+- pack_id=8
+  item_slot=1 | Special A:2.0%, Special B:2.0%, Special C:12.0%, Neon:30.0%, Traditional:54.0%
+  item_slot=2 | Special A:2.0%, Special B:2.0%, Special C:12.0%, Neon:30.0%, Traditional:54.0%
+  item_slot=3 | Special A:2.0%, Special B:2.0%, Special C:12.0%, Neon:30.0%, Traditional:54.0%
+  item_slot=4 | Special A:2.0%, Special B:2.0%, Special C:12.0%, Neon:30.0%, Traditional:54.0%
+  item_slot=5 | Special A:2.0%, Special B:2.0%, Special C:12.0%, Neon:30.0%, Traditional:54.0%
+- pack_id=11
+  item_slot=1 | Special A:2.0%, Special B:2.0%, Special C:12.0%, Neon:30.0%, Traditional:54.0%
+  item_slot=2 | Special A:2.0%, Special B:2.0%, Special C:12.0%, Neon:30.0%, Traditional:54.0%
+  item_slot=3 | Special A:2.0%, Special B:2.0%, Special C:12.0%, Neon:30.0%, Traditional:54.0%
+  item_slot=4 | Special A:2.0%, Special B:2.0%, Special C:12.0%, Neon:30.0%, Traditional:54.0%
+  item_slot=5 | Special A:2.0%, Special B:2.0%, Special C:12.0%, Neon:30.0%, Traditional:54.0%
+- pack_id=12
+  item_slot=1 | Special B:2.0%, Special C:14.0%, Neon:30.0%, Traditional:54.0%
+  item_slot=2 | Special B:2.0%, Special C:14.0%, Neon:30.0%, Traditional:54.0%
+  item_slot=3 | Special B:2.0%, Special C:14.0%, Neon:30.0%, Traditional:54.0%
+  item_slot=4 | Special B:2.0%, Special C:14.0%, Neon:30.0%, Traditional:54.0%
+  item_slot=5 | Special B:2.0%, Special C:14.0%, Neon:30.0%, Traditional:54.0%
+- pack_id=13
+  item_slot=1 | Special B:2.0%, Special C:12.0%, Neon:30.0%, Traditional:56.0%
+  item_slot=2 | Special B:2.0%, Special C:12.0%, Neon:30.0%, Traditional:56.0%
+  item_slot=3 | Special B:2.0%, Special C:12.0%, Neon:30.0%, Traditional:56.0%
+  item_slot=4 | Special B:2.0%, Special C:12.0%, Neon:30.0%, Traditional:56.0%
+  item_slot=5 | Special B:2.0%, Special C:12.0%, Neon:30.0%, Traditional:56.0%
+- pack_id=21
+  item_slot=1 | Traditional:96.0%, Joker:2.0%, Neon:2.0%, Neon Joker:0.0%, Special C:0.0%, Special B:0.0%, Special A:0.0%, Special S:0.0%
+  item_slot=2 | Traditional:55.0%, Joker:2.0%, Neon:42.9%, Neon Joker:0.1%, Special C:0.0%, Special B:0.0%, Special A:0.0%, Special S:0.0%
+  item_slot=3 | Traditional:0.0%, Joker:5.0%, Neon:63.0%, Neon Joker:2.0%, Special C:28.0%, Special B:1.9%, Special A:0.1%, Special S:0.0%
+- pack_id=22
+  item_slot=1 | Traditional:96.0%, Joker:2.0%, Neon:2.0%
+  item_slot=2 | Joker:5.0%, Neon:83.0%, Neon Joker:2.0%, Special C:8.0%, Special B:1.9%, Special A:0.1%
+  item_slot=3 | Neon:0.0%, Neon Joker:0.0%, Special C:70.0%, Special B:27.0%, Special A:2.9%, Special S:0.1%
+- pack_id=23
+  item_slot=1 | Traditional:96.0%, Joker:2.0%, Neon:2.0%
+  item_slot=2 | Traditional:60.0%, Joker:2.0%, Neon:37.9%, Neon Joker:0.1%
+  item_slot=3 | Neon:76.9%, Neon Joker:2.0%, Special C:15.0%, Special B:5.0%, Special A:1.0%, Special S:0.1%
+  item_slot=4 | Neon:0.0%, Neon Joker:0.0%, Special C:47.0%, Special B:35.0%, Special A:15.0%, Special S:3.0%
+- pack_id=24
+  item_slot=1 | Traditional:96.0%, Joker:2.0%, Neon:2.0%
+  item_slot=2 | Traditional:55.0%, Joker:2.0%, Neon:42.9%, Neon Joker:0.1%
+  item_slot=3 | Neon:0.0%, Neon Joker:0.0%, Special C:70.0%, Special B:27.0%, Special A:2.9%, Special S:0.1%
+  item_slot=4 | Special B:50.0%, Special A:40.0%, Special S:10.0%
+- pack_id=25
+  item_slot=1 | Traditional:50.0%, Joker:20.0%, Neon:10.0%, Neon Joker:10.0%, Special C:5.0%, Special B:5.0%
+  item_slot=2 | Joker:30.0%, Neon:20.0%, Neon Joker:20.0%, Special C:10.0%, Special B:10.0%, Special A:5.0%, Special S:5.0%
+  item_slot=3 | Neon:20.0%, Neon Joker:30.0%, Special C:10.0%, Special B:20.0%, Special A:10.0%, Special S:10.0%
+  item_slot=4 | Special A:30.0%, Special S:10.0%, Skin Special C:39.9%, Skin Special B:17.0%, Skin Special A:3.0%, Skin Special S:0.1%
+  item_slot=5 | Skin Special C:30.0%, Skin Special B:30.0%, Skin Special A:30.0%, Skin Special S:10.0%
+- pack_id=26
+  item_slot=1 | Traditional:50.0%, Joker:20.0%, Neon:10.0%, Neon Joker:10.0%, Special C:5.0%, Special B:5.0%
+  item_slot=2 | Joker:30.0%, Neon:20.0%, Neon Joker:20.0%, Special C:10.0%, Special B:10.0%, Special A:5.0%, Special S:5.0%
+  item_slot=3 | Joker:30.0%, Neon:20.0%, Neon Joker:20.0%, Special C:10.0%, Special B:10.0%, Special A:5.0%, Special S:5.0%
+  item_slot=4 | Neon:20.0%, Neon Joker:30.0%, Special C:10.0%, Special B:20.0%, Special A:10.0%, Special S:10.0%
+  item_slot=5 | Neon:20.0%, Neon Joker:30.0%, Special C:10.0%, Special B:20.0%, Special A:10.0%, Special S:10.0%
+  item_slot=6 | Neon:20.0%, Neon Joker:30.0%, Special C:10.0%, Special B:20.0%, Special A:10.0%, Special S:10.0%
+  item_slot=7 | Skin Special C:39.9%, Skin Special B:17.0%, Skin Special A:3.0%, Skin Special S:0.1%
+  item_slot=8 | Skin Special C:39.9%, Skin Special B:17.0%, Skin Special A:3.0%, Skin Special S:0.1%
+  item_slot=9 | Skin Special C:30.0%, Skin Special B:30.0%, Skin Special A:30.0%, Skin Special S:10.0%
+  item_slot=10 | Skin Special C:30.0%, Skin Special B:30.0%, Skin Special A:30.0%, Skin Special S:10.0%
+
+STORE TYPES (MAP SHOP NODES)
+- shop_id=1 | name=Deck | summary={{traditionals}} traditional or neon cards, {{modifiers}} modifiers, burn a card from your deck | inventory_hint=traditionals:5, modifiers:3
+- shop_id=2 | name=Global | summary={{specials}} special cards, {{powerups}} power-ups | inventory_hint=specials:2, powerups:2
+- shop_id=3 | name=Specials | summary={{specials}} special cards, {{lootboxes}} loot boxes | inventory_hint=specials:3, lootboxes:2
+- shop_id=4 | name=LevelUps | summary={{levelups}} level ups, {{specials}} special cards | inventory_hint=levelups:3, specials:2
+- shop_id=5 | name=Modifiers | summary={{modifiers}} modifiers, {{lootboxes}} loot boxes | inventory_hint=modifiers:4, lootboxes:2
+- shop_id=6 | name=Mix | summary={{lootboxes}} loot boxes, {{powerups}} power-ups, {{levelups}} level ups | inventory_hint=lootboxes:2, powerups:2, levelups:3
+
+STORE SECTIONS (DYNAMIC LAYOUT IDs)
+- traditionals: traditional + neon card offers
+- modifiers: modifier card offers
+- specials: special card offers
+- power-ups: consumable boosts (points/multi)
+- loot-boxes: randomized packs
+- level-up-table: poker hand level upgrades (points/multi growth)
+- burn: remove a card from your deck
+- unlock-slot: buy extra special-card slot (if below max)
+- reroll: refresh current store inventory for a coin cost
+
+ITEMS (NON-CARD SHOP MECHANICS)
+- Burn item: permanently remove one card from deck.
+- Special slot item: unlock one additional special card slot.
+- Poker hand level-up item: increase selected hand level (raises points/multi).
+- Reroll: re-randomize store inventory.
+- Power-up slots: game config default max 4 if config fetch unavailable.
+- Special-card slots: game config default max 7 if config fetch unavailable.
+
+RAGE ROUNDS - HOW THEY WORK
+- Rage rounds are separate map nodes (NodeType.RAGE) that apply one or more rage effects for that round.
+- Active rage card ids are exposed in game round state as round.rages.
+- Rage node payload encodes two numbers: round_index = floor(data / 2^32), power = data mod 2^32.
+- Rage nodes are labeled as Intermediate, Final, or Final Boss in UI.
+- Boss level constant in frontend: BOSS_LEVEL=3.
+- Rage effects are typically temporary, round-scoped debuffs (see Rage card list above).
+
+MAP MODEL
+- Map is fetched from on-chain map_system.getLevelMap(gameId).
+- Node types: ROUND, STORE, RAGE, REWARD, NONE (challenge support exists in UI enum).
+- Node data semantics:
+  - STORE node data => shop_id
+  - ROUND node data => round number
+  - RAGE node data => encoded round/power (see Rage section)
+- Each node has child connections; UI renders a DAG with branch choices.
+- Legend labels in app include: normal round, rage (intermediate/final), and six shop types.
+
+SCORING BASICS
+- Final play score uses Points x Multi model.
+- Traditional card base values from card texts: 2-10 pip values, J/Q/K=10, A=11.
+- Joker card text: can substitute any traditional card; grants +100 points and +1 multi when played.
+- Neon cards generally provide doubled point profile plus +1 multi over traditional equivalents.
+- Modifiers, specials, power-ups, and rage effects can alter scoring and legal hand composition.
+
+TEMPORARY VS PERMANENT SPECIALS
+- Store info defines temporary specials as auto-removed after 3 rounds.
+- Permanent specials persist until sold/removed.
+
+KNOWN DATA NOTES
+- Loot box translation provides human-readable odds/details for ids 1-13.
+- PACK_RATES currently provides explicit slot-level probability matrices for pack ids 1,2,3,4,5,6,8,11,12,13,21,22,23,24,25,26.
+- Rarity mapping files may not include every card id present in localization catalogs (new/legacy content coexist).
+
+SOURCE FILES USED
+- public/locales/en/cards/translation.json
+- public/locales/en/store/translation.json
+- public/locales/en/map/translation.json
+- public/locales/en/tutorials/translation.json
+- public/locales/en/plays/translation.json
+- src/data/specialCards.ts
+- src/data/rageCards.ts
+- src/data/modifiers.ts
+- src/data/lootBoxes.ts
+- src/data/lootBoxRates.ts
+- src/data/powerups.ts
+- src/constants/powerupEffects.ts
+- src/pages/Map/types.ts
+- src/pages/Map/nodes/StoreNode.tsx
+- src/providers/MapProvider.tsx
+- src/utils/getRageNodeData.ts
+- src/dojo/queries/getGameConfig.ts
+- src/dojo/queries/getGameView.ts
+- README.md
