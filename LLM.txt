@@ -1,54 +1,327 @@
-JOKERS OF NEON - LLM REFERENCE
-Generated from repo source data.
+JOKERS OF NEON - GAME MANUAL
 
 GAME OBJECTIVE
-- Reach each round target score by playing poker hands and progress through level maps.
-- Build stronger decks by buying cards, modifiers, specials, power-ups, and loot boxes in stores.
-- Survive escalating difficulty, including Rage rounds with temporary debuffs.
-- Source summary: README + tutorials + in-game localization.
+- Build a stronger deck and clear rounds by reaching target score thresholds.
+- Navigate map paths (rounds, shops, rage nodes) and adapt your strategy each run.
+- In the meta game, earn XP, unlock season rewards, and compete in leaderboards and tournaments.
 
-CORE LOOP
-- Round: play/discard from hand to reach target score.
-- If target is reached: go to map/store and invest coins in upgrades.
-- If target is not reached and no hands remain: run ends.
-- README notes a classic setup of 5 hands + 5 discards per round at run start.
+CORE GAMEPLAY LOOP
+- Start a run with limited hands and discards each round.
+- Play poker hands to score points x multiplier.
+- If you hit the target score, you clear the node and progress.
+- If you fail with no hands left, the run ends.
+- After progression nodes, visit shops to improve deck power, economy, and consistency.
 
 POKER HAND TYPES
-- key=RoyalFlush | name=Royal flush | description=Highest straight flush
-- key=StraightFlush | name=Straight flush | description=Straight of the same suit
-- key=FiveOfAKind | name=Five of a kind | description=Five cards of the same rank
-- key=FourOfAKind | name=Four of a kind | description=Four cards of the same rank
-- key=FullHouse | name=Full house | description=Three of a kind and a pair
-- key=Straight | name=Straight | description=Five consecutive cards
-- key=Flush | name=Flush | description=Five cards of the same suit
-- key=ThreeOfAKind | name=Three of a kind | description=Three cards of the same rank
-- key=TwoPair | name=Two pair | description=Two pairs of cards of different rank
-- key=OnePair | name=Pair | description=Two cards of the same rank
-- key=HighCard | name=High card | description=Cards that are not consecutive and of different suits
+- Royal Flush: the highest-ranking straight flush.
+- Straight Flush: five consecutive cards of the same suit.
+- Five of a Kind: five cards of the same rank.
+- Four of a Kind: four cards of the same rank.
+- Full House: three of a kind plus a pair.
+- Straight: five consecutive cards.
+- Flush: five cards of the same suit.
+- Three of a Kind: three cards of the same rank.
+- Two Pair: two different pairs.
+- Pair: two cards of the same rank.
+- High Card: no combination; only highest card value applies.
+
+SCORING BASICS
+- A play score is calculated as: Points x Multi.
+- Each hand belongs to a rarity category (C, B, A, S, SS).
+- That category defines base values and per-level growth.
+
+BASE POINTS AND MULTI BY PLAY
+- SS | Royal Flush | 120 points | +9 multi | The highest-ranking hand with Ace, King, Queen, Jack, and Ten of the same suit.
+- S | Straight Flush | 100 points | +8 multi | Five consecutive cards of the same suit.
+- SS | Five of a Kind | 80 points | +8 multi | Five cards of the same rank.
+- S | Four of a Kind | 60 points | +7 multi | Four cards of the same rank.
+- A | Full House | 40 points | +4 multi | Three of a kind plus a pair.
+- A | Flush | 35 points | +4 multi | Five cards of the same suit, not in sequence.
+- A | Straight | 30 points | +4 multi | Five consecutive cards of different suits.
+- B | Three of a Kind | 30 points | +3 multi | Three cards of the same rank.
+- B | Two Pair | 20 points | +3 multi | Two different pairs of cards.
+- C | Pair | 10 points | +2 multi | Two cards of the same rank.
+- C | High Card | 5 points | +1 multi | The highest single card when no other hand is made.
+
+LEVEL UP GROWTH (BY CATEGORY)
+- SS: +35 points and +3 multi per level.
+- S: +30 points and +2 multi per level.
+- A: +25 points and +2 multi per level.
+- B: +20 points and +1 multi per level.
+- C: +10 points and +1 multi per level.
+
+CARD SCORING NOTES
+- Traditional cards follow face value (2-10, J/Q/K=10, A=11).
+- Neon cards are upgraded variants and generally add +1 multi.
+- Jokers and Wildcards help complete hands.
+- Specials, Modifiers, Power-ups, and Rage effects can heavily change final round results.
 
 CARD IMAGE RULES
-- Base card image URL pattern: https://jokersofneon.com/cards/{id}.png
-- Skin image URL pattern: https://jokersofneon.com/cards/{id}_sk{skin_number}.png
-- Note: app bundle also includes local assets under public/Cards and powerups under public/powerups.
+- Base card image URL: https://jokersofneon.com/cards/{id}.png
+- Skin image URL: https://jokersofneon.com/cards/{id}_sk{skin_number}.png
 
 CARD TYPES
 - Traditional cards: ids 0-53 (includes Joker 52 and Wildcard 53).
 - Neon cards: ids 200-253 (neon variants + neon joker/wild).
-- Modifier cards: ids 608-613 (change suit/type behavior of a target card).
-- Power-ups: ids 800-807 (single-use points or multi boosts).
-- Special cards: primarily ids 10000-10214 plus 19901-19903 (global effects; permanent or temporary).
-- Rage cards: ids 20001-20026 subset (round debuffs/challenges).
-- Loot boxes: ids 1-13 (random reward containers).
+- Modifier cards: ids 600-699.
+- Power-ups: ids 800-899 (single-use boosts).
+- Special cards: mainly 10000-19999.
+- Rage cards: ids 20000-29999.
+- Loot boxes: ids 1-13.
+
+SPECIAL CARD ID FORMAT (5 DIGITS)
+- Pattern: 1SSCC
+- Digit 1: always 1 (special-card namespace).
+- Digits 2-3 (SS): season number (ascending from 01) or collection number (descending from 99).
+- Examples: 01=Season 1, 02=Season 2, 99=GG collection.
+- Digits 4-5 (CC): card id inside that season/collection.
+- Examples: 10101 (S1 card 01), 10214 (S2 card 14), 19903 (GG card 03).
 
 RARITY TIERS
-- C=Common, B=Rare, A=Epic, S=Legendary, SS=Mythic (from docs localization).
+- C=Common, B=Rare, A=Epic, S=Legendary, SS=Mythic.
 
-PRICING SNAPSHOT
-- Special card sell pricing by rarity: C:1000, B:1750, A:3500, S:5000, SS:7000
-- Modifier sell pricing by rarity: B:300, A:750, S:1000, C:0, SS:0
-- Loot box sell pricing by rarity: C:750, B:1500, A:2000, S:0, SS:0
-- Power-up base costs by tier: B:100, A:200, S:350, SS:500
-- Power-up computed sell values by tier: B:50, A:50, S:100, SS:150
+ECONOMY (IN-GAME VALUES)
+- Special shop values (sell): C:1000, B:1750, A:3500, S:5000, SS:7000
+- Modifier shop values (sell): B:300, A:750, S:1000, C:0, SS:0
+- Loot box shop values (sell): C:750, B:1500, A:2000, S:0, SS:0
+- Power-up base shop costs (buy): B:100, A:200, S:350, SS:500
+- Power-up shop values (sell): B:50, A:50, S:100, SS:150
+
+META GAME
+- Seasons last approximately 6 weeks.
+- A season-end tournament runs for approximately 10 days.
+- Season progression:
+  - Free + Premium (Season Pass) reward track.
+  - Includes packs and tournament entries.
+  - Progress is XP-driven with milestone rewards.
+- XP sources:
+  - Daily missions (easy/medium/hard).
+  - Level clears.
+  - Daily mission XP: easy=10, medium=20, hard=30.
+- Daily missions:
+  - Include score, deck-building, rage, poker-hand, and economy goals.
+  - Reset daily (around 06:00 UTC).
+- Season Pass benefits:
+  - Unlocks premium reward lane.
+  - Increases max lives from 3 to 6.
+  - Improves life recharge from every 8h to every 4h.
+  - Includes a 20% season-pack discount.
+- Lives:
+  - One life is spent per new run.
+  - Lives refill over time up to your cap.
+- Collections and skins:
+  - Each season introduces exclusive special cards.
+  - Collection grouping aligns with special-card SS digits.
+  - Skins are alternate visuals with their own rarity tiers.
+
+SEASON PASS, LIVES, AND DAILY CADENCE
+- Without Season Pass: max 3 lives, recharge every 8 hours.
+- With Season Pass: max 6 lives, recharge every 4 hours.
+- Daily missions are a primary repeatable XP source; level clears add additional XP.
+
+LEADERBOARDS
+- Game leaderboard scopes: Daily, Weekly, Season.
+- XP leaderboard scope: XP Season.
+- All prize entries below have `seasonPass=false`.
+
+GAME LEADERBOARD - DAILY PRIZES
+- 1: Epic x1
+- 2: Advanced x1
+- 3: Base x1
+
+GAME LEADERBOARD - WEEKLY PRIZES
+- 1: Epic x1, Legendary x1
+- 2: Epic x2
+- 3: Advanced x1, Epic x1
+- 4-5: Advanced x2
+
+GAME LEADERBOARD - SEASON PRIZES
+- 1: Epic x2, Legendary x3
+- 2: Epic x2, Legendary x2
+- 3: Epic x2, Legendary x1
+- 4-5: Advanced x1, Epic x1, Legendary x1
+- 6-10: Advanced x1, Epic x2
+- 11-15: Advanced x1, Epic x1
+- 16-25: Advanced x2
+- 26-50: Advanced x1
+
+XP LEADERBOARD - SEASON PRIZES
+- 1: Epic x1, Legendary x2, Collector XL x1
+- 2: Epic x1, Legendary x2, Collector x1
+- 3: Epic x1, Legendary x3
+- 4-5: Epic x1, Legendary x2
+- 6-10: Epic x1, Legendary x1
+- 11-15: Advanced x1, Epic x1
+
+TOURNAMENT
+- Runs at the end of each season for approximately 10 days.
+- Entry is obtained through season progression.
+- Rewards by rank:
+  - 1: Legendary x2, Collector x1, Collector XL x1
+  - 2: Legendary x2, Collector XL x1
+  - 3: Legendary x1, Collector XL x1
+  - 4-5: Legendary x1, Collector x1
+  - 6-10: Legendary x2
+  - 11-15: Legendary x1
+  - 16-25: Epic x1
+  - 26-50: Advanced x1
+- This tournament reward table does not grant Season Pass.
+
+PACK TYPES (PLAYER-FACING)
+- Basic / Advanced / Epic / Legendary / Collector / Collector XL
+- Current regular season packs: Advanced, Epic, Legendary.
+- Collector and Collector XL are enabled in limited windows.
+- Shop pack sizes:
+  - Pack 1: 3 cards
+  - Pack 2: 3 cards
+  - Pack 3: 4 cards
+  - Pack 4: 4 cards
+  - Pack 5: 5 cards
+  - Pack 6: 10 cards
+  - Pack 21: 3 cards
+  - Pack 22: 3 cards
+  - Pack 23: 4 cards
+  - Pack 24: 4 cards
+  - Pack 25: 5 cards
+  - Pack 26: 10 cards
+
+COLLECTOR PACKS AND SKINS
+- Collector packs are the rarest content packs of each season.
+- Collector: guarantees at least one skinned Special.
+- Collector XL: guarantees at least two skinned Specials.
+- Non-collector packs do not include skinned cards.
+
+STORE TYPES
+- Pack store: base, advanced, epic, and legendary packs.
+- Collector store: limited-time collector packs focused on skinned specials.
+- Specials store: buy/sell special cards for build scaling.
+- Modifiers store: cards that change suit or card type behavior.
+- Power-up store: immediate-use boosts for points and multiplier.
+- Loot box store: themed boxes by suit or card type.
+
+LOOT BOXES
+- id=1 | name=Basic loot box | description=Contains mostly traditional cards and modifiers | details=2% chance of getting a special card | 5% chance of getting a modifier card | 4% chance of getting a Joker | 1% chance of getting a Neon Joker | 88% chance of getting a traditional card | Loot box size 5 | image=https://jokersofneon.com/cards/1.png | size=5 | rarity=C
+- id=2 | name=Advanced loot box | description=Can contain a special card or joker | details=4% chance of getting a special card | 10% chance of getting a modifier card | 8% chance of getting a Joker | 2% chance of getting a Neon Joker | 76% chance of getting a traditional card | Loot box size 5 | image=https://jokersofneon.com/cards/2.png | size=5 | rarity=B
+- id=3 | name=Jokers loot box | description=More chances of getting a Joker | details=15% chance of getting a Joker | 1% chance of getting a Neon Joker | 84% chance of getting a traditional card | Loot box size 5 | image=https://jokersofneon.com/cards/3.png | size=3 | rarity=B
+- id=4 | name=Specials loot box | description=More chances of getting a special card | details=25% chance of getting a special card | 15% chance of getting a modifier | 60% chance of getting a traditional card | Loot box size 3 | image=https://jokersofneon.com/cards/4.png | size=3 | rarity=A
+- id=5 | name=Modifiers loot box | description=Contains mostly modifiers | details=50% chance of getting a modifier | 50% chance of getting a traditional card | Loot box size 5 | image=https://jokersofneon.com/cards/5.png | size=5 | rarity=B
+- id=6 | name=Figures loot box | description=Contains mostly figure cards | details=70% chance of getting a figure | 30% chance of getting other traditional cards | Loot box size 5 | image=https://jokersofneon.com/cards/6.png | size=5 | rarity=C
+- id=7 | name=The Deceitful Joker loot box | description=1 guaranteed Joker | details=1 guaranteed Joker | 9% chance of getting a Joker | 1% chance of getting a Neon Joker | 90% chance of getting a traditional card | Loot box size 4 | image=https://jokersofneon.com/cards/7.png | size=4 | rarity=A
+- id=8 | name=Hearts loot box | description=All hearts suited cards, can contain special cards and modifiers. | details=100% chance of getting Ace of Hearts | 54% chance of getting a traditional Heart card | 30% chance of getting Neon Heart card | 10% chance of getting Heart Suit modifier | 2% chance of getting 'Love is in the air' special card (A) | 2% chance of getting 'Dice of Hearts' special card (B) | 2% chance of getting 'Multiplied Hearts' special card (C) | Loot box size 5 | image=https://jokersofneon.com/cards/8.png | size=5 | rarity=C
+- id=9 | name=Special Bet loot box | description=Small loot box with chances of getting a special card or modifier | details=5% chance of getting a special card | 10% chance of getting a modifier | 85% chance of getting a traditional card | Loot box size 3 | image=https://jokersofneon.com/cards/9.png | size=3 | rarity=C
+- id=10 | name=Neon loot box | description=An exclusive loot box filled with neon cards | details=97% chance of getting a neon card | 3% chance of getting a Neon Joker | Loot box size 5 | image=https://jokersofneon.com/cards/10.png | size=5 | rarity=A
+- id=11 | name=Spades loot box | description=All spades suited cards, can contain special cards, neon cards and modifiers. | details=100% chance of getting Ace of Spades | 54% chance of getting a traditional Spade card | 30% chance of getting Neon Spade card | 10% chance of getting Spade Suit modifier | 2% chance of getting 'Spade Trio' special card (A) | 2% chance of getting 'Dice of Spades' special card (B) | 2% chance of getting 'Multiplied Spades' special card (C) | Loot box size 5 | image=https://jokersofneon.com/cards/11.png | size=5 | rarity=C
+- id=12 | name=Diamonds loot box | description=All diamonds suited cards, can contain special cards, neon cards and modifiers. | details=100% chance of getting Ace of Diamonds | 54% chance of getting a traditional Diamond card | 30% chance of getting Neon Diamond card | 10% chance of getting Diamond Suit modifier | 2% chance of getting 'Lucky hand' special card (C) | 2% chance of getting 'Multiplied Diamonds' special card (C) | 2% chance of getting 'Dice of Diamonds' special card (B) | Loot box size 5 | image=https://jokersofneon.com/cards/12.png | size=5 | rarity=C
+- id=13 | name=Clubs loot box | description=All clubs suited cards, can contain special cards, neon cards and modifiers. | details=100% chance of getting Ace of Clubs | 56% chance of getting a traditional Club card | 30% chance of getting Neon Club card | 10% chance of getting Club Suit modifier | 2% chance of getting 'Multiplied Clubs' special card (C) | 2% chance of getting 'Dice of Clubs' special card (B) | Loot box size 5 | image=https://jokersofneon.com/cards/13.png | size=5 | rarity=C
+
+PACK ODDS MATRIX
+- Format: Pack -> Slot within pack -> probability by card type
+- Pack 1
+  Slot 1 | Traditional:96.0%, Joker:2.0%, Neon:2.0%, Neon Joker:0.0%, Special C:0.0%, Special B:0.0%, Special A:0.0%, Special S:0.0%
+  Slot 2 | Traditional:55.0%, Joker:2.0%, Neon:42.9%, Neon Joker:0.1%, Special C:0.0%, Special B:0.0%, Special A:0.0%, Special S:0.0%
+  Slot 3 | Traditional:0.0%, Joker:5.0%, Neon:63.0%, Neon Joker:2.0%, Special C:28.0%, Special B:1.9%, Special A:0.1%, Special S:0.0%
+- Pack 2
+  Slot 1 | Traditional:96.0%, Joker:2.0%, Neon:2.0%
+  Slot 2 | Joker:5.0%, Neon:83.0%, Neon Joker:2.0%, Special C:8.0%, Special B:1.9%, Special A:0.1%
+  Slot 3 | Neon:0.0%, Neon Joker:0.0%, Special C:70.0%, Special B:27.0%, Special A:2.9%, Special S:0.1%
+- Pack 3
+  Slot 1 | Traditional:96.0%, Joker:2.0%, Neon:2.0%
+  Slot 2 | Traditional:60.0%, Joker:2.0%, Neon:37.9%, Neon Joker:0.1%
+  Slot 3 | Neon:76.9%, Neon Joker:2.0%, Special C:15.0%, Special B:5.0%, Special A:1.0%, Special S:0.1%
+  Slot 4 | Neon:0.0%, Neon Joker:0.0%, Special C:47.0%, Special B:35.0%, Special A:15.0%, Special S:3.0%
+- Pack 4
+  Slot 1 | Traditional:96.0%, Joker:2.0%, Neon:2.0%
+  Slot 2 | Traditional:55.0%, Joker:2.0%, Neon:42.9%, Neon Joker:0.1%
+  Slot 3 | Neon:0.0%, Neon Joker:0.0%, Special C:70.0%, Special B:27.0%, Special A:2.9%, Special S:0.1%
+  Slot 4 | Special B:50.0%, Special A:40.0%, Special S:10.0%
+- Pack 5
+  Slot 1 | Traditional:50.0%, Joker:20.0%, Neon:10.0%, Neon Joker:10.0%, Special C:5.0%, Special B:5.0%
+  Slot 2 | Joker:30.0%, Neon:20.0%, Neon Joker:20.0%, Special C:10.0%, Special B:10.0%, Special A:5.0%, Special S:5.0%
+  Slot 3 | Neon:20.0%, Neon Joker:30.0%, Special C:10.0%, Special B:20.0%, Special A:10.0%, Special S:10.0%
+  Slot 4 | Special A:30.0%, Special S:10.0%, Skin Special C:39.9%, Skin Special B:17.0%, Skin Special A:3.0%, Skin Special S:0.1%
+  Slot 5 | Skin Special C:30.0%, Skin Special B:30.0%, Skin Special A:30.0%, Skin Special S:10.0%
+- Pack 6
+  Slot 1 | Traditional:50.0%, Joker:20.0%, Neon:10.0%, Neon Joker:10.0%, Special C:5.0%, Special B:5.0%
+  Slot 2 | Joker:30.0%, Neon:20.0%, Neon Joker:20.0%, Special C:10.0%, Special B:10.0%, Special A:5.0%, Special S:5.0%
+  Slot 3 | Joker:30.0%, Neon:20.0%, Neon Joker:20.0%, Special C:10.0%, Special B:10.0%, Special A:5.0%, Special S:5.0%
+  Slot 4 | Neon:20.0%, Neon Joker:30.0%, Special C:10.0%, Special B:20.0%, Special A:10.0%, Special S:10.0%
+  Slot 5 | Neon:20.0%, Neon Joker:30.0%, Special C:10.0%, Special B:20.0%, Special A:10.0%, Special S:10.0%
+  Slot 6 | Neon:20.0%, Neon Joker:30.0%, Special C:10.0%, Special B:20.0%, Special A:10.0%, Special S:10.0%
+  Slot 7 | Skin Special C:39.9%, Skin Special B:17.0%, Skin Special A:3.0%, Skin Special S:0.1%
+  Slot 8 | Skin Special C:39.9%, Skin Special B:17.0%, Skin Special A:3.0%, Skin Special S:0.1%
+  Slot 9 | Skin Special C:30.0%, Skin Special B:30.0%, Skin Special A:30.0%, Skin Special S:10.0%
+  Slot 10 | Skin Special C:30.0%, Skin Special B:30.0%, Skin Special A:30.0%, Skin Special S:10.0%
+- Pack 8
+  Slot 1 | Special A:2.0%, Special B:2.0%, Special C:12.0%, Neon:30.0%, Traditional:54.0%
+  Slot 2 | Special A:2.0%, Special B:2.0%, Special C:12.0%, Neon:30.0%, Traditional:54.0%
+  Slot 3 | Special A:2.0%, Special B:2.0%, Special C:12.0%, Neon:30.0%, Traditional:54.0%
+  Slot 4 | Special A:2.0%, Special B:2.0%, Special C:12.0%, Neon:30.0%, Traditional:54.0%
+  Slot 5 | Special A:2.0%, Special B:2.0%, Special C:12.0%, Neon:30.0%, Traditional:54.0%
+- Pack 11
+  Slot 1 | Special A:2.0%, Special B:2.0%, Special C:12.0%, Neon:30.0%, Traditional:54.0%
+  Slot 2 | Special A:2.0%, Special B:2.0%, Special C:12.0%, Neon:30.0%, Traditional:54.0%
+  Slot 3 | Special A:2.0%, Special B:2.0%, Special C:12.0%, Neon:30.0%, Traditional:54.0%
+  Slot 4 | Special A:2.0%, Special B:2.0%, Special C:12.0%, Neon:30.0%, Traditional:54.0%
+  Slot 5 | Special A:2.0%, Special B:2.0%, Special C:12.0%, Neon:30.0%, Traditional:54.0%
+- Pack 12
+  Slot 1 | Special B:2.0%, Special C:14.0%, Neon:30.0%, Traditional:54.0%
+  Slot 2 | Special B:2.0%, Special C:14.0%, Neon:30.0%, Traditional:54.0%
+  Slot 3 | Special B:2.0%, Special C:14.0%, Neon:30.0%, Traditional:54.0%
+  Slot 4 | Special B:2.0%, Special C:14.0%, Neon:30.0%, Traditional:54.0%
+  Slot 5 | Special B:2.0%, Special C:14.0%, Neon:30.0%, Traditional:54.0%
+- Pack 13
+  Slot 1 | Special B:2.0%, Special C:12.0%, Neon:30.0%, Traditional:56.0%
+  Slot 2 | Special B:2.0%, Special C:12.0%, Neon:30.0%, Traditional:56.0%
+  Slot 3 | Special B:2.0%, Special C:12.0%, Neon:30.0%, Traditional:56.0%
+  Slot 4 | Special B:2.0%, Special C:12.0%, Neon:30.0%, Traditional:56.0%
+  Slot 5 | Special B:2.0%, Special C:12.0%, Neon:30.0%, Traditional:56.0%
+- Pack 21
+  Slot 1 | Traditional:96.0%, Joker:2.0%, Neon:2.0%, Neon Joker:0.0%, Special C:0.0%, Special B:0.0%, Special A:0.0%, Special S:0.0%
+  Slot 2 | Traditional:55.0%, Joker:2.0%, Neon:42.9%, Neon Joker:0.1%, Special C:0.0%, Special B:0.0%, Special A:0.0%, Special S:0.0%
+  Slot 3 | Traditional:0.0%, Joker:5.0%, Neon:63.0%, Neon Joker:2.0%, Special C:28.0%, Special B:1.9%, Special A:0.1%, Special S:0.0%
+- Pack 22
+  Slot 1 | Traditional:96.0%, Joker:2.0%, Neon:2.0%
+  Slot 2 | Joker:5.0%, Neon:83.0%, Neon Joker:2.0%, Special C:8.0%, Special B:1.9%, Special A:0.1%
+  Slot 3 | Neon:0.0%, Neon Joker:0.0%, Special C:70.0%, Special B:27.0%, Special A:2.9%, Special S:0.1%
+- Pack 23
+  Slot 1 | Traditional:96.0%, Joker:2.0%, Neon:2.0%
+  Slot 2 | Traditional:60.0%, Joker:2.0%, Neon:37.9%, Neon Joker:0.1%
+  Slot 3 | Neon:76.9%, Neon Joker:2.0%, Special C:15.0%, Special B:5.0%, Special A:1.0%, Special S:0.1%
+  Slot 4 | Neon:0.0%, Neon Joker:0.0%, Special C:47.0%, Special B:35.0%, Special A:15.0%, Special S:3.0%
+- Pack 24
+  Slot 1 | Traditional:96.0%, Joker:2.0%, Neon:2.0%
+  Slot 2 | Traditional:55.0%, Joker:2.0%, Neon:42.9%, Neon Joker:0.1%
+  Slot 3 | Neon:0.0%, Neon Joker:0.0%, Special C:70.0%, Special B:27.0%, Special A:2.9%, Special S:0.1%
+  Slot 4 | Special B:50.0%, Special A:40.0%, Special S:10.0%
+- Pack 25
+  Slot 1 | Traditional:50.0%, Joker:20.0%, Neon:10.0%, Neon Joker:10.0%, Special C:5.0%, Special B:5.0%
+  Slot 2 | Joker:30.0%, Neon:20.0%, Neon Joker:20.0%, Special C:10.0%, Special B:10.0%, Special A:5.0%, Special S:5.0%
+  Slot 3 | Neon:20.0%, Neon Joker:30.0%, Special C:10.0%, Special B:20.0%, Special A:10.0%, Special S:10.0%
+  Slot 4 | Special A:30.0%, Special S:10.0%, Skin Special C:39.9%, Skin Special B:17.0%, Skin Special A:3.0%, Skin Special S:0.1%
+  Slot 5 | Skin Special C:30.0%, Skin Special B:30.0%, Skin Special A:30.0%, Skin Special S:10.0%
+- Pack 26
+  Slot 1 | Traditional:50.0%, Joker:20.0%, Neon:10.0%, Neon Joker:10.0%, Special C:5.0%, Special B:5.0%
+  Slot 2 | Joker:30.0%, Neon:20.0%, Neon Joker:20.0%, Special C:10.0%, Special B:10.0%, Special A:5.0%, Special S:5.0%
+  Slot 3 | Joker:30.0%, Neon:20.0%, Neon Joker:20.0%, Special C:10.0%, Special B:10.0%, Special A:5.0%, Special S:5.0%
+  Slot 4 | Neon:20.0%, Neon Joker:30.0%, Special C:10.0%, Special B:20.0%, Special A:10.0%, Special S:10.0%
+  Slot 5 | Neon:20.0%, Neon Joker:30.0%, Special C:10.0%, Special B:20.0%, Special A:10.0%, Special S:10.0%
+  Slot 6 | Neon:20.0%, Neon Joker:30.0%, Special C:10.0%, Special B:20.0%, Special A:10.0%, Special S:10.0%
+  Slot 7 | Skin Special C:39.9%, Skin Special B:17.0%, Skin Special A:3.0%, Skin Special S:0.1%
+  Slot 8 | Skin Special C:39.9%, Skin Special B:17.0%, Skin Special A:3.0%, Skin Special S:0.1%
+  Slot 9 | Skin Special C:30.0%, Skin Special B:30.0%, Skin Special A:30.0%, Skin Special S:10.0%
+  Slot 10 | Skin Special C:30.0%, Skin Special B:30.0%, Skin Special A:30.0%, Skin Special S:10.0%
+
+MAP AND NODE FLOW
+- Main node families: Round, Store, Rage (plus reward/other utility nodes).
+- Rounds are regular scoring challenges.
+- Stores are upgrade/economy nodes with different inventory profiles.
+- Rage nodes are challenge spikes with temporary debuffs and higher tension.
+
+RAGE ROUNDS
+- Rage rounds apply one or more rage effects for that round.
+- Rage effects include suit silences, hand-size penalties, discard bans, hand restrictions, etc.
+- Rage nodes can be intermediate/final/final boss style milestones.
+- Boss-level milestone exists in progression flow (commonly represented as level 3).
 
 TRADITIONAL CARDS
 - id=0 | name=2 of Clubs | effect=Scores +2 points | image=https://jokersofneon.com/cards/0.png
@@ -297,17 +570,17 @@ RAGE CARDS
 - id=20025 | name=Buzzkiller | effect=Your most-played hand does not count this round. | image=https://jokersofneon.com/cards/20025.png
 - id=20026 | name=Blackout | effect=Two of your current special cards get silenced for this round | image=https://jokersofneon.com/cards/20026.png
 
-POWER-UPS (ITEM CARDS)
-- id=800 | name=+25 Points | effect_text=Scores +25 additional points | effect_points=25 | effect_multi=0 | tier=B | base_cost=100 | sell_value=50 | image=https://jokersofneon.com/cards/800.png | app_image=/powerups/800.png
-- id=801 | name=50 Points | effect_text=Scores +50 additional points | effect_points=50 | effect_multi=0 | tier=A | base_cost=200 | sell_value=50 | image=https://jokersofneon.com/cards/801.png | app_image=/powerups/801.png
-- id=802 | name=+75 Points | effect_text=Scores +75 additional points | effect_points=75 | effect_multi=0 | tier=S | base_cost=350 | sell_value=100 | image=https://jokersofneon.com/cards/802.png | app_image=/powerups/802.png
-- id=803 | name=+100 Points | effect_text=Scores +100 additional points | effect_points=100 | effect_multi=0 | tier=SS | base_cost=500 | sell_value=150 | image=https://jokersofneon.com/cards/803.png | app_image=/powerups/803.png
-- id=804 | name=+3 multi | effect_text=Adds +3 to the multi | effect_points=0 | effect_multi=3 | tier=B | base_cost=100 | sell_value=50 | image=https://jokersofneon.com/cards/804.png | app_image=/powerups/804.png
-- id=805 | name=+5 multi | effect_text=Adds +5 to the multi | effect_points=0 | effect_multi=5 | tier=A | base_cost=200 | sell_value=50 | image=https://jokersofneon.com/cards/805.png | app_image=/powerups/805.png
-- id=806 | name=+7 multi | effect_text=Adds +7 to the multi | effect_points=0 | effect_multi=7 | tier=S | base_cost=350 | sell_value=100 | image=https://jokersofneon.com/cards/806.png | app_image=/powerups/806.png
-- id=807 | name=10 multi | effect_text=Adds +10 to the multi | effect_points=0 | effect_multi=10 | tier=SS | base_cost=500 | sell_value=150 | image=https://jokersofneon.com/cards/807.png | app_image=/powerups/807.png
+POWER-UPS
+- id=800 | name=+25 Points | effect_text=Scores +25 additional points | effect_points=25 | effect_multi=0 | tier=B | base_cost=100 | sell_value=50 | image=https://jokersofneon.com/cards/800.png
+- id=801 | name=50 Points | effect_text=Scores +50 additional points | effect_points=50 | effect_multi=0 | tier=A | base_cost=200 | sell_value=50 | image=https://jokersofneon.com/cards/801.png
+- id=802 | name=+75 Points | effect_text=Scores +75 additional points | effect_points=75 | effect_multi=0 | tier=S | base_cost=350 | sell_value=100 | image=https://jokersofneon.com/cards/802.png
+- id=803 | name=+100 Points | effect_text=Scores +100 additional points | effect_points=100 | effect_multi=0 | tier=SS | base_cost=500 | sell_value=150 | image=https://jokersofneon.com/cards/803.png
+- id=804 | name=+3 multi | effect_text=Adds +3 to the multi | effect_points=0 | effect_multi=3 | tier=B | base_cost=100 | sell_value=50 | image=https://jokersofneon.com/cards/804.png
+- id=805 | name=+5 multi | effect_text=Adds +5 to the multi | effect_points=0 | effect_multi=5 | tier=A | base_cost=200 | sell_value=50 | image=https://jokersofneon.com/cards/805.png
+- id=806 | name=+7 multi | effect_text=Adds +7 to the multi | effect_points=0 | effect_multi=7 | tier=S | base_cost=350 | sell_value=100 | image=https://jokersofneon.com/cards/806.png
+- id=807 | name=10 multi | effect_text=Adds +10 to the multi | effect_points=0 | effect_multi=10 | tier=SS | base_cost=500 | sell_value=150 | image=https://jokersofneon.com/cards/807.png
 
-SKIN CATALOG (EXPLICIT ASSETS FOUND)
+SKIN CATALOG (KNOWN SKINS)
 - base_id=10101 | base_name=Faded Poster | skins=2 | urls=10101_sk2:https://jokersofneon.com/cards/10101_sk2.png
 - base_id=10104 | base_name=Point Juggler | skins=2 | urls=10104_sk2:https://jokersofneon.com/cards/10104_sk2.png
 - base_id=10105 | base_name=Deck Collector | skins=2 | urls=10105_sk2:https://jokersofneon.com/cards/10105_sk2.png
@@ -326,196 +599,7 @@ SKIN CATALOG (EXPLICIT ASSETS FOUND)
 - base_id=10213 | base_name=Residual Charge | skins=3 | urls=10213_sk3:https://jokersofneon.com/cards/10213_sk3.png
 - base_id=10214 | base_name=Undying Draw | skins=3 | urls=10214_sk3:https://jokersofneon.com/cards/10214_sk3.png
 
-LOOT BOXES
-- id=1 | name=Basic loot box | description=Contains mostly traditional cards and modifiers | details=2% chance of getting a special card | 5% chance of getting a modifier card | 4% chance of getting a Joker | 1% chance of getting a Neon Joker | 88% chance of getting a traditional card | Loot box size 5 | image=https://jokersofneon.com/cards/1.png | size=5 | rarity=C | sell_price=750
-- id=2 | name=Advanced loot box | description=Can contain a special card or joker | details=4% chance of getting a special card | 10% chance of getting a modifier card | 8% chance of getting a Joker | 2% chance of getting a Neon Joker | 76% chance of getting a traditional card | Loot box size 5 | image=https://jokersofneon.com/cards/2.png | size=5 | rarity=B | sell_price=1500
-- id=3 | name=Jokers loot box | description=More chances of getting a Joker | details=15% chance of getting a Joker | 1% chance of getting a Neon Joker | 84% chance of getting a traditional card | Loot box size 5 | image=https://jokersofneon.com/cards/3.png | size=3 | rarity=B | sell_price=1500
-- id=4 | name=Specials loot box | description=More chances of getting a special card | details=25% chance of getting a special card | 15% chance of getting a modifier | 60% chance of getting a traditional card | Loot box size 3 | image=https://jokersofneon.com/cards/4.png | size=3 | rarity=A | sell_price=2000
-- id=5 | name=Modifiers loot box | description=Contains mostly modifiers | details=50% chance of getting a modifier | 50% chance of getting a traditional card | Loot box size 5 | image=https://jokersofneon.com/cards/5.png | size=5 | rarity=B | sell_price=1500
-- id=6 | name=Figures loot box | description=Contains mostly figure cards | details=70% chance of getting a figure | 30% chance of getting other traditional cards | Loot box size 5 | image=https://jokersofneon.com/cards/6.png | size=5 | rarity=C | sell_price=750
-- id=7 | name=The Deceitful Joker loot box | description=1 guaranteed Joker | details=1 guaranteed Joker | 9% chance of getting a Joker | 1% chance of getting a Neon Joker | 90% chance of getting a traditional card | Loot box size 4 | image=https://jokersofneon.com/cards/7.png | size=4 | rarity=A | sell_price=2000
-- id=8 | name=Hearts loot box | description=All hearts suited cards, can contain special cards and modifiers. | details=100% chance of getting Ace of Hearts | 54% chance of getting a traditional Heart card | 30% chance of getting Neon Heart card | 10% chance of getting Heart Suit modifier | 2% chance of getting 'Love is in the air' special card (A) | 2% chance of getting 'Dice of Hearts' special card (B) | 2% chance of getting 'Multiplied Hearts' special card (C) | Loot box size 5 | image=https://jokersofneon.com/cards/8.png | size=5 | rarity=C | sell_price=750
-- id=9 | name=Special Bet loot box | description=Small loot box with chances of getting a special card or modifier | details=5% chance of getting a special card | 10% chance of getting a modifier | 85% chance of getting a traditional card | Loot box size 3 | image=https://jokersofneon.com/cards/9.png | size=3 | rarity=C | sell_price=750
-- id=10 | name=Neon loot box | description=An exclusive loot box filled with neon cards | details=97% chance of getting a neon card | 3% chance of getting a Neon Joker | Loot box size 5 | image=https://jokersofneon.com/cards/10.png | size=5 | rarity=A | sell_price=2000
-- id=11 | name=Spades loot box | description=All spades suited cards, can contain special cards, neon cards and modifiers. | details=100% chance of getting Ace of Spades | 54% chance of getting a traditional Spade card | 30% chance of getting Neon Spade card | 10% chance of getting Spade Suit modifier | 2% chance of getting 'Spade Trio' special card (A) | 2% chance of getting 'Dice of Spades' special card (B) | 2% chance of getting 'Multiplied Spades' special card (C) | Loot box size 5 | image=https://jokersofneon.com/cards/11.png | size=5 | rarity=C | sell_price=750
-- id=12 | name=Diamonds loot box | description=All diamonds suited cards, can contain special cards, neon cards and modifiers. | details=100% chance of getting Ace of Diamonds | 54% chance of getting a traditional Diamond card | 30% chance of getting Neon Diamond card | 10% chance of getting Diamond Suit modifier | 2% chance of getting 'Lucky hand' special card (C) | 2% chance of getting 'Multiplied Diamonds' special card (C) | 2% chance of getting 'Dice of Diamonds' special card (B) | Loot box size 5 | image=https://jokersofneon.com/cards/12.png | size=5 | rarity=C | sell_price=750
-- id=13 | name=Clubs loot box | description=All clubs suited cards, can contain special cards, neon cards and modifiers. | details=100% chance of getting Ace of Clubs | 56% chance of getting a traditional Club card | 30% chance of getting Neon Club card | 10% chance of getting Club Suit modifier | 2% chance of getting 'Multiplied Clubs' special card (C) | 2% chance of getting 'Dice of Clubs' special card (B) | Loot box size 5 | image=https://jokersofneon.com/cards/13.png | size=5 | rarity=C | sell_price=750
-
-LOOT BOX PROBABILITY MATRIX (PACK_RATES from src/data/lootBoxRates.ts)
-- Format: pack_id -> item_slot -> item_type:percentage
-- pack_id=1
-  item_slot=1 | Traditional:96.0%, Joker:2.0%, Neon:2.0%, Neon Joker:0.0%, Special C:0.0%, Special B:0.0%, Special A:0.0%, Special S:0.0%
-  item_slot=2 | Traditional:55.0%, Joker:2.0%, Neon:42.9%, Neon Joker:0.1%, Special C:0.0%, Special B:0.0%, Special A:0.0%, Special S:0.0%
-  item_slot=3 | Traditional:0.0%, Joker:5.0%, Neon:63.0%, Neon Joker:2.0%, Special C:28.0%, Special B:1.9%, Special A:0.1%, Special S:0.0%
-- pack_id=2
-  item_slot=1 | Traditional:96.0%, Joker:2.0%, Neon:2.0%
-  item_slot=2 | Joker:5.0%, Neon:83.0%, Neon Joker:2.0%, Special C:8.0%, Special B:1.9%, Special A:0.1%
-  item_slot=3 | Neon:0.0%, Neon Joker:0.0%, Special C:70.0%, Special B:27.0%, Special A:2.9%, Special S:0.1%
-- pack_id=3
-  item_slot=1 | Traditional:96.0%, Joker:2.0%, Neon:2.0%
-  item_slot=2 | Traditional:60.0%, Joker:2.0%, Neon:37.9%, Neon Joker:0.1%
-  item_slot=3 | Neon:76.9%, Neon Joker:2.0%, Special C:15.0%, Special B:5.0%, Special A:1.0%, Special S:0.1%
-  item_slot=4 | Neon:0.0%, Neon Joker:0.0%, Special C:47.0%, Special B:35.0%, Special A:15.0%, Special S:3.0%
-- pack_id=4
-  item_slot=1 | Traditional:96.0%, Joker:2.0%, Neon:2.0%
-  item_slot=2 | Traditional:55.0%, Joker:2.0%, Neon:42.9%, Neon Joker:0.1%
-  item_slot=3 | Neon:0.0%, Neon Joker:0.0%, Special C:70.0%, Special B:27.0%, Special A:2.9%, Special S:0.1%
-  item_slot=4 | Special B:50.0%, Special A:40.0%, Special S:10.0%
-- pack_id=5
-  item_slot=1 | Traditional:50.0%, Joker:20.0%, Neon:10.0%, Neon Joker:10.0%, Special C:5.0%, Special B:5.0%
-  item_slot=2 | Joker:30.0%, Neon:20.0%, Neon Joker:20.0%, Special C:10.0%, Special B:10.0%, Special A:5.0%, Special S:5.0%
-  item_slot=3 | Neon:20.0%, Neon Joker:30.0%, Special C:10.0%, Special B:20.0%, Special A:10.0%, Special S:10.0%
-  item_slot=4 | Special A:30.0%, Special S:10.0%, Skin Special C:39.9%, Skin Special B:17.0%, Skin Special A:3.0%, Skin Special S:0.1%
-  item_slot=5 | Skin Special C:30.0%, Skin Special B:30.0%, Skin Special A:30.0%, Skin Special S:10.0%
-- pack_id=6
-  item_slot=1 | Traditional:50.0%, Joker:20.0%, Neon:10.0%, Neon Joker:10.0%, Special C:5.0%, Special B:5.0%
-  item_slot=2 | Joker:30.0%, Neon:20.0%, Neon Joker:20.0%, Special C:10.0%, Special B:10.0%, Special A:5.0%, Special S:5.0%
-  item_slot=3 | Joker:30.0%, Neon:20.0%, Neon Joker:20.0%, Special C:10.0%, Special B:10.0%, Special A:5.0%, Special S:5.0%
-  item_slot=4 | Neon:20.0%, Neon Joker:30.0%, Special C:10.0%, Special B:20.0%, Special A:10.0%, Special S:10.0%
-  item_slot=5 | Neon:20.0%, Neon Joker:30.0%, Special C:10.0%, Special B:20.0%, Special A:10.0%, Special S:10.0%
-  item_slot=6 | Neon:20.0%, Neon Joker:30.0%, Special C:10.0%, Special B:20.0%, Special A:10.0%, Special S:10.0%
-  item_slot=7 | Skin Special C:39.9%, Skin Special B:17.0%, Skin Special A:3.0%, Skin Special S:0.1%
-  item_slot=8 | Skin Special C:39.9%, Skin Special B:17.0%, Skin Special A:3.0%, Skin Special S:0.1%
-  item_slot=9 | Skin Special C:30.0%, Skin Special B:30.0%, Skin Special A:30.0%, Skin Special S:10.0%
-  item_slot=10 | Skin Special C:30.0%, Skin Special B:30.0%, Skin Special A:30.0%, Skin Special S:10.0%
-- pack_id=8
-  item_slot=1 | Special A:2.0%, Special B:2.0%, Special C:12.0%, Neon:30.0%, Traditional:54.0%
-  item_slot=2 | Special A:2.0%, Special B:2.0%, Special C:12.0%, Neon:30.0%, Traditional:54.0%
-  item_slot=3 | Special A:2.0%, Special B:2.0%, Special C:12.0%, Neon:30.0%, Traditional:54.0%
-  item_slot=4 | Special A:2.0%, Special B:2.0%, Special C:12.0%, Neon:30.0%, Traditional:54.0%
-  item_slot=5 | Special A:2.0%, Special B:2.0%, Special C:12.0%, Neon:30.0%, Traditional:54.0%
-- pack_id=11
-  item_slot=1 | Special A:2.0%, Special B:2.0%, Special C:12.0%, Neon:30.0%, Traditional:54.0%
-  item_slot=2 | Special A:2.0%, Special B:2.0%, Special C:12.0%, Neon:30.0%, Traditional:54.0%
-  item_slot=3 | Special A:2.0%, Special B:2.0%, Special C:12.0%, Neon:30.0%, Traditional:54.0%
-  item_slot=4 | Special A:2.0%, Special B:2.0%, Special C:12.0%, Neon:30.0%, Traditional:54.0%
-  item_slot=5 | Special A:2.0%, Special B:2.0%, Special C:12.0%, Neon:30.0%, Traditional:54.0%
-- pack_id=12
-  item_slot=1 | Special B:2.0%, Special C:14.0%, Neon:30.0%, Traditional:54.0%
-  item_slot=2 | Special B:2.0%, Special C:14.0%, Neon:30.0%, Traditional:54.0%
-  item_slot=3 | Special B:2.0%, Special C:14.0%, Neon:30.0%, Traditional:54.0%
-  item_slot=4 | Special B:2.0%, Special C:14.0%, Neon:30.0%, Traditional:54.0%
-  item_slot=5 | Special B:2.0%, Special C:14.0%, Neon:30.0%, Traditional:54.0%
-- pack_id=13
-  item_slot=1 | Special B:2.0%, Special C:12.0%, Neon:30.0%, Traditional:56.0%
-  item_slot=2 | Special B:2.0%, Special C:12.0%, Neon:30.0%, Traditional:56.0%
-  item_slot=3 | Special B:2.0%, Special C:12.0%, Neon:30.0%, Traditional:56.0%
-  item_slot=4 | Special B:2.0%, Special C:12.0%, Neon:30.0%, Traditional:56.0%
-  item_slot=5 | Special B:2.0%, Special C:12.0%, Neon:30.0%, Traditional:56.0%
-- pack_id=21
-  item_slot=1 | Traditional:96.0%, Joker:2.0%, Neon:2.0%, Neon Joker:0.0%, Special C:0.0%, Special B:0.0%, Special A:0.0%, Special S:0.0%
-  item_slot=2 | Traditional:55.0%, Joker:2.0%, Neon:42.9%, Neon Joker:0.1%, Special C:0.0%, Special B:0.0%, Special A:0.0%, Special S:0.0%
-  item_slot=3 | Traditional:0.0%, Joker:5.0%, Neon:63.0%, Neon Joker:2.0%, Special C:28.0%, Special B:1.9%, Special A:0.1%, Special S:0.0%
-- pack_id=22
-  item_slot=1 | Traditional:96.0%, Joker:2.0%, Neon:2.0%
-  item_slot=2 | Joker:5.0%, Neon:83.0%, Neon Joker:2.0%, Special C:8.0%, Special B:1.9%, Special A:0.1%
-  item_slot=3 | Neon:0.0%, Neon Joker:0.0%, Special C:70.0%, Special B:27.0%, Special A:2.9%, Special S:0.1%
-- pack_id=23
-  item_slot=1 | Traditional:96.0%, Joker:2.0%, Neon:2.0%
-  item_slot=2 | Traditional:60.0%, Joker:2.0%, Neon:37.9%, Neon Joker:0.1%
-  item_slot=3 | Neon:76.9%, Neon Joker:2.0%, Special C:15.0%, Special B:5.0%, Special A:1.0%, Special S:0.1%
-  item_slot=4 | Neon:0.0%, Neon Joker:0.0%, Special C:47.0%, Special B:35.0%, Special A:15.0%, Special S:3.0%
-- pack_id=24
-  item_slot=1 | Traditional:96.0%, Joker:2.0%, Neon:2.0%
-  item_slot=2 | Traditional:55.0%, Joker:2.0%, Neon:42.9%, Neon Joker:0.1%
-  item_slot=3 | Neon:0.0%, Neon Joker:0.0%, Special C:70.0%, Special B:27.0%, Special A:2.9%, Special S:0.1%
-  item_slot=4 | Special B:50.0%, Special A:40.0%, Special S:10.0%
-- pack_id=25
-  item_slot=1 | Traditional:50.0%, Joker:20.0%, Neon:10.0%, Neon Joker:10.0%, Special C:5.0%, Special B:5.0%
-  item_slot=2 | Joker:30.0%, Neon:20.0%, Neon Joker:20.0%, Special C:10.0%, Special B:10.0%, Special A:5.0%, Special S:5.0%
-  item_slot=3 | Neon:20.0%, Neon Joker:30.0%, Special C:10.0%, Special B:20.0%, Special A:10.0%, Special S:10.0%
-  item_slot=4 | Special A:30.0%, Special S:10.0%, Skin Special C:39.9%, Skin Special B:17.0%, Skin Special A:3.0%, Skin Special S:0.1%
-  item_slot=5 | Skin Special C:30.0%, Skin Special B:30.0%, Skin Special A:30.0%, Skin Special S:10.0%
-- pack_id=26
-  item_slot=1 | Traditional:50.0%, Joker:20.0%, Neon:10.0%, Neon Joker:10.0%, Special C:5.0%, Special B:5.0%
-  item_slot=2 | Joker:30.0%, Neon:20.0%, Neon Joker:20.0%, Special C:10.0%, Special B:10.0%, Special A:5.0%, Special S:5.0%
-  item_slot=3 | Joker:30.0%, Neon:20.0%, Neon Joker:20.0%, Special C:10.0%, Special B:10.0%, Special A:5.0%, Special S:5.0%
-  item_slot=4 | Neon:20.0%, Neon Joker:30.0%, Special C:10.0%, Special B:20.0%, Special A:10.0%, Special S:10.0%
-  item_slot=5 | Neon:20.0%, Neon Joker:30.0%, Special C:10.0%, Special B:20.0%, Special A:10.0%, Special S:10.0%
-  item_slot=6 | Neon:20.0%, Neon Joker:30.0%, Special C:10.0%, Special B:20.0%, Special A:10.0%, Special S:10.0%
-  item_slot=7 | Skin Special C:39.9%, Skin Special B:17.0%, Skin Special A:3.0%, Skin Special S:0.1%
-  item_slot=8 | Skin Special C:39.9%, Skin Special B:17.0%, Skin Special A:3.0%, Skin Special S:0.1%
-  item_slot=9 | Skin Special C:30.0%, Skin Special B:30.0%, Skin Special A:30.0%, Skin Special S:10.0%
-  item_slot=10 | Skin Special C:30.0%, Skin Special B:30.0%, Skin Special A:30.0%, Skin Special S:10.0%
-
-STORE TYPES (MAP SHOP NODES)
-- shop_id=1 | name=Deck | summary={{traditionals}} traditional or neon cards, {{modifiers}} modifiers, burn a card from your deck | inventory_hint=traditionals:5, modifiers:3
-- shop_id=2 | name=Global | summary={{specials}} special cards, {{powerups}} power-ups | inventory_hint=specials:2, powerups:2
-- shop_id=3 | name=Specials | summary={{specials}} special cards, {{lootboxes}} loot boxes | inventory_hint=specials:3, lootboxes:2
-- shop_id=4 | name=LevelUps | summary={{levelups}} level ups, {{specials}} special cards | inventory_hint=levelups:3, specials:2
-- shop_id=5 | name=Modifiers | summary={{modifiers}} modifiers, {{lootboxes}} loot boxes | inventory_hint=modifiers:4, lootboxes:2
-- shop_id=6 | name=Mix | summary={{lootboxes}} loot boxes, {{powerups}} power-ups, {{levelups}} level ups | inventory_hint=lootboxes:2, powerups:2, levelups:3
-
-STORE SECTIONS (DYNAMIC LAYOUT IDs)
-- traditionals: traditional + neon card offers
-- modifiers: modifier card offers
-- specials: special card offers
-- power-ups: consumable boosts (points/multi)
-- loot-boxes: randomized packs
-- level-up-table: poker hand level upgrades (points/multi growth)
-- burn: remove a card from your deck
-- unlock-slot: buy extra special-card slot (if below max)
-- reroll: refresh current store inventory for a coin cost
-
-ITEMS (NON-CARD SHOP MECHANICS)
-- Burn item: permanently remove one card from deck.
-- Special slot item: unlock one additional special card slot.
-- Poker hand level-up item: increase selected hand level (raises points/multi).
-- Reroll: re-randomize store inventory.
-- Power-up slots: game config default max 4 if config fetch unavailable.
-- Special-card slots: game config default max 7 if config fetch unavailable.
-
-RAGE ROUNDS - HOW THEY WORK
-- Rage rounds are separate map nodes (NodeType.RAGE) that apply one or more rage effects for that round.
-- Active rage card ids are exposed in game round state as round.rages.
-- Rage node payload encodes two numbers: round_index = floor(data / 2^32), power = data mod 2^32.
-- Rage nodes are labeled as Intermediate, Final, or Final Boss in UI.
-- Boss level constant in frontend: BOSS_LEVEL=3.
-- Rage effects are typically temporary, round-scoped debuffs (see Rage card list above).
-
-MAP MODEL
-- Map is fetched from on-chain map_system.getLevelMap(gameId).
-- Node types: ROUND, STORE, RAGE, REWARD, NONE (challenge support exists in UI enum).
-- Node data semantics:
-  - STORE node data => shop_id
-  - ROUND node data => round number
-  - RAGE node data => encoded round/power (see Rage section)
-- Each node has child connections; UI renders a DAG with branch choices.
-- Legend labels in app include: normal round, rage (intermediate/final), and six shop types.
-
-SCORING BASICS
-- Final play score uses Points x Multi model.
-- Traditional card base values from card texts: 2-10 pip values, J/Q/K=10, A=11.
-- Joker card text: can substitute any traditional card; grants +100 points and +1 multi when played.
-- Neon cards generally provide doubled point profile plus +1 multi over traditional equivalents.
-- Modifiers, specials, power-ups, and rage effects can alter scoring and legal hand composition.
-
-TEMPORARY VS PERMANENT SPECIALS
-- Store info defines temporary specials as auto-removed after 3 rounds.
-- Permanent specials persist until sold/removed.
-
-KNOWN DATA NOTES
-- Loot box translation provides human-readable odds/details for ids 1-13.
-- PACK_RATES currently provides explicit slot-level probability matrices for pack ids 1,2,3,4,5,6,8,11,12,13,21,22,23,24,25,26.
-- Rarity mapping files may not include every card id present in localization catalogs (new/legacy content coexist).
-
-SOURCE FILES USED
-- public/locales/en/cards/translation.json
-- public/locales/en/store/translation.json
-- public/locales/en/map/translation.json
-- public/locales/en/tutorials/translation.json
-- public/locales/en/plays/translation.json
-- src/data/specialCards.ts
-- src/data/rageCards.ts
-- src/data/modifiers.ts
-- src/data/lootBoxes.ts
-- src/data/lootBoxRates.ts
-- src/data/powerups.ts
-- src/constants/powerupEffects.ts
-- src/pages/Map/types.ts
-- src/pages/Map/nodes/StoreNode.tsx
-- src/providers/MapProvider.tsx
-- src/utils/getRageNodeData.ts
-- src/dojo/queries/getGameConfig.ts
-- src/dojo/queries/getGameView.ts
-- README.md
+TODO (OPEN ITEMS)
+- Remove from the Specials and Rage lists any cards that are not active according to MODS configuration.
+- Explain how the map is built, the Rage round power, and how that affects Rage card selection.
+- Explain the round target-score curve across the full run.
