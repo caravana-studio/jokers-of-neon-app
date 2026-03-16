@@ -7,6 +7,7 @@ import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 import com.revenuecat.purchases.capacitor.PurchasesPlugin;
 import com.jokersofneon.play.AppsFlyerBridgePlugin;
+import com.jokersofneon.play.AgeSignalsBridgePlugin;
 
 public class MainActivity extends BridgeActivity {
     @Override
@@ -18,6 +19,8 @@ public class MainActivity extends BridgeActivity {
         registerPlugin(PurchasesPlugin.class);
         // AppsFlyer SDK for attribution and deep linking
         registerPlugin(AppsFlyerBridgePlugin.class);
+        // Play Age Signals for age range compliance in supported regions
+        registerPlugin(AgeSignalsBridgePlugin.class);
         super.onCreate(savedInstanceState);
     }
 }

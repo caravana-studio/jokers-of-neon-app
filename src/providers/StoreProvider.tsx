@@ -1,16 +1,19 @@
 import { PropsWithChildren, createContext, useContext } from "react";
+import { useTranslation } from "react-i18next";
 
 import { buySfx, levelUpSfx, rerollSfx } from "../constants/sfx.ts";
 import { BlisterPackItem } from "../dojo/typescript/models.gen";
 import { useDojo } from "../dojo/useDojo.tsx";
 import { useShopActions } from "../dojo/useShopActions";
 import { useAudio } from "../hooks/useAudio.tsx";
+import { useCustomToast } from "../hooks/useCustomToast.tsx";
 import { useDeckStore } from "../state/useDeckStore.ts";
 import { useGameStore } from "../state/useGameStore.ts";
 import { useShopStore } from "../state/useShopStore.ts";
 import { Card } from "../types/Card";
 import { PokerHandItem } from "../types/PokerHandItem";
 import { PowerUp } from "../types/Powerup/PowerUp.ts";
+import { shouldBlockLootBoxPurchases } from "../utils/ageSignals";
 import { getCardType } from "../utils/getCardType.ts";
 import { useCardData } from "./CardDataProvider.tsx";
 import { useSettings } from "./SettingsProvider";
@@ -110,6 +113,8 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
   const { play: levelUpHandSound } = useAudio(levelUpSfx, sfxVolume);
   const { play: buySound } = useAudio(buySfx, sfxVolume);
   const { play: rerollSound } = useAudio(rerollSfx, sfxVolume);
+  const { showErrorToast } = useCustomToast();
+  const { t } = useTranslation(["store"]);
 
   const {
     buyCard: dojoBuyCard,
@@ -271,11 +276,17 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     return promise;
   };
 
-  const buyPack = (pack: BlisterPackItem): Promise<boolean> => {
+  const buyPack = async (pack: BlisterPackItem): Promise<boolean> => {
+    if (await shouldBlockLootBoxPurchases()) {
+      showErrorToast(t("store.packs.minor-blocked"));
+      console.warn("[Age Signals] Loot box purchase blocked due to minor account status");
+      return false;
+    }
+
     const cost = pack?.discount_cost ? pack.discount_cost : pack?.cost ?? 0;
     removeCash(cost);
     buyBlisterPack(Number(pack.idx));
-    const promise = dojoBuyPack(gameId, Number(pack.idx))
+    return dojoBuyPack(gameId, Number(pack.idx))
       .then(async ({ success }) => {
         if (!success) {
           addCash(cost);
@@ -288,7 +299,6 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
         rollbackBuyBlisterPack(Number(pack.idx));
         return false;
       });
-    return promise;
   };
 
   const selectCardsFromPack = (cardIndices: number[]): Promise<boolean> => {
