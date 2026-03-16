@@ -39,7 +39,10 @@ import {
   OptimisticAnimationController,
   animateOptimisticCardPlay,
 } from "../utils/playEvents/animateOptimisticCardPlay.ts";
-import { animatePlayDiscard } from "../utils/playEvents/animatePlayDiscard.ts";
+import {
+  GAME_OVER_REDIRECT_DELAY_MS,
+  animatePlayDiscard,
+} from "../utils/playEvents/animatePlayDiscard.ts";
 import { buildOptimisticCardPlayEvents } from "../utils/playEvents/buildOptimisticCardPlayEvents.ts";
 import {
   buildOptimisticConverterCardPlayChangeEvents,
@@ -203,6 +206,11 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const playAnimationQueueRef = useRef<Promise<void>>(Promise.resolve());
   const activeOptimisticAnimationRef =
     useRef<OptimisticAnimationController | null>(null);
+  const latestPathRef = useRef(location.pathname);
+
+  useEffect(() => {
+    latestPathRef.current = location.pathname;
+  }, [location.pathname]);
 
   const resetLevel = () => {
     setRoundRewards(undefined);
@@ -320,6 +328,12 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       response.levelPassed.level_passed > 0 && advanceLevel();
       response.detailEarned.rerolls &&
         addRerolls(response.detailEarned.rerolls);
+    }
+
+    if (latestPathRef.current !== "/demo") {
+      refetchGameStore(client, gameId).catch((error) => {
+        console.error("Error refetching game state after background action", error);
+      });
     }
   };
 
@@ -648,7 +662,32 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     }
 
     if (gameState === GameStateEnum.GameOver) {
-      navigate(`/loose`);
+      if (location.pathname === "/demo") {
+        let cancelled = false;
+        let timeoutId: number | undefined;
+
+        playAnimationQueueRef.current
+          .catch(() => undefined)
+          .then(() => {
+            if (cancelled) return;
+
+            timeoutId = window.setTimeout(() => {
+              if (cancelled) return;
+              navigate(`/loose`);
+            }, GAME_OVER_REDIRECT_DELAY_MS);
+          });
+
+        return () => {
+          cancelled = true;
+          if (timeoutId !== undefined) {
+            window.clearTimeout(timeoutId);
+          }
+        };
+      }
+
+      if (location.pathname !== "/loose") {
+        navigate(`/loose`);
+      }
     } else if (
       gameState === GameStateEnum.Store &&
       location.pathname === "/demo"
