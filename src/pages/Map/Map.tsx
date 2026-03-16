@@ -1,10 +1,10 @@
-import ReactFlow, { Controls } from "reactflow";
+import ReactFlow, { Controls, CoordinateExtent } from "reactflow";
 import "reactflow/dist/style.css";
 import "./Map.css";
 import EmojiNode from "./nodes/EmojiNode";
 
 import { Flex } from "@chakra-ui/react";
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { MobileBottomBar } from "../../components/MobileBottomBar";
 import { MobileDecoration } from "../../components/MobileDecoration";
@@ -36,6 +36,9 @@ const NODE_TYPES = {
 };
 
 const EDGE_TYPES = { map: MapEdge };
+const MAP_EXTENT_PADDING_X = 220;
+const MAP_EXTENT_PADDING_Y = 220;
+const FALLBACK_NODE_SIZE = 60;
 
 export const Map = () => {
   const { t } = useTranslation("map");
@@ -64,6 +67,36 @@ export const Map = () => {
   const { handleNodeNavigation } = useNodeNavigation();
   const { refetch: refetchStore } = useStore();
   const hasInitialFitView = useRef(false);
+
+  const translateExtent = useMemo<CoordinateExtent | undefined>(() => {
+    if (nodes.length === 0) return undefined;
+
+    let minX = Infinity;
+    let minY = Infinity;
+    let maxX = -Infinity;
+    let maxY = -Infinity;
+
+    for (const node of nodes) {
+      const nodeWidth = node.width ?? FALLBACK_NODE_SIZE;
+      const nodeHeight = node.height ?? FALLBACK_NODE_SIZE;
+
+      minX = Math.min(minX, node.position.x);
+      minY = Math.min(minY, node.position.y);
+      maxX = Math.max(maxX, node.position.x + nodeWidth);
+      maxY = Math.max(maxY, node.position.y + nodeHeight);
+    }
+
+    return [
+      [
+        Math.floor(minX - MAP_EXTENT_PADDING_X),
+        Math.floor(minY - MAP_EXTENT_PADDING_Y),
+      ],
+      [
+        Math.ceil(maxX + MAP_EXTENT_PADDING_X),
+        Math.ceil(maxY + MAP_EXTENT_PADDING_Y),
+      ],
+    ];
+  }, [nodes]);
 
   useEffect(() => {
     if (layoutReady && nodes.length > 0 && !hasInitialFitView.current) {
@@ -139,6 +172,7 @@ export const Map = () => {
         edges={edges}
         nodeTypes={NODE_TYPES}
         edgeTypes={EDGE_TYPES}
+        translateExtent={translateExtent}
         panOnScroll={false}
         zoomOnScroll={true}
         nodesDraggable={false}

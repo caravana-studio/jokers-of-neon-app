@@ -62,6 +62,7 @@ export const controller =
         policies,
         rpc: RPC_URL,
         chainId: defaultChainId,
+        preset: import.meta.env.VITE_CONTROLLER_PRESET,
         redirectUrl: "jokers://open",
         disconnectRedirectUrl: "jokers://open",
         signupOptions,

@@ -42,6 +42,7 @@ export const SpecialCardsRow = () => {
   const freeUnlockedSlots = Math.max(0, 5 - cards.length - lockedSlots);
 
   const visibleCards = cards.length + freeUnlockedSlots + lockedSlots;
+  const hasSevenSpecialCards = cards.length === 7;
 
   const cardToDiscard = cards.find((c) => c.idx === cardToDiscardIdx);
 
@@ -69,6 +70,7 @@ export const SpecialCardsRow = () => {
         width={visibleCards > 5 ? "97%" : visibleCards > 6 ? "95%" : "100%"}
         alignItems={isSmallScreen ? "center" : "inherit"}
         columnGap={3}
+        pr={hasSevenSpecialCards ? 3 : 0}
         pb={isSmallScreen ? 0 : 4}
       >
         {cards.map((card) => {
