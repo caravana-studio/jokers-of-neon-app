@@ -101,6 +101,7 @@
       "tap-anywhere-to-close": "Toca en cualquier lugar para cerrar",
       "size": "Tamaño: {{size}}",
       "continue-btn": "Continuar",
+      "minor-blocked": "Las cajas no están disponibles para cuentas de menores en tu región.",
       "cards-select-lbl": "Selecciona las cartas que deseas conservar",
       "select-all-lbl": "Seleccionar todo",
       "special-cards-btn": "Ver items",

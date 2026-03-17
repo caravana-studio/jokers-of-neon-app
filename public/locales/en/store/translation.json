@@ -101,6 +101,7 @@
       "tap-anywhere-to-close": "Tap anywhere to close",
       "size": "Size: {{size}}",
       "continue-btn": "Continue",
+      "minor-blocked": "Loot boxes are unavailable for minor accounts in your region.",
       "cards-select-lbl": "Select the cards you want to keep",
       "select-all-lbl": "Select all",
       "special-cards-btn": "Manage items",
