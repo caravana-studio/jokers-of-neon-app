@@ -21,6 +21,7 @@ export const OpenLootBox = () => {
   const [openTextVisible, setOpenTextVisible] = useState(false);
   const [isBuying, setIsBuying] = useState(false);
   const lootBoxRef = useRef<LootBoxRef>(null);
+  const didStartPurchaseRef = useRef(false);
   const { sfxVolume } = useSettings();
   const { play: openPackSound } = useAudio(openPackSfx, sfxVolume);
   const { state } = useGameStore();
@@ -50,9 +51,10 @@ export const OpenLootBox = () => {
   }, [pack, navigate]);
 
   useEffect(() => {
-    if (!pack) {
+    if (!pack || didStartPurchaseRef.current) {
       return;
     }
+    didStartPurchaseRef.current = true;
 
     setIsBuying(true);
     buyPack(pack)
@@ -68,7 +70,7 @@ export const OpenLootBox = () => {
       .finally(() => {
         setIsBuying(false);
       });
-  }, [buyPack, navigate, pack]);
+  }, [pack]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
