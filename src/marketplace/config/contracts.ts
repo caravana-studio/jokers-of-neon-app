@@ -38,7 +38,7 @@ export const USDC_ADDRESS =
   "0x053c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8";
 
 export const SHOP_TREASURY_ADDRESS =
-  "0x0150720d052368e919337d82696bc8a1da7fc2ae2927930363d58aa5235ab865";
+  "0x003994B69Ee4aA73756bE7c9bB5609237C28b6F180fEfC3251698d0F38a10B88";
 
 // Well-known Starknet token addresses (same on mainnet & sepolia)
 export const STRK_ADDRESS =
