@@ -1,7 +1,7 @@
 import { chakra } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import { SEASON_NUMBER } from "../../constants/season";
+import { useSeasonNumber } from "../../constants/season";
 import { LegacyLogoPresentation } from "./LegacyLogoPresentation";
 import { LogoPresentation } from "./LogoPresentation";
 import { PoweredByPresentation } from "./PoweredBy";
@@ -17,7 +17,8 @@ const OpeningScreenAnimation: React.FC<OpeningScreenAnimationProps> = ({
   onAnimationEnd,
   skipAnimation = false,
 }) => {
-  const isSeason2 = SEASON_NUMBER === 2;
+  const seasonNumber = useSeasonNumber();
+  const isSeason2 = seasonNumber === 2;
   const hasFinishedRef = useRef(false);
   const [stage, setStage] = useState<"logo" | "poweredBy" | "end">("logo");
   const [logoVisibility, setLogoVisibility] = useState({

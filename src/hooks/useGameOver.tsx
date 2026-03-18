@@ -2,7 +2,7 @@ import { AppLauncher } from "@capacitor/app-launcher";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
-import { SEASON_NUMBER } from "../constants/season";
+import { useSeasonNumber } from "../constants/season";
 import { GAME_ID } from "../constants/localStorage";
 import { looseSfx } from "../constants/sfx";
 import { useSettings } from "../providers/SettingsProvider";
@@ -31,6 +31,7 @@ export const useGameOver = () => {
 
   const { t } = useTranslation(["intermediate-screens"]);
   const [isLoading, setIsLoading] = useState(false);
+  const seasonNumber = useSeasonNumber();
 
   const position = actualPlayer?.position ?? 100;
 
@@ -91,7 +92,7 @@ export const useGameOver = () => {
       `🃏 I just finished a ${gameTypeLabel} in @jokers_of_neon — check out my results:\n` +
       `🏅 Rank: ${actualPlayer.position}\n` +
       `🔥 Level: ${actualPlayer.level}\n\n` +
-      `Try to beat me on Jokers of Neon Season ${SEASON_NUMBER}`;
+      `Try to beat me on Jokers of Neon Season ${seasonNumber}`;
 
     const site = "https://jokersofneon.com/";
 

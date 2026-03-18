@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import CachedImage from "../../components/CachedImage";
 import { SeasonPass } from "../../components/SeasonPass/SeasonPass";
-import { SEASON_NUMBER } from "../../constants/season";
+import { useSeasonNumber } from "../../constants/season";
 import { useSeasonPass } from "../../providers/SeasonPassProvider";
 import { BLUE, VIOLET_LIGHT } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
@@ -55,7 +55,8 @@ export const SeasonPassRow = ({ id, price, unlocked }: SeasonPassRowProps) => {
     keyPrefix: "shop.season-pass",
   });
   const { isSmallScreen } = useResponsiveValues();
-  const isSeason2 = SEASON_NUMBER === 2;
+  const seasonNumber = useSeasonNumber();
+  const isSeason2 = seasonNumber === 2;
 
   const { purchaseSeasonPass } = useSeasonPass();
   const [isLoading, setIsLoading] = useState(false);
@@ -125,7 +126,7 @@ export const SeasonPassRow = ({ id, price, unlocked }: SeasonPassRowProps) => {
             lineHeight={1}
             textShadow={`0 0 7px ${VIOLET_LIGHT}`}
           >
-            {t("season-pass-x", { season: SEASON_NUMBER })}
+            {t("season-pass-x", { season: seasonNumber })}
           </Heading>
         </Flex>
         <Flex
@@ -145,8 +146,8 @@ export const SeasonPassRow = ({ id, price, unlocked }: SeasonPassRowProps) => {
             <SeasonPass rotate="-25deg" w={isSmallScreen ? "110px" : "230px"} unlocked />
           </Flex>
           <Flex w="50%" flexDir={"column"} gap={isSmallScreen ? 4 : 6}>
-            <Fact number={1} />
-            <Fact number={2} />
+            <Fact number={1} seasonNumber={seasonNumber} />
+            <Fact number={2} seasonNumber={seasonNumber} />
             {/* <Fact number={3} /> */}
           </Flex>
         </Flex>
@@ -181,7 +182,13 @@ export const SeasonPassRow = ({ id, price, unlocked }: SeasonPassRowProps) => {
   );
 };
 
-const Fact = ({ number }: { number: number }) => {
+const Fact = ({
+  number,
+  seasonNumber,
+}: {
+  number: number;
+  seasonNumber: number;
+}) => {
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "shop.season-pass.facts",
   });
@@ -191,10 +198,10 @@ const Fact = ({ number }: { number: number }) => {
     <Flex flexDir="column" gap={isSmallScreen ? 0.5 : 1.5}>
       <Text fontSize={isSmallScreen ? 15 : 26}>{t(`${number}-title`)}</Text>
       <Text fontSize={isSmallScreen ? 10 : 17} lineHeight={1}>
-        {t(`${number}-description-1`, { season: SEASON_NUMBER })}
+        {t(`${number}-description-1`, { season: seasonNumber })}
       </Text>
       <Text fontSize={isSmallScreen ? 10 : 17} lineHeight={1}>
-        {t(`${number}-description-2`, { season: SEASON_NUMBER })}
+        {t(`${number}-description-2`, { season: seasonNumber })}
       </Text>
     </Flex>
   );
