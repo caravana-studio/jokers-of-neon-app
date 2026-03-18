@@ -1,9 +1,8 @@
-import { SEASON_NUMBER } from "../constants/season";
+import { getSeasonNumber } from "../constants/season";
 import { RewardStatus } from "../enums/rewardStatus";
 import { IReward, IStep } from "../pages/SeasonProgression/types";
 
 const DEFAULT_API_BASE_URL = "http://localhost:3001";
-const DEFAULT_SEASON_ID = SEASON_NUMBER;
 const TOURNAMENT_ENTRY_PACK_ID = 99;
 
 export type GetSeasonLineParams = {
@@ -152,7 +151,7 @@ const countUnclaimedRewards = (steps: IStep[]) =>
 
 export async function getSeasonProgress({
   userAddress,
-  seasonId = DEFAULT_SEASON_ID,
+  seasonId = getSeasonNumber(),
   forceSeasonPassUnlocked,
 }: GetSeasonLineParams): Promise<{
   steps: IStep[];

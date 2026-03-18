@@ -1,4 +1,4 @@
-import { SEASON_NUMBER } from "../constants/season";
+import { getSeasonNumber } from "../constants/season";
 
 export type GetPlayerLivesParams = {
   playerAddress: string;
@@ -20,7 +20,7 @@ export type PlayerLivesApiResponse = {
 
 export async function getPlayerLives(
   client: any,
-  { playerAddress, seasonId = SEASON_NUMBER }: GetPlayerLivesParams
+  { playerAddress, seasonId = getSeasonNumber() }: GetPlayerLivesParams
 ): Promise<PlayerLivesApiResponse> {
   if (!playerAddress) {
     throw new Error("getPlayerLives: playerAddress is required");
