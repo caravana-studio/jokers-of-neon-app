@@ -142,6 +142,144 @@
     "pageTitle": "TERMOS DE USO",
     "back": "Voltar",
     "effectiveDate": "Data de Vigência",
-    "betaNotice": "Versão Beta — acesso antecipado"
+    "effectiveDateValue": "15 de março de 2026",
+    "betaNotice": "Versão beta - acesso antecipado",
+    "betaVersionLabel": "Versão Beta",
+    "entityLabel": "Entidade",
+    "entityName": "Caravana Studio LLC (Delaware, EUA)",
+    "contactLabel": "Contato",
+    "contactEmail": "gm@jokersofneon.com",
+    "metadataLine": "{{date}} · {{entity}}",
+    "documentTitle": "JOKERS OF NEON - TERMOS DE USO DO MARKETPLACE",
+    "authoritativeNotice": "A versão autoritativa destes Termos é a versão em inglês.",
+    "copyright": "© 2026 Caravana Studio LLC. Todos os direitos reservados.",
+    "footerNotice": "A versão autoritativa destes Termos é a versão em inglês. © 2026 Caravana Studio LLC. Todos os direitos reservados.",
+    "sections": {
+      "tldr": {
+        "number": "",
+        "title": "TL;DR",
+        "body": "• Marketplace beta: use por sua própria conta e risco\n• Você deve ter pelo menos 18 anos para negociar\n• Sem custódia: nunca mantemos seus fundos nem seus NFTs\n• O vendedor declara que possui ou controla o NFT listado e que pode vendê-lo legalmente\n• As taxas são exibidas antes de cada transação; você é responsável por impostos e pelas respectivas declarações\n• Os anúncios podem expirar, falhar ou deixar de estar disponíveis; a execução não é garantida\n• NFTs são colecionáveis, não investimentos\n• Transações on-chain executadas na Starknet são irreversíveis e não reembolsáveis"
+      },
+      "acceptance": {
+        "number": "1.",
+        "title": "Aceitação",
+        "body": "Ao conectar sua carteira e usar o Jokers of Neon Marketplace (o \"Marketplace\"), você concorda com estes Termos. Se discordar, não conecte sua carteira nem use o Marketplace."
+      },
+      "relationshipToGameTerms": {
+        "number": "2.",
+        "title": "Relação com os Termos do Jogo",
+        "body": "Estes Termos se aplicam além dos Termos e Condições do jogo Jokers of Neon e de qualquer licença NFT aplicável. Para a mecânica e as transações do marketplace, estes Termos prevalecem. Especificamente, a Seção 8 dos Termos do Jogo (\"No Marketplace\") não se aplica ao Marketplace operado sob estes Termos."
+      },
+      "aboutMarketplace": {
+        "number": "3.",
+        "title": "Sobre o Marketplace",
+        "body": "O Marketplace é um mercado secundário peer-to-peer e sem custódia para cartas NFT de Jokers of Neon, operado pela Caravana Studio LLC na Starknet. Ele está em beta (acesso antecipado) e sujeito a mudanças."
+      },
+      "eligibility": {
+        "number": "4.",
+        "title": "Elegibilidade",
+        "body": "Você deve ter pelo menos 18 anos e capacidade legal para celebrar contratos vinculantes. Você não pode usar o Marketplace se estiver em uma jurisdição sujeita a sanções dos EUA ou se o uso violar a lei aplicável."
+      },
+      "howMarketplaceWorks": {
+        "number": "5.",
+        "title": "Como o Marketplace Funciona",
+        "body": "Anúncio: vendedores aprovam o contrato do marketplace para transferir seu NFT e assinam uma ordem de venda off-chain. Nenhum fundo é bloqueado no momento do anúncio, e aprovar ou assinar não garante exibição nem execução.\n\nCompra: compradores aprovam o gasto do ERC-20 e então executam a compra on-chain. Se a ordem ainda estiver válida e preenchível naquele momento, o smart contract transfere de forma atômica o pagamento, a taxa e o NFT em uma única transação.\n\nCancelamento: vendedores podem cancelar anúncios ativos a qualquer momento por meio de uma transação on-chain. Também podemos deixar de exibir ou servir anúncios por nossa interface ou API sem assumir custódia dos ativos.\n\nLiquidação: todas as negociações são liquidadas atomicamente na Starknet. O Marketplace nunca mantém fundos nem NFTs."
+      },
+      "feesAndTaxes": {
+        "number": "6.",
+        "title": "Taxas e Impostos",
+        "body": "Uma taxa do marketplace, exibida antes da confirmação de qualquer transação, é deduzida do valor recebido pelo vendedor. Compradores e vendedores também pagam taxas de gas da rede Starknet. A taxa vigente é mostrada na tela de confirmação.\n\nVocê é o único responsável por determinar, pagar, reter e reportar quaisquer impostos, tributos ou encargos governamentais similares decorrentes de seus anúncios, compras, vendas ou outras negociações. Não fornecemos aconselhamento tributário, jurídico nem contábil."
+      },
+      "sellerRepresentations": {
+        "number": "7.",
+        "title": "Declarações do Vendedor",
+        "body": "Ao criar um anúncio, você declara e garante que: (a) é titular ou controla validamente o NFT anunciado e tem autoridade para aprová-lo, anunciá-lo, vendê-lo e transferi-lo; (b) seu anúncio, venda e transferência não violam qualquer lei aplicável, sanção, ordem judicial, contrato ou direitos de terceiros; e (c) as informações enviadas em conexão com o anúncio são precisas e não enganosas."
+      },
+      "failedOrStaleOrders": {
+        "number": "8.",
+        "title": "Ordens Frustradas, Expiradas ou Desatualizadas",
+        "body": "Não garantimos que qualquer anúncio permanecerá disponível, visível, correto, preenchível ou que será efetivamente executado. Os anúncios podem expirar, ser cancelados, removidos da interface ou da API, ou tornar-se desatualizados, atrasados, incompletos ou incorretos.\n\nAs transações podem falhar ou nem sequer ser propagadas por problemas de carteira, aprovações ou saldos insuficientes, problemas de assinatura, erros de preço ou exibição, pausas de contrato, congestionamento, indisponibilidade, reorgs, problemas de RPC ou indexador, ou outras falhas técnicas ou de rede. Podemos corrigir erros evidentes de exibição ou remover os anúncios afetados de nossa interface ou API antes da execução."
+      },
+      "risks": {
+        "number": "9.",
+        "title": "Riscos",
+        "body": "Ao usar o Marketplace, você reconhece:\n• Risco de smart contract: contratos podem conter bugs ou vulnerabilidades\n• Volatilidade de preços: preços de NFTs e tokens podem variar significativamente\n• Risco de rede: congestionamento, indisponibilidade ou reorgs podem atrasar, frustrar ou invalidar transações\n• Irreversibilidade: transações on-chain concluídas não podem ser revertidas\n• Risco beta: o Marketplace pode ser modificado, pausado ou descontinuado\n• Risco de carteira: você é o único responsável pela segurança da sua carteira"
+      },
+      "nftsAndIp": {
+        "number": "10.",
+        "title": "NFTs e Propriedade Intelectual",
+        "body": "Possuir ou comprar um NFT de Jokers of Neon por meio do Marketplace transfere o NFT em si, mas não transfere a titularidade da propriedade intelectual subjacente. Qualquer licença para usar, exibir ou de outro modo explorar um NFT de Jokers of Neon ou conteúdo relacionado é regida exclusivamente pelos termos do jogo Jokers of Neon, pela licença NFT ou por outros termos aplicáveis do publisher que estiverem vigentes naquele momento. O Marketplace não concede uma licença mais ampla nem separada."
+      },
+      "noInvestmentAdvice": {
+        "number": "11.",
+        "title": "Sem Aconselhamento de Investimento",
+        "body": "NFTs são colecionáveis digitais, não investimentos nem valores mobiliários. Nada nesta plataforma constitui aconselhamento financeiro, de investimento, jurídico ou tributário. Nenhuma expectativa de lucro ou retorno é implicada."
+      },
+      "prohibitedConduct": {
+        "number": "12.",
+        "title": "Conduta Proibida",
+        "body": "Você não pode realizar wash trading, manipulação de mercado, fraude, lavagem de dinheiro, evasão de sanções, uso de carteiras roubadas ou comprometidas, infração de direitos, nem qualquer outra atividade ilegal ou abusiva."
+      },
+      "walletAndThirdPartyServices": {
+        "number": "13.",
+        "title": "Carteiras e Serviços de Terceiros",
+        "body": "O Marketplace utiliza carteiras e serviços de terceiros, incluindo Cartridge Controller, cada qual sujeito aos seus próprios termos. Não somos responsáveis por serviços de terceiros, provedores RPC, indexadores, bridges nem falhas de carteiras."
+      },
+      "noCustody": {
+        "number": "14.",
+        "title": "Sem Custódia",
+        "body": "A Caravana Studio LLC não mantém, controla nem acessa seus fundos ou NFTs. Todas as negociações são executadas por smart contracts ou software de carteira sob seu controle."
+      },
+      "noRefundsOrReversals": {
+        "number": "15.",
+        "title": "Sem Reembolsos nem Reversões",
+        "body": "Como as compras são liquidadas on-chain, as transações executadas são finais, irreversíveis e não reembolsáveis, exceto quando a lei aplicável exigir o contrário. Não podemos reverter transações em blockchain, forçar a devolução de NFTs ou tokens, nem recuperar perdas causadas por erro do usuário, comprometimento de carteira ou falhas de terceiros."
+      },
+      "gameModifications": {
+        "number": "16.",
+        "title": "Modificações do Jogo",
+        "body": "A Caravana Studio LLC pode modificar, a qualquer momento, a mecânica das cartas, o gameplay, o balanceamento, a arte, a apresentação de metadata ou a utilidade do NFT. Tais mudanças não dão direito a reembolsos nem compensação."
+      },
+      "complianceAndSuspension": {
+        "number": "17.",
+        "title": "Conformidade, Segurança e Suspensão",
+        "body": "Para cumprir a lei, sanções, ordens judiciais ou por prevenção a fraude, segurança ou integridade, podemos suspender ou limitar o acesso à interface ou API do Marketplace, recusar exibir ou aceitar certos anúncios por meio de nossos serviços, remover anúncios da exibição, desabilitar funcionalidades do mercado, ou bloquear ou restringir carteiras ou usuários específicos em nossa interface ou serviços off-chain.\n\nQuando o contrato do marketplace ou a infraestrutura relacionada permitirem, também poderemos pausar a funcionalidade do marketplace. Essas ações não nos dão custódia dos seus ativos nem nos permitem reverter transações on-chain já concluídas."
+      },
+      "betaDisclaimer": {
+        "number": "18.",
+        "title": "Aviso de Beta",
+        "body": "Este Marketplace está em acesso antecipado. Funcionalidades podem estar incompletas, mudar ou ser removidas. Não damos garantias de disponibilidade, uptime, continuidade nem de execução bem-sucedida de qualquer anúncio ou transação."
+      },
+      "disclaimers": {
+        "number": "19.",
+        "title": "Isenções de Responsabilidade",
+        "body": "O MARKETPLACE É FORNECIDO \"NO ESTADO EM QUE SE ENCONTRA\" E \"CONFORME DISPONÍVEL\", SEM GARANTIAS DE QUALQUER TIPO, EXPRESSAS OU IMPLÍCITAS."
+      },
+      "limitationOfLiability": {
+        "number": "20.",
+        "title": "Limitação de Responsabilidade",
+        "body": "NA MÁXIMA EXTENSÃO PERMITIDA POR LEI, A CARAVANA STUDIO LLC NÃO SERÁ RESPONSÁVEL POR DANOS INDIRETOS, INCIDENTAIS, CONSEQUENCIAIS, ESPECIAIS, EXEMPLARES OU PUNITIVOS, NEM POR QUALQUER PERDA DE FUNDOS, DADOS, LUCROS, GOODWILL OU VALOR DE NFT."
+      },
+      "indemnification": {
+        "number": "21.",
+        "title": "Indenização",
+        "body": "Você concorda em indenizar e isentar a Caravana Studio LLC, suas afiliadas e membros da equipe de quaisquer reivindicações, danos, responsabilidades e despesas decorrentes do seu uso do Marketplace ou da violação destes Termos."
+      },
+      "updates": {
+        "number": "22.",
+        "title": "Atualizações",
+        "body": "Podemos modificar estes Termos a qualquer momento. O uso continuado do Marketplace após a entrada em vigor das alterações constitui aceitação. A Data de Vigência acima reflete a versão atual."
+      },
+      "governingLaw": {
+        "number": "23.",
+        "title": "Lei Aplicável",
+        "body": "Estes Termos são regidos pelas leis do Estado de Delaware, EUA."
+      },
+      "contact": {
+        "number": "24.",
+        "title": "Contato",
+        "body": "gm@jokersofneon.com"
+      }
+    }
   }
 }
