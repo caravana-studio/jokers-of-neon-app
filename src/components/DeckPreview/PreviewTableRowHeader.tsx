@@ -1,5 +1,5 @@
 import { Flex, Box } from "@chakra-ui/react";
-import { cardSuitsMap, RowHeader } from "./DeckPreviewTableUtils";
+import { cardSuitsMap, RowHeader, suitColorsMap } from "./DeckPreviewTableUtils";
 import { GREY_LINE, GREY_MEDIUM } from "../../theme/colors";
 import { IconComponent } from "../IconComponent";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
@@ -12,6 +12,8 @@ export const PreviewTableRowHeader: React.FC<RowHeader> = ({
 
   const Icon = cardSuitsMap.get(cardSuit);
   if (!Icon) return null;
+  const suitBackgroundColor = suitColorsMap.get(cardSuit) ?? "black";
+  const suitBackgroundWithOpacity = `${suitBackgroundColor}80`;
 
   const { isSmallScreen } = useResponsiveValues();
   const iconSize = isSmallScreen ? "9px" : "14px";
@@ -25,10 +27,8 @@ export const PreviewTableRowHeader: React.FC<RowHeader> = ({
       py={isSmallScreen ? "1px" : 1}
       columnGap={isSmallScreen ? "2px" : 2}
       textAlign={"center"}
-      backgroundColor={"black"}
-      border={"1px"}
+      backgroundColor={suitBackgroundWithOpacity}
       borderRadius={"15px"}
-      borderColor={"white"}
       width={isSmallScreen ? "100%" : "80px"}
     >
       {Icon && <IconComponent icon={Icon} width={iconSize} height={iconSize} />}

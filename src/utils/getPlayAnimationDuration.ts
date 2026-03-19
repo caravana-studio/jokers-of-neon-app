@@ -6,7 +6,7 @@ export const getMinimumDuration = (level: number, speed: Speed) => {
   } else if (Speed.FAST === speed) {
     return 300;
   } else if (Speed.FASTEST === speed) {
-    return 250;
+    return 275;
   }
   return 300;
 };

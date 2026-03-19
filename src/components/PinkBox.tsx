@@ -10,6 +10,8 @@ interface PinkBoxProps extends PropsWithChildren {
   actionHidden?: boolean;
   glowIntensity?: number;
   color?: "violet" | "blue";
+  buttonIsLoading?: boolean;
+  buttonIsDisabled?: boolean;
 }
 
 export const PinkBox = ({
@@ -20,6 +22,8 @@ export const PinkBox = ({
   actionHidden = false,
   glowIntensity = 0,
   color = "violet",
+  buttonIsLoading = false,
+  buttonIsDisabled = false,
 }: PinkBoxProps) => {
   const { isSmallScreen } = useResponsiveValues();
 
@@ -58,6 +62,8 @@ export const PinkBox = ({
           size="md"
           variant={color === "violet" ? "secondarySolid" : undefined}
           onClick={onClick}
+          isLoading={buttonIsLoading}
+          isDisabled={buttonIsDisabled}
           opacity={actionHidden ? 0 : 1}
           transition={"opacity 0.3s ease-in-out"}
           pointerEvents={actionHidden ? "none" : "auto"}

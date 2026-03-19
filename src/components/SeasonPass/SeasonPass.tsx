@@ -1,5 +1,5 @@
 import { VIOLET } from "../../theme/colors";
-import { SEASON_NUMBER } from "../../constants/season";
+import { useSeasonNumber } from "../../constants/season";
 import CachedImage from "../CachedImage";
 
 interface SeasonPassProps {
@@ -15,11 +15,12 @@ export const SeasonPass = ({
   unlocked = false,
   seasonNumber,
 }: SeasonPassProps) => {
+  const currentSeasonNumber = useSeasonNumber();
   const seasonImageNumber =
     Number.isFinite(seasonNumber) && (seasonNumber ?? 0) > 0
       ? Number(seasonNumber)
-      : SEASON_NUMBER > 0
-        ? SEASON_NUMBER
+      : currentSeasonNumber > 0
+        ? currentSeasonNumber
         : 1;
   const shadowColor = seasonImageNumber === 2 ? "rgba(255, 255, 255, 0.7)" : VIOLET;
 

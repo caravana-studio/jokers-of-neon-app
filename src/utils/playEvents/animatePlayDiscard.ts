@@ -8,6 +8,7 @@ import { eventTypeToSuit } from "./eventTypeToSuit";
 
 // Number of pitch variants available (points_0.mp3 to points_17.mp3)
 const PITCH_VARIANTS = 18;
+export const GAME_OVER_REDIRECT_DELAY_MS = 3000;
 
 interface AnimatePlayConfig {
   playEvents: PlayEvents;
@@ -419,7 +420,7 @@ export const animatePlayDiscard = (config: AnimatePlayConfig): number => {
     } else if (playEvents.gameOver) {
       setTimeout(() => {
         navigate(`/loose`);
-      }, 1000);
+      }, GAME_OVER_REDIRECT_DELAY_MS);
     } else if (playEvents.levelPassed && playEvents.detailEarned) {
       resetRage();
       setTimeout(() => {
