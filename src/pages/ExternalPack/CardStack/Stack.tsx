@@ -174,8 +174,6 @@ export default function Stack({
         onCardChange(topCard.cardId);
       }
     }
-    // Depend only on cardsData so navigation interactions (click/drag) are not reset.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cardsData]);
 
   const sendToBack = (id: CardData["id"]) => {

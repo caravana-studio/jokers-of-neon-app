@@ -16,6 +16,21 @@ const rootDir = fileURLToPath(new URL(".", import.meta.url));
 const indexHtml = path.resolve(rootDir, "index.html");
 const standaloneShopHtml = path.resolve(rootDir, "standalone-shop.html");
 const localCertDir = path.resolve(rootDir, ".cert");
+const isReactCompilerEnabled = process.env.VITE_REACT_COMPILER !== "false";
+
+const reactCompilerPlugin = react({
+  babel: {
+    plugins: [
+      [
+        "babel-plugin-react-compiler",
+        {
+          target: "18",
+          panicThreshold: "none",
+        },
+      ],
+    ],
+  },
+});
 
 const ensureLocalHttpsCert = () => {
   const keyFilePath = path.resolve(localCertDir, "localhost-key.pem");
@@ -80,7 +95,12 @@ const createConfig = (target: BuildTarget): UserConfig => {
   const https = resolveHttpsServerConfig();
   const config: UserConfig = {
     base: "./",
-    plugins: [react(), wasm(), topLevelAwait(), svgx()],
+    plugins: [
+      ...(isReactCompilerEnabled ? [reactCompilerPlugin] : []),
+      wasm(),
+      topLevelAwait(),
+      svgx(),
+    ],
     build: {
       outDir: isStandaloneShop ? "dist-shop" : "dist",
       rollupOptions: {

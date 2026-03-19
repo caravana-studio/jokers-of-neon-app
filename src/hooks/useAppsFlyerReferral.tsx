@@ -174,7 +174,6 @@ export function useAppsFlyerReferral(): UseAppsFlyerReferralResult {
 
     return () => clearTimeout(timer);
     // Note: accountType and username are accessed via refs, not closure
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account?.address, processReferral, processConversion]);
 
   // Retry failed referral

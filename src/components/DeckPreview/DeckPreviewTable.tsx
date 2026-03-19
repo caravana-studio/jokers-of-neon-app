@@ -9,12 +9,12 @@ import {
 } from "@chakra-ui/react";
 import { Suits } from "../../enums/suits";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
-import { getTableData, suitColorsMap } from "./DeckPreviewTableUtils";
+import { suitColorsMap, useTableData } from "./DeckPreviewTableUtils";
 import { PreviewTableColumnHeader } from "./PreviewTableColumnHeader";
 import { PreviewTableRowHeader } from "./PreviewTableRowHeader";
 
 export const DeckPreviewTable = () => {
-  const tableData = getTableData();
+  const tableData = useTableData();
   const columnHeaders = tableData.columnHeaders;
   const rowHeaders = tableData.rowHeaders;
   const rows = tableData.cells;

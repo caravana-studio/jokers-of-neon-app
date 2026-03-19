@@ -21,6 +21,7 @@ export const OpenLootBox = () => {
   const [openTextVisible, setOpenTextVisible] = useState(false);
   const [isBuying, setIsBuying] = useState(false);
   const lootBoxRef = useRef<LootBoxRef>(null);
+  const didStartPurchaseRef = useRef(false);
   const { sfxVolume } = useSettings();
   const { play: openPackSound } = useAudio(openPackSfx, sfxVolume);
   const { state } = useGameStore();
@@ -31,19 +32,30 @@ export const OpenLootBox = () => {
     keyPrefix: "open-lootbox",
   });
 
-  if (!pack) {
-    console.error("no pack!!");
-    navigate(GameStateEnum.Store);
-    return <p>LootBox not found.</p>;
-  }
-
   const openAnimationCallBack = () => {
+    if (!pack) {
+      return;
+    }
+
     transitionTo("loot-box-cards-selection", {
       state: { pack: pack },
     });
   };
 
   useEffect(() => {
+    if (!pack) {
+      console.error("no pack!!");
+      navigate(GameStateEnum.Store);
+      return;
+    }
+  }, [pack, navigate]);
+
+  useEffect(() => {
+    if (!pack || didStartPurchaseRef.current) {
+      return;
+    }
+    didStartPurchaseRef.current = true;
+
     setIsBuying(true);
     buyPack(pack)
       .then((response) => {
@@ -58,7 +70,7 @@ export const OpenLootBox = () => {
       .finally(() => {
         setIsBuying(false);
       });
-  }, []);
+  }, [pack]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -66,6 +78,10 @@ export const OpenLootBox = () => {
     }, 2000);
     return () => clearTimeout(timer);
   }, []);
+
+  if (!pack) {
+    return <p>LootBox not found.</p>;
+  }
 
   return (
     <Flex

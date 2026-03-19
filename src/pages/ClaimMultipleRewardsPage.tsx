@@ -69,7 +69,6 @@ export const ClaimMultipleRewardsPage = () => {
     };
 
     claim();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account?.address]);
 
   const headingStages: LoadingProgress[] = [
