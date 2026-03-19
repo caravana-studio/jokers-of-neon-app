@@ -4,6 +4,7 @@ import { decodeString } from "../dojo/utils/decodeString";
 import mainnetGraphQLClient from "../mainnetGraphQLClient";
 
 export const ALL_TIME_XP_LEADERBOARD_QUERY_KEY = "all-time-xp-leaderboard";
+const MAX_ALL_TIME_XP_LEADERBOARD_PLAYERS = 50;
 
 const ALL_TIME_XP_LEADERBOARD_QUERY = gql`
   query {
@@ -64,7 +65,7 @@ const fetchAllTimeXpLeaderboard = async () => {
       playerName: parseUsername(edge.node.username),
     }))
     .filter((entry) => {
-      const normalizedName = entry.playerName?.toLowerCase?.();
+      const normalizedName = entry.playerName?.trim().toLowerCase();
       const normalizedAddress = entry.address?.toLowerCase?.();
       const isBlocked =
         blockedUsernames.has(normalizedName ?? "") ||
@@ -91,10 +92,12 @@ const fetchAllTimeXpLeaderboard = async () => {
     );
   });
 
-  return sorted.map((entry, index) => ({
-    ...entry,
-    position: index + 1,
-  }));
+  return sorted
+    .slice(0, MAX_ALL_TIME_XP_LEADERBOARD_PLAYERS)
+    .map((entry, index) => ({
+      ...entry,
+      position: index + 1,
+    }));
 };
 
 export const useGetAllTimeXpLeaderboard = () => {
