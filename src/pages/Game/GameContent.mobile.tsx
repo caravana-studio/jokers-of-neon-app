@@ -6,7 +6,7 @@ import {
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Joyride, { CallBackProps } from "react-joyride";
 import { useNavigate } from "react-router-dom";
@@ -35,12 +35,19 @@ import { HandSection } from "./HandSection.tsx";
 import { PlayButton } from "./PlayButton.tsx";
 import { PowerUps } from "./PowerUps.tsx";
 import { MobilePreselectedCardsSection } from "./PreselectedCardsSection.mobile.tsx";
+import { SharedPlayableCardsLayer } from "./SharedPlayableCardsLayer.tsx";
 import { MobileTopSection } from "./TopSection.mobile.tsx";
 
 enum HighlightedType {
   Play,
   Discard,
 }
+
+type CardDropOrigin = {
+  left: number;
+  top: number;
+  token: number;
+};
 
 export const MobileGameContent = () => {
   const inTutorial = isTutorial();
@@ -80,6 +87,13 @@ export const MobileGameContent = () => {
   const [highlightedPlay, setHighlightedPlay] = useState(false);
   const [highlightedDiscard, setHighlightedDiscard] = useState(false);
   const [canClickPowerUp, setCanClickPowerUp] = useState(false);
+  const cardsStageRef = useRef<HTMLDivElement>(null);
+  const handCardsAnchorRef = useRef<HTMLDivElement>(null);
+  const preselectedCardsAnchorRef = useRef<HTMLDivElement>(null);
+  const dropOriginTokenRef = useRef(0);
+  const [dragDropOrigins, setDragDropOrigins] = useState<
+    Record<number, CardDropOrigin>
+  >({});
 
   useEffect(() => {
     setRun(inTutorial);
@@ -180,24 +194,62 @@ export const MobileGameContent = () => {
 
   const handleJoyrideCallback = handleJoyrideCallbackFactory(setRun);
 
+  const registerCardDropOrigin = (event: DragEndEvent, cardIdx: number) => {
+    const stageRect = cardsStageRef.current?.getBoundingClientRect();
+    const translatedRect = event.active.rect.current.translated;
+    const fallbackRect = event.active.rect.current.initial;
+    const activeRect = translatedRect ?? fallbackRect;
+
+    if (!stageRect || !activeRect) return;
+
+    const nextToken = ++dropOriginTokenRef.current;
+    setDragDropOrigins((currentOrigins) => ({
+      ...currentOrigins,
+      [cardIdx]: {
+        left: activeRect.left - stageRect.left,
+        top: activeRect.top - stageRect.top,
+        token: nextToken,
+      },
+    }));
+  };
+
+  const resolveDropZone = (event: DragEndEvent) => {
+    const overId = event.over?.id;
+    if (overId === PRESELECTED_CARD_SECTION_ID) return "preselected";
+    if (overId === HAND_SECTION_ID) return "hand";
+
+    const targetCard = hand.find((card) => card.id === String(overId));
+    if (!targetCard) return null;
+    return preSelectedCards.includes(targetCard.idx) ? "preselected" : "hand";
+  };
+
   const handleDragEnd = (event: DragEndEvent) => {
     const draggedCard = Number(event.active?.id);
     const isModifier = hand.find((c) => c.idx === draggedCard)?.isModifier;
+    const isCurrentlyPreselected = preSelectedCards.includes(draggedCard);
+    const overId = event.over?.id;
+    const targetCard = hand.find((card) => card.id === String(overId));
+    const numericOverId = Number(overId);
+    const modifiedCard =
+      targetCard?.idx ?? (Number.isNaN(numericOverId) ? NaN : numericOverId);
+    const dropZone = resolveDropZone(event);
 
-    const modifiedCard = Number(event.over?.id);
     if (!isNaN(modifiedCard) && !isNaN(draggedCard) && isModifier) {
       const index = preSelectedCards.indexOf(modifiedCard);
       if (index !== -1) {
         addModifier(modifiedCard, draggedCard);
       }
-    } else if (
-      !isModifier &&
-      (event.over?.id === PRESELECTED_CARD_SECTION_ID || !isNaN(modifiedCard))
-    ) {
+    } else if (!isModifier && dropZone === "preselected") {
+      if (!isCurrentlyPreselected) {
+        registerCardDropOrigin(event, draggedCard);
+      }
       setCardClicked(true);
       setStepIndex?.((stepIndex ?? 0) + 1);
       preSelectCard(draggedCard);
-    } else if (event.over?.id === HAND_SECTION_ID) {
+    } else if (!isModifier && dropZone === "hand") {
+      if (isCurrentlyPreselected) {
+        registerCardDropOrigin(event, draggedCard);
+      }
       unPreSelectCard(draggedCard);
     }
   };
@@ -283,6 +335,7 @@ export const MobileGameContent = () => {
           sensors={sensors}
         >
           <Box
+            ref={cardsStageRef}
             paddingTop={4}
             sx={{
               width: "100%",
@@ -291,6 +344,8 @@ export const MobileGameContent = () => {
               display: "flex",
               flexDirection: "column",
               justifyContent: "space-between",
+              position: "relative",
+              overflow: "visible",
             }}
           >
             <Flex
@@ -324,17 +379,20 @@ export const MobileGameContent = () => {
                 backgroundColor: "rgba(0,0,0,0.2)",
               }}
             >
-              <MobilePreselectedCardsSection />
-            </Box>
-            <Box mt={2} pb={2} display={"flex"} justifyContent={"center"}>
-              <HandSection
-                onTutorialCardClick={() => {
-                  if (run) {
-                    setCardClicked(true);
-                    setStepIndex?.((stepIndex ?? 0) + 1);
-                  }
-                }}
+              <MobilePreselectedCardsSection
+                cardsAnchorRef={preselectedCardsAnchorRef}
               />
+            </Box>
+            <Box
+              mt={2}
+              pb={2}
+              w="100%"
+              display={"flex"}
+              justifyContent={"center"}
+            >
+              <Flex width="100%" px={2.5} justifyContent="center">
+                <HandSection cardsAnchorRef={handCardsAnchorRef} />
+              </Flex>
             </Box>
             <MobileBottomBar
               firstButtonReactNode={
@@ -361,6 +419,18 @@ export const MobileGameContent = () => {
                   }}
                 />
               }
+            />
+            <SharedPlayableCardsLayer
+              stageRef={cardsStageRef}
+              handAnchorRef={handCardsAnchorRef}
+              preselectedAnchorRef={preselectedCardsAnchorRef}
+              dragDropOrigins={dragDropOrigins}
+              onTutorialHandCardClick={() => {
+                if (run) {
+                  setCardClicked(true);
+                  setStepIndex?.((stepIndex ?? 0) + 1);
+                }
+              }}
             />
           </Box>
         </DndContext>

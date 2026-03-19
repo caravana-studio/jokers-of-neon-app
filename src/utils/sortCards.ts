@@ -3,7 +3,7 @@ import { SortBy } from "../enums/sortBy";
 import { Card } from "../types/Card";
 
 export const sortCards = (cards: Card[], sortBy: SortBy): Card[] => {
-  return cards.sort((a, b) => {
+  return [...cards].sort((a, b) => {
     // First layer: isModifier and isSpecial
     if (a.isModifier !== b.isModifier) {
       return a.isModifier ? 1 : -1;
