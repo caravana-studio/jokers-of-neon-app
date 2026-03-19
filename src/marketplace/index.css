@@ -1,0 +1,39 @@
+/* Marketplace-only global styles.
+   Keep this file scoped to marketplace entrypoints to avoid cross-app side effects. */
+
+:root {
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background: #060f26;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+canvas {
+  display: block;
+}

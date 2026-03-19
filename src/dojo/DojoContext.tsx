@@ -14,6 +14,7 @@ import { controller } from "./controller/controller";
 import { useWallet } from "./WalletContext";
 import { rpcUrl } from "../config/cartridgeUrls";
 import { LoadingScreen } from "../pages/LoadingScreen/LoadingScreen";
+import { AppType, useAppContext } from "../providers/AppContextProvider";
 
 interface DojoAccount {
   create: () => void;
@@ -127,6 +128,7 @@ const DojoContextProvider = ({
   value,
   masterAccount,
 }: DojoContextProviderProps) => {
+  const appType = useAppContext();
   const {
     finalAccount,
     accountType,
@@ -138,6 +140,20 @@ const DojoContextProvider = ({
     onSuccessCallback,
     logout,
   } = useWallet();
+
+  const shopFallbackAccount = useMemo(
+    () =>
+      ({
+        address: "",
+        execute: async () => {
+          throw new Error("Wallet not connected");
+        },
+        waitForTransaction: async () => {
+          throw new Error("Wallet not connected");
+        },
+      }) as unknown as AccountInterface,
+    []
+  );
 
   const { create, list, get, select, isDeploying, clear } = useBurnerManager({
     burnerManager: value.burnerManager,
@@ -179,7 +195,10 @@ const DojoContextProvider = ({
     onSuccessCallback,
   ]);
 
-  if (!finalAccount) {
+  const resolvedAccount =
+    finalAccount ?? (appType === AppType.SHOP ? shopFallbackAccount : null);
+
+  if (!resolvedAccount) {
     return <LoadingScreen />;
   }
 
@@ -198,10 +217,10 @@ const DojoContextProvider = ({
           get,
           select,
           clear,
-          account: finalAccount as Account,
+          account: resolvedAccount as Account,
           isDeploying,
           accountDisplay: displayAddress(
-            (finalAccount as Account | AccountInterface)?.address || ""
+            (resolvedAccount as Account | AccountInterface)?.address || ""
           ),
         },
       }}

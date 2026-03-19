@@ -238,10 +238,11 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
         : "300px",
   };
 
-  if (
-    !finalAccount ||
-    (EARLY_ACCESS_VERSION && (!isUserAllowed || allowedLoading))
-  ) {
+  const shouldBlockWithWalletScreen =
+    appType !== AppType.SHOP &&
+    (!finalAccount || (EARLY_ACCESS_VERSION && (!isUserAllowed || allowedLoading)));
+
+  if (shouldBlockWithWalletScreen) {
     return (
       <PreThemeLoadingPage>
         <PositionedVersion />
@@ -261,17 +262,6 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
             src="logos/logo.png"
             alt="logo"
           />
-          {appType === AppType.SHOP && (
-            <Heading
-              lineHeight={1}
-              variant={"italic"}
-              mb={isMobile ? 3 : "50px"}
-              letterSpacing={1}
-              fontSize={isMobile ? 20 : 30}
-            >
-              SHOP
-            </Heading>
-          )}
           {EARLY_ACCESS_VERSION && (
             <Flex flexDir="column" mb={isMobile ? 3 : "50px"}>
               {showNotAllowed ? (

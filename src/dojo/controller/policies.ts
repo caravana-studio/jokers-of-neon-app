@@ -6,6 +6,15 @@ import { VRF_PROVIDER_ADDRESS } from "./constants";
 const DOJO_NAMESPACE =
   import.meta.env.VITE_DOJO_NAMESPACE || "jokers_of_neon_core";
 
+const MARKETPLACE_CONTRACT_ADDRESS =
+  import.meta.env.VITE_MARKETPLACE_CONTRACT_ADDRESS || "";
+const NFT_CONTRACT_ADDRESS =
+  import.meta.env.VITE_NFT_CONTRACT_ADDRESS || "";
+const STRK_ADDRESS =
+  "0x04718f5a0Fc34cC1AF16A1cdee98fFB20C31f5cD61D6Ab07201858f4287c938D";
+const ETH_ADDRESS =
+  "0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7";
+
 const VRF_POLICY = {
   vrf: {
     name: "VRF",
@@ -31,8 +40,15 @@ interface ContractPolicy {
   methods: Method[];
 }
 
+interface SignMessagePolicy {
+  types: Record<string, { name: string; type: string }[]>;
+  primaryType: string;
+  domain: Record<string, string>;
+}
+
 interface Policies {
   contracts: Record<string, ContractPolicy>;
+  messages?: SignMessagePolicy[];
 }
 
 const formatEntrypoint = (entrypoint: string): string => {
@@ -126,7 +142,54 @@ const generatePolicies = (): Policies => {
     ),
   };
 
-  return { contracts: sortContracts(policiesContracts) };
+  // Add marketplace policies when contract addresses are configured
+  if (MARKETPLACE_CONTRACT_ADDRESS) {
+    policiesContracts[MARKETPLACE_CONTRACT_ADDRESS] = {
+      methods: [
+        { name: "Fill Order", entrypoint: "fill_order" },
+        { name: "Cancel Order", entrypoint: "cancel_order" },
+        { name: "Cancel All Orders Below", entrypoint: "cancel_all_orders_below" },
+      ],
+    };
+    policiesContracts[STRK_ADDRESS] = {
+      methods: [{ name: "Approve", entrypoint: "approve" }],
+    };
+    policiesContracts[ETH_ADDRESS] = {
+      methods: [{ name: "Approve", entrypoint: "approve" }],
+    };
+    if (NFT_CONTRACT_ADDRESS) {
+      policiesContracts[NFT_CONTRACT_ADDRESS] = {
+        methods: [{ name: "Approve", entrypoint: "approve" }],
+      };
+    }
+  }
+
+  const messages: SignMessagePolicy[] = MARKETPLACE_CONTRACT_ADDRESS
+    ? [
+        {
+          types: {
+            StarknetDomain: [
+              { name: "name", type: "shortstring" },
+              { name: "version", type: "shortstring" },
+              { name: "chainId", type: "shortstring" },
+              { name: "revision", type: "shortstring" },
+            ],
+            Order: [{ name: "orderHash", type: "felt" }],
+          },
+          primaryType: "Order",
+          domain: {
+            name: "JokersOfNeonMarketplace",
+            version: "1",
+            revision: "1",
+          },
+        },
+      ]
+    : [];
+
+  return {
+    contracts: sortContracts(policiesContracts),
+    ...(messages.length > 0 ? { messages } : {}),
+  };
 };
 
 export const policies = generatePolicies();
