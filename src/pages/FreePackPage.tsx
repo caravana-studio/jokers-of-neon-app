@@ -7,12 +7,10 @@ import { getUserCards } from "../api/getUserCards";
 import { DelayedLoading } from "../components/DelayedLoading";
 import { SimulatedLoadingBar } from "../components/LoadingProgressBar/SimulatedLoadingProgressBar";
 import { MobileDecoration } from "../components/MobileDecoration";
-import { SEASON_NUMBER } from "../constants/season";
+import { useSeasonNumber } from "../constants/season";
 import { useDojo } from "../dojo/useDojo";
 import { LoadingProgress } from "../types/LoadingProgress";
 import { ExternalPack, SimplifiedCard } from "./ExternalPack/ExternalPack";
-
-const FALLBACK_FREE_PACK_ID = SEASON_NUMBER === 2 ? 21 : 1;
 
 export const FreePackPage = () => {
   const {
@@ -23,9 +21,11 @@ export const FreePackPage = () => {
     keyPrefix: "packs",
   });
   const navigate = useNavigate();
+  const seasonNumber = useSeasonNumber();
+  const fallbackFreePackId = seasonNumber === 2 ? 21 : 1;
 
   const [mintedCards, setMintedCards] = useState<SimplifiedCard[]>([]);
-  const [freePackId, setFreePackId] = useState<number>(FALLBACK_FREE_PACK_ID);
+  const [freePackId, setFreePackId] = useState<number>(fallbackFreePackId);
   const [ownedCardIds, setOwnedCardIds] = useState<string[]>([]);
   const hasClaimedRef = useRef<boolean>(false);
 
@@ -44,7 +44,7 @@ export const FreePackPage = () => {
         setFreePackId(
           Number.isFinite(resolvedPackId) && resolvedPackId > 0
             ? resolvedPackId
-            : FALLBACK_FREE_PACK_ID
+            : fallbackFreePackId
         );
         setMintedCards(
           claimedCards.map((card) => ({
@@ -57,7 +57,7 @@ export const FreePackPage = () => {
         console.error("Error claiming free pack:", e);
         navigate("/");
       });
-  }, [account?.address, navigate]);
+  }, [account?.address, fallbackFreePackId, navigate]);
 
   const headingStages: LoadingProgress[] = [
     {

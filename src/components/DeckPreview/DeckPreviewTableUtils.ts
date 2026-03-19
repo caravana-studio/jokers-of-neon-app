@@ -3,6 +3,7 @@ import { Icons } from "../../constants/icons";
 import { Cards } from "../../enums/cards";
 import { Suits } from "../../enums/suits";
 import { useDeckStore } from "../../state/useDeckStore";
+import { CLUBS, DIAMONDS, GREY_MEDIUM, HEARTS, SPADES } from "../../theme/colors";
 
 interface ColumnHeader {
   cardValue?: Cards;
@@ -50,6 +51,14 @@ const cardSuitsMap: Map<Suits, string | FC<SVGProps<ReactSVGElement>>> =
     [Suits.JOKER, Icons.JOKER],
   ]);
 
+const suitColorsMap: Map<Suits, string> = new Map([
+  [Suits.CLUBS, CLUBS],
+  [Suits.DIAMONDS, DIAMONDS],
+  [Suits.HEARTS, HEARTS],
+  [Suits.SPADES, SPADES],
+  [Suits.JOKER, GREY_MEDIUM],
+]);
+
 const getTableData = (): TableData => {
   const { unusedCards } = useDeckStore();
 
@@ -77,9 +86,8 @@ const getTableData = (): TableData => {
 };
 
 export {
-  cardSuitsMap, cardValuesMap, getTableData,
+  cardSuitsMap, cardValuesMap, getTableData, suitColorsMap,
   type ColumnHeader,
   type RowHeader,
   type TableData
 };
-

@@ -1,8 +1,7 @@
-import { SEASON_NUMBER } from "../constants/season";
+import { getSeasonNumber } from "../constants/season";
 import type { SimplifiedCard } from "../pages/ExternalPack/ExternalPack";
 
 const DEFAULT_API_BASE_URL = "http://localhost:3001";
-const DEFAULT_SEASON_ID = Number(SEASON_NUMBER ?? 1) || 1;
 
 export type ClaimSeasonRewardParams = {
   address: string;
@@ -106,7 +105,7 @@ export async function claimSeasonReward({
   address,
   level,
   isPremium,
-  seasonId = DEFAULT_SEASON_ID,
+  seasonId = getSeasonNumber(),
 }: ClaimSeasonRewardParams): Promise<SeasonRewardPack[] | boolean> {
   if (!address) {
     throw new Error("claimSeasonReward: address is required");

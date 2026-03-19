@@ -8,6 +8,7 @@ import { useTournamentSettings } from "./useTournamentSettings";
 
 export const LEADERBOARD_QUERY_KEY = "leaderboard";
 const guestNamePattern = /^joker_guest_\d+$/;
+const excludedNamePattern = /^chichilo\d+$/i;
 
 const DOJO_NAMESPACE =
   import.meta.env.VITE_MAINNET_NAMESPACE || "jokers_of_neon_core";
@@ -110,6 +111,9 @@ const mapLeaderboardEntry = (node: GameEdge["node"]) => ({
   wallet: node.owner,
   isTournament: node.is_tournament,
 });
+
+const isExcludedLeaderboardName = (playerName?: string) =>
+  Boolean(playerName && excludedNamePattern.test(playerName.trim()));
 
 const fetchGameNode = async (
   gameId?: string | number
@@ -223,10 +227,19 @@ const fetchGraphQLData = async (
   } | null = null;
 
   if (currentGameNode) {
-    currentGameEntry = mapLeaderboardEntry(currentGameNode);
+    const mappedCurrentGameEntry = mapLeaderboardEntry(currentGameNode);
+    currentGameEntry = isExcludedLeaderboardName(
+      mappedCurrentGameEntry.player_name
+    )
+      ? null
+      : mappedCurrentGameEntry;
   }
 
   processedEntries.forEach((entry) => {
+    if (isExcludedLeaderboardName(entry.player_name)) {
+      return;
+    }
+
     const playerId = normalizeGameId(entry.id);
 
     if (playerId && playerId === normalizedCurrentGameId) {

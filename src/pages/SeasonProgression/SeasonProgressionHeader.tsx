@@ -12,7 +12,7 @@ import { useTranslation } from "react-i18next";
 import { Clock } from "../../components/Clock";
 import { SeasonPassBuyButton } from "../../components/SeasonPass/SeasonPassBuyButton";
 import { SeasonPassUnlocked } from "../../components/SeasonPass/SeasonPassUnlocked";
-import { SEASON_NUMBER } from "../../constants/season";
+import { useSeasonNumber } from "../../constants/season";
 import { useInformationPopUp } from "../../providers/InformationPopUpProvider";
 import { useSeasonPass } from "../../providers/SeasonPassProvider";
 import { useSeason } from "../../queries/useSeason";
@@ -35,7 +35,7 @@ export const SeasonProgressionHeader = ({
   const { seasonPassUnlocked } = useSeasonPass();
   const { season } = useSeason();
 
-  const seasonNumber = SEASON_NUMBER;
+  const seasonNumber = useSeasonNumber();
   const seasonFinishDate = season?.finishDate;
   const infoContent = useMemo(
     () => (

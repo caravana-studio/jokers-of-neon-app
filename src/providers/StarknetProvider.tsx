@@ -11,13 +11,21 @@ import { num } from "starknet";
 import { rpcUrl, slotInstance } from "../config/cartridgeUrls";
 import { controller, getSlotChainId } from "../dojo/controller/controller";
 
+const standaloneMainnetRpc = import.meta.env.VITE_STARKNET_RPC_URL?.trim();
+const isStandaloneShopMode = import.meta.env.MODE === "standalone-shop";
+const shouldUseStandaloneMainnetRpc =
+  isStandaloneShopMode && !!standaloneMainnetRpc;
+const effectiveRpcUrl = shouldUseStandaloneMainnetRpc
+  ? standaloneMainnetRpc
+  : rpcUrl;
+
 function rpc() {
   return {
-    nodeUrl: rpcUrl,
+    nodeUrl: effectiveRpcUrl,
   };
 }
 
-const SLOT_INSTANCE = slotInstance;
+const SLOT_INSTANCE = shouldUseStandaloneMainnetRpc ? undefined : slotInstance;
 
 const slot: Chain = SLOT_INSTANCE && {
   id: num.toBigInt(getSlotChainId(SLOT_INSTANCE)),
@@ -25,10 +33,10 @@ const slot: Chain = SLOT_INSTANCE && {
   network: "jokers-of-neon",
   rpcUrls: {
     default: {
-      http: [rpcUrl],
+      http: [effectiveRpcUrl],
     },
     public: {
-      http: [rpcUrl],
+      http: [effectiveRpcUrl],
     },
   },
   nativeCurrency: {

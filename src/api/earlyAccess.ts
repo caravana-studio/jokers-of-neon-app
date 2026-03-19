@@ -16,14 +16,11 @@ function getApiKey(): string {
 }
 
 function getApiBaseUrl(): string {
-  const apiBase =
-    import.meta.env.VITE_API ??
-    import.meta.env.VITE_API_URL ??
-    import.meta.env.VITE_GAME_API_URL;
+  const apiBase = import.meta.env.VITE_GAME_API_URL;
 
   if (!apiBase) {
     throw new Error(
-      "checkEarlyAccess: Missing API base URL (set VITE_API or VITE_API_URL)"
+      "checkEarlyAccess: Missing API base URL (set VITE_GAME_API_URL)"
     );
   }
 

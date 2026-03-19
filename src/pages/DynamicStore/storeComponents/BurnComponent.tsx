@@ -1,9 +1,9 @@
-import { Flex, Tooltip } from "@chakra-ui/react";
+import { Flex, Image, Tooltip } from "@chakra-ui/react";
 import useResizeObserver from "@react-hook/resize-observer";
 import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import BurnIcon from "../../../assets/burn.svg?component";
+import burnFallbackIcon from "../../../assets/burn.svg";
 import { PriceBox } from "../../../components/PriceBox";
 import { PurchasedLbl } from "../../../components/PurchasedLbl";
 import { useShopStore } from "../../../state/useShopStore";
@@ -56,7 +56,13 @@ export const BurnComponent = ({}: IBurnItem) => {
             flexDirection="column"
             justifyContent={"center"}
           >
-            <BurnIcon height={`${height ? height * 0.7 : 70}px`} />
+            <Image
+              src="/burn.png"
+              fallbackSrc={burnFallbackIcon}
+              alt="burn-icon"
+              height={`${height ? height * 0.7 : 70}px`}
+              objectFit="contain"
+            />
           </Flex>
 
           <PurchasedLbl

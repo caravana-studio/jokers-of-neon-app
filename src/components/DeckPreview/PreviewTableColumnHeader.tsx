@@ -21,7 +21,6 @@ export const PreviewTableColumnHeader: React.FC<ColumnHeader> = ({
       p={isSmallScreen ? 0 : 1}
       textAlign={"center"}
       backgroundColor={"black"}
-      border={"1px"}
       borderRadius={"12px"}
       w={"auto"}
       color={"white"}
