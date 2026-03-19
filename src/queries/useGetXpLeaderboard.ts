@@ -4,6 +4,7 @@ import { decodeString } from "../dojo/utils/decodeString";
 import mainnetGraphQLClient from "../mainnetGraphQLClient";
 
 export const XP_LEADERBOARD_QUERY_KEY = "xp-leaderboard";
+const MAX_XP_LEADERBOARD_PLAYERS = 50;
 
 const XP_LEADERBOARD_QUERY = gql`
   query ($seasonId: u32!) {
@@ -99,7 +100,7 @@ const fetchXpLeaderboard = async (seasonId: number) => {
       hasSeasonPass: Boolean(edge.node.has_season_pass),
     }))
     .filter((entry) => {
-      const normalizedName = entry.playerName?.toLowerCase?.();
+      const normalizedName = entry.playerName?.trim().toLowerCase();
       const normalizedAddress = entry.address?.toLowerCase?.();
       const isBlocked =
         blockedUsernames.has(normalizedName ?? "") ||
@@ -123,7 +124,7 @@ const fetchXpLeaderboard = async (seasonId: number) => {
     );
   });
 
-  return sorted.map((entry, index) => ({
+  return sorted.slice(0, MAX_XP_LEADERBOARD_PLAYERS).map((entry, index) => ({
     ...entry,
     position: index + 1,
   }));
