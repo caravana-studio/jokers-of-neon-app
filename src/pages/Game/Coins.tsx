@@ -29,7 +29,7 @@ export const Coins = ({ rolling = false }: CoinsProps) => {
   return (
     <Flex
       flexDirection={isSmallScreen ? "row" : "column"}
-      alignItems="flex-end"
+      alignItems="center"
       gap={1}
     >
       <Flex

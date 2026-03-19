@@ -7,9 +7,8 @@ export const MobileTopSection = () => {
     <>
       <CompactRoundData />
       <Flex
-        width={["95%", "80%"]}
-        sx={{ margin: "0 auto" }}
-        mx={2}
+        width="100%"
+        px={2.5}
         justifyContent="center"
       >
         <SpecialCards />

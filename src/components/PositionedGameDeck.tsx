@@ -28,8 +28,9 @@ export const PositionedGameDeck = ({
       <Box
         sx={{
           position: "fixed",
-          bottom: 16,
-          right: 20,
+          bottom: inStore ? "16px" : { base: "16px", md: "67px" },
+          top: "auto",
+          right: inStore ? "20px" : { base: "16px", md: "40px" },
         }}
         onMouseEnter={() => !inStore && setIsDeckTableVisible(true)}
         onMouseLeave={() => !inStore && setIsDeckTableVisible(false)}
