@@ -1,5 +1,5 @@
 import { Button, Flex, Heading } from "@chakra-ui/react";
-import { ReactNode, useMemo, useState } from "react";
+import { ReactNode, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { AllTimeXpLeaderboard } from "../../components/AllTimeXpLeaderboard";
 import { Clock } from "../../components/Clock";
@@ -7,7 +7,7 @@ import { DelayedLoading } from "../../components/DelayedLoading";
 import { PositionedDiscordLink } from "../../components/DiscordLink";
 import { Leaderboard } from "../../components/Leaderboard";
 import { XpLeaderboard } from "../../components/XpLeaderboard";
-import { SEASON_NUMBER } from "../../constants/season";
+import { useSeasonNumber } from "../../constants/season";
 import { Tab, TabPattern } from "../../patterns/tabs/TabPattern";
 import { useTournamentSettings } from "../../queries/useTournamentSettings";
 import { VIOLET } from "../../theme/colors";
@@ -27,9 +27,16 @@ export const LeaderboardPageLayout = ({
   const { t } = useTranslation("home", { keyPrefix: "leaderboard" });
   const { isSmallScreen } = useResponsiveValues();
   const [seePrizes, setSeePrizes] = useState(false);
-  const currentSeason = Math.max(1, Math.floor(SEASON_NUMBER));
+  const seasonNumber = useSeasonNumber();
+  const currentSeason = Math.max(1, Math.floor(seasonNumber));
   const [selectedXpSeason, setSelectedXpSeason] = useState(currentSeason);
   const isTournamentActive = Boolean(tournament?.isActive);
+
+  useEffect(() => {
+    setSelectedXpSeason((previousSeason) =>
+      Math.max(1, Math.min(previousSeason, currentSeason))
+    );
+  }, [currentSeason]);
 
   const seasonOptions = useMemo(
     () => Array.from({ length: currentSeason }, (_, index) => index + 1),

@@ -53,6 +53,8 @@ const SortByContainer = ({ children }: { children: React.ReactNode }) => {
       flexDirection={isSmallScreen ? "row" : "column"}
       alignItems="center"
       gap={0.5}
+      zIndex={60}
+      position="relative"
     >
       <Text size="m" pl={{ base: 1, sm: 0 }}>
         {t("game.hand-section.sort-by.sort-by-title")}

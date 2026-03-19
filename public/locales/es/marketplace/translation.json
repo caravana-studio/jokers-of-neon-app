@@ -1,0 +1,285 @@
+{
+  "nav": {
+    "browse": "Explorar",
+    "sell": "Vender",
+    "myListings": "Mis Listados",
+    "shop": "Tienda"
+  },
+  "auth": {
+    "connect": "Conectar",
+    "disconnect": "DESCONECTAR",
+    "profile": "PERFIL",
+    "connectWallet": "Conecta tu Wallet",
+    "connectToList": "Conecta tu wallet para listar cartas a la venta",
+    "connectToView": "Conecta tu wallet para ver tus listados",
+    "connectToBuy": "Conecta Wallet para Comprar"
+  },
+  "browse": {
+    "title": "Mercado",
+    "filter": {
+      "search": "Buscar",
+      "searchPlaceholder": "Nombre de carta...",
+      "rarity": "Rareza",
+      "all": "Todos",
+      "sortBy": "Ordenar por",
+      "newest": "Más nuevos",
+      "oldest": "Más antiguos",
+      "priceAsc": "Precio ↑",
+      "priceDesc": "Precio ↓",
+      "minPrice": "Precio mín (USD)",
+      "maxPrice": "Precio máx (USD)"
+    },
+    "count": "{{shown}} de {{total}} listado",
+    "count_plural": "{{shown}} de {{total}} listados",
+    "countFiltered": "{{shown}} de {{loaded}} cargados · {{total}} en total",
+    "noListings": "No se encontraron listados",
+    "noMatch": "Ningún listado coincide con \"{{query}}\"",
+    "errorApi": "No se pudo conectar a la API. Verifica VITE_GAME_API_URL.",
+    "loadMore": "Cargar más ({{remaining}} restantes)",
+    "loading": "Cargando..."
+  },
+  "detail": {
+    "title": "DETALLES",
+    "rarity": "Rareza",
+    "price": "Precio",
+    "details": "Detalles",
+    "seller": "Vendedor",
+    "tokenId": "ID del Token",
+    "expires": "Vence",
+    "fee": "Comisión del Mercado",
+    "back": "Volver"
+  },
+  "sell": {
+    "title": "Crear Listado",
+    "selectCard": "Selecciona una Carta para Vender",
+    "nonMarketable": "No Comerciable",
+    "type": "Tipo",
+    "typeSpecial": "Especial",
+    "typeTraditional": "Tradicional",
+    "rarity": "Rareza",
+    "listingPrice": "Precio de Venta",
+    "expiresIn": "Expira En",
+    "expiry1Day": "1 Día",
+    "expiry7Days": "7 Días",
+    "expiry30Days": "30 Días",
+    "listForSale": "PONER A LA VENTA",
+    "retry": "REINTENTAR",
+    "cancel": "Cancelar",
+    "processing": "PROCESANDO...",
+    "approving": "APROBANDO NFT...",
+    "signing": "FIRMANDO ORDEN...",
+    "submitting": "ENVIANDO...",
+    "confirmTitle": "Confirmar Listado",
+    "confirmListingPrice": "Precio de venta",
+    "confirmRarity": "Rareza",
+    "confirmExpiresIn": "Expira en",
+    "confirmDay": "día",
+    "confirmDays": "días",
+    "confirmNotice": "Esto generará dos transacciones: aprobar NFT + firmar orden",
+    "confirmCancel": "Cancelar",
+    "confirmSubmit": "Confirmar",
+    "successTitle": "¡Listado!",
+    "myListings": "Mis Listados",
+    "specialCards": "Cartas Especiales",
+    "traditionalCards": "Cartas Tradicionales",
+    "categoryLabel": "Categoría",
+    "rarityLabel": "Rareza",
+    "noMarketableCards": "No tienes cartas comerciables en tu wallet.",
+    "hasNonMarketable": "Tienes cartas que no pueden listarse.",
+    "showNonMarketable": "No comerciables",
+    "notTransferableTooltip": "Esta carta no es transferible.",
+    "noCards": "No hay cartas en tu wallet",
+    "apiKeyMissing": "La clave de API del juego no está configurada.",
+    "apiKeyHint": "Agrega VITE_GAME_API_KEY a web/.env",
+    "errorApi": "No se pudo conectar a la API del juego. Verifica VITE_GAME_API_URL"
+  },
+  "myListings": {
+    "title": "Mis Listados",
+    "tabAll": "Todos",
+    "tabActive": "Activos",
+    "tabFilled": "Completados",
+    "tabCancelled": "Cancelados",
+    "noListings": "No tienes listados",
+    "noStatusListings": "No hay listados {{status}}",
+    "errorApi": "No se pudo conectar a la API. Verifica VITE_GAME_API_URL.",
+    "statusActive": "ACTIVO",
+    "statusFilled": "COMPLETADO",
+    "statusCancelled": "CANCELADO",
+    "statusExpired": "VENCIDO",
+    "statusLineFilled": "Completado",
+    "statusLineCancelled": "Cancelado",
+    "statusLineExpired": "Vencido",
+    "cancel": "Cancelar",
+    "expired": "Vencido"
+  },
+  "buy": {
+    "buyNow": "COMPRAR",
+    "yourListing": "Tu Listado",
+    "approving": "APROBANDO...",
+    "buying": "COMPRANDO...",
+    "confirming": "CONFIRMANDO...",
+    "insufficientBalance": "Saldo insuficiente",
+    "confirmTitle": "Confirmar Compra",
+    "willPay": "Pagarás",
+    "confirmNotice": "Esto generará dos transacciones: aprobar + completar orden",
+    "confirmCancel": "Cancelar",
+    "confirmSubmit": "Confirmar",
+    "successTitle": "¡Compra Completada!",
+    "close": "Cerrar"
+  },
+  "beta": {
+    "warning": "Beta — úsalo bajo tu propio riesgo.",
+    "description": "Este mercado está en acceso anticipado. Al usar esta herramienta aceptas los",
+    "terms": "Términos y Condiciones",
+    "dismiss": "Cerrar"
+  },
+  "terms": {
+    "modalTitle": "Términos de Uso del Marketplace",
+    "accept": "Aceptar",
+    "decline": "Rechazar",
+    "checkboxLabel": "He leído y acepto los Términos de Uso",
+    "declineWarning": "Al rechazar, tu wallet será desconectada.",
+    "pageTitle": "TÉRMINOS DE USO",
+    "back": "Volver",
+    "effectiveDate": "Fecha de Vigencia",
+    "effectiveDateValue": "15 de marzo de 2026",
+    "betaNotice": "Versión beta - acceso anticipado",
+    "betaVersionLabel": "Versión Beta",
+    "entityLabel": "Entidad",
+    "entityName": "Caravana Studio LLC (Delaware, EE. UU.)",
+    "contactLabel": "Contacto",
+    "contactEmail": "gm@jokersofneon.com",
+    "metadataLine": "{{date}} · {{entity}}",
+    "documentTitle": "JOKERS OF NEON - TÉRMINOS DE USO DEL MARKETPLACE",
+    "authoritativeNotice": "La versión autoritativa de estos Términos es la versión en inglés.",
+    "copyright": "© 2026 Caravana Studio LLC. Todos los derechos reservados.",
+    "footerNotice": "La versión autoritativa de estos Términos es la versión en inglés. © 2026 Caravana Studio LLC. Todos los derechos reservados.",
+    "sections": {
+      "tldr": {
+        "number": "",
+        "title": "TL;DR",
+        "body": "• Marketplace beta: úsalo bajo tu propio riesgo\n• Debes tener al menos 18 años para operar\n• Sin custodia: nunca retenemos tus fondos ni tus NFTs\n• El vendedor declara que posee o controla el NFT listado y que puede venderlo legalmente\n• Las comisiones se muestran antes de cada transacción; tú eres responsable por impuestos y sus reportes\n• Los listings pueden vencer, fallar o dejar de estar disponibles; la ejecución no está garantizada\n• Los NFTs son coleccionables, no inversiones\n• Las transacciones on-chain ejecutadas en Starknet son irreversibles y no reembolsables"
+      },
+      "acceptance": {
+        "number": "1.",
+        "title": "Aceptación",
+        "body": "Al conectar tu wallet y usar el Jokers of Neon Marketplace (el \"Marketplace\"), aceptas estos Términos. Si no estás de acuerdo, no conectes tu wallet ni uses el Marketplace."
+      },
+      "relationshipToGameTerms": {
+        "number": "2.",
+        "title": "Relación con los Términos del Juego",
+        "body": "Estos Términos se aplican además de los Términos y Condiciones del juego Jokers of Neon y de cualquier licencia NFT aplicable. Para la mecánica y las transacciones del marketplace, estos Términos prevalecen. En particular, la Sección 8 de los Términos del Juego (\"No Marketplace\") no se aplica al Marketplace operado bajo estos Términos."
+      },
+      "aboutMarketplace": {
+        "number": "3.",
+        "title": "Sobre el Marketplace",
+        "body": "El Marketplace es un mercado secundario peer-to-peer y sin custodia para cartas NFT de Jokers of Neon, operado por Caravana Studio LLC en Starknet. Está en beta (acceso anticipado) y puede cambiar."
+      },
+      "eligibility": {
+        "number": "4.",
+        "title": "Elegibilidad",
+        "body": "Debes tener al menos 18 años y capacidad legal para celebrar acuerdos vinculantes. No puedes usar el Marketplace si te encuentras en una jurisdicción sujeta a sanciones de EE. UU. o si el uso violaría la ley aplicable."
+      },
+      "howMarketplaceWorks": {
+        "number": "5.",
+        "title": "Cómo Funciona el Marketplace",
+        "body": "Listing: los vendedores aprueban al contrato del marketplace para transferir su NFT y firman una orden de venta off-chain. No se bloquean fondos al listar, y aprobar o firmar no garantiza visualización ni ejecución.\n\nCompra: los compradores aprueban el gasto del ERC-20 y luego ejecutan la compra on-chain. Si la orden sigue siendo válida y ejecutable en ese momento, el smart contract transfiere de forma atómica el pago, la comisión y el NFT en una sola transacción.\n\nCancelación: los vendedores pueden cancelar listings activos en cualquier momento mediante una transacción on-chain. También podemos dejar de mostrar o servir listings a través de nuestra interfaz o API sin tomar custodia de los activos.\n\nLiquidación: todas las operaciones se liquidan atómicamente en Starknet. El Marketplace nunca retiene fondos ni NFTs."
+      },
+      "feesAndTaxes": {
+        "number": "6.",
+        "title": "Comisiones e Impuestos",
+        "body": "Una comisión del marketplace, mostrada antes de confirmar cualquier transacción, se descuenta del producido del vendedor. Compradores y vendedores también pagan gas de la red Starknet. La comisión vigente se muestra en la pantalla de confirmación.\n\nEres el único responsable de determinar, pagar, retener y reportar cualquier impuesto, tasa o cargo gubernamental similar derivado de tus listings, compras, ventas u otras operaciones. No brindamos asesoramiento impositivo, legal ni contable."
+      },
+      "sellerRepresentations": {
+        "number": "7.",
+        "title": "Declaraciones del Vendedor",
+        "body": "Al crear un listing, declaras y garantizas que: (a) eres titular o controlas válidamente el NFT listado y tienes autoridad para aprobarlo, listarlo, venderlo y transferirlo; (b) tu listing, venta y transferencia no violan ninguna ley aplicable, sanción, orden judicial, contrato ni derechos de terceros; y (c) la información que envías en relación con el listing es exacta y no engañosa."
+      },
+      "failedOrStaleOrders": {
+        "number": "8.",
+        "title": "Órdenes Fallidas, Vencidas o Desactualizadas",
+        "body": "No garantizamos que un listing permanezca disponible, visible, exacto, ejecutable o que efectivamente se ejecute. Los listings pueden vencer, cancelarse, ser removidos de la interfaz o la API, o volverse desactualizados, demorados, incompletos o erróneos.\n\nLas transacciones pueden fallar o no difundirse por problemas de wallet, aprobaciones o balances insuficientes, problemas de firma, errores de precio o visualización, pausas del contrato, congestión, caídas, reorgs, problemas de RPC o indexador, u otras fallas técnicas o de red. Podemos corregir errores manifiestos de visualización o remover los listings afectados de nuestra interfaz o API antes de la ejecución."
+      },
+      "risks": {
+        "number": "9.",
+        "title": "Riesgos",
+        "body": "Al usar el Marketplace, reconoces:\n• Riesgo de smart contracts: los contratos pueden contener bugs o vulnerabilidades\n• Volatilidad de precios: los precios de NFTs y tokens pueden fluctuar significativamente\n• Riesgo de red: la congestión, las caídas o los reorgs pueden demorar, frustrar o invalidar transacciones\n• Irreversibilidad: las transacciones on-chain completadas no pueden revertirse\n• Riesgo beta: el Marketplace puede modificarse, pausarse o cerrarse\n• Riesgo de wallet: eres el único responsable de la seguridad de tu wallet"
+      },
+      "nftsAndIp": {
+        "number": "10.",
+        "title": "NFTs y Propiedad Intelectual",
+        "body": "Poseer o comprar un NFT de Jokers of Neon a través del Marketplace transfiere el NFT en sí, pero no transfiere la titularidad sobre la propiedad intelectual subyacente. Cualquier licencia para usar, mostrar o explotar de otro modo un NFT de Jokers of Neon o contenido relacionado se rige exclusivamente por los términos del juego Jokers of Neon, la licencia NFT o los demás términos del publisher que estén vigentes en ese momento. El Marketplace no otorga una licencia más amplia ni separada."
+      },
+      "noInvestmentAdvice": {
+        "number": "11.",
+        "title": "Sin Asesoramiento de Inversión",
+        "body": "Los NFTs son coleccionables digitales, no inversiones ni valores negociables. Nada en esta plataforma constituye asesoramiento financiero, de inversión, legal o impositivo. No se implica expectativa alguna de ganancia o retorno."
+      },
+      "prohibitedConduct": {
+        "number": "12.",
+        "title": "Conducta Prohibida",
+        "body": "No puedes realizar wash trading, manipulación de mercado, fraude, lavado de dinero, evasión de sanciones, uso de wallets robadas o comprometidas, infracción de derechos, ni ninguna otra actividad ilegal o abusiva."
+      },
+      "walletAndThirdPartyServices": {
+        "number": "13.",
+        "title": "Wallets y Servicios de Terceros",
+        "body": "El Marketplace utiliza wallets y servicios de terceros, incluyendo Cartridge Controller, cada uno sujeto a sus propios términos. No somos responsables por servicios de terceros, proveedores RPC, indexadores, bridges ni fallas de wallets."
+      },
+      "noCustody": {
+        "number": "14.",
+        "title": "Sin Custodia",
+        "body": "Caravana Studio LLC no retiene, controla ni accede a tus fondos o NFTs. Todas las operaciones se ejecutan mediante smart contracts o software de wallet que tú controlas."
+      },
+      "noRefundsOrReversals": {
+        "number": "15.",
+        "title": "Sin Reembolsos ni Reversiones",
+        "body": "Como las compras se liquidan on-chain, las transacciones ejecutadas son finales, irreversibles y no reembolsables, salvo cuando la ley aplicable exija lo contrario. No podemos revertir transacciones en blockchain, forzar la devolución de NFTs o tokens, ni recuperar pérdidas causadas por error del usuario, compromiso de wallet o fallas de terceros."
+      },
+      "gameModifications": {
+        "number": "16.",
+        "title": "Modificaciones del Juego",
+        "body": "Caravana Studio LLC puede modificar en cualquier momento la mecánica de las cartas, el gameplay, el balance, el arte, la presentación del metadata o la utilidad del NFT. Tales cambios no dan derecho a reembolsos ni compensación."
+      },
+      "complianceAndSuspension": {
+        "number": "17.",
+        "title": "Cumplimiento, Seguridad y Suspensión",
+        "body": "Para cumplir con la ley, sanciones, órdenes judiciales o por prevención de fraude, seguridad o integridad, podemos suspender o limitar el acceso a la interfaz o API del Marketplace, negarnos a mostrar o aceptar ciertos listings a través de nuestros servicios, remover listings de la visualización, deshabilitar funciones del mercado o bloquear o restringir wallets o usuarios concretos en nuestra interfaz o servicios off-chain.\n\nCuando el contrato del marketplace o la infraestructura relacionada lo permitan, también podemos pausar la funcionalidad del marketplace. Estas acciones no nos dan custodia de tus activos ni nos permiten revertir transacciones on-chain ya completadas."
+      },
+      "betaDisclaimer": {
+        "number": "18.",
+        "title": "Descargo por Beta",
+        "body": "Este Marketplace está en acceso anticipado. Las funciones pueden estar incompletas, cambiar o ser removidas. No damos garantías de disponibilidad, uptime, continuidad ni ejecución exitosa de ningún listing o transacción."
+      },
+      "disclaimers": {
+        "number": "19.",
+        "title": "Descargos",
+        "body": "EL MARKETPLACE SE PROPORCIONA \"TAL CUAL\" Y \"SEGÚN DISPONIBILIDAD\", SIN GARANTÍAS DE NINGÚN TIPO, EXPRESAS O IMPLÍCITAS."
+      },
+      "limitationOfLiability": {
+        "number": "20.",
+        "title": "Limitación de Responsabilidad",
+        "body": "EN LA MÁXIMA MEDIDA PERMITIDA POR LA LEY, CARAVANA STUDIO LLC NO SERÁ RESPONSABLE POR DAÑOS INDIRECTOS, INCIDENTALES, CONSECUENTES, ESPECIALES, EJEMPLARES O PUNITIVOS, NI POR PÉRDIDA DE FONDOS, DATOS, GANANCIAS, GOODWILL O VALOR DE NFT."
+      },
+      "indemnification": {
+        "number": "21.",
+        "title": "Indemnización",
+        "body": "Aceptas indemnizar y mantener indemne a Caravana Studio LLC, sus afiliadas y miembros del equipo frente a reclamos, daños, responsabilidades y gastos derivados de tu uso del Marketplace o de tu violación de estos Términos."
+      },
+      "updates": {
+        "number": "22.",
+        "title": "Actualizaciones",
+        "body": "Podemos modificar estos Términos en cualquier momento. El uso continuado del Marketplace una vez vigentes los cambios constituye aceptación. La Fecha de Vigencia indicada arriba refleja la versión actual."
+      },
+      "governingLaw": {
+        "number": "23.",
+        "title": "Ley Aplicable",
+        "body": "Estos Términos se rigen por las leyes del Estado de Delaware, EE. UU."
+      },
+      "contact": {
+        "number": "24.",
+        "title": "Contacto",
+        "body": "gm@jokersofneon.com"
+      }
+    }
+  }
+}

@@ -30,7 +30,13 @@ export const CompactRoundData = () => {
         zIndex: 1,
       }}
     >
-      <Box px={4} mb={1} borderRadius="md" width="100%" maxW="600px">
+      <Box
+        px={4}
+        mb={1}
+        borderRadius="md"
+        width="100%"
+        maxW={{ base: "100%", md: "600px" }}
+      >
         <LevelBox />
         <Flex justify="center" gap={1} align="center">
           <Box>

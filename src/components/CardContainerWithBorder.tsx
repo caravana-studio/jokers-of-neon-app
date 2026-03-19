@@ -9,20 +9,24 @@ export const CardContainerWithBorder = ({
   minWidth = "100%",
   maxWidth = "100%",
   height = "100%",
+  paddingLeft = [2.5, 5],
+  paddingRight = ["20px", "30px", "40px"],
   children,
 }: {
   width?: string;
   minWidth?: string;
   maxWidth?: string;
   height?: string;
+  paddingLeft?: any;
+  paddingRight?: any;
   children: ReactNode;
 }) => {
   return (
     <Flex
       className="special-cards-step-3"
       border={`1px solid ${GREY_LINE}`}
-      pl={[2.5, 5]}
-      pr={["20px", "30px", "40px"]}
+      pl={paddingLeft}
+      pr={paddingRight}
       py={[1, 2]}
       borderRadius={["12px", "20px"]}
       justifyContent="flex-start"
@@ -63,7 +67,7 @@ export const CardContainerSwitcher = ({
       backgroundColor={
         isClassic ? (isRageRound ? "black" : "backgroundBlue") : "transparent"
       }
-      zIndex={10}
+      zIndex={60}
       onClick={onClick}
       cursor={"pointer"}
     >

@@ -6,8 +6,8 @@ export const PreThemeLoadingPage = ({children} : PropsWithChildren) => {
       style={{
         height: "100%",
         position: "fixed",
-        bottom: 0,
-        width: "100vw",
+        inset: 0,
+        width: "100%",
         display: "flex",
         justifyContent: "center",
         flexDirection: "column",

@@ -15,7 +15,7 @@ import {
   RealLoadingBar,
   RealLoadingBarRef,
 } from "../../components/LoadingProgressBar/RealLoadingBar";
-import { SEASON_NUMBER } from "../../constants/season";
+import { useSeasonNumber } from "../../constants/season";
 import { LoadingScreenHandle } from "../../types/LoadingProgress";
 import { PreThemeLoadingPage } from "../PreThemeLoadingPage";
 import OpeningScreenAnimation from "./OpeningScreenAnimation";
@@ -42,7 +42,8 @@ export const LoadingScreen = forwardRef<
     },
     ref
   ) => {
-    const isSeason2 = SEASON_NUMBER === 2;
+    const seasonNumber = useSeasonNumber();
+    const isSeason2 = seasonNumber === 2;
     const [isFadingOut, setIsFadingOut] = useState(false);
     const [visibleSpinner, setVisibleSpinner] = useState(false);
     const [skipAnimation, setSkipAnimation] = useState(false);

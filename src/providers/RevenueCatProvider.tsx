@@ -25,13 +25,15 @@ import {
   useRef,
   useState,
 } from "react";
-import { useDojo } from "../dojo/DojoContext";
+import { useAccount } from "@starknet-react/core";
+import { DojoContext } from "../dojo/DojoContext";
 import { useUsername } from "../dojo/utils/useUsername";
 import { isNative as realNative } from "../utils/capacitorUtils";
 import { getRevenueCatApiKey } from "../utils/getRevenueCatApiKey";
 import { registerMilestone } from "../utils/appsflyerReferral";
 
 const FIRST_PURCHASE_KEY = "referral_first_purchase_tracked";
+const ANON_RC_USER = "jokers_anon_guest";
 
 const forceWebPayments = import.meta.env.VITE_FORCE_WEB_PAYMENTS
 const isNative = forceWebPayments ? false : realNative;
@@ -282,21 +284,21 @@ const normalizeOfferings = (
 };
 
 export const RevenueCatProvider = ({ children }: PropsWithChildren) => {
-  const usernameFromHook = useUsername();
-  const {
-    account: { account },
-    setup: { accountType },
-  } = useDojo();
+  const dojoCtx = useContext(DojoContext);
+  const { address: starknetAddress } = useAccount();
+  const dojoAddress = dojoCtx?.account?.account?.address ?? null;
+  const address = dojoAddress || starknetAddress || null;
+  const username = useUsername();
+  const accountType = dojoCtx?.accountType ?? null;
 
   const userId =
-    usernameFromHook && account?.address ? `${usernameFromHook},${account.address}` : null;
+    address && username ? `${username},${address}` : ANON_RC_USER;
   const [offerings, setOfferings] =
     useState<RevenueCatFormattedOfferings | null>(null);
   const [loading, setLoading] = useState(false);
   const [purchasesClient, setPurchasesClient] =
     useState<PurchasesClient | null>(isNative ? CapacitorPurchases : null);
   const purchasesRef = useRef<PurchasesClient | null>(purchasesClient);
-  const hasConfiguredRef = useRef(false);
   const lastUsernameRef = useRef<string | null>(null);
 
   useEffect(() => {
@@ -304,7 +306,7 @@ export const RevenueCatProvider = ({ children }: PropsWithChildren) => {
   }, [purchasesClient]);
 
   const fetchOfferings = useCallback(async () => {
-    if (!purchasesRef.current || !hasConfiguredRef.current) {
+    if (!purchasesRef.current) {
       return;
     }
 
@@ -328,7 +330,7 @@ export const RevenueCatProvider = ({ children }: PropsWithChildren) => {
   }, []);
 
   const configureRevenueCat = useCallback(async () => {
-    if (!userId || !usernameFromHook || !account?.address || hasConfiguredRef.current) {
+    if (lastUsernameRef.current === userId) {
       return;
     }
 
@@ -352,7 +354,6 @@ export const RevenueCatProvider = ({ children }: PropsWithChildren) => {
         setPurchasesClient(purchasesInstance);
       }
 
-      hasConfiguredRef.current = true;
       lastUsernameRef.current = userId;
       await fetchOfferings();
     } catch (error) {
@@ -363,20 +364,8 @@ export const RevenueCatProvider = ({ children }: PropsWithChildren) => {
   }, [fetchOfferings, userId]);
 
   useEffect(() => {
-    if (!userId) {
-      return;
-    }
-
-    if (!hasConfiguredRef.current) {
-      configureRevenueCat();
-      return;
-    }
-
-    if (lastUsernameRef.current !== userId) {
-      lastUsernameRef.current = userId;
-      fetchOfferings();
-    }
-  }, [configureRevenueCat, fetchOfferings, userId]);
+    void configureRevenueCat();
+  }, [configureRevenueCat]);
 
   const purchasePackage = useCallback(
     async (
@@ -456,23 +445,23 @@ export const RevenueCatProvider = ({ children }: PropsWithChildren) => {
       const result = await purchasePackage(resolvedPackage, options);
 
       // Track milestones for pack purchases (not season pass - that's handled in SeasonPassProvider)
-      if (!isSeasonPass && account?.address) {
+      if (!isSeasonPass && address) {
         // Register pack purchase milestone
-        registerMilestone(account.address, "pack_purchased", undefined, accountType, usernameFromHook)
+        registerMilestone(address, "pack_purchased", undefined, accountType, null)
           .catch((e) => console.error("Error registering pack purchase milestone", e));
 
         // Track first purchase milestone (only once per user)
         const hasTrackedFirstPurchase = localStorage.getItem(FIRST_PURCHASE_KEY);
         if (!hasTrackedFirstPurchase) {
           localStorage.setItem(FIRST_PURCHASE_KEY, "true");
-          registerMilestone(account.address, "first_purchase", undefined, accountType, usernameFromHook)
+          registerMilestone(address, "first_purchase", undefined, accountType, null)
             .catch((e) => console.error("Error registering first purchase milestone", e));
         }
       }
 
       return result;
     },
-    [offerings, purchasePackage, account?.address, accountType, usernameFromHook]
+    [offerings, purchasePackage, address, accountType]
   );
 
   const value = useMemo<RevenueCatContextValue>(

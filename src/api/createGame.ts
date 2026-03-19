@@ -1,4 +1,4 @@
-import { SEASON_NUMBER } from "../constants/season";
+import { getSeasonNumber } from "../constants/season";
 
 const DEFAULT_API_BASE_URL = "http://localhost:3001";
 
@@ -21,7 +21,7 @@ interface CreateGamePayload {
 export async function createGame({
   userAddress,
   playerName,
-  seasonId = SEASON_NUMBER,
+  seasonId = getSeasonNumber(),
   isTournament = false,
   seed,
 }: CreateGameParams) {

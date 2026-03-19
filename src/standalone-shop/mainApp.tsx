@@ -16,7 +16,7 @@ import { DojoProvider } from "../dojo/DojoContext.tsx";
 import { setup } from "../dojo/setup.ts";
 import { WalletProvider } from "../dojo/WalletContext.tsx";
 import localI18n from "../i18n.ts";
-import "../index.css";
+import "../marketplace/index.css";
 import { initDatadogRum } from "../monitoring/datadogRum.ts";
 import { DatadogUserContext } from "../monitoring/DatadogUserContext.tsx";
 import { LoadingScreen } from "../pages/LoadingScreen/LoadingScreen.tsx";

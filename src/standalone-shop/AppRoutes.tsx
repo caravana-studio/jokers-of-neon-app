@@ -1,10 +1,15 @@
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import "../App.scss";
 
 import { AnimatedPage } from "../components/AnimatedPage";
+import { BrowseListingsPage } from "../pages/Marketplace/BrowseListingsPage";
+import { CardDetailPage } from "../pages/Marketplace/CardDetailPage";
+import { CreateListingPage } from "../pages/Marketplace/CreateListingPage";
+import { MyListingsPage } from "../pages/Marketplace/MyListingsPage";
 import { ExternalPack } from "../pages/ExternalPack/ExternalPack";
 import { PurchasingPackPage } from "../pages/PurchasingPackPage";
 import { ShopPage } from "../pages/Shop/ShopPage";
+import { TermsPage } from "../pages/Marketplace/TermsPage";
 
 export const AppRoutes = () => {
   const location = useLocation();
@@ -15,7 +20,31 @@ export const AppRoutes = () => {
         path="/"
         element={
           <AnimatedPage>
-            <ShopPage />
+            <BrowseListingsPage />
+          </AnimatedPage>
+        }
+      />
+      <Route
+        path="/listing/:id"
+        element={
+          <AnimatedPage>
+            <CardDetailPage />
+          </AnimatedPage>
+        }
+      />
+      <Route
+        path="/sell"
+        element={
+          <AnimatedPage>
+            <CreateListingPage />
+          </AnimatedPage>
+        }
+      />
+      <Route
+        path="/my-listings"
+        element={
+          <AnimatedPage>
+            <MyListingsPage />
           </AnimatedPage>
         }
       />
@@ -43,13 +72,18 @@ export const AppRoutes = () => {
           </AnimatedPage>
         }
       />
+      <Route path="/external-packs" element={<Navigate to="/shop" replace />} />
       <Route
-        path="*"
+        path="/terms"
         element={
           <AnimatedPage>
-            <ShopPage />
+            <TermsPage />
           </AnimatedPage>
         }
+      />
+      <Route
+        path="*"
+        element={<Navigate to="/" replace />}
       />
     </Routes>
   );
