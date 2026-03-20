@@ -1,4 +1,4 @@
-import { Box, Flex, Heading, Text } from "@chakra-ui/react";
+import { Box, Flex, Heading, Text, type BoxProps } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { looseSfx } from "../../constants/sfx";
 import { useAudio } from "../../hooks/useAudio";
@@ -11,8 +11,27 @@ import { ScoreTotal } from "../ScoreTotal";
 import { LevelBox } from "./LevelBox";
 import { NumberBox } from "./NumberBox";
 import { ProgressBar } from "./ProgressBar";
+interface CompactRoundDataProps {
+  showPointsAndMulti?: boolean;
+  showFooter?: boolean;
+  showTutorialTargets?: boolean;
+  levelBoxFullWidth?: boolean;
+  desktopTypographyBoost?: boolean;
+  levelBottomSpacing?: BoxProps["mb"];
+  maxW?: BoxProps["maxW"];
+  px?: BoxProps["px"];
+}
 
-export const CompactRoundData = () => {
+export const CompactRoundData = ({
+  showPointsAndMulti = true,
+  showFooter = true,
+  showTutorialTargets = true,
+  levelBoxFullWidth = false,
+  desktopTypographyBoost = false,
+  levelBottomSpacing = 0.5,
+  maxW = "600px",
+  px = 4,
+}: CompactRoundDataProps) => {
   const { t } = useTranslation("game", {
     keyPrefix: "game.compact-round-data",
   });
@@ -21,6 +40,27 @@ export const CompactRoundData = () => {
 
   const { sfxVolume } = useSettings();
   const { play } = useAudio(looseSfx, sfxVolume);
+  const labelFontSize = desktopTypographyBoost
+    ? { base: "10px", md: "15px" }
+    : "10px";
+  const valueFontSize = desktopTypographyBoost
+    ? { base: "md", md: "2xl" }
+    : "md";
+  const numberGap = desktopTypographyBoost ? { base: 1, md: 2 } : 1;
+  const xFontSize = desktopTypographyBoost ? { base: "md", md: "xl" } : "md";
+  const levelHeadingFontSize = desktopTypographyBoost
+    ? { base: "11px", md: "17px" }
+    : "11px";
+  const progressBarHeight = desktopTypographyBoost
+    ? { base: "14px", md: "18px" }
+    : "14px";
+  const footerMarginTop = desktopTypographyBoost ? { base: 1, md: 3 } : 0;
+  const metricSectionWidth = desktopTypographyBoost
+    ? { base: "50px", md: "140px" }
+    : "50px";
+  const scoreTextAlign = desktopTypographyBoost ? "left" : "right";
+  const targetTextAlign = desktopTypographyBoost ? "right" : "left";
+  const rowJustify = desktopTypographyBoost ? "space-between" : "center";
 
   return (
     <Flex
@@ -30,52 +70,82 @@ export const CompactRoundData = () => {
         zIndex: 1,
       }}
     >
-      <Box
-        px={4}
-        mb={1}
-        borderRadius="md"
-        width="100%"
-        maxW={{ base: "100%", md: "600px" }}
-      >
-        <LevelBox />
-        <Flex justify="center" gap={1} align="center">
-          <Box>
+      <Box px={px} mb={1} borderRadius="md" width="100%" maxW={maxW}>
+        <LevelBox
+          fullWidth={levelBoxFullWidth}
+          headingFontSize={levelHeadingFontSize}
+          marginBottom={levelBottomSpacing}
+        />
+        <Flex justify={rowJustify} gap={showPointsAndMulti ? 1 : 3} align="center">
+          <Box width={metricSectionWidth}>
             <Text
-              textAlign="right"
-              fontSize="10px"
+              textAlign={scoreTextAlign}
+              fontSize={labelFontSize}
               textTransform="uppercase"
               fontWeight="500"
+              whiteSpace="nowrap"
+              wordBreak="keep-all"
+              overflow="visible"
             >
               {t("my-score")}
             </Text>
             <Heading
-              textAlign="right"
-              fontSize="md"
-              mr={0.5}
+              textAlign={scoreTextAlign}
+              fontSize={valueFontSize}
+              mr={desktopTypographyBoost ? 0 : 0.5}
               mt={-1}
               variant="italic"
-              width="50px"
+              width={metricSectionWidth}
             >
               <RollingNumber n={currentScore} sound />
             </Heading>
           </Box>
 
-          <Flex align="center" className="game-tutorial-step-6">
-            <NumberBox number={points} color={BLUE_LIGHT} />
-            <Text fontSize="md" fontWeight="bold">
-              x
-            </Text>
-            <NumberBox number={multi} color={VIOLET} spreadIncrease={5} />
-          </Flex>
+          {showPointsAndMulti && (
+            <Flex
+              align="center"
+              gap={numberGap}
+              className={
+                showTutorialTargets ? "game-tutorial-step-6" : undefined
+              }
+            >
+              <NumberBox
+                number={points}
+                color={BLUE_LIGHT}
+                large={desktopTypographyBoost}
+              />
+              <Text fontSize={xFontSize} fontWeight="bold">
+                x
+              </Text>
+              <NumberBox
+                number={multi}
+                color={VIOLET}
+                spreadIncrease={5}
+                large={desktopTypographyBoost}
+              />
+            </Flex>
+          )}
 
-          <Box className="game-tutorial-step-7">
-            <Text fontSize="10px" textTransform="uppercase" fontWeight="500">
+          <Box
+            width={metricSectionWidth}
+            className={showTutorialTargets ? "game-tutorial-step-7" : undefined}
+          >
+            <Text
+              textAlign={targetTextAlign}
+              fontSize={labelFontSize}
+              textTransform="uppercase"
+              fontWeight="500"
+              whiteSpace="nowrap"
+              wordBreak="keep-all"
+              overflow="visible"
+            >
               {t("target")}
             </Text>
             <Heading
-              width="50px"
-              fontSize="md"
-              ml={0.5}
+              textAlign={targetTextAlign}
+              width={metricSectionWidth}
+              fontSize={valueFontSize}
+              ml={desktopTypographyBoost ? 0 : 0.5}
               mt={-1}
               variant="italic"
             >
@@ -87,11 +157,14 @@ export const CompactRoundData = () => {
           progress={(currentScore / targetScore) * 100}
           playSound={play}
           animated
+          height={progressBarHeight}
         />
-        <Flex w="100%" justify="space-between">
-          <Coins rolling />
-          <ScoreTotal />
-        </Flex>
+        {showFooter && (
+          <Flex w="100%" justify="space-between" mt={footerMarginTop}>
+            <Coins rolling plainDesktop={desktopTypographyBoost} />
+            <ScoreTotal />
+          </Flex>
+        )}
       </Box>
     </Flex>
   );

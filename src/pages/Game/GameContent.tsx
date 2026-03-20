@@ -295,14 +295,23 @@ export const GameContent = () => {
           <CachedImage
             src={`/borders/top${isRageRound ? "-rage" : ""}.png`}
             height="8%"
-            width="calc(100% - 48px)"
+            width="100%"
             maxHeight="70px"
             position="fixed"
             top={0}
             zIndex={0}
           />
           <Box sx={{ height: "100%", width: "100%" }} px={"40px"}>
-            <Box sx={{ height: "30%", width: "100%" }} pt={"60px"}>
+            <Box
+              sx={{
+                height: "30%",
+                width: "100%",
+                overflow: "visible",
+                position: "relative",
+                zIndex: 300,
+              }}
+              pt={"60px"}
+            >
               <TopSection
                 onTutorialCardClick={() => {
                   if (run) {
@@ -312,7 +321,12 @@ export const GameContent = () => {
                 }}
               />
             </Box>
-            <Box height={"70%"} width={"100%"}>
+            <Box
+              height={"70%"}
+              width={"100%"}
+              position="relative"
+              zIndex={1}
+            >
               <DndContext
                 sensors={sensors}
                 onDragEnd={handleDragEnd}
@@ -382,7 +396,7 @@ export const GameContent = () => {
             src={`/borders/bottom${isRageRound ? "-rage" : ""}.png`}
             maxHeight="70px"
             height="8%"
-            width="calc(100% - 48px)"
+            width="100%"
             position="fixed"
             bottom={0}
             sx={{ pointerEvents: "none" }}

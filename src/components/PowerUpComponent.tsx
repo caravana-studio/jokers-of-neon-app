@@ -1,5 +1,5 @@
 import { Box, Flex, SystemStyleObject, Tooltip } from "@chakra-ui/react";
-import { useState } from "react";
+import { type MouseEvent, useState } from "react";
 import { getPowerUpData } from "../data/powerups";
 import { useGameStore } from "../state/useGameStore";
 import { BACKGROUND_BLUE, GREY_LINE } from "../theme/colors";
@@ -45,8 +45,17 @@ export const PowerUpComponent = ({
     powerUp?.power_up_id && getPowerUpData(powerUp.power_up_id)?.description;
 
   const powerupStyle = powerUp?.style;
+  const activeBorderColor = "rgba(255, 255, 255, 0.95)";
+  const activeGlowColor =
+    powerupStyle?.shadowLightColor ??
+    powerupStyle?.shadowColor ??
+    "rgba(255, 255, 255, 0.85)";
 
   const [startParticles, setStartParticles] = useState(false);
+  const handleClick = (e: MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+    onClick?.();
+  };
 
   const powerUpContent = powerUp ? (
     <Flex
@@ -59,7 +68,10 @@ export const PowerUpComponent = ({
       transition="all 0.2s ease-in-out"
       cursor={purchased ? "not-allowed" : "pointer"}
       opacity={purchased ? 0.3 : 1}
-      onClick={onClick}
+      border={calculatedIsActive ? `1px solid ${activeBorderColor}` : "1px solid transparent"}
+      boxShadow={calculatedIsActive ? `0 0 10px 1px ${activeGlowColor}` : "none"}
+      onClick={handleClick}
+      onPointerDown={(e) => e.stopPropagation()}
     >
       {hasPriceValue(price) && (
         <PriceBox

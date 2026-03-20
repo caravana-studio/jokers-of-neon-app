@@ -16,7 +16,8 @@
     "compact-round-data": {
       "my-score": "My score",
       "target": "Target",
-      "level-round": "L{{level}} Round {{round}}"
+      "level-round": "L{{level}} Round {{round}}",
+      "power-ups": "Power-ups"
     },
     "card-types": {
       "Common": "Traditional",

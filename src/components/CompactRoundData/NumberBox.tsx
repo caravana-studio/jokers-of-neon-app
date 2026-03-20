@@ -1,4 +1,4 @@
-import { Center, Heading } from "@chakra-ui/react";
+import { Center, Heading, useBreakpointValue } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { animated, useSpring } from "react-spring";
 import { RollingNumber } from "../RollingNumber";
@@ -7,14 +7,28 @@ interface INumberBoxProps {
   number: number;
   color: string;
   spreadIncrease?: number;
+  large?: boolean;
 }
 
 export const NumberBox = ({
   number,
   color,
   spreadIncrease = 100,
+  large = false,
 }: INumberBoxProps) => {
   const [prevNumber, setPrevNumber] = useState(number);
+  const width = useBreakpointValue({
+    base: "70px",
+    md: large ? "105px" : "70px",
+  });
+  const horizontalMargin = useBreakpointValue({
+    base: "7px",
+    md: large ? "10px" : "7px",
+  });
+  const numberFontSize = useBreakpointValue({
+    base: "sm",
+    md: large ? "xl" : "sm",
+  });
 
   const [{ boxShadow }, set] = useSpring(() => ({
     boxShadow: `0px 0px 3px 1px ${color}`,
@@ -40,14 +54,14 @@ export const NumberBox = ({
       style={{
         boxShadow,
         borderRadius: "80px",
-        width: "70px",
-        marginLeft: "7px",
-        marginRight: "7px",
+        width,
+        marginLeft: horizontalMargin,
+        marginRight: horizontalMargin,
         border: `2px solid ${color}`,
       }}
     >
       <Center>
-        <Heading fontSize="sm">
+        <Heading fontSize={numberFontSize}>
           <RollingNumber n={number} />
         </Heading>
       </Center>
