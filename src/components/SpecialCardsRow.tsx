@@ -36,13 +36,13 @@ export const SpecialCardsRow = () => {
 
   const { specialSlots } = useGameStore();
 
-  const lockedSlots =
-    specialSlots === maxSpecialCards ? 0 : Math.max(0, 5 - specialSlots);
+  const totalSlots = Math.max(maxSpecialCards, cards.length);
+  const effectiveUnlockedSlots = Math.max(specialSlots, cards.length);
+  const lockedSlots = Math.max(0, totalSlots - effectiveUnlockedSlots);
+  const freeUnlockedSlots = Math.max(0, effectiveUnlockedSlots - cards.length);
 
-  const freeUnlockedSlots = Math.max(0, 5 - cards.length - lockedSlots);
-
-  const visibleCards = cards.length + freeUnlockedSlots + lockedSlots;
-  const hasSevenSpecialCards = cards.length === 7;
+  const visibleCards = Math.max(1, cards.length + freeUnlockedSlots + lockedSlots);
+  const hasManySpecialCards = visibleCards >= 7;
 
   const cardToDiscard = cards.find((c) => c.idx === cardToDiscardIdx);
 
@@ -67,10 +67,10 @@ export const SpecialCardsRow = () => {
       <SimpleGrid
         columns={visibleCards}
         position="relative"
-        width={visibleCards > 5 ? "97%" : visibleCards > 6 ? "95%" : "100%"}
+        width={visibleCards > 6 ? "95%" : visibleCards > 5 ? "97%" : "100%"}
         alignItems={isSmallScreen ? "center" : "inherit"}
         columnGap={3}
-        pr={hasSevenSpecialCards ? 3 : 0}
+        pr={hasManySpecialCards ? 3 : 0}
         pb={isSmallScreen ? 0 : 4}
       >
         {cards.map((card) => {

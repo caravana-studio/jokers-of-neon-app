@@ -118,15 +118,28 @@ type GameStore = {
   clearShopTierUnlockedEvent: () => void;
 };
 
-const doRefetchGameStore = async (client: any, gameId: number, set: any) => {
+const doRefetchGameStore = async (
+  client: any,
+  gameId: number,
+  set: any,
+  get: any
+) => {
   const { round, game } = await getGameView(client, gameId);
   const specialCards = await getSpecialCardsView(client, gameId);
   const rageCards = getRageCards(round.rages);
   const powerUps = await getPowerUps(client, gameId);
-  const { maxPowerUpSlots, maxSpecialCards } = await getGameConfig(
+  const {
+    maxPowerUpSlots: configMaxPowerUpSlots,
+    maxSpecialCards: configMaxSpecialCards,
+  } = await getGameConfig(
     client,
     game.mod_id
   );
+  const currentStoreState = get();
+  const maxPowerUpSlots =
+    configMaxPowerUpSlots ?? currentStoreState.maxPowerUpSlots;
+  const maxSpecialCards =
+    configMaxSpecialCards ?? currentStoreState.maxSpecialCards;
 
   const modCardsConfig = await fetchCardsConfig(client, game.mod_id);
 
@@ -214,7 +227,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   modId: "jokers_of_neon_classic",
   isClassic: true,
   isTournament: false,
-  maxSpecialCards: 7,
+  maxSpecialCards: 1,
   maxPowerUpSlots: 4,
   powerUps: [],
   preSelectedPowerUps: [],
@@ -230,7 +243,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   shopTierUnlockedEvent: undefined,
 
   refetchGameStore: async (client, gameId) => {
-    await doRefetchGameStore(client, gameId, set);
+    await doRefetchGameStore(client, gameId, set, get);
   },
 
   refetchSpecialCards: async (client, gameId) => {

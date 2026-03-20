@@ -1,5 +1,5 @@
 import { Button, Flex, Heading } from "@chakra-ui/react";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { DelayedLoading } from "../../components/DelayedLoading";
@@ -43,7 +43,17 @@ export const DynamicStorePage = () => {
   const { t } = useTranslation("store", { keyPrefix: "store.dynamic" });
 
   const { setLoading } = useStore();
-  const { specialSlotItem } = useShopStore();
+  const {
+    specialSlotItem,
+    loadedItems,
+    commonCards,
+    modifierCards,
+    specialCards,
+    packs,
+    pokerHandItems,
+    powerUps,
+    burnItem,
+  } = useShopStore();
   const { shopId } = useGameStore();
   const store = storesConfig.find(
     (s) => s.id === SHOP_ID_MAP[shopId as keyof typeof SHOP_ID_MAP]
@@ -57,6 +67,105 @@ export const DynamicStorePage = () => {
 
   const distribution =
     store?.distribution[isSmallScreen ? "mobile" : "desktop"];
+  const sectionAvailability = useMemo(
+    () => ({
+      traditionals: commonCards.length > 0,
+      modifiers: modifierCards.length > 0,
+      specials: specialCards.length > 0,
+      "loot-boxes": packs.length > 0,
+      "level-up-table": pokerHandItems.length > 0,
+      "power-ups": powerUps.length > 0,
+      burn: Boolean(burnItem && Number(burnItem.cost) > 0),
+    }),
+    [
+      burnItem,
+      commonCards.length,
+      modifierCards.length,
+      packs.length,
+      pokerHandItems.length,
+      powerUps.length,
+      specialCards.length,
+    ]
+  );
+
+  const resolvedDistribution = useMemo(() => {
+    if (!distribution) return undefined;
+    if (!loadedItems) return distribution;
+
+    const isColumnAvailable = (id: string) =>
+      sectionAvailability[id as keyof typeof sectionAvailability] ?? true;
+
+    const availableColumns = distribution.rows
+      .flatMap((row) => row.columns)
+      .filter((col) => isColumnAvailable(col.id))
+      .filter(
+        (col, index, self) => self.findIndex((c) => c.id === col.id) === index
+      );
+
+    if (!availableColumns.length) {
+      return distribution;
+    }
+
+    if (availableColumns.length === 1) {
+      return {
+        rows: [
+          {
+            height: 100,
+            columns: [
+              {
+                id: availableColumns[0].id,
+                width: 100,
+              },
+            ],
+          },
+        ],
+      };
+    }
+
+    if (
+      (store?.id === "deck" || store?.id === "mix") &&
+      availableColumns.length === 2
+    ) {
+      return {
+        rows: availableColumns.map((col) => ({
+          height: 50,
+          columns: [
+            {
+              id: col.id,
+              width: 100,
+            },
+          ],
+        })),
+      };
+    }
+
+    const filteredRows = distribution.rows
+      .map((row) => ({
+        ...row,
+        columns: row.columns.filter((col) => isColumnAvailable(col.id)),
+      }))
+      .filter((row) => row.columns.length > 0);
+
+    if (!filteredRows.length) {
+      return distribution;
+    }
+
+    const totalHeight = filteredRows.reduce((sum, row) => sum + row.height, 0);
+
+    return {
+      rows: filteredRows.map((row) => {
+        const totalWidth = row.columns.reduce((sum, col) => sum + col.width, 0);
+        return {
+          ...row,
+          height: totalHeight > 0 ? (row.height / totalHeight) * 100 : row.height,
+          columns: row.columns.map((col) => ({
+            ...col,
+            width: totalWidth > 0 ? (col.width / totalWidth) * 100 : col.width,
+          })),
+        };
+      }),
+    };
+  }, [distribution, loadedItems, sectionAvailability, store?.id]);
   const navigate = useNavigate();
   const customNavigate = useCustomNavigate();
   const { onShopSkip } = useGameContext();
@@ -141,7 +250,7 @@ export const DynamicStorePage = () => {
             gap={{ base: 1.5, sm: 6 }}
             px={{ base: 2, sm: 0 }}
           >
-            {distribution?.rows.map((row, rowIndex) => (
+            {resolvedDistribution?.rows.map((row, rowIndex) => (
               <Flex
                 key={rowIndex}
                 h={`${row.height}%`}
