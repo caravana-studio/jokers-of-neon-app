@@ -27,6 +27,7 @@ import { useCardHighlight } from "../../providers/HighlightProvider/CardHighligh
 import { useSettings } from "../../providers/SettingsProvider";
 import { useAnimationStore } from "../../state/useAnimationStore";
 import { useCurrentHandStore } from "../../state/useCurrentHandStore";
+import { useGameStore } from "../../state/useGameStore";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { Card } from "../../types/Card";
 import { isTutorial } from "../../utils/isTutorial";
@@ -147,6 +148,7 @@ export const SharedPlayableCardsLayer = ({
 
   const { activeNode } = useDndContext();
   const { cardScale, isSmallScreen } = useResponsiveValues();
+  const remainingPlays = useGameStore((store) => store.remainingPlays);
 
   const {
     hand,
@@ -256,6 +258,12 @@ export const SharedPlayableCardsLayer = ({
       dealSoundTimeoutIdsRef.current = [];
     };
   }, []);
+
+  useEffect(() => {
+    if (playAnimation || discardAnimation) {
+      dealCardSound();
+    }
+  }, [dealCardSound, discardAnimation, playAnimation]);
 
   useEffect(() => {
     const previousCards = previousHandRef.current;
@@ -787,7 +795,7 @@ export const SharedPlayableCardsLayer = ({
             animate={{
               x: targetPosition.left,
               y: targetPosition.top + tutorialOffsetY,
-              opacity: 1,
+              opacity: remainingPlays === 0 && !isPreselected ? 0.4 : 1,
               scale: 1,
               rotate: 0,
             }}

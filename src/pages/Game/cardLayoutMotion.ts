@@ -3,16 +3,16 @@ import { Speed } from "../../enums/settings";
 
 export const CARD_LAYOUT_TRANSITION = {
   type: "spring",
-  stiffness: 520,
-  damping: 42,
-  mass: 0.72,
+  stiffness: 500,
+  damping: 21,
+  mass: 0.6,
 };
 
 export const CARD_DEAL_TRANSITION = {
   type: "spring",
-  stiffness: 420,
-  damping: 34,
-  mass: 0.82,
+  stiffness: 500,
+  damping: 21,
+  mass: 0.6,
 };
 
 const CARD_DEAL_STAGGER_SECONDS: Record<Speed, number> = {
