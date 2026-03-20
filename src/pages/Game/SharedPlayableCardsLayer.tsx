@@ -19,7 +19,7 @@ import { AnimatedCard } from "../../components/AnimatedCard";
 import { ModifiableCard } from "../../components/ModifiableCard";
 import { TiltCard } from "../../components/TiltCard";
 import { TUTORIAL_STEPS } from "../../constants/gameTutorial";
-import { preselectedCardSfx } from "../../constants/sfx";
+import { dealSfx, preselectedCardSfx } from "../../constants/sfx";
 import { CARD_HEIGHT, CARD_WIDTH } from "../../constants/visualProps";
 import { useAudio } from "../../hooks/useAudio";
 import { useGameContext } from "../../providers/GameProvider";
@@ -33,6 +33,7 @@ import { isTutorial } from "../../utils/isTutorial";
 import {
   CARD_DEAL_TRANSITION,
   CARD_LAYOUT_TRANSITION,
+  getCardDealStaggerSeconds,
   getCardDealFromDeckInitial,
   getCardLayoutId,
 } from "./cardLayoutMotion";
@@ -139,8 +140,9 @@ export const SharedPlayableCardsLayer = ({
   const { stepIndex, changeModifierCard } = useGameContext();
   const { t } = useTranslation(["game"]);
   const { discardAnimation, playAnimation } = useAnimationStore();
-  const { sfxVolume } = useSettings();
+  const { sfxVolume, animationSpeed } = useSettings();
   const { play: preselectCardSound } = useAudio(preselectedCardSfx, sfxVolume);
+  const { play: dealCardSound } = useAudio(dealSfx, sfxVolume);
   const { highlightItem: highlightCard } = useCardHighlight();
 
   const { activeNode } = useDndContext();
@@ -229,19 +231,45 @@ export const SharedPlayableCardsLayer = ({
   const [layoutRects, setLayoutRects] = useState<StageLayoutRects | null>(null);
 
   const [dealAnimationTokens, setDealAnimationTokens] = useState<Record<number, number>>({});
+  const [dealAnimationDelayByCard, setDealAnimationDelayByCard] = useState<
+    Record<number, number>
+  >({});
   const [freshDealAnimationTokens, setFreshDealAnimationTokens] = useState<
     Record<number, number>
   >({});
   const previousHandRef = useRef<Card[]>([]);
   const consumedDragDropTokensRef = useRef<Record<number, number>>({});
+  const dealSoundTimeoutIdsRef = useRef<number[]>([]);
+  const dealStaggerSeconds = useMemo(
+    () => getCardDealStaggerSeconds(animationSpeed),
+    [animationSpeed]
+  );
 
   const getCardSignature = (card: Card) =>
     `${card.img}-${card.isModifier ? "modifier" : "card"}`;
 
   useEffect(() => {
+    return () => {
+      dealSoundTimeoutIdsRef.current.forEach((timeoutId) => {
+        window.clearTimeout(timeoutId);
+      });
+      dealSoundTimeoutIdsRef.current = [];
+    };
+  }, []);
+
+  useEffect(() => {
     const previousCards = previousHandRef.current;
     const currentHandIndexes = new Set(hand.map((card) => card.idx));
     const currentHandAreaIndexes = new Set(handCards.map((card) => card.idx));
+    setDealAnimationDelayByCard((currentDelays) => {
+      const nextDelays = { ...currentDelays };
+      Object.keys(nextDelays).forEach((idx) => {
+        if (!currentHandIndexes.has(Number(idx))) {
+          delete nextDelays[Number(idx)];
+        }
+      });
+      return nextDelays;
+    });
 
     setDealAnimationTokens((currentTokens) => {
       const cleanedTokens: Record<number, number> = {};
@@ -294,11 +322,22 @@ export const SharedPlayableCardsLayer = ({
 
       const nextTokens = { ...cleanedTokens };
       const freshTokens: Record<number, number> = {};
+      const nextDelaysByCard: Record<number, number> = {};
 
-      newlyDealtCardIndexes.forEach((cardIdx) => {
+      newlyDealtCardIndexes.forEach((cardIdx, dealOrder) => {
         const nextToken = (nextTokens[cardIdx] ?? 0) + 1;
         nextTokens[cardIdx] = nextToken;
         freshTokens[cardIdx] = nextToken;
+        const dealDelay = dealOrder * dealStaggerSeconds;
+        nextDelaysByCard[cardIdx] = dealDelay;
+
+        const timeoutId = window.setTimeout(() => {
+          dealCardSound();
+          dealSoundTimeoutIdsRef.current = dealSoundTimeoutIdsRef.current.filter(
+            (id) => id !== timeoutId
+          );
+        }, Math.max(0, Math.round(dealDelay * 1000)));
+        dealSoundTimeoutIdsRef.current.push(timeoutId);
       });
 
       setFreshDealAnimationTokens((currentFreshTokens) => {
@@ -310,6 +349,11 @@ export const SharedPlayableCardsLayer = ({
         });
         return nextFreshTokens;
       });
+
+      setDealAnimationDelayByCard((currentDelays) => ({
+        ...currentDelays,
+        ...nextDelaysByCard,
+      }));
 
       window.setTimeout(() => {
         setFreshDealAnimationTokens((currentFreshTokens) => {
@@ -325,7 +369,7 @@ export const SharedPlayableCardsLayer = ({
     });
 
     previousHandRef.current = hand;
-  }, [hand, handCards]);
+  }, [dealCardSound, dealStaggerSeconds, hand, handCards]);
 
   const refreshAnchorRects = useCallback(() => {
     const nextStageRectRaw = stageRef.current?.getBoundingClientRect();
@@ -593,6 +637,8 @@ export const SharedPlayableCardsLayer = ({
         const showDragDropAnimation =
           dragDropAnimationToken > consumedDragDropToken &&
           Boolean(dragDropOrigins?.[card.idx]);
+        const dealDelay =
+          showDealAnimation ? dealAnimationDelayByCard[card.idx] ?? 0 : 0;
 
         if (showDragDropAnimation) {
           consumedDragDropTokensRef.current[card.idx] = dragDropAnimationToken;
@@ -747,8 +793,15 @@ export const SharedPlayableCardsLayer = ({
             }}
             transition={{
               ...CARD_DEAL_TRANSITION,
-              x: CARD_LAYOUT_TRANSITION,
-              y: CARD_LAYOUT_TRANSITION,
+              delay: dealDelay,
+              x: {
+                ...CARD_LAYOUT_TRANSITION,
+                delay: dealDelay,
+              },
+              y: {
+                ...CARD_LAYOUT_TRANSITION,
+                delay: dealDelay,
+              },
             }}
             style={{
               position: "absolute",
