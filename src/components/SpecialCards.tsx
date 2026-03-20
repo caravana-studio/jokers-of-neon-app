@@ -14,15 +14,13 @@ export const SpecialCards = () => {
   const { isSmallScreen, cardScale } = useResponsiveValues();
   const heightOffset = isSmallScreen ? 25 : 40;
   const cardWidth = CARD_WIDTH * cardScale;
-  const legacyMinSlots = 5;
-  const minSlots = Math.max(1, maxSpecialCards);
-  const containerMinSlots = Math.max(legacyMinSlots, minSlots);
+  const containerVisibleItems = 5;
 
   return (
     <CardContainerWithBorder
-      maxWidth={isSmallScreen ? "95%" : "100%"}
-      minWidth={`${cardWidth * containerMinSlots + (isSmallScreen ? 32 : 49)}px`}
-      width={"auto"}
+      maxWidth={"100%"}
+      minWidth={`${cardWidth * containerVisibleItems + (isSmallScreen ? 32 : 49)}px`}
+      width={isSmallScreen ? "100%" : "auto"}
       height={`${CARD_HEIGHT * cardScale + heightOffset}px`}
     >
       {specialSwitcherOn ? <SpecialCardsRow /> : <RageCards />}
