@@ -36,7 +36,6 @@ import {
   CARD_LAYOUT_TRANSITION,
   getCardDealStaggerSeconds,
   getCardDealFromDeckInitial,
-  getCardLayoutId,
 } from "./cardLayoutMotion";
 
 interface SharedPlayableCardsLayerProps {
@@ -72,6 +71,12 @@ type StageLayoutRects = {
   stage: RectSnapshot;
   hand: RectSnapshot;
   preselected: RectSnapshot;
+};
+
+type CardRenderSnapshot = {
+  renderId: number;
+  signature: string;
+  idx: number;
 };
 
 const PRESELECTED_AREA_HORIZONTAL_PADDING = 12;
@@ -209,9 +214,14 @@ export const SharedPlayableCardsLayer = ({
     [handCards]
   );
 
-  const handOrderByCardIdx = useMemo(
-    () => new Map(handCards.map((card, order) => [card.idx, order])),
-    [handCards]
+  const handLayoutCards = useMemo(
+    () => hand.filter((card) => !assignedModifierCardsSet.has(card.idx)),
+    [assignedModifierCardsSet, hand]
+  );
+
+  const handLayoutOrderByCardIdx = useMemo(
+    () => new Map(handLayoutCards.map((card, order) => [card.idx, order])),
+    [handLayoutCards]
   );
 
   const preselectedOrderByCardIdx = useMemo(
@@ -240,15 +250,67 @@ export const SharedPlayableCardsLayer = ({
     Record<number, number>
   >({});
   const previousHandRef = useRef<Card[]>([]);
+  const previousCardRenderSnapshotsRef = useRef<CardRenderSnapshot[]>([]);
+  const nextRenderIdRef = useRef(1);
   const consumedDragDropTokensRef = useRef<Record<number, number>>({});
   const dealSoundTimeoutIdsRef = useRef<number[]>([]);
   const dealStaggerSeconds = useMemo(
     () => getCardDealStaggerSeconds(animationSpeed),
     [animationSpeed]
   );
+  const getCardSignature = useCallback(
+    (card: Pick<Card, "img" | "isModifier">) =>
+      `${card.img}-${card.isModifier ? "modifier" : "card"}`,
+    []
+  );
 
-  const getCardSignature = (card: Card) =>
-    `${card.img}-${card.isModifier ? "modifier" : "card"}`;
+  const handRenderData = useMemo(() => {
+    const previousSnapshots = previousCardRenderSnapshotsRef.current;
+    const usedPreviousSnapshotIndexes = new Set<number>();
+    const renderIdByCardIdx: Record<number, number> = {};
+    const newlyDealtCardIndexes: number[] = [];
+    const nextSnapshots: CardRenderSnapshot[] = [];
+
+    hand.forEach((card) => {
+      const signature = getCardSignature(card);
+      let matchedPreviousSnapshotIndex = previousSnapshots.findIndex(
+        (snapshot, index) =>
+          !usedPreviousSnapshotIndexes.has(index) &&
+          snapshot.signature === signature &&
+          snapshot.idx === card.idx
+      );
+
+      if (matchedPreviousSnapshotIndex === -1) {
+        matchedPreviousSnapshotIndex = previousSnapshots.findIndex(
+          (snapshot, index) =>
+            !usedPreviousSnapshotIndexes.has(index) &&
+            snapshot.signature === signature
+        );
+      }
+
+      let renderId: number;
+      if (matchedPreviousSnapshotIndex === -1) {
+        renderId = nextRenderIdRef.current++;
+        newlyDealtCardIndexes.push(card.idx);
+      } else {
+        usedPreviousSnapshotIndexes.add(matchedPreviousSnapshotIndex);
+        renderId = previousSnapshots[matchedPreviousSnapshotIndex].renderId;
+      }
+
+      renderIdByCardIdx[card.idx] = renderId;
+      nextSnapshots.push({
+        renderId,
+        signature,
+        idx: card.idx,
+      });
+    });
+
+    return {
+      renderIdByCardIdx,
+      newlyDealtCardIndexes,
+      nextSnapshots,
+    };
+  }, [getCardSignature, hand]);
 
   useEffect(() => {
     return () => {
@@ -264,6 +326,10 @@ export const SharedPlayableCardsLayer = ({
       dealCardSound();
     }
   }, [dealCardSound, discardAnimation, playAnimation]);
+
+  useEffect(() => {
+    previousCardRenderSnapshotsRef.current = handRenderData.nextSnapshots;
+  }, [handRenderData.nextSnapshots]);
 
   useEffect(() => {
     const previousCards = previousHandRef.current;
@@ -294,35 +360,9 @@ export const SharedPlayableCardsLayer = ({
         return cleanedTokens;
       }
 
-      const previousCounts = new Map<string, number>();
-      previousCards.forEach((card) => {
-        const signature = getCardSignature(card);
-        previousCounts.set(signature, (previousCounts.get(signature) ?? 0) + 1);
-      });
-
-      const currentCounts = new Map<string, number>();
-      hand.forEach((card) => {
-        const signature = getCardSignature(card);
-        currentCounts.set(signature, (currentCounts.get(signature) ?? 0) + 1);
-      });
-
-      const newCardBudget = new Map<string, number>();
-      currentCounts.forEach((count, signature) => {
-        const addedCopies = count - (previousCounts.get(signature) ?? 0);
-        if (addedCopies > 0) {
-          newCardBudget.set(signature, addedCopies);
-        }
-      });
-
-      const newlyDealtCardIndexes: number[] = [];
-      handCards.forEach((card) => {
-        const signature = getCardSignature(card);
-        const remainingNewCopies = newCardBudget.get(signature) ?? 0;
-        if (remainingNewCopies > 0) {
-          newCardBudget.set(signature, remainingNewCopies - 1);
-          newlyDealtCardIndexes.push(card.idx);
-        }
-      });
+      const newlyDealtCardIndexes = handRenderData.newlyDealtCardIndexes.filter(
+        (cardIdx) => currentHandAreaIndexes.has(cardIdx)
+      );
 
       if (newlyDealtCardIndexes.length === 0) {
         return cleanedTokens;
@@ -377,7 +417,12 @@ export const SharedPlayableCardsLayer = ({
     });
 
     previousHandRef.current = hand;
-  }, [dealCardSound, dealStaggerSeconds, hand, handCards]);
+  }, [
+    dealCardSound,
+    dealStaggerSeconds,
+    hand,
+    handRenderData.newlyDealtCardIndexes,
+  ]);
 
   const refreshAnchorRects = useCallback(() => {
     const nextStageRectRaw = stageRef.current?.getBoundingClientRect();
@@ -600,7 +645,7 @@ export const SharedPlayableCardsLayer = ({
         .map((card) => {
         const isModifierCard = card.isModifier;
         const isPreselected = !isModifierCard && preselectedCardsSet.has(card.idx);
-        const handOrder = handOrderByCardIdx.get(card.idx);
+        const handOrder = handLayoutOrderByCardIdx.get(card.idx);
         const preselectedOrder = preselectedOrderByCardIdx.get(card.idx);
         const currentStepConfig = TUTORIAL_STEPS[stepIndex ?? 0];
         const targetSelector = currentStepConfig?.target;
@@ -629,7 +674,7 @@ export const SharedPlayableCardsLayer = ({
             )
           : getHandCardPosition(
               handOrder ?? 0,
-              handCards.length
+              handLayoutCards.length
             );
 
         if (!targetPosition) return null;
@@ -652,8 +697,8 @@ export const SharedPlayableCardsLayer = ({
           consumedDragDropTokensRef.current[card.idx] = dragDropAnimationToken;
         }
 
-        const cardLayoutId = getCardLayoutId(card);
-        const cardTransitionKey = `${cardLayoutId}-${dealAnimationToken}-${dragDropAnimationToken}`;
+        const cardRenderId = handRenderData.renderIdByCardIdx[card.idx] ?? card.idx;
+        const cardTransitionKey = `game-card-${cardRenderId}-${dealAnimationToken}-${dragDropAnimationToken}`;
         const renderedCard: Card = {
           ...card,
           modifiers: getModifiers(card.idx),
