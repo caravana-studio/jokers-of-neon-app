@@ -59,6 +59,9 @@ export const HandSection = ({
             variant="italic"
             textAlign="center"
             bottom={{ base: "140px", md: "100px" }}
+            position="relative"
+            zIndex={80}
+            pointerEvents="none"
             w="100%"
           >
             {t("game.hand-section.no-cards-label")}
