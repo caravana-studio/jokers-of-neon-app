@@ -13,7 +13,8 @@ interface PowerUpsProps {
 }
 
 export const PowerUps = ({ onTutorialCardClick }: PowerUpsProps) => {
-  const { powerUps, togglePreselectedPowerUp } = useGameStore();
+  const { powerUps, togglePreselectedPowerUp, preSelectedPowerUps } =
+    useGameStore();
   const { preSelectionLocked } = useCurrentHandStore();
   const { isSmallScreen } = useResponsiveValues();
   const width = isSmallScreen ? 60 : 93;
@@ -25,15 +26,19 @@ export const PowerUps = ({ onTutorialCardClick }: PowerUpsProps) => {
   return (
     <Flex
       gap={[1, 4]}
-      zIndex={preSelectionLocked ? 1 : 2}
+      position="relative"
+      zIndex={preSelectionLocked ? 70 : 80}
+      pointerEvents="auto"
       className="game-tutorial-power-up"
     >
       {powerUps?.map((powerUp, index) => {
+        const isActive = !!powerUp && preSelectedPowerUps.includes(powerUp.idx);
         return (
           <PowerUpComponent
-            key={index}
+            key={powerUp?.idx ?? index}
             width={componentWidth}
             powerUp={powerUp}
+            isActive={isActive}
             onClick={() => {
               if (powerUp) {
                 const result = togglePreselectedPowerUp(powerUp.idx);

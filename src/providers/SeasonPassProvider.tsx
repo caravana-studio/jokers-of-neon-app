@@ -8,8 +8,8 @@ import {
   useRef,
   useState,
 } from "react";
-import { useDojo } from "../dojo/DojoContext";
-import { useUsername } from "../dojo/utils/useUsername";
+import { useAccount } from "@starknet-react/core";
+import { DojoContext } from "../dojo/DojoContext";
 import { useSeasonProgressStore } from "../state/useSeasonProgressStore";
 import { showPurchaseSuccessToast } from "../utils/transactionNotifications";
 import { useRevenueCat } from "./RevenueCatProvider";
@@ -32,12 +32,15 @@ const SeasonPassContext = createContext<SeasonPassContextValue>({
 });
 
 export const SeasonPassProvider = ({ children }: PropsWithChildren) => {
-  const {
-    account: { account },
-    setup: { accountType },
-  } = useDojo();
-  const username = useUsername();
-  const userAddress = account?.address;
+  const dojoCtx = useContext(DojoContext);
+  const { address: starknetAddress } = useAccount();
+  // Use || (not ??) so empty-string address ("" from shopFallbackAccount) is treated as null
+  const dojoAddress = dojoCtx?.account?.account?.address || null;
+  const accountType = dojoCtx?.accountType ?? null;
+  const username = null;
+  // Fall back to starknetAddress so marketplace connector login works
+  // (dojoAddress stays null after marketplace login since DojoProvider isn't updated)
+  const userAddress = dojoAddress || starknetAddress || null;
   const { offerings, purchasePackageById } = useRevenueCat();
   const [isPurchasing, setIsPurchasing] = useState(false);
   const seasonPassUnlocked = useSeasonProgressStore(

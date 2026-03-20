@@ -1,288 +1,143 @@
-import {
-  Box,
-  Button,
-  Flex,
-  GridItem,
-  Heading,
-  SimpleGrid,
-  Text,
-  useDisclosure,
-} from "@chakra-ui/react";
-import { useDndContext, useDroppable } from "@dnd-kit/core";
-import { ReactNode, useState } from "react";
+import { Box, Flex, Heading } from "@chakra-ui/react";
+import { useDroppable } from "@dnd-kit/core";
+import { ReactNode, RefObject } from "react";
 import { useTranslation } from "react-i18next";
-import { AnimatedCard } from "../../components/AnimatedCard";
 import { CardContainerWithBorder } from "../../components/CardContainerWithBorder";
 import { ShowPlays } from "../../components/ShowPlays";
 import { SortBy } from "../../components/SortBy";
-import { TiltCard } from "../../components/TiltCard";
-import { TUTORIAL_STEPS } from "../../constants/gameTutorial";
 import { HAND_SECTION_ID } from "../../constants/general";
-import { preselectedCardSfx } from "../../constants/sfx";
 import { CARD_HEIGHT, CARD_WIDTH } from "../../constants/visualProps";
-import { useAudio } from "../../hooks/useAudio";
-import { useGameContext } from "../../providers/GameProvider";
-import { useCardHighlight } from "../../providers/HighlightProvider/CardHighlightProvider";
-import { useSettings } from "../../providers/SettingsProvider";
-import { useCurrentHandStore } from "../../state/useCurrentHandStore";
 import { useGameStore } from "../../state/useGameStore";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
-import { isTutorial } from "../../utils/isTutorial";
-import { Coins } from "./Coins";
 
 interface HandSectionProps {
   onTutorialCardClick?: () => void;
+  cardsAnchorRef?: RefObject<HTMLDivElement>;
 }
 
-export const HandSection = ({ onTutorialCardClick }: HandSectionProps) => {
-  useGameContext();
-
-  const { changeModifierCard, stepIndex } = useGameContext();
-
-  const { hand, preSelectedCards, togglePreselected, preSelectedModifiers } =
-    useCurrentHandStore();
-  const { sfxVolume } = useSettings();
-
+export const HandSection = ({
+  onTutorialCardClick: _onTutorialCardClick,
+  cardsAnchorRef,
+}: HandSectionProps) => {
   const { remainingPlays, roundRewards } = useGameStore();
-  const { play: preselectCardSound } = useAudio(preselectedCardSfx, sfxVolume);
+  const { t } = useTranslation(["game"]);
+  const { cardScale, isSmallScreen } = useResponsiveValues();
 
-  const { highlightItem: highlightCard } = useCardHighlight();
-
-  const [discarding, setDiscarding] = useState(false);
-
+  const cardHeight = CARD_HEIGHT * cardScale;
+  const handContainerWidth =
+    CARD_WIDTH * cardScale * 6 + (isSmallScreen ? 32 : 50);
+  const desktopSideColumnWidthPx = Math.max(
+    96,
+    Math.round(CARD_WIDTH * cardScale * 0.78)
+  );
+  const renderedCardHeight =
+    (CARD_HEIGHT + (isSmallScreen ? 12 : 8)) * cardScale;
   const handsLeft = remainingPlays;
-
-  const { activeNode } = useDndContext();
 
   const { setNodeRef } = useDroppable({
     id: HAND_SECTION_ID,
   });
 
-  const cardIsPreselected = (cardIndex: number) => {
-    return (
-      preSelectedCards.filter((idx) => idx === cardIndex).length > 0 ||
-      Object.values(preSelectedModifiers).some((array) =>
-        array.includes(cardIndex)
-      )
-    );
-  };
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const [menuIdx, setMenuIdx] = useState<number | undefined>();
-  const [hoveredCard, setHoveredCard] = useState<number | null>(null);
-  const [hoveredButton, setHoveredButton] = useState<number | null>(null);
-  const { t } = useTranslation(["game"]);
-  const { cardScale, isSmallScreen } = useResponsiveValues();
-
-  const cardWidth = CARD_WIDTH * cardScale;
-  const cardHeight = CARD_HEIGHT * cardScale;
-  const isTutorialRunning = isTutorial();
-
   return (
-    <>
-      {!isSmallScreen && (
-        <Flex
-          flexDirection="column"
-          justifyContent="space-between"
-          pb={1}
-          height={cardHeight}
-          gap={1}
-          sx={{
-            zIndex: 1,
-          }}
-        >
-          <SortBy />
-          <Coins rolling />
-        </Flex>
-      )}
-      <Box
-        pr={!isSmallScreen ? 12 : 6}
-        pl={!isSmallScreen ? 4 : 2}
-        className="game-tutorial-step-2 tutorial-modifiers-step-1"
-        ref={setNodeRef}
-        height={isSmallScreen ? cardHeight : "100%"}
-        display={"flex"}
-        alignItems={"end"}
-      >
-        <HandSectionContainer>
-          {handsLeft === 0 ? (
-            <Heading
-              ml={{ base: "0", md: "100px" }}
-              size={{ base: "sm", md: "md" }}
-              variant="italic"
-              textAlign="center"
-              bottom={{ base: "140px", md: "100px" }}
-              w="100%"
-            >
-              {t("game.hand-section.no-cards-label")}
-            </Heading>
-          ) : (
-            <SimpleGrid
+    <Box
+      pr={0}
+      pl={0}
+      className="game-tutorial-step-2 tutorial-modifiers-step-1"
+      ref={setNodeRef}
+      height={isSmallScreen ? renderedCardHeight + 8 : "100%"}
+      width="100%"
+      flex={1}
+      minWidth={0}
+      display={"flex"}
+      alignItems={"end"}
+    >
+      <HandSectionContainer>
+        {handsLeft === 0 ? (
+          <Heading
+            ml={{ base: "0", md: "100px" }}
+            size={{ base: "sm", md: "md" }}
+            variant="italic"
+            textAlign="center"
+            bottom={{ base: "140px", md: "100px" }}
+            position="relative"
+            zIndex={80}
+            pointerEvents="none"
+            w="100%"
+          >
+            {t("game.hand-section.no-cards-label")}
+          </Heading>
+        ) : (
+          <Flex
+            width="100%"
+            alignItems="flex-end"
+            justifyContent={!isSmallScreen ? "center" : "flex-start"}
+            gap={!isSmallScreen ? 4 : 0}
+          >
+            {!isSmallScreen && (
+              <Flex
+                flexDirection="column"
+                justifyContent="flex-end"
+                pb={1}
+                height={cardHeight}
+                gap={1}
+                width={`${desktopSideColumnWidthPx}px`}
+                flexShrink={0}
+                sx={{
+                  zIndex: 40,
+                }}
+              >
+                <SortBy />
+              </Flex>
+            )}
+            <Box
+              ref={cardsAnchorRef}
               opacity={!roundRewards && handsLeft > 0 ? 1 : 0.3}
-              minWidth={`${cardWidth * 4}px`}
-              maxWidth={`${cardWidth * 6.5}px`}
-              columns={hand.length}
+              minWidth={isSmallScreen ? "100%" : `${handContainerWidth}px`}
+              maxWidth={isSmallScreen ? "100%" : `${handContainerWidth}px`}
+              w={isSmallScreen ? "100%" : `${handContainerWidth}px`}
+              flexShrink={0}
+              h={`${renderedCardHeight + 4}px`}
               position="relative"
-              w={isSmallScreen ? "92%" : "unset"}
             >
-              {hand.map((card, index) => {
-                const isPreselected = cardIsPreselected(card.idx);
-                const currentStepConfig = TUTORIAL_STEPS[stepIndex ?? 0];
-                const targetSelector = currentStepConfig?.target;
-                const cardClassName = "hand-element-" + index;
-                const isActiveTutorialStep =
-                  targetSelector === `.${cardClassName}`;
-
-                const isAnyHandCardTargeted = targetSelector?.toString()
-                  .startsWith(".hand-element-");
-
-                const isClickDisabled =
-                  isTutorialRunning &&
-                  isAnyHandCardTargeted &&
-                  !isActiveTutorialStep;
-
-                const activeStyle = isActiveTutorialStep
-                  ? {
-                      transform: "translateY(-20px)",
-                      transition: "transform 0.3s ease-in-out",
-                      zIndex: 999,
-                    }
-                  : {
-                      transition: "transform 0.3s ease-in-out",
-                    };
-
-                return (
-                  <GridItem
-                    key={card.idx + "-" + index}
-                    sx={{
-                      pointerEvents: isPreselected ? "none" : "auto",
-                      ...activeStyle,
-                    }}
-                    w="100%"
-                    onContextMenu={(e) => {
-                      e.stopPropagation();
-                      e.preventDefault();
-                      setMenuIdx(card.idx);
-                      onOpen();
-                    }}
-                    className={
-                      card.isModifier
-                        ? "tutorial-modifiers-step-2"
-                        : cardClassName
-                    }
-                    onMouseEnter={() =>
-                      !isSmallScreen && setHoveredCard(card.idx)
-                    }
-                    onMouseLeave={() => {
-                      setHoveredCard(null);
-                      setHoveredButton(null);
-                    }}
-                    position="relative"
-                  >
-                    {card.isModifier && !isPreselected && (
-                      <Flex
-                        position={"absolute"}
-                        zIndex={7}
-                        bottom={"5px"}
-                        left={"5px"}
-                        borderRadius={"10px"}
-                        background={"violet"}
-                        sx={{
-                          zIndex: 20,
-                        }}
-                      >
-                        {hoveredCard === card.idx && (
-                          <Button
-                            height={8}
-                            fontSize="8px"
-                            px={"16px"}
-                            borderRadius={"10px"}
-                            size={isSmallScreen ? "xs" : "md"}
-                            variant={"discardSecondarySolid"}
-                            onMouseEnter={() => setHoveredButton(card.idx)}
-                            display="flex"
-                            gap={4}
-                            isDisabled={discarding}
-                            onClick={(e) => {
-                              setDiscarding(true);
-                              e.stopPropagation();
-                              setHoveredButton(null);
-                              changeModifierCard(card.idx).then((_) => {
-                                setDiscarding(false);
-                              });
-                              onClose();
-                            }}
-                          >
-                            <Text fontSize="10px">X</Text>
-                            {hoveredButton === card.idx && (
-                              <Text fontSize="10px">
-                                {t("game.hand-section.modifier-change")}
-                              </Text>
-                            )}
-                          </Button>
-                        )}
-                      </Flex>
-                    )}
-                    {!isPreselected && (
-                      <AnimatedCard idx={card.idx} discarded={card.discarded}>
-                        <TiltCard
-                          card={card}
-                          scale={cardScale}
-                          cursor={
-                            card.isModifier
-                              ? activeNode
-                                ? "grabbing"
-                                : "grab"
-                              : "pointer"
-                          }
-                          onClick={() => {
-                            if (isClickDisabled) return;
-
-                            if (onTutorialCardClick) onTutorialCardClick();
-                            if (!card.isModifier) {
-                              const preselected = togglePreselected(card.idx);
-                              if (preselected) {
-                                preselectCardSound();
-                              }
-                            } else {
-                              highlightCard(card);
-                            }
-                          }}
-                          className={"hand-element-" + index}
-                          onHold={() => {
-                            if (isClickDisabled) return;
-                            isSmallScreen && highlightCard(card);
-                          }}
-                        />
-                      </AnimatedCard>
-                    )}
-                  </GridItem>
-                );
-              })}
               {!isSmallScreen && (
                 <Flex
                   bottom={"-35px"}
-                  width="calc(100% + 30px)"
-                  justifyContent={"flex-end"}
+                  right={"16px"}
                   alignItems="flex-end"
                   position="absolute"
                 >
                   <ShowPlays />
                 </Flex>
               )}
-            </SimpleGrid>
-          )}
-        </HandSectionContainer>
-      </Box>
-    </>
+            </Box>
+            {!isSmallScreen && (
+              <Box
+                width={`${desktopSideColumnWidthPx}px`}
+                flexShrink={0}
+                opacity={0}
+                pointerEvents="none"
+                aria-hidden
+              />
+            )}
+          </Flex>
+        )}
+      </HandSectionContainer>
+    </Box>
   );
 };
 
 const HandSectionContainer = ({ children }: { children: ReactNode }) => {
   const { cardScale, isSmallScreen } = useResponsiveValues();
-  const cardHeight = CARD_HEIGHT * cardScale;
+  const renderedCardHeight =
+    (CARD_HEIGHT + (isSmallScreen ? 12 : 8)) * cardScale;
   return isSmallScreen ? (
     <CardContainerWithBorder
-      height={`${cardHeight + (isSmallScreen ? 16 : 20)}px`}
+      width="100%"
+      minWidth="0"
+      maxWidth="95%"
+      paddingLeft={[0, 0]}
+      paddingRight={[0, 0]}
+      height={`${renderedCardHeight + 16}px`}
     >
       <SortBy />
       {children}

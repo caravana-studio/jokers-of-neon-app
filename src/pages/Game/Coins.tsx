@@ -19,30 +19,38 @@ const getPxBasedOnDigits = (num: number) => {
 
 interface CoinsProps {
   rolling?: boolean;
+  plainDesktop?: boolean;
 }
 
-export const Coins = ({ rolling = false }: CoinsProps) => {
+export const Coins = ({ rolling = false, plainDesktop = false }: CoinsProps) => {
   const { isSmallScreen } = useResponsiveValues();
 
   const { cash } = useGameStore();
+  const usePlainDesktopStyles = plainDesktop && !isSmallScreen;
 
   return (
     <Flex
       flexDirection={isSmallScreen ? "row" : "column"}
-      alignItems="flex-end"
+      alignItems="center"
       gap={1}
     >
       <Flex
         gap={1.5}
         alignItems="center"
         justifyContent="center"
-        border={isSmallScreen ? "none" : "1px solid white"}
+        border={isSmallScreen || usePlainDesktopStyles ? "none" : "1px solid white"}
         borderRadius="8px"
         color="white"
-        minWidth={{ base: 0, sm: "70px" }}
-        width={isSmallScreen ? "unset" : getPxBasedOnDigits(cash)}
-        p={{ base: 0, sm: "15px 6px" }}
-        fontSize={isSmallScreen ? "9px": "13px"}
+        minWidth={usePlainDesktopStyles ? 0 : { base: 0, sm: "70px" }}
+        width={isSmallScreen || usePlainDesktopStyles ? "unset" : getPxBasedOnDigits(cash)}
+        p={usePlainDesktopStyles ? 0 : { base: 0, sm: "15px 6px" }}
+        fontSize={
+          usePlainDesktopStyles
+            ? { base: "9px", md: "15px", lg: "17px" }
+            : isSmallScreen
+              ? "9px"
+              : "13px"
+        }
       >
         <CashSymbol size={isSmallScreen ? 2 : undefined} />
         {rolling ? <RollingNumber n={cash} /> : <span>{cash}</span>}

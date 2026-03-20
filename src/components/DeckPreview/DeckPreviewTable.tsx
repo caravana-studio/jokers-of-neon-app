@@ -8,14 +8,13 @@ import {
   Tr
 } from "@chakra-ui/react";
 import { Suits } from "../../enums/suits";
-import { GREY_MEDIUM } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
-import { getTableData } from "./DeckPreviewTableUtils";
+import { suitColorsMap, useTableData } from "./DeckPreviewTableUtils";
 import { PreviewTableColumnHeader } from "./PreviewTableColumnHeader";
 import { PreviewTableRowHeader } from "./PreviewTableRowHeader";
 
 export const DeckPreviewTable = () => {
-  const tableData = getTableData();
+  const tableData = useTableData();
   const columnHeaders = tableData.columnHeaders;
   const rowHeaders = tableData.rowHeaders;
   const rows = tableData.cells;
@@ -49,23 +48,28 @@ export const DeckPreviewTable = () => {
         </Tr>
       </Thead>
       <Tbody color={"white"}>
-        {rows.slice(0, -1).map((row, rowIndex) => (
-          <Tr key={rowIndex}>
-            <Th border="none" p={0} m={0}>
-              <PreviewTableRowHeader
-                cardSuit={rowHeaders[rowIndex].cardSuit}
-                quantity={rowHeaders[rowIndex].quantity}
-              />
-            </Th>
-            {row.map((cell, cellIndex) => {
-              const suit = rowHeaders[rowIndex]?.cardSuit;
-              return (
+        {rows.slice(0, -1).map((row, rowIndex) => {
+          const suit = rowHeaders[rowIndex]?.cardSuit;
+          const suitColor = suit ? suitColorsMap.get(suit) : undefined;
+          const rowBackgroundColor = suitColor
+            ? `${suitColor}80`
+            : "rgba(0, 0, 0, 0.5)";
+
+          return (
+            <Tr key={rowIndex}>
+              <Th border="none" p={0} m={0}>
+                <PreviewTableRowHeader
+                  cardSuit={rowHeaders[rowIndex].cardSuit}
+                  quantity={rowHeaders[rowIndex].quantity}
+                />
+              </Th>
+              {row.map((cell, cellIndex) => (
                 <Td
                   visibility={suit != Suits.JOKER ? "visible" : "hidden"}
                   key={`${rowIndex}-${cellIndex}`}
                   p={1}
                   textAlign="center"
-                  backgroundColor={rowIndex % 2 === 0 ? "black" : GREY_MEDIUM}
+                  backgroundColor={rowBackgroundColor}
                   border="none"
                   borderRadius={
                     cellIndex === 0
@@ -79,10 +83,10 @@ export const DeckPreviewTable = () => {
                     {cell.quantity}
                   </Box>
                 </Td>
-              );
-            })}
-          </Tr>
-        ))}
+              ))}
+            </Tr>
+          );
+        })}
       </Tbody>
     </Table>
   );

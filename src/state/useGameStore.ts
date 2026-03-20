@@ -381,21 +381,38 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   togglePreselectedPowerUp: (powerUpIdx: number): boolean => {
+    if (typeof powerUpIdx !== "number" || Number.isNaN(powerUpIdx)) {
+      return false;
+    }
+
     const {
       preSelectedPowerUps,
       remainingPlays,
-      unPreSelectPowerUp,
-      preSelectPowerUp,
       maxPowerUpSlots,
+      powerUps,
     } = get();
+
+    const availablePowerUps = powerUps.filter((powerUp) => powerUp !== null).length;
+    const normalizedMaxPowerUpSlots =
+      Number.isFinite(maxPowerUpSlots) && maxPowerUpSlots > 0
+        ? maxPowerUpSlots
+        : Math.max(availablePowerUps, 1);
+
     if (remainingPlays > 0) {
       if (preSelectedPowerUps.includes(powerUpIdx)) {
-        unPreSelectPowerUp(powerUpIdx);
-        return true;
-      } else if (preSelectedPowerUps.length < maxPowerUpSlots) {
-        preSelectPowerUp(powerUpIdx);
+        const next = preSelectedPowerUps.filter((idx) => idx !== powerUpIdx);
+        set({
+          preSelectedPowerUps: next,
+        });
         return true;
       }
+
+      if (preSelectedPowerUps.length < normalizedMaxPowerUpSlots) {
+        const next = [...preSelectedPowerUps, powerUpIdx];
+        set({ preSelectedPowerUps: next });
+        return true;
+      }
+      return false;
     }
     return false;
   },

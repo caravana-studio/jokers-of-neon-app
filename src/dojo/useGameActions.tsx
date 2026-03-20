@@ -15,7 +15,7 @@ import { useAudio } from "../hooks/useAudio";
 import { useSettings } from "../providers/SettingsProvider";
 import { handleXPEvents } from "../utils/handleXPEvents";
 import { getModifiersForContract } from "./utils/getModifiersForContract";
-import { SEASON_NUMBER } from "../constants/season";
+import { getSeasonNumber } from "../constants/season";
 import { useUsername } from "./utils/useUsername";
 
 const createGameEmptyResponse = {
@@ -261,7 +261,7 @@ export const useGameActions = () => {
     }
   };
 
-  const claimLives = async (seasonId = SEASON_NUMBER) => {
+  const claimLives = async (seasonId = getSeasonNumber()) => {
     try {
       const response = await client.lives_system.claim(account, seasonId);
       const transaction_hash = response?.transaction_hash ?? "";

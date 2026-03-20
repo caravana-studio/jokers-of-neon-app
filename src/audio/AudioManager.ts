@@ -3,11 +3,12 @@ import { App } from "@capacitor/app";
 import { Capacitor, PluginListenerHandle } from "@capacitor/core";
 import { Howl } from "howler";
 import {
+  getSfxVolumeMultiplier,
   SFX_REGISTRY,
+  normalizePath,
   toNativeAssetId,
   toNativeAssetPath,
   toWebAssetPath,
-  normalizePath,
 } from "./audioRegistry";
 
 class AudioManager {
@@ -21,6 +22,7 @@ class AudioManager {
 
   // Native audio tracking
   private nativePreloadedIds: Set<string> = new Set();
+  private nativePathByAssetId: Map<string, string> = new Map();
 
   // Settings
   private volume = 1;
@@ -77,12 +79,18 @@ class AudioManager {
     await Promise.allSettled(preloadPromises);
   }
 
+  private getEffectiveVolume(path: string): number {
+    const volume = this.volume * getSfxVolumeMultiplier(path);
+    return Math.max(0, Math.min(1, volume));
+  }
+
   private async preloadNativeSound(
     path: string,
     channels: number
   ): Promise<void> {
     const assetId = toNativeAssetId(path);
     const nativePath = toNativeAssetPath(path);
+    const normalizedPath = normalizePath(path);
 
     try {
       await NativeAudio.preload({
@@ -95,10 +103,11 @@ class AudioManager {
 
       await NativeAudio.setVolume({
         assetId,
-        volume: this.volume,
+        volume: this.getEffectiveVolume(normalizedPath),
       }).catch(() => {});
 
       this.nativePreloadedIds.add(assetId);
+      this.nativePathByAssetId.set(assetId, normalizedPath);
     } catch {
       // Silent fail for preload errors
     }
@@ -112,7 +121,7 @@ class AudioManager {
     const howl = new Howl({
       src: [toWebAssetPath(normalizedPath)],
       preload: true,
-      volume: this.volume,
+      volume: this.getEffectiveVolume(normalizedPath),
     });
 
     this.howlCache.set(normalizedPath, howl);
@@ -168,11 +177,15 @@ class AudioManager {
 
     if (this.isNative) {
       for (const assetId of this.nativePreloadedIds) {
-        NativeAudio.setVolume({ assetId, volume }).catch(() => {});
+        const normalizedPath = this.nativePathByAssetId.get(assetId) ?? "";
+        NativeAudio.setVolume({
+          assetId,
+          volume: this.getEffectiveVolume(normalizedPath),
+        }).catch(() => {});
       }
     } else {
-      for (const howl of this.howlCache.values()) {
-        howl.volume(volume);
+      for (const [normalizedPath, howl] of this.howlCache.entries()) {
+        howl.volume(this.getEffectiveVolume(normalizedPath));
       }
     }
   }
@@ -206,6 +219,7 @@ class AudioManager {
         await NativeAudio.unload({ assetId }).catch(() => {});
       }
       this.nativePreloadedIds.clear();
+      this.nativePathByAssetId.clear();
     }
 
     // Unload web sounds

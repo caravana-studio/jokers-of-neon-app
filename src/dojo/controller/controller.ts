@@ -6,10 +6,15 @@ import { rpcUrl, slotInstance } from "../../config/cartridgeUrls";
 import { isNative, isNativeAndroid } from "../../utils/capacitorUtils";
 import { policies } from "./policies";
 
+const standaloneMainnetRpc = import.meta.env.VITE_STARKNET_RPC_URL?.trim();
+const isStandaloneShopMode = import.meta.env.MODE === "standalone-shop";
+const shouldUseStandaloneMainnetRpc =
+  isStandaloneShopMode && !!standaloneMainnetRpc;
+
 const CHAIN =
-  slotInstance ||
-  import.meta.env.VITE_CHAIN ||
-  "jokers-of-neon";
+  shouldUseStandaloneMainnetRpc
+    ? "mainnet"
+    : slotInstance || import.meta.env.VITE_CHAIN || "jokers-of-neon";
 
 const DOJO_NAMESPACE =
   import.meta.env.VITE_DOJO_NAMESPACE || "jokers_of_neon_core";
@@ -35,7 +40,7 @@ const defaultChainId =
     ? getChainId(CHAIN)
     : getSlotChainId(CHAIN);
 
-const RPC_URL = rpcUrl;
+const RPC_URL = shouldUseStandaloneMainnetRpc ? standaloneMainnetRpc : rpcUrl;
 
 const signupOptions: AuthOptions = isNativeAndroid
   ? ["google", "discord", "password"]
@@ -51,7 +56,11 @@ const controllerOptions = {
   signupOptions,
 };
 
-if (CHAIN !== "mainnet" && CHAIN !== "sepolia") {
+if (
+  !shouldUseStandaloneMainnetRpc &&
+  CHAIN !== "mainnet" &&
+  CHAIN !== "sepolia"
+) {
   controllerOptions.slot = CHAIN;
 }
 
@@ -62,7 +71,6 @@ export const controller =
         policies,
         rpc: RPC_URL,
         chainId: defaultChainId,
-        preset: import.meta.env.VITE_CONTROLLER_PRESET,
         redirectUrl: "jokers://open",
         disconnectRedirectUrl: "jokers://open",
         signupOptions,

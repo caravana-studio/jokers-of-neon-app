@@ -15,6 +15,7 @@ import { useGameActions } from "./dojo/useGameActions";
 import { useUsername } from "./dojo/utils/useUsername";
 import { useAppsFlyerReferral } from "./hooks/useAppsFlyerReferral";
 import { initAppsFlyerReferralListener, initWebReferralDetection } from "./utils/appsflyerReferral";
+import { fetchAndStoreAgeSignals } from "./utils/ageSignals";
 import { BackgroundAnimationProvider } from "./providers/BackgroundAnimationProvider";
 import { CardAnimationsProvider } from "./providers/CardAnimationsProvider";
 import { CardDataProvider } from "./providers/CardDataProvider";
@@ -89,6 +90,11 @@ function App() {
     });
 
     askForTracking();
+
+    // Fetch Play Age Signals once at startup for compliance checks
+    fetchAndStoreAgeSignals().catch((error) => {
+      console.warn("[Age Signals] Startup fetch failed:", error);
+    });
     
     // Initialize AppsFlyer referral listener (native platforms)
     initAppsFlyerReferralListener().catch((err) => {

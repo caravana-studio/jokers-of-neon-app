@@ -9,7 +9,7 @@ import {
   isNative,
   nativePaddingTop
 } from "../utils/capacitorUtils";
-import { UnlockProgressDebugWidget } from "./debug/UnlockProgressDebugWidget";
+import { UnlockProgressDebugWidget } from "./UnlockProgressDebugWidget";
 import { SidebarMenu } from "./Menu/BarMenu/SidebarMenu";
 import { BottomMenu } from "./Menu/BottomMenu";
 

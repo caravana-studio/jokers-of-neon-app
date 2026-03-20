@@ -71,7 +71,7 @@ export const SpecialCardsRow = () => {
         alignItems={isSmallScreen ? "center" : "inherit"}
         columnGap={3}
         pr={hasManySpecialCards ? 3 : 0}
-        pb={isSmallScreen ? 0 : 4}
+        pb={isSmallScreen ? 3 : 4}
       >
         {cards.map((card) => {
           return (

@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Box, type BoxProps } from "@chakra-ui/react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useBackgroundAnimation } from "../../providers/BackgroundAnimationProvider";
 import { useGameStore } from "../../state/useGameStore";
@@ -19,12 +19,14 @@ interface IProgressBarProps {
   color?: string;
   animated?: boolean;
   playSound?: () => void;
+  height?: BoxProps["h"];
 }
 export const ProgressBar = ({
   progress,
   color = BLUE_LIGHT,
   animated = false,
   playSound,
+  height = "14px",
 }: IProgressBarProps) => {
   const [barColor, setBarColor] = useState(color);
   const [glowSize, setGlowSize] = useState(BASE_GLOW);
@@ -108,7 +110,7 @@ export const ProgressBar = ({
   return (
     <Box mt={1.5} position="relative" w="100%">
       <Box
-        h="14px"
+        h={height}
         borderRadius="full"
         border="2px solid white"
         position="relative"

@@ -93,6 +93,16 @@ interface RewardsDetailProps {
 }
 
 export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
+  const { t } = useTranslation("intermediate-screens", {
+    keyPrefix: "rewards-details.labels",
+  });
+  const { navigateToMap } = useMapNavigate();
+  const { isSmallScreen } = useResponsiveValues();
+  const { currentScore } = useGameStore();
+  const [animationEnded, setAnimationEnded] = useState(false);
+  const [skip, setSkip] = useState(false);
+  const [isNavigating, setIsNavigating] = useState(false);
+
   if (!roundRewards) return null;
 
   const {
@@ -110,23 +120,12 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
     total,
   } = roundRewards;
 
-  const { t } = useTranslation("intermediate-screens", {
-    keyPrefix: "rewards-details.labels",
-  });
-
   const baseLabel = t("base");
   const handsLeftLabel = t("hands-left", { hands: hands_left });
   const discardsLeftLabel = t("discards-left", { discards: discard_left });
   const rerollsLabel = t("rerolls", { rerolls: rerolls });
   const rageLabel = t("rage", { cards: rage_card_defeated });
   const specialCardBonusLabel = t("special-card-bonus");
-
-  const { navigateToMap } = useMapNavigate();
-  const { isSmallScreen } = useResponsiveValues();
-  const { currentScore } = useGameStore();
-  const [animationEnded, setAnimationEnded] = useState(false);
-  const [skip, setSkip] = useState(false);
-  const [isNavigating, setIsNavigating] = useState(false);
 
   const playerWon = level_passed === BOSS_LEVEL;
 
