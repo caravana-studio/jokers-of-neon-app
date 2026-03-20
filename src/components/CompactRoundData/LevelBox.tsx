@@ -1,35 +1,56 @@
-import { Box, Center, Heading } from "@chakra-ui/react";
+import {
+  Box,
+  Center,
+  Heading,
+  type BoxProps,
+  type HeadingProps,
+} from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { useGameStore } from "../../state/useGameStore";
 import { BLUE_LIGHT, VIOLET } from "../../theme/colors";
 import { isTutorial } from "../../utils/isTutorial";
 
-export const LevelBox = () => {
+interface LevelBoxProps {
+  fullWidth?: boolean;
+  headingFontSize?: HeadingProps["fontSize"];
+  marginBottom?: BoxProps["mb"];
+}
+
+export const LevelBox = ({
+  fullWidth = false,
+  headingFontSize = "11px",
+  marginBottom = 0.5,
+}: LevelBoxProps) => {
   const { t } = useTranslation("game");
   const { isRageRound } = useGameStore();
   const { level, round } = useGameStore();
   const inTutorial = isTutorial();
 
+  const Wrapper = fullWidth ? Box : Center;
+
   return (
-    <Center>
+    <Wrapper width={fullWidth ? "100%" : undefined}>
       <Box
         bg={`linear-gradient(to right, ${BLUE_LIGHT} 50%, ${VIOLET} 50%) `}
         p="2px"
         borderRadius="11px"
-        mb={0.5}
+        mb={marginBottom}
+        width={fullWidth ? "100%" : undefined}
       >
         <Box
           backgroundColor={isRageRound ? "black" : "backgroundBlue"}
           borderRadius="9px"
           px={5}
           py={0.25}
+          width={fullWidth ? "100%" : undefined}
         >
           <Heading
-            fontSize="11px"
+            fontSize={headingFontSize}
             textTransform="uppercase"
             variant="italic"
             color="white"
             fontWeight="bold"
+            textAlign={fullWidth ? "center" : undefined}
           >
             {inTutorial
               ? t("game.tutorial").toUpperCase()
@@ -40,6 +61,6 @@ export const LevelBox = () => {
           </Heading>
         </Box>
       </Box>
-    </Center>
+    </Wrapper>
   );
 };

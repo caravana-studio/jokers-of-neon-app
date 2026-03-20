@@ -91,8 +91,11 @@ const useTableData = (): TableData => {
 };
 
 export {
-  cardSuitsMap, cardValuesMap, suitColorsMap, useTableData,
+  cardSuitsMap,
+  cardValuesMap,
+  suitColorsMap,
+  useTableData,
   type ColumnHeader,
   type RowHeader,
-  type TableData
+  type TableData,
 };

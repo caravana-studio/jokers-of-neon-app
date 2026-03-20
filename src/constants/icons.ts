@@ -37,6 +37,7 @@ import ListIcon from "../assets/MenuIcons/list.png";
 import MoreIcon from "../assets/MenuIcons/more.png";
 import FreepackIcon from "../assets/free-pack.png";
 import GiftIcon from "../assets/gift.png";
+import LockedIcon from "../assets/locked.png";
 
 export const Icons = {
   HEART: HeartIcon,
@@ -78,6 +79,7 @@ export const Icons = {
   SEASON: SeasonIcon,
   GIFT: GiftIcon,
   TOURNAMENT: TournamentIcon,
+  LOCKED: LockedIcon,
 } as const;
 
 export type IconType = keyof typeof Icons;

@@ -9,7 +9,6 @@ import { HAND_SECTION_ID } from "../../constants/general";
 import { CARD_HEIGHT, CARD_WIDTH } from "../../constants/visualProps";
 import { useGameStore } from "../../state/useGameStore";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
-import { Coins } from "./Coins";
 
 interface HandSectionProps {
   onTutorialCardClick?: () => void;
@@ -77,7 +76,7 @@ export const HandSection = ({
             {!isSmallScreen && (
               <Flex
                 flexDirection="column"
-                justifyContent="space-between"
+                justifyContent="flex-end"
                 pb={1}
                 height={cardHeight}
                 gap={1}
@@ -88,7 +87,6 @@ export const HandSection = ({
                 }}
               >
                 <SortBy />
-                <Coins rolling />
               </Flex>
             )}
             <Box
