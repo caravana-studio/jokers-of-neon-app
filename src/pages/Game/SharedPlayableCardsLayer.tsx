@@ -19,7 +19,7 @@ import { AnimatedCard } from "../../components/AnimatedCard";
 import { ModifiableCard } from "../../components/ModifiableCard";
 import { TiltCard } from "../../components/TiltCard";
 import { TUTORIAL_STEPS } from "../../constants/gameTutorial";
-import { preselectedCardSfx } from "../../constants/sfx";
+import { dealSfx, preselectedCardSfx } from "../../constants/sfx";
 import { CARD_HEIGHT, CARD_WIDTH } from "../../constants/visualProps";
 import { useAudio } from "../../hooks/useAudio";
 import { useGameContext } from "../../providers/GameProvider";
@@ -27,14 +27,15 @@ import { useCardHighlight } from "../../providers/HighlightProvider/CardHighligh
 import { useSettings } from "../../providers/SettingsProvider";
 import { useAnimationStore } from "../../state/useAnimationStore";
 import { useCurrentHandStore } from "../../state/useCurrentHandStore";
+import { useGameStore } from "../../state/useGameStore";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { Card } from "../../types/Card";
 import { isTutorial } from "../../utils/isTutorial";
 import {
   CARD_DEAL_TRANSITION,
   CARD_LAYOUT_TRANSITION,
+  getCardDealStaggerSeconds,
   getCardDealFromDeckInitial,
-  getCardLayoutId,
 } from "./cardLayoutMotion";
 
 interface SharedPlayableCardsLayerProps {
@@ -70,6 +71,12 @@ type StageLayoutRects = {
   stage: RectSnapshot;
   hand: RectSnapshot;
   preselected: RectSnapshot;
+};
+
+type CardRenderSnapshot = {
+  renderId: number;
+  signature: string;
+  idx: number;
 };
 
 const PRESELECTED_AREA_HORIZONTAL_PADDING = 12;
@@ -139,12 +146,14 @@ export const SharedPlayableCardsLayer = ({
   const { stepIndex, changeModifierCard } = useGameContext();
   const { t } = useTranslation(["game"]);
   const { discardAnimation, playAnimation } = useAnimationStore();
-  const { sfxVolume } = useSettings();
+  const { sfxVolume, animationSpeed } = useSettings();
   const { play: preselectCardSound } = useAudio(preselectedCardSfx, sfxVolume);
+  const { play: dealCardSound } = useAudio(dealSfx, sfxVolume);
   const { highlightItem: highlightCard } = useCardHighlight();
 
   const { activeNode } = useDndContext();
   const { cardScale, isSmallScreen } = useResponsiveValues();
+  const remainingPlays = useGameStore((store) => store.remainingPlays);
 
   const {
     hand,
@@ -205,9 +214,14 @@ export const SharedPlayableCardsLayer = ({
     [handCards]
   );
 
-  const handOrderByCardIdx = useMemo(
-    () => new Map(handCards.map((card, order) => [card.idx, order])),
-    [handCards]
+  const handLayoutCards = useMemo(
+    () => hand.filter((card) => !assignedModifierCardsSet.has(card.idx)),
+    [assignedModifierCardsSet, hand]
+  );
+
+  const handLayoutOrderByCardIdx = useMemo(
+    () => new Map(handLayoutCards.map((card, order) => [card.idx, order])),
+    [handLayoutCards]
   );
 
   const preselectedOrderByCardIdx = useMemo(
@@ -229,19 +243,107 @@ export const SharedPlayableCardsLayer = ({
   const [layoutRects, setLayoutRects] = useState<StageLayoutRects | null>(null);
 
   const [dealAnimationTokens, setDealAnimationTokens] = useState<Record<number, number>>({});
+  const [dealAnimationDelayByCard, setDealAnimationDelayByCard] = useState<
+    Record<number, number>
+  >({});
   const [freshDealAnimationTokens, setFreshDealAnimationTokens] = useState<
     Record<number, number>
   >({});
   const previousHandRef = useRef<Card[]>([]);
+  const previousCardRenderSnapshotsRef = useRef<CardRenderSnapshot[]>([]);
+  const nextRenderIdRef = useRef(1);
   const consumedDragDropTokensRef = useRef<Record<number, number>>({});
+  const dealSoundTimeoutIdsRef = useRef<number[]>([]);
+  const dealStaggerSeconds = useMemo(
+    () => getCardDealStaggerSeconds(animationSpeed),
+    [animationSpeed]
+  );
+  const getCardSignature = useCallback(
+    (card: Pick<Card, "img" | "isModifier">) =>
+      `${card.img}-${card.isModifier ? "modifier" : "card"}`,
+    []
+  );
 
-  const getCardSignature = (card: Card) =>
-    `${card.img}-${card.isModifier ? "modifier" : "card"}`;
+  const handRenderData = useMemo(() => {
+    const previousSnapshots = previousCardRenderSnapshotsRef.current;
+    const usedPreviousSnapshotIndexes = new Set<number>();
+    const renderIdByCardIdx: Record<number, number> = {};
+    const newlyDealtCardIndexes: number[] = [];
+    const nextSnapshots: CardRenderSnapshot[] = [];
+
+    hand.forEach((card) => {
+      const signature = getCardSignature(card);
+      let matchedPreviousSnapshotIndex = previousSnapshots.findIndex(
+        (snapshot, index) =>
+          !usedPreviousSnapshotIndexes.has(index) &&
+          snapshot.signature === signature &&
+          snapshot.idx === card.idx
+      );
+
+      if (matchedPreviousSnapshotIndex === -1) {
+        matchedPreviousSnapshotIndex = previousSnapshots.findIndex(
+          (snapshot, index) =>
+            !usedPreviousSnapshotIndexes.has(index) &&
+            snapshot.signature === signature
+        );
+      }
+
+      let renderId: number;
+      if (matchedPreviousSnapshotIndex === -1) {
+        renderId = nextRenderIdRef.current++;
+        newlyDealtCardIndexes.push(card.idx);
+      } else {
+        usedPreviousSnapshotIndexes.add(matchedPreviousSnapshotIndex);
+        renderId = previousSnapshots[matchedPreviousSnapshotIndex].renderId;
+      }
+
+      renderIdByCardIdx[card.idx] = renderId;
+      nextSnapshots.push({
+        renderId,
+        signature,
+        idx: card.idx,
+      });
+    });
+
+    return {
+      renderIdByCardIdx,
+      newlyDealtCardIndexes,
+      nextSnapshots,
+    };
+  }, [getCardSignature, hand]);
+
+  useEffect(() => {
+    return () => {
+      dealSoundTimeoutIdsRef.current.forEach((timeoutId) => {
+        window.clearTimeout(timeoutId);
+      });
+      dealSoundTimeoutIdsRef.current = [];
+    };
+  }, []);
+
+  useEffect(() => {
+    if (playAnimation || discardAnimation) {
+      dealCardSound();
+    }
+  }, [dealCardSound, discardAnimation, playAnimation]);
+
+  useEffect(() => {
+    previousCardRenderSnapshotsRef.current = handRenderData.nextSnapshots;
+  }, [handRenderData.nextSnapshots]);
 
   useEffect(() => {
     const previousCards = previousHandRef.current;
     const currentHandIndexes = new Set(hand.map((card) => card.idx));
     const currentHandAreaIndexes = new Set(handCards.map((card) => card.idx));
+    setDealAnimationDelayByCard((currentDelays) => {
+      const nextDelays = { ...currentDelays };
+      Object.keys(nextDelays).forEach((idx) => {
+        if (!currentHandIndexes.has(Number(idx))) {
+          delete nextDelays[Number(idx)];
+        }
+      });
+      return nextDelays;
+    });
 
     setDealAnimationTokens((currentTokens) => {
       const cleanedTokens: Record<number, number> = {};
@@ -258,35 +360,9 @@ export const SharedPlayableCardsLayer = ({
         return cleanedTokens;
       }
 
-      const previousCounts = new Map<string, number>();
-      previousCards.forEach((card) => {
-        const signature = getCardSignature(card);
-        previousCounts.set(signature, (previousCounts.get(signature) ?? 0) + 1);
-      });
-
-      const currentCounts = new Map<string, number>();
-      hand.forEach((card) => {
-        const signature = getCardSignature(card);
-        currentCounts.set(signature, (currentCounts.get(signature) ?? 0) + 1);
-      });
-
-      const newCardBudget = new Map<string, number>();
-      currentCounts.forEach((count, signature) => {
-        const addedCopies = count - (previousCounts.get(signature) ?? 0);
-        if (addedCopies > 0) {
-          newCardBudget.set(signature, addedCopies);
-        }
-      });
-
-      const newlyDealtCardIndexes: number[] = [];
-      handCards.forEach((card) => {
-        const signature = getCardSignature(card);
-        const remainingNewCopies = newCardBudget.get(signature) ?? 0;
-        if (remainingNewCopies > 0) {
-          newCardBudget.set(signature, remainingNewCopies - 1);
-          newlyDealtCardIndexes.push(card.idx);
-        }
-      });
+      const newlyDealtCardIndexes = handRenderData.newlyDealtCardIndexes.filter(
+        (cardIdx) => currentHandAreaIndexes.has(cardIdx)
+      );
 
       if (newlyDealtCardIndexes.length === 0) {
         return cleanedTokens;
@@ -294,11 +370,22 @@ export const SharedPlayableCardsLayer = ({
 
       const nextTokens = { ...cleanedTokens };
       const freshTokens: Record<number, number> = {};
+      const nextDelaysByCard: Record<number, number> = {};
 
-      newlyDealtCardIndexes.forEach((cardIdx) => {
+      newlyDealtCardIndexes.forEach((cardIdx, dealOrder) => {
         const nextToken = (nextTokens[cardIdx] ?? 0) + 1;
         nextTokens[cardIdx] = nextToken;
         freshTokens[cardIdx] = nextToken;
+        const dealDelay = dealOrder * dealStaggerSeconds;
+        nextDelaysByCard[cardIdx] = dealDelay;
+
+        const timeoutId = window.setTimeout(() => {
+          dealCardSound();
+          dealSoundTimeoutIdsRef.current = dealSoundTimeoutIdsRef.current.filter(
+            (id) => id !== timeoutId
+          );
+        }, Math.max(0, Math.round(dealDelay * 1000)));
+        dealSoundTimeoutIdsRef.current.push(timeoutId);
       });
 
       setFreshDealAnimationTokens((currentFreshTokens) => {
@@ -310,6 +397,11 @@ export const SharedPlayableCardsLayer = ({
         });
         return nextFreshTokens;
       });
+
+      setDealAnimationDelayByCard((currentDelays) => ({
+        ...currentDelays,
+        ...nextDelaysByCard,
+      }));
 
       window.setTimeout(() => {
         setFreshDealAnimationTokens((currentFreshTokens) => {
@@ -325,7 +417,12 @@ export const SharedPlayableCardsLayer = ({
     });
 
     previousHandRef.current = hand;
-  }, [hand, handCards]);
+  }, [
+    dealCardSound,
+    dealStaggerSeconds,
+    hand,
+    handRenderData.newlyDealtCardIndexes,
+  ]);
 
   const refreshAnchorRects = useCallback(() => {
     const nextStageRectRaw = stageRef.current?.getBoundingClientRect();
@@ -548,7 +645,7 @@ export const SharedPlayableCardsLayer = ({
         .map((card) => {
         const isModifierCard = card.isModifier;
         const isPreselected = !isModifierCard && preselectedCardsSet.has(card.idx);
-        const handOrder = handOrderByCardIdx.get(card.idx);
+        const handOrder = handLayoutOrderByCardIdx.get(card.idx);
         const preselectedOrder = preselectedOrderByCardIdx.get(card.idx);
         const currentStepConfig = TUTORIAL_STEPS[stepIndex ?? 0];
         const targetSelector = currentStepConfig?.target;
@@ -577,7 +674,7 @@ export const SharedPlayableCardsLayer = ({
             )
           : getHandCardPosition(
               handOrder ?? 0,
-              handCards.length
+              handLayoutCards.length
             );
 
         if (!targetPosition) return null;
@@ -593,13 +690,15 @@ export const SharedPlayableCardsLayer = ({
         const showDragDropAnimation =
           dragDropAnimationToken > consumedDragDropToken &&
           Boolean(dragDropOrigins?.[card.idx]);
+        const dealDelay =
+          showDealAnimation ? dealAnimationDelayByCard[card.idx] ?? 0 : 0;
 
         if (showDragDropAnimation) {
           consumedDragDropTokensRef.current[card.idx] = dragDropAnimationToken;
         }
 
-        const cardLayoutId = getCardLayoutId(card);
-        const cardTransitionKey = `${cardLayoutId}-${dealAnimationToken}-${dragDropAnimationToken}`;
+        const cardRenderId = handRenderData.renderIdByCardIdx[card.idx] ?? card.idx;
+        const cardTransitionKey = `game-card-${cardRenderId}-${dealAnimationToken}-${dragDropAnimationToken}`;
         const renderedCard: Card = {
           ...card,
           modifiers: getModifiers(card.idx),
@@ -741,14 +840,21 @@ export const SharedPlayableCardsLayer = ({
             animate={{
               x: targetPosition.left,
               y: targetPosition.top + tutorialOffsetY,
-              opacity: 1,
+              opacity: remainingPlays === 0 && !isPreselected ? 0.4 : 1,
               scale: 1,
               rotate: 0,
             }}
             transition={{
               ...CARD_DEAL_TRANSITION,
-              x: CARD_LAYOUT_TRANSITION,
-              y: CARD_LAYOUT_TRANSITION,
+              delay: dealDelay,
+              x: {
+                ...CARD_LAYOUT_TRANSITION,
+                delay: dealDelay,
+              },
+              y: {
+                ...CARD_LAYOUT_TRANSITION,
+                delay: dealDelay,
+              },
             }}
             style={{
               position: "absolute",

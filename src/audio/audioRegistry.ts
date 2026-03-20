@@ -7,6 +7,7 @@ export const SFX_REGISTRY: SfxEntry[] = [
   // Card interactions
   { path: "/music/card-selection.mp3", channels: 3 },
   { path: "/music/card-drag.mp3", channels: 2 },
+  { path: "/music/deal.mp3", channels: 6 },
 
   // Game actions
   { path: "/music/play.mp3", channels: 1 },
@@ -54,6 +55,15 @@ export const SFX_REGISTRY: SfxEntry[] = [
 
 export const normalizePath = (path: string): string => {
   return path.replace(/^\/+/, "");
+};
+
+const SFX_VOLUME_MULTIPLIERS: Record<string, number> = {
+  "music/deal.mp3": 0.3,
+};
+
+export const getSfxVolumeMultiplier = (path: string): number => {
+  const normalized = normalizePath(path);
+  return SFX_VOLUME_MULTIPLIERS[normalized] ?? 1;
 };
 
 export const toNativeAssetPath = (path: string): string => {

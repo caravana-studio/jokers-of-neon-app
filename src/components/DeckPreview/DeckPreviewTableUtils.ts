@@ -52,7 +52,6 @@ const cardSuitsMap: Map<Suits, string | FC<SVGProps<ReactSVGElement>>> =
     [Suits.JOKER, Icons.JOKER],
   ]);
 
-const buildTableData = (unusedCards: Card[]): TableData => {
 const suitColorsMap: Map<Suits, string> = new Map([
   [Suits.CLUBS, CLUBS],
   [Suits.DIAMONDS, DIAMONDS],
@@ -60,6 +59,8 @@ const suitColorsMap: Map<Suits, string> = new Map([
   [Suits.SPADES, SPADES],
   [Suits.JOKER, GREY_MEDIUM],
 ]);
+
+const buildTableData = (unusedCards: Card[]): TableData => {
   const columnHeaders = Array.from(cardValuesMap.keys()).map((cardValue) => ({
     cardValue,
     quantity: unusedCards.filter((card) => card.card === cardValue).length,

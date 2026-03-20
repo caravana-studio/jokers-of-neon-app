@@ -196,6 +196,11 @@ export const animatePlayDiscard = (config: AnimatePlayConfig): number => {
   };
 
   const playDuration = 500;
+  const isRoundTransition = Boolean(
+    playEvents.levelPassed && playEvents.detailEarned
+  );
+  const isGameOver = Boolean(playEvents.gameOver);
+  const shouldKeepCardsOutOfHand = isRoundTransition || isGameOver;
 
   const ALL_CARDS_DURATION = Object.values(durations).reduce(
     (a, b) => a + b,
@@ -493,8 +498,10 @@ export const animatePlayDiscard = (config: AnimatePlayConfig): number => {
     refetchPowerUps();
 
     setAnimation(false);
-    clearPreSelection();
-    remainingPlays > 0 && setPreSelectionLocked(false);
+    if (!shouldKeepCardsOutOfHand) {
+      clearPreSelection();
+      remainingPlays > 0 && setPreSelectionLocked(false);
+    }
     setPlayIsNeon(false);
 
     setCurrentScore(playEvents.score);
