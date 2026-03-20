@@ -18,6 +18,7 @@ import { LevelPokerHand } from "../types/LevelPokerHand";
 import { ModCardsConfig } from "../types/ModConfig";
 import { PowerUp } from "../types/Powerup/PowerUp";
 import { RoundRewards } from "../types/RoundRewards";
+import { ShopTierUnlockedEvent } from "../types/ScoreData";
 import { Plays } from "../enums/plays";
 import { getRageNodeData } from "../utils/getRageNodeData";
 import { m5, p25 } from "../utils/mocks/powerUpMocks";
@@ -60,6 +61,7 @@ type GameStore = {
   nodeRound: number;
   shopId: number;
   inBossRound: boolean;
+  shopTierUnlockedEvent: ShopTierUnlockedEvent | undefined;
 
   refetchGameStore: (client: any, gameId: number) => Promise<void>;
   setGameId: (gameId: number) => void;
@@ -110,6 +112,10 @@ type GameStore = {
   fetchGameStoreForTutorial: () => void;
   setInBossRound: (inBossRound: boolean) => void;
   setIsTournament: (isTournament: boolean) => void;
+  setShopTierUnlockedEvent: (
+    event: ShopTierUnlockedEvent | undefined
+  ) => void;
+  clearShopTierUnlockedEvent: () => void;
 };
 
 const doRefetchGameStore = async (client: any, gameId: number, set: any) => {
@@ -221,6 +227,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   nodeRound: 0,
   shopId: 0,
   inBossRound: false,
+  shopTierUnlockedEvent: undefined,
 
   refetchGameStore: async (client, gameId) => {
     await doRefetchGameStore(client, gameId, set);
@@ -234,13 +241,18 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   setGameId: (gameId) => {
-    set({ id: gameId });
+    set({ id: gameId, shopTierUnlockedEvent: undefined });
     localStorage.setItem(GAME_ID, gameId.toString());
   },
 
   removeGameId: () => {
     localStorage.removeItem(GAME_ID);
-    set({ id: 0, state: GameStateEnum.NotSet, isTournament: false });
+    set({
+      id: 0,
+      state: GameStateEnum.NotSet,
+      isTournament: false,
+      shopTierUnlockedEvent: undefined,
+    });
   },
 
   play: () => {
@@ -509,5 +521,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   setIsTournament: (isTournament) => {
     set({ isTournament });
+  },
+
+  setShopTierUnlockedEvent: (event) => {
+    console.log("[unlock-debug] useGameStore.setShopTierUnlockedEvent", event);
+    set({ shopTierUnlockedEvent: event });
+  },
+
+  clearShopTierUnlockedEvent: () => {
+    console.log("[unlock-debug] useGameStore.clearShopTierUnlockedEvent");
+    set({ shopTierUnlockedEvent: undefined });
   },
 }));

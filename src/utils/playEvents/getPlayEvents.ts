@@ -20,13 +20,13 @@ import { getLevelPassedEvent } from "./getLevelPassedEvent";
 import { getNeonPlayEvent } from "./getNeonPlayEvent";
 import { getPowerUpEvents } from "./getPowerUpEvents";
 import { getScoreEvent } from "./getScoreEvent";
+import { getShopTierUnlockedEvent } from "./getShopTierUnlockedEvent";
 
 const PLAY_GAME_OVER_EVENT_KEY = getEventKey(DojoEvents.PLAY_GAME_OVER);
 const SECOND_CHANCE_EVENT_KEY = getEventKey(DojoEvents.SECOND_CHANCE);
 
 export const getPlayEvents = (events: DojoEvent[]): PlayEvents => {
   const cardPlayEvents = getCardPlayEvents(events);
-  console.log("Card Play Events:", cardPlayEvents);
   const cardPlayChangeEvents = cardPlayEvents
     .filter(converterEventFilter)
     .sort(sortCardPlayEvents);
@@ -36,6 +36,7 @@ export const getPlayEvents = (events: DojoEvent[]): PlayEvents => {
     gameOver: !!events.find(
       (event) => event.keys[1] === PLAY_GAME_OVER_EVENT_KEY
     ),
+    shopTierUnlockedEvent: getShopTierUnlockedEvent(events),
     levelPassed: getLevelPassedEvent(events),
     levelUpPlayEvent: getLevelUpPlayEvent(events),
     detailEarned: getDetailEarnedEvent(events),
@@ -56,6 +57,15 @@ export const getPlayEvents = (events: DojoEvent[]): PlayEvents => {
     ].sort(sortCardPlayEvents),
     cardActivateEvent: getCardActivateEvent(events),
   };
+
+  if (playEvents.gameOver) {
+    console.log("[unlock-debug] game over detected in play response", {
+      hasShopTierUnlockedEvent: Boolean(playEvents.shopTierUnlockedEvent),
+      parsedShopTierUnlockedEvent: playEvents.shopTierUnlockedEvent,
+      allEventKeys: events.map((event) => event.keys),
+      eventDataLengths: events.map((event) => event.data.length),
+    });
+  }
 
   return playEvents;
 };

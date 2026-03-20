@@ -155,6 +155,9 @@ const bgConfig: Record<string, { bg: BackgroundType; decoration?: boolean }> = {
   loose: {
     bg: BackgroundType.Loose,
   },
+  "shop-tier-unlocked": {
+    bg: BackgroundType.Store,
+  },
   redirect: {
     bg: BackgroundType.Game,
   },

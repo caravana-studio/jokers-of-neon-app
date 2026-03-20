@@ -7,6 +7,7 @@ export interface PlayEvents {
   gameOver: boolean;
   levelPassed?: LevelPassedEvent;
   levelUpPlayEvent?: LevelUpPlayEvent;
+  shopTierUnlockedEvent?: ShopTierUnlockedEvent;
   detailEarned?: DetailEarned;
   neonPlayEvent?: NeonPlayEvent;
   cards: Card[];
@@ -127,4 +128,9 @@ export interface LevelCompleteEvent {
   level: number;
   completion_count: number;
   base_xp: number;
+}
+
+export interface ShopTierUnlockedEvent {
+  game_id: number;
+  unlock_id: string;
 }

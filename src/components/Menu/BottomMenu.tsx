@@ -13,6 +13,16 @@ export const BottomMenu = () => {
     onMoreClick: () => setIsMenuOpen(true),
   });
   const inTutorial = isTutorial();
+  const hideBottomMenu = Boolean(
+    matchPath(
+      { path: "/shop-tier-unlocked/:gameId", end: true },
+      window.location.pathname
+    )
+  );
+
+  if (hideBottomMenu) {
+    return null;
+  }
 
   return (
     <>

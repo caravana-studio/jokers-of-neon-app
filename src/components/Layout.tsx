@@ -1,5 +1,6 @@
 import { Flex } from "@chakra-ui/react";
 import { ReactNode } from "react";
+import { matchPath, useLocation } from "react-router-dom";
 import { ReactFlowProvider } from "reactflow";
 import { MapProvider } from "../providers/MapProvider";
 import { StoreProvider } from "../providers/StoreProvider";
@@ -8,11 +9,19 @@ import {
   isNative,
   nativePaddingTop
 } from "../utils/capacitorUtils";
+import { UnlockProgressDebugWidget } from "./debug/UnlockProgressDebugWidget";
 import { SidebarMenu } from "./Menu/BarMenu/SidebarMenu";
 import { BottomMenu } from "./Menu/BottomMenu";
 
 export const Layout = ({ children }: { children: ReactNode }) => {
   const { isSmallScreen } = useResponsiveValues();
+  const location = useLocation();
+  const hideBottomSpacing = Boolean(
+    matchPath(
+      { path: "/shop-tier-unlocked/:gameId", end: true },
+      location.pathname
+    )
+  );
 
   return (
     <ReactFlowProvider>
@@ -21,8 +30,17 @@ export const Layout = ({ children }: { children: ReactNode }) => {
           <Flex
             width={"100%"}
             height={"100%"}
+            position="relative"
             pt={nativePaddingTop}
-            pb={isNative ? "80px" : isSmallScreen ? "50px" : "0px"}
+            pb={
+              hideBottomSpacing
+                ? "0px"
+                : isNative
+                  ? "80px"
+                  : isSmallScreen
+                    ? "50px"
+                    : "0px"
+            }
             flexDirection={isSmallScreen ? "column" : "row"}
             flexGrow={1}
             minH={0}
@@ -39,6 +57,7 @@ export const Layout = ({ children }: { children: ReactNode }) => {
             >
               {children}
             </Flex>
+            <UnlockProgressDebugWidget />
           </Flex>
           {isSmallScreen && <BottomMenu />}
         </StoreProvider>

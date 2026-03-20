@@ -34,6 +34,7 @@ import { RewardsPage } from "./pages/RewardsPage";
 import { SeasonProgressionPage } from "./pages/SeasonProgression/SeasonProgressionPage";
 import { SettingsPage } from "./pages/SettingsPage";
 import { ShopPage } from "./pages/Shop/ShopPage";
+import { ShopTierUnlockedPage } from "./pages/ShopTierUnlocked/ShopTierUnlockedPage";
 import { SummaryPage } from "./pages/SummaryPage";
 import { TestPage } from "./pages/TestPage";
 import { VibrationPage } from "./pages/VibrationPage";
@@ -200,6 +201,14 @@ export const AppRoutes = () => {
             <GameStoreLoader>
               <SummaryPage win={false} />
             </GameStoreLoader>
+          </AnimatedPage>
+        }
+      />
+      <Route
+        path="/shop-tier-unlocked/:gameId"
+        element={
+          <AnimatedPage>
+            <ShopTierUnlockedPage />
           </AnimatedPage>
         }
       />

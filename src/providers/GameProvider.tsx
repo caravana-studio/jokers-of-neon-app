@@ -138,6 +138,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     refetchSpecialCards,
     refetchPlays,
     setIsTournament,
+    setShopTierUnlockedEvent,
+    clearShopTierUnlockedEvent,
   } = useGameStore();
 
   const {
@@ -219,6 +221,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     showSpecials();
     resetPowerUps();
     resetSpecials();
+    clearShopTierUnlockedEvent();
     refetchSpecialCardsData(modId, gameId, specialCards);
     setState(GameStateEnum.NotSet);
   };
@@ -318,6 +321,23 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   };
 
   const handlePlaySideEffects = (response: PlayEvents) => {
+    console.log("[unlock-debug] handlePlaySideEffects", {
+      gameId,
+      gameState: response.gameOver ? "GameOver" : "InProgress",
+      shopTierUnlockedEventFromResponse: response.shopTierUnlockedEvent,
+    });
+
+    if (response.shopTierUnlockedEvent) {
+      console.log("[unlock-debug] storing shop tier unlocked event", {
+        game_id: gameId,
+        unlock_id: response.shopTierUnlockedEvent.unlock_id,
+      });
+      setShopTierUnlockedEvent({
+        game_id: gameId,
+        unlock_id: response.shopTierUnlockedEvent.unlock_id,
+      });
+    }
+
     fetchDeck(client, gameId, getCardData);
     refetchDebuffedPlayerHands(client, gameId);
     refetchSpecialCardsData(modId, gameId, specialCards);
@@ -662,6 +682,9 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     }
 
     if (gameState === GameStateEnum.GameOver) {
+      console.log("[unlock-debug] game state changed to GameOver", {
+        pathname: location.pathname,
+      });
       if (location.pathname === "/demo") {
         let cancelled = false;
         let timeoutId: number | undefined;
