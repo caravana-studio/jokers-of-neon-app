@@ -1076,6 +1076,26 @@ export function setupWorld(provider: DojoProvider) {
     }
   };
 
+  const build_mods_info_system_getGameConfigForPlayer_calldata = (): DojoCall => {
+    return {
+      contractName: "mods_info_system",
+      entrypoint: "get_game_config_for_player",
+      calldata: [],
+    };
+  };
+
+  const mods_info_system_getGameConfigForPlayer = async () => {
+    try {
+      return await provider.call(
+        DOJO_NAMESPACE,
+        build_mods_info_system_getGameConfigForPlayer_calldata()
+      );
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+
   const build_mods_info_system_getGameMods_calldata = (): DojoCall => {
     return {
       contractName: "mods_info_system",
@@ -2395,6 +2415,9 @@ export function setupWorld(provider: DojoProvider) {
         build_mods_info_system_getCumulativeInfo_calldata,
       getGameConfig: mods_info_system_getGameConfig,
       buildGetGameConfigCalldata: build_mods_info_system_getGameConfig_calldata,
+      getGameConfigForPlayer: mods_info_system_getGameConfigForPlayer,
+      buildGetGameConfigForPlayerCalldata:
+        build_mods_info_system_getGameConfigForPlayer_calldata,
       getGameMods: mods_info_system_getGameMods,
       buildGetGameModsCalldata: build_mods_info_system_getGameMods_calldata,
       getRageCardsIds: mods_info_system_getRageCardsIds,

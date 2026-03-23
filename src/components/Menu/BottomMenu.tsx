@@ -1,6 +1,6 @@
 import { Flex } from "@chakra-ui/react";
 import { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { matchPath, useLocation } from "react-router-dom";
 import { isNative } from "../../utils/capacitorUtils";
 import { isTutorial } from "../../utils/isTutorial";
 import { ContextMenuItem } from "./ContextMenuItem";
@@ -17,7 +17,7 @@ export const BottomMenu = () => {
   const hideBottomMenu = Boolean(
     matchPath(
       { path: "/shop-tier-unlocked/:gameId", end: true },
-      window.location.pathname
+      location.pathname
     )
   );
 

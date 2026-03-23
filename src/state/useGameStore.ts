@@ -131,10 +131,7 @@ const doRefetchGameStore = async (
   const {
     maxPowerUpSlots: configMaxPowerUpSlots,
     maxSpecialCards: configMaxSpecialCards,
-  } = await getGameConfig(
-    client,
-    game.mod_id
-  );
+  } = await getGameConfig(client);
   const currentStoreState = get();
   const maxPowerUpSlots =
     configMaxPowerUpSlots ?? currentStoreState.maxPowerUpSlots;
