@@ -6,7 +6,7 @@ import {
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Joyride, { CallBackProps } from "react-joyride";
 import { useNavigate } from "react-router-dom";
@@ -24,6 +24,7 @@ import {
 } from "../../constants/general.ts";
 import { GameStateEnum } from "../../dojo/typescript/custom.ts";
 import { useGameContext } from "../../providers/GameProvider.tsx";
+import { useCardAnimations } from "../../providers/CardAnimationsProvider.tsx";
 import { useCurrentHandStore } from "../../state/useCurrentHandStore.ts";
 import { useGameStore } from "../../state/useGameStore.ts";
 import { isTutorial } from "../../utils/isTutorial.ts";
@@ -58,6 +59,7 @@ export const GameContent = () => {
     hand,
     addModifier,
   } = useCurrentHandStore();
+  const { animatedCard } = useCardAnimations();
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -325,7 +327,7 @@ export const GameContent = () => {
               height={"70%"}
               width={"100%"}
               position="relative"
-              zIndex={1}
+              zIndex={350}
             >
               <DndContext
                 sensors={sensors}
