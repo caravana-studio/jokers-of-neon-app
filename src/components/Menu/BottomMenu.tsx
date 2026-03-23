@@ -1,14 +1,15 @@
 import { Flex } from "@chakra-ui/react";
 import { useState } from "react";
-import { matchPath } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { isNative } from "../../utils/capacitorUtils";
 import { isTutorial } from "../../utils/isTutorial";
 import { ContextMenuItem } from "./ContextMenuItem";
 import { GameMenuContent } from "./GameMenu/GameMenuContent";
-import { gameUrls, useContextMenuItems } from "./useContextMenuItems";
+import { isInGamePath, useContextMenuItems } from "./useContextMenuItems";
 
 export const BottomMenu = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const location = useLocation();
   const { mainMenuItems, inGameMenuItems } = useContextMenuItems({
     onMoreClick: () => setIsMenuOpen(true),
   });
@@ -41,19 +42,18 @@ export const BottomMenu = () => {
         position="absolute"
         bottom={isNative ? "30px" : "0px"}
       >
-        {(gameUrls.some((url) =>
-          matchPath({ path: url, end: true }, window.location.pathname)
-        )
-          ? inGameMenuItems
-          : mainMenuItems
-        ).map((item) => (
-          <ContextMenuItem
-            {...item}
-            nameKey={item.key}
-            disabled={inTutorial}
-            pulse={item.pulse}
-          />
-        ))}
+        {(isInGamePath(location.pathname) ? inGameMenuItems : mainMenuItems).map((item) => {
+          const { key, ...menuItem } = item;
+          return (
+            <ContextMenuItem
+              key={key}
+              {...menuItem}
+              nameKey={key}
+              disabled={inTutorial}
+              pulse={item.pulse}
+            />
+          );
+        })}
       </Flex>
 
       <Flex

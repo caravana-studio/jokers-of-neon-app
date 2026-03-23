@@ -1,13 +1,13 @@
 import { Box } from "@chakra-ui/react";
 import { PropsWithChildren, useEffect, useState } from "react";
-import { matchPath, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useGameStore } from "../state/useGameStore";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import { getImageFromCache } from "../utils/cacheUtils";
 import { isNativeAndroid } from "../utils/capacitorUtils";
 import BackgroundVideo from "./BackgroundVideo";
 import CachedImage, { checkImageExists } from "./CachedImage";
-import { gameUrls } from "./Menu/useContextMenuItems";
+import { isInGamePath } from "./Menu/useContextMenuItems";
 
 const getBackgroundColor = (type: string) => {
   switch (type) {
@@ -182,9 +182,7 @@ export const Background = ({ children }: PropsWithChildren) => {
         : BackgroundType.Rage
       : bgConfig[page]?.bg;
 
-  const isInGamePage = gameUrls.some((gameUrl) =>
-    Boolean(matchPath({ path: gameUrl, end: true }, location.pathname))
-  );
+  const isInGamePage = isInGamePath(location.pathname);
   const useTournamentTheme = Boolean(
     type && isTournament && isInGamePage && tournamentBackgroundTypes.has(type)
   );

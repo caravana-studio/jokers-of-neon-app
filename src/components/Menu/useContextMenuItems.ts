@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { matchPath, useLocation, useNavigate } from "react-router-dom";
 import { Icons } from "../../constants/icons";
 import { useDojo } from "../../dojo/DojoContext";
 import { GameStateEnum } from "../../dojo/typescript/custom";
@@ -27,6 +27,7 @@ export const mainMenuUrls = [
 export const gameUrls = [
   "/map",
   "/demo",
+  "/tutorial",
   "/practice",
   "/store",
   "/rewards",
@@ -42,6 +43,9 @@ export const gameUrls = [
   "/plays",
   "/settings-game",
 ];
+
+export const isInGamePath = (pathname: string) =>
+  gameUrls.some((path) => Boolean(matchPath({ path, end: true }, pathname)));
 
 export const getIcon = (state: GameStateEnum) => {
   switch (state) {
