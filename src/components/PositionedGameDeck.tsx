@@ -28,6 +28,7 @@ export const PositionedGameDeck = ({
       <Box
         sx={{
           position: "fixed",
+          zIndex: 1000,
           bottom: inStore ? "16px" : { base: "16px", md: "67px" },
           top: "auto",
           right: inStore ? "20px" : { base: "16px", md: "40px" },

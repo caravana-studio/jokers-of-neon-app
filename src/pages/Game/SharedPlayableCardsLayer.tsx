@@ -22,6 +22,7 @@ import { TUTORIAL_STEPS } from "../../constants/gameTutorial";
 import { dealSfx, preselectedCardSfx } from "../../constants/sfx";
 import { CARD_HEIGHT, CARD_WIDTH } from "../../constants/visualProps";
 import { useAudio } from "../../hooks/useAudio";
+import { useCardAnimations } from "../../providers/CardAnimationsProvider";
 import { useGameContext } from "../../providers/GameProvider";
 import { useCardHighlight } from "../../providers/HighlightProvider/CardHighlightProvider";
 import { useSettings } from "../../providers/SettingsProvider";
@@ -150,6 +151,7 @@ export const SharedPlayableCardsLayer = ({
   const { play: preselectCardSound } = useAudio(preselectedCardSfx, sfxVolume);
   const { play: dealCardSound } = useAudio(dealSfx, sfxVolume);
   const { highlightItem: highlightCard } = useCardHighlight();
+  const { animatedCard } = useCardAnimations();
 
   const { activeNode } = useDndContext();
   const { cardScale, isSmallScreen } = useResponsiveValues();
@@ -636,7 +638,7 @@ export const SharedPlayableCardsLayer = ({
         position: "absolute",
         inset: 0,
         pointerEvents: "none",
-        zIndex: 15,
+        zIndex: 320,
         overflow: "visible",
       }}
     >
