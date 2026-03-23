@@ -193,18 +193,6 @@ export const SharedPlayableCardsLayer = ({
     [preSelectedCards]
   );
 
-  const hasPreselectedPointsOrMultiAnimation = useMemo(() => {
-    const animatedIndexes = animatedCard?.idx;
-    if (!animatedIndexes?.length) return false;
-
-    const hasPointsAnimation = typeof animatedCard?.points === "number";
-    const hasMultiAnimation = typeof animatedCard?.multi === "number";
-
-    if (!hasPointsAnimation && !hasMultiAnimation) return false;
-
-    return animatedIndexes.some((idx) => preselectedCardsSet.has(idx));
-  }, [animatedCard?.idx, animatedCard?.multi, animatedCard?.points, preselectedCardsSet]);
-
   const handCards = useMemo(
     () =>
       hand.filter((card) => {
@@ -650,7 +638,7 @@ export const SharedPlayableCardsLayer = ({
         position: "absolute",
         inset: 0,
         pointerEvents: "none",
-        zIndex: hasPreselectedPointsOrMultiAnimation ? 320 : 15,
+        zIndex: 320,
         overflow: "visible",
       }}
     >

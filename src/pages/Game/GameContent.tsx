@@ -85,19 +85,6 @@ export const GameContent = () => {
     Record<number, CardDropOrigin>
   >({});
 
-  const hasPreselectedPointsOrMultiAnimation = useMemo(() => {
-    const animatedIndexes = animatedCard?.idx;
-    if (!animatedIndexes?.length) return false;
-
-    const hasPointsAnimation = typeof animatedCard?.points === "number";
-    const hasMultiAnimation = typeof animatedCard?.multi === "number";
-
-    if (!hasPointsAnimation && !hasMultiAnimation) return false;
-
-    const preselectedSet = new Set(preSelectedCards);
-    return animatedIndexes.some((idx) => preselectedSet.has(idx));
-  }, [animatedCard?.idx, animatedCard?.multi, animatedCard?.points, preSelectedCards]);
-
   useEffect(() => {
     setRun(inTutorial);
   }, []);
@@ -340,7 +327,7 @@ export const GameContent = () => {
               height={"70%"}
               width={"100%"}
               position="relative"
-              zIndex={hasPreselectedPointsOrMultiAnimation ? 350 : 1}
+              zIndex={350}
             >
               <DndContext
                 sensors={sensors}
