@@ -48,13 +48,13 @@ const evaluateHand = (
     const cardId = Number(card.card_id);
     const cardSuitData = CARDS_SUIT_DATA[cardId];
 
-    const suit = cardSuitData.suit;
-    const rank = CARDS_SUIT_DATA[cardId]?.card;
+    const suit = card.suit ?? cardSuitData?.suit ?? Suits.JOKER;
+    const rank = card.value ?? card.card ?? cardSuitData?.card ?? Cards.JOKER;
 
     let modifiedCardData = {
       ...card,
-      card: card.value ?? rank,
-      suit: card.suit ?? suit,
+      card: rank,
+      suit,
       type: "",
     };
 
@@ -432,40 +432,56 @@ export const checkHand = (
   specialCards: Card[],
   preSelectedModifiers: { [key: number]: number[] }
 ): HandResult => {
-  const play = evaluateHand(hand, preSelectedCards, specialCards, preSelectedModifiers);
-  const cardsComposingPlay = getCardsComposingPlay(
-    hand,
-    preSelectedCards,
-    specialCards,
-    preSelectedModifiers,
-    play
-  );
+  try {
+    const play = evaluateHand(
+      hand,
+      preSelectedCards,
+      specialCards,
+      preSelectedModifiers
+    );
+    const cardsComposingPlay = getCardsComposingPlay(
+      hand,
+      preSelectedCards,
+      specialCards,
+      preSelectedModifiers,
+      play
+    );
 
-  // Check if all cards composing the detected play are neon
-  const selectedCards = cardsComposingPlay.map(cardIdx =>
-    hand.find(c => c.idx === cardIdx)
-  ).filter((card): card is Card => card !== undefined);
+    // Check if all cards composing the detected play are neon
+    const selectedCards = cardsComposingPlay
+      .map((cardIdx) => hand.find((c) => c.idx === cardIdx))
+      .filter((card): card is Card => card !== undefined);
 
-  // A play is neon if all cards composing it (excluding jokers/wildcards) are neon cards
-  const isNeon = selectedCards.length > 0 && selectedCards.every(card => {
-    // Jokers and wildcards don't affect neon status
-    if (card.suit === Suits.JOKER || card.suit === Suits.WILDCARD) {
-      return true;
-    }
+    // A play is neon if all cards composing it (excluding jokers/wildcards) are neon cards
+    const isNeon =
+      selectedCards.length > 0 &&
+      selectedCards.every((card) => {
+        // Jokers and wildcards don't affect neon status
+        if (card.suit === Suits.JOKER || card.suit === Suits.WILDCARD) {
+          return true;
+        }
 
-    // Check if card has neon modifier applied
-    const modifiers = preSelectedModifiers[card.idx] ?? [];
-    const hasNeonModifier = modifiers.some(modifierIdx => {
-      const modifierCard = hand.find(c => c.idx === modifierIdx);
-      return modifierCard?.card_id === ModifiersId.NEON_MODIFIER;
-    });
+        // Check if card has neon modifier applied
+        const modifiers = preSelectedModifiers[card.idx] ?? [];
+        const hasNeonModifier = modifiers.some((modifierIdx) => {
+          const modifierCard = hand.find((c) => c.idx === modifierIdx);
+          return modifierCard?.card_id === ModifiersId.NEON_MODIFIER;
+        });
 
-    return card.isNeon === true || hasNeonModifier;
-  });
+        return card.isNeon === true || hasNeonModifier;
+      });
 
-  return {
-    play,
-    isNeon,
-    cardsComposingPlay,
-  };
+    return {
+      play,
+      isNeon,
+      cardsComposingPlay,
+    };
+  } catch (error) {
+    console.error("checkHand failed", error);
+    return {
+      play: Plays.NONE,
+      isNeon: false,
+      cardsComposingPlay: [],
+    };
+  }
 };

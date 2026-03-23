@@ -167,7 +167,7 @@ export const ShopTierUnlockedPage = () => {
               <Text
                 fontFamily="Orbitron"
                 letterSpacing="0.5em"
-                fontSize={{ base: "12px", sm: "26px", lg: "30px" }}
+                fontSize={{ base: "12px", sm: "26px"}}
                 color="white"
                 textTransform="uppercase"
                 mb={{ base: 1, sm: 2 }}
@@ -183,7 +183,7 @@ export const ShopTierUnlockedPage = () => {
             >
               <Heading
                 fontFamily="Sonara"
-                fontSize={{ base: "26px", sm: "52px", lg: "62px" }}
+                fontSize={{ base: "26px", sm: "40px"}}
                 lineHeight={0.92}
                 color="white"
                 textTransform="uppercase"
@@ -299,7 +299,7 @@ export const ShopTierUnlockedPage = () => {
             >
               <Heading
                 fontFamily="Orbitron"
-                fontSize={{ base: "34px", sm: "48px", lg: "56px" }}
+                fontSize={{ base: "34px", sm: "48px" }}
                 lineHeight={1}
                 color="white"
                 textShadow="inherit"
@@ -360,7 +360,6 @@ export const ShopTierUnlockedPage = () => {
                   lineHeight={1.2}
                   color="whiteAlpha.900"
                   textShadow="0 0 12px rgba(255,255,255,0.2)"
-                  mb={8}
                 >
                   {t("next-run-hint")}
                 </Text>
@@ -372,7 +371,7 @@ export const ShopTierUnlockedPage = () => {
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={getTransition(6 + rarityStep)}
-            style={{ width: "100%" }}
+            style={{ width: "100%", marginTop: "30px" }}
           >
             <MobileBottomBar
               firstButton={

@@ -1050,20 +1050,25 @@ export function setupWorld(provider: DojoProvider) {
   };
 
   const build_mods_info_system_getGameConfig_calldata = (
-    modId: BigNumberish
+    modId: BigNumberish,
+    gameId?: BigNumberish
   ): DojoCall => {
     return {
       contractName: "mods_info_system",
       entrypoint: "get_game_config",
-      calldata: [modId],
+      calldata:
+        gameId === undefined || gameId === null ? [modId] : [modId, gameId],
     };
   };
 
-  const mods_info_system_getGameConfig = async (modId: BigNumberish) => {
+  const mods_info_system_getGameConfig = async (
+    modId: BigNumberish,
+    gameId?: BigNumberish
+  ) => {
     try {
       return await provider.call(
         DOJO_NAMESPACE,
-        build_mods_info_system_getGameConfig_calldata(modId)
+        build_mods_info_system_getGameConfig_calldata(modId, gameId)
       );
     } catch (error) {
       console.error(error);

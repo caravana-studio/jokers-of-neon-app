@@ -9,6 +9,9 @@ import { useDojo } from "../dojo/useDojo";
 
 interface DebugState {
   tier: number;
+  totalRuns?: number;
+  maxLevel?: number;
+  maxRound?: number;
   entries: UnlockEntryView[];
 }
 
@@ -28,7 +31,55 @@ export const UnlockProgressDebugWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [data, setData] = useState<DebugState>({ tier: 0, entries: [] });
+  const [data, setData] = useState<DebugState>({
+    tier: 0,
+    entries: [],
+  });
+
+  const formatLevelRound = (
+    level?: number,
+    round?: number,
+    fallback = "-"
+  ): string => {
+    if (level === undefined && round === undefined) return fallback;
+    const safeLevel = level ?? 0;
+    const safeRound = round ?? 0;
+    return `L${safeLevel}R${safeRound}`;
+  };
+
+  const meetsRunsRequirement = (
+    playerRuns?: number,
+    requiredRuns?: number
+  ): boolean => {
+    if (requiredRuns === undefined || requiredRuns <= 0) return true;
+    return (playerRuns ?? 0) >= requiredRuns;
+  };
+
+  const meetsRoundRequirement = (
+    playerLevel?: number,
+    playerRound?: number,
+    requiredLevel?: number,
+    requiredRound?: number
+  ): boolean => {
+    if (requiredLevel === undefined && requiredRound === undefined) return true;
+
+    const pLevel = playerLevel ?? 0;
+    const pRound = playerRound ?? 0;
+    const rLevel = requiredLevel ?? 0;
+    const rRound = requiredRound ?? 0;
+
+    if (pLevel > rLevel) return true;
+    if (pLevel < rLevel) return false;
+    return pRound >= rRound;
+  };
+
+  const getRequirementColor = (
+    met: boolean,
+    hasRequirement: boolean
+  ): string => {
+    if (!hasRequirement) return "whiteAlpha.500";
+    return met ? "green.300" : "whiteAlpha.700";
+  };
 
   const playerAddress = useMemo(
     () => getAddress(account?.account?.address),
@@ -54,6 +105,9 @@ export const UnlockProgressDebugWidget = () => {
 
         setData({
           tier: playerTier.tier,
+          totalRuns: playerTier.totalRuns,
+          maxLevel: playerTier.maxLevel,
+          maxRound: playerTier.maxRound,
           entries: unlockEntries,
         });
       } catch (err) {
@@ -96,11 +150,16 @@ export const UnlockProgressDebugWidget = () => {
           backdropFilter="blur(6px)"
         >
           <Flex justifyContent="space-between" alignItems="center" mb={2}>
-            <Text fontSize="xs" color="whiteAlpha.900">
+            <Text fontSize="xs" color="whiteAlpha.900" fontWeight="bold">
               player tier: {data.tier}
             </Text>
             {isLoading && <Spinner size="xs" />}
           </Flex>
+
+          <Text fontSize="xs" color="whiteAlpha.800" mb={2}>
+            runs: {data.totalRuns ?? 0} · max round:{" "}
+            {formatLevelRound(data.maxLevel, data.maxRound)}
+          </Text>
 
           {!playerAddress && (
             <Text fontSize="xs" color="orange.200">
@@ -117,26 +176,70 @@ export const UnlockProgressDebugWidget = () => {
           <Flex direction="column" gap={1}>
             {data.entries.map((entry) => {
               const isUnlocked = entry.order <= data.tier;
+              const hasRunsRequirement =
+                entry.runs !== undefined && entry.runs > 0;
+              const hasRoundRequirement =
+                entry.maxLevel !== undefined || entry.maxRound !== undefined;
+              const runsMet = meetsRunsRequirement(data.totalRuns, entry.runs);
+              const roundMet = meetsRoundRequirement(
+                data.maxLevel,
+                data.maxRound,
+                entry.maxLevel,
+                entry.maxRound
+              );
+              const requirementsMet = runsMet && roundMet;
               return (
                 <Flex
                   key={`${entry.order}-${entry.unlockId}`}
                   justifyContent="space-between"
-                  alignItems="center"
+                  alignItems="flex-start"
+                  direction="column"
                   px={2}
                   py={1}
                   borderRadius="6px"
                   bg={isUnlocked ? "green.900" : "whiteAlpha.100"}
                 >
-                  <Text fontSize="xs" color="whiteAlpha.900" pr={2}>
-                    #{entry.order} {entry.unlockId}
-                  </Text>
-                  <Text
-                    fontSize="xs"
-                    color={isUnlocked ? "green.200" : "whiteAlpha.700"}
-                    whiteSpace="nowrap"
+                  <Flex
+                    justifyContent="space-between"
+                    alignItems="center"
+                    width="100%"
                   >
-                    {isUnlocked ? "unlocked" : "locked"}
-                  </Text>
+                    <Text fontSize="xs" color="whiteAlpha.900" pr={2}>
+                      #{entry.order} {entry.unlockId}
+                    </Text>
+                    <Text
+                      fontSize="xs"
+                      color={isUnlocked ? "green.200" : "whiteAlpha.700"}
+                      whiteSpace="nowrap"
+                    >
+                      {isUnlocked ? "unlocked" : "locked"}
+                    </Text>
+                  </Flex>
+                  <Flex mt={0.5} alignItems="center" gap={1} flexWrap="wrap">
+                    <Text fontSize="11px" color="whiteAlpha.700">
+                      runs
+                    </Text>
+                    <Text
+                      fontSize="11px"
+                      color={getRequirementColor(runsMet, hasRunsRequirement)}
+                      fontWeight={runsMet && hasRunsRequirement ? "700" : "400"}
+                    >
+                      {entry.runs ?? "-"}
+                    </Text>
+                    <Text fontSize="11px" color="whiteAlpha.500">
+                      ·
+                    </Text>
+                    <Text fontSize="11px" color="whiteAlpha.700">
+                      round
+                    </Text>
+                    <Text
+                      fontSize="11px"
+                      color={getRequirementColor(roundMet, hasRoundRequirement)}
+                      fontWeight={roundMet && hasRoundRequirement ? "700" : "400"}
+                    >
+                      {formatLevelRound(entry.maxLevel, entry.maxRound)}
+                    </Text>
+                  </Flex>
                 </Flex>
               );
             })}
