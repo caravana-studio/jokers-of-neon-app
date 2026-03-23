@@ -1,18 +1,19 @@
 import { Box, Divider, Flex, Heading, Tooltip, useDisclosure } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { matchPath, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useCurrentPageInfo } from "../../../hooks/useCurrentPageInfo";
 import { useGameStore } from "../../../state/useGameStore";
 import { AnimatedText } from "../../AnimatedText";
 import CachedImage from "../../CachedImage";
 import { LogoutMenuListBtn } from "../Buttons/Logout/LogoutMenuListBtn";
 import { ContextMenuItem } from "../ContextMenuItem";
-import { gameUrls, useContextMenuItems } from "../useContextMenuItems";
+import { isInGamePath, useContextMenuItems } from "../useContextMenuItems";
 import { DailyMissionsPopover } from "./DailyMissionsPopover";
 
 export const SidebarMenu = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const page = useCurrentPageInfo();
   const { isTournament } = useGameStore();
   const { t } = useTranslation("intermediate-screens", {
@@ -37,9 +38,7 @@ export const SidebarMenu = () => {
       onMoreClick: undefined,
     });
 
-  const inGame = gameUrls.some((url) =>
-    matchPath({ path: url, end: true }, window.location.pathname)
-  );
+  const inGame = isInGamePath(location.pathname);
 
   useEffect(() => {
     setTimeout(() => {
@@ -69,9 +68,17 @@ export const SidebarMenu = () => {
         alignItems={"center"}
         w="100%"
       >
-        {(!inGame ? mainMenuItems : inGameMenuItems).map((item) => (
-          <ContextMenuItem {...item} nameKey={item.key} pulse={item.pulse} />
-        ))}
+        {(!inGame ? mainMenuItems : inGameMenuItems).map((item) => {
+          const { key, ...menuItem } = item;
+          return (
+            <ContextMenuItem
+              key={key}
+              {...menuItem}
+              nameKey={key}
+              pulse={item.pulse}
+            />
+          );
+        })}
 
         {inGame && (
           <>
