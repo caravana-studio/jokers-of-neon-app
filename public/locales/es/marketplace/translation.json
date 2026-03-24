@@ -110,7 +110,10 @@
     "statusLineCancelled": "Cancelado",
     "statusLineExpired": "Vencido",
     "cancel": "Cancelar",
-    "expired": "Vencido"
+    "expired": "Vencido",
+    "tabExpired": "Vencidos",
+    "relist": "Relistar",
+    "expiredInfo": "Estos listados han vencido. Puedes relistarlos o cancelar para recuperar tu carta."
   },
   "buy": {
     "buyNow": "COMPRAR",

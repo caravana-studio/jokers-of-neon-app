@@ -110,7 +110,10 @@
     "statusLineCancelled": "Cancelled",
     "statusLineExpired": "Expired",
     "cancel": "Cancel",
-    "expired": "Expired"
+    "expired": "Expired",
+    "tabExpired": "Expired",
+    "relist": "Re-list",
+    "expiredInfo": "These listings have expired. You can re-list them or cancel to reclaim your card."
   },
   "buy": {
     "buyNow": "BUY NOW",

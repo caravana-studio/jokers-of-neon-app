@@ -110,7 +110,10 @@
     "statusLineCancelled": "Cancelado",
     "statusLineExpired": "Expirado",
     "cancel": "Cancelar",
-    "expired": "Expirado"
+    "expired": "Expirado",
+    "tabExpired": "Expirados",
+    "relist": "Relistar",
+    "expiredInfo": "Estes anúncios expiraram. Você pode relistá-los ou cancelar para recuperar sua carta."
   },
   "buy": {
     "buyNow": "COMPRAR",
