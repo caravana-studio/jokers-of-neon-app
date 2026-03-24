@@ -1,4 +1,4 @@
-import { Box, Heading, useTheme } from "@chakra-ui/react";
+import { Box, Flex, Heading, Text, useTheme } from "@chakra-ui/react";
 import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { useGameStore } from "../state/useGameStore";
@@ -9,39 +9,63 @@ export const MultiPoints = () => {
   const { t } = useTranslation(["game"]);
 
   return (
-    <Box
-      gap={{ base: 1, md: 1.5 }}
-      sx={{ display: "flex", alignItems: "center" }}
+    <Flex
+      width="100%"
+      alignItems="center"
       className="game-tutorial-step-6"
+      gap={{ base: 2, md: 3 }}
     >
-      <PointBox type="points">
-        <Heading size={{ base: "xs", md: "s" }}>
+      <Flex flex={1} direction="column" alignItems="center" gap={1}>
+        <Text
+          textTransform="uppercase"
+          fontSize={{ base: "11px", md: "16px" }}
+          letterSpacing={{ base: "0.05em", md: "0.08em" }}
+          lineHeight={1}
+          zIndex={10}
+        >
           {t("game.multi-points.points")}
+        </Text>
+        <PointBox type="points" stretch>
+          <Heading size={{ base: "s", md: "m" }}>
+            <RollingNumber n={points} />
+          </Heading>
+        </PointBox>
+      </Flex>
+
+      {!isMobile && (
+        <Heading size="s" mt={4} px={{ base: 0, md: 1 }}>
+          x
         </Heading>
-        <Heading size={{ base: "s", md: "m" }}>
-          <RollingNumber n={points} />
-        </Heading>
-      </PointBox>
-      {!isMobile && <Heading size="s">x</Heading>}
-      <PointBox type="multi">
-        <Heading size={{ base: "xs", md: "s" }}>
+      )}
+
+      <Flex flex={1} direction="column" alignItems="center" gap={1}>
+        <Text
+          textTransform="uppercase"
+          fontSize={{ base: "11px", md: "16px" }}
+          letterSpacing={{ base: "0.05em", md: "0.08em" }}
+          lineHeight={1}
+          zIndex={10}
+        >
           {t("game.multi-points.multi")}
-        </Heading>
-        <Heading size={{ base: "s", md: "m" }}>
-          <RollingNumber n={multi} />
-        </Heading>
-      </PointBox>
-    </Box>
+        </Text>
+        <PointBox type="multi" stretch>
+          <Heading size={{ base: "s", md: "m" }}>
+            <RollingNumber n={multi} />
+          </Heading>
+        </PointBox>
+      </Flex>
+    </Flex>
   );
 };
 
 interface PointBoxProps {
-  children: JSX.Element[];
+  children: JSX.Element | JSX.Element[];
   type: "points" | "multi" | "level";
   height?: string;
+  stretch?: boolean;
 }
 
-export const PointBox = ({ children, type, height }: PointBoxProps) => {
+export const PointBox = ({ children, type, height, stretch = false }: PointBoxProps) => {
   const { colors } = useTheme();
   const colorMap = {
     points: colors.neonGreen,
@@ -50,12 +74,11 @@ export const PointBox = ({ children, type, height }: PointBoxProps) => {
   };
 
   const color = colorMap[type];
-  const calculatedHeight = height ?? { base: 43, sm: 53, md: 81 };
   return (
     <Box
-      height={calculatedHeight}
-      minWidth={{ base: 70, md: 120 }}
-      p={{ base: 1, md: 2 }}
+      width={stretch ? "100%" : "auto"}
+      minWidth={stretch ? 0 : { base: 70, md: 120 }}
+      p={{ base: 1, md: 1 }}
       sx={{
         border: `2px solid ${color}`,
         display: "flex",
@@ -67,7 +90,7 @@ export const PointBox = ({ children, type, height }: PointBoxProps) => {
         base: `0px 0px 10px 4px ${color} `,
         sm: `0px 0px 17px 7px ${color}`,
       }}
-      borderRadius={{ base: 15, md: 20 }}
+      borderRadius={{ base: 15, md: 15 }}
     >
       {children}
     </Box>

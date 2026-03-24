@@ -1,4 +1,5 @@
-import { Flex } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
+import { useTranslation } from "react-i18next";
 import { CashSymbol } from "../../components/CashSymbol";
 import { RollingNumber } from "../../components/RollingNumber";
 import { useGameStore } from "../../state/useGameStore";
@@ -24,9 +25,33 @@ interface CoinsProps {
 
 export const Coins = ({ rolling = false, plainDesktop = false }: CoinsProps) => {
   const { isSmallScreen } = useResponsiveValues();
+  const { t } = useTranslation(["game"]);
 
   const { cash } = useGameStore();
   const usePlainDesktopStyles = plainDesktop && !isSmallScreen;
+
+  if (usePlainDesktopStyles) {
+    return (
+      <Flex width="100%" alignItems="center" gap={2}>
+        <Text
+          fontSize="10px"
+          letterSpacing="0.08em"
+          whiteSpace="nowrap"
+          textTransform="uppercase"
+          opacity={0.9}
+        >
+          {t("game.hand-section.my-coins")}
+        </Text>
+        <Box h="1px" flex={1} bg="whiteAlpha.500" />
+        <Flex alignItems="center" gap={1} whiteSpace="nowrap">
+          <CashSymbol size={"14px"} />
+          <Text fontSize={{ base: "10px", md: "14px" }} lineHeight={1} fontWeight={500}>
+            {rolling ? <RollingNumber n={cash} /> : cash}
+          </Text>
+        </Flex>
+      </Flex>
+    );
+  }
 
   return (
     <Flex
