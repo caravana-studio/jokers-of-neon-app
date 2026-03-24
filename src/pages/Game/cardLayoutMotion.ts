@@ -4,14 +4,14 @@ import { Speed } from "../../enums/settings";
 export const CARD_LAYOUT_TRANSITION = {
   type: "spring",
   stiffness: 500,
-  damping: 21,
+  damping: 24,
   mass: 0.6,
 };
 
 export const CARD_DEAL_TRANSITION = {
   type: "spring",
   stiffness: 500,
-  damping: 21,
+  damping: 24,
   mass: 0.6,
 };
 
