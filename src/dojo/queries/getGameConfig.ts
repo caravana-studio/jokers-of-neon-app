@@ -4,10 +4,11 @@ const toPositiveInt = (value: unknown): number | undefined => {
   return parsed;
 };
 
-export const getGameConfig = async (client: any) => {
+export const getGameConfig = async (client: any, playerAddress: string) => {
   try {
-    const tx_result = await client.mods_info_system.getGameConfigForPlayer();
-    console.log('game config', tx_result);
+    const tx_result = await client.mods_info_system.getGameConfigForPlayer(
+      playerAddress
+    );
     return {
       maxPowerUpSlots: toPositiveInt(tx_result.max_power_up_slots),
       maxSpecialCards: toPositiveInt(tx_result.max_special_slots),

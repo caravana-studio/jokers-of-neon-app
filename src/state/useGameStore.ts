@@ -63,7 +63,11 @@ type GameStore = {
   inBossRound: boolean;
   shopTierUnlockedEvent: ShopTierUnlockedEvent | undefined;
 
-  refetchGameStore: (client: any, gameId: number) => Promise<void>;
+  refetchGameStore: (
+    client: any,
+    gameId: number,
+    playerAddress?: string
+  ) => Promise<void>;
   setGameId: (gameId: number) => void;
   removeGameId: () => void;
   play: () => void;
@@ -121,6 +125,7 @@ type GameStore = {
 const doRefetchGameStore = async (
   client: any,
   gameId: number,
+  playerAddress: string | undefined,
   set: any,
   get: any
 ) => {
@@ -131,7 +136,7 @@ const doRefetchGameStore = async (
   const {
     maxPowerUpSlots: configMaxPowerUpSlots,
     maxSpecialCards: configMaxSpecialCards,
-  } = await getGameConfig(client);
+  } = await getGameConfig(client, playerAddress ?? game.owner);
   const currentStoreState = get();
   const maxPowerUpSlots =
     configMaxPowerUpSlots ?? currentStoreState.maxPowerUpSlots;
@@ -239,8 +244,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
   inBossRound: false,
   shopTierUnlockedEvent: undefined,
 
-  refetchGameStore: async (client, gameId) => {
-    await doRefetchGameStore(client, gameId, set, get);
+  refetchGameStore: async (client, gameId, playerAddress) => {
+    await doRefetchGameStore(client, gameId, playerAddress, set, get);
   },
 
   refetchSpecialCards: async (client, gameId) => {

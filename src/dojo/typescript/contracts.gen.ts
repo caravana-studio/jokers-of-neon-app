@@ -1076,19 +1076,21 @@ export function setupWorld(provider: DojoProvider) {
     }
   };
 
-  const build_mods_info_system_getGameConfigForPlayer_calldata = (): DojoCall => {
+  const build_mods_info_system_getGameConfigForPlayer_calldata = (
+    player: string
+  ): DojoCall => {
     return {
       contractName: "mods_info_system",
       entrypoint: "get_game_config_for_player",
-      calldata: [],
+      calldata: [player],
     };
   };
 
-  const mods_info_system_getGameConfigForPlayer = async () => {
+  const mods_info_system_getGameConfigForPlayer = async (player: string) => {
     try {
       return await provider.call(
         DOJO_NAMESPACE,
-        build_mods_info_system_getGameConfigForPlayer_calldata()
+        build_mods_info_system_getGameConfigForPlayer_calldata(player)
       );
     } catch (error) {
       console.error(error);

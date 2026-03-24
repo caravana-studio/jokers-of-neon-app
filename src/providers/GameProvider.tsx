@@ -351,7 +351,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     }
 
     if (latestPathRef.current !== "/demo") {
-      refetchGameStore(client, gameId).catch((error) => {
+      refetchGameStore(client, gameId, account.address).catch((error) => {
         console.error("Error refetching game state after background action", error);
       });
     }
@@ -642,7 +642,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         return success;
       })
       .catch(() => {
-        refetchGameStore(client, gameId);
+        refetchGameStore(client, gameId, account.address);
         return false;
       })
       .finally(() => {

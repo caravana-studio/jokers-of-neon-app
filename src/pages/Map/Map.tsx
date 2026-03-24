@@ -58,6 +58,7 @@ export const Map = () => {
 
   const {
     setup: { client },
+    account: { account },
   } = useDojo();
 
   const { isSmallScreen } = useResponsiveValues();
@@ -121,7 +122,7 @@ export const Map = () => {
   );
 
   const refetchAndNavigate = async (state: GameStateEnum) => {
-    await refetchGameStore(client, gameId);
+    await refetchGameStore(client, gameId, account.address);
     navigate(state);
   };
 

@@ -147,8 +147,10 @@ const getAddress = (value: unknown): string => {
   return "";
 };
 
-const unlockSetCache = new Map<string, Set<ShopTooltipItemKey>>();
-const unlockSetPromiseCache = new Map<string, Promise<Set<ShopTooltipItemKey>>>();
+const unlockSetPromiseCache = new Map<
+  string,
+  Promise<Set<ShopTooltipItemKey> | null>
+>();
 
 export const getUnlockedShopTooltipItemsForPlayer = async (
   client: any,
@@ -158,9 +160,6 @@ export const getUnlockedShopTooltipItemsForPlayer = async (
   if (!client || !playerAddress) return null;
 
   const cacheKey = playerAddress.toLowerCase();
-  const cached = unlockSetCache.get(cacheKey);
-  if (cached) return cached;
-
   const inFlight = unlockSetPromiseCache.get(cacheKey);
   if (inFlight) return inFlight;
 
@@ -169,14 +168,20 @@ export const getUnlockedShopTooltipItemsForPlayer = async (
     getUnlockList(client),
   ])
     .then(([playerTier, unlockEntries]) => {
-      const unlocked = getUnlockedShopTooltipItems(unlockEntries, playerTier.tier);
-      unlockSetCache.set(cacheKey, unlocked);
+      const unlocked = getUnlockedShopTooltipItems(
+        unlockEntries,
+        playerTier.tier
+      );
       unlockSetPromiseCache.delete(cacheKey);
       return unlocked;
     })
     .catch((error) => {
+      console.error(
+        "[shop-tooltip] failed to fetch unlock progress for player",
+        error
+      );
       unlockSetPromiseCache.delete(cacheKey);
-      throw error;
+      return null;
     });
 
   unlockSetPromiseCache.set(cacheKey, request);

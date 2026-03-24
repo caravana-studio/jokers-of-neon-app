@@ -1,4 +1,4 @@
-import { Box, Button, Flex, SimpleGrid, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { CARD_HEIGHT, CARD_WIDTH } from "../constants/visualProps.ts";
@@ -45,7 +45,7 @@ export const SpecialCardsRow = () => {
     Math.max(0, effectiveUnlockedSlots - cards.length)
   );
   const lockedSlots = Math.max(0, visiblePlaceholders - freeUnlockedSlots);
-  const hasManySpecialCards = visibleCards >= 7;
+  const slotContainerWidth = `${cardWidth}px`;
 
   const cardToDiscard = cards.find((c) => c.idx === cardToDiscardIdx);
 
@@ -57,9 +57,6 @@ export const SpecialCardsRow = () => {
       setCardToDiscardIdx(null);
     }
   };
-
-  const slotWidth = (visibleCards > 6 ? 88 : 92) / visibleCards;
-
   return (
     <Flex
       width="100%"
@@ -67,13 +64,12 @@ export const SpecialCardsRow = () => {
       alignItems={"center"}
       justifyContent={"flex-start"}
     >
-      <SimpleGrid
-        columns={visibleCards}
+      <Flex
         position="relative"
-        width={visibleCards > 6 ? "95%" : visibleCards > 5 ? "97%" : "100%"}
+        width="100%"
         alignItems={isSmallScreen ? "center" : "inherit"}
-        columnGap={3}
-        pr={hasManySpecialCards ? 3 : 0}
+        justifyContent="flex-start"
+        gap={3}
         pb={isSmallScreen ? 3 : 4}
       >
         {cards.map((card) => {
@@ -82,8 +78,9 @@ export const SpecialCardsRow = () => {
               className="special-cards-step-1"
               key={card.idx}
               justifyContent="flex-start"
-              width={`${slotWidth}%`}
-              maxWidth={`${slotWidth + 7}px`}
+              width={slotContainerWidth}
+              minWidth={slotContainerWidth}
+              flexShrink={0}
               position="relative"
               zIndex={1}
               onMouseEnter={() => !isSmallScreen && setHoveredCard(card.idx)}
@@ -157,7 +154,9 @@ export const SpecialCardsRow = () => {
         {Array.from({ length: freeUnlockedSlots }).map((_, index) => (
           <Flex
             key={`unlocked-slot-${index}`}
-            maxWidth={`${slotWidth}%`}
+            width={slotContainerWidth}
+            minWidth={slotContainerWidth}
+            flexShrink={0}
             height={`${cardHeight}px`}
           >
             <UnlockedSlot
@@ -178,7 +177,9 @@ export const SpecialCardsRow = () => {
         {Array.from({ length: lockedSlots }).map((_, index) => (
           <Flex
             key={`locked-slot-${index}`}
-            maxWidth={`${slotWidth}%`}
+            width={slotContainerWidth}
+            minWidth={slotContainerWidth}
+            flexShrink={0}
             height={`${cardHeight}px`}
           >
             <LockedSlot
@@ -195,7 +196,7 @@ export const SpecialCardsRow = () => {
             />
           </Flex>
         ))}
-      </SimpleGrid>
+      </Flex>
       {cardToDiscardIdx !== null && (
         <ConfirmationModal
           close={() => setCardToDiscardIdx(null)}
