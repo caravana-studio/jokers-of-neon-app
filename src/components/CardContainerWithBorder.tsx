@@ -12,6 +12,7 @@ export const CardContainerWithBorder = ({
   paddingLeft = [2.5, 5],
   paddingRight = ["20px", "30px", "40px"],
   children,
+  mr
 }: {
   width?: string;
   minWidth?: string;
@@ -20,6 +21,7 @@ export const CardContainerWithBorder = ({
   paddingLeft?: any;
   paddingRight?: any;
   children: ReactNode;
+  mr?: number
 }) => {
   return (
     <Flex

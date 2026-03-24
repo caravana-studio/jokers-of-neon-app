@@ -54,7 +54,7 @@ export const CompactRoundData = ({
   const progressBarHeight = desktopTypographyBoost
     ? { base: "14px", md: "18px" }
     : "14px";
-  const footerMarginTop = desktopTypographyBoost ? { base: 1, md: 3 } : 0;
+  const footerMarginTop = desktopTypographyBoost ? "25px" : 1.5;
   const metricSectionWidth = desktopTypographyBoost
     ? { base: "50px", md: "140px" }
     : "50px";
@@ -160,9 +160,16 @@ export const CompactRoundData = ({
           height={progressBarHeight}
         />
         {showFooter && (
-          <Flex w="100%" justify="space-between" mt={footerMarginTop}>
+          <Flex
+            w="100%"
+            flexDir={desktopTypographyBoost ? "column" : "row"}
+            justifyContent={desktopTypographyBoost ? "flex-start" : "space-between"}
+            alignItems={desktopTypographyBoost ? "stretch" : "center"}
+            gap={5}
+            mt={footerMarginTop}
+          >
+            <ScoreTotal plainDesktop={desktopTypographyBoost} />
             <Coins rolling plainDesktop={desktopTypographyBoost} />
-            <ScoreTotal />
           </Flex>
         )}
       </Box>

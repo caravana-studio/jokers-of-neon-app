@@ -310,7 +310,6 @@ export const GameContent = () => {
                 width: "100%",
                 overflow: "visible",
                 position: "relative",
-                zIndex: 300,
               }}
               pt={"60px"}
             >

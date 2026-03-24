@@ -8,7 +8,19 @@ import { useGameStore } from "../state/useGameStore";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import { checkHand } from "../utils/checkHand";
 
-export const CurrentPlay = () => {
+interface CurrentPlayProps {
+  showEmptyText?: boolean;
+  fontFamily?: string;
+  desktopFontSize?: number;
+  mobileFontSize?: number;
+}
+
+export const CurrentPlay = ({
+  showEmptyText = true,
+  fontFamily,
+  desktopFontSize = 20,
+  mobileFontSize = 18,
+}: CurrentPlayProps = {}) => {
   const {
     preSelectedPlay,
     setPreSelectedPlay,
@@ -33,6 +45,10 @@ export const CurrentPlay = () => {
   const { isSmallScreen } = useResponsiveValues();
 
   const isDebuffedPlay = debuffedPlayerHands.includes(preSelectedPlay);
+  const isEmptyPlay = preSelectedPlay === Plays.NONE;
+  const currentPlayLabel = isEmptyPlay
+    ? t("game.preselected-cards-section.current-play-lbl.default")
+    : `${playIsNeon ? t("game.preselected-cards-section.current-play-lbl.neon-play") : ""} ${tPlays(`${PLAYS_DATA[preSelectedPlay]?.name}.name`)}`;
 
   const setMultiAndPoints = (play: Plays) => {
     const playerPokerHand = plays[play - 1];
@@ -84,12 +100,12 @@ export const CurrentPlay = () => {
       justifyContent={"center"}
     >
       <Text
-        fontSize={isSmallScreen ? 18 : 25}
+        fontSize={isSmallScreen ? mobileFontSize : desktopFontSize}
+        fontFamily={fontFamily}
         color={isDebuffedPlay ? "HEARTS" : "white"}
+        textAlign="center"
       >
-        {preSelectedPlay === Plays.NONE
-          ? t("game.preselected-cards-section.current-play-lbl.default")
-          : `${playIsNeon ? t("game.preselected-cards-section.current-play-lbl.neon-play") : ""} ${tPlays(`${PLAYS_DATA[preSelectedPlay]?.name}.name`)}`}
+        {isEmptyPlay && !showEmptyText ? "" : currentPlayLabel}
       </Text>
     </Flex>
   );

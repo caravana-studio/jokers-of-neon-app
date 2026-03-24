@@ -15,7 +15,7 @@ import { HighlightAnimation } from "./animations/HighlightAnimation";
 
 interface PowerUpProps {
   powerUp: PowerUp | null;
-  width: number;
+  width: number | string;
   onClick?: () => void;
   inStore?: boolean;
   containerSx?: SystemStyleObject;
@@ -56,12 +56,20 @@ export const PowerUpComponent = ({
     e.stopPropagation();
     onClick?.();
   };
+  const resolvedWidth = typeof width === "number" ? `${width}px` : width;
+  const purchasedLabelOffset = (() => {
+    if (typeof width !== "number") {
+      return isSmallScreen ? "8px" : "12px";
+    }
+
+    return `${isSmallScreen ? width / 3 - 10 : width / 3 - 15}px`;
+  })();
 
   const powerUpContent = powerUp ? (
     <Flex
       justifyContent="center"
       position="relative"
-      width={`${width}px`}
+      width={resolvedWidth}
       borderRadius={"22%"}
       background={"black"}
       transform={calculatedIsActive ? "scale(1.1)" : "scale(1)"}
@@ -85,7 +93,7 @@ export const PowerUpComponent = ({
       )}
       <PurchasedLbl
         purchased={purchased ?? false}
-        topOffset={`${isSmallScreen ? width / 3 - 10 : width / 3 - 15}px`}
+        topOffset={purchasedLabelOffset}
         fontSize={isSmallScreen ? 6 : 11 * cardScale}
         customText={customPurchasedText}
       />
@@ -131,17 +139,19 @@ const EmptyPowerUp = ({
   width,
   containerSx,
 }: {
-  width: number;
+  width: number | string;
   containerSx?: SystemStyleObject;
 }) => {
   const { isSmallScreen } = useResponsiveValues();
   const { isRageRound, isClassic } = useGameStore();
+  const resolvedWidth = typeof width === "number" ? `${width}px` : width;
   return (
     <Box
-      height={`${isSmallScreen ? width / 1.8 : width / 1.9}px`}
+      height={typeof width === "number" ? `${isSmallScreen ? width / 1.8 : width / 1.9}px` : "auto"}
+      aspectRatio={typeof width === "number" ? undefined : (isSmallScreen ? "1.8 / 1" : "1.9 / 1")}
       border={`1px solid ${GREY_LINE}`}
       borderRadius={{ base: "10px", sm: "15px" }}
-      width={`${width}px`}
+      width={resolvedWidth}
       mt={isSmallScreen ? 1.5 : 2.5}
       mx={2}
       backgroundColor={

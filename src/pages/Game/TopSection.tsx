@@ -1,10 +1,12 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import CachedImage from "../../components/CachedImage.tsx";
-import { SpecialCards } from "../../components/SpecialCards.tsx";
-import { PowerUps } from "./PowerUps.tsx";
-import { useGameStore } from "../../state/useGameStore.ts";
 import CompactRoundData from "../../components/CompactRoundData/CompactRoundData.tsx";
+import { CurrentPlay } from "../../components/CurrentPlay.tsx";
+import { MultiPoints } from "../../components/MultiPoints.tsx";
+import { SpecialCards } from "../../components/SpecialCards.tsx";
+import { useGameStore } from "../../state/useGameStore.ts";
+import { PowerUps } from "./PowerUps.tsx";
 
 interface TopSectionProps {
   onTutorialCardClick?: () => void;
@@ -18,41 +20,83 @@ export const TopSection = ({ onTutorialCardClick }: TopSectionProps) => {
   return (
     <Flex flexDir="column">
       <Box position="absolute" top={"35px"} right={"10px"}>
-        <CachedImage
-          src="logos/logo-variant.svg"
-          width={"150px"}
-          alt="logo"
-        />
+        <CachedImage src="logos/logo-variant.svg" width={"150px"} alt="logo" />
       </Box>
       <Flex
         position="relative"
         height="100%"
         width="100%"
-        justifyContent={"space-between"}
-        alignItems={"flex-start"}
+        alignItems="flex-start"
+        display="grid"
+        gridTemplateColumns="minmax(0, 1fr) auto minmax(0, 1fr)"
+        columnGap={{ base: 3, lg: 6 }}
         sx={{
-          zIndex: 300,
           overflow: "visible",
         }}
       >
         <Box
-          mr={4}
-          maxW={{ base: "300px", lg: "560px" }}
           width="100%"
+          maxW="100%"
           position="relative"
           zIndex={120}
           overflow="visible"
         >
           <CompactRoundData
+            showPointsAndMulti={false}
             showFooter
             levelBoxFullWidth
             desktopTypographyBoost
             levelBottomSpacing={{ base: 0.5, md: 3 }}
-            maxW={{ base: "300px", lg: "560px" }}
+            maxW="100%"
             px={0}
           />
+        </Box>
+        <Flex
+          justifyContent="center"
+          alignItems="flex-start"
+          width="100%"
+          position="relative"
+          zIndex={300}
+          sx={{
+            "& .special-cards-step-3": {
+              margin: 0,
+            },
+          }}
+          mr={8}
+        >
+          <SpecialCards />
+        </Flex>
+        <Flex
+          direction="column"
+          width="100%"
+          alignItems="stretch"
+          gap={3}
+          position="relative"
+        >
+          <Flex
+            width="100%"
+            minH={{ base: "52px", lg: "62px" }}
+            border="1px solid"
+            borderColor="whiteAlpha.500"
+            borderRadius="12px"
+            alignItems="center"
+            justifyContent="center"
+            px={3}
+          >
+            <CurrentPlay
+              showEmptyText={false}
+              fontFamily="Sonara"
+              desktopFontSize={16}
+              mobileFontSize={16}
+            />
+          </Flex>
+
+          <Flex width="100%">
+            <MultiPoints />
+          </Flex>
+
           {showPowerUps && (
-            <Box mt={3}>
+            <Box mt={4}>
               <Flex
                 alignItems="center"
                 gap={2}
@@ -60,32 +104,25 @@ export const TopSection = ({ onTutorialCardClick }: TopSectionProps) => {
                 textTransform="uppercase"
                 opacity={0.9}
               >
-                <Text fontSize="10px" letterSpacing="0.08em" whiteSpace="nowrap">
+                <Text
+                  fontSize="10px"
+                  letterSpacing="0.08em"
+                  whiteSpace="nowrap"
+                >
                   {t("game.compact-round-data.power-ups")}
                 </Text>
                 <Box h="1px" width="100%" bg="whiteAlpha.500" />
               </Flex>
-              <Flex justifyContent="flex-start" position="relative" zIndex={200}>
+              <Flex
+                width="100%"
+                justifyContent="flex-start"
+                position="relative"
+                zIndex={420}
+              >
                 <PowerUps onTutorialCardClick={onTutorialCardClick} />
               </Flex>
             </Box>
           )}
-        </Box>
-        <Flex
-          flexDirection="row"
-          justifyContent="flex-end"
-          alignItems="flex-start"
-          gap={1}
-          pr={0}
-          mr={0}
-          width={"100%"}
-          sx={{
-            "& .special-cards-step-3": {
-              margin: 0,
-            },
-          }}
-        >
-          <SpecialCards />
         </Flex>
       </Flex>
     </Flex>
