@@ -272,7 +272,11 @@ function CardListingPreview({
                 fontSize={{ base: "md", md: "lg" }}
                 mt={3}
               >
-                {card.isSpecial ? t("sell.typeSpecial") : t("sell.typeTraditional")}
+                {card.isSpecial && card.skinId >= 2
+                  ? t("sell.typeSkinnedSpecial")
+                  : card.isSpecial
+                    ? t("sell.typeSpecial")
+                    : t("sell.typeTraditional")}
               </Text>
             </Box>
 
