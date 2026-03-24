@@ -84,8 +84,8 @@ export const PreselectedCardsSection = ({
             height={`${renderedCardHeight + 12}px`}
             background={"url(grid.png)"}
             width="90%"
-            backgroundRepeat="space"
-            backgroundSize="52px auto"
+            backgroundRepeat="repeat-x"
+            backgroundSize="auto 100%"
           />
           {showEmptyHint && (
             <Flex

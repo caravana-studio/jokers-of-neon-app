@@ -4,6 +4,8 @@ import CachedImage from "../../components/CachedImage.tsx";
 import CompactRoundData from "../../components/CompactRoundData/CompactRoundData.tsx";
 import { CurrentPlay } from "../../components/CurrentPlay.tsx";
 import { MultiPoints } from "../../components/MultiPoints.tsx";
+import { Plays } from "../../enums/plays";
+import { useCurrentHandStore } from "../../state/useCurrentHandStore";
 import { SpecialCards } from "../../components/SpecialCards.tsx";
 import { useGameStore } from "../../state/useGameStore.ts";
 import { PowerUps } from "./PowerUps.tsx";
@@ -14,14 +16,13 @@ interface TopSectionProps {
 
 export const TopSection = ({ onTutorialCardClick }: TopSectionProps) => {
   const { powerUps } = useGameStore();
+  const { preSelectedPlay } = useCurrentHandStore();
   const { t } = useTranslation(["game"]);
   const showPowerUps = powerUps.some((powerUp) => powerUp !== null);
+  const showCurrentPlayLogo = preSelectedPlay === Plays.NONE;
 
   return (
     <Flex flexDir="column">
-      <Box position="absolute" top={"35px"} right={"10px"}>
-        <CachedImage src="logos/logo-variant.svg" width={"150px"} alt="logo" />
-      </Box>
       <Flex
         position="relative"
         height="100%"
@@ -82,6 +83,7 @@ export const TopSection = ({ onTutorialCardClick }: TopSectionProps) => {
             alignItems="center"
             justifyContent="center"
             px={3}
+            position="relative"
           >
             <CurrentPlay
               showEmptyText={false}
@@ -89,6 +91,21 @@ export const TopSection = ({ onTutorialCardClick }: TopSectionProps) => {
               desktopFontSize={16}
               mobileFontSize={16}
             />
+            {showCurrentPlayLogo && (
+              <Flex
+                position="absolute"
+                inset={0}
+                alignItems="center"
+                justifyContent="center"
+                pointerEvents="none"
+              >
+                <CachedImage
+                  src="logos/logo-variant.svg"
+                  width={{ base: "130px", md: "180px" }}
+                  alt="logo"
+                />
+              </Flex>
+            )}
           </Flex>
 
           <Flex width="100%">

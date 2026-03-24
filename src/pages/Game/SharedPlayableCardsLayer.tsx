@@ -43,6 +43,7 @@ interface SharedPlayableCardsLayerProps {
   stageRef: RefObject<HTMLDivElement>;
   handAnchorRef: RefObject<HTMLDivElement>;
   preselectedAnchorRef: RefObject<HTMLDivElement>;
+  deckAnchorRef?: RefObject<HTMLDivElement>;
   onTutorialHandCardClick?: () => void;
   dragDropOrigins?: Record<number, CardDropOrigin>;
 }
@@ -141,6 +142,7 @@ export const SharedPlayableCardsLayer = ({
   stageRef,
   handAnchorRef,
   preselectedAnchorRef,
+  deckAnchorRef,
   onTutorialHandCardClick,
   dragDropOrigins,
 }: SharedPlayableCardsLayerProps) => {
@@ -620,17 +622,38 @@ export const SharedPlayableCardsLayer = ({
     return null;
   }
 
-  const deckOrigin = {
-    left: Math.max(
-      0,
-      layoutRects.stage.width - renderedCardWidth * (isSmallScreen ? 0.6 : 0.45)
-    ),
-    top: Math.max(
-      0,
-      layoutRects.stage.height -
-        renderedCardHeight * (isSmallScreen ? 0.6 : 0.45)
-    ),
-  };
+  const fallbackDeckOrigin = isSmallScreen
+    ? {
+        left: Math.max(0, (layoutRects.stage.width - renderedCardWidth) / 2),
+        top: Math.max(0, layoutRects.stage.height - renderedCardHeight * 0.6),
+      }
+    : {
+        left: Math.max(0, layoutRects.stage.width - renderedCardWidth * 0.45),
+        top: Math.max(0, layoutRects.stage.height - renderedCardHeight * 0.45),
+      };
+  const deckAnchorRect = deckAnchorRef?.current?.getBoundingClientRect();
+  const stageRectRaw = stageRef.current?.getBoundingClientRect();
+
+  const deckOrigin =
+    !isSmallScreen &&
+    deckAnchorRect &&
+    stageRectRaw &&
+    isValidRect(deckAnchorRect, 1, 1)
+      ? {
+          left: Math.max(
+            0,
+            deckAnchorRect.left -
+              stageRectRaw.left +
+              (deckAnchorRect.width - renderedCardWidth) / 2
+          ),
+          top: Math.max(
+            0,
+            deckAnchorRect.top -
+              stageRectRaw.top +
+              (deckAnchorRect.height - renderedCardHeight) / 2
+          ),
+        }
+      : fallbackDeckOrigin;
 
   return (
     <motion.div
