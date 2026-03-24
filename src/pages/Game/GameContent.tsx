@@ -80,6 +80,7 @@ export const GameContent = () => {
   const cardsStageRef = useRef<HTMLDivElement>(null);
   const handCardsAnchorRef = useRef<HTMLDivElement>(null);
   const preselectedCardsAnchorRef = useRef<HTMLDivElement>(null);
+  const deckAnchorRef = useRef<HTMLDivElement>(null);
   const dropOriginTokenRef = useRef(0);
   const [dragDropOrigins, setDragDropOrigins] = useState<
     Record<number, CardDropOrigin>
@@ -306,11 +307,10 @@ export const GameContent = () => {
           <Box sx={{ height: "100%", width: "100%" }} px={"40px"}>
             <Box
               sx={{
-                height: "30%",
+                height: "40%",
                 width: "100%",
                 overflow: "visible",
                 position: "relative",
-                zIndex: 300,
               }}
               pt={"60px"}
             >
@@ -324,7 +324,7 @@ export const GameContent = () => {
               />
             </Box>
             <Box
-              height={"70%"}
+              height={"60%"}
               width={"100%"}
               position="relative"
               zIndex={350}
@@ -345,7 +345,7 @@ export const GameContent = () => {
                 >
                   <Box
                     sx={{
-                      height: "55%",
+                      height: "45%",
                       width: "100%",
                       display: "flex",
                       flexDirection: "row",
@@ -371,7 +371,7 @@ export const GameContent = () => {
                     mr={{ base: 10, md: 20 }}
                     sx={{
                       display: "flex",
-                      height: "45%",
+                      height: "55%",
                       alignItems: "flex-end",
                       justifyContent: "center",
                     }}
@@ -382,6 +382,7 @@ export const GameContent = () => {
                     stageRef={cardsStageRef}
                     handAnchorRef={handCardsAnchorRef}
                     preselectedAnchorRef={preselectedCardsAnchorRef}
+                    deckAnchorRef={deckAnchorRef}
                     dragDropOrigins={dragDropOrigins}
                     onTutorialHandCardClick={() => {
                       if (run) {
@@ -405,7 +406,7 @@ export const GameContent = () => {
           />
         </Box>
 
-        <PositionedGameDeck />
+        <PositionedGameDeck deckAnchorRef={deckAnchorRef} />
       </Box>
     </Box>
   );

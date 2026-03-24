@@ -1,14 +1,17 @@
 import { Box, Flex } from "@chakra-ui/react";
+import { RefObject } from "react";
 import { useState } from "react";
 import { DeckPreviewTable } from "./DeckPreview/DeckPreviewTable";
 import { GameDeck } from "./GameDeck";
 
 interface PositionedGameDeckProps {
   inStore?: boolean;
+  deckAnchorRef?: RefObject<HTMLDivElement>;
 }
 
 export const PositionedGameDeck = ({
   inStore = false,
+  deckAnchorRef,
 }: PositionedGameDeckProps) => {
   const [isDeckTableVisible, setIsDeckTableVisible] = useState(false);
 
@@ -26,6 +29,7 @@ export const PositionedGameDeck = ({
       </Flex>
 
       <Box
+        ref={deckAnchorRef}
         sx={{
           position: "fixed",
           zIndex: 1000,

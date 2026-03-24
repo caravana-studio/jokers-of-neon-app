@@ -15,12 +15,9 @@ export const RageCards = () => {
   const cardWidth = CARD_WIDTH * cardScale;
   const cardHeight = CARD_HEIGHT * cardScale;
   const visibleCards = rageCards.length;
-  const maxVisibleCards = 5;
-  const totalSpacing = (maxVisibleCards - 2) * 16;
-  const containerWidth = cardWidth * maxVisibleCards + totalSpacing;
 
   return (
-    <Box w={`${containerWidth}px`} pr={visibleCards >= 9 ? "7%" : 4}>
+    <Box w="100%" pr={visibleCards >= 9 ? "7%" : 4}>
       <Flex
         width={"100%"}
         alignItems={"center"}
