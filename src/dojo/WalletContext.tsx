@@ -20,7 +20,7 @@ import { ACCOUNT_TYPE, GAME_ID, LOGGED_USER } from "../constants/localStorage";
 import { PreThemeLoadingPage } from "../pages/PreThemeLoadingPage";
 import { AppType, useAppContext } from "../providers/AppContextProvider";
 import { useGetLastGameId } from "../queries/useGetLastGameId";
-import { logEvent } from "../utils/analytics";
+import { logEvent, setAnalyticsUserId, setAnalyticsUserProperties } from "../utils/analytics";
 import { isNative, nativePaddingTop } from "../utils/capacitorUtils";
 import { controller } from "./controller/controller";
 import { SetupResult } from "./setup";
@@ -165,6 +165,16 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
       }
     }
   }, [accountType, finalAccount, burnerAccount, controllerAccount]);
+
+  useEffect(() => {
+    if (finalAccount) {
+      setAnalyticsUserId(finalAccount.address);
+      setAnalyticsUserProperties({
+        account_type: accountType ?? "unknown",
+        platform: isNative ? "native" : "web",
+      });
+    }
+  }, [finalAccount, accountType]);
 
   useEffect(() => {
     if (EARLY_ACCESS_VERSION && finalAccount) {
