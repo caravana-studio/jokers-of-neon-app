@@ -37,7 +37,7 @@ export const PreviewSlot = () => {
     <Button
       onClick={handleBuyClick}
       isDisabled={notEnoughCash || locked || buyDisabled}
-      variant="outlinePrimaryGlow"
+      variant="solid"
       height={{ base: "40px", sm: "100%" }}
       width={{ base: "50%", sm: "unset" }}
     >
