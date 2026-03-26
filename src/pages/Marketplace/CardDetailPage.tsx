@@ -293,7 +293,7 @@ export function CardDetailPage() {
       {/* Action buttons */}
       <HStack spacing={4} justifyContent="flex-end" w="95%">
         {listing.status === "active" && (
-          <BuyButton listing={listing} onSuccess={() => navigate("/my-listings")} />
+          <BuyButton listing={listing} onSuccess={() => navigate("/sell")} />
         )}
         <Button
           size="md"
