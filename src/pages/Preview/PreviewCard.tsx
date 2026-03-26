@@ -76,7 +76,7 @@ const PreviewCard = () => {
   ) : (
     <Button
       onClick={onBuyClick}
-      variant="outlinePrimaryGlow"
+      variant="solid"
       height={{ base: "40px", sm: "100%" }}
       width={{ base: "50%", sm: "unset" }}
       isDisabled={
