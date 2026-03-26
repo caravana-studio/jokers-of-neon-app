@@ -64,7 +64,7 @@ export function BuyButton({ listing, onSuccess }: BuyButtonProps) {
   const hasInsufficientBalance =
     balanceData !== undefined && balanceData.value < BigInt(listing.price);
 
-  // Show success modal when purchase completes, then redirect after 4s
+  // Show the success modal once the purchase completes.
   useEffect(() => {
     if (status === "done") openSuccess();
   }, [status]);
@@ -72,6 +72,11 @@ export function BuyButton({ listing, onSuccess }: BuyButtonProps) {
   const handleConfirm = async () => {
     closeConfirm();
     await buy(listing);
+  };
+
+  const handleSuccessClose = () => {
+    closeSuccess();
+    onSuccess?.();
   };
 
   if (walletStatus !== "connected") {
@@ -193,7 +198,7 @@ export function BuyButton({ listing, onSuccess }: BuyButtonProps) {
       </Modal>
 
       {/* ── Success modal ── */}
-      <Modal isOpen={isSuccessOpen} onClose={closeSuccess}>
+      <Modal isOpen={isSuccessOpen} onClose={handleSuccessClose}>
         <ModalOverlay bg="rgba(0, 0, 0, 0.6)" />
         <ModalContent p={3} mx={4}>
           <ModalHeader pb={2}>
@@ -256,7 +261,7 @@ export function BuyButton({ listing, onSuccess }: BuyButtonProps) {
             <Button
               variant="secondarySolid"
               size="sm"
-              onClick={closeSuccess}
+              onClick={handleSuccessClose}
             >
               {t("buy.close")}
             </Button>
