@@ -250,12 +250,10 @@ export const SharedPlayableCardsLayer = ({
   const [dealAnimationDelayByCard, setDealAnimationDelayByCard] = useState<
     Record<number, number>
   >({});
-  const [freshDealAnimationTokens, setFreshDealAnimationTokens] = useState<
-    Record<number, number>
-  >({});
   const previousHandRef = useRef<Card[]>([]);
   const previousCardRenderSnapshotsRef = useRef<CardRenderSnapshot[]>([]);
   const nextRenderIdRef = useRef(1);
+  const consumedDealAnimationTokensRef = useRef<Record<number, number>>({});
   const consumedDragDropTokensRef = useRef<Record<number, number>>({});
   const dealSoundTimeoutIdsRef = useRef<number[]>([]);
   const dealStaggerSeconds = useMemo(
@@ -336,9 +334,16 @@ export const SharedPlayableCardsLayer = ({
   }, [handRenderData.nextSnapshots]);
 
   useEffect(() => {
-    const previousCards = previousHandRef.current;
     const currentHandIndexes = new Set(hand.map((card) => card.idx));
     const currentHandAreaIndexes = new Set(handCards.map((card) => card.idx));
+
+    Object.keys(consumedDealAnimationTokensRef.current).forEach((idx) => {
+      const numericIdx = Number(idx);
+      if (!currentHandIndexes.has(numericIdx)) {
+        delete consumedDealAnimationTokensRef.current[numericIdx];
+      }
+    });
+
     setDealAnimationDelayByCard((currentDelays) => {
       const nextDelays = { ...currentDelays };
       Object.keys(nextDelays).forEach((idx) => {
@@ -369,13 +374,11 @@ export const SharedPlayableCardsLayer = ({
       }
 
       const nextTokens = { ...cleanedTokens };
-      const freshTokens: Record<number, number> = {};
       const nextDelaysByCard: Record<number, number> = {};
 
       newlyDealtCardIndexes.forEach((cardIdx, dealOrder) => {
         const nextToken = (nextTokens[cardIdx] ?? 0) + 1;
         nextTokens[cardIdx] = nextToken;
-        freshTokens[cardIdx] = nextToken;
         const dealDelay = dealOrder * dealStaggerSeconds;
         nextDelaysByCard[cardIdx] = dealDelay;
 
@@ -388,30 +391,10 @@ export const SharedPlayableCardsLayer = ({
         dealSoundTimeoutIdsRef.current.push(timeoutId);
       });
 
-      setFreshDealAnimationTokens((currentFreshTokens) => {
-        const nextFreshTokens = { ...currentFreshTokens, ...freshTokens };
-        Object.keys(nextFreshTokens).forEach((idx) => {
-          if (!currentHandAreaIndexes.has(Number(idx))) {
-            delete nextFreshTokens[Number(idx)];
-          }
-        });
-        return nextFreshTokens;
-      });
-
       setDealAnimationDelayByCard((currentDelays) => ({
         ...currentDelays,
         ...nextDelaysByCard,
       }));
-
-      window.setTimeout(() => {
-        setFreshDealAnimationTokens((currentFreshTokens) => {
-          const nextFreshTokens = { ...currentFreshTokens };
-          newlyDealtCardIndexes.forEach((cardIdx) => {
-            delete nextFreshTokens[cardIdx];
-          });
-          return nextFreshTokens;
-        });
-      }, 0);
 
       return nextTokens;
     });
@@ -704,10 +687,11 @@ export const SharedPlayableCardsLayer = ({
         const dragDropAnimationToken = dragDropOrigins?.[card.idx]?.token ?? 0;
         const consumedDragDropToken =
           consumedDragDropTokensRef.current[card.idx] ?? 0;
+        const consumedDealAnimationToken =
+          consumedDealAnimationTokensRef.current[card.idx] ?? 0;
         const showDealAnimation =
           !isPreselected &&
-          freshDealAnimationTokens[card.idx] === dealAnimationToken &&
-          dealAnimationToken > 0;
+          dealAnimationToken > consumedDealAnimationToken;
         const showDragDropAnimation =
           dragDropAnimationToken > consumedDragDropToken &&
           Boolean(dragDropOrigins?.[card.idx]);
@@ -716,6 +700,9 @@ export const SharedPlayableCardsLayer = ({
 
         if (showDragDropAnimation) {
           consumedDragDropTokensRef.current[card.idx] = dragDropAnimationToken;
+        }
+        if (showDealAnimation) {
+          consumedDealAnimationTokensRef.current[card.idx] = dealAnimationToken;
         }
 
         const cardRenderId = handRenderData.renderIdByCardIdx[card.idx] ?? card.idx;
