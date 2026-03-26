@@ -58,8 +58,10 @@ export const CompactRoundData = ({
   const metricSectionWidth = desktopTypographyBoost
     ? { base: "50px", md: "140px" }
     : "50px";
+  const useInsetTargetAlignment = desktopTypographyBoost && !showPointsAndMulti;
   const scoreTextAlign = desktopTypographyBoost ? "left" : "right";
   const targetTextAlign = desktopTypographyBoost ? "right" : "left";
+  const targetMarginRight = useInsetTargetAlignment ? { base: 0, md: 3 } : 0;
   const rowJustify = desktopTypographyBoost ? "space-between" : "center";
 
   return (
@@ -95,7 +97,7 @@ export const CompactRoundData = ({
               mr={desktopTypographyBoost ? 0 : 0.5}
               mt={-1}
               variant="italic"
-              width={metricSectionWidth}
+              width="100%"
             >
               <RollingNumber n={currentScore} sound />
             </Heading>
@@ -128,6 +130,7 @@ export const CompactRoundData = ({
 
           <Box
             width={metricSectionWidth}
+            mr={targetMarginRight}
             className={showTutorialTargets ? "game-tutorial-step-7" : undefined}
           >
             <Text
@@ -143,7 +146,7 @@ export const CompactRoundData = ({
             </Text>
             <Heading
               textAlign={targetTextAlign}
-              width={metricSectionWidth}
+              width="100%"
               fontSize={valueFontSize}
               ml={desktopTypographyBoost ? 0 : 0.5}
               mt={-1}
