@@ -685,20 +685,29 @@ RAGE ROUND CONFIGURATION
 - Minimum round level before rage activation: 3
 - Level cooldown: 1
 
+LEVELS AND ROUNDS STRUCTURE
+- A run is divided into levels. Each level generates a procedural map with multiple stages.
+- The number of stages per level grows as you progress: total_stages = 4 + (level * 1).
+  - Level 1: 5 stages, Level 2: 6 stages, Level 3: 7 stages, etc.
+- Stages can be Round nodes, Rage nodes, or Store nodes, determined by probability during map generation.
+  - Round nodes: 90% base probability. These are combat encounters where the player must reach a target score.
+  - Rage nodes: 10% base probability, plus forced rage nodes placed evenly across the map (minimum 2, maximum 5 per level). The last stage of every level is always a Rage boss node.
+  - Store nodes: inserted after other nodes with 100% probability (if the player has unlocked shop types).
+- The number of rounds per level is NOT fixed — it depends on the procedurally generated map layout.
+- The round counter is cumulative across the entire run (it never resets between levels). This counter determines the target score for each round.
+- A level is completed when the player beats the final node (Rage boss) of the level map. Upon level completion, the player advances to the next level and a new map is generated.
+
 ROUND TARGET SCORE CURVE
-- Round 1: 300
-- Round 2: 600
-- Round 3: 900
-- Round 4: 1,200
-- Round 5: 1,500
-- Rounds 6-11: 2,400 + (round - 6) * 900 => 2,400 / 3,300 / 4,200 / 5,100 / 6,000 / 6,900
-- Round 11: 6,900 (last of this tier, formula gives 2400 + 5*900 = 6,900)
-- Rounds 12-18: 10,500 + (round - 12) * 3,600 => 10,500 / 14,100 / 17,700 / 21,300 / 24,900 / 28,500 / 32,100
-- Rounds 19-26: 50,100 + (round - 19) * 18,000 => 50,100 / 68,100 / 86,100 / ... / 176,100
-- Rounds 27-35: 284,100 + (round - 27) * 108,000
-- Rounds 36-45: 1,904,100 + (round - 36) * 756,000
-- Rounds 46-56: 14,756,100 + (round - 46) * 6,048,000
-- Rounds 57+: 178,052,100 + (round - 57) * 54,432,000
+- The round number used for score calculation is a global counter that increments across all levels in a run.
+- Formula (from calculate_round_score in game_config):
+  - Rounds 1-5: 300 * round => 300 / 600 / 900 / 1,200 / 1,500
+  - Rounds 6-11: 2,400 + (round - 6) * 900 => 2,400 / 3,300 / 4,200 / 5,100 / 6,000 / 6,900
+  - Rounds 12-18: 10,500 + (round - 12) * 3,600 => 10,500 / 14,100 / 17,700 / 21,300 / 24,900 / 28,500 / 32,100
+  - Rounds 19-26: 50,100 + (round - 19) * 18,000 => 50,100 / 68,100 / 86,100 / ... / 176,100
+  - Rounds 27-35: 284,100 + (round - 27) * 108,000
+  - Rounds 36-45: 1,904,100 + (round - 36) * 756,000
+  - Rounds 46-56: 14,756,100 + (round - 46) * 6,048,000
+  - Rounds 57+: 178,052,100 + (round - 57) * 54,432,000
 - Growth multiplier per tier: ~3x, ~4x, ~5x, ~6x, ~7x, ~8x, ~9x (exponential acceleration).
 
 DISCOUNT SYSTEM
@@ -720,9 +729,6 @@ ACHIEVEMENTS (32 TOTAL)
 - Categories: Burn, Buy/Sell Specials, Cash, Deck Building, Joker Collection, Hand Types (Five of a Kind, High Card, Straight Flush, Neon Flush, Royal Flush), Level Progression, Loot Boxes, Neon Cards, Power-ups, Rage Rounds, Round Challenges, Games Played, Scoring, Slot.
 - Each achievement has multiple tiers awarding 25-100 points per tier.
 - Some achievements are hidden until unlocked.
-
-CURRENT SEASON
-- Current season ID: 2 (Season 2).
 
 MOD SYSTEM (ARCHITECTURE)
 - The game uses a modular system called "mods" that allows customizing cards, rages, game config, shop config, loot boxes, and poker hands.
