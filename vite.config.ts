@@ -17,6 +17,7 @@ const indexHtml = path.resolve(rootDir, "index.html");
 const standaloneShopHtml = path.resolve(rootDir, "standalone-shop.html");
 const localCertDir = path.resolve(rootDir, ".cert");
 const isReactCompilerEnabled = process.env.VITE_REACT_COMPILER !== "false";
+const assetBase = process.env.VITE_ASSET_BASE || "/";
 
 const reactCompilerPlugin = react({
   babel: {
@@ -94,7 +95,7 @@ const createConfig = (target: BuildTarget): UserConfig => {
   const isAll = target === "all";
   const https = resolveHttpsServerConfig();
   const config: UserConfig = {
-    base: "./",
+    base: assetBase,
     plugins: [
       ...(isReactCompilerEnabled ? [reactCompilerPlugin] : []),
       wasm(),
