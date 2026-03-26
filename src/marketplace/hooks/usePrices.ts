@@ -3,12 +3,13 @@ import { useState, useEffect } from "react";
 export interface TokenPrices {
   STRK: number | null;
   ETH: number | null;
+  USDC: number | null;
 }
 
 const REFRESH_MS = 60_000;
 
 // ─── Module-level singleton so all components share one fetch ─────────────────
-let cache: TokenPrices = { STRK: null, ETH: null };
+let cache: TokenPrices = { STRK: null, ETH: null, USDC: 1 };
 let intervalId: ReturnType<typeof setInterval> | null = null;
 const subscribers = new Set<(p: TokenPrices) => void>();
 

@@ -49,4 +49,5 @@ export const ETH_ADDRESS =
 export const PAYMENT_TOKENS = [
   { address: STRK_ADDRESS, symbol: "STRK", decimals: 18 },
   { address: ETH_ADDRESS, symbol: "ETH", decimals: 18 },
+  { address: USDC_ADDRESS, symbol: "USDC", decimals: 6 },
 ] as const;
