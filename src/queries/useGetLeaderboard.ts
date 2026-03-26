@@ -31,6 +31,9 @@ export const LEADERBOARD_QUERY = gql`
           round
           is_tournament
           owner
+          entity {
+            executedAt
+          }
         }
       }
     }
@@ -49,6 +52,9 @@ const GAME_TOURNAMENT_QUERY = gql`
           round
           is_tournament
           owner
+          entity {
+            executedAt
+          }
         }
       }
     }
@@ -64,6 +70,9 @@ interface GameEdge {
     round: number;
     is_tournament: boolean;
     owner: string;
+    entity?: {
+      executedAt?: string;
+    };
   };
 }
 
@@ -110,6 +119,7 @@ const mapLeaderboardEntry = (node: GameEdge["node"]) => ({
   round: node.round,
   wallet: node.owner,
   isTournament: node.is_tournament,
+  executedAt: node.entity?.executedAt ?? null,
 });
 
 const isExcludedLeaderboardName = (playerName?: string) =>
@@ -213,6 +223,7 @@ const fetchGraphQLData = async (
       round: number;
       wallet: string;
       isTournament: boolean;
+      executedAt: string | null;
     }
   >();
 
@@ -224,6 +235,7 @@ const fetchGraphQLData = async (
     round: number;
     wallet: string;
     isTournament: boolean;
+    executedAt: string | null;
   } | null = null;
 
   if (currentGameNode) {

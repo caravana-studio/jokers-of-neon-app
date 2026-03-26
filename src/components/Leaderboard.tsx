@@ -26,6 +26,17 @@ import { formatNumber } from "../utils/formatNumber.ts";
 import { normalizeGameId } from "../utils/normalizeGameId.ts";
 import { RollingNumber } from "./RollingNumber";
 
+const formatLeaderboardDate = (isoDate: string | null) => {
+  if (!isoDate) return "-";
+  const date = new Date(isoDate);
+  if (Number.isNaN(date.getTime())) return "-";
+  const month = `${date.getUTCMonth() + 1}`.padStart(2, "0");
+  const day = `${date.getUTCDate()}`.padStart(2, "0");
+  const hours = `${date.getUTCHours()}`.padStart(2, "0");
+  const minutes = `${date.getUTCMinutes()}`.padStart(2, "0");
+  return `${month}/${day} ${hours}:${minutes}`;
+};
+
 const CURRENT_LEADER_STYLES = {
   position: "relative",
   borderTop: "1px solid white",
@@ -193,6 +204,22 @@ export const Leaderboard = ({
                       <Td color={"white !important"}>
                         <Text>{leader.player_name}</Text>
                       </Td>
+                      <Td>
+                        <Text
+                          fontSize={isSmallScreen ? 9 : 12}
+                          color={VIOLET_LIGHT}
+                        >
+                          #{String(leader.id)}
+                        </Text>
+                      </Td>
+                      <Td>
+                        <Text
+                          fontSize={isSmallScreen ? 9 : 12}
+                          color={VIOLET_LIGHT}
+                        >
+                          {formatLeaderboardDate(leader.executedAt)}
+                        </Text>
+                      </Td>
                       {seePrizes ? (
                         <Td maxW="150px" p="12px 20px" whiteSpace="normal">
                           <Text
@@ -249,13 +276,22 @@ export const Leaderboard = ({
                     <Td>...</Td>
                     <Td>...</Td>
                     <Td>...</Td>
+                    <Td>...</Td>
+                    <Td>...</Td>
                   </Tr>
                   <CustomTr highlighted key={actualPlayer.position}>
                     <Td>#{actualPlayer.position}</Td>
                     <Td>{actualPlayer.player_name}</Td>
-                    {/*                     <Td isNumeric>
-                      <RollingNumber n={actualPlayer.player_score} />
-                    </Td> */}
+                    <Td>
+                      <Text fontSize={isSmallScreen ? 9 : 12} color={VIOLET_LIGHT}>
+                        #{String(actualPlayer.id)}
+                      </Text>
+                    </Td>
+                    <Td>
+                      <Text fontSize={isSmallScreen ? 9 : 12} color={VIOLET_LIGHT}>
+                        {formatLeaderboardDate(actualPlayer.executedAt)}
+                      </Text>
+                    </Td>
                     <Td maxW="150px" p="12px 20px" whiteSpace="normal">
                       <Text
                         color={"white !important"}

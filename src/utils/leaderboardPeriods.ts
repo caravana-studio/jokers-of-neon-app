@@ -19,6 +19,7 @@ const formatUtcDate = (date: Date) => {
   return `${year}-${month}-${day}`;
 };
 
+
 export const addDaysToUtcDateString = (dateString: string, days: number) => {
   const date = new Date(`${dateString}T00:00:00.000Z`);
 
