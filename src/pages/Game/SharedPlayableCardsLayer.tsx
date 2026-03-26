@@ -360,10 +360,6 @@ export const SharedPlayableCardsLayer = ({
         }
       });
 
-      if (previousCards.length === 0) {
-        return cleanedTokens;
-      }
-
       const newlyDealtCardIndexes = handRenderData.newlyDealtCardIndexes.filter(
         (cardIdx) => currentHandAreaIndexes.has(cardIdx)
       );
