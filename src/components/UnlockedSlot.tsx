@@ -1,6 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import { CARD_HEIGHT, CARD_WIDTH } from "../constants/visualProps.ts";
 import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
+import CachedImage from "./CachedImage.tsx";
 
 interface IUnlockedSlotProps {
   scale?: number;
@@ -13,14 +14,20 @@ export const UnlockedSlot = ({
 }: IUnlockedSlotProps) => {
   const { isSmallScreen } = useResponsiveValues();
 
+  if (!scale) {
+    return <Box width={0} height={0} minWidth={0} />;
+  }
+
   return (
-    <Box
-      width={scale ? `${CARD_WIDTH * scale}` : 0}
-      height={scale ? `${CARD_HEIGHT * scale}` : 0}
-      minWidth={scale ? `${CARD_WIDTH * scale}` : 0}
-      borderRadius={isSmallScreen ? "7%" : "5%"}
-      boxShadow={`0px 0px 1px 0px white, 0px 0px 1px 0px white inset`}
+    <CachedImage
+      src="/store/unlocked-slot.png"
+      alt="unlocked-slot"
+      width={`${CARD_WIDTH * scale}`}
+      height={`${CARD_HEIGHT * scale}`}
+      minWidth={`${CARD_WIDTH * scale}`}
       backgroundColor={backgroundColor ?? "transparent"}
-    ></Box>
+      borderRadius={isSmallScreen ? "7%" : "5%"}
+      opacity={0.5}
+    />
   );
 };

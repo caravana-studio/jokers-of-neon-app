@@ -1,4 +1,5 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
+import { keyframes } from "@emotion/react";
 import { useTranslation } from "react-i18next";
 import CachedImage from "../../components/CachedImage.tsx";
 import CompactRoundData from "../../components/CompactRoundData/CompactRoundData.tsx";
@@ -10,6 +11,12 @@ import { SpecialCards } from "../../components/SpecialCards.tsx";
 import { useGameStore } from "../../state/useGameStore.ts";
 import { PowerUps } from "./PowerUps.tsx";
 
+const glowPulse = keyframes`
+  0%   { box-shadow: 0 0 0px 0px rgba(255,255,255,0); }
+  35%  { box-shadow: 0 0 14px 4px rgba(255,255,255,0.55); }
+  100% { box-shadow: 0 0 0px 0px rgba(255,255,255,0); }
+`;
+
 interface TopSectionProps {
   onTutorialCardClick?: () => void;
 }
@@ -17,6 +24,7 @@ interface TopSectionProps {
 export const TopSection = ({ onTutorialCardClick }: TopSectionProps) => {
   const { powerUps } = useGameStore();
   const { preSelectedPlay } = useCurrentHandStore();
+  const isEmptyPlay = preSelectedPlay === Plays.NONE;
   const { t } = useTranslation(["game"]);
   const showPowerUps = powerUps.some((powerUp) => powerUp !== null);
   const showCurrentPlayLogo = preSelectedPlay === Plays.NONE;
@@ -75,6 +83,7 @@ export const TopSection = ({ onTutorialCardClick }: TopSectionProps) => {
           position="relative"
         >
           <Flex
+            key={preSelectedPlay}
             width="100%"
             minH={{ base: "52px", lg: "62px" }}
             border="1px solid"
@@ -84,6 +93,7 @@ export const TopSection = ({ onTutorialCardClick }: TopSectionProps) => {
             justifyContent="center"
             px={3}
             position="relative"
+            animation={!isEmptyPlay ? `${glowPulse} 0.6s ease-out both` : undefined}
           >
             <CurrentPlay
               showEmptyText={false}

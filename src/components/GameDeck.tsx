@@ -51,10 +51,10 @@ export const GameDeck = ({ inStore = false }: GameDeckProps) => {
           </Text>
         )}
         <CachedImage
-          sx={{ maxWidth: "unset" }}
+          sx={{ maxWidth: "unset", height: "auto" }}
           src={deckImg()}
           alt={`Card back`}
-          width={`${cardWidth * 1.05}px`}
+          width={`${cardWidth * 1.122}px`}
           cursor={"pointer"}
         />
       </Flex>

@@ -26,11 +26,13 @@ export const CardContainerWithBorder = ({
   return (
     <Flex
       className="special-cards-step-3"
-      border={`1px solid ${GREY_LINE}`}
+      border="1px solid"
+      borderColor="whiteAlpha.500"
+      backgroundColor="blackAlpha.500"
       pl={paddingLeft}
       pr={paddingRight}
       py={[1, 2]}
-      borderRadius={["12px", "20px"]}
+      borderRadius={["8px", "12px"]}
       justifyContent="flex-start"
       alignItems="center"
       position="relative"
