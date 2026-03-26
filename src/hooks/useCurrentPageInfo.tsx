@@ -10,7 +10,7 @@ import { useGameStore } from "../state/useGameStore";
 
 export const useCurrentPageInfo = (): PageInfo | null => {
   const location = useLocation();
-  const { isRageRound, nodeRound, shopId } = useGameStore();
+  const { isRageRound, nodeRound, round, shopId } = useGameStore();
   const { currentNode } = useMap();
   const { t: tGame } = useTranslation(["game"], { keyPrefix: "game" });
   const { t: tShop } = useTranslation(["store"]);
@@ -25,6 +25,7 @@ export const useCurrentPageInfo = (): PageInfo | null => {
     isRageRound,
     isNodeLast: currentNode?.data.last,
     nodeRound,
+    round,
     tGame,
     tShop,
   });
@@ -40,7 +41,7 @@ export const useCurrentPageInfo = (): PageInfo | null => {
       setCurrentPage(pageInfo);
       localStorage.setItem(LAST_PAGE, JSON.stringify(pageInfo));
     }
-  }, [location.pathname, nodeRound, pageInfo?.name, pageInfo?.icon, shopId]);
+  }, [location.pathname, nodeRound, round, pageInfo?.name, pageInfo?.icon, shopId]);
 
   return currentPage;
 };

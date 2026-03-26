@@ -49,7 +49,7 @@ export const PreviewLootBox = () => {
     <Button
       onClick={onBuyClick}
       isDisabled={notEnoughCash || locked}
-      variant={{ base: "solid", sm: "outlinePrimaryGlow" }}
+      variant="solid"
       height={{ base: "30px", sm: "100%" }}
       minWidth={"100px"}
       fontSize={{ base: 10, sm: "unset" }}

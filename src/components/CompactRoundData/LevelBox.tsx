@@ -2,6 +2,7 @@ import {
   Box,
   Center,
   Heading,
+  Skeleton,
   type BoxProps,
   type HeadingProps,
 } from "@chakra-ui/react";
@@ -22,9 +23,9 @@ export const LevelBox = ({
   marginBottom = 0.5,
 }: LevelBoxProps) => {
   const { t } = useTranslation("game");
-  const { isRageRound } = useGameStore();
-  const { level, round } = useGameStore();
+  const { isRageRound, level, round, gameLoading } = useGameStore();
   const inTutorial = isTutorial();
+  const showRoundLoadingSkeleton = !inTutorial && (gameLoading || round <= 0);
 
   const Wrapper = fullWidth ? Box : Center;
 
@@ -54,10 +55,23 @@ export const LevelBox = ({
           >
             {inTutorial
               ? t("game.tutorial").toUpperCase()
-              : t("game.compact-round-data.level-round", {
-                  level: level,
-                  round,
-                })}
+              : showRoundLoadingSkeleton
+                ? (
+                  <Skeleton
+                    as="span"
+                    display="inline-block"
+                    width="105px"
+                    height="1em"
+                    borderRadius="4px"
+                    startColor="whiteAlpha.300"
+                    endColor="whiteAlpha.500"
+                    verticalAlign="middle"
+                  />
+                )
+                : t("game.compact-round-data.level-round", {
+                    level: level,
+                    round,
+                  })}
           </Heading>
         </Box>
       </Box>

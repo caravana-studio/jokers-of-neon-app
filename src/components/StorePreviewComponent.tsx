@@ -292,15 +292,15 @@ export const StorePreviewComponent = ({
           flexDirection={{ base: "column", sm: "row" }}
         >
           <HStack gap={4}>
-            {buyButton}
             <Button
-              variant="outlineSecondaryGlow"
+              variant="secondarySolid"
               onClick={() => navigate("/store")}
               height={{ base: "40px", sm: "100%" }}
               width={{ base: "50%", sm: "unset" }}
             >
               {t("store.preview-card.labels.close")}
             </Button>
+            {buyButton}
           </HStack>
         </Flex>
       </Flex>
