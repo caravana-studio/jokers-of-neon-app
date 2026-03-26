@@ -19,7 +19,7 @@ export const PositionedGameDeck = ({
     <>
       <Flex
         position={"absolute"}
-        zIndex={1000}
+        zIndex={900}
         display={isDeckTableVisible ? "flex" : "none"}
         top="50%"
         left="50%"
@@ -32,7 +32,7 @@ export const PositionedGameDeck = ({
         ref={deckAnchorRef}
         sx={{
           position: "fixed",
-          zIndex: 1000,
+          zIndex: 900,
           bottom: inStore ? "16px" : { base: "16px", md: "67px" },
           top: "auto",
           right: inStore ? "20px" : { base: "16px", md: "40px" },

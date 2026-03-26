@@ -51,3 +51,11 @@ export const PAYMENT_TOKENS = [
   { address: ETH_ADDRESS, symbol: "ETH", decimals: 18 },
   { address: USDC_ADDRESS, symbol: "USDC", decimals: 6 },
 ] as const;
+
+export type PaymentToken = (typeof PAYMENT_TOKENS)[number];
+
+export function getPaymentToken(address: string): PaymentToken | undefined {
+  return PAYMENT_TOKENS.find(
+    (token) => token.address.toLowerCase() === address.toLowerCase()
+  );
+}
