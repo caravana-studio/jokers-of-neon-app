@@ -10,6 +10,7 @@ export interface LockedSlotProps {
   price?: number;
   discountPrice?: number;
   showPrice?: boolean;
+  opacity?: number;
 }
 
 export const LockedSlot = (props: LockedSlotProps) => {
