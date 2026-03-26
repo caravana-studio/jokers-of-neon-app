@@ -16,7 +16,6 @@ const COMMON_SETTINGS: Partial<Step> = {
   disableScrollParentFix: isMobile ? true : false,
   hideBackButton: true,
   data: { timeout: 0 },
-  showSkipButton: true,
 };
 
 export const TUTORIAL_STEPS: Step[] = [];

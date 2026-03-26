@@ -56,7 +56,6 @@ import { useCardData } from "./CardDataProvider.tsx";
 import { gameProviderDefaults } from "./gameProviderDefaults.ts";
 import { PracticeGameContext } from "./PracticeGameProvider.tsx";
 import { useSettings } from "./SettingsProvider.tsx";
-import { TutorialGameContext } from "./TutorialGameProvider.tsx";
 
 export interface IGameContext {
   executeCreateGame: (isTournament?: boolean) => void;
@@ -86,13 +85,8 @@ const GameContext = createContext<IGameContext>(gameProviderDefaults);
 
 export const useGameContext = () => {
   const location = useLocation();
-  const inTutorial = location.pathname === "/tutorial";
   const inPractice = location.pathname === "/practice";
-  const context = inTutorial
-    ? TutorialGameContext
-    : inPractice
-      ? PracticeGameContext
-      : GameContext;
+  const context = inPractice ? PracticeGameContext : GameContext;
   return useContext(context);
 };
 
@@ -290,7 +284,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
               setPreSelectionLocked(false);
               setRoundRewards(undefined);
               setState(GameStateEnum.NotSet);
-              navigate("/demo");
+              navigate("/round");
             } else {
               showErrorToast("Error creating game");
               console.error("Error creating game", response);
@@ -350,7 +344,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         addRerolls(response.detailEarned.rerolls);
     }
 
-    if (latestPathRef.current !== "/demo") {
+    if (latestPathRef.current !== "/round") {
       refetchGameStore(client, gameId, account.address).catch((error) => {
         console.error("Error refetching game state after background action", error);
       });
@@ -685,7 +679,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       console.log("[unlock-debug] game state changed to GameOver", {
         pathname: location.pathname,
       });
-      if (location.pathname === "/demo") {
+      if (location.pathname === "/round") {
         let cancelled = false;
         let timeoutId: number | undefined;
 
@@ -713,7 +707,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       }
     } else if (
       gameState === GameStateEnum.Store &&
-      location.pathname === "/demo"
+      location.pathname === "/round"
     ) {
       console.log("redirecting to store");
       navigate("/store");

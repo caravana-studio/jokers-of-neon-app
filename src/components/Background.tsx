@@ -89,6 +89,9 @@ const bgConfig: Record<string, { bg: BackgroundType; decoration?: boolean }> = {
   demo: {
     bg: BackgroundType.Game,
   },
+  round: {
+    bg: BackgroundType.Game,
+  },
   rewards: {
     bg: BackgroundType.Game,
   },

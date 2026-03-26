@@ -48,7 +48,6 @@ export const NewHome = () => {
   const { data: games } = useGetMyGames();
   const { fetchProfileData } = useProfileStore();
 
-  const [isTutorialModalOpen, setTutorialModalOpen] = useState(false);
   const [isVersionModalOpen, setVersionModalOpen] = useState(false);
   const [isGuestLoginModalOpen, setGuestLoginModalOpen] = useState(false);
   const [version, setVersion] = useState<string | null>(null);
@@ -135,17 +134,8 @@ export const NewHome = () => {
     if (games && games.length > 0) {
       navigate("/my-games");
     } else {
-      setTutorialModalOpen(true);
+      handleCreateGame();
     }
-  };
-
-  const handleCloseTutorialModal = () => {
-    setTutorialModalOpen(false);
-  };
-
-  const handleConfirmTutorial = () => {
-    navigate("/tutorial");
-    setTutorialModalOpen(false);
   };
 
   const handleGuestLoginClick = () => {
@@ -186,13 +176,6 @@ export const NewHome = () => {
         // ignore preferences error; nothing we can do in UI
       }
     }
-  };
-
-  const handleSkipTutorial = () => {
-    handleCreateGame();
-    setTutorialModalOpen(false);
-    logEvent("tutorial_skipped");
-    logEvent("tutorial_done");
   };
 
   return (
@@ -337,19 +320,6 @@ export const NewHome = () => {
           />
         )}
       </Flex>
-
-      {isTutorialModalOpen && (
-        <ConfirmationModal
-          close={handleCloseTutorialModal}
-          title={t("tutorialModal.title")}
-          description={t("tutorialModal.description")}
-          confirmText={t("tutorialModal.confirm-text")}
-          cancelText={t("tutorialModal.cancel-text")}
-          onCancel={handleSkipTutorial}
-          onConfirm={handleConfirmTutorial}
-          showCloseButton
-        />
-      )}
       {isVersionModalOpen && (
         <ConfirmationModal
           close={handleSkipVersion}

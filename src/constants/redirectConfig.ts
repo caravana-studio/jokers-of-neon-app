@@ -16,7 +16,7 @@ export const redirectConfig: RedirectRule[] = [
     redirectTo: "/loot-box-cards-selection",
   },
   {
-    originPaths: ["/loot-box-cards-selection", "/demo"],
+    originPaths: ["/loot-box-cards-selection", "/round", "/demo"],
     gameState: GameStateEnum.Store,
     redirectTo: "/store",
   },
@@ -28,12 +28,12 @@ export const redirectConfig: RedirectRule[] = [
   {
     originPaths: /^\/(?!map).*$/,
     gameState: GameStateEnum.Round,
-    redirectTo: "/demo",
+    redirectTo: "/round",
   },
   {
     originPaths: /^\/(?!map).*$/,
     gameState: GameStateEnum.Rage,
-    redirectTo: "/demo",
+    redirectTo: "/round",
   },
   {
     originPaths: "*",
@@ -43,10 +43,10 @@ export const redirectConfig: RedirectRule[] = [
 ];
 
 export const stateToPageMap: Record<GameStateEnum, string> = {
-  [GameStateEnum.Round]: "/demo",
-  [GameStateEnum.Rage]: "/demo",
+  [GameStateEnum.Round]: "/round",
+  [GameStateEnum.Rage]: "/round",
   [GameStateEnum.Reward]: "/store",
-  [GameStateEnum.Challenge]: "/demo",
+  [GameStateEnum.Challenge]: "/round",
   [GameStateEnum.Map]: "/map",
   [GameStateEnum.Store]: "/store",
   [GameStateEnum.Lootbox]: "/loot-box-cards-selection",

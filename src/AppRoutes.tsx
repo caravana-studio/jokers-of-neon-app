@@ -11,7 +11,6 @@ import { DynamicStorePage } from "./pages/DynamicStore/DynamicStorePage";
 import { ExternalPack } from "./pages/ExternalPack/ExternalPack";
 import { FreePackPage } from "./pages/FreePackPage";
 import { GamePage } from "./pages/Game/GamePage";
-import { GamePageTutorial } from "./pages/Game/GamePageTutorial";
 import { GameOver } from "./pages/GameOver/GameOver";
 import { Login } from "./pages/Login";
 import { ManagePage } from "./pages/Manage/ManagePage";
@@ -44,7 +43,6 @@ import { CardHighlightProvider } from "./providers/HighlightProvider/CardHighlig
 import { PowerupHighlightProvider } from "./providers/HighlightProvider/PowerupHighlightProvider";
 import { PracticeGameProvider } from "./providers/PracticeGameProvider";
 import { StoreProvider } from "./providers/StoreProvider";
-import TutorialGameProvider from "./providers/TutorialGameProvider";
 import { LoginGate } from "./utils/LoginGate";
 
 export const AppRoutes = () => {
@@ -149,7 +147,7 @@ export const AppRoutes = () => {
         }
       />
       <Route
-        path="/demo"
+        path="/round"
         element={
           <AnimatedPage>
             <GameStoreLoader>
@@ -158,6 +156,7 @@ export const AppRoutes = () => {
           </AnimatedPage>
         }
       />
+      <Route path="/demo" element={<Navigate to="/round" replace />} />
       <Route
         path="/my-games"
         element={
@@ -240,16 +239,6 @@ export const AppRoutes = () => {
               </GameStoreLoader>
             </AnimatedPage>
           </StoreProvider>
-        }
-      />
-      <Route
-        path="/tutorial"
-        element={
-          <TutorialGameProvider>
-            <AnimatedPage>
-              <GamePageTutorial />
-            </AnimatedPage>
-          </TutorialGameProvider>
         }
       />
       <Route

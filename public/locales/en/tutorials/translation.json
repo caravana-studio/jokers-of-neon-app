@@ -106,6 +106,34 @@
       "content-mobile": "Drag the modifier to the discard button to remove it. This won't cost you a discard."
     }
   },
+  "progressiveGame": {
+    "firstEntry": {
+      "title": "Welcome to your first Jokers of Neon run",
+      "objective": "Your goal is to score points by making poker hands.",
+      "selectTitle": "Build your hand",
+      "selectContent": "You can select up to 5 cards from your hand to build poker hands.",
+      "playsTitle": "Don't know poker hands?",
+      "playsContent": "We got you covered. Tap this button to see all possible hands."
+    },
+    "firstTwoSelected": {
+      "title": "Keep going",
+      "content": "You can play 3 times and discard 3 times per round."
+    },
+    "firstScore": {
+      "title": "Nice!",
+      "content": "You scored {{score}} points. You need {{targetScore}} points to clear the round."
+    }
+  },
+  "progressiveRewards": {
+    "firstEntry": {
+      "title": "Round rewards",
+      "overview": "Here you can see everything you earned after finishing the round.",
+      "efficiencyTitle": "Play efficiently",
+      "efficiencyContent": "The more hands and discards you keep, the more rewards you get.",
+      "totalTitle": "Final total",
+      "totalContent": "This is the final amount you take from this round."
+    }
+  },
   "joyride": {
     "back": "Back",
     "next": "Next",

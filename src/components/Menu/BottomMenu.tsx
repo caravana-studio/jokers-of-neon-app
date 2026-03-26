@@ -2,7 +2,6 @@ import { Flex } from "@chakra-ui/react";
 import { useState } from "react";
 import { matchPath, useLocation } from "react-router-dom";
 import { isNative } from "../../utils/capacitorUtils";
-import { isTutorial } from "../../utils/isTutorial";
 import { ContextMenuItem } from "./ContextMenuItem";
 import { GameMenuContent } from "./GameMenu/GameMenuContent";
 import { isInGamePath, useContextMenuItems } from "./useContextMenuItems";
@@ -13,7 +12,6 @@ export const BottomMenu = () => {
   const { mainMenuItems, inGameMenuItems } = useContextMenuItems({
     onMoreClick: () => setIsMenuOpen(true),
   });
-  const inTutorial = isTutorial();
   const hideBottomMenu = Boolean(
     matchPath(
       { path: "/shop-tier-unlocked/:gameId", end: true },
@@ -49,7 +47,6 @@ export const BottomMenu = () => {
               key={key}
               {...menuItem}
               nameKey={key}
-              disabled={inTutorial}
               pulse={item.pulse}
             />
           );

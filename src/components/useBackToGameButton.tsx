@@ -15,7 +15,7 @@ export const useBackToGameButton = () => {
     if (state !== GameStateEnum.NotStarted) {
       state === GameStateEnum.Store
         ? navigate("/store", { state: { lastTabIndex: 2 } })
-        : navigate("/demo", {
+        : navigate("/round", {
             state: { skipRageAnimation: true },
           });
     } else navigate(-1);

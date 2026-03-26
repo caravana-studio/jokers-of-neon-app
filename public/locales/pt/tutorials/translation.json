@@ -106,6 +106,34 @@
       "content-mobile": "Arraste o modificador para o botão de descarte para removê-lo. Isso não custará um descarte."
     }
   },
+  "progressiveGame": {
+    "firstEntry": {
+      "title": "Boas-vindas à sua primeira partida de Jokers of Neon",
+      "objective": "O objetivo é somar pontos montando mãos de pôquer.",
+      "selectTitle": "Monte sua jogada",
+      "selectContent": "Você pode selecionar até 5 cartas da sua mão para montar mãos de pôquer.",
+      "playsTitle": "Não conhece as mãos de pôquer?",
+      "playsContent": "Sem problema, a gente te ajuda. Toque neste botão para ver todas as jogadas possíveis."
+    },
+    "firstTwoSelected": {
+      "title": "Continue jogando",
+      "content": "Você pode jogar 3 vezes e descartar 3 vezes por rodada."
+    },
+    "firstScore": {
+      "title": "Boa!",
+      "content": "Você marcou {{score}} pontos. Precisa de {{targetScore}} pontos para passar da rodada."
+    }
+  },
+  "progressiveRewards": {
+    "firstEntry": {
+      "title": "Recompensas da rodada",
+      "overview": "Aqui você vê tudo o que ganhou ao terminar a rodada.",
+      "efficiencyTitle": "Jogue com eficiência",
+      "efficiencyContent": "Quanto mais mãos e descartes sobrarem, mais recompensas você recebe.",
+      "totalTitle": "Total final",
+      "totalContent": "Este é o total final que você leva desta rodada."
+    }
+  },
   "joyride": {
     "back": "Voltar",
     "next": "Próximo",

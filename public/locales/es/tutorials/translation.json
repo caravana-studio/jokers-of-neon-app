@@ -106,6 +106,34 @@
       "content-mobile": "Arrastra el modificador al botón de descarte para eliminarlo. No te costará un descarte."
     }
   },
+  "progressiveGame": {
+    "firstEntry": {
+      "title": "Bienvenido a tu primera partida de Jokers of Neon",
+      "objective": "El objetivo es sumar puntos haciendo jugadas de poker.",
+      "selectTitle": "Arma tu jugada",
+      "selectContent": "Podés seleccionar hasta 5 cartas de tu mano para armar manos de poker.",
+      "playsTitle": "¿No sabés las jugadas de poker?",
+      "playsContent": "No te preocupes, te ayudamos. Tocá este botón para ver todas las jugadas posibles."
+    },
+    "firstTwoSelected": {
+      "title": "Seguí jugando",
+      "content": "Tenés 3 plays y 3 descartes por ronda."
+    },
+    "firstScore": {
+      "title": "¡Bien hecho!",
+      "content": "Sumaste {{score}} puntos. Necesitás {{targetScore}} puntos para pasar de ronda."
+    }
+  },
+  "progressiveRewards": {
+    "firstEntry": {
+      "title": "Recompensas de ronda",
+      "overview": "Acá ves todo lo que ganaste al terminar la ronda.",
+      "efficiencyTitle": "Jugá con eficiencia",
+      "efficiencyContent": "Cuantas más manos y descartes te sobren, más recompensas recibís.",
+      "totalTitle": "Total ganado",
+      "totalContent": "Este es el total final que te llevás de esta ronda."
+    }
+  },
   "joyride": {
     "back": "Atrás",
     "next": "Siguiente",

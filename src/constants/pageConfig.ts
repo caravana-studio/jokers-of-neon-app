@@ -64,7 +64,7 @@ export const getPageConfig = (
       }),
     },
     {
-      path: "/demo",
+      path: "/round",
       getPageInfo: ({ tGame, isRageRound, isNodeLast, nodeRound, match }) => ({
         name: tGame("game-menu.pages.demo", {
           roundType: isRageRound

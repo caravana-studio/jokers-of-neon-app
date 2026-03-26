@@ -76,89 +76,95 @@ export const CompactRoundData = ({
           headingFontSize={levelHeadingFontSize}
           marginBottom={levelBottomSpacing}
         />
-        <Flex justify={rowJustify} gap={showPointsAndMulti ? 1 : 3} align="center">
-          <Box width={metricSectionWidth}>
-            <Text
-              textAlign={scoreTextAlign}
-              fontSize={labelFontSize}
-              textTransform="uppercase"
-              fontWeight="500"
-              whiteSpace="nowrap"
-              wordBreak="keep-all"
-              overflow="visible"
-            >
-              {t("my-score")}
-            </Text>
-            <Heading
-              textAlign={scoreTextAlign}
-              fontSize={valueFontSize}
-              mr={desktopTypographyBoost ? 0 : 0.5}
-              mt={-1}
-              variant="italic"
-              width={metricSectionWidth}
-            >
-              <RollingNumber n={currentScore} sound />
-            </Heading>
-          </Box>
-
-          {showPointsAndMulti && (
-            <Flex
-              align="center"
-              gap={numberGap}
-              className={
-                showTutorialTargets ? "game-tutorial-step-6" : undefined
-              }
-            >
-              <NumberBox
-                number={points}
-                color={BLUE_LIGHT}
-                large={desktopTypographyBoost}
-              />
-              <Text fontSize={xFontSize} fontWeight="bold">
-                x
+        <Box
+          className={
+            showTutorialTargets ? "game-tutorial-step-score-panel" : undefined
+          }
+        >
+          <Flex justify={rowJustify} gap={showPointsAndMulti ? 1 : 3} align="center">
+            <Box width={metricSectionWidth}>
+              <Text
+                textAlign={scoreTextAlign}
+                fontSize={labelFontSize}
+                textTransform="uppercase"
+                fontWeight="500"
+                whiteSpace="nowrap"
+                wordBreak="keep-all"
+                overflow="visible"
+              >
+                {t("my-score")}
               </Text>
-              <NumberBox
-                number={multi}
-                color={VIOLET}
-                spreadIncrease={5}
-                large={desktopTypographyBoost}
-              />
-            </Flex>
-          )}
+              <Heading
+                textAlign={scoreTextAlign}
+                fontSize={valueFontSize}
+                mr={desktopTypographyBoost ? 0 : 0.5}
+                mt={-1}
+                variant="italic"
+                width={metricSectionWidth}
+              >
+                <RollingNumber n={currentScore} sound />
+              </Heading>
+            </Box>
 
-          <Box
-            width={metricSectionWidth}
-            className={showTutorialTargets ? "game-tutorial-step-7" : undefined}
-          >
-            <Text
-              textAlign={targetTextAlign}
-              fontSize={labelFontSize}
-              textTransform="uppercase"
-              fontWeight="500"
-              whiteSpace="nowrap"
-              wordBreak="keep-all"
-              overflow="visible"
-            >
-              {t("target")}
-            </Text>
-            <Heading
-              textAlign={targetTextAlign}
+            {showPointsAndMulti && (
+              <Flex
+                align="center"
+                gap={numberGap}
+                className={
+                  showTutorialTargets ? "game-tutorial-step-6" : undefined
+                }
+              >
+                <NumberBox
+                  number={points}
+                  color={BLUE_LIGHT}
+                  large={desktopTypographyBoost}
+                />
+                <Text fontSize={xFontSize} fontWeight="bold">
+                  x
+                </Text>
+                <NumberBox
+                  number={multi}
+                  color={VIOLET}
+                  spreadIncrease={5}
+                  large={desktopTypographyBoost}
+                />
+              </Flex>
+            )}
+
+            <Box
               width={metricSectionWidth}
-              fontSize={valueFontSize}
-              ml={desktopTypographyBoost ? 0 : 0.5}
-              mt={-1}
-              variant="italic"
+              className={showTutorialTargets ? "game-tutorial-step-7" : undefined}
             >
-              <RollingNumber n={targetScore} />
-            </Heading>
-          </Box>
-        </Flex>
-        <ProgressBar
-          progress={(currentScore / targetScore) * 100}
-          playSound={play}
-          animated
-          height={progressBarHeight}
-        />
+              <Text
+                textAlign={targetTextAlign}
+                fontSize={labelFontSize}
+                textTransform="uppercase"
+                fontWeight="500"
+                whiteSpace="nowrap"
+                wordBreak="keep-all"
+                overflow="visible"
+              >
+                {t("target")}
+              </Text>
+              <Heading
+                textAlign={targetTextAlign}
+                width={metricSectionWidth}
+                fontSize={valueFontSize}
+                ml={desktopTypographyBoost ? 0 : 0.5}
+                mt={-1}
+                variant="italic"
+              >
+                <RollingNumber n={targetScore} />
+              </Heading>
+            </Box>
+          </Flex>
+          <ProgressBar
+            progress={(currentScore / targetScore) * 100}
+            playSound={play}
+            animated
+            height={progressBarHeight}
+          />
+        </Box>
         {showFooter && (
           <Flex
             w="100%"

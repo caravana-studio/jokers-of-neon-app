@@ -24,6 +24,7 @@ import {
   PRESELECTED_CARD_SECTION_ID,
 } from "../../constants/general.ts";
 import { GameStateEnum } from "../../dojo/typescript/custom.ts";
+import { useProgressiveGameTutorial } from "../../hooks/useProgressiveGameTutorial.ts";
 import { useGameContext } from "../../providers/GameProvider.tsx";
 import { useCardHighlight } from "../../providers/HighlightProvider/CardHighlightProvider.tsx";
 import { useCurrentHandStore } from "../../state/useCurrentHandStore.ts";
@@ -69,7 +70,19 @@ export const MobileGameContent = () => {
     gameLoading,
     gameError: error,
     id: gameId,
+    currentScore,
+    targetScore,
   } = useGameStore();
+  const {
+    run: runProgressiveTutorial,
+    steps: progressiveTutorialSteps,
+    locale: progressiveTutorialLocale,
+    handleCallback: onProgressiveTutorialCallback,
+  } = useProgressiveGameTutorial({
+    preSelectedCardsCount: preSelectedCards.length,
+    currentScore,
+    targetScore,
+  });
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -185,7 +198,7 @@ export const MobileGameContent = () => {
           default: {
             resetLevel();
             if (!gameId || gameId === 0) return navigate("/my-games");
-            else return navigate("/demo");
+            else return navigate("/round");
           }
         }
       }
@@ -308,6 +321,20 @@ export const MobileGameContent = () => {
         bottom={[1, 4]}
       >
         <Joyride
+          steps={progressiveTutorialSteps}
+          run={runProgressiveTutorial}
+          continuous
+          showProgress={false}
+          callback={onProgressiveTutorialCallback}
+          styles={TUTORIAL_STYLE}
+          locale={progressiveTutorialLocale}
+          disableCloseOnEsc
+          disableOverlayClose
+          hideCloseButton
+          spotlightClicks
+        />
+
+        <Joyride
           steps={TUTORIAL_STEPS}
           run={run}
           continuous
@@ -318,7 +345,6 @@ export const MobileGameContent = () => {
           stepIndex={stepIndex}
           disableCloseOnEsc
           disableOverlayClose
-          showSkipButton
           hideCloseButton
         />
       </Box>
