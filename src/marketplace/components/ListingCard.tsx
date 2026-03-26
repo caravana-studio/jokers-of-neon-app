@@ -9,19 +9,12 @@ import { useAddressUsername } from "../../hooks/useAddressUsername";
 import { useCardName } from "../hooks/useCardName";
 import { TokenIcon } from "./TokenIcon";
 import { RARITY_LABELS, RARITY_COLORS } from "../types/marketplace";
-import { PAYMENT_TOKENS } from "../config/contracts";
+import { getPaymentToken } from "../config/contracts";
 import { usePrices, toUsd, formatUsd } from "../hooks/usePrices";
 import type { Listing } from "../types/marketplace";
 
 interface ListingCardProps {
   listing: Listing;
-}
-
-function getTokenSymbol(address: string): string {
-  const token = PAYMENT_TOKENS.find(
-    (t) => t.address.toLowerCase() === address.toLowerCase()
-  );
-  return token?.symbol ?? "TOKEN";
 }
 
 const SKIN_BORDER_COLOR: Record<number, string> = {
@@ -30,11 +23,13 @@ const SKIN_BORDER_COLOR: Record<number, string> = {
 };
 
 export function ListingCard({ listing }: ListingCardProps) {
-  const symbol = getTokenSymbol(listing.payment_token);
+  const token = getPaymentToken(listing.payment_token);
+  const symbol = token?.symbol ?? "TOKEN";
+  const tokenAmount = formatTokenAmount(listing.price, token?.decimals ?? 18);
   const rarityLabel = RARITY_LABELS[listing.rarity] || "Common";
   const rarityColor = RARITY_COLORS[listing.rarity] || "#555";
   const prices = usePrices();
-  const usdLabel = formatUsd(toUsd(formatTokenAmount(listing.price), symbol, prices));
+  const usdLabel = formatUsd(toUsd(tokenAmount, symbol, prices));
   const sellerName = useAddressUsername(listing.seller_address);
   const cardName = useCardName(listing.card_id, listing.card_name);
   const nameColor = SKIN_NAME_COLOR[listing.skin_id] ?? "white";
@@ -100,7 +95,7 @@ export function ListingCard({ listing }: ListingCardProps) {
               fontWeight="bold"
               lineHeight={1}
             >
-              {formatTokenAmount(listing.price)}
+              {tokenAmount}
             </Text>
             <TokenIcon symbol={symbol} size="22px" />
           </HStack>

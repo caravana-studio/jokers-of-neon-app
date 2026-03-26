@@ -4,21 +4,15 @@ import { useMarketplaceStore } from "../state/marketplaceStore";
 import { usePrices, toUsd } from "./usePrices";
 import type { TokenPrices } from "./usePrices";
 import { formatTokenAmount } from "../utils/formatPrice";
-import { PAYMENT_TOKENS } from "../config/contracts";
+import { getPaymentToken } from "../config/contracts";
 import type { Listing } from "../types/marketplace";
 
 const LIMIT = 20;
 
-function getTokenSymbol(address: string): string {
-  const token = PAYMENT_TOKENS.find(
-    (t) => t.address.toLowerCase() === address.toLowerCase()
-  );
-  return token?.symbol ?? "TOKEN";
-}
-
 function listingUsd(listing: Listing, prices: TokenPrices): number | null {
-  const symbol = getTokenSymbol(listing.payment_token);
-  return toUsd(formatTokenAmount(listing.price), symbol, prices);
+  const token = getPaymentToken(listing.payment_token);
+  const symbol = token?.symbol ?? "TOKEN";
+  return toUsd(formatTokenAmount(listing.price, token?.decimals ?? 18), symbol, prices);
 }
 
 export function useListings() {

@@ -9,7 +9,7 @@ import { SkinBadge, SKIN_NAME_COLOR } from "./SkinBadge";
 import { formatTokenAmount } from "../utils/formatPrice";
 import { useCardName } from "../hooks/useCardName";
 import { RARITY_LABELS, RARITY_COLORS, getEffectiveStatus } from "../types/marketplace";
-import { PAYMENT_TOKENS } from "../config/contracts";
+import { getPaymentToken } from "../config/contracts";
 import { usePrices, toUsd, formatUsd } from "../hooks/usePrices";
 import { TokenIcon } from "./TokenIcon";
 import type { Listing } from "../types/marketplace";
@@ -20,13 +20,6 @@ interface MyListingCardProps {
   onRelist: (listing: Listing) => void;
   isCancelling: boolean;
   isRelisting: boolean;
-}
-
-function getTokenSymbol(address: string): string {
-  const token = PAYMENT_TOKENS.find(
-    (t) => t.address.toLowerCase() === address.toLowerCase()
-  );
-  return token?.symbol ?? "TOKEN";
 }
 
 const SKIN_BORDER_COLOR: Record<number, string> = {
@@ -82,12 +75,14 @@ function StatusLine({ listing, effectiveStatus }: { listing: Listing; effectiveS
 
 export function MyListingCard({ listing, onCancel, onRelist, isCancelling, isRelisting }: MyListingCardProps) {
   const { t } = useTranslation("marketplace");
-  const symbol = getTokenSymbol(listing.payment_token);
+  const token = getPaymentToken(listing.payment_token);
+  const symbol = token?.symbol ?? "TOKEN";
+  const tokenAmount = formatTokenAmount(listing.price, token?.decimals ?? 18);
   const cardName = useCardName(listing.card_id, listing.card_name);
   const rarityLabel = RARITY_LABELS[listing.rarity] || "Common";
   const rarityColor = RARITY_COLORS[listing.rarity] || "#555";
   const prices = usePrices();
-  const usdLabel = formatUsd(toUsd(formatTokenAmount(listing.price), symbol, prices));
+  const usdLabel = formatUsd(toUsd(tokenAmount, symbol, prices));
   const effectiveStatus = getEffectiveStatus(listing);
   const isTerminal = effectiveStatus !== "active";
   const STATUS_BADGE_LABEL: Record<string, string> = {
@@ -195,7 +190,7 @@ export function MyListingCard({ listing, onCancel, onRelist, isCancelling, isRel
             fontWeight="bold"
             lineHeight={1}
           >
-            {formatTokenAmount(listing.price)}
+            {tokenAmount}
           </Text>
           <TokenIcon symbol={symbol} size="22px" />
         </Flex>
