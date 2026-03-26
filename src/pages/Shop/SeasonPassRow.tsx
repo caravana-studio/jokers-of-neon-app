@@ -78,7 +78,7 @@ export const SeasonPassRow = ({
   const seasonNumber = useSeasonNumber();
   const isSeason2 = seasonNumber === 2;
 
-  const { purchaseSeasonPass } = useSeasonPass();
+  const { purchaseSeasonPass, refetchSeasonPassUnlocked } = useSeasonPass();
   const { connectors, connect } = useConnect();
   const { address: starknetAddress } = useAccount();
   const { buy: buyWithCrypto, status: cryptoStatus } = useCryptoPurchase();
@@ -133,7 +133,12 @@ export const SeasonPassRow = ({
     }
 
     try {
-      await buyWithCrypto(id, priceAtoms, id);
+      const result = await buyWithCrypto(id, priceAtoms, id);
+
+      if (!result.deliveryPending) {
+        await refetchSeasonPassUnlocked();
+      }
+
       toast({
         status: "success",
         title: t("crypto-success-title", {
