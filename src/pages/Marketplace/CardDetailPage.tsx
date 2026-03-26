@@ -199,6 +199,18 @@ export function CardDetailPage() {
               </HStack>
             </Box>
 
+            {/* Type */}
+            <Box>
+              <SectionLabel>{t("detail.type")}</SectionLabel>
+              <Text color="neonGreen" fontFamily="Oxanium" fontSize={{ base: "md", md: "lg" }} mt={3}>
+                {listing.card_id >= 10000 && listing.skin_id >= 2
+                  ? t("sell.typeSkinnedSpecial")
+                  : listing.card_id >= 10000
+                    ? t("sell.typeSpecial")
+                    : t("sell.typeTraditional")}
+              </Text>
+            </Box>
+
             {/* Price */}
             <Box>
               <SectionLabel>{t("detail.price")}</SectionLabel>

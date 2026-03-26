@@ -23,7 +23,7 @@ import {
 import { keyframes } from "@emotion/react";
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useAccount } from "@starknet-react/core";
 import { useUserCards } from "../../marketplace/hooks/useUserCards";
 import { useCreateListing } from "../../marketplace/hooks/useCreateListing";
@@ -272,7 +272,11 @@ function CardListingPreview({
                 fontSize={{ base: "md", md: "lg" }}
                 mt={3}
               >
-                {card.isSpecial ? t("sell.typeSpecial") : t("sell.typeTraditional")}
+                {card.isSpecial && card.skinId >= 2
+                  ? t("sell.typeSkinnedSpecial")
+                  : card.isSpecial
+                    ? t("sell.typeSpecial")
+                    : t("sell.typeTraditional")}
               </Text>
             </Box>
 
@@ -563,19 +567,23 @@ export function CreateListingPage() {
   const { t } = useTranslation("marketplace");
   const { status: walletStatus, address } = useAccount();
   const { cards, loading, error } = useUserCards();
-  const [selectedCard, setSelectedCard] = useState<UserCard | null>(null);
+  const location = useLocation();
+  const preselectedCard = (location.state as { preselectedCard?: UserCard } | null)?.preselectedCard ?? null;
+  const [selectedCard, setSelectedCard] = useState<UserCard | null>(preselectedCard);
   const [listedTokenIds, setListedTokenIds] = useState<Set<string>>(new Set());
   const [filterCategory, setFilterCategory] = useState<string | null>(null);
   const [filterRarity, setFilterRarity] = useState<number | null>(null);
   const [showAll, setShowAll] = useState(false);
   const navigate = useNavigate();
 
-  // Fetch seller's active listings to show LISTED badges
+  // Fetch seller's active/expired listings to show LISTED badges
   useEffect(() => {
     if (!address) return;
     getSellerListings(address).then(({ data }) => {
       const ids = new Set(
-        data.filter((l) => l.status === "active").map((l) => l.token_id)
+        data
+          .filter((l) => l.status === "active" || l.status === "expired")
+          .map((l) => l.token_id)
       );
       setListedTokenIds(ids);
     }).catch(() => {/* non-critical, ignore */});

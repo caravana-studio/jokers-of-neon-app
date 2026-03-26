@@ -40,6 +40,7 @@
   },
   "detail": {
     "title": "DETALLES",
+    "type": "Tipo",
     "rarity": "Rareza",
     "price": "Precio",
     "details": "Detalles",
@@ -55,6 +56,7 @@
     "nonMarketable": "No Comerciable",
     "type": "Tipo",
     "typeSpecial": "Especial",
+    "typeSkinnedSpecial": "Especial con Skin",
     "typeTraditional": "Tradicional",
     "rarity": "Rareza",
     "listingPrice": "Precio de Venta",
@@ -110,7 +112,10 @@
     "statusLineCancelled": "Cancelado",
     "statusLineExpired": "Vencido",
     "cancel": "Cancelar",
-    "expired": "Vencido"
+    "expired": "Vencido",
+    "tabExpired": "Vencidos",
+    "relist": "Relistar",
+    "expiredInfo": "Estos listados han vencido. Puedes relistarlos o cancelar para recuperar tu carta."
   },
   "buy": {
     "buyNow": "COMPRAR",

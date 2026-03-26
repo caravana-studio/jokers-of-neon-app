@@ -12,13 +12,15 @@ import {
 import { useEffect, useState, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useAccount } from "@starknet-react/core";
+import { useNavigate } from "react-router-dom";
 import { CallData } from "starknet";
 import { getSellerListings, cancelListing } from "../../marketplace/api/marketplace";
 import { MARKETPLACE_CONTRACT_ADDRESS } from "../../marketplace/config/contracts";
 import { MARKETPLACE_CARD_GRID_TEMPLATE_COLUMNS } from "../../marketplace/components/cardGridLayout";
 import { parseStarknetError } from "../../marketplace/utils/parseStarknetError";
 import { MyListingCard } from "../../marketplace/components/MyListingCard";
-import type { Listing, ListingStatus } from "../../marketplace/types/marketplace";
+import type { Listing, ListingStatus, UserCard } from "../../marketplace/types/marketplace";
+import { getEffectiveStatus } from "../../marketplace/types/marketplace";
 
 type FilterTab = "all" | ListingStatus;
 
@@ -28,15 +30,18 @@ export function MyListingsPage() {
   const TABS: { key: FilterTab; label: string }[] = [
     { key: "all",       label: t("myListings.tabAll") },
     { key: "active",    label: t("myListings.tabActive") },
+    { key: "expired",   label: t("myListings.tabExpired") },
     { key: "filled",    label: t("myListings.tabFilled") },
     { key: "cancelled", label: t("myListings.tabCancelled") },
   ];
 
   const { account, address, status: walletStatus } = useAccount();
+  const navigate = useNavigate();
   const [listings, setListings] = useState<Listing[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [cancellingId, setCancellingId] = useState<string | null>(null);
+  const [relistingId, setRelistingId] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<FilterTab>("all");
 
   const fetchListings = useCallback(async () => {
@@ -81,6 +86,43 @@ export function MyListingsPage() {
     }
   };
 
+  const handleRelist = async (listing: Listing) => {
+    if (!account) return;
+    setRelistingId(listing.id);
+    try {
+      const tx = await account.execute([
+        {
+          contractAddress: MARKETPLACE_CONTRACT_ADDRESS,
+          entrypoint: "cancel_order",
+          calldata: CallData.compile({ nonce: listing.nonce }),
+        },
+      ]);
+      await account.waitForTransaction(tx.transaction_hash);
+      await cancelListing(listing.id);
+      setListings((prev) => prev.filter((l) => l.id !== listing.id));
+
+      const preselectedCard: UserCard = {
+        tokenId: listing.token_id,
+        cardId: listing.card_id,
+        cardName: listing.card_name,
+        rarity: listing.rarity,
+        season: listing.season,
+        skinId: listing.skin_id,
+        quality: listing.quality,
+        marketable: true,
+        isSpecial: listing.card_id >= 10000,
+        count: 1,
+        owner: listing.seller_address,
+        skinRarity: 0,
+      };
+      navigate("/sell", { state: { preselectedCard } });
+    } catch (err) {
+      setError(parseStarknetError(err));
+    } finally {
+      setRelistingId(null);
+    }
+  };
+
   if (walletStatus !== "connected") {
     return (
       <VStack py={20} spacing={4}>
@@ -95,7 +137,7 @@ export function MyListingsPage() {
   const displayed =
     activeTab === "all"
       ? listings
-      : listings.filter((l) => l.status === activeTab);
+      : listings.filter((l) => getEffectiveStatus(l) === activeTab);
 
   return (
     <VStack spacing={6} align="stretch">
@@ -109,7 +151,7 @@ export function MyListingsPage() {
           const count =
             tab.key === "all"
               ? listings.length
-              : listings.filter((l) => l.status === tab.key).length;
+              : listings.filter((l) => getEffectiveStatus(l) === tab.key).length;
           const isActive = activeTab === tab.key;
           return (
             <Box
@@ -157,16 +199,25 @@ export function MyListingsPage() {
             : t("myListings.noStatusListings", { status: activeTab })}
         </Text>
       ) : (
-        <SimpleGrid templateColumns={MARKETPLACE_CARD_GRID_TEMPLATE_COLUMNS} spacing={4}>
-          {displayed.map((listing) => (
-            <MyListingCard
-              key={listing.id}
-              listing={listing}
-              onCancel={handleCancel}
-              isCancelling={cancellingId === listing.id}
-            />
-          ))}
-        </SimpleGrid>
+        <>
+          {activeTab === "expired" && displayed.length > 0 && (
+            <Text color="whiteAlpha.600" fontSize={13} fontFamily="Oxanium">
+              {t("myListings.expiredInfo")}
+            </Text>
+          )}
+          <SimpleGrid templateColumns={MARKETPLACE_CARD_GRID_TEMPLATE_COLUMNS} spacing={4}>
+            {displayed.map((listing) => (
+              <MyListingCard
+                key={listing.id}
+                listing={listing}
+                onCancel={handleCancel}
+                onRelist={handleRelist}
+                isCancelling={cancellingId === listing.id}
+                isRelisting={relistingId === listing.id}
+              />
+            ))}
+          </SimpleGrid>
+        </>
       )}
     </VStack>
   );

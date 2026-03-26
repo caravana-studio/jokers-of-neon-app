@@ -85,3 +85,10 @@ export const RARITY_COLORS: Record<number, string> = {
   4: "#A144B2",  // S - Epic
   5: "#f80023",  // SS - Legendary
 };
+
+export function getEffectiveStatus(listing: Listing): ListingStatus {
+  if (listing.status === "active" && listing.expiration < Math.floor(Date.now() / 1000)) {
+    return "expired";
+  }
+  return listing.status;
+}

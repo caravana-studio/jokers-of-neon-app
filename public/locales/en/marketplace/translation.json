@@ -40,6 +40,7 @@
   },
   "detail": {
     "title": "DETAILS",
+    "type": "Type",
     "rarity": "Rarity",
     "price": "Price",
     "details": "Details",
@@ -55,6 +56,7 @@
     "nonMarketable": "Non Marketable",
     "type": "Type",
     "typeSpecial": "Special",
+    "typeSkinnedSpecial": "Skinned Special",
     "typeTraditional": "Traditional",
     "rarity": "Rarity",
     "listingPrice": "Listing Price",
@@ -110,7 +112,10 @@
     "statusLineCancelled": "Cancelled",
     "statusLineExpired": "Expired",
     "cancel": "Cancel",
-    "expired": "Expired"
+    "expired": "Expired",
+    "tabExpired": "Expired",
+    "relist": "Re-list",
+    "expiredInfo": "These listings have expired. You can re-list them or cancel to reclaim your card."
   },
   "buy": {
     "buyNow": "BUY NOW",
