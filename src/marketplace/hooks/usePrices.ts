@@ -23,6 +23,7 @@ async function loadPrices() {
     cache = {
       STRK: strk?.price ? parseFloat(strk.price) : null,
       ETH: eth?.price ? parseFloat(eth.price) : null,
+      USDC: 1,
     };
     subscribers.forEach((cb) => cb(cache));
   } catch {}
