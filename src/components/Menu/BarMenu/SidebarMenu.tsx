@@ -1,4 +1,4 @@
-import { Box, Divider, Flex, Heading, Tooltip, useDisclosure } from "@chakra-ui/react";
+import { Box, Divider, Flex, Heading, Skeleton, Tooltip, useDisclosure } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -15,7 +15,7 @@ export const SidebarMenu = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const page = useCurrentPageInfo();
-  const { isTournament } = useGameStore();
+  const { isTournament, round, gameLoading } = useGameStore();
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "my-games",
   });
@@ -39,6 +39,8 @@ export const SidebarMenu = () => {
     });
 
   const inGame = isInGamePath(location.pathname);
+  const showRoundLoadingSkeleton =
+    location.pathname === "/demo" && (gameLoading || round <= 0);
 
   useEffect(() => {
     setTimeout(() => {
@@ -133,22 +135,32 @@ export const SidebarMenu = () => {
           cursor={"pointer"}
           flex={1}
         >
-          <AnimatedText duration={0.5} displayedText={page?.name ?? ""}>
-            <Heading
-              variant="italic"
-              as="div"
-              size={"sm"}
-              textTransform={"uppercase"}
-              flex={1}
-              sx={{
-                writingMode: "vertical-lr",
-                whiteSpace: "nowrap",
-                transform: "rotate(-180deg)",
-              }}
-            >
-              {animatedText}
-            </Heading>
-          </AnimatedText>
+          {showRoundLoadingSkeleton ? (
+            <Skeleton
+              height="110px"
+              width="12px"
+              borderRadius="999px"
+              startColor="whiteAlpha.300"
+              endColor="whiteAlpha.500"
+            />
+          ) : (
+            <AnimatedText duration={0.5} displayedText={page?.name ?? ""}>
+              <Heading
+                variant="italic"
+                as="div"
+                size={"sm"}
+                textTransform={"uppercase"}
+                flex={1}
+                sx={{
+                  writingMode: "vertical-lr",
+                  whiteSpace: "nowrap",
+                  transform: "rotate(-180deg)",
+                }}
+              >
+                {animatedText}
+              </Heading>
+            </AnimatedText>
+          )}
           {/*           <MenuBtn
             icon={page?.icon ?? Icons.CIRCLE}
             description={""}
