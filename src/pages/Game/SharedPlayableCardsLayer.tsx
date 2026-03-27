@@ -339,6 +339,21 @@ export const SharedPlayableCardsLayer = ({
     const previousCards = previousHandRef.current;
     const currentHandIndexes = new Set(hand.map((card) => card.idx));
     const currentHandAreaIndexes = new Set(handCards.map((card) => card.idx));
+    const isMobileRoundStartDeal =
+      isSmallScreen &&
+      previousCards.length === 0 &&
+      currentHandAreaIndexes.size > 0;
+
+    setFreshDealAnimationTokens((currentFreshTokens) => {
+      const nextFreshTokens = { ...currentFreshTokens };
+      Object.keys(nextFreshTokens).forEach((idx) => {
+        if (!currentHandAreaIndexes.has(Number(idx))) {
+          delete nextFreshTokens[Number(idx)];
+        }
+      });
+      return nextFreshTokens;
+    });
+
     setDealAnimationDelayByCard((currentDelays) => {
       const nextDelays = { ...currentDelays };
       Object.keys(nextDelays).forEach((idx) => {
@@ -365,6 +380,10 @@ export const SharedPlayableCardsLayer = ({
       );
 
       if (newlyDealtCardIndexes.length === 0) {
+        return cleanedTokens;
+      }
+
+      if (isMobileRoundStartDeal) {
         return cleanedTokens;
       }
 
@@ -422,6 +441,7 @@ export const SharedPlayableCardsLayer = ({
     dealStaggerSeconds,
     hand,
     handRenderData.newlyDealtCardIndexes,
+    isSmallScreen,
   ]);
 
   const refreshAnchorRects = useCallback(() => {
