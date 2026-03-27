@@ -67,6 +67,7 @@ export const NewHome = () => {
   const [isVersionModalOpen, setVersionModalOpen] = useState(false);
   const [isGuestLoginModalOpen, setGuestLoginModalOpen] = useState(false);
   const [version, setVersion] = useState<string | null>(null);
+  const [hasUnclaimedRewards, setHasUnclaimedRewards] = useState(false);
   const [desktopBannerScale, setDesktopBannerScale] = useState(1);
   const desktopBannerViewportRef = useRef<HTMLDivElement | null>(null);
   const desktopBannerContentRef = useRef<HTMLDivElement | null>(null);
@@ -280,10 +281,16 @@ export const NewHome = () => {
   return (
     <DelayedLoading ms={100}>
       <XpBoosterModal />
-      <FreePack
-        onClaimClick={useBurnerAcc ? handleOpenGuestLoginModal : undefined}
-      />
-      {!useBurnerAcc && <UnclaimedRewards />}
+      {(useBurnerAcc || !hasUnclaimedRewards) && (
+        <FreePack
+          onClaimClick={useBurnerAcc ? handleOpenGuestLoginModal : undefined}
+        />
+      )}
+      {!useBurnerAcc && (
+        <UnclaimedRewards
+          onRewardsAvailabilityChange={setHasUnclaimedRewards}
+        />
+      )}
       <PositionedDiscordLink />
       <MobileDecoration />
       {/*       <RemoveScroll>
