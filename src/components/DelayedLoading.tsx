@@ -27,6 +27,7 @@ export const DelayedLoading = ({
       <Flex
         h="100%"
         w="100%"
+        flexDir={"column"}
         opacity={delayedLoading ? 0 : 1}
         transform={delayedLoading ? "translateY(10px)" : "translateY(0px)"}
         transition="all 0.5s ease-in-out"
