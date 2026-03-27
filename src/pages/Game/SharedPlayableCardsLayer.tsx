@@ -861,7 +861,7 @@ export const SharedPlayableCardsLayer = ({
             animate={{
               x: targetPosition.left,
               y: targetPosition.top + tutorialOffsetY,
-              opacity: remainingPlays === 0 && !isPreselected ? 0.4 : 1,
+              opacity: 1,
               scale: 1,
               rotate: 0,
             }}
@@ -898,6 +898,33 @@ export const SharedPlayableCardsLayer = ({
           </motion.div>
         );
       })}
+      {remainingPlays === 0 && (
+        <Flex
+          position="absolute"
+          left={`${layoutRects.hand.left}px`}
+          top={`${layoutRects.hand.top}px`}
+          width={`${layoutRects.hand.width}px`}
+          height={`${layoutRects.hand.height}px`}
+          alignItems="center"
+          justifyContent="center"
+          borderRadius={isSmallScreen ? "12px" : "16px"}
+          bg="rgba(4, 8, 18, 0.58)"
+          px={3}
+          textAlign="center"
+          pointerEvents="auto"
+          zIndex={1200}
+        >
+          <Text
+            fontSize={isSmallScreen ? "sm" : "md"}
+            fontStyle="italic"
+            fontWeight="semibold"
+            textShadow="0 1px 4px rgba(0, 0, 0, 0.9)"
+            color="white"
+          >
+            {t("game.hand-section.no-cards-label")}
+          </Text>
+        </Flex>
+      )}
     </motion.div>
   );
 };
