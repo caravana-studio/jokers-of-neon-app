@@ -11,6 +11,7 @@ import { CARDS_SUIT_DATA } from "../data/traditionalCards";
 import { changeCardNeon } from "../utils/cardTransformation/changeCardNeon";
 import { changeCardSuit } from "../utils/cardTransformation/changeCardSuit";
 import { sortCards } from "../utils/sortCards";
+import { datadogRum } from "../monitoring/datadogRum";
 
 type CurrentHandStore = {
   hand: Card[];
@@ -44,9 +45,47 @@ type CurrentHandStore = {
 };
 
 const MAX_PRESELECTED_CARDS = 5;
+const reportedMissingModifierReferences = new Set<string>();
 
 const filterInvalidCards = (cards: Card[]) => {
   return cards.filter((card) => card.card_id !== 9999);
+};
+
+const sanitizePreselectedState = (
+  hand: Card[],
+  preSelectedCards: number[],
+  preSelectedModifiers: { [key: number]: number[] }
+) => {
+  const validCardIndexes = new Set(hand.map((card) => card.idx));
+  const nextPreSelectedCards = preSelectedCards.filter((idx) =>
+    validCardIndexes.has(idx)
+  );
+
+  const nextPreSelectedModifiers: { [key: number]: number[] } = {};
+  let removedReferences = 0;
+
+  Object.entries(preSelectedModifiers).forEach(([cardIdx, modifierIndexes]) => {
+    const parsedCardIdx = Number(cardIdx);
+    if (!validCardIndexes.has(parsedCardIdx)) {
+      removedReferences += modifierIndexes.length;
+      return;
+    }
+
+    const nextModifierIndexes = modifierIndexes.filter((modifierIdx) =>
+      validCardIndexes.has(modifierIdx)
+    );
+    removedReferences += modifierIndexes.length - nextModifierIndexes.length;
+
+    if (nextModifierIndexes.length > 0) {
+      nextPreSelectedModifiers[parsedCardIdx] = nextModifierIndexes;
+    }
+  });
+
+  return {
+    nextPreSelectedCards,
+    nextPreSelectedModifiers,
+    removedReferences,
+  };
 };
 
 export const useCurrentHandStore = create<CurrentHandStore>((set, get) => ({
@@ -62,17 +101,58 @@ export const useCurrentHandStore = create<CurrentHandStore>((set, get) => ({
   cardTransformationLock: false,
 
   refetchCurrentHandStore: async (client, gameId) => {
-    const { sortBy } = get();
+    const { sortBy, preSelectedCards, preSelectedModifiers } = get();
     const hand = await getHandCards(client, gameId, sortBy);
+    const filteredHand = filterInvalidCards(hand);
+    const {
+      nextPreSelectedCards,
+      nextPreSelectedModifiers,
+      removedReferences,
+    } = sanitizePreselectedState(
+      filteredHand,
+      preSelectedCards,
+      preSelectedModifiers
+    );
+
+    if (removedReferences > 0) {
+      datadogRum.addAction("game.preselection_sanitized_on_refetch", {
+        removedReferences,
+        gameId,
+      });
+    }
+
     set({
-      hand: filterInvalidCards(hand),
+      hand: filteredHand,
+      preSelectedCards: nextPreSelectedCards,
+      preSelectedModifiers: nextPreSelectedModifiers,
     });
     set({ maxPreSelectedCards: MAX_PRESELECTED_CARDS });
   },
 
   replaceCards: (cards: Card[]) => {
-    const { sortBy } = get();
-    set({ hand: sortCards(filterInvalidCards(cards), sortBy) });
+    const { sortBy, preSelectedCards, preSelectedModifiers } = get();
+    const nextHand = sortCards(filterInvalidCards(cards), sortBy);
+    const {
+      nextPreSelectedCards,
+      nextPreSelectedModifiers,
+      removedReferences,
+    } = sanitizePreselectedState(
+      nextHand,
+      preSelectedCards,
+      preSelectedModifiers
+    );
+
+    if (removedReferences > 0) {
+      datadogRum.addAction("game.preselection_sanitized_on_replace_cards", {
+        removedReferences,
+      });
+    }
+
+    set({
+      hand: nextHand,
+      preSelectedCards: nextPreSelectedCards,
+      preSelectedModifiers: nextPreSelectedModifiers,
+    });
   },
 
   toggleSortBy: () => {
@@ -142,12 +222,29 @@ export const useCurrentHandStore = create<CurrentHandStore>((set, get) => ({
 
   getModifiers: (preSelectedCardIndex: number) => {
     const { preSelectedModifiers, hand } = get();
-    const modifierIndexes = preSelectedModifiers[preSelectedCardIndex];
-    return (
-      modifierIndexes?.map((modifierIdx) => {
-        return hand.find((c) => c.idx === modifierIdx)!;
-      }) ?? []
-    );
+    const modifierIndexes = preSelectedModifiers[preSelectedCardIndex] ?? [];
+    const handByIdx = new Map(hand.map((card) => [card.idx, card]));
+    const modifiers: Card[] = [];
+
+    modifierIndexes.forEach((modifierIdx) => {
+      const modifierCard = handByIdx.get(modifierIdx);
+      if (modifierCard) {
+        modifiers.push(modifierCard);
+        return;
+      }
+
+      const reportKey = `${preSelectedCardIndex}:${modifierIdx}`;
+      if (!reportedMissingModifierReferences.has(reportKey)) {
+        reportedMissingModifierReferences.add(reportKey);
+        datadogRum.addAction("game.missing_modifier_reference", {
+          preSelectedCardIndex,
+          modifierIdx,
+          handSize: hand.length,
+        });
+      }
+    });
+
+    return modifiers;
   },
 
   clearPreSelection: () => {
