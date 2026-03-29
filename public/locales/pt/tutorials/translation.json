@@ -116,8 +116,10 @@
       "playsContent": "Sem problema, a gente te ajuda. Toque neste botão para ver todas as jogadas possíveis."
     },
     "firstTwoSelected": {
-      "title": "Continue jogando",
-      "content": "Você pode jogar 3 vezes e descartar 3 vezes por rodada."
+      "playTitle": "Continue jogando",
+      "playContent": "Você tem 3 jogadas por rodada.",
+      "discardTitle": "Use seus descartes",
+      "discardContent": "Você também tem 3 descartes por rodada."
     },
     "firstScore": {
       "title": "Boa!",
@@ -134,11 +136,23 @@
       "totalContent": "Este é o total final que você leva desta rodada."
     }
   },
+  "progressiveMap": {
+    "firstEntry": {
+      "title": "Bem-vindo ao mapa",
+      "welcome": "Bem-vindo ao mapa do nível 1.",
+      "pathsTitle": "Escolha seu caminho",
+      "pathsContent": "Você pode escolher caminhos diferentes para avançar.",
+      "shopTitle": "Lojas disponíveis",
+      "shopContent": "Escolha uma das lojas disponíveis para avançar.",
+      "shopTypesTitle": "Tipos de loja",
+      "shopTypesContent": "Cada tipo de loja tem itens diferentes."
+    }
+  },
   "joyride": {
     "back": "Voltar",
     "next": "Próximo",
     "skip": "Pular",
     "close": "Fechar",
-    "last": "Finalizar"
+    "last": "Continuar"
   }
 }

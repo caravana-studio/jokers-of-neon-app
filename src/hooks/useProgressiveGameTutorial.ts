@@ -116,11 +116,16 @@ export const useProgressiveGameTutorial = ({
     if (activeTutorialId === PROGRESSIVE_TUTORIAL_IDS.GAME_FIRST_TWO_SELECTED) {
       return [
         {
-          target: ".game-tutorial-intro",
-          placement: "center",
+          target: ".game-tutorial-step-4",
           disableBeacon: true,
-          title: t("progressiveGame.firstTwoSelected.title"),
-          content: t("progressiveGame.firstTwoSelected.content"),
+          title: t("progressiveGame.firstTwoSelected.playTitle"),
+          content: t("progressiveGame.firstTwoSelected.playContent"),
+        },
+        {
+          target: ".game-tutorial-step-3",
+          disableBeacon: true,
+          title: t("progressiveGame.firstTwoSelected.discardTitle"),
+          content: t("progressiveGame.firstTwoSelected.discardContent"),
         },
       ];
     }

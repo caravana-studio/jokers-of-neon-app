@@ -116,8 +116,10 @@
       "playsContent": "We got you covered. Tap this button to see all possible hands."
     },
     "firstTwoSelected": {
-      "title": "Keep going",
-      "content": "You can play 3 times and discard 3 times per round."
+      "playTitle": "Keep going",
+      "playContent": "You have 3 plays per round.",
+      "discardTitle": "Use your discards",
+      "discardContent": "You also have 3 discards per round."
     },
     "firstScore": {
       "title": "Nice!",
@@ -134,11 +136,23 @@
       "totalContent": "This is the final amount you take from this round."
     }
   },
+  "progressiveMap": {
+    "firstEntry": {
+      "title": "Welcome to the map",
+      "welcome": "Welcome to the level 1 map.",
+      "pathsTitle": "Choose your path",
+      "pathsContent": "You can choose different paths to move forward.",
+      "shopTitle": "Available shops",
+      "shopContent": "Choose one of the available shops to advance.",
+      "shopTypesTitle": "Shop types",
+      "shopTypesContent": "Each type of shop offers different items."
+    }
+  },
   "joyride": {
     "back": "Back",
     "next": "Next",
     "skip": "Skip",
     "close": "Close",
-    "last": "Finish"
+    "last": "Continue"
   }
 }

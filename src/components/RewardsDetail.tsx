@@ -136,6 +136,7 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
       transition={{ delay: 0.5, duration: 0.5, ease: "easeOut" }}
     >
       <Heading
+        className="rewards-tutorial-title"
         size={level_passed || !isSmallScreen ? "lg" : "sm"}
         variant="italic"
         textShadow={level_passed ? `0 0 8px ${VIOLET_LIGHT}` : "none"}

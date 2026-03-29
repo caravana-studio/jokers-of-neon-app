@@ -116,8 +116,10 @@
       "playsContent": "No te preocupes, te ayudamos. Tocá este botón para ver todas las jugadas posibles."
     },
     "firstTwoSelected": {
-      "title": "Seguí jugando",
-      "content": "Tenés 3 plays y 3 descartes por ronda."
+      "playTitle": "Seguí jugando",
+      "playContent": "Tenés 3 plays por ronda.",
+      "discardTitle": "Aprovechá tus descartes",
+      "discardContent": "También tenés 3 descartes por ronda."
     },
     "firstScore": {
       "title": "¡Bien hecho!",
@@ -126,12 +128,24 @@
   },
   "progressiveRewards": {
     "firstEntry": {
-      "title": "Recompensas de ronda",
-      "overview": "Acá ves todo lo que ganaste al terminar la ronda.",
+      "title": "¡Bien hecho! Superaste la primera ronda",
+      "overview": "",
       "efficiencyTitle": "Jugá con eficiencia",
       "efficiencyContent": "Cuantas más manos y descartes te sobren, más recompensas recibís.",
       "totalTitle": "Total ganado",
-      "totalContent": "Este es el total final que te llevás de esta ronda."
+      "totalContent": "Esta es la cantidad de monedas que te llevás de esta ronda. Las podrás usar en las tiendas."
+    }
+  },
+  "progressiveMap": {
+    "firstEntry": {
+      "title": "Bienvenido al mapa",
+      "welcome": "Bienvenido al mapa del nivel 1.",
+      "pathsTitle": "Elegí tu camino",
+      "pathsContent": "Podés elegir diferentes caminos para avanzar.",
+      "shopTitle": "Tiendas disponibles",
+      "shopContent": "Elegí una de las tiendas disponibles para avanzar.",
+      "shopTypesTitle": "Tipos de tienda",
+      "shopTypesContent": "Cada tipo de tienda tiene diferentes ítems."
     }
   },
   "joyride": {
@@ -139,6 +153,6 @@
     "next": "Siguiente",
     "skip": "Saltar",
     "close": "Cerrar",
-    "last": "Finalizar"
+    "last": "Continuar"
   }
 }

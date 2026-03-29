@@ -8,19 +8,27 @@ import {
   setProgressiveTutorialCompleted,
 } from "../utils/progressiveTutorialStorage";
 
-export const useProgressiveRewardsTutorial = () => {
+interface UseProgressiveMapTutorialProps {
+  canStart: boolean;
+}
+
+export const useProgressiveMapTutorial = ({
+  canStart,
+}: UseProgressiveMapTutorialProps) => {
   const { t } = useTranslation("tutorials");
   const [run, setRun] = useState(false);
 
   useEffect(() => {
+    if (!canStart) return;
+
     const completed = getProgressiveTutorialState();
-    if (!completed[PROGRESSIVE_TUTORIAL_IDS.REWARDS_FIRST_ENTRY]) {
+    if (!completed[PROGRESSIVE_TUTORIAL_IDS.MAP_FIRST_ENTRY]) {
       setRun(true);
     }
-  }, []);
+  }, [canStart]);
 
   const completeTutorial = useCallback(() => {
-    setProgressiveTutorialCompleted(PROGRESSIVE_TUTORIAL_IDS.REWARDS_FIRST_ENTRY);
+    setProgressiveTutorialCompleted(PROGRESSIVE_TUTORIAL_IDS.MAP_FIRST_ENTRY);
     setRun(false);
   }, []);
 
@@ -40,22 +48,29 @@ export const useProgressiveRewardsTutorial = () => {
   const steps = useMemo<Step[]>(
     () => [
       {
-        target: ".rewards-tutorial-title",
+        target: ".map-tutorial-level",
         disableBeacon: true,
-        title: t("progressiveRewards.firstEntry.title"),
-        content: t("progressiveRewards.firstEntry.overview"),
+        title: t("progressiveMap.firstEntry.title"),
+        content: t("progressiveMap.firstEntry.welcome"),
       },
       {
-        target: ".rewards-tutorial-efficiency",
+        target: ".map-tutorial-graph",
+        placement: "center",
         disableBeacon: true,
-        title: t("progressiveRewards.firstEntry.efficiencyTitle"),
-        content: t("progressiveRewards.firstEntry.efficiencyContent"),
+        title: t("progressiveMap.firstEntry.pathsTitle"),
+        content: t("progressiveMap.firstEntry.pathsContent"),
       },
       {
-        target: ".rewards-tutorial-total",
+        target: ".map-tutorial-store-node",
         disableBeacon: true,
-        title: t("progressiveRewards.firstEntry.totalTitle"),
-        content: t("progressiveRewards.firstEntry.totalContent"),
+        title: t("progressiveMap.firstEntry.shopTitle"),
+        content: t("progressiveMap.firstEntry.shopContent"),
+      },
+      {
+        target: ".map-tutorial-store-node",
+        disableBeacon: true,
+        title: t("progressiveMap.firstEntry.shopTypesTitle"),
+        content: t("progressiveMap.firstEntry.shopTypesContent"),
       },
     ],
     [t]
@@ -68,3 +83,4 @@ export const useProgressiveRewardsTutorial = () => {
     handleCallback,
   };
 };
+

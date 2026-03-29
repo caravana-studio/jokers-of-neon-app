@@ -86,6 +86,7 @@ const StoreNode = memo(({ data }: any) => {
       placement="right"
     >
       <Box
+        className="map-tutorial-store-node"
         style={{
           background:
             data.current || data.visited

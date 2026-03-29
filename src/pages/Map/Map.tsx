@@ -6,12 +6,15 @@ import EmojiNode from "./nodes/EmojiNode";
 import { Flex } from "@chakra-ui/react";
 import { useEffect, useMemo, useRef } from "react";
 import { useTranslation } from "react-i18next";
+import Joyride from "react-joyride";
 import { MobileBottomBar } from "../../components/MobileBottomBar";
 import { MobileDecoration } from "../../components/MobileDecoration";
 import { useBackToGameButton } from "../../components/useBackToGameButton";
+import { TUTORIAL_STYLE } from "../../constants/gameTutorial";
 import { GameStateEnum } from "../../dojo/typescript/custom";
 import { useDojo } from "../../dojo/useDojo";
 import { useCustomNavigate } from "../../hooks/useCustomNavigate";
+import { useProgressiveMapTutorial } from "../../hooks/useProgressiveMapTutorial";
 import { useMap } from "../../providers/MapProvider";
 import { useStore } from "../../providers/StoreProvider";
 import { useGameStore } from "../../state/useGameStore";
@@ -68,6 +71,14 @@ export const Map = () => {
   const { handleNodeNavigation } = useNodeNavigation();
   const { refetch: refetchStore } = useStore();
   const hasInitialFitView = useRef(false);
+  const {
+    run: runMapTutorial,
+    steps: mapTutorialSteps,
+    locale: mapTutorialLocale,
+    handleCallback: onMapTutorialCallback,
+  } = useProgressiveMapTutorial({
+    canStart: layoutReady && nodes.length > 0,
+  });
 
   const translateExtent = useMemo<CoordinateExtent | undefined>(() => {
     if (nodes.length === 0) return undefined;
@@ -157,7 +168,22 @@ export const Map = () => {
   };
 
   return (
-    <div style={{ height: "100%", width: "100%", zIndex: 10 }}>
+    <div
+      className="map-tutorial-graph"
+      style={{ height: "100%", width: "100%", zIndex: 10 }}
+    >
+      <Joyride
+        steps={mapTutorialSteps}
+        run={runMapTutorial}
+        continuous
+        showProgress={false}
+        callback={onMapTutorialCallback}
+        styles={TUTORIAL_STYLE}
+        locale={mapTutorialLocale}
+        disableCloseOnEsc
+        disableOverlayClose
+        hideCloseButton
+      />
       <MobileDecoration fadeToBlack />
       <Flex
         position="absolute"
