@@ -1048,6 +1048,10 @@
     "20026": {
       "name": "Blackout",
       "description": "Dos de tus cartas especiales actuales quedan silenciadas durante esta ronda"
+    },
+    "20027": {
+      "name": "Mandato del Faraón",
+      "description": "Debes jugar 3 o más cartas en esta ronda."
     }
   },
   "lootBoxes": {

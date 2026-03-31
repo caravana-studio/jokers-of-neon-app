@@ -1048,6 +1048,10 @@
     "20026": {
       "name": "Blackout",
       "description": "Two of your current special cards get silenced for this round"
+    },
+    "20027": {
+      "name": "Pharaoh's Mandate",
+      "description": "You must play 3 or more cards this round."
     }
   },
   "lootBoxes": {
