@@ -424,6 +424,62 @@
     "10214": {
       "name": "Robo Inmortal",
       "description": "La primera mano que descartas en cada ronda sube de nivel."
+    },
+    "10301": {
+      "name": "Doses Salvajes",
+      "description": "Todos los 2s se consideran comodines."
+    },
+    "10302": {
+      "name": "Mano de Midas",
+      "description": "Si al menos el ^blue(50%)^ de las cartas jugadas son Diamantes, gana ^yellow(+250 monedas)^."
+    },
+    "10303": {
+      "name": "Carga de Descarte",
+      "description": "Gana ^violet(+2 multi)^ por cada descarte. Se reinicia al jugar una mano."
+    },
+    "10304": {
+      "name": "Comodín de Bolsillo",
+      "description": "Comienza cada ronda con un Comodín en la mano. No se agrega a tu mazo."
+    },
+    "10305": {
+      "name": "Custodio de Tréboles",
+      "description": "Gana ^blue(+5 puntos)^ (acumulativos) por cada carta de Trébol en tu mazo. Actualmente ^blue(+{{points}} puntos)^."
+    },
+    "10306": {
+      "name": "Adrenalina",
+      "description": "Gana ^blue(+50 puntos)^ (acumulativos) por cada carta de Furia en la ronda. Actualmente ^blue(+{{points}} puntos)^."
+    },
+    "10307": {
+      "name": "Fiebre de Botín",
+      "description": "Las tiendas ofrecen ^blue(+1 caja de botín)^ y todas las cajas de botín cuestan ^yellow(25% menos)^."
+    },
+    "10308": {
+      "name": "Disparo de Práctica",
+      "description": "Cada jugada o descarte tiene ^yellow(25% de probabilidad)^ de no consumirse."
+    },
+    "10309": {
+      "name": "Réplica",
+      "description": "Después de cada carta de Furia, crea una carta especial temporal aleatoria."
+    },
+    "10310": {
+      "name": "Apego Extremo",
+      "description": "Gana ^blue(+25 puntos)^ (acumulativos) cada vez que repites la misma mano. Se reinicia cuando juegas una mano diferente. Actualmente ^blue(+{{points}} puntos)^."
+    },
+    "10311": {
+      "name": "Redoblar",
+      "description": "Suma los ^blue(puntos)^ base de la mano jugada."
+    },
+    "10312": {
+      "name": "Bendición Real",
+      "description": "Cada ESCALERA REAL jugada sube de nivel una mano aleatoria en 1."
+    },
+    "10313": {
+      "name": "Disposofobia",
+      "description": "TRÍO, PÓKER y REPÓKER tienen ^yellow(50% de probabilidad)^ de acumular recompensas: ^yellow(+15 monedas)^, ^blue(+15 puntos)^ y ^violet(+1 multi)^, respectivamente. Actualmente ^yellow(+{{cash}} monedas)^, ^blue(+{{points}} puntos)^ y ^violet(+{{multi}} multi)^."
+    },
+    "10314": {
+      "name": "Ouroboros",
+      "description": "Cada ronda copia el efecto de una carta especial aleatoria."
     }
   },
   "power-ups": {

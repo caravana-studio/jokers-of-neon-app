@@ -860,6 +860,62 @@
     "10214": {
       "name": "Undying Draw",
       "description": "The first hand you discard each round is leveled up."
+    },
+    "10301": {
+      "name": "Wild Deuces",
+      "description": "All 2s are considered wildcards."
+    },
+    "10302": {
+      "name": "Midas Hand",
+      "description": "If at least ^blue(50%)^ of the played cards are Diamonds, earn ^yellow(+250 cash)^."
+    },
+    "10303": {
+      "name": "Discard Charge",
+      "description": "Gains ^violet(+2 multi)^ for each discard. Resets after you play a hand."
+    },
+    "10304": {
+      "name": "Pocket Joker",
+      "description": "Start each round with a Joker in hand. It is not added to your deck."
+    },
+    "10305": {
+      "name": "Club Keeper",
+      "description": "Gains ^blue(+5 points)^ (stacking) for each Club card in your deck. Currently ^blue(+{{points}} points)^."
+    },
+    "10306": {
+      "name": "Adrenaline",
+      "description": "Gains ^blue(+50 points)^ (stacking) for each Rage card in the round. Currently ^blue(+{{points}} points)^."
+    },
+    "10307": {
+      "name": "Loot Rush",
+      "description": "Shops offer ^blue(+1 loot box)^, and all loot boxes cost ^yellow(25% less)^."
+    },
+    "10308": {
+      "name": "Practice Shoot",
+      "description": "Each play or discard has a ^yellow(25% chance)^ to not be consumed."
+    },
+    "10309": {
+      "name": "Aftershock",
+      "description": "After each Rage, create a random temporary special card."
+    },
+    "10310": {
+      "name": "Extreme Attachment",
+      "description": "Gains ^blue(+25 points)^ (stacking) each time you repeat the same hand. Resets when you play a different hand. Currently ^blue(+{{points}} points)^."
+    },
+    "10311": {
+      "name": "Double Down",
+      "description": "Adds the base ^blue(points)^ of the played hand."
+    },
+    "10312": {
+      "name": "Royal Blessing",
+      "description": "Each ROYAL FLUSH you play levels up a random hand by 1."
+    },
+    "10313": {
+      "name": "Disposophobia",
+      "description": "THREE OF A KIND, FOUR OF A KIND, and FIVE OF A KIND each have a ^yellow(50% chance)^ to accumulate rewards: ^yellow(+15 cash)^, ^blue(+15 points)^, and ^violet(+1 multi)^, respectively. Currently ^yellow(+{{cash}} cash)^, ^blue(+{{points}} points)^, and ^violet(+{{multi}} multi)^."
+    },
+    "10314": {
+      "name": "Ouroboros",
+      "description": "Each round, copies the effect of a random special card."
     }
   },
   "power-ups": {

@@ -424,6 +424,62 @@
     "10214": {
       "name": "Compra Imortal",
       "description": "A primeira mão que você descarta em cada rodada sobe de nível."
+    },
+    "10301": {
+      "name": "Duques Selvagens",
+      "description": "Todos os 2s são considerados jokers."
+    },
+    "10302": {
+      "name": "Mão de Midas",
+      "description": "Se pelo menos ^blue(50%)^ das cartas jogadas forem de Ouros, ganhe ^yellow(+250 moedas)^."
+    },
+    "10303": {
+      "name": "Carga de Descarte",
+      "description": "Ganha ^violet(+2 multi)^ por cada descarte. Reinicia ao jogar uma mão."
+    },
+    "10304": {
+      "name": "Joker de Bolso",
+      "description": "Comece cada rodada com um Joker na mão. Ele não é adicionado ao seu baralho."
+    },
+    "10305": {
+      "name": "Zelador de Paus",
+      "description": "Ganhe ^blue(+5 pontos)^ (acumulativos) para cada carta de Paus no seu baralho. Atualmente ^blue(+{{points}} pontos)^."
+    },
+    "10306": {
+      "name": "Adrenalina",
+      "description": "Ganhe ^blue(+50 pontos)^ (acumulativos) para cada carta de Rage na rodada. Atualmente ^blue(+{{points}} pontos)^."
+    },
+    "10307": {
+      "name": "Corrida do Saque",
+      "description": "As lojas oferecem ^blue(+1 baú)^, e todos os baús custam ^yellow(25% menos)^."
+    },
+    "10308": {
+      "name": "Tiro de Prática",
+      "description": "Cada jogada ou descarte tem ^yellow(25% de chance)^ de não ser consumido."
+    },
+    "10309": {
+      "name": "Réplica",
+      "description": "Depois de cada Rage, crie uma carta especial temporária aleatória."
+    },
+    "10310": {
+      "name": "Apego Extremo",
+      "description": "Ganhe ^blue(+25 pontos)^ (acumulativos) cada vez que repete a mesma mão. Reinicia quando você joga uma mão diferente. Atualmente ^blue(+{{points}} pontos)^."
+    },
+    "10311": {
+      "name": "Dobrar a Aposta",
+      "description": "Adiciona os ^blue(pontos)^ base da mão jogada."
+    },
+    "10312": {
+      "name": "Bênção Real",
+      "description": "Cada Royal Flush jogado aumenta em 1 o nível de uma mão aleatória."
+    },
+    "10313": {
+      "name": "Disposofobia",
+      "description": "TRINCA, QUADRA e QUINTETO têm ^yellow(50% de chance)^ de acumular recompensas: ^yellow(+15 moedas)^, ^blue(+15 pontos)^ e ^violet(+1 multi)^, respectivamente. Atualmente ^yellow(+{{cash}} moedas)^, ^blue(+{{points}} pontos)^ e ^violet(+{{multi}} multi)^."
+    },
+    "10314": {
+      "name": "Ouroboros",
+      "description": "A cada rodada, copia o efeito de uma carta especial aleatória."
     }
   },
   "power-ups": {
