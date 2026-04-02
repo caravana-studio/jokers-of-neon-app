@@ -72,15 +72,28 @@ export class CavosAccountAdapter {
     calls: Call | Call[],
     _details?: any
   ): Promise<InvokeFunctionResponse> {
+    const callsArray = Array.isArray(calls) ? calls : [calls];
+    console.log("[CavosAdapter] execute() called with", callsArray.length, "calls:",
+      callsArray.map(c => `${c.contractAddress?.slice(0,10)}...${c.entrypoint}`));
+
     await this._waitForSlotDeploy();
-    const txHash = await this._executeOnSlot(calls);
-    return { transaction_hash: txHash };
+    console.log("[CavosAdapter] Slot ready, calling executeOnSlot...");
+
+    try {
+      const txHash = await this._executeOnSlot(calls);
+      console.log("[CavosAdapter] executeOnSlot returned txHash:", txHash);
+      return { transaction_hash: txHash };
+    } catch (error) {
+      console.error("[CavosAdapter] executeOnSlot failed:", error);
+      throw error;
+    }
   }
 
   async waitForTransaction(
     txHash: string,
     options?: { retryInterval?: number }
   ): Promise<any> {
+    console.log("[CavosAdapter] waitForTransaction:", txHash);
     const retryInterval = options?.retryInterval ?? 1000;
     const maxAttempts = 120;
     let attempts = 0;
