@@ -38,6 +38,7 @@
     "@capacitor/push-notifications": "^7.0.4",
     "@capacitor/share": "^7.0.2",
     "@cartridge/connector": "0.13.9",
+    "@cavos/react": "^1.1.12",
     "@chakra-ui/anatomy": "^2.1.1",
     "@chakra-ui/icons": "^2.1.1",
     "@chakra-ui/react": "^2.8.2",

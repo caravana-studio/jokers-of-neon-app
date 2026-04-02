@@ -22,7 +22,7 @@ export type ProfileStore = {
     userAddress: string,
     snAccount?: Account | AccountInterface,
     username?: string,
-    accountType?: "burner" | "controller" | null
+    accountType?: "burner" | "controller" | "cavos" | null
   ) => Promise<void>;
 
   updateAvatar: (

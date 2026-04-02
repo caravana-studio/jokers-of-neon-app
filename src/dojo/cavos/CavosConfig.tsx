@@ -1,0 +1,151 @@
+import { CavosProvider as CavosSDKProvider, useCavos } from "@cavos/react";
+import React, { createContext, ReactNode, useContext } from "react";
+import { getContractByName } from "@dojoengine/core";
+import { getManifest } from "../getManifest";
+import { slotInstance } from "../../config/cartridgeUrls";
+import { getSlotChainId } from "../controller/controller";
+
+const CAVOS_APP_ID =
+  import.meta.env.VITE_CAVOS_APP_ID || "";
+
+const CAVOS_PAYMASTER_API_KEY =
+  import.meta.env.VITE_CAVOS_PAYMASTER_API_KEY || "";
+
+const DOJO_NAMESPACE =
+  import.meta.env.VITE_DOJO_NAMESPACE || "jokers_of_neon_core";
+
+const VRF_PROVIDER_ADDRESS =
+  import.meta.env.VITE_VRF_PROVIDER_ADDRESS ||
+  "0x051fea4450da9d6aee758bdeba88b2f665bcbf549d2c61421aa724e9ac0ced8f";
+
+
+const CAVOS_SLOT_RPC_URL = slotInstance
+  ? `https://api.cartridge.gg/x/${slotInstance}/katana`
+  : "http://localhost:5050";
+
+export const CAVOS_ENABLED = !!CAVOS_APP_ID;
+
+const getSlotChainIdHex = (): string | undefined => {
+  if (!slotInstance) return undefined;
+  return getSlotChainId(slotInstance);
+};
+
+const getAllowedContracts = (): string[] => {
+  const manifest = getManifest();
+  const contracts: string[] = [];
+
+  const systemNames = [
+    "action_system",
+    "game_system",
+    "play_system",
+    "shop_system",
+    "map_system",
+    "lives_system",
+    "daily_missions_system",
+    "season_system",
+    "ticket_system",
+    "pack_system",
+    "level_xp_system",
+    "gg_sync_system",
+    "mods_info_system",
+    "poker_hand_system",
+    "permission_system",
+  ];
+
+  for (const name of systemNames) {
+    const contract = getContractByName(manifest, DOJO_NAMESPACE, name);
+    if (contract?.address) {
+      contracts.push(contract.address);
+    }
+  }
+
+  contracts.push(VRF_PROVIDER_ADDRESS);
+
+  return contracts;
+};
+
+// Bridge context: exposes useCavos() result to components outside CavosProvider
+const CavosBridgeContext = createContext<ReturnType<typeof useCavos> | null>(null);
+
+/**
+ * Safe hook — returns the Cavos SDK state when CavosProvider is in the tree, null otherwise.
+ * Can be called unconditionally from any component.
+ */
+export const useCavosSafe = () => useContext(CavosBridgeContext);
+
+/**
+ * Inner component that calls useCavos() (which requires CavosProvider above)
+ * and forwards the result through CavosBridgeContext.
+ */
+const CavosBridge: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const cavos = useCavos();
+
+  React.useEffect(() => {
+    console.log("[CAVOS-BRIDGE] Cavos SDK state:", {
+      isAuthenticated: cavos.isAuthenticated,
+      isLoading: cavos.isLoading,
+      address: cavos.address,
+      user: cavos.user,
+      walletStatus: cavos.walletStatus,
+      hasActiveSession: cavos.hasActiveSession,
+      pendingDeployTxHash: cavos.walletStatus?.pendingDeployTxHash,
+      isSlotDeploying: cavos.walletStatus?.isSlotDeploying,
+      isSlotDeployed: cavos.walletStatus?.isSlotDeployed,
+      pendingSlotDeployTxHash: cavos.walletStatus?.pendingSlotDeployTxHash,
+      hasSlotProvider: !!cavos.getSlotProvider?.(),
+    });
+  }, [
+    cavos.isAuthenticated,
+    cavos.isLoading,
+    cavos.address,
+    cavos.walletStatus,
+    cavos.hasActiveSession,
+  ]);
+
+  return (
+    <CavosBridgeContext.Provider value={cavos}>
+      {children}
+    </CavosBridgeContext.Provider>
+  );
+};
+
+interface CavosWrapperProps {
+  children: ReactNode;
+}
+
+export const CavosWrapper: React.FC<CavosWrapperProps> = ({ children }) => {
+  if (!CAVOS_APP_ID) {
+    return <>{children}</>;
+  }
+
+  const allowedContracts = getAllowedContracts();
+  const slotChainId = getSlotChainIdHex();
+
+  return (
+    <CavosSDKProvider
+      config={{
+        appId: CAVOS_APP_ID,
+        network: "mainnet",
+        paymasterApiKey: CAVOS_PAYMASTER_API_KEY || undefined,
+        enableLogging: true,
+        slot: {
+          rpcUrl: 'https://api.cartridge.gg/x/jokers-core-season2/katana',
+          chainId: '0x57505f4a4f4b4552535f434f52455f534541534f4e32',
+          relayerAddress: "0x22e94ff47f8fa53124b4465775d79f57d345ade18a77602a33a37cd0bfd0bb2",
+          relayerPrivateKey: "0x49a3b5e422219fbe4fabf9d853666818155287ff9e3715f241e75e80b4ff43c",
+        },
+        session: {
+          defaultPolicy: {
+            spendingLimits: [],
+            allowedContracts,
+            maxCallsPerTx: 10,
+          },
+        },
+      }}
+    >
+      <CavosBridge>
+        {children}
+      </CavosBridge>
+    </CavosSDKProvider>
+  );
+};
