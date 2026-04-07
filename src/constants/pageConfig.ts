@@ -21,6 +21,7 @@ export const getPageConfig = (
     isRageRound: boolean;
     isNodeLast: boolean;
     nodeRound: number;
+    round: number;
     tGame: TFunction;
     tShop: TFunction;
   }
@@ -65,12 +66,12 @@ export const getPageConfig = (
     },
     {
       path: "/round",
-      getPageInfo: ({ tGame, isRageRound, isNodeLast, nodeRound, match }) => ({
+      getPageInfo: ({ tGame, isRageRound, isNodeLast, round, match }) => ({
         name: tGame("game-menu.pages.demo", {
           roundType: isRageRound
             ? tGame("game-menu.pages.rage-round")
             : tGame("game-menu.pages.round"),
-          level: nodeRound,
+          level: round,
         }),
         icon: isRageRound ? Icons.RAGE : Icons.ROUND,
         url: match.pathname,

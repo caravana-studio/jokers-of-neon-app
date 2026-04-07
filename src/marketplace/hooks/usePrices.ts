@@ -3,12 +3,13 @@ import { useState, useEffect } from "react";
 export interface TokenPrices {
   STRK: number | null;
   ETH: number | null;
+  USDC: number | null;
 }
 
 const REFRESH_MS = 60_000;
 
 // ─── Module-level singleton so all components share one fetch ─────────────────
-let cache: TokenPrices = { STRK: null, ETH: null };
+let cache: TokenPrices = { STRK: null, ETH: null, USDC: 1 };
 let intervalId: ReturnType<typeof setInterval> | null = null;
 const subscribers = new Set<(p: TokenPrices) => void>();
 
@@ -22,6 +23,7 @@ async function loadPrices() {
     cache = {
       STRK: strk?.price ? parseFloat(strk.price) : null,
       ETH: eth?.price ? parseFloat(eth.price) : null,
+      USDC: 1,
     };
     subscribers.forEach((cb) => cb(cache));
   } catch {}

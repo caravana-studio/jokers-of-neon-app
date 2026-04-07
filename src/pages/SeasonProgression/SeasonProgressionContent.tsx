@@ -98,6 +98,8 @@ export const SeasonProgressionContent = ({
     <Flex
       ref={containerRef}
       w="100%"
+      flex={1}
+      minH={0}
       marginTop={`${STEP_HEIGHT}px`}
       position="relative"
       overflowY="auto"

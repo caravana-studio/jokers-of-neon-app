@@ -8,8 +8,8 @@ import { CardTooltip } from "./CardTooltip";
 import { SkinBadge, SKIN_NAME_COLOR } from "./SkinBadge";
 import { formatTokenAmount } from "../utils/formatPrice";
 import { useCardName } from "../hooks/useCardName";
-import { RARITY_LABELS, RARITY_COLORS } from "../types/marketplace";
-import { PAYMENT_TOKENS } from "../config/contracts";
+import { RARITY_LABELS, RARITY_COLORS, getEffectiveStatus } from "../types/marketplace";
+import { getPaymentToken } from "../config/contracts";
 import { usePrices, toUsd, formatUsd } from "../hooks/usePrices";
 import { TokenIcon } from "./TokenIcon";
 import type { Listing } from "../types/marketplace";
@@ -17,14 +17,9 @@ import type { Listing } from "../types/marketplace";
 interface MyListingCardProps {
   listing: Listing;
   onCancel: (listing: Listing) => void;
+  onRelist: (listing: Listing) => void;
   isCancelling: boolean;
-}
-
-function getTokenSymbol(address: string): string {
-  const token = PAYMENT_TOKENS.find(
-    (t) => t.address.toLowerCase() === address.toLowerCase()
-  );
-  return token?.symbol ?? "TOKEN";
+  isRelisting: boolean;
 }
 
 const SKIN_BORDER_COLOR: Record<number, string> = {
@@ -63,13 +58,13 @@ function useCountdown(expirationTimestamp: number): string {
   return label;
 }
 
-function StatusLine({ listing }: { listing: Listing }) {
+function StatusLine({ listing, effectiveStatus }: { listing: Listing; effectiveStatus: ReturnType<typeof getEffectiveStatus> }) {
   const { t } = useTranslation("marketplace");
   const countdown = useCountdown(listing.expiration);
 
-  if (listing.status === "filled")    return <Text fontSize={13} color="#3182CE" fontFamily="Oxanium">{t("myListings.statusLineFilled")}</Text>;
-  if (listing.status === "cancelled") return <Text fontSize={13} color="whiteAlpha.400" fontFamily="Oxanium">{t("myListings.statusLineCancelled")}</Text>;
-  if (listing.status === "expired")   return <Text fontSize={13} color="whiteAlpha.400" fontFamily="Oxanium">{t("myListings.statusLineExpired")}</Text>;
+  if (effectiveStatus === "filled")    return <Text fontSize={13} color="#3182CE" fontFamily="Oxanium">{t("myListings.statusLineFilled")}</Text>;
+  if (effectiveStatus === "cancelled") return <Text fontSize={13} color="whiteAlpha.400" fontFamily="Oxanium">{t("myListings.statusLineCancelled")}</Text>;
+  if (effectiveStatus === "expired")   return <Text fontSize={13} color="whiteAlpha.400" fontFamily="Oxanium">{t("myListings.statusLineExpired")}</Text>;
 
   return (
     <Text fontSize={14} color="whiteAlpha.700" fontFamily="Oxanium">
@@ -78,23 +73,26 @@ function StatusLine({ listing }: { listing: Listing }) {
   );
 }
 
-export function MyListingCard({ listing, onCancel, isCancelling }: MyListingCardProps) {
+export function MyListingCard({ listing, onCancel, onRelist, isCancelling, isRelisting }: MyListingCardProps) {
   const { t } = useTranslation("marketplace");
-  const symbol = getTokenSymbol(listing.payment_token);
+  const token = getPaymentToken(listing.payment_token);
+  const symbol = token?.symbol ?? "TOKEN";
+  const tokenAmount = formatTokenAmount(listing.price, token?.decimals ?? 18);
   const cardName = useCardName(listing.card_id, listing.card_name);
   const rarityLabel = RARITY_LABELS[listing.rarity] || "Common";
   const rarityColor = RARITY_COLORS[listing.rarity] || "#555";
   const prices = usePrices();
-  const usdLabel = formatUsd(toUsd(formatTokenAmount(listing.price), symbol, prices));
-  const isTerminal = listing.status !== "active";
+  const usdLabel = formatUsd(toUsd(tokenAmount, symbol, prices));
+  const effectiveStatus = getEffectiveStatus(listing);
+  const isTerminal = effectiveStatus !== "active";
   const STATUS_BADGE_LABEL: Record<string, string> = {
     active:    t("myListings.statusActive"),
     filled:    t("myListings.statusFilled"),
     cancelled: t("myListings.statusCancelled"),
     expired:   t("myListings.statusExpired"),
   };
-  const statusBadgeBg = STATUS_BADGE_BG[listing.status] ?? STATUS_BADGE_BG.expired;
-  const statusBadgeLabel = STATUS_BADGE_LABEL[listing.status] ?? STATUS_BADGE_LABEL.expired;
+  const statusBadgeBg = STATUS_BADGE_BG[effectiveStatus] ?? STATUS_BADGE_BG.expired;
+  const statusBadgeLabel = STATUS_BADGE_LABEL[effectiveStatus] ?? STATUS_BADGE_LABEL.expired;
 
   const nameColor = isTerminal ? "whiteAlpha.500" : (SKIN_NAME_COLOR[listing.skin_id] ?? "white");
   const nameGlow = !isTerminal && SKIN_NAME_COLOR[listing.skin_id]
@@ -107,7 +105,7 @@ export function MyListingCard({ listing, onCancel, isCancelling }: MyListingCard
     <Box
       bg="rgba(0,0,0,0.6)"
       border="1px solid"
-      borderColor={listing.status === "active" ? "#22c55e" : "whiteAlpha.100"}
+      borderColor={effectiveStatus === "active" ? "#22c55e" : "whiteAlpha.100"}
       borderRadius="15px"
       p={3}
       cursor={isTerminal ? "default" : "pointer"}
@@ -168,7 +166,7 @@ export function MyListingCard({ listing, onCancel, isCancelling }: MyListingCard
               px={3}
               py="3px"
               borderRadius="full"
-              boxShadow={listing.status === "active" ? "0 0 8px #16a34a88" : undefined}
+              boxShadow={effectiveStatus === "active" ? "0 0 8px #16a34a88" : undefined}
             >
               {statusBadgeLabel}
             </Badge>
@@ -192,7 +190,7 @@ export function MyListingCard({ listing, onCancel, isCancelling }: MyListingCard
             fontWeight="bold"
             lineHeight={1}
           >
-            {formatTokenAmount(listing.price)}
+            {tokenAmount}
           </Text>
           <TokenIcon symbol={symbol} size="22px" />
         </Flex>
@@ -204,16 +202,17 @@ export function MyListingCard({ listing, onCancel, isCancelling }: MyListingCard
         )}
 
         {/* Countdown / status line */}
-        <StatusLine listing={listing} />
+        <StatusLine listing={listing} effectiveStatus={effectiveStatus} />
 
-        {/* Cancel button */}
-        {listing.status === "active" && (
+        {/* Action buttons */}
+        {effectiveStatus === "active" && (
           <Button
             size="sm"
             variant="defaultOutline"
             mt={1}
             w="100%"
             isLoading={isCancelling}
+            isDisabled={isRelisting}
             onClick={(e) => {
               e.preventDefault();
               onCancel(listing);
@@ -221,6 +220,36 @@ export function MyListingCard({ listing, onCancel, isCancelling }: MyListingCard
           >
             {t("myListings.cancel")}
           </Button>
+        )}
+        {effectiveStatus === "expired" && (
+          <VStack spacing={1} w="100%" mt={1}>
+            <Button
+              size="sm"
+              colorScheme="cyan"
+              w="100%"
+              isLoading={isRelisting}
+              isDisabled={isCancelling}
+              onClick={(e) => {
+                e.preventDefault();
+                onRelist(listing);
+              }}
+            >
+              {t("myListings.relist")}
+            </Button>
+            <Button
+              size="sm"
+              variant="defaultOutline"
+              w="100%"
+              isLoading={isCancelling}
+              isDisabled={isRelisting}
+              onClick={(e) => {
+                e.preventDefault();
+                onCancel(listing);
+              }}
+            >
+              {t("myListings.cancel")}
+            </Button>
+          </VStack>
         )}
       </VStack>
     </Box>

@@ -23,20 +23,13 @@ import { useBuyNow } from "../hooks/useBuyNow";
 import { CardImage } from "./CardImage";
 import { formatTokenAmount } from "../utils/formatPrice";
 import { usePrices, toUsd, formatUsd } from "../hooks/usePrices";
-import { PAYMENT_TOKENS } from "../config/contracts";
+import { getPaymentToken } from "../config/contracts";
 import { TokenIcon } from "./TokenIcon";
 import type { Listing } from "../types/marketplace";
 
 interface BuyButtonProps {
   listing: Listing;
   onSuccess?: () => void;
-}
-
-function getTokenSymbol(address: string): string {
-  const token = PAYMENT_TOKENS.find(
-    (t) => t.address.toLowerCase() === address.toLowerCase()
-  );
-  return token?.symbol ?? "TOKEN";
 }
 
 const popIn = keyframes`
@@ -53,8 +46,9 @@ export function BuyButton({ listing, onSuccess }: BuyButtonProps) {
   const { isOpen: isSuccessOpen, onOpen: openSuccess, onClose: closeSuccess } = useDisclosure();
   const prices = usePrices();
 
-  const symbol = getTokenSymbol(listing.payment_token);
-  const tokenAmount = formatTokenAmount(listing.price);
+  const token = getPaymentToken(listing.payment_token);
+  const symbol = token?.symbol ?? "TOKEN";
+  const tokenAmount = formatTokenAmount(listing.price, token?.decimals ?? 18);
   const usdLabel = formatUsd(toUsd(tokenAmount, symbol, prices));
 
   const { data: balanceData } = useBalance({
@@ -70,7 +64,7 @@ export function BuyButton({ listing, onSuccess }: BuyButtonProps) {
   const hasInsufficientBalance =
     balanceData !== undefined && balanceData.value < BigInt(listing.price);
 
-  // Show success modal when purchase completes, then redirect after 4s
+  // Show the success modal once the purchase completes.
   useEffect(() => {
     if (status === "done") openSuccess();
   }, [status]);
@@ -78,6 +72,11 @@ export function BuyButton({ listing, onSuccess }: BuyButtonProps) {
   const handleConfirm = async () => {
     closeConfirm();
     await buy(listing);
+  };
+
+  const handleSuccessClose = () => {
+    closeSuccess();
+    onSuccess?.();
   };
 
   if (walletStatus !== "connected") {
@@ -199,7 +198,7 @@ export function BuyButton({ listing, onSuccess }: BuyButtonProps) {
       </Modal>
 
       {/* ── Success modal ── */}
-      <Modal isOpen={isSuccessOpen} onClose={closeSuccess}>
+      <Modal isOpen={isSuccessOpen} onClose={handleSuccessClose}>
         <ModalOverlay bg="rgba(0, 0, 0, 0.6)" />
         <ModalContent p={3} mx={4}>
           <ModalHeader pb={2}>
@@ -262,7 +261,7 @@ export function BuyButton({ listing, onSuccess }: BuyButtonProps) {
             <Button
               variant="secondarySolid"
               size="sm"
-              onClick={closeSuccess}
+              onClick={handleSuccessClose}
             >
               {t("buy.close")}
             </Button>

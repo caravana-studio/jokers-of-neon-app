@@ -92,9 +92,10 @@ const resolveHttpsServerConfig = () => {
 const createConfig = (target: BuildTarget): UserConfig => {
   const isStandaloneShop = target === "standaloneShop";
   const isAll = target === "all";
+  const assetBase = isStandaloneShop ? "/" : "./";
   const https = resolveHttpsServerConfig();
   const config: UserConfig = {
-    base: "./",
+    base: assetBase,
     plugins: [
       ...(isReactCompilerEnabled ? [reactCompilerPlugin] : []),
       wasm(),

@@ -14,6 +14,9 @@ const STRK_ADDRESS =
   "0x04718f5a0Fc34cC1AF16A1cdee98fFB20C31f5cD61D6Ab07201858f4287c938D";
 const ETH_ADDRESS =
   "0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7";
+const USDC_ADDRESS =
+  import.meta.env.VITE_USDC_ADDRESS ||
+  "0x053c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8";
 
 const VRF_POLICY = {
   vrf: {
@@ -155,6 +158,9 @@ const generatePolicies = (): Policies => {
       methods: [{ name: "Approve", entrypoint: "approve" }],
     };
     policiesContracts[ETH_ADDRESS] = {
+      methods: [{ name: "Approve", entrypoint: "approve" }],
+    };
+    policiesContracts[USDC_ADDRESS] = {
       methods: [{ name: "Approve", entrypoint: "approve" }],
     };
     if (NFT_CONTRACT_ADDRESS) {

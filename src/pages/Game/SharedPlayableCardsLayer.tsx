@@ -339,6 +339,21 @@ export const SharedPlayableCardsLayer = ({
     const previousCards = previousHandRef.current;
     const currentHandIndexes = new Set(hand.map((card) => card.idx));
     const currentHandAreaIndexes = new Set(handCards.map((card) => card.idx));
+    const isMobileRoundStartDeal =
+      isSmallScreen &&
+      previousCards.length === 0 &&
+      currentHandAreaIndexes.size > 0;
+
+    setFreshDealAnimationTokens((currentFreshTokens) => {
+      const nextFreshTokens = { ...currentFreshTokens };
+      Object.keys(nextFreshTokens).forEach((idx) => {
+        if (!currentHandAreaIndexes.has(Number(idx))) {
+          delete nextFreshTokens[Number(idx)];
+        }
+      });
+      return nextFreshTokens;
+    });
+
     setDealAnimationDelayByCard((currentDelays) => {
       const nextDelays = { ...currentDelays };
       Object.keys(nextDelays).forEach((idx) => {
@@ -360,15 +375,15 @@ export const SharedPlayableCardsLayer = ({
         }
       });
 
-      if (previousCards.length === 0) {
-        return cleanedTokens;
-      }
-
       const newlyDealtCardIndexes = handRenderData.newlyDealtCardIndexes.filter(
         (cardIdx) => currentHandAreaIndexes.has(cardIdx)
       );
 
       if (newlyDealtCardIndexes.length === 0) {
+        return cleanedTokens;
+      }
+
+      if (isMobileRoundStartDeal) {
         return cleanedTokens;
       }
 
@@ -426,6 +441,7 @@ export const SharedPlayableCardsLayer = ({
     dealStaggerSeconds,
     hand,
     handRenderData.newlyDealtCardIndexes,
+    isSmallScreen,
   ]);
 
   const refreshAnchorRects = useCallback(() => {
@@ -865,7 +881,7 @@ export const SharedPlayableCardsLayer = ({
             animate={{
               x: targetPosition.left,
               y: targetPosition.top + tutorialOffsetY,
-              opacity: remainingPlays === 0 && !isPreselected ? 0.4 : 1,
+              opacity: 1,
               scale: 1,
               rotate: 0,
             }}
@@ -902,6 +918,33 @@ export const SharedPlayableCardsLayer = ({
           </motion.div>
         );
       })}
+      {remainingPlays === 0 && (
+        <Flex
+          position="absolute"
+          left={`${layoutRects.hand.left}px`}
+          top={`${layoutRects.hand.top}px`}
+          width={`${layoutRects.hand.width}px`}
+          height={`${layoutRects.hand.height}px`}
+          alignItems="center"
+          justifyContent="center"
+          borderRadius={isSmallScreen ? "12px" : "16px"}
+          bg="rgba(4, 8, 18, 0.58)"
+          px={3}
+          textAlign="center"
+          pointerEvents="auto"
+          zIndex={1200}
+        >
+          <Text
+            fontSize={isSmallScreen ? "sm" : "md"}
+            fontStyle="italic"
+            fontWeight="semibold"
+            textShadow="0 1px 4px rgba(0, 0, 0, 0.9)"
+            color="white"
+          >
+            {t("game.hand-section.no-cards-label")}
+          </Text>
+        </Flex>
+      )}
     </motion.div>
   );
 };

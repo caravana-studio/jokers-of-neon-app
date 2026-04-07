@@ -1,4 +1,5 @@
 import { Flex, Text } from "@chakra-ui/react";
+import { keyframes } from "@emotion/react";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { PLAYS_DATA } from "../constants/plays";
@@ -7,6 +8,12 @@ import { useCurrentHandStore } from "../state/useCurrentHandStore";
 import { useGameStore } from "../state/useGameStore";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import { checkHand } from "../utils/checkHand";
+
+const popIn = keyframes`
+  0%   { transform: scale(0.8);  opacity: 0; }
+  65%  { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(1);    opacity: 1; }
+`;
 
 interface CurrentPlayProps {
   showEmptyText?: boolean;
@@ -100,10 +107,12 @@ export const CurrentPlay = ({
       justifyContent={"center"}
     >
       <Text
+        key={preSelectedPlay}
         fontSize={isSmallScreen ? mobileFontSize : desktopFontSize}
         fontFamily={fontFamily}
         color={isDebuffedPlay ? "HEARTS" : "white"}
         textAlign="center"
+        animation={`${popIn} 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both`}
       >
         {isEmptyPlay && !showEmptyText ? "" : currentPlayLabel}
       </Text>

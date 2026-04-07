@@ -37,7 +37,7 @@ export const initDatadogRum = () => {
     env,
     version: APP_VERSION,
     sessionSampleRate: 100,
-    sessionReplaySampleRate: isProd ? 15 : 100,
+    sessionReplaySampleRate: isProd ? 100 : 100,
     trackUserInteractions: true,
     trackResources: true,
     trackLongTasks: true,

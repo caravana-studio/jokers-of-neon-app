@@ -19,19 +19,12 @@ import { BuyButton } from "../../marketplace/components/BuyButton";
 import { formatTokenAmount } from "../../marketplace/utils/formatPrice";
 import { useAddressUsername } from "../../hooks/useAddressUsername";
 import { RARITY_LABELS, RARITY_COLORS } from "../../marketplace/types/marketplace";
-import { PAYMENT_TOKENS } from "../../marketplace/config/contracts";
+import { getPaymentToken } from "../../marketplace/config/contracts";
 import { useMarketplace } from "../../marketplace/providers/MarketplaceProvider";
 import { usePrices, toUsd, formatUsd } from "../../marketplace/hooks/usePrices";
 import { useCardName } from "../../marketplace/hooks/useCardName";
 import { TokenIcon } from "../../marketplace/components/TokenIcon";
 import type { Listing } from "../../marketplace/types/marketplace";
-
-function getTokenSymbol(address: string): string {
-  const token = PAYMENT_TOKENS.find(
-    (t) => t.address.toLowerCase() === address.toLowerCase()
-  );
-  return token?.symbol ?? "TOKEN";
-}
 
 function SectionLabel({ children }: { children: string }) {
   return (
@@ -101,14 +94,16 @@ export function CardDetailPage() {
     );
   }
 
-  const symbol = getTokenSymbol(listing.payment_token);
+  const token = getPaymentToken(listing.payment_token);
+  const symbol = token?.symbol ?? "TOKEN";
+  const tokenAmount = formatTokenAmount(listing.price, token?.decimals ?? 18);
   const rarityLabel = RARITY_LABELS[listing.rarity] || "Common";
   const rarityColor = RARITY_COLORS[listing.rarity] || "#999";
   const expiresDate = listing.expiration
     ? new Date(listing.expiration * 1000).toLocaleDateString()
     : "—";
   const feePercent = (feeBps / 100).toFixed(1);
-  const usdLabel = formatUsd(toUsd(formatTokenAmount(listing.price), symbol, prices));
+  const usdLabel = formatUsd(toUsd(tokenAmount, symbol, prices));
 
   return (
     <Flex
@@ -199,6 +194,18 @@ export function CardDetailPage() {
               </HStack>
             </Box>
 
+            {/* Type */}
+            <Box>
+              <SectionLabel>{t("detail.type")}</SectionLabel>
+              <Text color="neonGreen" fontFamily="Oxanium" fontSize={{ base: "md", md: "lg" }} mt={3}>
+                {listing.card_id >= 10000 && listing.skin_id >= 2
+                  ? t("sell.typeSkinnedSpecial")
+                  : listing.card_id >= 10000
+                    ? t("sell.typeSpecial")
+                    : t("sell.typeTraditional")}
+              </Text>
+            </Box>
+
             {/* Price */}
             <Box>
               <SectionLabel>{t("detail.price")}</SectionLabel>
@@ -210,7 +217,7 @@ export function CardDetailPage() {
                   fontWeight="bold"
                   lineHeight={1}
                 >
-                  {formatTokenAmount(listing.price)}
+                  {tokenAmount}
                 </Text>
                 <TokenIcon symbol={symbol} size="28px" />
               </HStack>
@@ -286,7 +293,7 @@ export function CardDetailPage() {
       {/* Action buttons */}
       <HStack spacing={4} justifyContent="flex-end" w="95%">
         {listing.status === "active" && (
-          <BuyButton listing={listing} onSuccess={() => navigate("/")} />
+          <BuyButton listing={listing} onSuccess={() => navigate("/sell")} />
         )}
         <Button
           size="md"

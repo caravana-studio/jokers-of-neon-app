@@ -15,6 +15,7 @@ interface IBaseLockedSlotProps {
   price?: number;
   discountPrice?: number;
   showPrice?: boolean;
+  opacity?: number;
 }
 
 export const BaseLockedSlot = ({
@@ -28,6 +29,7 @@ export const BaseLockedSlot = ({
   price,
   discountPrice,
   showPrice = true,
+  opacity,
 }: IBaseLockedSlotProps) => {
   const defaultBg = "/store/locked-slot.png";
   const [bgImage, setBgImage] = useState(defaultBg);
@@ -51,6 +53,7 @@ export const BaseLockedSlot = ({
             minWidth={`${CARD_WIDTH * scale}`}
             backgroundColor={backgroundColor ?? "transparent"}
             borderRadius={borderRadius ?? "0px"}
+            opacity={opacity}
           />
         </Box>
         {showPrice && finalPrice > 0 && (

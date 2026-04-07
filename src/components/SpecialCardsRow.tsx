@@ -192,7 +192,7 @@ export const SpecialCardsRow = () => {
                     ? "black"
                     : "transparent"
               }
-              borderRadius={isSmallScreen ? "0px" : "10%"}
+              borderRadius={isSmallScreen ? "0px" : "4px"}
             />
           </Flex>
         ))}
