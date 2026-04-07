@@ -197,7 +197,9 @@ export const TiltCard = ({
           )}
         </ConditionalTilt>
       </Box>
-      {card.modifiers?.map((c, index) => {
+      {(card.modifiers ?? [])
+        .filter((modifier): modifier is Card => Boolean(modifier))
+        .map((c, index) => {
         const { top, left } = getModifierOffset(index);
         const isSilent = isModifierSilent(c, rageCards);
 
