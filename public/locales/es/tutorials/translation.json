@@ -119,7 +119,7 @@
       "playTitle": "Seguí jugando",
       "playContent": "Tenés 3 plays por ronda.",
       "discardTitle": "Aprovechá tus descartes",
-      "discardContent": "También tenés 3 descartes por ronda."
+      "discardContent": "También podés descartar tus cartas para obtener nuevas."
     },
     "firstScore": {
       "title": "¡Bien hecho!",
@@ -143,7 +143,7 @@
       "pathsTitle": "Elegí tu camino",
       "pathsContent": "Podés elegir diferentes caminos para avanzar.",
       "shopTitle": "Tiendas disponibles",
-      "shopContent": "Elegí una de las tiendas disponibles para avanzar.",
+      "shopContent": "Elegí una tienda disponible para avanzar. Cada tipo de tienda tiene diferentes ítems.",
       "shopTypesTitle": "Tipos de tienda",
       "shopTypesContent": "Cada tipo de tienda tiene diferentes ítems."
     }

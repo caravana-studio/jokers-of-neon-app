@@ -48,7 +48,8 @@ export const useProgressiveMapTutorial = ({
   const steps = useMemo<Step[]>(
     () => [
       {
-        target: ".map-tutorial-level",
+        target: ".map-tutorial-graph",
+        placement: "center",
         disableBeacon: true,
         title: t("progressiveMap.firstEntry.title"),
         content: t("progressiveMap.firstEntry.welcome"),
@@ -66,12 +67,6 @@ export const useProgressiveMapTutorial = ({
         title: t("progressiveMap.firstEntry.shopTitle"),
         content: t("progressiveMap.firstEntry.shopContent"),
       },
-      {
-        target: ".map-tutorial-store-node",
-        disableBeacon: true,
-        title: t("progressiveMap.firstEntry.shopTypesTitle"),
-        content: t("progressiveMap.firstEntry.shopTypesContent"),
-      },
     ],
     [t]
   );
@@ -83,4 +78,3 @@ export const useProgressiveMapTutorial = ({
     handleCallback,
   };
 };
-

@@ -117,12 +117,14 @@ export const useProgressiveGameTutorial = ({
       return [
         {
           target: ".game-tutorial-step-4",
+          placement: "left",
           disableBeacon: true,
           title: t("progressiveGame.firstTwoSelected.playTitle"),
           content: t("progressiveGame.firstTwoSelected.playContent"),
         },
         {
           target: ".game-tutorial-step-3",
+          placement: "right",
           disableBeacon: true,
           title: t("progressiveGame.firstTwoSelected.discardTitle"),
           content: t("progressiveGame.firstTwoSelected.discardContent"),

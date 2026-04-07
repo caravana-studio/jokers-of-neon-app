@@ -17,6 +17,7 @@ import { MobileDecoration } from "../../components/MobileDecoration.tsx";
 import {
   JOYRIDE_LOCALES,
   TUTORIAL_STEPS,
+  TUTORIAL_FLOATER_PROPS,
   TUTORIAL_STYLE,
 } from "../../constants/gameTutorial";
 import {
@@ -312,42 +313,38 @@ export const MobileGameContent = () => {
         />
       )}
       <MobileDecoration />
-      <Box
-        sx={{
-          position: "fixed",
-          zIndex: 1000,
-        }}
-        right={[1, 4]}
-        bottom={[1, 4]}
-      >
-        <Joyride
-          steps={progressiveTutorialSteps}
-          run={runProgressiveTutorial}
-          continuous
-          showProgress={false}
-          callback={onProgressiveTutorialCallback}
-          styles={TUTORIAL_STYLE}
-          locale={progressiveTutorialLocale}
-          disableCloseOnEsc
-          disableOverlayClose
-          hideCloseButton
-          spotlightClicks
-        />
+      <Joyride
+        steps={progressiveTutorialSteps}
+        run={runProgressiveTutorial}
+        continuous
+        showProgress={false}
+        callback={onProgressiveTutorialCallback}
+        styles={TUTORIAL_STYLE}
+        floaterProps={TUTORIAL_FLOATER_PROPS}
+        locale={progressiveTutorialLocale}
+        disableCloseOnEsc
+        disableOverlayClose
+        hideCloseButton
+        spotlightClicks={false}
+        disableScrolling
+      />
 
-        <Joyride
-          steps={TUTORIAL_STEPS}
-          run={run}
-          continuous
-          showProgress={false}
-          callback={handleJoyrideCallback}
-          styles={TUTORIAL_STYLE}
-          locale={JOYRIDE_LOCALES}
-          stepIndex={stepIndex}
-          disableCloseOnEsc
-          disableOverlayClose
-          hideCloseButton
-        />
-      </Box>
+      <Joyride
+        steps={TUTORIAL_STEPS}
+        run={run}
+        continuous
+        showProgress={false}
+        callback={handleJoyrideCallback}
+        styles={TUTORIAL_STYLE}
+        floaterProps={TUTORIAL_FLOATER_PROPS}
+        locale={JOYRIDE_LOCALES}
+        stepIndex={stepIndex}
+        disableCloseOnEsc
+        disableOverlayClose
+        hideCloseButton
+        spotlightClicks={false}
+        disableScrolling
+      />
 
       <Box
         sx={{

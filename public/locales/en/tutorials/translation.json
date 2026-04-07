@@ -119,7 +119,7 @@
       "playTitle": "Keep going",
       "playContent": "You have 3 plays per round.",
       "discardTitle": "Use your discards",
-      "discardContent": "You also have 3 discards per round."
+      "discardContent": "You can also discard your cards to draw new ones."
     },
     "firstScore": {
       "title": "Nice!",
@@ -143,7 +143,7 @@
       "pathsTitle": "Choose your path",
       "pathsContent": "You can choose different paths to move forward.",
       "shopTitle": "Available shops",
-      "shopContent": "Choose one of the available shops to advance.",
+      "shopContent": "Choose one available shop to move forward. Each shop type offers different items.",
       "shopTypesTitle": "Shop types",
       "shopTypesContent": "Each type of shop offers different items."
     }

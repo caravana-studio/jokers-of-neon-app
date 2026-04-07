@@ -40,7 +40,7 @@ export const useProgressiveRewardsTutorial = () => {
   const steps = useMemo<Step[]>(
     () => [
       {
-        target: ".rewards-tutorial-title",
+        target: ".rewards-tutorial-root",
         disableBeacon: true,
         title: t("progressiveRewards.firstEntry.title"),
         content: t("progressiveRewards.firstEntry.overview"),

@@ -10,7 +10,7 @@ import Joyride from "react-joyride";
 import { MobileBottomBar } from "../../components/MobileBottomBar";
 import { MobileDecoration } from "../../components/MobileDecoration";
 import { useBackToGameButton } from "../../components/useBackToGameButton";
-import { TUTORIAL_STYLE } from "../../constants/gameTutorial";
+import { TUTORIAL_FLOATER_PROPS, TUTORIAL_STYLE } from "../../constants/gameTutorial";
 import { GameStateEnum } from "../../dojo/typescript/custom";
 import { useDojo } from "../../dojo/useDojo";
 import { useCustomNavigate } from "../../hooks/useCustomNavigate";
@@ -179,10 +179,13 @@ export const Map = () => {
         showProgress={false}
         callback={onMapTutorialCallback}
         styles={TUTORIAL_STYLE}
+        floaterProps={TUTORIAL_FLOATER_PROPS}
         locale={mapTutorialLocale}
         disableCloseOnEsc
         disableOverlayClose
         hideCloseButton
+        spotlightClicks={false}
+        disableScrolling
       />
       <MobileDecoration fadeToBlack />
       <Flex

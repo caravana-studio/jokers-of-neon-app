@@ -119,7 +119,7 @@
       "playTitle": "Continue jogando",
       "playContent": "Você tem 3 jogadas por rodada.",
       "discardTitle": "Use seus descartes",
-      "discardContent": "Você também tem 3 descartes por rodada."
+      "discardContent": "Você também pode descartar suas cartas para receber novas."
     },
     "firstScore": {
       "title": "Boa!",
@@ -143,7 +143,7 @@
       "pathsTitle": "Escolha seu caminho",
       "pathsContent": "Você pode escolher caminhos diferentes para avançar.",
       "shopTitle": "Lojas disponíveis",
-      "shopContent": "Escolha uma das lojas disponíveis para avançar.",
+      "shopContent": "Escolha uma loja disponível para avançar. Cada tipo de loja tem itens diferentes.",
       "shopTypesTitle": "Tipos de loja",
       "shopTypesContent": "Cada tipo de loja tem itens diferentes."
     }

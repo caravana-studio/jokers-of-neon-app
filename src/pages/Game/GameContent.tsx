@@ -16,6 +16,7 @@ import { PositionedGameDeck } from "../../components/PositionedGameDeck.tsx";
 import {
   JOYRIDE_LOCALES,
   TUTORIAL_STEPS,
+  TUTORIAL_FLOATER_PROPS,
   TUTORIAL_STYLE,
 } from "../../constants/gameTutorial";
 import {
@@ -296,11 +297,13 @@ export const GameContent = () => {
           showProgress={false}
           callback={onProgressiveTutorialCallback}
           styles={TUTORIAL_STYLE}
+          floaterProps={TUTORIAL_FLOATER_PROPS}
           locale={progressiveTutorialLocale}
           disableCloseOnEsc
           disableOverlayClose
           hideCloseButton
-          spotlightClicks
+          spotlightClicks={false}
+          disableScrolling
         />
 
         <Joyride
@@ -310,11 +313,14 @@ export const GameContent = () => {
           showProgress={false}
           callback={handleJoyrideCallback}
           styles={TUTORIAL_STYLE}
+          floaterProps={TUTORIAL_FLOATER_PROPS}
           locale={JOYRIDE_LOCALES}
           stepIndex={stepIndex}
           disableCloseOnEsc
           disableOverlayClose
           hideCloseButton
+          spotlightClicks={false}
+          disableScrolling
         />
 
         <Box
