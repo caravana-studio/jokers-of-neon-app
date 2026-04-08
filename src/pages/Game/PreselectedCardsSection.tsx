@@ -67,6 +67,7 @@ export const PreselectedCardsSection = ({
 
         <Box
           ref={setNodeRef}
+          className="tutorial-modifiers-step-center"
           sx={{
             width: "100%",
             height: "100%",

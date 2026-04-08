@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { CallBackProps, STATUS, Step } from "react-joyride";
 import { useTranslation } from "react-i18next";
+import { ModifiersId } from "../enums/modifiersId";
 import { JOYRIDE_LOCALES } from "../constants/gameTutorial";
 import {
   PROGRESSIVE_TUTORIAL_IDS,
@@ -14,15 +15,25 @@ interface UseProgressiveGameTutorialProps {
   preSelectedCardsCount: number;
   currentScore: number;
   targetScore: number;
+  clearedRoundOnFirstPlay: boolean;
+  firstModifierCardId?: number;
 }
 
 const getNextTutorialId = (
   completed: ProgressiveTutorialState,
   preSelectedCardsCount: number,
-  currentScore: number
+  currentScore: number,
+  firstModifierCardId?: number
 ): ProgressiveTutorialId | null => {
   if (!completed[PROGRESSIVE_TUTORIAL_IDS.GAME_FIRST_ENTRY]) {
     return PROGRESSIVE_TUTORIAL_IDS.GAME_FIRST_ENTRY;
+  }
+
+  if (
+    !completed[PROGRESSIVE_TUTORIAL_IDS.GAME_FIRST_MODIFIER] &&
+    firstModifierCardId !== undefined
+  ) {
+    return PROGRESSIVE_TUTORIAL_IDS.GAME_FIRST_MODIFIER;
   }
 
   if (
@@ -46,6 +57,8 @@ export const useProgressiveGameTutorial = ({
   preSelectedCardsCount,
   currentScore,
   targetScore,
+  clearedRoundOnFirstPlay,
+  firstModifierCardId,
 }: UseProgressiveGameTutorialProps) => {
   const { t } = useTranslation("tutorials");
   const [completed, setCompleted] = useState<ProgressiveTutorialState>(() =>
@@ -77,7 +90,8 @@ export const useProgressiveGameTutorial = ({
     const nextTutorial = getNextTutorialId(
       completed,
       preSelectedCardsCount,
-      currentScore
+      currentScore,
+      firstModifierCardId
     );
 
     if (!nextTutorial) {
@@ -86,7 +100,33 @@ export const useProgressiveGameTutorial = ({
 
     setActiveTutorialId(nextTutorial);
     setRun(true);
-  }, [activeTutorialId, completed, currentScore, preSelectedCardsCount, run]);
+  }, [
+    activeTutorialId,
+    completed,
+    currentScore,
+    firstModifierCardId,
+    preSelectedCardsCount,
+    run,
+  ]);
+
+  const modifierEffectLabel = useMemo(() => {
+    switch (firstModifierCardId) {
+      case ModifiersId.SUIT_CLUB_MODIFIER:
+        return t("progressiveGame.firstModifier.effects.club");
+      case ModifiersId.SUIT_DIAMONDS_MODIFIER:
+        return t("progressiveGame.firstModifier.effects.diamonds");
+      case ModifiersId.SUIT_HEARTS_MODIFIER:
+        return t("progressiveGame.firstModifier.effects.hearts");
+      case ModifiersId.SUIT_SPADES_MODIFIER:
+        return t("progressiveGame.firstModifier.effects.spades");
+      case ModifiersId.NEON_MODIFIER:
+        return t("progressiveGame.firstModifier.effects.neon");
+      case ModifiersId.WILDCARD_MODIFIER:
+        return t("progressiveGame.firstModifier.effects.wildcard");
+      default:
+        return t("progressiveGame.firstModifier.effects.card");
+    }
+  }, [firstModifierCardId, t]);
 
   const steps = useMemo<Step[]>(() => {
     if (activeTutorialId === PROGRESSIVE_TUTORIAL_IDS.GAME_FIRST_ENTRY) {
@@ -132,25 +172,67 @@ export const useProgressiveGameTutorial = ({
       ];
     }
 
+    if (activeTutorialId === PROGRESSIVE_TUTORIAL_IDS.GAME_FIRST_MODIFIER) {
+      return [
+        {
+          target: ".tutorial-modifiers-step-2",
+          disableBeacon: true,
+          title: t("progressiveGame.firstModifier.title"),
+          content: t("progressiveGame.firstModifier.content"),
+        },
+        {
+          target: ".tutorial-modifiers-step-2",
+          disableBeacon: true,
+          title: t("progressiveGame.firstModifier.howToUseTitle"),
+          content: t("progressiveGame.firstModifier.howToUseContent", {
+            effect: modifierEffectLabel,
+          }),
+        },
+      ];
+    }
+
     if (activeTutorialId === PROGRESSIVE_TUTORIAL_IDS.GAME_FIRST_SCORE) {
       return [
         {
           target: ".game-tutorial-step-score-panel",
           disableBeacon: true,
           title: t("progressiveGame.firstScore.title"),
-          content: t("progressiveGame.firstScore.content", {
-            score: currentScore,
-            targetScore,
-          }),
+          content: t(
+            clearedRoundOnFirstPlay
+              ? "progressiveGame.firstScore.contentFirstPlayClear"
+              : "progressiveGame.firstScore.content",
+            {
+              score: currentScore,
+              targetScore,
+            }
+          ),
         },
       ];
     }
 
     return [];
-  }, [activeTutorialId, currentScore, t, targetScore]);
+  }, [
+    activeTutorialId,
+    clearedRoundOnFirstPlay,
+    currentScore,
+    modifierEffectLabel,
+    t,
+    targetScore,
+  ]);
 
   const handleCallback = useCallback(
     (data: CallBackProps) => {
+      if (
+        data.type === "error:target_not_found" &&
+        activeTutorialId === PROGRESSIVE_TUTORIAL_IDS.GAME_FIRST_MODIFIER
+      ) {
+        // Modifier cards can mount a frame later due layout/animation timing.
+        // Keep it pending so it can retry when the target exists.
+        setRun(false);
+        setActiveTutorialId(null);
+        return;
+      }
+
       if (
         data.status === STATUS.FINISHED ||
         data.status === STATUS.SKIPPED ||
@@ -159,7 +241,7 @@ export const useProgressiveGameTutorial = ({
         completeActiveTutorial();
       }
     },
-    [completeActiveTutorial]
+    [activeTutorialId, completeActiveTutorial]
   );
 
   return {
@@ -167,5 +249,6 @@ export const useProgressiveGameTutorial = ({
     steps,
     locale: JOYRIDE_LOCALES,
     handleCallback,
+    activeTutorialId,
   };
 };

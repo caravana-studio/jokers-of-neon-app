@@ -121,9 +121,25 @@
       "discardTitle": "Use seus descartes",
       "discardContent": "Você também pode descartar suas cartas para receber novas."
     },
+    "firstModifier": {
+      "title": "Carta modificadora",
+      "content": "Esta é uma carta modificadora. As modificadoras aplicam um efeito sobre uma carta específica.",
+      "howToUseTitle": "Como usar",
+      "howToUseContent": "Por exemplo, esta carta transforma uma das suas cartas em {{effect}}. Para usar, arraste para uma das cartas pré-selecionadas no centro da tela.",
+      "effects": {
+        "club": "paus",
+        "diamonds": "ouros",
+        "hearts": "copas",
+        "spades": "espadas",
+        "neon": "neon",
+        "wildcard": "wildcard",
+        "card": "outro tipo"
+      }
+    },
     "firstScore": {
       "title": "Boa!",
-      "content": "Você marcou {{score}} pontos. Precisa de {{targetScore}} pontos para passar da rodada."
+      "content": "Você marcou {{score}} pontos. Precisa de {{targetScore}} pontos para passar da rodada.",
+      "contentFirstPlayClear": "Boa! Você marcou {{score}} pontos. Você precisava de {{targetScore}} para passar da rodada, e conseguiu na primeira jogada."
     }
   },
   "progressiveRewards": {
@@ -146,6 +162,16 @@
       "shopContent": "Escolha uma loja disponível para avançar. Cada tipo de loja tem itens diferentes.",
       "shopTypesTitle": "Tipos de loja",
       "shopTypesContent": "Cada tipo de loja tem itens diferentes."
+    }
+  },
+  "progressiveShop": {
+    "firstEntry": {
+      "title": "Bem-vindo à sua primeira loja",
+      "welcome": "Aqui você poderá comprar itens para melhorar seu baralho.",
+      "rerollTitle": "Rerrolar itens",
+      "rerollContent": "Os itens são aleatórios, mas você pode rerrolar se não gostar do que recebeu.",
+      "nextTitle": "Avançar",
+      "nextContent": "Quando estiver pronto, toque em próximo para avançar."
     }
   },
   "joyride": {

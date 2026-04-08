@@ -116,14 +116,30 @@
       "playsContent": "No te preocupes, te ayudamos. Tocá este botón para ver todas las jugadas posibles."
     },
     "firstTwoSelected": {
-      "playTitle": "Seguí jugando",
-      "playContent": "Tenés 3 plays por ronda.",
+      "playTitle": "Jugadas",
+      "playContent": "Podés hacer 3 jugadas por ronda.",
       "discardTitle": "Aprovechá tus descartes",
       "discardContent": "También podés descartar tus cartas para obtener nuevas."
     },
+    "firstModifier": {
+      "title": "Carta modificadora",
+      "content": "Esta es una carta modificadora. Las modificadoras aplican un efecto sobre una carta específica.",
+      "howToUseTitle": "Cómo usarla",
+      "howToUseContent": "Por ejemplo, esta convierte una de tus cartas a {{effect}}. Para usarla, arrastrala a una de las cartas preseleccionadas en el centro de la pantalla.",
+      "effects": {
+        "club": "tréboles",
+        "diamonds": "diamantes",
+        "hearts": "corazones",
+        "spades": "picas",
+        "neon": "neon",
+        "wildcard": "wildcard",
+        "card": "otro tipo"
+      }
+    },
     "firstScore": {
       "title": "¡Bien hecho!",
-      "content": "Sumaste {{score}} puntos. Necesitás {{targetScore}} puntos para pasar de ronda."
+      "content": "Sumaste {{score}} puntos. Necesitás {{targetScore}} puntos para pasar de ronda.",
+      "contentFirstPlayClear": "¡Bien hecho! Sumaste {{score}} puntos. Necesitabas {{targetScore}} para pasar de ronda y lo conseguiste con tu primera jugada."
     }
   },
   "progressiveRewards": {
@@ -146,6 +162,16 @@
       "shopContent": "Elegí una tienda disponible para avanzar. Cada tipo de tienda tiene diferentes ítems.",
       "shopTypesTitle": "Tipos de tienda",
       "shopTypesContent": "Cada tipo de tienda tiene diferentes ítems."
+    }
+  },
+  "progressiveShop": {
+    "firstEntry": {
+      "title": "Bienvenido a tu primera tienda",
+      "welcome": "Acá vas a poder comprar ítems para mejorar tu mazo.",
+      "rerollTitle": "Actualizar",
+      "rerollContent": "Los ítems son aleatorios, pero podés actualizar la tienda si no te gusta lo que salió.",
+      "nextTitle": "Continuar",
+      "nextContent": "Cuando estés listo, tocá siguiente para avanzar."
     }
   },
   "joyride": {

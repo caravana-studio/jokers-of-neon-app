@@ -121,9 +121,25 @@
       "discardTitle": "Use your discards",
       "discardContent": "You can also discard your cards to draw new ones."
     },
+    "firstModifier": {
+      "title": "Modifier card",
+      "content": "This is a modifier card. Modifiers apply an effect to a specific card.",
+      "howToUseTitle": "How to use it",
+      "howToUseContent": "For example, this one turns one of your cards into {{effect}}. To use it, drag it to one of the preselected cards in the center of the screen.",
+      "effects": {
+        "club": "clubs",
+        "diamonds": "diamonds",
+        "hearts": "hearts",
+        "spades": "spades",
+        "neon": "neon",
+        "wildcard": "wildcard",
+        "card": "another type"
+      }
+    },
     "firstScore": {
       "title": "Nice!",
-      "content": "You scored {{score}} points. You need {{targetScore}} points to clear the round."
+      "content": "You scored {{score}} points. You need {{targetScore}} points to clear the round.",
+      "contentFirstPlayClear": "Nice! You scored {{score}} points. You needed {{targetScore}} to clear the round, and you did it on your first play."
     }
   },
   "progressiveRewards": {
@@ -146,6 +162,16 @@
       "shopContent": "Choose one available shop to move forward. Each shop type offers different items.",
       "shopTypesTitle": "Shop types",
       "shopTypesContent": "Each type of shop offers different items."
+    }
+  },
+  "progressiveShop": {
+    "firstEntry": {
+      "title": "Welcome to your first shop",
+      "welcome": "You will be able to buy items to improve your deck.",
+      "rerollTitle": "Reroll items",
+      "rerollContent": "Items are random, but you can reroll if you don't like what you got.",
+      "nextTitle": "Move on",
+      "nextContent": "Whenever you are ready, click next to move on."
     }
   },
   "joyride": {

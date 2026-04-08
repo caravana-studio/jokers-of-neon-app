@@ -127,7 +127,12 @@ export const UnlockProgressDebugWidget = () => {
   }, [isOpen, setup?.client, playerAddress]);
 
   return (
-    <Box position="absolute" top={{ base: 2, md: 3 }} right={{ base: 2, md: 3 }} zIndex={PANEL_Z_INDEX}>
+    <Box
+      position="absolute"
+      top={{ base: "calc(env(safe-area-inset-top) + 12px)", md: 3 }}
+      right={{ base: 2, md: 3 }}
+      zIndex={PANEL_Z_INDEX}
+    >
       <Button
         size="sm"
         variant="outline"

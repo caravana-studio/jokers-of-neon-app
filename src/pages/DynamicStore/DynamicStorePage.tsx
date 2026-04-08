@@ -1,6 +1,7 @@
 import { Button, Flex, Heading } from "@chakra-ui/react";
 import { useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import Joyride from "react-joyride";
 import { useNavigate } from "react-router-dom";
 import { DelayedLoading } from "../../components/DelayedLoading";
 import { DefaultInfo } from "../../components/Info/DefaultInfo";
@@ -8,9 +9,14 @@ import { MobileBottomBar } from "../../components/MobileBottomBar";
 import { MobileDecoration } from "../../components/MobileDecoration";
 import { PositionedGameDeck } from "../../components/PositionedGameDeck";
 import { PriceBox } from "../../components/PriceBox";
+import {
+  TUTORIAL_FLOATER_PROPS,
+  TUTORIAL_STYLE,
+} from "../../constants/gameTutorial";
 import { GameStateEnum } from "../../dojo/typescript/custom";
 import { useShopActions } from "../../dojo/useShopActions";
 import { useCustomNavigate } from "../../hooks/useCustomNavigate";
+import { useProgressiveShopTutorial } from "../../hooks/useProgressiveShopTutorial";
 import { useRedirectByGameState } from "../../hooks/useRedirectByGameState";
 import { useGameContext } from "../../providers/GameProvider";
 import { useStore } from "../../providers/StoreProvider";
@@ -64,6 +70,14 @@ export const DynamicStorePage = () => {
   }, [shopId]);
 
   const { isSmallScreen } = useResponsiveValues();
+  const {
+    run: runShopTutorial,
+    steps: shopTutorialSteps,
+    locale: shopTutorialLocale,
+    handleCallback: onShopTutorialCallback,
+  } = useProgressiveShopTutorial({
+    canStart: loadedItems,
+  });
 
   const distribution =
     store?.distribution[isSmallScreen ? "mobile" : "desktop"];
@@ -174,7 +188,7 @@ export const DynamicStorePage = () => {
 
   const { skipShop } = useShopActions();
 
-  const { nextLevelButton, nextLevelButtonProps } = useNextLevelButton();
+  const { nextLevelButtonProps } = useNextLevelButton();
 
   useRedirectByGameState();
 
@@ -205,6 +219,7 @@ export const DynamicStorePage = () => {
 
   const nextButton = (
     <Button
+      className="progressive-shop-next-button"
       onClick={handleNextLevelClick}
       h={{ base: "28px", sm: "unset" }}
       w={{ base: "100%", sm: "280px" }}
@@ -217,7 +232,23 @@ export const DynamicStorePage = () => {
 
   return (
     <DelayedLoading>
+      <Joyride
+        steps={shopTutorialSteps}
+        run={runShopTutorial}
+        continuous
+        showProgress={false}
+        callback={onShopTutorialCallback}
+        styles={TUTORIAL_STYLE}
+        floaterProps={TUTORIAL_FLOATER_PROPS}
+        locale={shopTutorialLocale}
+        disableCloseOnEsc
+        disableOverlayClose
+        hideCloseButton
+        spotlightClicks={false}
+        disableScrolling
+      />
       <Flex
+        className="shop-tutorial-root"
         height="100%"
         width="100%"
         flexDirection="column"
@@ -337,7 +368,10 @@ export const DynamicStorePage = () => {
               },
               label: t("manage-items"),
             }}
-            secondButton={nextLevelButtonProps}
+            secondButton={{
+              ...nextLevelButtonProps,
+              className: "progressive-shop-next-button",
+            }}
           />
         )}
         {!isSmallScreen && <PositionedGameDeck inStore />}

@@ -2,10 +2,12 @@ import { PROGRESSIVE_TUTORIAL_STATE } from "../constants/localStorage";
 
 export const PROGRESSIVE_TUTORIAL_IDS = {
   GAME_FIRST_ENTRY: "game_first_entry",
+  GAME_FIRST_MODIFIER: "game_first_modifier",
   GAME_FIRST_TWO_SELECTED: "game_first_two_selected",
   GAME_FIRST_SCORE: "game_first_score",
   REWARDS_FIRST_ENTRY: "rewards_first_entry",
   MAP_FIRST_ENTRY: "map_first_entry",
+  SHOP_FIRST_ENTRY: "shop_first_entry",
 } as const;
 
 export type ProgressiveTutorialId =

@@ -53,6 +53,7 @@ type GameStore = {
   powerUps: (PowerUp | null)[];
   preSelectedPowerUps: number[];
   roundRewards: RoundRewards | undefined;
+  pendingTutorialRewardsRedirect: boolean;
   gameLoading: boolean;
   gameError: boolean;
   modCardsConfig: ModCardsConfig | undefined;
@@ -100,6 +101,7 @@ type GameStore = {
   refetchSpecialCards: (client: any, gameId: number) => Promise<void>;
   unPreSelectAllPowerUps: () => void;
   setRoundRewards: (rewards: RoundRewards | undefined) => void;
+  setPendingTutorialRewardsRedirect: (pending: boolean) => void;
   setGameLoading: (loading: boolean) => void;
   setGameError: (error: boolean) => void;
   toggleSpecialSwitcher: () => void;
@@ -236,6 +238,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   gameLoading: true,
   gameError: false,
   roundRewards: undefined,
+  pendingTutorialRewardsRedirect: false,
   modCardsConfig: undefined,
   specialSwitcherOn: true,
   plays: [],
@@ -462,6 +465,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   setRoundRewards: (rewards: RoundRewards | undefined) => {
     set({ roundRewards: rewards });
+  },
+
+  setPendingTutorialRewardsRedirect: (pending: boolean) => {
+    set({ pendingTutorialRewardsRedirect: pending });
   },
 
   toggleSpecialSwitcher: () => {

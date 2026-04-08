@@ -52,6 +52,10 @@ import {
 import { buildOptimisticPowerUpEvents } from "../utils/playEvents/buildOptimisticPowerUpEvents.ts";
 import { filterOptimisticEventsFromPlayEvents } from "../utils/playEvents/filterOptimisticEventsFromPlayEvents.ts";
 import { filterSilentCardEventsFromPlayEvents } from "../utils/playEvents/filterSilentCardEventsFromPlayEvents.ts";
+import {
+  PROGRESSIVE_TUTORIAL_IDS,
+  getProgressiveTutorialState,
+} from "../utils/progressiveTutorialStorage";
 import { useCardData } from "./CardDataProvider.tsx";
 import { gameProviderDefaults } from "./gameProviderDefaults.ts";
 import { PracticeGameContext } from "./PracticeGameProvider.tsx";
@@ -100,6 +104,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     addPoints,
     addMulti,
     remainingPlays,
+    totalPlays,
     discard: stateDiscard,
     play: statePlay,
     rollbackPlay,
@@ -128,12 +133,14 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setState,
     addRerolls,
     advanceLevel,
+    targetScore,
     refetchDebuffedPlayerHands,
     refetchSpecialCards,
     refetchPlays,
     setIsTournament,
     setShopTierUnlockedEvent,
     clearShopTierUnlockedEvent,
+    setPendingTutorialRewardsRedirect,
   } = useGameStore();
 
   const {
@@ -216,6 +223,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     resetPowerUps();
     resetSpecials();
     clearShopTierUnlockedEvent();
+    setPendingTutorialRewardsRedirect(false);
     refetchSpecialCardsData(modId, gameId, specialCards);
     setState(GameStateEnum.NotSet);
   };
@@ -356,6 +364,26 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setAnimation: (playing: boolean) => void,
     pitchState?: { index: number }
   ): number => {
+    const completedTutorials = getProgressiveTutorialState();
+    const firstScoreTutorialPending =
+      !completedTutorials[PROGRESSIVE_TUTORIAL_IDS.GAME_FIRST_SCORE];
+    const levelPassedInfo = response.levelPassed;
+    const detailEarned = response.detailEarned;
+    const reachedRewardsFlow =
+      Boolean(levelPassedInfo && detailEarned) &&
+      Number(levelPassedInfo?.level_passed ?? 0) === 0;
+    const clearedOnFirstPlay =
+      typeof detailEarned?.hands_left === "number" &&
+      totalPlays > 0 &&
+      detailEarned.hands_left === totalPlays - 1;
+    const deferRewardsNavigation =
+      firstScoreTutorialPending &&
+      reachedRewardsFlow &&
+      clearedOnFirstPlay &&
+      response.score >= targetScore;
+
+    setPendingTutorialRewardsRedirect(deferRewardsNavigation);
+
     console.log("events", response);
     return animatePlayDiscard({
       playEvents: response,
@@ -395,6 +423,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       address: account.address,
       clearRoundSound,
       clearLevelSound,
+      deferRewardsNavigation,
     });
   };
 
