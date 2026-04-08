@@ -1047,7 +1047,7 @@
     },
     "20027": {
       "name": "Pharaoh's Mandate",
-      "description": "You must play 3 or more cards this round."
+      "description": "When you play a hand, its level resets to 1."
     }
   },
   "lootBoxes": {

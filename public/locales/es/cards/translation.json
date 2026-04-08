@@ -1047,7 +1047,7 @@
     },
     "20027": {
       "name": "Mandato del Faraón",
-      "description": "Debes jugar 3 o más cartas en esta ronda."
+      "description": "Al jugar una mano, su nivel se reinicia a 1."
     }
   },
   "lootBoxes": {
