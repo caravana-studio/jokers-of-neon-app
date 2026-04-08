@@ -49,7 +49,14 @@ public class AgeSignalsBridgePlugin extends Plugin {
 
         ageSignalsManager
             .checkAgeSignals(request)
-            .addOnSuccessListener(result -> call.resolve(buildSuccessResponse(result)))
+            .addOnSuccessListener(result -> {
+                try {
+                    call.resolve(buildSuccessResponse(result));
+                } catch (Exception exception) {
+                    Log.e(TAG, "Age signals success response parsing failed", exception);
+                    call.resolve(buildErrorResponse(exception));
+                }
+            })
             .addOnFailureListener(error -> call.resolve(buildErrorResponse(error)));
     }
 
@@ -59,8 +66,10 @@ public class AgeSignalsBridgePlugin extends Plugin {
         payload.put("available", true);
         payload.put("checkedAt", toIso8601(new Date()));
 
-        int rawUserStatus = result.userStatus();
-        payload.put("rawUserStatus", rawUserStatus);
+        Integer rawUserStatus = result.userStatus();
+        if (rawUserStatus != null) {
+            payload.put("rawUserStatus", rawUserStatus);
+        }
         payload.put("userStatus", mapVerificationStatus(rawUserStatus));
 
         Integer ageLower = result.ageLower();
@@ -113,7 +122,10 @@ public class AgeSignalsBridgePlugin extends Plugin {
         return payload;
     }
 
-    private String mapVerificationStatus(int status) {
+    private String mapVerificationStatus(Integer status) {
+        if (status == null) {
+            return "UNSPECIFIED";
+        }
         switch (status) {
             case STATUS_VERIFIED:
                 return "VERIFIED";
