@@ -1,6 +1,7 @@
 import { Flex } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { useDeckPreviewHoldStore } from "../../state/useDeckPreviewHoldStore";
 import { isNative } from "../../utils/capacitorUtils";
 import { isTutorial } from "../../utils/isTutorial";
 import { ContextMenuItem } from "./ContextMenuItem";
@@ -14,6 +15,13 @@ export const BottomMenu = () => {
     onMoreClick: () => setIsMenuOpen(true),
   });
   const inTutorial = isTutorial();
+  const setDeckPreviewVisible = useDeckPreviewHoldStore(
+    (store) => store.setDeckPreviewVisible
+  );
+
+  useEffect(() => {
+    setDeckPreviewVisible(false);
+  }, [location.pathname, setDeckPreviewVisible]);
 
   return (
     <>
@@ -41,6 +49,11 @@ export const BottomMenu = () => {
               nameKey={key}
               disabled={inTutorial}
               pulse={item.pulse}
+              onHoldChange={
+                key === "deck"
+                  ? (isHolding) => setDeckPreviewVisible(isHolding)
+                  : undefined
+              }
             />
           );
         })}

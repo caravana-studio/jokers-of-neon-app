@@ -1,6 +1,6 @@
 import { Flex, Text, Tooltip } from "@chakra-ui/react";
 import { keyframes } from "@emotion/react";
-import { FC, ReactSVGElement, SVGProps } from "react";
+import { FC, ReactSVGElement, SVGProps, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
@@ -15,6 +15,7 @@ interface ContextMenuItemProps {
   nameKey?: string;
   notificationCount?: number;
   pulse?: boolean;
+  onHoldChange?: (isHolding: boolean) => void;
 }
 
 const pulseKeyframes = keyframes`
@@ -36,6 +37,7 @@ export const ContextMenuItem = ({
   nameKey,
   notificationCount,
   pulse = false,
+  onHoldChange,
 }: ContextMenuItemProps) => {
   const { isSmallScreen } = useResponsiveValues();
   const iconSize = isSmallScreen ? "20px" : "22px";
@@ -49,6 +51,35 @@ export const ContextMenuItem = ({
   const badgeFontSize = isSmallScreen ? "8px" : "9px";
   const { t } = useTranslation("home", { keyPrefix: "menu" });
   const pulseAnimation = `${pulseKeyframes} 1.6s ease-in-out infinite`;
+  const holdTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const holdActivatedRef = useRef(false);
+  const HOLD_DELAY_MS = 300;
+
+  const clearHoldTimeout = () => {
+    if (holdTimeoutRef.current) {
+      clearTimeout(holdTimeoutRef.current);
+      holdTimeoutRef.current = null;
+    }
+  };
+
+  const handleTouchStart = () => {
+    if (!onHoldChange || disabled) return;
+    holdActivatedRef.current = false;
+    clearHoldTimeout();
+    holdTimeoutRef.current = setTimeout(() => {
+      holdActivatedRef.current = true;
+      onHoldChange(true);
+      holdTimeoutRef.current = null;
+    }, HOLD_DELAY_MS);
+  };
+
+  const handleTouchEnd = () => {
+    if (!onHoldChange) return;
+    clearHoldTimeout();
+    if (holdActivatedRef.current) {
+      onHoldChange(false);
+    }
+  };
   const content = (
     <Link
       style={{
@@ -60,17 +91,26 @@ export const ContextMenuItem = ({
       aria-disabled={disabled}
       className={"game-tutorial-step-btn-" + nameKey}
       tabIndex={disabled ? -1 : 0}
-      onClick={
-        disabled || onClick
-          ? (e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              if (onClick && !disabled) {
-                onClick();
-              }
-            }
-          : undefined
-      }
+      onClick={(e) => {
+        if (holdActivatedRef.current) {
+          holdActivatedRef.current = false;
+          e.preventDefault();
+          e.stopPropagation();
+          return;
+        }
+
+        if (disabled || onClick) {
+          e.preventDefault();
+          e.stopPropagation();
+          if (onClick && !disabled) {
+            onClick();
+          }
+        }
+      }}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+      onTouchMove={handleTouchEnd}
+      onTouchCancel={handleTouchEnd}
     >
       <Flex
         flex="1"

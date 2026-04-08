@@ -1,4 +1,6 @@
-import { Flex, Heading, Text } from "@chakra-ui/react";
+import { ChevronUpIcon } from "@chakra-ui/icons";
+import { AnimatePresence } from "framer-motion";
+import { Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -6,6 +8,7 @@ import { CashSymbol } from "../../components/CashSymbol";
 import { DeckPreviewTable } from "../../components/DeckPreview/DeckPreviewTable";
 import { MobileBottomBar } from "../../components/MobileBottomBar";
 import { MobileDecoration } from "../../components/MobileDecoration";
+import { MotionBox } from "../../components/MotionBox";
 import { useStore } from "../../providers/StoreProvider";
 import { useGameStore } from "../../state/useGameStore";
 import { useShopStore } from "../../state/useShopStore";
@@ -27,6 +30,7 @@ export const DeckPageContentMobile = ({
 }: DeckPageContentMobileProps) => {
   const { t } = useTranslation("game", { keyPrefix: "game.deck" });
   const [cardsToBurn, setCardsToBurn] = useState<Card[]>([]);
+  const [isDeckPreviewOpen, setIsDeckPreviewOpen] = useState(false);
   const navigate = useNavigate();
   const { burnCards } = useStore();
   const { burnItem, locked } = useShopStore();
@@ -114,13 +118,50 @@ export const DeckPageContentMobile = ({
             />
           </Flex>
           <Flex
-            py={2}
+            flexDirection="column"
+            alignItems="center"
             px={2}
-            height={"auto"}
-            width={["100%", "80%"]}
-            margin={"0 auto"}
+            pb={2}
+            width="100%"
           >
-            <DeckPreviewTable />
+            <Button
+              size="xs"
+              variant="defaultOutline"
+              borderRadius="full"
+              px={3}
+              minW="unset"
+              onClick={() => setIsDeckPreviewOpen((prev) => !prev)}
+            >
+              <Text fontSize="xs" mr={1}>
+                {isDeckPreviewOpen ? "hide" : "preview deck"}
+              </Text>
+              <ChevronUpIcon
+                boxSize={5}
+                transform={isDeckPreviewOpen ? "rotate(180deg)" : "rotate(0deg)"}
+                transition="transform 0.2s ease-in-out"
+              />
+            </Button>
+            <AnimatePresence initial={false}>
+              {isDeckPreviewOpen && (
+                <MotionBox
+                  key="deck-preview-mobile"
+                  width="100%"
+                  initial={{ height: 0, opacity: 0, marginTop: 0 }}
+                  animate={{ height: "auto", opacity: 1, marginTop: 8 }}
+                  exit={{ height: 0, opacity: 0, marginTop: 0 }}
+                  transition={{ duration: 0.22, ease: "easeInOut" }}
+                  overflow="hidden"
+                >
+                  <Flex
+                    width="95%"
+                    height="auto"
+                    margin="0 auto"
+                  >
+                    <DeckPreviewTable />
+                  </Flex>
+                </MotionBox>
+              )}
+            </AnimatePresence>
           </Flex>
         </Flex>
       ) : (
