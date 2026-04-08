@@ -173,10 +173,6 @@
       "name": "Factor de Escala",
       "description": "Mejora todas tus manos en 2 niveles"
     },
-    "10040": {
-      "name": "Doses Salvajes",
-      "description": "Todos los 2s se consideran comodines"
-    },
     "10041": {
       "name": "Robo Inmortal",
       "description": "Sube de nivel la primer mano descartada"
@@ -426,8 +422,8 @@
       "description": "La primera mano que descartas en cada ronda sube de nivel."
     },
     "10301": {
-      "name": "Doses Salvajes",
-      "description": "Todos los 2s se consideran comodines."
+      "name": "Dos Camaleones",
+      "description": "Todos los 2s se consideran cartas Camaleón."
     },
     "10302": {
       "name": "Mano de Midas",
@@ -435,7 +431,7 @@
     },
     "10303": {
       "name": "Carga de Descarte",
-      "description": "Gana ^violet(+2 multi)^ por cada descarte. Se reinicia al jugar una mano."
+      "description": "Gana ^violet(+2 multi)^ (acumulativos) por cada descarte. Se reinicia al jugar una mano. Actualmente ^violet(+{{multi}} multi)^."
     },
     "10304": {
       "name": "Comodín de Bolsillo",
@@ -443,11 +439,11 @@
     },
     "10305": {
       "name": "Custodio de Tréboles",
-      "description": "Gana ^blue(+5 puntos)^ (acumulativos) por cada carta de Trébol en tu mazo. Actualmente ^blue(+{{points}} puntos)^."
+      "description": "Suma ^blue(+5 puntos)^ por cada carta de Trébol en tu mazo."
     },
     "10306": {
       "name": "Adrenalina",
-      "description": "Gana ^blue(+50 puntos)^ (acumulativos) por cada carta de Furia en la ronda. Actualmente ^blue(+{{points}} puntos)^."
+      "description": "Suma ^blue(+50 puntos)^ por cada carta de Furia en la ronda."
     },
     "10307": {
       "name": "Fiebre de Botín",
