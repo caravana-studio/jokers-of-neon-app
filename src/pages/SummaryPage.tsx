@@ -177,6 +177,7 @@ const SummaryDetail = ({ win }: SummaryPageProps) => {
             skip={skip}
             label={labels[0]}
             value={compactRound}
+            rollingSound={false}
             showCashSymbol={false}
             coloredValue
           />
@@ -184,6 +185,7 @@ const SummaryDetail = ({ win }: SummaryPageProps) => {
             skip={skip}
             label={labels[1]}
             value={gameTracker.highestHand}
+            rollingSound={false}
             showCashSymbol={false}
             coloredValue
           />
@@ -192,6 +194,7 @@ const SummaryDetail = ({ win }: SummaryPageProps) => {
             label={labels[2]}
             showCashSymbol={false}
             value={`${tPlays(`${mostPlayedHandName}.name`)} (${gameTracker.mostPlayedHandCount})`}
+            rollingSound={false}
             coloredValue
           />
 
@@ -201,6 +204,7 @@ const SummaryDetail = ({ win }: SummaryPageProps) => {
             showCashSymbol={false}
             value={gameTracker.cardsPlayedCount}
             rollingDelay={(DELAY_START + STAGGER) * 1000}
+            rollingSound={false}
             coloredValue
           />
           <RewardItem
@@ -209,6 +213,7 @@ const SummaryDetail = ({ win }: SummaryPageProps) => {
             showCashSymbol={false}
             value={gameTracker.cardsDiscardedCount}
             rollingDelay={(DELAY_START + STAGGER) * 1000}
+            rollingSound={false}
             coloredValue
           />
           <RewardItem
@@ -217,6 +222,7 @@ const SummaryDetail = ({ win }: SummaryPageProps) => {
             showCashSymbol={false}
             value={gameTracker.rageWins}
             rollingDelay={(DELAY_START + STAGGER) * 1000}
+            rollingSound={false}
             coloredValue
           />
           <Box h="20px" />
