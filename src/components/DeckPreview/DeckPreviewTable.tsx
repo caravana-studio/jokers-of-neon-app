@@ -51,9 +51,9 @@ export const DeckPreviewTable = () => {
         {rows.slice(0, -1).map((row, rowIndex) => {
           const suit = rowHeaders[rowIndex]?.cardSuit;
           const suitColor = suit ? suitColorsMap.get(suit) : undefined;
-          const rowBackgroundColor = suitColor
-            ? `${suitColor}80`
-            : "rgba(0, 0, 0, 0.5)";
+          const rowBackground = suitColor
+            ? `linear-gradient(${suitColor}80, ${suitColor}80), #000000`
+            : "linear-gradient(rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.12)), #000000";
 
           return (
             <Tr key={rowIndex}>
@@ -69,7 +69,7 @@ export const DeckPreviewTable = () => {
                   key={`${rowIndex}-${cellIndex}`}
                   p={1}
                   textAlign="center"
-                  backgroundColor={rowBackgroundColor}
+                  background={rowBackground}
                   border="none"
                   borderRadius={
                     cellIndex === 0
