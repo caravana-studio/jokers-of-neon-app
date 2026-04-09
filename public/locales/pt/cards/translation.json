@@ -173,10 +173,6 @@
       "name": "Fator de Escala",
       "description": "Aprimora todas as suas mãos em 2 níveis"
     },
-    "10040": {
-      "name": "Duques Selvagens",
-      "description": "Todos os 2s são considerados jokers"
-    },
     "10041": {
       "name": "Compra Imortal",
       "description": "A primeira mão descartada é aprimorada"
@@ -435,7 +431,7 @@
     },
     "10303": {
       "name": "Carga de Descarte",
-      "description": "Ganha ^violet(+2 multi)^ por cada descarte. Reinicia ao jogar uma mão."
+      "description": "Adiciona ^violet(+2 multi)^ (acumulativo) por cada descarte. Reinicia ao jogar uma mão. Atualmente ^violet(+{{multi}} multi)^."
     },
     "10304": {
       "name": "Joker de Bolso",
@@ -443,11 +439,11 @@
     },
     "10305": {
       "name": "Zelador de Paus",
-      "description": "Ganhe ^blue(+5 pontos)^ (acumulativos) para cada carta de Paus no seu baralho. Atualmente ^blue(+{{points}} pontos)^."
+      "description": "Adiciona ^blue(+5 pontos)^ para cada carta de Paus no seu baralho."
     },
     "10306": {
       "name": "Adrenalina",
-      "description": "Ganhe ^blue(+50 pontos)^ (acumulativos) para cada carta de Rage na rodada. Atualmente ^blue(+{{points}} pontos)^."
+      "description": "Adiciona ^blue(+50 pontos)^ para cada carta de Rage na rodada."
     },
     "10307": {
       "name": "Corrida do Saque",
@@ -1051,7 +1047,7 @@
     },
     "20027": {
       "name": "Mandato do Faraó",
-      "description": "Você deve jogar 3 ou mais cartas nesta rodada."
+      "description": "Ao jogar uma mão, seu nível é redefinido para 1."
     }
   },
   "lootBoxes": {

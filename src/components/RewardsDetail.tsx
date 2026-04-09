@@ -19,6 +19,7 @@ interface RewardItemProps {
   value: number | string;
   reroll?: boolean;
   rollingDelay?: number;
+  rollingSound?: boolean;
   skip?: boolean;
   showCashSymbol?: boolean;
   coloredValue?: boolean;
@@ -32,6 +33,7 @@ export const RewardItem = ({
   value,
   reroll = false,
   rollingDelay = 0,
+  rollingSound = true,
   skip = false,
   showCashSymbol = true,
   coloredValue = false,
@@ -78,7 +80,7 @@ export const RewardItem = ({
               {skip || typeof value === "string" ? (
                 value
               ) : (
-                <RollingNumber n={value} delay={rollingDelay} sound />
+                <RollingNumber n={value} delay={rollingDelay} sound={rollingSound} />
               )}
             </Heading>
           </Flex>

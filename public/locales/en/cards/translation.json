@@ -609,10 +609,6 @@
       "name": "Scaling factor",
       "description": "Upgrade all your hands by 2 levels"
     },
-    "10040": {
-      "name": "Wild deuces",
-      "description": "All 2s are considered wildcards"
-    },
     "10041": {
       "name": "Undying Draw",
       "description": "First discarded hand gets leveled up"
@@ -871,7 +867,7 @@
     },
     "10303": {
       "name": "Discard Charge",
-      "description": "Gains ^violet(+2 multi)^ for each discard. Resets after you play a hand."
+      "description": "Gains ^violet(+2 multi)^ (stacking) for each discard. Resets after you play a hand. Currently ^violet(+{{multi}} multi)^."
     },
     "10304": {
       "name": "Pocket Joker",
@@ -879,11 +875,11 @@
     },
     "10305": {
       "name": "Club Keeper",
-      "description": "Gains ^blue(+5 points)^ (stacking) for each Club card in your deck. Currently ^blue(+{{points}} points)^."
+      "description": "Adds ^blue(+5 points)^ for each Club card in your deck."
     },
     "10306": {
       "name": "Adrenaline",
-      "description": "Gains ^blue(+50 points)^ (stacking) for each Rage card in the round. Currently ^blue(+{{points}} points)^."
+      "description": "Adds ^blue(+50 points)^ for each Rage card in the round."
     },
     "10307": {
       "name": "Loot Rush",
@@ -895,7 +891,7 @@
     },
     "10309": {
       "name": "Aftershock",
-      "description": "After each Rage, create a random temporary special card."
+      "description": "After each Rage, create a random temporary special card (you must have an empty special slot)."
     },
     "10310": {
       "name": "Extreme Attachment",
@@ -1051,7 +1047,7 @@
     },
     "20027": {
       "name": "Pharaoh's Mandate",
-      "description": "You must play 3 or more cards this round."
+      "description": "When you play a hand, its level resets to 1."
     }
   },
   "lootBoxes": {

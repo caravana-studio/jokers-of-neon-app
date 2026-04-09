@@ -6,14 +6,17 @@ import {
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
+import { AnimatePresence } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Joyride, { CallBackProps, STATUS } from "react-joyride";
 import { useNavigate } from "react-router-dom";
+import { DeckPreviewTable } from "../../components/DeckPreview/DeckPreviewTable.tsx";
 import { Loading } from "../../components/Loading.tsx";
 import { MobileBottomBar } from "../../components/MobileBottomBar.tsx";
 import { MobileCardHighlight } from "../../components/MobileCardHighlight.tsx";
 import { MobileDecoration } from "../../components/MobileDecoration.tsx";
+import { MotionBox } from "../../components/MotionBox.tsx";
 import {
   JOYRIDE_LOCALES,
   TUTORIAL_STEPS,
@@ -29,6 +32,7 @@ import { useProgressiveGameTutorial } from "../../hooks/useProgressiveGameTutori
 import { useGameContext } from "../../providers/GameProvider.tsx";
 import { useCardHighlight } from "../../providers/HighlightProvider/CardHighlightProvider.tsx";
 import { useCurrentHandStore } from "../../state/useCurrentHandStore.ts";
+import { useDeckPreviewHoldStore } from "../../state/useDeckPreviewHoldStore.ts";
 import { useGameStore } from "../../state/useGameStore.ts";
 import { logEvent } from "../../utils/analytics.ts";
 import { isTutorial } from "../../utils/isTutorial.ts";
@@ -103,7 +107,7 @@ export const MobileGameContent = ({
       activationConstraint: {
         distance: 8,
       },
-    })
+    }),
   );
   const [run, setRun] = useState(false);
   const [cardClicked, setCardClicked] = useState(false);
@@ -114,6 +118,12 @@ export const MobileGameContent = ({
   const [highlightedPlay, setHighlightedPlay] = useState(false);
   const [highlightedDiscard, setHighlightedDiscard] = useState(false);
   const [canClickPowerUp, setCanClickPowerUp] = useState(false);
+  const isDeckPreviewVisible = useDeckPreviewHoldStore(
+    (store) => store.isDeckPreviewVisible,
+  );
+  const setDeckPreviewVisible = useDeckPreviewHoldStore(
+    (store) => store.setDeckPreviewVisible,
+  );
   const cardsStageRef = useRef<HTMLDivElement>(null);
   const handCardsAnchorRef = useRef<HTMLDivElement>(null);
   const preselectedCardsAnchorRef = useRef<HTMLDivElement>(null);
@@ -125,6 +135,10 @@ export const MobileGameContent = ({
   useEffect(() => {
     setRun(inTutorial);
   }, []);
+
+  useEffect(() => {
+    return () => setDeckPreviewVisible(false);
+  }, [setDeckPreviewVisible]);
 
   const stepData = [
     { step: 13, delay: 2700 },
@@ -158,7 +172,7 @@ export const MobileGameContent = ({
   }, [stepIndex]);
 
   const handleJoyrideCallbackFactory = (
-    setRunCallback: React.Dispatch<React.SetStateAction<boolean>>
+    setRunCallback: React.Dispatch<React.SetStateAction<boolean>>,
   ) => {
     return (data: CallBackProps) => {
       const { type, status } = data;
@@ -200,7 +214,7 @@ export const MobileGameContent = ({
 
       if (type === "tour:end") {
         logEvent(
-          status === "skipped" ? "tutorial_skipped" : "tutorial_finished"
+          status === "skipped" ? "tutorial_skipped" : "tutorial_finished",
         );
         logEvent("tutorial_done");
         setRunCallback(false);
@@ -380,6 +394,53 @@ export const MobileGameContent = ({
           />
         </>
       )}
+      <Box
+        sx={{
+          position: "fixed",
+          zIndex: 1000,
+        }}
+        right={[1, 4]}
+        bottom={[1, 4]}
+      >
+        <Joyride
+          steps={TUTORIAL_STEPS}
+          run={run}
+          continuous
+          showProgress={false}
+          callback={handleJoyrideCallback}
+          styles={TUTORIAL_STYLE}
+          locale={JOYRIDE_LOCALES}
+          stepIndex={stepIndex}
+          disableCloseOnEsc
+          disableOverlayClose
+          showSkipButton
+          hideCloseButton
+        />
+      </Box>
+      <AnimatePresence>
+        {isDeckPreviewVisible && (
+          <MotionBox
+            position="fixed"
+            zIndex={1300}
+            top="50%"
+            left="50%"
+            transform="translate(-50%, -50%)"
+            pointerEvents="none"
+            width="95vw"
+            maxWidth="95vw"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2, ease: "easeInOut" }}
+          >
+            <Flex justifyContent="center">
+              <Box width="100%" sx={{ "& table": { width: "100%" } }}>
+                <DeckPreviewTable />
+              </Box>
+            </Flex>
+          </MotionBox>
+        )}
+      </AnimatePresence>
 
       <Box
         sx={{

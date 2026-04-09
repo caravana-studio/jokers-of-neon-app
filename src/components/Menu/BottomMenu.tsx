@@ -1,6 +1,7 @@
 import { Flex } from "@chakra-ui/react";
-import { useState } from "react";
-import { matchPath, useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import { useDeckPreviewHoldStore } from "../../state/useDeckPreviewHoldStore";
 import { isNative } from "../../utils/capacitorUtils";
 import { ContextMenuItem } from "./ContextMenuItem";
 import { GameMenuContent } from "./GameMenu/GameMenuContent";
@@ -12,16 +13,13 @@ export const BottomMenu = () => {
   const { mainMenuItems, inGameMenuItems } = useContextMenuItems({
     onMoreClick: () => setIsMenuOpen(true),
   });
-  const hideBottomMenu = Boolean(
-    matchPath(
-      { path: "/shop-tier-unlocked/:gameId", end: true },
-      location.pathname
-    )
+  const setDeckPreviewVisible = useDeckPreviewHoldStore(
+    (store) => store.setDeckPreviewVisible,
   );
 
-  if (hideBottomMenu) {
-    return null;
-  }
+  useEffect(() => {
+    setDeckPreviewVisible(false);
+  }, [location.pathname, setDeckPreviewVisible]);
 
   return (
     <>
@@ -40,7 +38,10 @@ export const BottomMenu = () => {
         position="absolute"
         bottom={isNative ? "30px" : "0px"}
       >
-        {(isInGamePath(location.pathname) ? inGameMenuItems : mainMenuItems).map((item) => {
+        {(isInGamePath(location.pathname)
+          ? inGameMenuItems
+          : mainMenuItems
+        ).map((item) => {
           const { key, ...menuItem } = item;
           return (
             <ContextMenuItem
@@ -48,6 +49,11 @@ export const BottomMenu = () => {
               {...menuItem}
               nameKey={key}
               pulse={item.pulse}
+              onHoldChange={
+                key === "deck"
+                  ? (isHolding) => setDeckPreviewVisible(isHolding)
+                  : undefined
+              }
             />
           );
         })}
