@@ -5,7 +5,9 @@ export const rageCardIds = {
   BROKEN_MODIFIERS: 20013,
   LOCKED_PLAYS: 20022,
   PUNCHED_TICKET: 20023,
-  BUZZKILLER: 20025
+  BUZZKILLER: 20025,
+  BLACKOUT: 20026,
+  PHARAOHS_MANDATE: 20027,
 };
 
 export const debuffPokerHandCardIds = [
