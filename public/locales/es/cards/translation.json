@@ -431,7 +431,7 @@
     },
     "10303": {
       "name": "Carga de Descarte",
-      "description": "Gana ^violet(+2 multi)^ (acumulativos) por cada descarte. Se reinicia al jugar una mano. Actualmente ^violet(+{{multi}} multi)^."
+      "description": "Suma ^violet(+2 multi)^ (acumulativos) por cada descarte. Se reinicia al jugar una mano. Actualmente ^violet(+{{multi}} multi)^."
     },
     "10304": {
       "name": "Comodín de Bolsillo",
