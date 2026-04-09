@@ -431,7 +431,7 @@
     },
     "10303": {
       "name": "Carga de Descarte",
-      "description": "Ganhe ^violet(+2 multi)^ (acumulativo) por cada descarte. Reinicia ao jogar uma mão. Atualmente ^violet(+{{multi}} multi)^."
+      "description": "Adiciona ^violet(+2 multi)^ (acumulativo) por cada descarte. Reinicia ao jogar uma mão. Atualmente ^violet(+{{multi}} multi)^."
     },
     "10304": {
       "name": "Joker de Bolso",
