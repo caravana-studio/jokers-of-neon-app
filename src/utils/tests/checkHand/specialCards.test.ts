@@ -43,6 +43,7 @@ import {
   EasyFlush,
   EasyStraight,
   StraightToHighStraight,
+  WildDeuces,
 } from "../../mocks/specialCardMocks";
 
 test("Flush with EasyFlush should work", () => {
@@ -96,6 +97,20 @@ test("Flush with AllCardsToHearts should work", () => {
 test("Flush with AllCardsToHearts and a joker should work", () => {
   expect(testCheckHand([H2, H3, H4, D10, JOKER2], [AllCardsToHearts])).toBe(
     Plays.FLUSH
+  );
+});
+
+test("Wild Deuces converts played 2s into wildcards", () => {
+  expect(testCheckHand([H2, C3], [WildDeuces])).toBe(Plays.PAIR);
+});
+
+test("Wild Deuces allows multi-joker style combinations from 2s", () => {
+  expect(testCheckHand([H2, C2, H7], [WildDeuces])).toBe(Plays.THREE_OF_A_KIND);
+});
+
+test("Wild Deuces has no effect when silenced", () => {
+  expect(testCheckHand([H2, C3], [{ ...WildDeuces, silenced: true }])).toBe(
+    Plays.HIGH_CARD
   );
 });
 

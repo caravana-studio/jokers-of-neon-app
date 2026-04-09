@@ -106,11 +106,97 @@
       "content-mobile": "Arraste o modificador para o botão de descarte para removê-lo. Isso não custará um descarte."
     }
   },
+  "progressiveGame": {
+    "firstEntry": {
+      "title": "Boas-vindas à sua primeira partida de Jokers of Neon",
+      "objective": "O objetivo é somar pontos montando mãos de pôquer.",
+      "selectTitle": "Monte sua jogada",
+      "selectContent": "Você pode selecionar até 5 cartas da sua mão para montar mãos de pôquer.",
+      "playsTitle": "Não conhece as mãos de pôquer?",
+      "playsContent": "Sem problema, a gente te ajuda. Toque neste botão para ver todas as jogadas possíveis."
+    },
+    "firstTwoSelected": {
+      "playTitle": "Continue jogando",
+      "playContent": "Você tem 3 jogadas por rodada.",
+      "discardTitle": "Use seus descartes",
+      "discardContent": "Você também pode descartar suas cartas para receber novas."
+    },
+    "firstModifier": {
+      "title": "Carta modificadora",
+      "content": "Esta é uma carta modificadora. As modificadoras aplicam um efeito sobre uma carta específica.",
+      "howToUseTitle": "Como usar",
+      "howToUseContent": "Por exemplo, esta carta transforma uma das suas cartas em {{effect}}. Para usar, arraste para uma das cartas pré-selecionadas no centro da tela.",
+      "effects": {
+        "club": "paus",
+        "diamonds": "ouros",
+        "hearts": "copas",
+        "spades": "espadas",
+        "neon": "neon",
+        "wildcard": "wildcard",
+        "card": "outro tipo"
+      }
+    },
+    "firstSpecialCard": {
+      "title": "Cartas especiais",
+      "content": "As cartas especiais têm efeitos globais no jogo inteiro. São as mais poderosas, então vale a pena comprá-las se você quiser ir longe.",
+      "alwaysOnTitle": "Sempre ativas",
+      "alwaysOnContent": "As cartas especiais ficam ativas o tempo todo. Enquanto você as tiver, o efeito continua ativo."
+    },
+    "firstPowerUp": {
+      "title": "Power-ups",
+      "content": "Power-ups são consumíveis que dão pontos ou multi extra em uma jogada específica.",
+      "activateTitle": "Ativar power-ups",
+      "activateContent": "Toque para ativar. Depois de ativados, eles serão aplicados na sua próxima jogada."
+    },
+    "firstNeonCard": {
+      "title": "Cartas neon",
+      "content": "As cartas neon servem para montar jogadas de pôquer, assim como as tradicionais, mas são mais poderosas. Elas somam o dobro de pontos e +1 de multi.",
+      "neonPlaysTitle": "Neon plays",
+      "neonPlaysContent": "Se você fizer uma jogada composta apenas por cartas neon, o nível dela sobe 4 vezes, somando ainda mais pontos e multi."
+    },
+    "firstScore": {
+      "title": "Boa!",
+      "content": "Você marcou {{score}} pontos. Precisa de {{targetScore}} pontos para passar da rodada.",
+      "contentFirstPlayClear": "Você marcou {{score}} pontos. Você precisava de {{targetScore}} para passar da rodada, e conseguiu na primeira jogada."
+    }
+  },
+  "progressiveRewards": {
+    "firstEntry": {
+      "title": "Recompensas da rodada",
+      "overview": "Aqui você vê tudo o que ganhou ao terminar a rodada.",
+      "efficiencyTitle": "Jogue com eficiência",
+      "efficiencyContent": "Quanto mais mãos e descartes sobrarem, mais recompensas você recebe.",
+      "totalTitle": "Total final",
+      "totalContent": "Este é o total final que você leva desta rodada."
+    }
+  },
+  "progressiveMap": {
+    "firstEntry": {
+      "title": "Bem-vindo ao mapa",
+      "welcome": "Bem-vindo ao mapa do nível 1.",
+      "pathsTitle": "Escolha seu caminho",
+      "pathsContent": "Você pode escolher caminhos diferentes para avançar.",
+      "shopTitle": "Lojas disponíveis",
+      "shopContent": "Escolha uma loja disponível para avançar. Cada tipo de loja tem itens diferentes.",
+      "shopTypesTitle": "Tipos de loja",
+      "shopTypesContent": "Cada tipo de loja tem itens diferentes."
+    }
+  },
+  "progressiveShop": {
+    "firstEntry": {
+      "title": "Bem-vindo à sua primeira loja",
+      "welcome": "Aqui você poderá comprar itens para melhorar seu baralho.",
+      "rerollTitle": "Rerrolar itens",
+      "rerollContent": "Os itens são aleatórios, mas você pode rerrolar se não gostar do que recebeu.",
+      "nextTitle": "Avançar",
+      "nextContent": "Quando estiver pronto, toque em próximo para avançar."
+    }
+  },
   "joyride": {
     "back": "Voltar",
     "next": "Próximo",
     "skip": "Pular",
     "close": "Fechar",
-    "last": "Finalizar"
+    "last": "Continuar"
   }
 }

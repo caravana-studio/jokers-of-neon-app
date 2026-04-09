@@ -19,6 +19,7 @@ import { useSeasonNumber } from "../../constants/season";
 import { LoadingScreenHandle } from "../../types/LoadingProgress";
 import { PreThemeLoadingPage } from "../PreThemeLoadingPage";
 import OpeningScreenAnimation from "./OpeningScreenAnimation";
+import { useSeasonLoadingAssets } from "./useSeasonLoadingAssets";
 
 interface LoadingScreenProps {
   error?: boolean;
@@ -43,7 +44,8 @@ export const LoadingScreen = forwardRef<
     ref
   ) => {
     const seasonNumber = useSeasonNumber();
-    const isSeason2 = seasonNumber === 2;
+    const { hasSeasonAssets, isSeasonPresentation } =
+      useSeasonLoadingAssets(seasonNumber);
     const [isFadingOut, setIsFadingOut] = useState(false);
     const [visibleSpinner, setVisibleSpinner] = useState(false);
     const [skipAnimation, setSkipAnimation] = useState(false);
@@ -82,11 +84,11 @@ export const LoadingScreen = forwardRef<
     }, [onPresentationEnd, showPresentation]);
 
     const handleAnimationEnd = useCallback(() => {
-      if (!isSeason2) {
+      if (!isSeasonPresentation) {
         setVisibleSpinner(true);
       }
       onPresentationEnd();
-    }, [isSeason2, onPresentationEnd]);
+    }, [isSeasonPresentation, onPresentationEnd]);
 
     const handleSkipPresentation = useCallback(() => {
       setSkipAnimation(true);
@@ -94,7 +96,8 @@ export const LoadingScreen = forwardRef<
       onPresentationEnd();
     }, [onPresentationEnd]);
 
-    const shouldShowSpinner = isSeason2 || visibleSpinner || !showPresentation;
+    const shouldShowSpinner =
+      isSeasonPresentation || visibleSpinner || !showPresentation;
 
     return (
       <Flex
@@ -124,17 +127,21 @@ export const LoadingScreen = forwardRef<
 
                 {shouldShowSpinner && (
                   <Flex
-                    width={showPresentation && isSeason2 ? "100%" : "80%"}
-                    position={showPresentation && isSeason2 ? "absolute" : "relative"}
+                    width={showPresentation && isSeasonPresentation ? "100%" : "80%"}
+                    position={
+                      showPresentation && isSeasonPresentation
+                        ? "absolute"
+                        : "relative"
+                    }
                     left={0}
-                    bottom={showPresentation && isSeason2 ? 0 : undefined}
-                    px={showPresentation && isSeason2 ? 3 : 0}
-                    zIndex={showPresentation && isSeason2 ? 30 : 1}
+                    bottom={showPresentation && isSeasonPresentation ? 0 : undefined}
+                    px={showPresentation && isSeasonPresentation ? 3 : 0}
+                    zIndex={showPresentation && isSeasonPresentation ? 30 : 1}
                   >
                     <RealLoadingBar
                       ref={progressBarRef}
                       steps={steps}
-                      showHint={!showPresentation || !isSeason2}
+                      showHint={!showPresentation || !isSeasonPresentation}
                     />
                   </Flex>
                 )}
@@ -144,7 +151,7 @@ export const LoadingScreen = forwardRef<
           <RemoveScroll>
             <></>
           </RemoveScroll>
-          {!isSeason2 && !skipAnimation && showPresentation && (
+          {hasSeasonAssets === false && !skipAnimation && showPresentation && (
             <div
               style={{
                 position: "absolute",

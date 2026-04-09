@@ -16,6 +16,7 @@ export const Redirect = () => {
   console.log("state", state);
   const {
     setup: { client },
+    account: { account },
   } = useDojo();
 
   useEffect(() => {
@@ -29,10 +30,10 @@ export const Redirect = () => {
 
   useEffect(() => {
     if (!state || state === GameStateEnum.NotSet) {
-      refetchGameStore(client, gameId);
+      refetchGameStore(client, gameId, account.address);
       // refetchCurrentHandStore(client, gameId);
     }
-  }, [state]);
+  }, [state, account.address, client, gameId, refetchGameStore]);
 
   return (
     <>

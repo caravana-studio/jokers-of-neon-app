@@ -1,9 +1,17 @@
 import { Flex, Heading, Image } from "@chakra-ui/react";
 import { isMobile } from "react-device-detect";
 import { motion } from "framer-motion";
+import { SeasonLoadingAssets } from "./useSeasonLoadingAssets";
 
-export const LogoPresentation: React.FC = () => {
+interface LogoPresentationProps {
+  seasonNumber: number;
+  assets: SeasonLoadingAssets;
+}
 
+export const LogoPresentation: React.FC<LogoPresentationProps> = ({
+  seasonNumber,
+  assets,
+}) => {
   return (
     <Flex
       width="100%"
@@ -14,7 +22,7 @@ export const LogoPresentation: React.FC = () => {
       overflow="hidden"
     >
       <Image
-        src="/loading-screen/loading-bg.jpg"
+        src={assets.backgroundSrc}
         alt="Loading background"
         position="absolute"
         inset={0}
@@ -39,7 +47,7 @@ export const LogoPresentation: React.FC = () => {
         transition={{ duration: 0.5, ease: "easeOut", delay: 0.1 }}
       >
         <Image
-          src="/loading-screen/loading-boss.png"
+          src={assets.bossSrc}
           alt="Loading boss"
           width={isMobile ? "100vw" : "56vw"}
           maxWidth="900px"
@@ -86,7 +94,7 @@ export const LogoPresentation: React.FC = () => {
         transition={{ duration: 0.6, ease: "easeOut", delay: 1.45 }}
       >
         <Heading variant="italic" size={isMobile ? "sm" : "lg"}>
-          SEASON 2
+          SEASON {seasonNumber}
         </Heading>
       </motion.div>
 
@@ -100,7 +108,7 @@ export const LogoPresentation: React.FC = () => {
         }}
       >
         <Image
-          src="/loading-screen/loading-top.png"
+          src={assets.bottomSrc}
           alt="Loading foreground"
           width="100%"
           objectFit="cover"

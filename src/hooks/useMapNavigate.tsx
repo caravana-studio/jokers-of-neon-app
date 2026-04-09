@@ -10,10 +10,11 @@ export const useMapNavigate = () => {
   const { setNodeTransactionPending, setActiveNodeId } = useMapNavigationStore();
   const {
     setup: { client },
+    account: { account },
   } = useDojo();
 
   const navigateToMap = async () => {
-    await refetchGameStore(client, gameId);
+    await refetchGameStore(client, gameId, account.address);
     // Reset map navigation state to ensure nodes are clickable
     setNodeTransactionPending(false);
     setActiveNodeId(null);

@@ -37,6 +37,7 @@ export const MapPage = () => {
         top={{ base: "12px", sm: "27px" }}
         right={"0px"}
         zIndex={1000}
+        className="map-tutorial-level"
       >
         <CachedImage
           src="/borders/level.png"

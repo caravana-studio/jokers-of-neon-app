@@ -27,6 +27,7 @@ const RoundNode = memo(({ data }: any) => {
 
   const {
     setup: { client },
+    account: { account },
   } = useDojo();
 
   const { setSelectedNodeData, selectedNodeData } = useMap();
@@ -39,7 +40,7 @@ const RoundNode = memo(({ data }: any) => {
   const title = t("name");
 
   const refetchAndNavigate = async () => {
-    await refetchGameStore(client, gameId);
+    await refetchGameStore(client, gameId, account.address);
     navigate(GameStateEnum.Round);
   };
 

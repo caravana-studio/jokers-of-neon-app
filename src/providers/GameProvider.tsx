@@ -52,11 +52,14 @@ import {
 import { buildOptimisticPowerUpEvents } from "../utils/playEvents/buildOptimisticPowerUpEvents.ts";
 import { filterOptimisticEventsFromPlayEvents } from "../utils/playEvents/filterOptimisticEventsFromPlayEvents.ts";
 import { filterSilentCardEventsFromPlayEvents } from "../utils/playEvents/filterSilentCardEventsFromPlayEvents.ts";
+import {
+  PROGRESSIVE_TUTORIAL_IDS,
+  getProgressiveTutorialState,
+} from "../utils/progressiveTutorialStorage";
 import { useCardData } from "./CardDataProvider.tsx";
 import { gameProviderDefaults } from "./gameProviderDefaults.ts";
 import { PracticeGameContext } from "./PracticeGameProvider.tsx";
 import { useSettings } from "./SettingsProvider.tsx";
-import { TutorialGameContext } from "./TutorialGameProvider.tsx";
 
 export interface IGameContext {
   executeCreateGame: (isTournament?: boolean) => void;
@@ -86,13 +89,8 @@ const GameContext = createContext<IGameContext>(gameProviderDefaults);
 
 export const useGameContext = () => {
   const location = useLocation();
-  const inTutorial = location.pathname === "/tutorial";
   const inPractice = location.pathname === "/practice";
-  const context = inTutorial
-    ? TutorialGameContext
-    : inPractice
-      ? PracticeGameContext
-      : GameContext;
+  const context = inPractice ? PracticeGameContext : GameContext;
   return useContext(context);
 };
 
@@ -106,6 +104,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     addPoints,
     addMulti,
     remainingPlays,
+    totalPlays,
     discard: stateDiscard,
     play: statePlay,
     rollbackPlay,
@@ -134,10 +133,14 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setState,
     addRerolls,
     advanceLevel,
+    targetScore,
     refetchDebuffedPlayerHands,
     refetchSpecialCards,
     refetchPlays,
     setIsTournament,
+    setShopTierUnlockedEvent,
+    clearShopTierUnlockedEvent,
+    setPendingTutorialRewardsRedirect,
   } = useGameStore();
 
   const {
@@ -219,6 +222,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     showSpecials();
     resetPowerUps();
     resetSpecials();
+    clearShopTierUnlockedEvent();
+    setPendingTutorialRewardsRedirect(false);
     refetchSpecialCardsData(modId, gameId, specialCards);
     setState(GameStateEnum.NotSet);
   };
@@ -287,7 +292,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
               setPreSelectionLocked(false);
               setRoundRewards(undefined);
               setState(GameStateEnum.NotSet);
-              navigate("/demo");
+              navigate("/round");
             } else {
               showErrorToast("Error creating game");
               console.error("Error creating game", response);
@@ -318,6 +323,23 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   };
 
   const handlePlaySideEffects = (response: PlayEvents) => {
+    console.log("[unlock-debug] handlePlaySideEffects", {
+      gameId,
+      gameState: response.gameOver ? "GameOver" : "InProgress",
+      shopTierUnlockedEventFromResponse: response.shopTierUnlockedEvent,
+    });
+
+    if (response.shopTierUnlockedEvent) {
+      console.log("[unlock-debug] storing shop tier unlocked event", {
+        game_id: gameId,
+        unlock_id: response.shopTierUnlockedEvent.unlock_id,
+      });
+      setShopTierUnlockedEvent({
+        game_id: gameId,
+        unlock_id: response.shopTierUnlockedEvent.unlock_id,
+      });
+    }
+
     fetchDeck(client, gameId, getCardData);
     refetchDebuffedPlayerHands(client, gameId);
     refetchSpecialCardsData(modId, gameId, specialCards);
@@ -330,8 +352,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         addRerolls(response.detailEarned.rerolls);
     }
 
-    if (latestPathRef.current !== "/demo") {
-      refetchGameStore(client, gameId).catch((error) => {
+    if (latestPathRef.current !== "/round") {
+      refetchGameStore(client, gameId, account.address).catch((error) => {
         console.error("Error refetching game state after background action", error);
       });
     }
@@ -342,6 +364,26 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setAnimation: (playing: boolean) => void,
     pitchState?: { index: number }
   ): number => {
+    const completedTutorials = getProgressiveTutorialState();
+    const firstScoreTutorialPending =
+      !completedTutorials[PROGRESSIVE_TUTORIAL_IDS.GAME_FIRST_SCORE];
+    const levelPassedInfo = response.levelPassed;
+    const detailEarned = response.detailEarned;
+    const reachedRewardsFlow =
+      Boolean(levelPassedInfo && detailEarned) &&
+      Number(levelPassedInfo?.level_passed ?? 0) === 0;
+    const clearedOnFirstPlay =
+      typeof detailEarned?.hands_left === "number" &&
+      totalPlays > 0 &&
+      detailEarned.hands_left === totalPlays - 1;
+    const deferRewardsNavigation =
+      firstScoreTutorialPending &&
+      reachedRewardsFlow &&
+      clearedOnFirstPlay &&
+      response.score >= targetScore;
+
+    setPendingTutorialRewardsRedirect(deferRewardsNavigation);
+
     console.log("events", response);
     return animatePlayDiscard({
       playEvents: response,
@@ -381,6 +423,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       address: account.address,
       clearRoundSound,
       clearLevelSound,
+      deferRewardsNavigation,
     });
   };
 
@@ -622,7 +665,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         return success;
       })
       .catch(() => {
-        refetchGameStore(client, gameId);
+        refetchGameStore(client, gameId, account.address);
         return false;
       })
       .finally(() => {
@@ -662,7 +705,10 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     }
 
     if (gameState === GameStateEnum.GameOver) {
-      if (location.pathname === "/demo") {
+      console.log("[unlock-debug] game state changed to GameOver", {
+        pathname: location.pathname,
+      });
+      if (location.pathname === "/round") {
         let cancelled = false;
         let timeoutId: number | undefined;
 
@@ -690,7 +736,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       }
     } else if (
       gameState === GameStateEnum.Store &&
-      location.pathname === "/demo"
+      location.pathname === "/round"
     ) {
       console.log("redirecting to store");
       navigate("/store");

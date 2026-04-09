@@ -23,6 +23,7 @@ export const ManagePage = () => {
 
   const {
     setup: { client },
+    account: { account },
   } = useDojo();
 
   const { isSmallScreen } = useResponsiveValues();
@@ -153,7 +154,7 @@ export const ManagePage = () => {
               sellPowerup(highlightedPowerup.idx).then((response) => {
                 if (response) {
                   setDiscardedPowerups((prev) => [...prev, highlightedPowerup]);
-                  refetchGameStore(client, gameId);
+                  refetchGameStore(client, gameId, account.address);
                 }
               });
           }}

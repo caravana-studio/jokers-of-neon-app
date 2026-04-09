@@ -24,18 +24,21 @@ interface SpecialCardDojo {
 }
 
 const getSpecialCards = (specialCards: SpecialCardDojo[]) => {
-  return specialCards.map((card: SpecialCardDojo, index: number) => {
-    const card_id = Number(card.effect_card_id);
-    return {
-      card_id,
-      isSpecial: true,
-      id: card_id?.toString(),
-      idx: index ?? 0,
-      img: `${card_id}.png`,
-      temporary: card?.is_temporary,
-      remaining: Number(card?.remaining),
-      selling_price: Number(card?.selling_price),
-      silenced: card?.is_silenced,
-    };
-  });
+  return specialCards
+    .filter((card) => Number(card.effect_card_id) > 0)
+    .map((card: SpecialCardDojo, index: number) => {
+      const card_id = Number(card.effect_card_id);
+      const idx = Number(card.idx ?? index);
+      return {
+        card_id,
+        isSpecial: true,
+        id: `${card_id}-${idx}`,
+        idx,
+        img: `${card_id}.png`,
+        temporary: card?.is_temporary,
+        remaining: Number(card?.remaining),
+        selling_price: Number(card?.selling_price),
+        silenced: card?.is_silenced,
+      };
+    });
 };
