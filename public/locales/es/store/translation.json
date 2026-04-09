@@ -126,8 +126,9 @@
     }
   },
   "config": {
-    "shop": "Tienda",
-    "0": { "name": "" },
+    "0": {
+      "name": ""
+    },
     "1": {
       "name": "Mazo",
       "content": "{{traditionals}} cartas tradicionales o neón, {{modifiers}} modificadores, quemar una carta de tu mazo"
@@ -151,6 +152,16 @@
     "6": {
       "name": "Mix",
       "content": "{{lootboxes}} cajas, {{powerups}} potenciadores, {{levelups}} mejoras de nivel"
+    },
+    "shop": "Tienda",
+    "items-content": {
+      "traditionalsNeon": "{{count}} cartas tradicionales o neón",
+      "modifiers": "{{count}} modificadores",
+      "specials": "{{count}} cartas especiales",
+      "powerups": "{{count}} potenciadores",
+      "levelups": "{{count}} mejoras de nivel",
+      "lootboxes": "{{count}} cajas",
+      "burn": "quemar una carta de tu mazo"
     }
   },
   "loot-box-rates": {

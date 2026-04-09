@@ -21,7 +21,6 @@ import { LogoutMenuBtn } from "../Buttons/Logout/LogoutMenuBtn";
 import { MapMenuBtn } from "../Buttons/MapMenuBtn";
 import { MyGamesMenuBtn } from "../Buttons/MyGamesMenuBtn";
 import { SettingsMenuBtn } from "../Buttons/SettingsMenuBtn";
-import { TutorialBtn } from "../Buttons/TutorialBtn";
 import { BackMenuBtn } from "../Buttons/BackMenuBtn";
 import { DailyMissions } from "../../DailyMissions/DailyMissions";
 

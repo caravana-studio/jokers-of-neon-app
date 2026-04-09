@@ -11,6 +11,7 @@ import { PinkBox } from "../components/PinkBox";
 import { RewardItem } from "../components/RewardsDetail";
 import { BOSS_LEVEL } from "../constants/general";
 import { PLAYS_DATA } from "../constants/plays";
+import { getShopTierUnlockConfig } from "../constants/shopTierUnlock";
 import {
   DEFAULT_TRACKER_VIEW,
   getGameTracker,
@@ -57,7 +58,13 @@ const SummaryDetail = ({ win }: SummaryPageProps) => {
   const [skip, setSkip] = useState(false);
   const [animationEnded, setAnimationEnded] = useState(false);
   const [isNavigating, setIsNavigating] = useState(false);
-  const { totalScore, level, round, id: gameId } = useGameStore();
+  const {
+    totalScore,
+    level,
+    round,
+    id: gameId,
+    shopTierUnlockedEvent,
+  } = useGameStore();
   const [gameTracker, setGameTracker] = useState(DEFAULT_TRACKER_VIEW);
 
   useEffect(() => {
@@ -149,7 +156,25 @@ const SummaryDetail = ({ win }: SummaryPageProps) => {
             setIsNavigating(true);
             navigateToMap();
           } else {
-            navigate(`/gameover/${gameId}`);
+            const hasShopTierUnlockedEventForCurrentGame = Boolean(
+              shopTierUnlockedEvent?.unlock_id &&
+                getShopTierUnlockConfig(shopTierUnlockedEvent.unlock_id)
+            );
+
+            console.log("[unlock-debug] loose continue navigation decision", {
+              gameId,
+              shopTierUnlockedEvent,
+              hasShopTierUnlockedEventForCurrentGame,
+              resolvedUnlockConfig: shopTierUnlockedEvent?.unlock_id
+                ? getShopTierUnlockConfig(shopTierUnlockedEvent.unlock_id)
+                : undefined,
+            });
+
+            if (hasShopTierUnlockedEventForCurrentGame) {
+              navigate(`/shop-tier-unlocked/${gameId}`);
+            } else {
+              navigate(`/gameover/${gameId}`);
+            }
           }
         }}
         actionHidden={!animationEnded}

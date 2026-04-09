@@ -44,9 +44,13 @@ export const SpecialCards: React.FC<SpecialCardsProps> = ({
   const { specialSlots, specialCards, maxSpecialCards } = useGameStore();
   const getSkinFor = useSkinPreferencesStore((store) => store.getSkinFor);
 
-  const freeUnlockedSlots = specialSlots - specialCards.length;
-  const lockedSlots =
-    specialSlots === maxSpecialCards ? 0 : Math.max(1, 5 - specialSlots);
+  const totalSlots = Math.max(maxSpecialCards, specialCards.length);
+  const effectiveUnlockedSlots = Math.max(specialSlots, specialCards.length);
+  const freeUnlockedSlots = Math.max(
+    0,
+    effectiveUnlockedSlots - specialCards.length
+  );
+  const lockedSlots = Math.max(0, totalSlots - effectiveUnlockedSlots);
 
   const { isSmallScreen, cardScale } = useResponsiveValues();
 

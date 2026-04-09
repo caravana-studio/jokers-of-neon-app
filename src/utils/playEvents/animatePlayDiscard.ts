@@ -50,6 +50,7 @@ interface AnimatePlayConfig {
   address: string;
   clearRoundSound: () => void;
   clearLevelSound: () => void;
+  deferRewardsNavigation?: boolean;
 }
 
 export const animatePlayDiscard = (config: AnimatePlayConfig): number => {
@@ -88,6 +89,7 @@ export const animatePlayDiscard = (config: AnimatePlayConfig): number => {
     address,
     clearRoundSound,
     clearLevelSound,
+    deferRewardsNavigation,
   } = config;
 
   if (!playEvents) return 0;
@@ -439,11 +441,14 @@ export const animatePlayDiscard = (config: AnimatePlayConfig): number => {
         playEvents.levelPassed?.level_passed
           ? clearLevelSound()
           : clearRoundSound();
-        navigate(
+        const destinationPath =
           playEvents.levelPassed?.level_passed === BOSS_LEVEL
             ? "/win"
-            : "/rewards"
-        );
+            : "/rewards";
+
+        if (!(deferRewardsNavigation && destinationPath === "/rewards")) {
+          navigate(destinationPath);
+        }
       }, 1000);
       playEvents.levelPassed?.level_passed &&
         playEvents.levelPassed?.level &&

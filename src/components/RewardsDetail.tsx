@@ -138,6 +138,7 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
       transition={{ delay: 0.5, duration: 0.5, ease: "easeOut" }}
     >
       <Heading
+        className="rewards-tutorial-title"
         size={level_passed || !isSmallScreen ? "lg" : "sm"}
         variant="italic"
         textShadow={level_passed ? `0 0 8px ${VIOLET_LIGHT}` : "none"}
@@ -183,6 +184,7 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
       maxW="900px"
       onClick={() => setSkip(true)}
       zIndex={10}
+      className="rewards-tutorial-root"
     >
       <PinkBox
         title={title}
@@ -217,18 +219,20 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
             value={round_defeat}
             rollingDelay={DELAY_START * 1000 + 500}
           />
-          <RewardItem
-            skip={skip}
-            label={handsLeftLabel}
-            value={hands_left_cash}
-            rollingDelay={(DELAY_START + STAGGER) * 1000}
-          />
-          <RewardItem
-            skip={skip}
-            label={discardsLeftLabel}
-            value={discard_left_cash}
-            rollingDelay={(DELAY_START + STAGGER) * 1000}
-          />
+          <Box className="rewards-tutorial-efficiency" w="100%">
+            <RewardItem
+              skip={skip}
+              label={handsLeftLabel}
+              value={hands_left_cash}
+              rollingDelay={(DELAY_START + STAGGER) * 1000}
+            />
+            <RewardItem
+              skip={skip}
+              label={discardsLeftLabel}
+              value={discard_left_cash}
+              rollingDelay={(DELAY_START + STAGGER) * 1000}
+            />
+          </Box>
           {rewards_special_card > 0 && (
             <RewardItem
               skip={skip}
@@ -256,6 +260,7 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
             px={isSmallScreen ? 2 : 8}
             w="100%"
             justifyContent="space-between"
+            className="rewards-tutorial-total"
           >
             <Heading color="DIAMONDS">{t("total")}</Heading>
             <Flex gap={1} alignItems="center" justifyContent={"center"}>

@@ -9,7 +9,7 @@ import {
 import { AnimatePresence } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import Joyride, { CallBackProps } from "react-joyride";
+import Joyride, { CallBackProps, STATUS } from "react-joyride";
 import { useNavigate } from "react-router-dom";
 import { DeckPreviewTable } from "../../components/DeckPreview/DeckPreviewTable.tsx";
 import { Loading } from "../../components/Loading.tsx";
@@ -20,6 +20,7 @@ import { MotionBox } from "../../components/MotionBox.tsx";
 import {
   JOYRIDE_LOCALES,
   TUTORIAL_STEPS,
+  TUTORIAL_FLOATER_PROPS,
   TUTORIAL_STYLE,
 } from "../../constants/gameTutorial";
 import {
@@ -27,6 +28,7 @@ import {
   PRESELECTED_CARD_SECTION_ID,
 } from "../../constants/general.ts";
 import { GameStateEnum } from "../../dojo/typescript/custom.ts";
+import { useProgressiveGameTutorial } from "../../hooks/useProgressiveGameTutorial.ts";
 import { useGameContext } from "../../providers/GameProvider.tsx";
 import { useCardHighlight } from "../../providers/HighlightProvider/CardHighlightProvider.tsx";
 import { useCurrentHandStore } from "../../state/useCurrentHandStore.ts";
@@ -34,6 +36,7 @@ import { useDeckPreviewHoldStore } from "../../state/useDeckPreviewHoldStore.ts"
 import { useGameStore } from "../../state/useGameStore.ts";
 import { logEvent } from "../../utils/analytics.ts";
 import { isTutorial } from "../../utils/isTutorial.ts";
+import { PROGRESSIVE_TUTORIAL_IDS } from "../../utils/progressiveTutorialStorage";
 import { DiscardButton } from "./DiscardButton.tsx";
 import { HandSection } from "./HandSection.tsx";
 import { PlayButton } from "./PlayButton.tsx";
@@ -53,7 +56,13 @@ type CardDropOrigin = {
   token: number;
 };
 
-export const MobileGameContent = () => {
+interface MobileGameContentProps {
+  tutorialsBlocked?: boolean;
+}
+
+export const MobileGameContent = ({
+  tutorialsBlocked = false,
+}: MobileGameContentProps) => {
   const inTutorial = isTutorial();
   const { executeCreateGame, resetLevel, stepIndex, setStepIndex } =
     useGameContext();
@@ -73,14 +82,40 @@ export const MobileGameContent = () => {
     gameLoading,
     gameError: error,
     id: gameId,
+    currentScore,
+    targetScore,
+    pendingTutorialRewardsRedirect,
+    setPendingTutorialRewardsRedirect,
+    specialCards,
+    powerUps,
   } = useGameStore();
+  const firstModifierCardId = hand.find((card) => card.isModifier)?.card_id;
+  const hasSpecialCardInGame = specialCards.length > 0;
+  const firstPowerUpIndex = powerUps.find((powerUp) => powerUp)?.idx;
+  const hasNeonCardInGame = hand.some((card) => card.isNeon && !card.isModifier);
+  const {
+    run: runProgressiveTutorial,
+    steps: progressiveTutorialSteps,
+    locale: progressiveTutorialLocale,
+    handleCallback: onProgressiveTutorialCallback,
+    activeTutorialId,
+  } = useProgressiveGameTutorial({
+    preSelectedCardsCount: preSelectedCards.length,
+    currentScore,
+    targetScore,
+    clearedRoundOnFirstPlay: pendingTutorialRewardsRedirect,
+    firstModifierCardId,
+    hasSpecialCardInGame,
+    firstPowerUpIndex,
+    hasNeonCardInGame,
+  });
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
         distance: 8,
       },
-    })
+    }),
   );
   const [run, setRun] = useState(false);
   const [cardClicked, setCardClicked] = useState(false);
@@ -92,10 +127,10 @@ export const MobileGameContent = () => {
   const [highlightedDiscard, setHighlightedDiscard] = useState(false);
   const [canClickPowerUp, setCanClickPowerUp] = useState(false);
   const isDeckPreviewVisible = useDeckPreviewHoldStore(
-    (store) => store.isDeckPreviewVisible
+    (store) => store.isDeckPreviewVisible,
   );
   const setDeckPreviewVisible = useDeckPreviewHoldStore(
-    (store) => store.setDeckPreviewVisible
+    (store) => store.setDeckPreviewVisible,
   );
   const cardsStageRef = useRef<HTMLDivElement>(null);
   const handCardsAnchorRef = useRef<HTMLDivElement>(null);
@@ -145,7 +180,7 @@ export const MobileGameContent = () => {
   }, [stepIndex]);
 
   const handleJoyrideCallbackFactory = (
-    setRunCallback: React.Dispatch<React.SetStateAction<boolean>>
+    setRunCallback: React.Dispatch<React.SetStateAction<boolean>>,
   ) => {
     return (data: CallBackProps) => {
       const { type, status } = data;
@@ -187,7 +222,7 @@ export const MobileGameContent = () => {
 
       if (type === "tour:end") {
         logEvent(
-          status === "skipped" ? "tutorial_skipped" : "tutorial_finished"
+          status === "skipped" ? "tutorial_skipped" : "tutorial_finished",
         );
         logEvent("tutorial_done");
         setRunCallback(false);
@@ -199,7 +234,7 @@ export const MobileGameContent = () => {
           default: {
             resetLevel();
             if (!gameId || gameId === 0) return navigate("/my-games");
-            else return navigate("/demo");
+            else return navigate("/round");
           }
         }
       }
@@ -207,6 +242,24 @@ export const MobileGameContent = () => {
   };
 
   const handleJoyrideCallback = handleJoyrideCallbackFactory(setRun);
+
+  const handleProgressiveTutorialCallback = (data: CallBackProps) => {
+    onProgressiveTutorialCallback(data);
+
+    const tutorialEnded =
+      data.status === STATUS.FINISHED ||
+      data.status === STATUS.SKIPPED ||
+      data.type === "error:target_not_found";
+
+    if (
+      tutorialEnded &&
+      activeTutorialId === PROGRESSIVE_TUTORIAL_IDS.GAME_FIRST_SCORE &&
+      pendingTutorialRewardsRedirect
+    ) {
+      setPendingTutorialRewardsRedirect(false);
+      navigate("/rewards");
+    }
+  };
 
   const registerCardDropOrigin = (event: DragEndEvent, cardIdx: number) => {
     const stageRect = cardsStageRef.current?.getBoundingClientRect();
@@ -313,6 +366,42 @@ export const MobileGameContent = () => {
         />
       )}
       <MobileDecoration />
+      {!tutorialsBlocked && (
+        <>
+          <Joyride
+            steps={progressiveTutorialSteps}
+            run={runProgressiveTutorial}
+            continuous
+            showProgress={false}
+            callback={handleProgressiveTutorialCallback}
+            styles={TUTORIAL_STYLE}
+            floaterProps={TUTORIAL_FLOATER_PROPS}
+            locale={progressiveTutorialLocale}
+            disableCloseOnEsc
+            disableOverlayClose
+            hideCloseButton
+            spotlightClicks={false}
+            disableScrolling
+          />
+
+          <Joyride
+            steps={TUTORIAL_STEPS}
+            run={run}
+            continuous
+            showProgress={false}
+            callback={handleJoyrideCallback}
+            styles={TUTORIAL_STYLE}
+            floaterProps={TUTORIAL_FLOATER_PROPS}
+            locale={JOYRIDE_LOCALES}
+            stepIndex={stepIndex}
+            disableCloseOnEsc
+            disableOverlayClose
+            hideCloseButton
+            spotlightClicks={false}
+            disableScrolling
+          />
+        </>
+      )}
       <Box
         sx={{
           position: "fixed",

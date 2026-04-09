@@ -79,7 +79,7 @@ export const MobileBottomBar = ({
     <Flex
       width="98%"
       mx={4}
-      mb={8}
+      mb={isSmallScreen ? 8 : "70px"}
       mt={3}
       justifyContent={isSmallScreen ? "space-between" : "center "}
       gap={isSmallScreen ? 0 : 8}
@@ -98,14 +98,14 @@ export const MobileBottomBar = ({
         </Box>
       ) : (
         <>
-          <Box w="30%">
+          <Box w={isSmallScreen ? "30%" : "350px"}>
             {firstButton ? (
               <BarButton {...firstButton} />
             ) : (
               firstButtonReactNode
             )}
           </Box>
-          <Box w="30%">
+          <Box w={isSmallScreen ? "30%" : "350px"}>
             {secondButton ? (
               <BarButton  variant="secondarySolid" {...secondButton} />
             ) : (

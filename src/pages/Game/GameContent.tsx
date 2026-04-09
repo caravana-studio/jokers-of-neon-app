@@ -8,7 +8,7 @@ import {
 } from "@dnd-kit/core";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import Joyride, { CallBackProps } from "react-joyride";
+import Joyride, { CallBackProps, STATUS } from "react-joyride";
 import { useNavigate } from "react-router-dom";
 import CachedImage from "../../components/CachedImage.tsx";
 import { Loading } from "../../components/Loading.tsx";
@@ -16,6 +16,7 @@ import { PositionedGameDeck } from "../../components/PositionedGameDeck.tsx";
 import {
   JOYRIDE_LOCALES,
   TUTORIAL_STEPS,
+  TUTORIAL_FLOATER_PROPS,
   TUTORIAL_STYLE,
 } from "../../constants/gameTutorial";
 import {
@@ -23,11 +24,13 @@ import {
   PRESELECTED_CARD_SECTION_ID,
 } from "../../constants/general.ts";
 import { GameStateEnum } from "../../dojo/typescript/custom.ts";
+import { useProgressiveGameTutorial } from "../../hooks/useProgressiveGameTutorial.ts";
 import { useGameContext } from "../../providers/GameProvider.tsx";
 import { useCardAnimations } from "../../providers/CardAnimationsProvider.tsx";
 import { useCurrentHandStore } from "../../state/useCurrentHandStore.ts";
 import { useGameStore } from "../../state/useGameStore.ts";
 import { isTutorial } from "../../utils/isTutorial.ts";
+import { PROGRESSIVE_TUTORIAL_IDS } from "../../utils/progressiveTutorialStorage";
 import { HandSection } from "./HandSection.tsx";
 import { PreselectedCardsSection } from "./PreselectedCardsSection.tsx";
 import { SharedPlayableCardsLayer } from "./SharedPlayableCardsLayer.tsx";
@@ -40,7 +43,11 @@ type CardDropOrigin = {
   token: number;
 };
 
-export const GameContent = () => {
+interface GameContentProps {
+  tutorialsBlocked?: boolean;
+}
+
+export const GameContent = ({ tutorialsBlocked = false }: GameContentProps) => {
   const inTutorial = isTutorial();
   const { executeCreateGame, resetLevel, stepIndex, setStepIndex } =
     useGameContext();
@@ -51,6 +58,12 @@ export const GameContent = () => {
     gameLoading,
     gameError: error,
     id: gameId,
+    currentScore,
+    targetScore,
+    pendingTutorialRewardsRedirect,
+    setPendingTutorialRewardsRedirect,
+    specialCards,
+    powerUps,
   } = useGameStore();
   const {
     preSelectCard,
@@ -60,6 +73,26 @@ export const GameContent = () => {
     addModifier,
   } = useCurrentHandStore();
   const { animatedCard } = useCardAnimations();
+  const firstModifierCardId = hand.find((card) => card.isModifier)?.card_id;
+  const hasSpecialCardInGame = specialCards.length > 0;
+  const firstPowerUpIndex = powerUps.find((powerUp) => powerUp)?.idx;
+  const hasNeonCardInGame = hand.some((card) => card.isNeon && !card.isModifier);
+  const {
+    run: runProgressiveTutorial,
+    steps: progressiveTutorialSteps,
+    locale: progressiveTutorialLocale,
+    handleCallback: onProgressiveTutorialCallback,
+    activeTutorialId,
+  } = useProgressiveGameTutorial({
+    preSelectedCardsCount: preSelectedCards.length,
+    currentScore,
+    targetScore,
+    clearedRoundOnFirstPlay: pendingTutorialRewardsRedirect,
+    firstModifierCardId,
+    hasSpecialCardInGame,
+    firstPowerUpIndex,
+    hasNeonCardInGame,
+  });
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -164,7 +197,7 @@ export const GameContent = () => {
           default: {
             resetLevel();
             if (!gameId || gameId === 0) return navigate("/my-games");
-            else return navigate("/demo");
+            else return navigate("/round");
           }
         }
       }
@@ -172,6 +205,24 @@ export const GameContent = () => {
   };
 
   const handleJoyrideCallback = handleJoyrideCallbackFactory(setRun);
+
+  const handleProgressiveTutorialCallback = (data: CallBackProps) => {
+    onProgressiveTutorialCallback(data);
+
+    const tutorialEnded =
+      data.status === STATUS.FINISHED ||
+      data.status === STATUS.SKIPPED ||
+      data.type === "error:target_not_found";
+
+    if (
+      tutorialEnded &&
+      activeTutorialId === PROGRESSIVE_TUTORIAL_IDS.GAME_FIRST_SCORE &&
+      pendingTutorialRewardsRedirect
+    ) {
+      setPendingTutorialRewardsRedirect(false);
+      navigate("/rewards");
+    }
+  };
 
   const registerCardDropOrigin = (event: DragEndEvent, cardIdx: number) => {
     const stageRect = cardsStageRef.current?.getBoundingClientRect();
@@ -259,7 +310,7 @@ export const GameContent = () => {
     );
   }
 
-  if (gameLoading || !isTutorial) {
+  if (gameLoading) {
     return <Loading />;
   }
 
@@ -276,20 +327,42 @@ export const GameContent = () => {
           width: "100%",
         }}
       >
-        <Joyride
-          steps={TUTORIAL_STEPS}
-          run={run}
-          continuous
-          showProgress={false}
-          callback={handleJoyrideCallback}
-          styles={TUTORIAL_STYLE}
-          locale={JOYRIDE_LOCALES}
-          stepIndex={stepIndex}
-          disableCloseOnEsc
-          disableOverlayClose
-          showSkipButton
-          hideCloseButton
-        />
+        {!tutorialsBlocked && (
+          <>
+            <Joyride
+              steps={progressiveTutorialSteps}
+              run={runProgressiveTutorial}
+              continuous
+              showProgress={false}
+              callback={handleProgressiveTutorialCallback}
+              styles={TUTORIAL_STYLE}
+              floaterProps={TUTORIAL_FLOATER_PROPS}
+              locale={progressiveTutorialLocale}
+              disableCloseOnEsc
+              disableOverlayClose
+              hideCloseButton
+              spotlightClicks={false}
+              disableScrolling
+            />
+
+            <Joyride
+              steps={TUTORIAL_STEPS}
+              run={run}
+              continuous
+              showProgress={false}
+              callback={handleJoyrideCallback}
+              styles={TUTORIAL_STYLE}
+              floaterProps={TUTORIAL_FLOATER_PROPS}
+              locale={JOYRIDE_LOCALES}
+              stepIndex={stepIndex}
+              disableCloseOnEsc
+              disableOverlayClose
+              hideCloseButton
+              spotlightClicks={false}
+              disableScrolling
+            />
+          </>
+        )}
 
         <Box
           sx={{ width: "100%", height: "100%" }}

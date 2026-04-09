@@ -26,8 +26,7 @@ export const mainMenuUrls = [
 
 export const gameUrls = [
   "/map",
-  "/demo",
-  "/tutorial",
+  "/round",
   "/practice",
   "/store",
   "/rewards",
@@ -245,7 +244,7 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
 
   const handleGoToCurrentGameState = () => {
     if (state === GameStateEnum.Round || state === GameStateEnum.Rage) {
-      navigate("/demo", { state: { skipRageAnimation: true } });
+      navigate("/round", { state: { skipRageAnimation: true } });
       return;
     }
 

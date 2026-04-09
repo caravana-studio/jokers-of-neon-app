@@ -23,6 +23,7 @@ export const MobilePreselectedCardsSection = ({
 
   return (
     <Box
+      className="tutorial-modifiers-step-center"
       gap={1}
       py={2}
       sx={{
