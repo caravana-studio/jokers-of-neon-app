@@ -62,6 +62,8 @@ export const GameContent = ({ tutorialsBlocked = false }: GameContentProps) => {
     targetScore,
     pendingTutorialRewardsRedirect,
     setPendingTutorialRewardsRedirect,
+    specialCards,
+    powerUps,
   } = useGameStore();
   const {
     preSelectCard,
@@ -72,6 +74,8 @@ export const GameContent = ({ tutorialsBlocked = false }: GameContentProps) => {
   } = useCurrentHandStore();
   const { animatedCard } = useCardAnimations();
   const firstModifierCardId = hand.find((card) => card.isModifier)?.card_id;
+  const hasSpecialCardInGame = specialCards.length > 0;
+  const firstPowerUpIndex = powerUps.find((powerUp) => powerUp)?.idx;
   const {
     run: runProgressiveTutorial,
     steps: progressiveTutorialSteps,
@@ -84,6 +88,8 @@ export const GameContent = ({ tutorialsBlocked = false }: GameContentProps) => {
     targetScore,
     clearedRoundOnFirstPlay: pendingTutorialRewardsRedirect,
     firstModifierCardId,
+    hasSpecialCardInGame,
+    firstPowerUpIndex,
   });
 
   const sensors = useSensors(

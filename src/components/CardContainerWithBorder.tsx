@@ -12,7 +12,8 @@ export const CardContainerWithBorder = ({
   paddingLeft = [2.5, 5],
   paddingRight = ["20px", "30px", "40px"],
   children,
-  mr
+  mr,
+  className,
 }: {
   width?: string;
   minWidth?: string;
@@ -21,11 +22,16 @@ export const CardContainerWithBorder = ({
   paddingLeft?: any;
   paddingRight?: any;
   children: ReactNode;
-  mr?: number
+  mr?: number;
+  className?: string;
 }) => {
+  const mergedClassName = ["special-cards-step-3", className]
+    .filter(Boolean)
+    .join(" ");
+
   return (
     <Flex
-      className="special-cards-step-3"
+      className={mergedClassName}
       border="1px solid"
       borderColor="whiteAlpha.500"
       backgroundColor="blackAlpha.500"

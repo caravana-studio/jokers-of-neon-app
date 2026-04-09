@@ -136,6 +136,18 @@
         "card": "otro tipo"
       }
     },
+    "firstSpecialCard": {
+      "title": "Cartas especiales",
+      "content": "Las cartas especiales tienen efectos globales sobre el juego. Son las más poderosas, así que compralas si querés llegar lejos.",
+      "alwaysOnTitle": "Siempre activas",
+      "alwaysOnContent": "Las cartas especiales están activas todo el tiempo: mientras las tengas, su efecto estará activo."
+    },
+    "firstPowerUp": {
+      "title": "Potenciadores",
+      "content": "Los potenciadores son consumibles que te dan puntos o multi extra en una jugada puntual.",
+      "activateTitle": "Activación",
+      "activateContent": "Tocá para activarlos. Una vez activados, se aplicarán en tu próxima jugada."
+    },
     "firstScore": {
       "title": "¡Bien hecho!",
       "content": "Sumaste {{score}} puntos. Necesitás {{targetScore}} puntos para pasar de ronda.",

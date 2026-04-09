@@ -11,19 +11,25 @@ import {
   setProgressiveTutorialCompleted,
 } from "../utils/progressiveTutorialStorage";
 
+const TUTORIAL_START_DELAY_MS = 1000;
+
 interface UseProgressiveGameTutorialProps {
   preSelectedCardsCount: number;
   currentScore: number;
   targetScore: number;
   clearedRoundOnFirstPlay: boolean;
   firstModifierCardId?: number;
+  hasSpecialCardInGame: boolean;
+  firstPowerUpIndex?: number;
 }
 
 const getNextTutorialId = (
   completed: ProgressiveTutorialState,
   preSelectedCardsCount: number,
   currentScore: number,
-  firstModifierCardId?: number
+  firstModifierCardId?: number,
+  hasSpecialCardInGame?: boolean,
+  firstPowerUpIndex?: number
 ): ProgressiveTutorialId | null => {
   if (!completed[PROGRESSIVE_TUTORIAL_IDS.GAME_FIRST_ENTRY]) {
     return PROGRESSIVE_TUTORIAL_IDS.GAME_FIRST_ENTRY;
@@ -34,6 +40,20 @@ const getNextTutorialId = (
     firstModifierCardId !== undefined
   ) {
     return PROGRESSIVE_TUTORIAL_IDS.GAME_FIRST_MODIFIER;
+  }
+
+  if (
+    !completed[PROGRESSIVE_TUTORIAL_IDS.GAME_FIRST_SPECIAL_CARD] &&
+    hasSpecialCardInGame
+  ) {
+    return PROGRESSIVE_TUTORIAL_IDS.GAME_FIRST_SPECIAL_CARD;
+  }
+
+  if (
+    !completed[PROGRESSIVE_TUTORIAL_IDS.GAME_FIRST_POWER_UP] &&
+    firstPowerUpIndex !== undefined
+  ) {
+    return PROGRESSIVE_TUTORIAL_IDS.GAME_FIRST_POWER_UP;
   }
 
   if (
@@ -59,6 +79,8 @@ export const useProgressiveGameTutorial = ({
   targetScore,
   clearedRoundOnFirstPlay,
   firstModifierCardId,
+  hasSpecialCardInGame,
+  firstPowerUpIndex,
 }: UseProgressiveGameTutorialProps) => {
   const { t } = useTranslation("tutorials");
   const [completed, setCompleted] = useState<ProgressiveTutorialState>(() =>
@@ -91,20 +113,30 @@ export const useProgressiveGameTutorial = ({
       completed,
       preSelectedCardsCount,
       currentScore,
-      firstModifierCardId
+      firstModifierCardId,
+      hasSpecialCardInGame,
+      firstPowerUpIndex
     );
 
     if (!nextTutorial) {
       return;
     }
 
-    setActiveTutorialId(nextTutorial);
-    setRun(true);
+    const startTimer = window.setTimeout(() => {
+      setActiveTutorialId(nextTutorial);
+      setRun(true);
+    }, TUTORIAL_START_DELAY_MS);
+
+    return () => {
+      window.clearTimeout(startTimer);
+    };
   }, [
     activeTutorialId,
     completed,
     currentScore,
+    firstPowerUpIndex,
     firstModifierCardId,
+    hasSpecialCardInGame,
     preSelectedCardsCount,
     run,
   ]);
@@ -191,6 +223,47 @@ export const useProgressiveGameTutorial = ({
       ];
     }
 
+    if (activeTutorialId === PROGRESSIVE_TUTORIAL_IDS.GAME_FIRST_SPECIAL_CARD) {
+      return [
+        {
+          target: ".progressive-special-cards-tutorial-target",
+          placement: "bottom",
+          disableBeacon: true,
+          title: t("progressiveGame.firstSpecialCard.title"),
+          content: t("progressiveGame.firstSpecialCard.content"),
+        },
+        {
+          target: ".progressive-special-cards-tutorial-target",
+          placement: "bottom",
+          disableBeacon: true,
+          title: t("progressiveGame.firstSpecialCard.alwaysOnTitle"),
+          content: t("progressiveGame.firstSpecialCard.alwaysOnContent"),
+        },
+      ];
+    }
+
+    if (activeTutorialId === PROGRESSIVE_TUTORIAL_IDS.GAME_FIRST_POWER_UP) {
+      const powerUpTarget =
+        firstPowerUpIndex !== undefined
+          ? `.game-tutorial-power-up-${firstPowerUpIndex}`
+          : ".game-tutorial-power-up";
+
+      return [
+        {
+          target: ".game-tutorial-power-up",
+          disableBeacon: true,
+          title: t("progressiveGame.firstPowerUp.title"),
+          content: t("progressiveGame.firstPowerUp.content"),
+        },
+        {
+          target: powerUpTarget,
+          disableBeacon: true,
+          title: t("progressiveGame.firstPowerUp.activateTitle"),
+          content: t("progressiveGame.firstPowerUp.activateContent"),
+        },
+      ];
+    }
+
     if (activeTutorialId === PROGRESSIVE_TUTORIAL_IDS.GAME_FIRST_SCORE) {
       return [
         {
@@ -215,6 +288,7 @@ export const useProgressiveGameTutorial = ({
     activeTutorialId,
     clearedRoundOnFirstPlay,
     currentScore,
+    firstPowerUpIndex,
     modifierEffectLabel,
     t,
     targetScore,
@@ -222,12 +296,18 @@ export const useProgressiveGameTutorial = ({
 
   const handleCallback = useCallback(
     (data: CallBackProps) => {
-      if (
+      const shouldRetryForLateMountTarget =
         data.type === "error:target_not_found" &&
-        activeTutorialId === PROGRESSIVE_TUTORIAL_IDS.GAME_FIRST_MODIFIER
+        (activeTutorialId === PROGRESSIVE_TUTORIAL_IDS.GAME_FIRST_MODIFIER ||
+          activeTutorialId ===
+            PROGRESSIVE_TUTORIAL_IDS.GAME_FIRST_SPECIAL_CARD ||
+          activeTutorialId === PROGRESSIVE_TUTORIAL_IDS.GAME_FIRST_POWER_UP);
+
+      if (
+        shouldRetryForLateMountTarget
       ) {
-        // Modifier cards can mount a frame later due layout/animation timing.
-        // Keep it pending so it can retry when the target exists.
+        // Some targets can mount a frame later due layout/animation timing.
+        // Keep tutorial pending so it can retry when the target exists.
         setRun(false);
         setActiveTutorialId(null);
         return;

@@ -136,6 +136,18 @@
         "card": "outro tipo"
       }
     },
+    "firstSpecialCard": {
+      "title": "Cartas especiais",
+      "content": "As cartas especiais têm efeitos globais no jogo inteiro. São as mais poderosas, então vale a pena comprá-las se você quiser ir longe.",
+      "alwaysOnTitle": "Sempre ativas",
+      "alwaysOnContent": "As cartas especiais ficam ativas o tempo todo. Enquanto você as tiver, o efeito continua ativo."
+    },
+    "firstPowerUp": {
+      "title": "Power-ups",
+      "content": "Power-ups são consumíveis que dão pontos ou multi extra em uma jogada específica.",
+      "activateTitle": "Ativar power-ups",
+      "activateContent": "Toque para ativar. Depois de ativados, eles serão aplicados na sua próxima jogada."
+    },
     "firstScore": {
       "title": "Boa!",
       "content": "Você marcou {{score}} pontos. Precisa de {{targetScore}} pontos para passar da rodada.",

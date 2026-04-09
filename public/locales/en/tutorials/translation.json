@@ -136,6 +136,18 @@
         "card": "another type"
       }
     },
+    "firstSpecialCard": {
+      "title": "Special cards",
+      "content": "Special cards have global effects over the whole game. They are the most powerful cards, so make sure to buy them if you want to go far.",
+      "alwaysOnTitle": "Always active",
+      "alwaysOnContent": "Special cards stay active all the time. As long as you keep them, their effects stay active."
+    },
+    "firstPowerUp": {
+      "title": "Power-ups",
+      "content": "Power-ups are consumables that give you extra points or multi for a specific play.",
+      "activateTitle": "Activate power-ups",
+      "activateContent": "Tap to activate them. Once activated, they will be applied on your next play."
+    },
     "firstScore": {
       "title": "Nice!",
       "content": "You scored {{score}} points. You need {{targetScore}} points to clear the round.",

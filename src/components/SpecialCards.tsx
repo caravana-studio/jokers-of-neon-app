@@ -10,7 +10,8 @@ import { SpecialCardsRow } from "./SpecialCardsRow.tsx";
 import { SpecialRageSwitcher } from "./SpecialRageSwitcher.tsx";
 
 export const SpecialCards = () => {
-  const { specialSwitcherOn, specialSlots, maxSpecialCards, isRageRound } = useGameStore();
+  const { specialSwitcherOn, specialSlots, maxSpecialCards, isRageRound } =
+    useGameStore();
   const { isSmallScreen, cardScale } = useResponsiveValues();
   const heightOffset = isSmallScreen ? 25 : 40;
   const cardWidth = CARD_WIDTH * cardScale;
@@ -23,15 +24,26 @@ export const SpecialCards = () => {
       minWidth={`${cardWidth * containerVisibleItems + (isSmallScreen ? 32 : 49)}px`}
       width={isSmallScreen ? "100%" : "auto"}
       height={`${CARD_HEIGHT * cardScale + heightOffset}px`}
+      className="progressive-special-cards-tutorial-target"
     >
-      <Box position="relative" width="100%" height="100%" display="flex" alignItems="center">
+      <Box
+        position="relative"
+        width="100%"
+        height="100%"
+        display="flex"
+        alignItems="center"
+      >
         <Box
           position="relative"
           width="100%"
           zIndex={isShowingSpecialCards ? 2 : 1}
           opacity={isShowingSpecialCards ? 1 : 0}
           pointerEvents={isShowingSpecialCards ? "auto" : "none"}
-          transform={isShowingSpecialCards ? "translateY(0px) scale(1)" : "translateY(10px) scale(0.96)"}
+          transform={
+            isShowingSpecialCards
+              ? "translateY(0px) scale(1)"
+              : "translateY(10px) scale(0.96)"
+          }
           filter={isShowingSpecialCards ? "blur(0px)" : "blur(2px)"}
           willChange="opacity, transform, filter"
           transition="opacity 340ms cubic-bezier(0.22, 1, 0.36, 1), transform 340ms cubic-bezier(0.22, 1, 0.36, 1), filter 260ms ease"
@@ -44,7 +56,11 @@ export const SpecialCards = () => {
           zIndex={isShowingSpecialCards ? 1 : 2}
           opacity={isShowingSpecialCards ? 0 : 1}
           pointerEvents={isShowingSpecialCards ? "none" : "auto"}
-          transform={isShowingSpecialCards ? "translateY(10px) scale(0.96)" : "translateY(0px) scale(1)"}
+          transform={
+            isShowingSpecialCards
+              ? "translateY(10px) scale(0.96)"
+              : "translateY(0px) scale(1)"
+          }
           filter={isShowingSpecialCards ? "blur(2px)" : "blur(0px)"}
           display="flex"
           alignItems="center"
