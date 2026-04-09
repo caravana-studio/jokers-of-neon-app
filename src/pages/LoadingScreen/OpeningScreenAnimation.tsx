@@ -5,6 +5,7 @@ import { useSeasonNumber } from "../../constants/season";
 import { LegacyLogoPresentation } from "./LegacyLogoPresentation";
 import { LogoPresentation } from "./LogoPresentation";
 import { PoweredByPresentation } from "./PoweredBy";
+import { useSeasonLoadingAssets } from "./useSeasonLoadingAssets";
 
 const MotionBox = chakra(motion.div);
 
@@ -18,7 +19,8 @@ const OpeningScreenAnimation: React.FC<OpeningScreenAnimationProps> = ({
   skipAnimation = false,
 }) => {
   const seasonNumber = useSeasonNumber();
-  const isSeason2 = seasonNumber === 2;
+  const { hasSeasonAssets, isSeasonPresentation, seasonAssets } =
+    useSeasonLoadingAssets(seasonNumber);
   const hasFinishedRef = useRef(false);
   const [stage, setStage] = useState<"logo" | "poweredBy" | "end">("logo");
   const [logoVisibility, setLogoVisibility] = useState({
@@ -33,7 +35,11 @@ const OpeningScreenAnimation: React.FC<OpeningScreenAnimationProps> = ({
   });
 
   useEffect(() => {
-    if (isSeason2) {
+    if (hasSeasonAssets === null) {
+      return;
+    }
+
+    if (isSeasonPresentation) {
       const timer = setTimeout(() => {
         if (hasFinishedRef.current) return;
         hasFinishedRef.current = true;
@@ -121,7 +127,7 @@ const OpeningScreenAnimation: React.FC<OpeningScreenAnimationProps> = ({
         clearTimeout(t6);
       };
     }
-  }, [isSeason2, onAnimationEnd, skipAnimation, stage]);
+  }, [hasSeasonAssets, isSeasonPresentation, onAnimationEnd, skipAnimation, stage]);
 
   return (
     <MotionBox
@@ -137,11 +143,13 @@ const OpeningScreenAnimation: React.FC<OpeningScreenAnimationProps> = ({
       pointerEvents="none"
       overflow="hidden"
     >
-      {isSeason2 && <LogoPresentation />}
-      {!isSeason2 && stage === "logo" && (
+      {isSeasonPresentation && (
+        <LogoPresentation seasonNumber={seasonNumber} assets={seasonAssets} />
+      )}
+      {hasSeasonAssets === false && stage === "logo" && (
         <LegacyLogoPresentation visibleElements={logoVisibility} />
       )}
-      {!isSeason2 && stage === "poweredBy" && (
+      {hasSeasonAssets === false && stage === "poweredBy" && (
         <PoweredByPresentation visibleElements={poweredByVisibility} />
       )}
     </MotionBox>
