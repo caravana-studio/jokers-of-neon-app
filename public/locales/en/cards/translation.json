@@ -879,7 +879,7 @@
     },
     "10306": {
       "name": "Adrenaline",
-      "description": "Gain ^blue(+50 points)^ for each Rage card in the round."
+      "description": "Adds ^blue(+50 points)^ for each Rage card in the round."
     },
     "10307": {
       "name": "Loot Rush",
