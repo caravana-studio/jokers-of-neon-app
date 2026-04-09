@@ -875,7 +875,7 @@
     },
     "10305": {
       "name": "Club Keeper",
-      "description": "Gain ^blue(+5 points)^ for each Club card in your deck."
+      "description": "Adds ^blue(+5 points)^ for each Club card in your deck."
     },
     "10306": {
       "name": "Adrenaline",
