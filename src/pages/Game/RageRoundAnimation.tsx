@@ -33,7 +33,13 @@ const DESCRIPTION_DELAY_MS = 520;
 const FOOTER_DELAY_MS = 780;
 const CARD_ASPECT_RATIO = CARD_WIDTH / CARD_HEIGHT;
 
-export const RageRoundAnimation = () => {
+interface RageRoundAnimationProps {
+  onVisibilityChange?: (visible: boolean) => void;
+}
+
+export const RageRoundAnimation = ({
+  onVisibilityChange,
+}: RageRoundAnimationProps) => {
   const [isVisible, setIsVisible] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const [autoSkip, setAutoSkip] = useState(false);
@@ -202,6 +208,10 @@ export const RageRoundAnimation = () => {
     resetSequence();
     showSpecials();
   }, [isRageRound, resetSequence, showRages, showSpecials]);
+
+  useEffect(() => {
+    onVisibilityChange?.(isVisible);
+  }, [isVisible, onVisibilityChange]);
 
   useEffect(() => {
     if (!isVisible) {

@@ -7,11 +7,12 @@ import {
   canOptimisticallyBuildConverterEvents,
   getActiveConverterSpecialCards,
 } from "../../playEvents/buildOptimisticConverterCardPlayChangeEvents";
-import { D6, D7, D8, D9, H7, S10 } from "../../mocks/cardMocks";
+import { D6, D7, D8, D9, H2, H7, S10 } from "../../mocks/cardMocks";
 import {
   AllCardsToHearts,
   NeonSynergy,
   StraightToHighStraight,
+  WildDeuces,
 } from "../../mocks/specialCardMocks";
 
 const unsupportedConverter: Card = {
@@ -124,6 +125,23 @@ test("buildOptimisticConverterCardPlayChangeEvents supports neon synergy convert
       ],
       specials: [{ idx: NeonSynergy.idx, quantity: 1 }],
       eventType: EventTypeEnum.Neon,
+    },
+  ]);
+});
+
+test("buildOptimisticConverterCardPlayChangeEvents supports wild deuces converter", () => {
+  const events = buildOptimisticConverterCardPlayChangeEvents({
+    hand: [H2, D7],
+    preSelectedCards: [H2.idx, D7.idx],
+    specialCards: [WildDeuces],
+    preSelectedModifiers: {},
+  });
+
+  expect(events).toEqual([
+    {
+      hand: [{ idx: H2.idx, quantity: 53 }],
+      specials: [{ idx: WildDeuces.idx, quantity: 1 }],
+      eventType: EventTypeEnum.Rank,
     },
   ]);
 });

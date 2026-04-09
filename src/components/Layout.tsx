@@ -8,6 +8,7 @@ import {
   isNative,
   nativePaddingTop
 } from "../utils/capacitorUtils";
+import { UnlockProgressDebugWidget } from "./UnlockProgressDebugWidget";
 import { SidebarMenu } from "./Menu/BarMenu/SidebarMenu";
 import { BottomMenu } from "./Menu/BottomMenu";
 
@@ -21,8 +22,15 @@ export const Layout = ({ children }: { children: ReactNode }) => {
           <Flex
             width={"100%"}
             height={"100%"}
+            position="relative"
             pt={nativePaddingTop}
-            pb={isNative ? "80px" : isSmallScreen ? "50px" : "0px"}
+            pb={
+              isNative
+                ? "80px"
+                : isSmallScreen
+                  ? "50px"
+                  : "0px"
+            }
             flexDirection={isSmallScreen ? "column" : "row"}
             flexGrow={1}
             minH={0}
@@ -39,6 +47,7 @@ export const Layout = ({ children }: { children: ReactNode }) => {
             >
               {children}
             </Flex>
+            <UnlockProgressDebugWidget />
           </Flex>
           {isSmallScreen && <BottomMenu />}
         </StoreProvider>

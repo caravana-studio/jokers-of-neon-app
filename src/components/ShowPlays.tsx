@@ -5,6 +5,10 @@ import { Button, Flex, Text } from "@chakra-ui/react";
 import { InfoIcon } from "@chakra-ui/icons";
 import { useTranslation } from "react-i18next";
 import { isTutorial } from "../utils/isTutorial";
+import {
+  PROGRESSIVE_TUTORIAL_IDS,
+  setProgressiveTutorialCompleted,
+} from "../utils/progressiveTutorialStorage";
 
 export const ShowPlays = () => {
   const [hoveredButton, setHoveredButton] = useState(false);
@@ -27,6 +31,9 @@ export const ShowPlays = () => {
       onMouseLeave={() => setHoveredButton(false)}
       onClick={(e) => {
         e.stopPropagation();
+        setProgressiveTutorialCompleted(
+          PROGRESSIVE_TUTORIAL_IDS.GAME_FIRST_ENTRY
+        );
         navigate("/plays", { state: { isTutorial: inTutorial } });
       }}
     >

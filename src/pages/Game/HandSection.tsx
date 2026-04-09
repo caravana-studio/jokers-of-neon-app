@@ -120,7 +120,7 @@ const HandSectionContainer = ({ children }: { children: ReactNode }) => {
     <CardContainerWithBorder
       width="100%"
       minWidth="0"
-      maxWidth="95%"
+      maxWidth="100%"
       paddingLeft={[0, 0]}
       paddingRight={[0, 0]}
       height={`${renderedCardHeight + 16}px`}

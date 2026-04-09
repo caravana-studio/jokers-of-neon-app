@@ -1,10 +1,8 @@
 import { Button, Flex, Heading } from "@chakra-ui/react";
-import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { RemoveScroll } from "react-remove-scroll";
 import { useNavigate } from "react-router-dom";
-import { ConfirmationModal } from "../components/ConfirmationModal";
 import { DelayedLoading } from "../components/DelayedLoading";
 import { MobileBottomBar } from "../components/MobileBottomBar";
 import { MobileDecoration } from "../components/MobileDecoration";
@@ -12,7 +10,6 @@ import SpineAnimation from "../components/SpineAnimation";
 import { useGameContext } from "../providers/GameProvider";
 import { useGetMyGames } from "../queries/useGetMyGames";
 import { useResponsiveValues } from "../theme/responsiveSettings";
-import { logEvent } from "../utils/analytics";
 
 export const Home = () => {
   const { t } = useTranslation(["home"]);
@@ -20,8 +17,6 @@ export const Home = () => {
   const navigate = useNavigate();
   const { prepareNewGame, executeCreateGame } = useGameContext();
   const { data: games } = useGetMyGames();
-
-  const [isTutorialModalOpen, setTutorialModalOpen] = useState(false);
 
   const handleCreateGame = async () => {
     prepareNewGame();
@@ -33,25 +28,8 @@ export const Home = () => {
     if (games && games.length > 0) {
       navigate("/my-games");
     } else {
-      setTutorialModalOpen(true);
+      handleCreateGame();
     }
-  };
-
-  const handleCloseTutorialModal = () => {
-    setTutorialModalOpen(false);
-  };
-
-  const handleConfirmTutorial = () => {
-    navigate("/tutorial");
-    setTutorialModalOpen(false);
-  };
-
-  const handleSkipTutorial = () => {
-    handleCreateGame();
-    setTutorialModalOpen(false);
-
-    logEvent("tutorial_skipped");
-    logEvent("tutorial_done");
   };
 
   return (
@@ -133,19 +111,6 @@ export const Home = () => {
           <Flex h="50px" />
         )}
       </Flex>
-
-      {isTutorialModalOpen && (
-        <ConfirmationModal
-          close={handleCloseTutorialModal}
-          title={t("tutorialModal.title")}
-          description={t("tutorialModal.description")}
-          confirmText={t("tutorialModal.confirm-text")}
-          cancelText={t("tutorialModal.cancel-text")}
-          onCancel={handleSkipTutorial}
-          onConfirm={handleConfirmTutorial}
-          showCloseButton
-        />
-      )}
     </DelayedLoading>
   );
 };

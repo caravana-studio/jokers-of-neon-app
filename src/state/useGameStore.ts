@@ -18,6 +18,7 @@ import { LevelPokerHand } from "../types/LevelPokerHand";
 import { ModCardsConfig } from "../types/ModConfig";
 import { PowerUp } from "../types/Powerup/PowerUp";
 import { RoundRewards } from "../types/RoundRewards";
+import { ShopTierUnlockedEvent } from "../types/ScoreData";
 import { Plays } from "../enums/plays";
 import { getRageNodeData } from "../utils/getRageNodeData";
 import { m5, p25 } from "../utils/mocks/powerUpMocks";
@@ -52,6 +53,7 @@ type GameStore = {
   powerUps: (PowerUp | null)[];
   preSelectedPowerUps: number[];
   roundRewards: RoundRewards | undefined;
+  pendingTutorialRewardsRedirect: boolean;
   gameLoading: boolean;
   gameError: boolean;
   modCardsConfig: ModCardsConfig | undefined;
@@ -60,8 +62,13 @@ type GameStore = {
   nodeRound: number;
   shopId: number;
   inBossRound: boolean;
+  shopTierUnlockedEvent: ShopTierUnlockedEvent | undefined;
 
-  refetchGameStore: (client: any, gameId: number) => Promise<void>;
+  refetchGameStore: (
+    client: any,
+    gameId: number,
+    playerAddress?: string
+  ) => Promise<void>;
   setGameId: (gameId: number) => void;
   removeGameId: () => void;
   play: () => void;
@@ -94,6 +101,7 @@ type GameStore = {
   refetchSpecialCards: (client: any, gameId: number) => Promise<void>;
   unPreSelectAllPowerUps: () => void;
   setRoundRewards: (rewards: RoundRewards | undefined) => void;
+  setPendingTutorialRewardsRedirect: (pending: boolean) => void;
   setGameLoading: (loading: boolean) => void;
   setGameError: (error: boolean) => void;
   toggleSpecialSwitcher: () => void;
@@ -110,17 +118,32 @@ type GameStore = {
   fetchGameStoreForTutorial: () => void;
   setInBossRound: (inBossRound: boolean) => void;
   setIsTournament: (isTournament: boolean) => void;
+  setShopTierUnlockedEvent: (
+    event: ShopTierUnlockedEvent | undefined
+  ) => void;
+  clearShopTierUnlockedEvent: () => void;
 };
 
-const doRefetchGameStore = async (client: any, gameId: number, set: any) => {
+const doRefetchGameStore = async (
+  client: any,
+  gameId: number,
+  playerAddress: string | undefined,
+  set: any,
+  get: any
+) => {
   const { round, game } = await getGameView(client, gameId);
   const specialCards = await getSpecialCardsView(client, gameId);
   const rageCards = getRageCards(round.rages);
   const powerUps = await getPowerUps(client, gameId);
-  const { maxPowerUpSlots, maxSpecialCards } = await getGameConfig(
-    client,
-    game.mod_id
-  );
+  const {
+    maxPowerUpSlots: configMaxPowerUpSlots,
+    maxSpecialCards: configMaxSpecialCards,
+  } = await getGameConfig(client, playerAddress ?? game.owner);
+  const currentStoreState = get();
+  const maxPowerUpSlots =
+    configMaxPowerUpSlots ?? currentStoreState.maxPowerUpSlots;
+  const maxSpecialCards =
+    configMaxSpecialCards ?? currentStoreState.maxSpecialCards;
 
   const modCardsConfig = await fetchCardsConfig(client, game.mod_id);
 
@@ -208,22 +231,24 @@ export const useGameStore = create<GameStore>((set, get) => ({
   modId: "jokers_of_neon_classic",
   isClassic: true,
   isTournament: false,
-  maxSpecialCards: 7,
+  maxSpecialCards: 1,
   maxPowerUpSlots: 4,
   powerUps: [],
   preSelectedPowerUps: [],
   gameLoading: true,
   gameError: false,
   roundRewards: undefined,
+  pendingTutorialRewardsRedirect: false,
   modCardsConfig: undefined,
   specialSwitcherOn: true,
   plays: [],
   nodeRound: 0,
   shopId: 0,
   inBossRound: false,
+  shopTierUnlockedEvent: undefined,
 
-  refetchGameStore: async (client, gameId) => {
-    await doRefetchGameStore(client, gameId, set);
+  refetchGameStore: async (client, gameId, playerAddress) => {
+    await doRefetchGameStore(client, gameId, playerAddress, set, get);
   },
 
   refetchSpecialCards: async (client, gameId) => {
@@ -234,13 +259,18 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   setGameId: (gameId) => {
-    set({ id: gameId });
+    set({ id: gameId, shopTierUnlockedEvent: undefined });
     localStorage.setItem(GAME_ID, gameId.toString());
   },
 
   removeGameId: () => {
     localStorage.removeItem(GAME_ID);
-    set({ id: 0, state: GameStateEnum.NotSet, isTournament: false });
+    set({
+      id: 0,
+      state: GameStateEnum.NotSet,
+      isTournament: false,
+      shopTierUnlockedEvent: undefined,
+    });
   },
 
   play: () => {
@@ -437,6 +467,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
     set({ roundRewards: rewards });
   },
 
+  setPendingTutorialRewardsRedirect: (pending: boolean) => {
+    set({ pendingTutorialRewardsRedirect: pending });
+  },
+
   toggleSpecialSwitcher: () => {
     set((state) => ({ specialSwitcherOn: !state.specialSwitcherOn }));
   },
@@ -526,5 +560,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   setIsTournament: (isTournament) => {
     set({ isTournament });
+  },
+
+  setShopTierUnlockedEvent: (event) => {
+    console.log("[unlock-debug] useGameStore.setShopTierUnlockedEvent", event);
+    set({ shopTierUnlockedEvent: event });
+  },
+
+  clearShopTierUnlockedEvent: () => {
+    console.log("[unlock-debug] useGameStore.clearShopTierUnlockedEvent");
+    set({ shopTierUnlockedEvent: undefined });
   },
 }));
