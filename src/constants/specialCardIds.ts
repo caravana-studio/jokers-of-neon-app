@@ -5,6 +5,7 @@ export const specialCardIds = {
   EASY_STRAIGHT: 10008,
   SPECIAL_CARDS_BLOCKS_SUIT_CHANGE: 10014,
   STRAIGHT_TO_HIGH_STRAIGHT: 10201,
+  WILD_DEUCES: 10301,
 };
 
 // Special cards that can transform played cards (suit/neon/rank).
@@ -18,6 +19,7 @@ export const CONVERTER_SPECIAL_CARD_IDS = [
   10201, // Relativity
   10208, // Neon Doctrine
   10210, // Neon Synergy
+  specialCardIds.WILD_DEUCES, // Wild Deuces
 ] as const;
 
 export const CONVERTER_SPECIAL_CARD_IDS_SET = new Set<number>(

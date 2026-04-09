@@ -22,6 +22,9 @@ const evaluateHand = (
       s.card_id === specialCardIds.STRAIGHT_TO_HIGH_STRAIGHT &&
       s.silenced !== true
   );
+  const specialWildDeuces = specialCards.some(
+    (s) => s.card_id === specialCardIds.WILD_DEUCES && s.silenced !== true
+  );
   const easyFlush = specialCards.some((s) => s.card_id === specialCardIds.EASY_FLUSH);
   const easyStraight = specialCards.some((s) => s.card_id === specialCardIds.EASY_STRAIGHT);
 
@@ -70,6 +73,16 @@ const evaluateHand = (
           modifiedCardData.card = Cards.WILDCARD;
       }
     });
+
+    if (
+      specialWildDeuces &&
+      modifiedCardData.card === Cards.TWO &&
+      modifiedCardData.suit != Suits.JOKER &&
+      modifiedCardData.suit != Suits.WILDCARD
+    ) {
+      modifiedCardData.card = Cards.WILDCARD;
+      modifiedCardData.suit = Suits.WILDCARD;
+    }
 
     if (specialAllCardsToHearts) {
       if (
