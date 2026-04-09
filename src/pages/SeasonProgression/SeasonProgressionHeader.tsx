@@ -75,16 +75,17 @@ export const SeasonProgressionHeader = ({
         overflowX="visible"
         gap={2}
         position="relative"
-        justifyContent={"center"}
-        alignItems="flex-end"
+        justifyContent={isSmallScreen ? "space-between" : "center"}
+        alignItems={isSmallScreen ? "flex-start" : "flex-end"}
+        flexDir={isSmallScreen ? "column" : "row"}
       >
         <Flex
-          position="absolute"
-          w={isSmallScreen ? "190px" : "500px"}
+          position={isSmallScreen ? "static" : "absolute"}
+          w={isSmallScreen ? "100%" : "500px"}
           flexWrap={"wrap"}
           gap={1}
-          top={0}
-          left={0}
+          top={isSmallScreen ? undefined : 0}
+          left={isSmallScreen ? undefined : 0}
         >
           <Heading
             fontSize={isSmallScreen ? "sm" : "lg"}
@@ -100,13 +101,20 @@ export const SeasonProgressionHeader = ({
               <Clock date={seasonFinishDate} />
             </Box>
           )}
-          <Text
+          <Flex
             w="100%"
-            fontSize={isSmallScreen ? "xs" : "sm"}
-            color="gray.200"
-            lineHeight="short"
+            alignItems="baseline"
+            gap={1}
+            flexWrap="nowrap"
           >
-            {t("intro.summary")}{" "}
+            <Text
+              fontSize={isSmallScreen ? "xs" : "sm"}
+              color="gray.200"
+              lineHeight="short"
+              whiteSpace="nowrap"
+            >
+              {t("intro.summary")}
+            </Text>
             <Button
               variant="ghost"
               size="sm"
@@ -115,15 +123,20 @@ export const SeasonProgressionHeader = ({
               height="auto"
               minH="unset"
               py={0}
-              px={2}
+              px={0}
               lineHeight="inherit"
+              minW="auto"
               onClick={() => setInformation(infoContent)}
             >
               {t("intro.learn-more")}
             </Button>
-          </Text>
+          </Flex>
         </Flex>
-        <Heading mb={3} fontWeight={100} fontSize={isSmallScreen ? 11 : 18}>
+        <Heading
+          mb={isSmallScreen ? 0 : 3}
+          fontWeight={100}
+          fontSize={isSmallScreen ? 11 : 18}
+        >
           {t("free-rewards")}
         </Heading>
       </Flex>
