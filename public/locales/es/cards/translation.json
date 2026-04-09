@@ -383,7 +383,7 @@
     },
     "10205": {
       "name": "Ciclo de Dinero",
-      "description": "Suma ^yellow(+50% de monedas obtenidas)^ al completar cada nivel."
+      "description": "Suma ^yellow(+50% de monedas obtenidas)^ al completar cada ronda."
     },
     "10206": {
       "name": "Valor Accidental",

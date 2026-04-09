@@ -383,7 +383,7 @@
     },
     "10205": {
       "name": "Ciclo de Dinheiro",
-      "description": "Adiciona ^yellow(+50% de moedas)^ obtidas ao completar cada nível."
+      "description": "Adiciona ^yellow(+50% de moedas)^ obtidas ao completar cada rodada."
     },
     "10206": {
       "name": "Valor Acidental",

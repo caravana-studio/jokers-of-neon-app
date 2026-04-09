@@ -819,7 +819,7 @@
     },
     "10205": {
       "name": "Cash Loop",
-      "description": "Adds ^yellow(+50% cash rewards)^ after completing each level."
+      "description": "Adds ^yellow(+50% cash rewards)^ after completing each round."
     },
     "10206": {
       "name": "Accidental Value",
