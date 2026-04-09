@@ -891,7 +891,7 @@
     },
     "10309": {
       "name": "Aftershock",
-      "description": "After each Rage, create a random temporary special card."
+      "description": "After each Rage, create a random temporary special card (you must have an empty special slot)."
     },
     "10310": {
       "name": "Extreme Attachment",
