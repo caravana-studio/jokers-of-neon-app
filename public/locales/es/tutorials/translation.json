@@ -148,6 +148,12 @@
       "activateTitle": "Activación",
       "activateContent": "Tocá para activarlos. Una vez activados, se aplicarán en tu próxima jugada."
     },
+    "firstNeonCard": {
+      "title": "Cartas de neon",
+      "content": "Las cartas de neon sirven para armar jugadas de poker, igual que las tradicionales, pero más poderosas. Suman el doble de puntos y 1 multi.",
+      "neonPlaysTitle": "Neon plays",
+      "neonPlaysContent": "Si hacés una jugada que contenga solo cartas de neon, subirá su nivel 4 veces, sumando más puntos y multi."
+    },
     "firstScore": {
       "title": "¡Bien hecho!",
       "content": "Sumaste {{score}} puntos. Necesitás {{targetScore}} puntos para pasar de ronda.",

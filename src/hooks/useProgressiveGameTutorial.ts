@@ -21,6 +21,7 @@ interface UseProgressiveGameTutorialProps {
   firstModifierCardId?: number;
   hasSpecialCardInGame: boolean;
   firstPowerUpIndex?: number;
+  hasNeonCardInGame: boolean;
 }
 
 const getNextTutorialId = (
@@ -29,7 +30,8 @@ const getNextTutorialId = (
   currentScore: number,
   firstModifierCardId?: number,
   hasSpecialCardInGame?: boolean,
-  firstPowerUpIndex?: number
+  firstPowerUpIndex?: number,
+  hasNeonCardInGame?: boolean
 ): ProgressiveTutorialId | null => {
   if (!completed[PROGRESSIVE_TUTORIAL_IDS.GAME_FIRST_ENTRY]) {
     return PROGRESSIVE_TUTORIAL_IDS.GAME_FIRST_ENTRY;
@@ -57,6 +59,13 @@ const getNextTutorialId = (
   }
 
   if (
+    !completed[PROGRESSIVE_TUTORIAL_IDS.GAME_FIRST_NEON_CARD] &&
+    hasNeonCardInGame
+  ) {
+    return PROGRESSIVE_TUTORIAL_IDS.GAME_FIRST_NEON_CARD;
+  }
+
+  if (
     !completed[PROGRESSIVE_TUTORIAL_IDS.GAME_FIRST_TWO_SELECTED] &&
     preSelectedCardsCount >= 2
   ) {
@@ -81,6 +90,7 @@ export const useProgressiveGameTutorial = ({
   firstModifierCardId,
   hasSpecialCardInGame,
   firstPowerUpIndex,
+  hasNeonCardInGame,
 }: UseProgressiveGameTutorialProps) => {
   const { t } = useTranslation("tutorials");
   const [completed, setCompleted] = useState<ProgressiveTutorialState>(() =>
@@ -115,7 +125,8 @@ export const useProgressiveGameTutorial = ({
       currentScore,
       firstModifierCardId,
       hasSpecialCardInGame,
-      firstPowerUpIndex
+      firstPowerUpIndex,
+      hasNeonCardInGame
     );
 
     if (!nextTutorial) {
@@ -136,6 +147,7 @@ export const useProgressiveGameTutorial = ({
     currentScore,
     firstPowerUpIndex,
     firstModifierCardId,
+    hasNeonCardInGame,
     hasSpecialCardInGame,
     preSelectedCardsCount,
     run,
@@ -260,6 +272,23 @@ export const useProgressiveGameTutorial = ({
           disableBeacon: true,
           title: t("progressiveGame.firstPowerUp.activateTitle"),
           content: t("progressiveGame.firstPowerUp.activateContent"),
+        },
+      ];
+    }
+
+    if (activeTutorialId === PROGRESSIVE_TUTORIAL_IDS.GAME_FIRST_NEON_CARD) {
+      return [
+        {
+          target: ".game-tutorial-step-2",
+          disableBeacon: true,
+          title: t("progressiveGame.firstNeonCard.title"),
+          content: t("progressiveGame.firstNeonCard.content"),
+        },
+        {
+          target: ".game-tutorial-step-2",
+          disableBeacon: true,
+          title: t("progressiveGame.firstNeonCard.neonPlaysTitle"),
+          content: t("progressiveGame.firstNeonCard.neonPlaysContent"),
         },
       ];
     }

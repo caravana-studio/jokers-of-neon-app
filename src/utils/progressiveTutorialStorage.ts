@@ -5,6 +5,7 @@ export const PROGRESSIVE_TUTORIAL_IDS = {
   GAME_FIRST_MODIFIER: "game_first_modifier",
   GAME_FIRST_SPECIAL_CARD: "game_first_special_card",
   GAME_FIRST_POWER_UP: "game_first_power_up",
+  GAME_FIRST_NEON_CARD: "game_first_neon_card",
   GAME_FIRST_TWO_SELECTED: "game_first_two_selected",
   GAME_FIRST_SCORE: "game_first_score",
   REWARDS_FIRST_ENTRY: "rewards_first_entry",

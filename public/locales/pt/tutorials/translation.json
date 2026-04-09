@@ -148,6 +148,12 @@
       "activateTitle": "Ativar power-ups",
       "activateContent": "Toque para ativar. Depois de ativados, eles serão aplicados na sua próxima jogada."
     },
+    "firstNeonCard": {
+      "title": "Cartas neon",
+      "content": "As cartas neon servem para montar jogadas de pôquer, assim como as tradicionais, mas são mais poderosas. Elas somam o dobro de pontos e +1 de multi.",
+      "neonPlaysTitle": "Neon plays",
+      "neonPlaysContent": "Se você fizer uma jogada composta apenas por cartas neon, o nível dela sobe 4 vezes, somando ainda mais pontos e multi."
+    },
     "firstScore": {
       "title": "Boa!",
       "content": "Você marcou {{score}} pontos. Precisa de {{targetScore}} pontos para passar da rodada.",

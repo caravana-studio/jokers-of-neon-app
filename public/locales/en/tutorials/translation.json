@@ -148,6 +148,12 @@
       "activateTitle": "Activate power-ups",
       "activateContent": "Tap to activate them. Once activated, they will be applied on your next play."
     },
+    "firstNeonCard": {
+      "title": "Neon cards",
+      "content": "Neon cards are used to build poker hands just like traditional cards, but they are stronger. They give double points and +1 multi.",
+      "neonPlaysTitle": "Neon plays",
+      "neonPlaysContent": "If you make a hand with only neon cards, its level will increase 4 times, giving even more points and multi."
+    },
     "firstScore": {
       "title": "Nice!",
       "content": "You scored {{score}} points. You need {{targetScore}} points to clear the round.",

@@ -92,6 +92,7 @@ export const MobileGameContent = ({
   const firstModifierCardId = hand.find((card) => card.isModifier)?.card_id;
   const hasSpecialCardInGame = specialCards.length > 0;
   const firstPowerUpIndex = powerUps.find((powerUp) => powerUp)?.idx;
+  const hasNeonCardInGame = hand.some((card) => card.isNeon && !card.isModifier);
   const {
     run: runProgressiveTutorial,
     steps: progressiveTutorialSteps,
@@ -106,6 +107,7 @@ export const MobileGameContent = ({
     firstModifierCardId,
     hasSpecialCardInGame,
     firstPowerUpIndex,
+    hasNeonCardInGame,
   });
 
   const sensors = useSensors(
