@@ -157,7 +157,7 @@
     "firstScore": {
       "title": "¡Bien hecho!",
       "content": "Sumaste {{score}} puntos. Necesitás {{targetScore}} puntos para pasar de ronda.",
-      "contentFirstPlayClear": "¡Bien hecho! Sumaste {{score}} puntos. Necesitabas {{targetScore}} para pasar de ronda y lo conseguiste con tu primera jugada."
+      "contentFirstPlayClear": "Sumaste {{score}} puntos. Necesitabas {{targetScore}} para pasar de ronda y lo conseguiste con tu primera jugada."
     }
   },
   "progressiveRewards": {

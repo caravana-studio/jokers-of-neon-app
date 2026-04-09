@@ -157,7 +157,7 @@
     "firstScore": {
       "title": "Boa!",
       "content": "Você marcou {{score}} pontos. Precisa de {{targetScore}} pontos para passar da rodada.",
-      "contentFirstPlayClear": "Boa! Você marcou {{score}} pontos. Você precisava de {{targetScore}} para passar da rodada, e conseguiu na primeira jogada."
+      "contentFirstPlayClear": "Você marcou {{score}} pontos. Você precisava de {{targetScore}} para passar da rodada, e conseguiu na primeira jogada."
     }
   },
   "progressiveRewards": {

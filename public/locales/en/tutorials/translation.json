@@ -157,7 +157,7 @@
     "firstScore": {
       "title": "Nice!",
       "content": "You scored {{score}} points. You need {{targetScore}} points to clear the round.",
-      "contentFirstPlayClear": "Nice! You scored {{score}} points. You needed {{targetScore}} to clear the round, and you did it on your first play."
+      "contentFirstPlayClear": "You scored {{score}} points. You needed {{targetScore}} to clear the round, and you did it on your first play."
     }
   },
   "progressiveRewards": {

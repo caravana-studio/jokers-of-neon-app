@@ -100,19 +100,28 @@ export const useProgressiveGameTutorial = ({
     useState<ProgressiveTutorialId | null>(null);
   const [run, setRun] = useState(false);
 
+  const markTutorialCompleted = useCallback((id: ProgressiveTutorialId) => {
+    setProgressiveTutorialCompleted(id, true);
+    setCompleted((prev) => {
+      if (prev[id]) {
+        return prev;
+      }
+      return {
+        ...prev,
+        [id]: true,
+      };
+    });
+  }, []);
+
   const completeActiveTutorial = useCallback(() => {
     if (!activeTutorialId) {
       return;
     }
 
-    setProgressiveTutorialCompleted(activeTutorialId, true);
-    setCompleted((prev) => ({
-      ...prev,
-      [activeTutorialId]: true,
-    }));
+    markTutorialCompleted(activeTutorialId);
     setRun(false);
     setActiveTutorialId(null);
-  }, [activeTutorialId]);
+  }, [activeTutorialId, markTutorialCompleted]);
 
   useEffect(() => {
     if (run || activeTutorialId) {
@@ -134,6 +143,11 @@ export const useProgressiveGameTutorial = ({
     }
 
     const startTimer = window.setTimeout(() => {
+      if (nextTutorial === PROGRESSIVE_TUTORIAL_IDS.GAME_FIRST_SCORE) {
+        // Score tutorial has two possible copy variants. Marking it as completed
+        // as soon as it appears prevents the other variant from showing later.
+        markTutorialCompleted(nextTutorial);
+      }
       setActiveTutorialId(nextTutorial);
       setRun(true);
     }, TUTORIAL_START_DELAY_MS);
@@ -149,6 +163,7 @@ export const useProgressiveGameTutorial = ({
     firstModifierCardId,
     hasNeonCardInGame,
     hasSpecialCardInGame,
+    markTutorialCompleted,
     preSelectedCardsCount,
     run,
   ]);

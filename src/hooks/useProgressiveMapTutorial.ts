@@ -52,14 +52,7 @@ export const useProgressiveMapTutorial = ({
         placement: "center",
         disableBeacon: true,
         title: t("progressiveMap.firstEntry.title"),
-        content: t("progressiveMap.firstEntry.welcome"),
-      },
-      {
-        target: ".map-tutorial-graph",
-        placement: "center",
-        disableBeacon: true,
-        title: t("progressiveMap.firstEntry.pathsTitle"),
-        content: t("progressiveMap.firstEntry.pathsContent"),
+        content: `${t("progressiveMap.firstEntry.welcome")} ${t("progressiveMap.firstEntry.pathsContent")}`,
       },
       {
         target: ".map-tutorial-store-node",
