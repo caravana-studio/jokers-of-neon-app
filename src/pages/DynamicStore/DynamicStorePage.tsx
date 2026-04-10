@@ -1,4 +1,5 @@
-import { Button, Flex, Heading } from "@chakra-ui/react";
+import { keyframes } from "@emotion/react";
+import { Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import Joyride from "react-joyride";
@@ -36,6 +37,18 @@ const SPECIALS_SHOP_CONFIG_ID = 3;
 const LEVEL_UPS_SHOP_CONFIG_ID = 4;
 const MODIFIERS_SHOP_CONFIG_ID = 5;
 const MIX_SHOP_CONFIG_ID = 6;
+
+const unlockSlotPulseAnimation = keyframes`
+  0% {
+    box-shadow: 0 0 10px 3px ${BLUE};
+  }
+  50% {
+    box-shadow: 0 0 16px 8px ${BLUE};
+  }
+  100% {
+    box-shadow: 0 0 10px 3px ${BLUE};
+  }
+`;
 
 export const SHOP_ID_MAP = {
   [DECK_SHOP_CONFIG_ID]: "deck",
@@ -183,8 +196,15 @@ export const DynamicStorePage = () => {
   const navigate = useNavigate();
   const customNavigate = useCustomNavigate();
   const { onShopSkip } = useGameContext();
-  const { specialSlots, maxSpecialCards, id: gameId } = useGameStore();
-  const slotsLen = specialSlots;
+  const {
+    specialSlots,
+    maxSpecialCards,
+    specialCards: playerSpecialCards,
+    id: gameId,
+  } = useGameStore();
+
+  const noAvailableSpecialSlots = playerSpecialCards.length >= specialSlots;
+  const canBuyMoreSpecialSlots = specialSlots < maxSpecialCards;
 
   const { skipShop } = useShopActions();
 
@@ -288,7 +308,22 @@ export const DynamicStorePage = () => {
                 w="100%"
                 gap={{ base: 1.5, sm: 6 }}
               >
-                {row.columns.map((col, colIndex) => (
+                {row.columns.map((col, colIndex) => {
+                  const isSpecialsColumn = col.id === "specials";
+                  const showUnlockSlotButton =
+                    isSpecialsColumn && canBuyMoreSpecialSlots;
+                  const showManageSpecialsButton =
+                    isSpecialsColumn &&
+                    noAvailableSpecialSlots &&
+                    !canBuyMoreSpecialSlots;
+                  const showUnlockSlotButtonInHeader =
+                    showUnlockSlotButton && !noAvailableSpecialSlots;
+                  const showUnlockSlotButtonInOverlay =
+                    showUnlockSlotButton && noAvailableSpecialSlots;
+                  const hasSpecialsAction =
+                    showUnlockSlotButtonInHeader || showManageSpecialsButton;
+
+                  return (
                   <Flex
                     key={colIndex}
                     w={`${col.width}%`}
@@ -308,7 +343,9 @@ export const DynamicStorePage = () => {
                       alignItems="center"
                       justifyContent={{
                         base:
-                          col.id === "specials" ? "space-between" : "center",
+                          isSpecialsColumn && hasSpecialsAction
+                            ? "space-between"
+                            : "center",
                         sm: "space-between",
                       }}
                     >
@@ -318,7 +355,7 @@ export const DynamicStorePage = () => {
                         </Heading>
                         <DefaultInfo title={col.id} />
                       </Flex>
-                      {col.id === "specials" && slotsLen != maxSpecialCards && (
+                      {showUnlockSlotButtonInHeader && (
                         <Flex gap={isSmallScreen ? 2 : 8} alignItems="center">
                           <PriceBox
                             price={specialSlotItem?.cost ?? 0}
@@ -332,6 +369,11 @@ export const DynamicStorePage = () => {
                             px={{ base: 3, sm: 6 }}
                             borderRadius={7}
                             boxShadow={`0 0 10px 5px ${BLUE}`}
+                            animation={
+                              noAvailableSpecialSlots
+                                ? `${unlockSlotPulseAnimation} 1.4s ease-in-out infinite`
+                                : undefined
+                            }
                             onClick={() => {
                               navigate("/preview/slot");
                             }}
@@ -340,10 +382,91 @@ export const DynamicStorePage = () => {
                           </Button>
                         </Flex>
                       )}
+                      {showManageSpecialsButton && (
+                        <Flex gap={isSmallScreen ? 2 : 6} alignItems="center">
+                          <Text
+                            fontSize={{ base: "9px", sm: "12px" }}
+                            textAlign="right"
+                            lineHeight={1.2}
+                          >
+                            {t("all-slots-occupied")}
+                          </Text>
+                          <Button
+                            size="xs"
+                            fontSize={{ base: "9px", sm: "12px" }}
+                            px={{ base: 3, sm: 6 }}
+                            borderRadius={7}
+                            onClick={() => {
+                              navigate("/manage");
+                            }}
+                          >
+                            {t("my-specials")}
+                          </Button>
+                        </Flex>
+                      )}
                     </Flex>
-                    {getComponent(col.id, col.doubleRow ?? false)}
+
+                    <Flex position="relative" flexGrow={1}>
+                      {isSpecialsColumn && noAvailableSpecialSlots && (
+                        <Flex
+                          position="absolute"
+                          inset={0}
+                          zIndex={2}
+                          pointerEvents="none"
+                          flexDirection="column"
+                          justifyContent="center"
+                          alignItems="center"
+                          gap={2}
+                        >
+                          <Text
+                            textAlign="center"
+                            fontSize={{ base: "11px", sm: "15px" }}
+                            fontWeight="600"
+                            color="white"
+                            bg="rgba(0, 0, 0, 0.75)"
+                            borderRadius="8px"
+                            px={{ base: 2, sm: 3 }}
+                            py={1}
+                          >
+                            {t("no-space-overlay")}
+                          </Text>
+                          {showUnlockSlotButtonInOverlay && (
+                            <Flex gap={isSmallScreen ? 2 : 6} alignItems="center">
+                              <PriceBox
+                                price={specialSlotItem?.cost ?? 0}
+                                purchased={false}
+                                discountPrice={specialSlotItem?.discount_cost}
+                                absolutePosition={false}
+                              />
+                              <Button
+                                size="xs"
+                                fontSize={{ base: "9px", sm: "12px" }}
+                                px={{ base: 3, sm: 6 }}
+                                borderRadius={7}
+                                boxShadow={`0 0 10px 5px ${BLUE}`}
+                                animation={`${unlockSlotPulseAnimation} 1.4s ease-in-out infinite`}
+                                pointerEvents="auto"
+                                onClick={() => {
+                                  navigate("/preview/slot");
+                                }}
+                              >
+                                {t("unlock-slot")}
+                              </Button>
+                            </Flex>
+                          )}
+                        </Flex>
+                      )}
+
+                      <Flex
+                        w="100%"
+                        h="100%"
+                      >
+                        {getComponent(col.id, col.doubleRow ?? false)}
+                      </Flex>
+                    </Flex>
                   </Flex>
-                ))}
+                  );
+                })}
               </Flex>
             ))}
           </Flex>

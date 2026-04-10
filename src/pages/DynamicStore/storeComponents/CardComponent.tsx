@@ -3,7 +3,7 @@ import useResizeObserver from "@react-hook/resize-observer";
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { TiltCard } from "../../../components/TiltCard";
-import { useStore } from "../../../providers/StoreProvider";
+import { useGameStore } from "../../../state/useGameStore";
 import { useResponsiveValues } from "../../../theme/responsiveSettings";
 import { getCardUniqueId } from "../../../utils/getCardUniqueId";
 import { RerollingAnimation } from "../../store/StoreElements/RerollingAnimation";
@@ -19,6 +19,7 @@ export const CardComponent = ({
   doubleRow = false,
 }: CardComponentProps) => {
   const { commonCards, modifierCards, specialCards } = useShopStore();
+  const { specialSlots, specialCards: playerSpecialCards } = useGameStore();
   const flexRef = useRef<HTMLDivElement>(null);
   const [height, setHeight] = useState<number | undefined>(undefined);
   const [width, setWidth] = useState<number | undefined>(undefined);
@@ -40,6 +41,8 @@ export const CardComponent = ({
   const cardLength = cards?.length ?? 0;
   const maxCardWidth = width ? (width - cardLength * 12) / cardLength : 0;
   const maxCardHeight = maxCardWidth * 1.52;
+  const noAvailableSpecialSlots = playerSpecialCards.length >= specialSlots;
+  const dimSpecialCards = id === "specials" && noAvailableSpecialSlots;
 
   return (
     <RerollingAnimation>
@@ -53,31 +56,36 @@ export const CardComponent = ({
         flexWrap={doubleRow ? "wrap" : "nowrap"}
       >
         {cards.map((card) => (
-          <TiltCard
+          <Flex
             key={getCardUniqueId(card)}
-            card={card}
-            cursor="pointer"
-            onClick={() => {
-              if (!card.purchased) {
-                navigate("/preview/card", {
-                  state: { card: card },
-                });
+            opacity={dimSpecialCards ? 0.5 : 1}
+            transition="opacity 0.2s ease-in-out"
+          >
+            <TiltCard
+              card={card}
+              cursor="pointer"
+              onClick={() => {
+                if (!card.purchased) {
+                  navigate("/preview/card", {
+                    state: { card: card },
+                  });
+                }
+              }}
+              height={
+                height
+                  ? doubleRow
+                    ? (height / 2) * 0.92
+                    : height * (isSmallScreen ? 0.82 : 0.92) > maxCardHeight
+                      ? maxCardHeight
+                      : height * (isSmallScreen ? 0.82 : 0.92)
+                  : undefined
               }
-            }}
-            height={
-              height
-                ? doubleRow
-                  ? (height / 2) * 0.92
-                  : height * (isSmallScreen ? 0.82 : 0.92) > maxCardHeight
-                    ? maxCardHeight
-                    : height * (isSmallScreen ? 0.82 : 0.92)
-                : undefined
-            }
-            sx={{
-              flex: doubleRow ? "1 1 calc(50% - 12px)" : undefined,
-              maxWidth: doubleRow ? "calc(50% - 12px)" : undefined,
-            }}
-          />
+              sx={{
+                flex: doubleRow ? "1 1 calc(50% - 12px)" : undefined,
+                maxWidth: doubleRow ? "calc(50% - 12px)" : undefined,
+              }}
+            />
+          </Flex>
         ))}
       </Flex>
     </RerollingAnimation>
