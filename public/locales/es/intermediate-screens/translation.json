@@ -205,6 +205,8 @@
     "current-position": "Estás en la posición número {{position}}, ¿quieres mantenerlo?",
     "login": "Iniciar sesión",
     "skip": "Saltar",
+    "continue-without-account": "Continuar sin cuenta",
+    "guest-login-prompt": "¿Quieres iniciar sesión y guardar tu progreso?",
     "gameOver-msj": "FIN DEL JUEGO",
     "table": {
       "gameOver-leader-msj": "¡Felicitaciones! ¡Eres el mejor jugador en la clasificación!",
