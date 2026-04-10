@@ -11,6 +11,7 @@ export const packCutSfx = "/music/pack_cut.mp3";
 export const packResultSfx = "/music/pack_result.mp3";
 export const cardDragSfx = "/music/card-drag.mp3";
 export const dealSfx = "/music/deal.mp3";
+export const popSfx = "/music/pop.mp3";
 export const rerollSfx = "/music/reroll-store.mp3";
 export const looseSfx = "music/loose.mp3";
 export const negativeMultiSfx = "music/s-negative-multi.mp3";

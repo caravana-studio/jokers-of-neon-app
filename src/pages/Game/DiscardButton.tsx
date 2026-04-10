@@ -1,6 +1,7 @@
 import { Button, Flex, Text } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { useGameContext } from "../../providers/GameProvider";
+import { useAnimationStore } from "../../state/useAnimationStore";
 import { useCurrentHandStore } from "../../state/useCurrentHandStore";
 import { useGameStore } from "../../state/useGameStore";
 import { PlayDiscardIndicators } from "./PlayDiscardIndicator";
@@ -18,6 +19,12 @@ export const DiscardButton = ({
 }: DiscardButtonProps) => {
   const { preSelectedCards, preSelectionLocked } = useCurrentHandStore();
   const { discard } = useGameContext();
+  const discardRollbackPulseToken = useAnimationStore(
+    (store) => store.discardRollbackPulseToken
+  );
+  const discardRollbackPulseDurationMs = useAnimationStore(
+    (store) => store.discardRollbackPulseDurationMs
+  );
 
   const { totalDiscards, remainingDiscards } = useGameStore();
 
@@ -58,6 +65,8 @@ export const DiscardButton = ({
         type="discard"
         total={totalDiscards ?? 5}
         active={remainingDiscards}
+        pulseToken={discardRollbackPulseToken}
+        pulseDurationMs={discardRollbackPulseDurationMs}
       />
     </Flex>
   );

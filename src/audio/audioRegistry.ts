@@ -37,6 +37,7 @@ export const SFX_REGISTRY: SfxEntry[] = [
   // Other
   { path: "music/loose.mp3", channels: 1 },
   { path: "music/achievement-sfx.mp3", channels: 1 },
+  { path: "/music/pop.mp3", channels: 2 },
 
   // Rolling number sounds (different durations)
   { path: "music/points_15_ms.mp3", channels: 1 },

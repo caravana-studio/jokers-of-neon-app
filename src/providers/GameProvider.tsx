@@ -14,6 +14,7 @@ import {
   clearRound,
   discardSfx,
   negativeMultiSfx,
+  popSfx,
 } from "../constants/sfx.ts";
 
 // Number of pitch variants for scoring sounds (points_0.mp3 to points_17.mp3)
@@ -56,6 +57,8 @@ import {
   PROGRESSIVE_TUTORIAL_IDS,
   getProgressiveTutorialState,
 } from "../utils/progressiveTutorialStorage";
+import { resolvePostActionKind } from "../utils/playEvents/postAction.ts";
+import type { PostActionKind } from "../utils/playEvents/postAction.ts";
 import { useCardData } from "./CardDataProvider.tsx";
 import { gameProviderDefaults } from "./gameProviderDefaults.ts";
 import { PracticeGameContext } from "./PracticeGameProvider.tsx";
@@ -162,8 +165,13 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const { fetchDeck } = useDeckStore();
 
-  const { setPlayAnimation, setDiscardAnimation, setLevelUpHand } =
-    useAnimationStore();
+  const {
+    setPlayAnimation,
+    setDiscardAnimation,
+    setLevelUpHand,
+    triggerPlayRollbackPulse,
+    triggerDiscardRollbackPulse,
+  } = useAnimationStore();
 
   const { getCardData } = useCardData();
 
@@ -197,6 +205,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const { play: negativeMultiSound } = useAudio(negativeMultiSfx, sfxVolume);
   const { play: clearRoundSound } = useAudio(clearRound, sfxVolume);
   const { play: clearLevelSound } = useAudio(clearLevel, sfxVolume);
+  const { play: popSound } = useAudio(popSfx, sfxVolume);
 
   const playAnimationDuration = getPlayAnimationDuration(level, animationSpeed);
 
@@ -359,10 +368,55 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     }
   };
 
+  const applyPostActionRollback = (
+    response: PlayEvents,
+    fallbackActionType: PostActionKind
+  ) => {
+    if (!response.postActionEvent) {
+      return;
+    }
+
+    const actionType = resolvePostActionKind(
+      response.postActionEvent.action_type,
+      fallbackActionType
+    );
+
+    if (actionType === "play") {
+      rollbackPlay();
+      return;
+    }
+
+    if (actionType === "discard") {
+      rollbackDiscard();
+    }
+  };
+
+  const triggerPostActionPulse = (
+    actionType: PostActionKind,
+    durationMs?: number
+  ) => {
+    if (actionType === "play") {
+      triggerPlayRollbackPulse(durationMs);
+      return;
+    }
+
+    triggerDiscardRollbackPulse(durationMs);
+  };
+
+  const handlePostActionAnimationStart = (
+    response: PlayEvents,
+    fallbackActionType: PostActionKind,
+    pulseDurationMs: number
+  ) => {
+    applyPostActionRollback(response, fallbackActionType);
+    triggerPostActionPulse(fallbackActionType, pulseDurationMs);
+  };
+
   const runResolvedPlayAnimation = (
     response: PlayEvents,
     setAnimation: (playing: boolean) => void,
-    pitchState?: { index: number }
+    pitchState?: { index: number },
+    actionContext?: PostActionKind
   ): number => {
     const completedTutorials = getProgressiveTutorialState();
     const firstScoreTutorialPending =
@@ -423,14 +477,24 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       address: account.address,
       clearRoundSound,
       clearLevelSound,
+      popSound,
       deferRewardsNavigation,
+      actionContext,
+      onPostActionAnimationStart: (resolvedActionType, pulseDurationMs) => {
+        handlePostActionAnimationStart(
+          response,
+          resolvedActionType,
+          pulseDurationMs
+        );
+      },
     });
   };
 
   const queueResolvedPlayAnimation = (
     response: PlayEvents,
     setAnimation: (playing: boolean) => void,
-    pitchState?: { index: number }
+    pitchState?: { index: number },
+    actionContext?: PostActionKind
   ) => {
     playAnimationQueueRef.current = playAnimationQueueRef.current
       .catch(() => undefined)
@@ -438,7 +502,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         const animationDuration = runResolvedPlayAnimation(
           response,
           setAnimation,
-          pitchState
+          pitchState,
+          actionContext
         );
         if (animationDuration <= 0) {
           return Promise.resolve();
@@ -455,18 +520,20 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setAnimation,
     onStateChange,
     rollback,
+    actionType,
   }: {
     action: () => Promise<PlayEvents | undefined>;
     setAnimation: (playing: boolean) => void;
     onStateChange: () => void;
     rollback: () => void;
+    actionType: PostActionKind;
   }) => {
     setPreSelectionLocked(true);
     onStateChange();
     action()
       .then((response) => {
         if (response) {
-          runResolvedPlayAnimation(response, setAnimation);
+          runResolvedPlayAnimation(response, setAnimation, undefined, actionType);
           handlePlaySideEffects(response);
         } else {
           rollback();
@@ -577,7 +644,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
           queueResolvedPlayAnimation(
             filteredResponse,
             setPlayAnimation,
-            playPitchState
+            playPitchState,
+            "play"
           );
           handlePlaySideEffects(response);
         } else {
@@ -605,6 +673,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       setAnimation: setDiscardAnimation,
       onStateChange: stateDiscard,
       rollback: rollbackDiscard,
+      actionType: "discard",
     });
   };
 

@@ -42,6 +42,14 @@ export const AnimatedCard = ({
   );
 
   const isNeon = useMemo(() => animatedCard?.isNeon, [animatedCard?.isNeon]);
+  const highlightOnly = useMemo(
+    () => animatedCard?.highlightOnly,
+    [animatedCard?.highlightOnly]
+  );
+  const highlightColor = useMemo(
+    () => animatedCard?.highlightColor,
+    [animatedCard?.highlightColor]
+  );
   const animationIndex = useMemo(
     () => animatedCard?.animationIndex,
     [animatedCard?.animationIndex]
@@ -60,6 +68,10 @@ export const AnimatedCard = ({
   const { colors } = useTheme();
 
   const getColor = () => {
+    if (highlightColor) {
+      return colors[highlightColor] ?? highlightColor;
+    }
+
     if (suit) {
       return colors[suit];
     } else if (multi) {
@@ -94,7 +106,7 @@ export const AnimatedCard = ({
 
   useEffect(() => {
     if (
-      (points || multi || suit || cash || isNeon) &&
+      (points || multi || suit || cash || isNeon || highlightOnly) &&
       animatedCardIdxArray?.includes(idx)
     ) {
       const animateColor = getColor();
@@ -135,7 +147,17 @@ export const AnimatedCard = ({
         ],
       });
     }
-  }, [points, multi, suit, animatedCardIdxArray, animationIndex, isNeon]);
+  }, [
+    points,
+    multi,
+    suit,
+    cash,
+    animatedCardIdxArray,
+    animationIndex,
+    isNeon,
+    highlightOnly,
+    highlightColor,
+  ]);
 
   useEffect(() => {
     if (played) {
