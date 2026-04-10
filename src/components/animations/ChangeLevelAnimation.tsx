@@ -18,7 +18,7 @@ import { PLAYS_DATA } from "../../constants/plays";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import theme from "../../theme/theme";
 
-export const LevelUpFirstDiscartedHandAnimation = () => {
+export const ChangeLevelAnimation = () => {
   const [showAnimationHeading, setShowAnimationHeading] = useState(false);
   const [showAnimationText, setShowAnimationText] = useState(false);
   const [showNewDataText, setNewDataText] = useState(false);
@@ -271,7 +271,11 @@ export const LevelUpFirstDiscartedHandAnimation = () => {
               <>
                 <animated.div style={headingSpring}>
                   <Heading fontSize={isSmallScreen ? "1rem" : "2rem"}>
-                    {t("head") + " "}
+                    {t(
+                      (levelUpHand?.level ?? 0) >= (levelUpHand?.old_level ?? 0)
+                        ? "head-up"
+                        : "head-down"
+                    ) + " "}
                   </Heading>
                 </animated.div>
 

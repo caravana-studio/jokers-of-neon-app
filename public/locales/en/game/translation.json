@@ -201,7 +201,9 @@
   "animations": {
     "labels": {
       "level": "LEVEL",
-      "head": "HAND LEVELED UP"
+      "head": "HAND LEVELED UP",
+      "head-up": "HAND LEVELED UP",
+      "head-down": "HAND LEVELED DOWN"
     }
   },
   "rage-cards": {

@@ -201,7 +201,9 @@
   "animations": {
     "labels": {
       "level": "NÍVEL",
-      "head": "MÃO APRIMORADA"
+      "head": "MÃO APRIMORADA",
+      "head-up": "MÃO APRIMORADA",
+      "head-down": "MÃO REBAIXADA"
     }
   },
   "rage-cards": {
