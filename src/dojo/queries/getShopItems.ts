@@ -104,17 +104,6 @@ export const getShopItems = async (client: any, gameId: number) => {
       let tx_result = await client.shop_views.getShopItems(gameId);
       const rawPokerHands = tx_result[POKER_HANDS_IDX] ?? [];
 
-      console.debug("[SHOP_DEBUG][getShopItems] raw poker hands", {
-        gameId,
-        rawCount: rawPokerHands.length,
-        rawItems: rawPokerHands.map((item: any) => ({
-          idx: toInt(item.idx),
-          poker_hand: getVariantKey(item.poker_hand),
-          cost: toInt(item.cost),
-          purchased: Boolean(item.purchased),
-        })),
-      });
-
       const modifiersAndCommonCards = tx_result[CARDS_IDX]
         .filter((txCard: any) => {
           const itemType = getVariantKey(txCard.item_type);
@@ -151,26 +140,6 @@ export const getShopItems = async (client: any, gameId: number) => {
 
       const pokerHandItems = pokerHandsFilteredByIdx.map((txPokerHand: any) => {
           return getPokerHandItem(txPokerHand);
-      });
-
-      console.debug("[SHOP_DEBUG][getShopItems] mapped poker hands", {
-        gameId,
-        afterFilterCount: pokerHandItems.length,
-        droppedByIdxFilterCount: rawPokerHands.length - pokerHandsFilteredByIdx.length,
-        droppedByIdxFilterItems: rawPokerHands
-          .filter((item: any) => getVariantKey(item.poker_hand) !== "None" && toInt(item.idx) < 0)
-          .map((item: any) => ({
-            idx: toInt(item.idx),
-            poker_hand: getVariantKey(item.poker_hand),
-            cost: toInt(item.cost),
-            purchased: Boolean(item.purchased),
-          })),
-        mappedItems: pokerHandItems.map((item: any) => ({
-          idx: item.idx,
-          poker_hand: item.poker_hand,
-          cost: item.cost,
-          purchased: Boolean(item.purchased),
-        })),
       });
 
       const packs = tx_result[BLISTER_PACKS_IDX]
