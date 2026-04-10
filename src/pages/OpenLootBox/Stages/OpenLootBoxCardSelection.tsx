@@ -35,8 +35,6 @@ export const OpenLootBoxCardSelection = () => {
   const customNavigate = useCustomNavigate();
   const navigate = useNavigate();
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
-  const [showErrorTooltip, setShowErrorTooltip] = useState(false);
-  const [isButtonBlocked, setIsButtonBlocked] = useState(false);
 
   const {
     fetchLootBoxResult,
@@ -58,6 +56,10 @@ export const OpenLootBoxCardSelection = () => {
   ).length;
   const maxSpecialCards = specialSlots ?? 0;
   const currentSpecialCardsLength = currentSpecialCards?.length ?? 0;
+  const availableSpecialSlots = Math.max(
+    0,
+    maxSpecialCards - currentSpecialCardsLength
+  );
 
   useEffect(() => {
     fetchLootBoxResult(client, gameId, getCardData);
@@ -98,33 +100,14 @@ export const OpenLootBoxCardSelection = () => {
   } = useCardHighlight();
 
   const highlightSpecialCard = (card: Card) => {
-    // Cancel error tooltip when opening MobileCardHighlight
-    setShowErrorTooltip(false);
-    setIsButtonBlocked(false);
     highlightSpecialCardOriginal(card);
   };
 
-  const chooseDisabled =
-    specialCardsToKeep > maxSpecialCards - currentSpecialCardsLength;
+  const chooseDisabled = specialCardsToKeep > availableSpecialSlots;
+  const showSpecialSlotsError = chooseDisabled;
   const allSelected = cardsToKeep.length === cards.length;
 
   const onContinueClick = () => {
-    // Si el botón está bloqueado, no hacer nada
-    if (isButtonBlocked) {
-      return;
-    }
-
-    // Si hay error de cartas especiales en móvil, mostrar tooltip por 3 segundos
-    if (chooseDisabled && isSmallScreen) {
-      setShowErrorTooltip(true);
-      setIsButtonBlocked(true);
-      setTimeout(() => {
-        setShowErrorTooltip(false);
-        setIsButtonBlocked(false);
-      }, 3000);
-      return;
-    }
-
     if (cardsToKeep.length === 0) {
       setConfirmationModalOpen(true);
     } else {
@@ -147,7 +130,7 @@ export const OpenLootBoxCardSelection = () => {
   );
 
   const renderContinueButton = () => {
-    if (chooseDisabled && !isSmallScreen) {
+    if (showSpecialSlotsError && !isSmallScreen) {
       return (
         <Tooltip label={t("store.packs.error-lbl")} zIndex={10}>
           <Box display="inline-block">{continueButton}</Box>
@@ -209,6 +192,11 @@ export const OpenLootBoxCardSelection = () => {
                 onCardToggle={toggleCard}
                 onGridClick={skipFlipping}
                 onCardLongPress={highlightSpecialCard}
+                mobileInfoMessage={
+                  isSmallScreen && showSpecialSlotsError
+                    ? t("store.packs.error-lbl")
+                    : undefined
+                }
               />
             </Flex>
             <Flex
@@ -239,20 +227,14 @@ export const OpenLootBoxCardSelection = () => {
                 }
                 secondButtonReactNode={
                   !animationRunning ? (
-                    <Tooltip
-                      label={t("store.packs.error-lbl")}
-                      isOpen={showErrorTooltip}
-                      placement="top"
-                    >
-                      <Box w="100%">
-                        <BarButton
-                          onClick={onContinueClick}
-                          disabled={isButtonBlocked}
-                          variant={isButtonBlocked ? "defaultOutline" : "secondarySolid"}
-                          label={t("store.packs.continue-btn")}
-                        />
-                      </Box>
-                    </Tooltip>
+                    <Box w="100%">
+                      <BarButton
+                        onClick={onContinueClick}
+                        disabled={chooseDisabled}
+                        variant={chooseDisabled ? "defaultOutline" : "secondarySolid"}
+                        label={t("store.packs.continue-btn")}
+                      />
+                    </Box>
                   ) : undefined
                 }
               />

@@ -20,6 +20,7 @@ interface FlipCardGridProps {
   onCardToggle: (card: Card) => void;
   onGridClick: () => void;
   onCardLongPress?: (card: Card) => void;
+  mobileInfoMessage?: string;
 }
 
 export const FlipCardGrid = ({
@@ -30,6 +31,7 @@ export const FlipCardGrid = ({
   onCardToggle,
   onGridClick,
   onCardLongPress,
+  mobileInfoMessage,
 }: FlipCardGridProps) => {
   const { cardScale, isSmallScreen } = useResponsiveValues();
   const adjustedCardScale = cardScale * 1.2;
@@ -114,21 +116,43 @@ export const FlipCardGrid = ({
         })}
       </Flex>
       {isSmallScreen && onCardLongPress && (
-        <Text
-          position="absolute"
-          bottom="100px"
-          left="50%"
-          transform="translateX(-50%)"
-          fontSize="sm"
-          color="whiteAlpha.700"
-          textAlign="center"
-          opacity={animationRunning ? 0 : 1}
-          transition="opacity 0.3s ease"
-          pointerEvents="none"
-          whiteSpace="nowrap"
-        >
-          {t("store.packs.press-for-detail")}
-        </Text>
+        <>
+          <Text
+            position="absolute"
+            bottom="100px"
+            left="50%"
+            transform="translateX(-50%)"
+            fontSize="sm"
+            color="whiteAlpha.700"
+            textAlign="center"
+            opacity={animationRunning ? 0 : 1}
+            transition="opacity 0.3s ease"
+            pointerEvents="none"
+            whiteSpace="nowrap"
+          >
+            {t("store.packs.press-for-detail")}
+          </Text>
+          {mobileInfoMessage && (
+            <Text
+              position="absolute"
+              bottom="140px"
+              left="50%"
+              transform="translateX(-50%)"
+              fontSize="sm"
+              color="white"
+              px={2}
+              textAlign="center"
+              opacity={animationRunning ? 0 : 1}
+              transition="opacity 0.3s ease"
+              pointerEvents="none"
+              whiteSpace="normal"
+              overflowWrap="anywhere"
+              w={"85vw"}
+            >
+              {mobileInfoMessage}
+            </Text>
+          )}
+        </>
       )}
     </FullScreenCardContainer>
   );
