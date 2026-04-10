@@ -102,6 +102,8 @@ export const getShopItems = async (client: any, gameId: number) => {
   if (gameId != 0) {
     try {
       let tx_result = await client.shop_views.getShopItems(gameId);
+      const rawPokerHands = tx_result[POKER_HANDS_IDX] ?? [];
+
       const modifiersAndCommonCards = tx_result[CARDS_IDX]
         .filter((txCard: any) => {
           const itemType = getVariantKey(txCard.item_type);
@@ -128,17 +130,18 @@ export const getShopItems = async (client: any, gameId: number) => {
         .map((txCard: any) => {
           return getCard(txCard);
         });
-      const pokerHandItems = tx_result[POKER_HANDS_IDX]
+      const pokerHandsFilteredByIdx = rawPokerHands
         .filter((txPokerHand: any) => {
           const pokerHand = getVariantKey(txPokerHand.poker_hand);
           if (pokerHand === "None") return false;
-          return toInt(txPokerHand.idx) > 0;
-        })
-        .map(
-        (txPokerHand: any) => {
+          // Some valid contract responses use idx=0 for the first level-up item.
+          return toInt(txPokerHand.idx) >= 0;
+        });
+
+      const pokerHandItems = pokerHandsFilteredByIdx.map((txPokerHand: any) => {
           return getPokerHandItem(txPokerHand);
-        }
-      );
+      });
+
       const packs = tx_result[BLISTER_PACKS_IDX]
         .filter(
           (txBlisterPack: any) =>
