@@ -1,10 +1,12 @@
 import { Box, Button, Collapse, Flex, Spinner, Text } from "@chakra-ui/react";
 import { useEffect, useMemo, useState } from "react";
+import { TESTERS } from "../constants/testers";
 import {
   getPlayerTier,
   getUnlockList,
   UnlockEntryView,
 } from "../dojo/queries/getShopUnlockProgress";
+import { useUsername } from "../dojo/utils/useUsername";
 import { useDojo } from "../dojo/useDojo";
 
 interface DebugState {
@@ -28,6 +30,7 @@ const getAddress = (value: unknown): string => {
 
 export const UnlockProgressDebugWidget = () => {
   const { setup, account } = useDojo();
+  const username = useUsername();
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -86,7 +89,10 @@ export const UnlockProgressDebugWidget = () => {
     [account?.account?.address]
   );
 
+  const isTester = Boolean(username && TESTERS.includes(username));
+
   useEffect(() => {
+    if (!isTester) return;
     if (!isOpen) return;
     if (!setup?.client || !playerAddress) return;
 
@@ -124,7 +130,11 @@ export const UnlockProgressDebugWidget = () => {
     return () => {
       cancelled = true;
     };
-  }, [isOpen, setup?.client, playerAddress]);
+  }, [isOpen, isTester, setup?.client, playerAddress]);
+
+  if (!isTester) {
+    return null;
+  }
 
   return (
     <Box

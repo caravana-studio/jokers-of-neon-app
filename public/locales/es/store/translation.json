@@ -16,6 +16,9 @@
       "manage-items": "Items",
       "next": "Siguiente",
       "unlock-slot": "Nuevo espacio",
+      "my-specials": "Mis especiales",
+      "all-slots-occupied": "Todos los espacios estan ocupados",
+      "no-space-overlay": "No tienes espacios disponibles para comprar más especiales",
       "titles": {
         "traditionals": "Cartas tradicionales y neón",
         "modifiers": "Cartas modificadoras",

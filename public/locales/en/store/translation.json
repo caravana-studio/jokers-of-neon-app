@@ -16,6 +16,9 @@
       "manage-items": "Manage items",
       "next": "Next",
       "unlock-slot": "Unlock slot",
+      "my-specials": "My specials",
+      "all-slots-occupied": "All slots are occupied",
+      "no-space-overlay": "You have no available slots to buy more specials",
       "titles": {
         "traditionals": "Traditional and neon cards",
         "modifiers": "Modifier cards",
