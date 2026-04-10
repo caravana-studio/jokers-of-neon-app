@@ -78,11 +78,25 @@ export const useShopStore = create<ShopStore>((set, get) => ({
   refetchShopStore: async (client, gameId) => {
     const shopItems = await getShopItems(client, gameId);
     if (shopItems) {
+      const sortedPokerHandItems = shopItems.pokerHandItems.sort(sortByPokerHand);
+
+      console.debug("[SHOP_DEBUG][useShopStore] applying shop items", {
+        gameId,
+        pokerHandItemsCount: sortedPokerHandItems.length,
+        pokerHandItems: sortedPokerHandItems.map((item: PokerHandItem) => ({
+          idx: item.idx,
+          poker_hand: item.poker_hand,
+          level: item.level,
+          cost: item.cost,
+          purchased: Boolean(item.purchased),
+        })),
+      });
+
       set({
         specialCards: shopItems.specialCards.sort(sortByCardId),
         modifierCards: shopItems.modifierCards.sort(sortByCardId),
         commonCards: shopItems.commonCards.sort(sortByCardId),
-        pokerHandItems: shopItems.pokerHandItems.sort(sortByPokerHand),
+        pokerHandItems: sortedPokerHandItems,
         packs: shopItems.packs.sort(sortByPackId),
         specialSlotItem: shopItems.specialSlotItem,
         burnItem: shopItems.burnItem,

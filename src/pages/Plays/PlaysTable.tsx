@@ -71,6 +71,38 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
       )
     : plays;
 
+  useEffect(() => {
+    if (!inStore) return;
+
+    const currentFilteredPlays = !isLoading
+      ? plays.filter((play) =>
+          pokerHandItems?.find(
+            (item) => item.poker_hand === play.poker_hand.toString()
+          )
+        )
+      : plays;
+
+    console.debug("[SHOP_DEBUG][PlaysTable] render inputs", {
+      gameId,
+      isLoading,
+      playsCount: plays.length,
+      pokerHandItemsCount: pokerHandItems?.length ?? 0,
+      filteredPlaysCount: currentFilteredPlays.length,
+      pokerHandItems: (pokerHandItems ?? []).map((item) => ({
+        idx: item.idx,
+        poker_hand: item.poker_hand,
+        level: item.level,
+        purchased: Boolean(item.purchased),
+      })),
+      filteredPlays: currentFilteredPlays.map((play) => ({
+        poker_hand: play.poker_hand?.toString?.() ?? "",
+        level: Number(play.level),
+        points: Number(play.points),
+        multi: Number(play.multi),
+      })),
+    });
+  }, [inStore, gameId, isLoading, plays, pokerHandItems]);
+
   return (
     <>
       {filteredPlays ? (
