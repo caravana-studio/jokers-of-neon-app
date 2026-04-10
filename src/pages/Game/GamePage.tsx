@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { RemoveScroll } from "react-remove-scroll";
 import { useLocation } from "react-router-dom";
-import { LevelUpFirstDiscartedHandAnimation } from "../../components/animations/LevelUpFirstDiscartedHandAnimation";
+import { ChangeLevelAnimation } from "../../components/animations/ChangeLevelAnimation";
 import { SecondChanceCardAnimation } from "../../components/animations/SecondChanceCardAnimation";
 import { SpecialCardAnimation } from "../../components/animations/SpecialCardAnimation";
 import { DelayedLoading } from "../../components/DelayedLoading";
@@ -56,7 +56,7 @@ export const GamePage = () => {
       {!skipRageAnimationRef.current && (
         <RageRoundAnimation onVisibilityChange={setIsRageAnimationVisible} />
       )}
-      <LevelUpFirstDiscartedHandAnimation />
+      <ChangeLevelAnimation />
       {animateSecondChanceCard && <SecondChanceCardAnimation />}
       {animateSpecialCardDefault && (
         <SpecialCardAnimation

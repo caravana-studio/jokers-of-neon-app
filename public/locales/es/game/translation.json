@@ -202,7 +202,9 @@
   "animations": {
     "labels": {
       "level": "NIVEL",
-      "head": "MANO MEJORADA"
+      "head": "MANO MEJORADA",
+      "head-up": "MANO MEJORADA",
+      "head-down": "MANO DEGRADADA"
     }
   },
   "rage-cards": {
