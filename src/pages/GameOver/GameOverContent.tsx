@@ -1,4 +1,5 @@
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
+import { ReactNode } from "react";
 import { BackgroundDecoration } from "../../components/Background";
 import { DelayedLoading } from "../../components/DelayedLoading";
 import { Leaderboard } from "../../components/Leaderboard";
@@ -21,6 +22,7 @@ interface GameOverContentProps {
   firstButton?: BarButtonProps;
   secondButton?: BarButtonProps;
   loggedIn?: boolean;
+  guestCtaMessage?: ReactNode;
 }
 
 export const GameOverContent: React.FC<GameOverContentProps> = ({
@@ -32,6 +34,7 @@ export const GameOverContent: React.FC<GameOverContentProps> = ({
   firstButton,
   secondButton,
   loggedIn,
+  guestCtaMessage,
 }) => {
   const { isSmallScreen } = useResponsiveValues();
 
@@ -82,7 +85,12 @@ export const GameOverContent: React.FC<GameOverContentProps> = ({
           alignItems={"center"}
           pt={{ base: loggedIn ? 0 : 28, sm: 0 }}
         >
-          {actualPlayerPosition !== undefined && !loggedIn && (
+          {guestCtaMessage && !loggedIn && (
+            <Text textAlign="center" whiteSpace="pre-line">
+              {guestCtaMessage}
+            </Text>
+          )}
+          {!guestCtaMessage && actualPlayerPosition !== undefined && !loggedIn && (
             <Text>
               {t("game-over.current-position", {
                 position: actualPlayerPosition,
