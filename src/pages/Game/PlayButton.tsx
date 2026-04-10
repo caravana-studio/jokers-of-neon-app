@@ -1,6 +1,7 @@
 import { Button, Flex, Text } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { useGameContext } from "../../providers/GameProvider";
+import { useAnimationStore } from "../../state/useAnimationStore";
 import { useCurrentHandStore } from "../../state/useCurrentHandStore";
 import { useGameStore } from "../../state/useGameStore";
 import { isTutorial } from "../../utils/isTutorial";
@@ -20,6 +21,12 @@ export const PlayButton = ({
   const { play, remainingPlaysTutorial } = useGameContext();
 
   const { preSelectedCards, preSelectionLocked } = useCurrentHandStore();
+  const playRollbackPulseToken = useAnimationStore(
+    (store) => store.playRollbackPulseToken
+  );
+  const playRollbackPulseDurationMs = useAnimationStore(
+    (store) => store.playRollbackPulseDurationMs
+  );
 
   const { totalPlays, remainingPlays } = useGameStore();
   const handsLeft = !isTutorial()
@@ -63,6 +70,8 @@ export const PlayButton = ({
         type="play"
         total={totalPlays ?? 5}
         active={handsLeft}
+        pulseToken={playRollbackPulseToken}
+        pulseDurationMs={playRollbackPulseDurationMs}
       />
     </Flex>
   );

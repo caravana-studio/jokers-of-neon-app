@@ -5,10 +5,14 @@ import { Suits } from "../../enums/suits";
 import { Card } from "../../types/Card";
 import { CardPlayEvent, PlayEvents } from "../../types/ScoreData";
 import { eventTypeToSuit } from "./eventTypeToSuit";
+import { resolvePostActionKind } from "./postAction";
+import type { PostActionKind } from "./postAction";
 
 // Number of pitch variants available (points_0.mp3 to points_17.mp3)
 const PITCH_VARIANTS = 18;
 export const GAME_OVER_REDIRECT_DELAY_MS = 3000;
+const POST_ACTION_SPECIAL_DURATION_EXTRA_MS = 200;
+const POST_ACTION_BULLET_EXTRA_MS = 140;
 
 interface AnimatePlayConfig {
   playEvents: PlayEvents;
@@ -50,7 +54,13 @@ interface AnimatePlayConfig {
   address: string;
   clearRoundSound: () => void;
   clearLevelSound: () => void;
+  popSound?: () => void;
   deferRewardsNavigation?: boolean;
+  actionContext?: PostActionKind;
+  onPostActionAnimationStart?: (
+    actionType: PostActionKind,
+    pulseDurationMs: number
+  ) => void;
 }
 
 export const animatePlayDiscard = (config: AnimatePlayConfig): number => {
@@ -202,6 +212,18 @@ export const animatePlayDiscard = (config: AnimatePlayConfig): number => {
     playEvents.levelPassed && playEvents.detailEarned
   );
   const isGameOver = Boolean(playEvents.gameOver);
+  const postActionDuration = playEvents.postActionEvent
+    ? playAnimationDuration + POST_ACTION_SPECIAL_DURATION_EXTRA_MS
+    : 0;
+  const postActionKind = resolvePostActionKind(
+    playEvents.postActionEvent?.action_type,
+    config.actionContext
+  );
+  const postActionSpecialCard = playEvents.postActionEvent
+    ? specialCards.find(
+        (card) => card.card_id === playEvents.postActionEvent?.effect_card_id
+      )
+    : undefined;
   const shouldKeepCardsOutOfHand = isRoundTransition || isGameOver;
 
   const ALL_CARDS_DURATION = Object.values(durations).reduce(
@@ -462,6 +484,30 @@ export const animatePlayDiscard = (config: AnimatePlayConfig): number => {
     }
   };
 
+  const handlePostActionEvent = () => {
+    if (!playEvents.postActionEvent) {
+      return;
+    }
+
+    config.popSound?.();
+
+    if (postActionSpecialCard) {
+      setAnimatedCard({
+        special_idx: postActionSpecialCard.idx,
+        highlightOnly: true,
+        highlightColor: postActionKind === "discard" ? "blue" : "violet",
+        animationIndex: 900,
+      });
+    }
+
+    if (postActionKind) {
+      config.onPostActionAnimationStart?.(
+        postActionKind,
+        postActionDuration + POST_ACTION_BULLET_EXTRA_MS
+      );
+    }
+  };
+
   // Main execution flow
   setPreSelectionLocked(true);
 
@@ -496,7 +542,7 @@ export const animatePlayDiscard = (config: AnimatePlayConfig): number => {
       (durations.accumDuration > 0 ? playDuration : 0)
   );
 
-  setTimeout(() => {
+  const finalizeAnimation = () => {
     // Reset state
     setAnimatedPowerUp(undefined);
     unPreSelectAllPowerUps();
@@ -516,7 +562,21 @@ export const animatePlayDiscard = (config: AnimatePlayConfig): number => {
 
     handleGameEnd();
     setCardTransformationLock(false);
+  };
+
+  setTimeout(() => {
+    handlePostActionEvent();
+
+    if (postActionDuration > 0) {
+      setTimeout(() => {
+        setAnimatedCard(undefined);
+        finalizeAnimation();
+      }, postActionDuration);
+      return;
+    }
+
+    finalizeAnimation();
   }, ALL_CARDS_DURATION + playDuration);
 
-  return ALL_CARDS_DURATION + playDuration;
+  return ALL_CARDS_DURATION + playDuration + postActionDuration;
 };

@@ -18,6 +18,7 @@ import { getDetailEarnedEvent } from "./getDetailEarnedEvent";
 import { getHandEvent } from "./getHandEvent";
 import { getLevelPassedEvent } from "./getLevelPassedEvent";
 import { getNeonPlayEvent } from "./getNeonPlayEvent";
+import { getPostActionEvent } from "./getPostActionEvent";
 import { getPowerUpEvents } from "./getPowerUpEvents";
 import { getScoreEvent } from "./getScoreEvent";
 import { getShopTierUnlockedEvent } from "./getShopTierUnlockedEvent";
@@ -56,6 +57,7 @@ export const getPlayEvents = (events: DojoEvent[]): PlayEvents => {
         .filter(specialScoreEventFilter),
     ].sort(sortCardPlayEvents),
     cardActivateEvent: getCardActivateEvent(events),
+    postActionEvent: getPostActionEvent(events),
   };
 
   if (playEvents.gameOver) {

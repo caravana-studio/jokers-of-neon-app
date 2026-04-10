@@ -18,6 +18,7 @@ export interface PlayEvents {
   cardActivateEvent?: CardActivateEvent;
   acumulativeEvents?: CardPlayEvent[];
   cardPlayEvents?: CardPlayEvent[];
+  postActionEvent?: PostActionEvent;
 }
 
 export interface CardPlayEvent {
@@ -96,6 +97,12 @@ export interface ModifierNeonEvent {
 
 export interface CardActivateEvent {
   special_id: number;
+}
+
+export interface PostActionEvent {
+  game_id: number;
+  action_type: number;
+  effect_card_id: number;
 }
 
 export interface DetailEarned {

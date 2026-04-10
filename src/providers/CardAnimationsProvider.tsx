@@ -26,6 +26,8 @@ interface IAnimatedCard {
   multi?: number;
   suit?: Suits;
   special_idx?: number;
+  highlightOnly?: boolean;
+  highlightColor?: string;
   animationIndex: number;
   cash?: number;
   isNeon?: boolean;
