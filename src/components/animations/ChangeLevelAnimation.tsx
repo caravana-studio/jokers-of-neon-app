@@ -12,6 +12,7 @@ import { ArrowRight } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { animated, useSpring } from "react-spring";
+import { CHANGE_LEVEL_ANIMATION_DURATION_MS } from "../../constants/animationDurations";
 import { useAnimationStore } from "../../state/useAnimationStore";
 
 import { PLAYS_DATA } from "../../constants/plays";
@@ -139,7 +140,7 @@ export const ChangeLevelAnimation = () => {
 
       const timer = setTimeout(() => {
         resetAnimationState();
-      }, 7000);
+      }, CHANGE_LEVEL_ANIMATION_DURATION_MS);
       return () => {
         clearTimeout(showTextTimer);
         clearTimeout(showNewDataTimer);
