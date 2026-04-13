@@ -29,7 +29,7 @@ import { logEvent } from "../../utils/analytics";
 import { useNextLevelButton } from "../store/StoreElements/useNextLevelButton";
 import { getComponent } from "./storeComponents/getComponent";
 import { StoreTopBar } from "./storeComponents/TopBar/StoreTopBar";
-import { storesConfig } from "./storesConfig";
+import { getStoreConfigById } from "./storesConfig";
 
 const DECK_SHOP_CONFIG_ID = 1;
 const GLOBAL_SHOP_CONFIG_ID = 2;
@@ -74,8 +74,34 @@ export const DynamicStorePage = () => {
     burnItem,
   } = useShopStore();
   const { shopId } = useGameStore();
-  const store = storesConfig.find(
-    (s) => s.id === SHOP_ID_MAP[shopId as keyof typeof SHOP_ID_MAP]
+
+  const sectionCounts = useMemo(
+    () => ({
+      traditionals: commonCards.length,
+      modifiers: modifierCards.length,
+      specials: specialCards.length,
+      "loot-boxes": packs.length,
+      "level-up-table": pokerHandItems.length,
+      "power-ups": powerUps.length,
+      burn: burnItem && Number(burnItem.cost) > 0 ? 1 : 0,
+    }),
+    [
+      burnItem,
+      commonCards.length,
+      modifierCards.length,
+      packs.length,
+      pokerHandItems.length,
+      powerUps.length,
+      specialCards.length,
+    ]
+  );
+
+  const store = useMemo(
+    () =>
+      getStoreConfigById(SHOP_ID_MAP[shopId as keyof typeof SHOP_ID_MAP], {
+        sectionCounts,
+      }),
+    [sectionCounts, shopId]
   );
 
   useEffect(() => {
@@ -96,23 +122,15 @@ export const DynamicStorePage = () => {
     store?.distribution[isSmallScreen ? "mobile" : "desktop"];
   const sectionAvailability = useMemo(
     () => ({
-      traditionals: commonCards.length > 0,
-      modifiers: modifierCards.length > 0,
-      specials: specialCards.length > 0,
-      "loot-boxes": packs.length > 0,
-      "level-up-table": pokerHandItems.length > 0,
-      "power-ups": powerUps.length > 0,
-      burn: Boolean(burnItem && Number(burnItem.cost) > 0),
+      traditionals: sectionCounts.traditionals > 0,
+      modifiers: sectionCounts.modifiers > 0,
+      specials: sectionCounts.specials > 0,
+      "loot-boxes": sectionCounts["loot-boxes"] > 0,
+      "level-up-table": sectionCounts["level-up-table"] > 0,
+      "power-ups": sectionCounts["power-ups"] > 0,
+      burn: sectionCounts.burn > 0,
     }),
-    [
-      burnItem,
-      commonCards.length,
-      modifierCards.length,
-      packs.length,
-      pokerHandItems.length,
-      powerUps.length,
-      specialCards.length,
-    ]
+    [sectionCounts]
   );
 
   const resolvedDistribution = useMemo(() => {
