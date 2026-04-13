@@ -436,6 +436,37 @@ const storeDistributionOverrides: StoreDistributionOverride[] = [
       },
     },
   },
+  {
+    id: "modifiers-mobile-balanced-when-extra-loot-boxes",
+    storeId: "modifiers",
+    conditions: {
+      "loot-boxes": { gte: 3 },
+    },
+    patch: {
+      mobile: {
+        rows: [
+          {
+            height: 50,
+            columns: [
+              {
+                id: "modifiers",
+                width: 100,
+              },
+            ],
+          },
+          {
+            height: 50,
+            columns: [
+              {
+                id: "loot-boxes",
+                width: 100,
+              },
+            ],
+          },
+        ],
+      },
+    },
+  },
 ];
 
 const matchesCountCondition = (
