@@ -1,4 +1,5 @@
 import { postLevelXP } from "../../api/postLevelXP";
+import { CHANGE_LEVEL_ANIMATION_DURATION_MS } from "../../constants/animationDurations";
 import { BOSS_LEVEL } from "../../constants/general";
 import { EventTypeEnum } from "../../dojo/typescript/custom";
 import { Suits } from "../../enums/suits";
@@ -103,9 +104,7 @@ export const animatePlayDiscard = (config: AnimatePlayConfig): number => {
   } = config;
 
   if (!playEvents) return 0;
-  if (playEvents.levelUpPlayEvent && config.setLevelUpHand) {
-    config.setLevelUpHand(playEvents.levelUpPlayEvent);
-  }
+  const levelUpPlayEvent = playEvents.levelUpPlayEvent;
 
   const sharedPitchState = config.pitchState ?? { index: 0 };
   const getNextPitchIndex = () => {
@@ -211,6 +210,11 @@ export const animatePlayDiscard = (config: AnimatePlayConfig): number => {
   const isRoundTransition = Boolean(
     playEvents.levelPassed && playEvents.detailEarned
   );
+  const shouldDelayGameEndForLevelUp =
+    Boolean(levelUpPlayEvent) && isRoundTransition;
+  const levelUpGameEndDelay = shouldDelayGameEndForLevelUp
+    ? CHANGE_LEVEL_ANIMATION_DURATION_MS
+    : 0;
   const isGameOver = Boolean(playEvents.gameOver);
   const postActionDuration = playEvents.postActionEvent
     ? playAnimationDuration + POST_ACTION_SPECIAL_DURATION_EXTRA_MS
@@ -560,8 +564,23 @@ export const animatePlayDiscard = (config: AnimatePlayConfig): number => {
       addCash(playEvents.detailEarned.total);
     }
 
-    handleGameEnd();
-    setCardTransformationLock(false);
+    if (levelUpPlayEvent && config.setLevelUpHand) {
+      config.setLevelUpHand(levelUpPlayEvent);
+    }
+
+    const executeGameEnd = () => {
+      handleGameEnd();
+      setCardTransformationLock(false);
+    };
+
+    if (levelUpGameEndDelay > 0) {
+      setTimeout(() => {
+        executeGameEnd();
+      }, levelUpGameEndDelay);
+      return;
+    }
+
+    executeGameEnd();
   };
 
   setTimeout(() => {
@@ -578,5 +597,10 @@ export const animatePlayDiscard = (config: AnimatePlayConfig): number => {
     finalizeAnimation();
   }, ALL_CARDS_DURATION + playDuration);
 
-  return ALL_CARDS_DURATION + playDuration + postActionDuration;
+  return (
+    ALL_CARDS_DURATION +
+    playDuration +
+    postActionDuration +
+    levelUpGameEndDelay
+  );
 };
