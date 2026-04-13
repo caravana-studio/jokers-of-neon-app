@@ -255,7 +255,7 @@
     },
     "10066": {
       "name": "Ciclo del Dinero",
-      "description": "Gana un 50% más de recompensas después de cada nivel."
+      "description": "Gana un 50% más de recompensas después de cada ronda."
     },
     "10067": {
       "name": "Cazador de Especiales",
@@ -455,7 +455,7 @@
     },
     "10309": {
       "name": "Réplica",
-      "description": "Después de cada carta de Furia, crea una carta especial temporal aleatoria."
+      "description": "Después de cada ronda de Furia, crea una carta especial temporal aleatoria."
     },
     "10310": {
       "name": "Apego Extremo",
