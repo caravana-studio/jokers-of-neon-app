@@ -1,4 +1,4 @@
-const DEFAULT_API_BASE_URL = "http://localhost:3001";
+import { getGameApiBaseUrl } from "../config/gameApiUrl";
 
 export type PushPlatform = "ios" | "android";
 export type PushLanguage = "es" | "en" | "pt";
@@ -15,7 +15,7 @@ type RegisterPushDeviceApiResponse = {
   success?: boolean;
 };
 
-const baseUrl = import.meta.env.VITE_GAME_API_URL?.replace(/\/$/, "") || DEFAULT_API_BASE_URL;
+const getBaseUrl = () => getGameApiBaseUrl();
 
 function getApiKey(): string {
   const apiKey = import.meta.env.VITE_GAME_API_KEY;
@@ -51,7 +51,7 @@ export async function registerPushDevice({
   }
 
   const apiKey = getApiKey();
-  const requestUrl = `${baseUrl}/v1/push/devices/register`;
+  const requestUrl = `${getBaseUrl()}/v1/push/devices/register`;
 
   const response = await fetch(requestUrl, {
     method: "POST",

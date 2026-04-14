@@ -1,4 +1,4 @@
-const DEFAULT_API_BASE_URL = "http://localhost:3001";
+import { getGameApiBaseUrl } from "../config/gameApiUrl";
 
 export type MintPackParams = {
   packId: number;
@@ -19,9 +19,7 @@ export async function mintPack({ packId, recipient }: MintPackParams) {
     throw new Error("mintPack: Missing VITE_GAME_API_KEY environment variable");
   }
 
-  const baseUrl =
-    import.meta.env.VITE_GAME_API_URL?.replace(/\/$/, "") ||
-    DEFAULT_API_BASE_URL;
+  const baseUrl = getGameApiBaseUrl();
   const requestUrl = `${baseUrl}/api/pack/mint`;
 
   const response = await fetch(requestUrl, {

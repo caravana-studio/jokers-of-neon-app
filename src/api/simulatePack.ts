@@ -1,4 +1,4 @@
-const DEFAULT_API_BASE_URL = "http://localhost:3001";
+import { getGameApiBaseUrl } from "../config/gameApiUrl";
 
 export type SimulatePackParams = {
   packId: number;
@@ -31,9 +31,7 @@ export async function simulatePack({
     );
   }
 
-  const baseUrl =
-    import.meta.env.VITE_GAME_API_URL?.replace(/\/$/, "") ||
-    DEFAULT_API_BASE_URL;
+  const baseUrl = getGameApiBaseUrl();
   const requestUrl = `${baseUrl}/api/pack/simulate`;
 
   const response = await fetch(requestUrl, {

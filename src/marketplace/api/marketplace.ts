@@ -1,4 +1,4 @@
-import { API_URL, MARKETPLACE_API_KEY } from "../config/contracts";
+import { getApiUrl, MARKETPLACE_API_KEY } from "../config/contracts";
 import type {
   Listing,
   CreateListingPayload,
@@ -11,7 +11,7 @@ const baseHeaders: Record<string, string> = {
 };
 
 async function apiFetch<T>(path: string, options?: RequestInit): Promise<T> {
-  const res = await fetch(`${API_URL}${path}`, {
+  const res = await fetch(`${getApiUrl()}${path}`, {
     ...options,
     headers: { ...baseHeaders, ...options?.headers },
   });
@@ -74,7 +74,7 @@ export async function reportListingFilled(
   txHash: string,
   buyerAddress: string
 ): Promise<void> {
-  await fetch(`${API_URL}/api/marketplace/listings/${id}/fill`, {
+  await fetch(`${getApiUrl()}/api/marketplace/listings/${id}/fill`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ tx_hash: txHash, buyer_address: buyerAddress }),

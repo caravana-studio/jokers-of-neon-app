@@ -1,8 +1,7 @@
 import { getSeasonNumber } from "../constants/season";
+import { getGameApiBaseUrl } from "../config/gameApiUrl";
 import { RewardStatus } from "../enums/rewardStatus";
 import { IReward, IStep } from "../pages/SeasonProgression/types";
-
-const DEFAULT_API_BASE_URL = "http://localhost:3001";
 const TOURNAMENT_ENTRY_PACK_ID = 99;
 
 export type GetSeasonLineParams = {
@@ -172,9 +171,7 @@ export async function getSeasonProgress({
     );
   }
 
-  const baseUrl =
-    import.meta.env.VITE_GAME_API_URL?.replace(/\/$/, "") ||
-    DEFAULT_API_BASE_URL;
+  const baseUrl = getGameApiBaseUrl();
 
   const progressRequestUrl = `${baseUrl}/api/season/progress/${encodeURIComponent(
     userAddress

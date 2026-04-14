@@ -1,4 +1,5 @@
 import { rpcUrl } from "../../config/cartridgeUrls";
+import { getGameApiBaseUrl } from "../../config/gameApiUrl";
 
 export const MARKETPLACE_CONTRACT_ADDRESS =
   import.meta.env.VITE_MARKETPLACE_CONTRACT_ADDRESS || "";
@@ -19,10 +20,7 @@ export const STARKNET_RPC_URL =
 
 export const CHAIN = import.meta.env.VITE_CHAIN || "mainnet";
 
-export const API_URL = (import.meta.env.VITE_GAME_API_URL || "http://localhost:3001").replace(/\/$/, "");
-
-export const GAME_API_URL =
-  import.meta.env.VITE_GAME_API_URL || "http://localhost:3001";
+export const getApiUrl = () => getGameApiBaseUrl();
 
 export const GAME_API_KEY = import.meta.env.VITE_GAME_API_KEY || "";
 

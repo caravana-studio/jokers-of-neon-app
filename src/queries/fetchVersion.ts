@@ -8,12 +8,13 @@ export interface VersionResponse {
   version: string;
   maintenance?: boolean;
   slot?: Record<string, string>;
+  api?: Record<string, string>;
 }
 
 const FALLBACK_VERSION_RESPONSE: VersionResponse = { version: APP_VERSION };
 let fetchVersionPromise: Promise<VersionResponse> | null = null;
 
-const isSlotMap = (value: unknown): value is Record<string, string> => {
+const isStringMap = (value: unknown): value is Record<string, string> => {
   if (!value || typeof value !== "object") {
     return false;
   }
@@ -30,6 +31,7 @@ const normalizeVersionResponse = (data: unknown): VersionResponse => {
     version?: unknown;
     maintenance?: unknown;
     slot?: unknown;
+    api?: unknown;
   };
 
   const version =
@@ -43,7 +45,8 @@ const normalizeVersionResponse = (data: unknown): VersionResponse => {
       typeof candidate.maintenance === "boolean"
         ? candidate.maintenance
         : undefined,
-    slot: isSlotMap(candidate.slot) ? candidate.slot : undefined,
+    slot: isStringMap(candidate.slot) ? candidate.slot : undefined,
+    api: isStringMap(candidate.api) ? candidate.api : undefined,
   };
 };
 

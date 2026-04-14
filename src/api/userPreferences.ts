@@ -1,4 +1,4 @@
-const DEFAULT_API_BASE_URL = "http://localhost:3001";
+import { getGameApiBaseUrl } from "../config/gameApiUrl";
 
 export type UserPreferences = {
   wallet?: string;
@@ -32,9 +32,7 @@ type SkinPreferencesApiResponse = {
   error?: string;
 };
 
-const baseUrl =
-  import.meta.env.VITE_GAME_API_URL?.replace(/\/+$/, "") ||
-  DEFAULT_API_BASE_URL;
+const getBaseUrl = () => getGameApiBaseUrl();
 
 function getApiKey(): string {
   const apiKey = import.meta.env.VITE_GAME_API_KEY;
@@ -127,7 +125,7 @@ export async function getUserPreferences(
     throw new Error("getUserPreferences: wallet is required");
   }
   const apiKey = getApiKey();
-  const requestUrl = `${baseUrl}/v1/user/preferences/${encodeURIComponent(
+  const requestUrl = `${getBaseUrl()}/v1/user/preferences/${encodeURIComponent(
     wallet
   )}`;
 
@@ -167,7 +165,7 @@ export async function getUserSkinPreferences(
     throw new Error("getUserSkinPreferences: userAddress is required");
   }
   const apiKey = getApiKey();
-  const requestUrl = `${baseUrl}/v1/user/preferences/${encodeURIComponent(
+  const requestUrl = `${getBaseUrl()}/v1/user/preferences/${encodeURIComponent(
     userAddress
   )}/skins`;
 
@@ -222,7 +220,7 @@ export async function updateUserSkinPreference(
   }
 
   const apiKey = getApiKey();
-  const requestUrl = `${baseUrl}/v1/user/preferences/${encodeURIComponent(
+  const requestUrl = `${getBaseUrl()}/v1/user/preferences/${encodeURIComponent(
     userAddress
   )}/skins`;
 
@@ -269,7 +267,7 @@ export async function patchUserPreferences(
     throw new Error("patchUserPreferences: wallet is required");
   }
   const apiKey = getApiKey();
-  const requestUrl = `${baseUrl}/v1/user/preferences/${encodeURIComponent(
+  const requestUrl = `${getBaseUrl()}/v1/user/preferences/${encodeURIComponent(
     wallet
   )}`;
 

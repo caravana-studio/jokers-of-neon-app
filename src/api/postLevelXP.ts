@@ -1,4 +1,4 @@
-const DEFAULT_API_BASE_URL = "http://localhost:3001";
+import { getGameApiBaseUrl } from "../config/gameApiUrl";
 
 export type PostLevelXPParams = {
   address: string;
@@ -34,9 +34,7 @@ export async function postLevelXP({
     );
   }
 
-  const baseUrl =
-    import.meta.env.VITE_GAME_API_URL?.replace(/\/$/, "") ||
-    DEFAULT_API_BASE_URL;
+  const baseUrl = getGameApiBaseUrl();
   const requestUrl = `${baseUrl}/api/xp/level-completion`;
 
   const response = await fetch(requestUrl, {

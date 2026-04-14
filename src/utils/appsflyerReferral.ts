@@ -1,5 +1,6 @@
 import { App } from "@capacitor/app";
 import { Capacitor } from "@capacitor/core";
+import { getGameApiBaseUrl } from "../config/gameApiUrl";
 import { AppsFlyerBridge, getDeviceId, getWebBridgeInstance } from "./appsflyer";
 
 // =============================================================================
@@ -159,7 +160,7 @@ function markReferralAsProcessed(userAddress: string): void {
 
 function getApiConfig() {
   const apiKey = import.meta.env.VITE_GAME_API_KEY || "";
-  const baseUrl = (import.meta.env.VITE_GAME_API_URL || "http://localhost:3001").replace(/\/$/, "");
+  const baseUrl = getGameApiBaseUrl();
   return { apiKey, baseUrl };
 }
 

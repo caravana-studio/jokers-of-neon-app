@@ -1,6 +1,5 @@
 import { useQuery } from "react-query";
-
-const DEFAULT_API_BASE_URL = "http://localhost:3001";
+import { getGameApiBaseUrl } from "../config/gameApiUrl";
 export const GAME_ID_RANGE_QUERY_KEY = "game-id-range";
 
 type GameIdRangeApiResponse = {
@@ -41,9 +40,7 @@ const fetchGameIdRange = async (
   startDate: string,
   endDate: string
 ): Promise<GameIdRange> => {
-  const baseUrl =
-    import.meta.env.VITE_GAME_API_URL?.replace(/\/$/, "") ||
-    DEFAULT_API_BASE_URL;
+  const baseUrl = getGameApiBaseUrl();
 
   const params = new URLSearchParams({
     start_date: startDate,

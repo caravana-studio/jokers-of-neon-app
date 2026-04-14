@@ -1,6 +1,5 @@
 import { getSeasonNumber } from "../constants/season";
-
-const DEFAULT_API_BASE_URL = "http://localhost:3001";
+import { getGameApiBaseUrl } from "../config/gameApiUrl";
 
 export type CreateGameParams = {
   userAddress: string;
@@ -40,9 +39,7 @@ export async function createGame({
     );
   }
 
-  const baseUrl =
-    import.meta.env.VITE_GAME_API_URL?.replace(/\/$/, "") ||
-    DEFAULT_API_BASE_URL;
+  const baseUrl = getGameApiBaseUrl();
   const requestUrl = `${baseUrl}/api/game/create`;
 
   const payload: CreateGamePayload = {
