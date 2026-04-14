@@ -1,6 +1,6 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { Icons } from "../constants/icons.ts";
-import { CARD_HEIGHT, CARD_WIDTH } from "../constants/visualProps.ts";
+import { CARD_HEIGHT } from "../constants/visualProps.ts";
 import { useGameStore } from "../state/useGameStore.ts";
 import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
 import { CardContainerWithBorder } from "./CardContainerWithBorder.tsx";
@@ -14,15 +14,14 @@ export const SpecialCards = () => {
     useGameStore();
   const { isSmallScreen, cardScale } = useResponsiveValues();
   const heightOffset = isSmallScreen ? 25 : 40;
-  const cardWidth = CARD_WIDTH * cardScale;
-  const containerVisibleItems = 5;
+  const containerWidth = isSmallScreen ? "calc(100vw - 32px)" : "45vw";
   const isShowingSpecialCards = !isRageRound || specialSwitcherOn;
 
   return (
     <CardContainerWithBorder
-      maxWidth={"100%"}
-      minWidth={`${cardWidth * containerVisibleItems + (isSmallScreen ? 32 : 49)}px`}
-      width={isSmallScreen ? "100%" : "auto"}
+      maxWidth={containerWidth}
+      minWidth={containerWidth}
+      width={containerWidth}
       height={`${CARD_HEIGHT * cardScale + heightOffset}px`}
       className="progressive-special-cards-tutorial-target"
     >
