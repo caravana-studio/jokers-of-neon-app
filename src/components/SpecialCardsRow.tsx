@@ -1,5 +1,5 @@
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { CARD_HEIGHT, CARD_WIDTH } from "../constants/visualProps.ts";
 import { useGameContext } from "../providers/GameProvider.tsx";
@@ -26,11 +26,11 @@ export const SpecialCardsRow = () => {
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const [hoveredButton, setHoveredButton] = useState<number | null>(null);
   const [cardToDiscardIdx, setCardToDiscardIdx] = useState<number | null>(null);
+  const rowRef = useRef<HTMLDivElement | null>(null);
+  const [rowWidth, setRowWidth] = useState(0);
   const { t } = useTranslation(["game"]);
   const { cardScale, isSmallScreen, isCardScaleCalculated } =
     useResponsiveValues();
-  const cardWidth = CARD_WIDTH * cardScale;
-  const cardHeight = CARD_HEIGHT * cardScale;
 
   const { highlightItem: highlightCard } = useCardHighlight();
 
@@ -42,12 +42,55 @@ export const SpecialCardsRow = () => {
   const visiblePlaceholders = Math.max(0, visibleCards - cards.length);
   const freeUnlockedSlots = Math.min(
     visiblePlaceholders,
-    Math.max(0, effectiveUnlockedSlots - cards.length)
+    Math.max(0, effectiveUnlockedSlots - cards.length),
   );
   const lockedSlots = Math.max(0, visiblePlaceholders - freeUnlockedSlots);
-  const slotContainerWidth = `${cardWidth}px`;
+  const totalVisibleItems = cards.length + freeUnlockedSlots + lockedSlots;
+  const baselineCount = 5;
+  const minGapPx = isSmallScreen ? 8 : 12;
+
+  const scaleForFive =
+    rowWidth > 0
+      ? (rowWidth - minGapPx * (baselineCount - 1)) /
+        (CARD_WIDTH * baselineCount)
+      : cardScale;
+  const slotScale = Math.min(cardScale, Math.max(scaleForFive, 0.1));
+  const slotWidthPx = CARD_WIDTH * slotScale;
+  const slotHeightPx = CARD_HEIGHT * slotScale;
+
+  const perItemSpacingPx =
+    totalVisibleItems > 1 && rowWidth > 0
+      ? (() => {
+          if (totalVisibleItems < 5) {
+            return minGapPx;
+          }
+          if (totalVisibleItems === 5) {
+            return minGapPx;
+          }
+          const step = (rowWidth - slotWidthPx) / (totalVisibleItems - 1);
+          const marginLeft = step - slotWidthPx;
+          return marginLeft;
+        })()
+      : minGapPx;
+
+  const slotContainerWidth = `${slotWidthPx}px`;
 
   const cardToDiscard = cards.find((c) => c.idx === cardToDiscardIdx);
+
+  useEffect(() => {
+    const node = rowRef.current;
+    if (!node) return;
+
+    const updateWidth = () => setRowWidth(node.clientWidth);
+    updateWidth();
+
+    if (typeof ResizeObserver === "undefined") return;
+
+    const observer = new ResizeObserver(() => updateWidth());
+    observer.observe(node);
+
+    return () => observer.disconnect();
+  }, []);
 
   const handleDiscard = () => {
     const card = cards.find((c) => c.idx === cardToDiscardIdx);
@@ -65,14 +108,15 @@ export const SpecialCardsRow = () => {
       justifyContent={"flex-start"}
     >
       <Flex
+        ref={rowRef}
         position="relative"
         width="100%"
         alignItems={isSmallScreen ? "center" : "inherit"}
         justifyContent="flex-start"
-        gap={3}
+        gap={0}
         pb={isSmallScreen ? 3 : 4}
       >
-        {cards.map((card) => {
+        {cards.map((card, index) => {
           return (
             <Flex
               className="special-cards-step-1"
@@ -81,8 +125,13 @@ export const SpecialCardsRow = () => {
               width={slotContainerWidth}
               minWidth={slotContainerWidth}
               flexShrink={0}
+              ml={index === 0 ? 0 : `${perItemSpacingPx}px`}
               position="relative"
-              zIndex={1}
+              zIndex={
+                hoveredCard === card.idx || hoveredButton === card.idx
+                  ? totalVisibleItems + 100
+                  : index + 1
+              }
               onMouseEnter={() => !isSmallScreen && setHoveredCard(card.idx)}
               onMouseLeave={() => {
                 setHoveredCard(null);
@@ -92,7 +141,7 @@ export const SpecialCardsRow = () => {
               <AnimatedParticleCard
                 idx={card.idx}
                 isSpecial={!!card.isSpecial}
-                scale={cardScale}
+                scale={slotScale}
               >
                 <Box position="relative">
                   <Flex
@@ -123,7 +172,7 @@ export const SpecialCardsRow = () => {
                           <Flex alignItems="center" gap={1}>
                             <Text fontSize="10px">
                               {t(
-                                "game.special-cards.remove-special-cards-label"
+                                "game.special-cards.remove-special-cards-label",
                               )}
                             </Text>
                             <CashSymbol size="10px" />
@@ -134,14 +183,14 @@ export const SpecialCardsRow = () => {
                     )}
                   </Flex>
                   <Box
-                    width={`${cardWidth}px`}
+                    width={`${slotWidthPx}px`}
                     onClick={() => {
                       isSmallScreen && highlightCard(card);
                     }}
                   >
                     <CardImage3D
                       card={card}
-                      height={`${cardHeight}px`}
+                      height={`${slotHeightPx}px`}
                       small
                       showCumulativeProgress
                     />
@@ -157,7 +206,8 @@ export const SpecialCardsRow = () => {
             width={slotContainerWidth}
             minWidth={slotContainerWidth}
             flexShrink={0}
-            height={`${cardHeight}px`}
+            ml={cards.length + index === 0 ? 0 : `${perItemSpacingPx}px`}
+            height={`${slotHeightPx}px`}
           >
             <UnlockedSlot
               key={`unlocked-${index}`}
@@ -170,7 +220,7 @@ export const SpecialCardsRow = () => {
                       : BACKGROUND_BLUE
                     : "transparent"
               }
-              scale={isCardScaleCalculated ? cardScale : undefined}
+              scale={isCardScaleCalculated ? slotScale : undefined}
             />
           </Flex>
         ))}
@@ -180,11 +230,16 @@ export const SpecialCardsRow = () => {
             width={slotContainerWidth}
             minWidth={slotContainerWidth}
             flexShrink={0}
-            height={`${cardHeight}px`}
+            ml={
+              cards.length + freeUnlockedSlots + index === 0
+                ? 0
+                : `${perItemSpacingPx}px`
+            }
+            height={`${slotHeightPx}px`}
           >
             <LockedSlot
               key={`locked-${index}`}
-              scale={cardScale}
+              scale={slotScale}
               backgroundColor={
                 visibleCards <= 5
                   ? "transparent"
