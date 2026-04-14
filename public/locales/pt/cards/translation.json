@@ -454,8 +454,8 @@
       "description": "Cada jogada ou descarte tem ^yellow(25% de chance)^ de não ser consumido."
     },
     "10309": {
-      "name": "Réplica",
-      "description": "Depois de cada Rage, crie uma carta especial temporária aleatória."
+      "name": "Sequela",
+      "description": "Depois de cada rodada de Rage, crie uma carta especial temporária aleatória."
     },
     "10310": {
       "name": "Apego Extremo",
