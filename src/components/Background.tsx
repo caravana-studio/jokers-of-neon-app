@@ -1,15 +1,21 @@
 import { Box } from "@chakra-ui/react";
 import { PropsWithChildren, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { useSeasonNumber } from "../constants/season";
 import { useGameStore } from "../state/useGameStore";
 import { useResponsiveValues } from "../theme/responsiveSettings";
+import {
+  addSeasonSuffixToAssetPath,
+  doesAssetExist,
+  resolveSeasonalAssetPath,
+} from "../utils/assetAvailability";
 import { getImageFromCache } from "../utils/cacheUtils";
 import { isNativeAndroid } from "../utils/capacitorUtils";
 import BackgroundVideo from "./BackgroundVideo";
 import CachedImage, { checkImageExists } from "./CachedImage";
 import { isInGamePath } from "./Menu/useContextMenuItems";
 
-const getBackgroundColor = (type: string) => {
+const getBackgroundColor = (type?: string) => {
   switch (type) {
     case "white":
       return "white";
@@ -49,11 +55,11 @@ const tournamentBackgroundImageByType: Partial<Record<BackgroundType, string>> =
   [BackgroundType.RageBoss]: "/bg/rage-bg_t.jpg",
 };
 
-const getBackgroundImagePath = (
-  type: BackgroundType | undefined,
+const getBaseBackgroundImagePath = (
+  type: BackgroundType,
   useTournamentTheme: boolean
 ) => {
-  if (!type || type === BackgroundType.Home) {
+  if (type === BackgroundType.Home) {
     return "/bg/home-bg.jpg";
   }
 
@@ -68,6 +74,31 @@ const getBackgroundImagePath = (
   }
 
   return `/bg/${type}-bg.jpg`;
+};
+
+const resolveBackgroundImagePath = async (
+  type: BackgroundType,
+  useTournamentTheme: boolean,
+  seasonNumber: number
+) => {
+  const fallbackType = type === BackgroundType.RageBoss ? BackgroundType.Rage : type;
+  const fallbackPath = getBaseBackgroundImagePath(fallbackType, useTournamentTheme);
+  const resolvedFallbackPath = await resolveSeasonalAssetPath(
+    fallbackPath,
+    seasonNumber
+  );
+
+  if (type !== BackgroundType.RageBoss) {
+    return resolvedFallbackPath;
+  }
+
+  const seasonalRageBossPath = addSeasonSuffixToAssetPath(
+    useTournamentTheme ? "/bg/rage-boss-bg_t.jpg" : "/bg/rage-boss-bg.jpg",
+    seasonNumber
+  );
+  const hasSeasonalRageBossPath = await doesAssetExist(seasonalRageBossPath);
+
+  return hasSeasonalRageBossPath ? seasonalRageBossPath : resolvedFallbackPath;
 };
 
 const scrollOnMobile = true;
@@ -168,6 +199,7 @@ const bgConfig: Record<string, { bg: BackgroundType; decoration?: boolean }> = {
 
 export const Background = ({ children }: PropsWithChildren) => {
   const { isSmallScreen } = useResponsiveValues();
+  const seasonNumber = useSeasonNumber();
   const [backgroundImageUrl, setBackgroundImageUrl] = useState<string>("none");
 
   const { isRageRound, modId, isClassic, inBossRound, isTournament } =
@@ -190,17 +222,40 @@ export const Background = ({ children }: PropsWithChildren) => {
     type && isTournament && isInGamePage && tournamentBackgroundTypes.has(type)
   );
 
-  const [src, setSrc] = useState("");
+  const [src, setSrc] = useState("/bg/home-bg.jpg");
   const [videoType, setVideoType] = useState<BackgroundType>(
     BackgroundType.Home
   );
 
   useEffect(() => {
-    if (type) {
-      setSrc(getBackgroundImagePath(type, useTournamentTheme));
-      setVideoType(type);
-    }
-  }, [type, useTournamentTheme]);
+    const backgroundType = type ?? BackgroundType.Home;
+    setVideoType(backgroundType);
+
+    const fallbackPath = getBaseBackgroundImagePath(
+      backgroundType,
+      useTournamentTheme
+    );
+    setSrc(fallbackPath);
+
+    let isMounted = true;
+
+    const resolveBackground = async () => {
+      const resolvedPath = await resolveBackgroundImagePath(
+        backgroundType,
+        useTournamentTheme,
+        seasonNumber
+      );
+
+      if (!isMounted) return;
+      setSrc(resolvedPath);
+    };
+
+    void resolveBackground();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [seasonNumber, type, useTournamentTheme]);
 
   const modAwareSrc = !isClassic ? baseUrl + src : src;
 
@@ -226,10 +281,10 @@ export const Background = ({ children }: PropsWithChildren) => {
       sx={{
         backgroundColor: getBackgroundColor(type),
         backgroundImage: isClassic
-          ? `url(${getBackgroundImagePath(type, useTournamentTheme)})`
+          ? `url(${src})`
           : backgroundImageUrl != "none"
-            ? backgroundImageUrl
-            : `url(${getBackgroundImagePath(type, useTournamentTheme)})`,
+            ? `url(${backgroundImageUrl})`
+            : `url(${src})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         height: "100svh",

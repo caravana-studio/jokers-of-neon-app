@@ -244,7 +244,10 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
 
   if (shouldBlockWithWalletScreen) {
     return (
-      <PreThemeLoadingPage>
+      <PreThemeLoadingPage
+        backgroundSize="cover"
+        backgroundPosition="bottom center"
+      >
         <PositionedVersion />
         <MobileDecoration
           top={nativePaddingTop}
