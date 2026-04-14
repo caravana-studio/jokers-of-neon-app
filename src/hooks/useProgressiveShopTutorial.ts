@@ -4,9 +4,9 @@ import { JOYRIDE_LOCALES } from "../constants/gameTutorial";
 import { useTranslation } from "react-i18next";
 import {
   PROGRESSIVE_TUTORIAL_IDS,
-  getProgressiveTutorialState,
-  setProgressiveTutorialCompleted,
 } from "../utils/progressiveTutorialStorage";
+import { useSettings } from "../providers/SettingsProvider";
+import { useTutorialStore } from "../state/useTutorialStore";
 
 interface UseProgressiveShopTutorialProps {
   canStart: boolean;
@@ -16,21 +16,29 @@ export const useProgressiveShopTutorial = ({
   canStart,
 }: UseProgressiveShopTutorialProps) => {
   const { t } = useTranslation("tutorials");
+  const { skipAllTutorials, preferencesLoaded } = useSettings();
+  const completed = useTutorialStore((state) => state.completed);
+  const tutorialsLoaded = useTutorialStore((state) => state.loaded);
+  const markTutorialCompleted = useTutorialStore(
+    (state) => state.markTutorialCompleted
+  );
   const [run, setRun] = useState(false);
 
   useEffect(() => {
-    if (!canStart) return;
+    if (!canStart || !tutorialsLoaded || !preferencesLoaded || skipAllTutorials) {
+      setRun(false);
+      return;
+    }
 
-    const completed = getProgressiveTutorialState();
     if (!completed[PROGRESSIVE_TUTORIAL_IDS.SHOP_FIRST_ENTRY]) {
       setRun(true);
     }
-  }, [canStart]);
+  }, [canStart, completed, preferencesLoaded, skipAllTutorials, tutorialsLoaded]);
 
   const completeTutorial = useCallback(() => {
-    setProgressiveTutorialCompleted(PROGRESSIVE_TUTORIAL_IDS.SHOP_FIRST_ENTRY);
+    void markTutorialCompleted(PROGRESSIVE_TUTORIAL_IDS.SHOP_FIRST_ENTRY);
     setRun(false);
-  }, []);
+  }, [markTutorialCompleted]);
 
   const handleCallback = useCallback(
     (data: CallBackProps) => {

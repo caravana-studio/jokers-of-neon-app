@@ -56,6 +56,8 @@ export const SettingsContent = () => {
     setPushEventsEnabled,
     pushDailyPacksEnabled,
     setPushDailyPacksEnabled,
+    skipAllTutorials,
+    setSkipAllTutorials,
     timezone,
     setTimezone,
   } = useSettings();
@@ -72,6 +74,8 @@ export const SettingsContent = () => {
   const pushRemindersLbl = t("push-reminders");
   const pushEventsLbl = t("push-events");
   const pushDailyPacksLbl = t("push-daily-packs");
+  const skipAllTutorialsLbl = t("skip-all-tutorials");
+  const skipAllTutorialsHelpLbl = t("skip-all-tutorials-help");
   const timezoneLbl = t("timezone");
   const enableNotificationsLbl = t("enable-notifications");
   const androidNotificationsHelpLbl = t("android-notifications-help");
@@ -304,6 +308,21 @@ export const SettingsContent = () => {
           </MenuList>
         </Menu>
       </Flex>
+      <Box>
+        <Flex gap={2} alignItems={"center"}>
+          <Text size="md" width={"50%"}>
+            {skipAllTutorialsLbl}
+          </Text>
+          <Switch
+            ml="auto"
+            isChecked={skipAllTutorials}
+            onChange={(e) => setSkipAllTutorials(e.target.checked)}
+          />
+        </Flex>
+        <Text fontSize={[11, 13]} lineHeight={1} opacity={0.8} mt={[1, 2]}>
+          {skipAllTutorialsHelpLbl}
+        </Text>
+      </Box>
       {isPushSupported && (
         <>
           <Text size="md" fontWeight="bold">

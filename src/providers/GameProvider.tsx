@@ -55,7 +55,6 @@ import { filterOptimisticEventsFromPlayEvents } from "../utils/playEvents/filter
 import { filterSilentCardEventsFromPlayEvents } from "../utils/playEvents/filterSilentCardEventsFromPlayEvents.ts";
 import {
   PROGRESSIVE_TUTORIAL_IDS,
-  getProgressiveTutorialState,
 } from "../utils/progressiveTutorialStorage";
 import { resolvePostActionKind } from "../utils/playEvents/postAction.ts";
 import type { PostActionKind } from "../utils/playEvents/postAction.ts";
@@ -63,6 +62,7 @@ import { useCardData } from "./CardDataProvider.tsx";
 import { gameProviderDefaults } from "./gameProviderDefaults.ts";
 import { PracticeGameContext } from "./PracticeGameProvider.tsx";
 import { useSettings } from "./SettingsProvider.tsx";
+import { useTutorialStore } from "../state/useTutorialStore.ts";
 
 export interface IGameContext {
   executeCreateGame: (isTournament?: boolean) => void;
@@ -196,7 +196,9 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const { showErrorToast } = useCustomToast();
 
-  const { sfxVolume, animationSpeed } = useSettings();
+  const { sfxVolume, animationSpeed, skipAllTutorials } = useSettings();
+  const completedTutorials = useTutorialStore((state) => state.completed);
+  const tutorialsLoaded = useTutorialStore((state) => state.loaded);
 
   const { play: discardSound } = useAudio(discardSfx, sfxVolume);
   // Use pitched audio for scoring sounds (points_0.mp3 to points_17.mp3)
@@ -418,8 +420,9 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     pitchState?: { index: number },
     actionContext?: PostActionKind
   ): number => {
-    const completedTutorials = getProgressiveTutorialState();
     const firstScoreTutorialPending =
+      !skipAllTutorials &&
+      tutorialsLoaded &&
       !completedTutorials[PROGRESSIVE_TUTORIAL_IDS.GAME_FIRST_SCORE];
     const levelPassedInfo = response.levelPassed;
     const detailEarned = response.detailEarned;

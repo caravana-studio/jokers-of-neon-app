@@ -7,14 +7,17 @@ import { useTranslation } from "react-i18next";
 import { isTutorial } from "../utils/isTutorial";
 import {
   PROGRESSIVE_TUTORIAL_IDS,
-  setProgressiveTutorialCompleted,
 } from "../utils/progressiveTutorialStorage";
+import { useTutorialStore } from "../state/useTutorialStore";
 
 export const ShowPlays = () => {
   const [hoveredButton, setHoveredButton] = useState(false);
   const navigate = useNavigate();
   const { t } = useTranslation(["game"]);
   const inTutorial = isTutorial();
+  const markTutorialCompleted = useTutorialStore(
+    (state) => state.markTutorialCompleted
+  );
 
   return (
     <Button
@@ -31,9 +34,7 @@ export const ShowPlays = () => {
       onMouseLeave={() => setHoveredButton(false)}
       onClick={(e) => {
         e.stopPropagation();
-        setProgressiveTutorialCompleted(
-          PROGRESSIVE_TUTORIAL_IDS.GAME_FIRST_ENTRY
-        );
+        void markTutorialCompleted(PROGRESSIVE_TUTORIAL_IDS.GAME_FIRST_ENTRY);
         navigate("/plays", { state: { isTutorial: inTutorial } });
       }}
     >
