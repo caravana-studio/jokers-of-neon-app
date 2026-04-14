@@ -194,6 +194,8 @@
     "push-reminders": "As missões diárias estão prestes a expirar",
     "push-events": "Eventos especiais",
     "push-daily-packs": "Novo pacote diário disponível",
+    "skip-all-tutorials": "Pular todos os tutoriais",
+    "skip-all-tutorials-help": "Quando ativado, desativa os tutoriais em todo o jogo.",
     "timezone": "Fuso horário",
     "enable-notifications": "Ativar notificações",
     "android-notifications-help": "Ative as notificações para Jokers of Neon nas configurações do sistema."

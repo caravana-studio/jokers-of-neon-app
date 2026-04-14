@@ -7,9 +7,9 @@ import {
   PROGRESSIVE_TUTORIAL_IDS,
   ProgressiveTutorialId,
   ProgressiveTutorialState,
-  getProgressiveTutorialState,
-  setProgressiveTutorialCompleted,
 } from "../utils/progressiveTutorialStorage";
+import { useSettings } from "../providers/SettingsProvider";
+import { useTutorialStore } from "../state/useTutorialStore";
 
 const TUTORIAL_START_DELAY_MS = 1000;
 
@@ -93,25 +93,19 @@ export const useProgressiveGameTutorial = ({
   hasNeonCardInGame,
 }: UseProgressiveGameTutorialProps) => {
   const { t } = useTranslation("tutorials");
-  const [completed, setCompleted] = useState<ProgressiveTutorialState>(() =>
-    getProgressiveTutorialState()
+  const { skipAllTutorials, preferencesLoaded } = useSettings();
+  const completed = useTutorialStore((state) => state.completed);
+  const tutorialsLoaded = useTutorialStore((state) => state.loaded);
+  const markTutorialCompletedInStore = useTutorialStore(
+    (state) => state.markTutorialCompleted
   );
   const [activeTutorialId, setActiveTutorialId] =
     useState<ProgressiveTutorialId | null>(null);
   const [run, setRun] = useState(false);
 
   const markTutorialCompleted = useCallback((id: ProgressiveTutorialId) => {
-    setProgressiveTutorialCompleted(id, true);
-    setCompleted((prev) => {
-      if (prev[id]) {
-        return prev;
-      }
-      return {
-        ...prev,
-        [id]: true,
-      };
-    });
-  }, []);
+    void markTutorialCompletedInStore(id);
+  }, [markTutorialCompletedInStore]);
 
   const completeActiveTutorial = useCallback(() => {
     if (!activeTutorialId) {
@@ -124,6 +118,12 @@ export const useProgressiveGameTutorial = ({
   }, [activeTutorialId, markTutorialCompleted]);
 
   useEffect(() => {
+    if (!tutorialsLoaded || !preferencesLoaded || skipAllTutorials) {
+      setRun(false);
+      setActiveTutorialId(null);
+      return;
+    }
+
     if (run || activeTutorialId) {
       return;
     }
@@ -164,8 +164,11 @@ export const useProgressiveGameTutorial = ({
     hasNeonCardInGame,
     hasSpecialCardInGame,
     markTutorialCompleted,
+    preferencesLoaded,
     preSelectedCardsCount,
     run,
+    skipAllTutorials,
+    tutorialsLoaded,
   ]);
 
   const modifierEffectLabel = useMemo(() => {

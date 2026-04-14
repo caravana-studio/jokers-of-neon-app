@@ -8,6 +8,7 @@ export type UserPreferences = {
   push_daily_packs_enabled: boolean;
   push_extra1_enabled: boolean;
   push_extra2_enabled: boolean;
+  skip_all_tutorials: boolean;
   timezone: string;
   language: string;
   sound_volume: number;

@@ -1,4 +1,4 @@
-import { PROGRESSIVE_TUTORIAL_STATE } from "../constants/localStorage";
+import { PROGRESSIVE_TUTORIAL_STATE as PROGRESSIVE_TUTORIAL_STATE_KEY } from "../constants/localStorage";
 
 export const PROGRESSIVE_TUTORIAL_IDS = {
   GAME_FIRST_ENTRY: "game_first_entry",
@@ -13,6 +13,8 @@ export const PROGRESSIVE_TUTORIAL_IDS = {
   SHOP_FIRST_ENTRY: "shop_first_entry",
 } as const;
 
+export const PROGRESSIVE_TUTORIAL_STATE = PROGRESSIVE_TUTORIAL_STATE_KEY;
+
 export type ProgressiveTutorialId =
   (typeof PROGRESSIVE_TUTORIAL_IDS)[keyof typeof PROGRESSIVE_TUTORIAL_IDS];
 
@@ -20,32 +22,50 @@ export type ProgressiveTutorialState = Partial<
   Record<ProgressiveTutorialId, boolean>
 >;
 
-const readProgressiveTutorialState = (): ProgressiveTutorialState => {
+const KNOWN_TUTORIAL_IDS = new Set<string>(
+  Object.values(PROGRESSIVE_TUTORIAL_IDS)
+);
+
+const readProgressiveTutorialState = (
+  storageKey: string = PROGRESSIVE_TUTORIAL_STATE
+): ProgressiveTutorialState => {
   if (typeof window === "undefined") {
     return {};
   }
 
-  const raw = window.localStorage.getItem(PROGRESSIVE_TUTORIAL_STATE);
+  const raw = window.localStorage.getItem(storageKey);
   if (!raw) {
     return {};
   }
 
   try {
     const parsed = JSON.parse(raw);
-    if (typeof parsed === "object" && parsed !== null) {
-      return parsed as ProgressiveTutorialState;
+    if (typeof parsed !== "object" || parsed === null) {
+      return {};
     }
-    return {};
+
+    return Object.entries(parsed).reduce<ProgressiveTutorialState>(
+      (acc, [id, completed]) => {
+        if (KNOWN_TUTORIAL_IDS.has(id) && completed === true) {
+          acc[id as ProgressiveTutorialId] = true;
+        }
+        return acc;
+      },
+      {}
+    );
   } catch {
     return {};
   }
 };
 
-const writeProgressiveTutorialState = (state: ProgressiveTutorialState) => {
+const writeProgressiveTutorialState = (
+  state: ProgressiveTutorialState,
+  storageKey: string = PROGRESSIVE_TUTORIAL_STATE
+) => {
   if (typeof window === "undefined") {
     return;
   }
-  window.localStorage.setItem(PROGRESSIVE_TUTORIAL_STATE, JSON.stringify(state));
+  window.localStorage.setItem(storageKey, JSON.stringify(state));
 };
 
 export const getProgressiveTutorialState = (): ProgressiveTutorialState =>
