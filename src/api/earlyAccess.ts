@@ -1,3 +1,5 @@
+import { getGameApiBaseUrl } from "../config/gameApiUrl";
+
 type EarlyAccessResponse = {
   registered?: boolean;
 };
@@ -16,15 +18,7 @@ function getApiKey(): string {
 }
 
 function getApiBaseUrl(): string {
-  const apiBase = import.meta.env.VITE_GAME_API_URL;
-
-  if (!apiBase) {
-    throw new Error(
-      "checkEarlyAccess: Missing API base URL (set VITE_GAME_API_URL)"
-    );
-  }
-
-  return String(apiBase).replace(/\/$/, "");
+  return getGameApiBaseUrl();
 }
 
 export async function checkEarlyAccess(

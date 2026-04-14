@@ -5,8 +5,7 @@ import {
 } from "../pages/MyCollection/utils";
 import { transformAPIResultToCollection } from "../utils/transformers/transformAPIResultToCollection";
 import { transformAPIResultToTraditionalCollection } from "../utils/transformers/transformAPIResultToTraditionalCollection";
-
-const DEFAULT_API_BASE_URL = "http://localhost:3001";
+import { getGameApiBaseUrl } from "../config/gameApiUrl";
 
 export type UserCard = {
   tokenId: string;
@@ -52,9 +51,7 @@ export async function getUserCards(userAddress: string): Promise<{
     );
   }
 
-  const baseUrl =
-    import.meta.env.VITE_GAME_API_URL?.replace(/\/$/, "") ||
-    DEFAULT_API_BASE_URL;
+  const baseUrl = getGameApiBaseUrl();
   const requestUrl = `${baseUrl}/api/nft/${encodeURIComponent(userAddress)}`;
 
   const response = await fetch(requestUrl, {

@@ -1,4 +1,4 @@
-const DEFAULT_API_BASE_URL = "http://localhost:3001";
+import { getGameApiBaseUrl } from "../config/gameApiUrl";
 
 /**
  * Creates or gets a referral code for a user
@@ -14,9 +14,7 @@ export async function createReferralCode(
     throw new Error("Missing VITE_GAME_API_KEY environment variable");
   }
 
-  const baseUrl =
-    import.meta.env.VITE_GAME_API_URL?.replace(/\/$/, "") ||
-    DEFAULT_API_BASE_URL;
+  const baseUrl = getGameApiBaseUrl();
   const requestUrl = `${baseUrl}/api/referral/create-code`;
 
   const response = await fetch(requestUrl, {
@@ -72,9 +70,7 @@ export async function getReferralStats(userAddress: string) {
     throw new Error("Missing VITE_GAME_API_KEY environment variable");
   }
 
-  const baseUrl =
-    import.meta.env.VITE_GAME_API_URL?.replace(/\/$/, "") ||
-    DEFAULT_API_BASE_URL;
+  const baseUrl = getGameApiBaseUrl();
   const requestUrl = `${baseUrl}/api/referral/stats/${encodeURIComponent(userAddress)}`;
 
   const response = await fetch(requestUrl, {
@@ -115,9 +111,7 @@ export async function registerMilestone(
     throw new Error("Missing VITE_GAME_API_KEY environment variable");
   }
 
-  const baseUrl =
-    import.meta.env.VITE_GAME_API_URL?.replace(/\/$/, "") ||
-    DEFAULT_API_BASE_URL;
+  const baseUrl = getGameApiBaseUrl();
   const requestUrl = `${baseUrl}/api/referral/milestone`;
 
   const response = await fetch(requestUrl, {
@@ -158,9 +152,7 @@ export async function checkAndDistributeRewards(referrerAddress: string): Promis
     throw new Error("Missing VITE_GAME_API_KEY environment variable");
   }
 
-  const baseUrl =
-    import.meta.env.VITE_GAME_API_URL?.replace(/\/$/, "") ||
-    DEFAULT_API_BASE_URL;
+  const baseUrl = getGameApiBaseUrl();
   const requestUrl = `${baseUrl}/api/referral/check-rewards`;
 
   const response = await fetch(requestUrl, {

@@ -1,6 +1,6 @@
 import { hash } from "starknet";
 import {
-  GAME_API_URL,
+  getApiUrl,
   GAME_API_KEY,
   NFT_CONTRACT_ADDRESS,
   STARKNET_RPC_URL,
@@ -121,7 +121,7 @@ export async function getUserCards(userAddress: string): Promise<UserCard[]> {
   if (!userAddress) throw new Error("getUserCards: userAddress is required");
   if (!GAME_API_KEY) throw new Error("getUserCards: Missing VITE_GAME_API_KEY");
 
-  const baseUrl = GAME_API_URL.replace(/\/$/, "");
+  const baseUrl = getApiUrl();
   const res = await fetch(`${baseUrl}/api/nft/${encodeURIComponent(userAddress)}`, {
     method: "GET",
     headers: { "X-API-Key": GAME_API_KEY },
