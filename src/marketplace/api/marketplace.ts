@@ -27,6 +27,7 @@ export async function getListings(
 ): Promise<{ data: Listing[]; total: number }> {
   const params = new URLSearchParams();
   if (filter?.card_id != null) params.set("card_id", String(filter.card_id));
+  if (filter?.card_type) params.set("card_type", filter.card_type);
   if (filter?.rarity != null) params.set("rarity", String(filter.rarity));
   if (filter?.payment_token) params.set("payment_token", filter.payment_token);
   if (filter?.min_price) params.set("min_price", filter.min_price);

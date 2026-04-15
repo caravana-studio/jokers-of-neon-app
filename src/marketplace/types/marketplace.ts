@@ -1,4 +1,5 @@
 export type ListingStatus = "active" | "filled" | "cancelled" | "expired";
+export type ListingCardType = "all" | "special" | "traditional";
 
 export interface Listing {
   id: string;
@@ -46,6 +47,7 @@ export interface CreateListingPayload {
 
 export interface ListingsFilter {
   card_id?: number;
+  card_type?: ListingCardType;
   rarity?: number;
   payment_token?: string;
   min_price?: string;
