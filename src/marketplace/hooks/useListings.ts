@@ -5,7 +5,7 @@ import { usePrices, toUsd } from "./usePrices";
 import type { TokenPrices } from "./usePrices";
 import { formatTokenAmount } from "../utils/formatPrice";
 import { getPaymentToken } from "../config/contracts";
-import type { Listing } from "../types/marketplace";
+import type { Listing, ListingCardType } from "../types/marketplace";
 
 const LIMIT = 20;
 
@@ -15,7 +15,7 @@ function listingUsd(listing: Listing, prices: TokenPrices): number | null {
   return toUsd(formatTokenAmount(listing.price, token?.decimals ?? 18), symbol, prices);
 }
 
-export function useListings() {
+export function useListings(cardType: ListingCardType = "all") {
   const { filter, setFilter } = useMarketplaceStore();
   const prices = usePrices();
 
@@ -29,9 +29,9 @@ export function useListings() {
   const filterRef = useRef(filter);
   filterRef.current = filter;
 
-  // Only rarity/card_id/payment_token cause a server refetch.
+  // Only server-side filters cause a refetch.
   // Sort and price filters are applied client-side.
-  const serverKey = `${filter.rarity ?? ""}|${filter.card_id ?? ""}|${filter.payment_token ?? ""}`;
+  const serverKey = `${cardType}|${filter.rarity ?? ""}|${filter.card_id ?? ""}|${filter.payment_token ?? ""}`;
 
   useEffect(() => {
     let cancelled = false;
@@ -40,6 +40,7 @@ export function useListings() {
     setPage(1);
 
     getListings({
+      card_type: cardType,
       rarity: filter.rarity,
       card_id: filter.card_id,
       payment_token: filter.payment_token,
@@ -64,7 +65,7 @@ export function useListings() {
     return () => {
       cancelled = true;
     };
-  }, [serverKey]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [serverKey, cardType]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const loadMore = useCallback(async () => {
     const nextPage = page + 1;
@@ -72,6 +73,7 @@ export function useListings() {
     try {
       const f = filterRef.current;
       const result = await getListings({
+        card_type: cardType,
         rarity: f.rarity,
         card_id: f.card_id,
         payment_token: f.payment_token,
@@ -83,7 +85,7 @@ export function useListings() {
       setPage(nextPage);
     } catch {}
     setLoadingMore(false);
-  }, [page]);
+  }, [page, cardType]);
 
   // Client-side sort + USD price filter applied to the full loaded batch
   const displayed = useMemo(() => {
@@ -146,6 +148,7 @@ export function useListings() {
     filter,
     setFilter,
     loadMore,
+    loadedCount: listings.length,
     // hasMore compares raw loaded count vs server total (unaffected by client filter)
     hasMore: listings.length < total,
   };
