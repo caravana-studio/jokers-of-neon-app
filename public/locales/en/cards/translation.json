@@ -899,7 +899,7 @@
     },
     "10311": {
       "name": "Double Down",
-      "description": "Adds the base ^blue(points)^ of the played hand."
+      "description": "Doubles the base ^blue(points)^ of the played hand."
     },
     "10312": {
       "name": "Royal Blessing",
@@ -907,11 +907,11 @@
     },
     "10313": {
       "name": "Disposophobia",
-      "description": "THREE OF A KIND, FOUR OF A KIND, and FIVE OF A KIND each have a ^yellow(50% chance)^ to accumulate rewards: ^yellow(+15 cash)^, ^blue(+15 points)^, and ^violet(+1 multi)^, respectively. Currently ^yellow(+{{cash}} cash)^, ^blue(+{{points}} points)^, and ^violet(+{{multi}} multi)^."
+      "description": "THREE OF A KIND accumulates ^yellow(+15 cash)^, FOUR OF A KIND ^blue(+15 points)^, and FIVE OF A KIND ^violet(+1 multi)^, each with a ^yellow(50% chance)^. Currently: THREE OF A KIND ^yellow(+{{cash}} cash)^, FOUR OF A KIND ^blue(+{{points}} points)^, and FIVE OF A KIND ^violet(+{{multi}} multi)^."
     },
     "10314": {
       "name": "Ouroboros",
-      "description": "Each round, copies the effect of a random special card."
+      "description": "Each round, copies the effect of a random equipped special card."
     }
   },
   "power-ups": {
