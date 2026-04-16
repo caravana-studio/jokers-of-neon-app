@@ -21,6 +21,7 @@ interface SimulatePackRowProps {
 const PACK_SIZES: Record<number, number> = {
   1: 3, 2: 3, 3: 4, 4: 4, 5: 5, 6: 10,
   21: 3, 22: 3, 23: 4, 24: 4, 25: 5, 26: 10,
+  31: 3, 32: 3, 33: 4, 34: 4, 35: 5, 36: 10,
 };
 const PACK_NAMES: Record<number, string> = {
   1: "Basic Pack",
@@ -35,10 +36,16 @@ const PACK_NAMES: Record<number, string> = {
   24: "Legendary Pack S2",
   25: "Collector Pack S2",
   26: "Collector XL Pack S2",
+  31: "Basic Pack S3",
+  32: "Advanced Pack S3",
+  33: "Epic Pack S3",
+  34: "Legendary Pack S3",
+  35: "Collector Pack S3",
+  36: "Collector XL Pack S3",
 };
 
 export const SimulatePackRow = ({ packId }: SimulatePackRowProps) => {
-  const isLimitedEdition = [5, 6, 25, 26].includes(packId);
+  const isLimitedEdition = [5, 6, 25, 26, 35, 36].includes(packId);
   const { isSmallScreen } = useResponsiveValues();
   const navigate = useNavigate();
   const toast = useToast();

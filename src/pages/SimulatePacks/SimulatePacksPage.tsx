@@ -1,14 +1,25 @@
-import { Box, Flex, Heading } from "@chakra-ui/react";
+import { Button, Flex, Heading } from "@chakra-ui/react";
+import { useState } from "react";
 import { DelayedLoading } from "../../components/DelayedLoading";
 import { MobileDecoration } from "../../components/MobileDecoration";
 import { BLUE } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { SimulatePackRow } from "./SimulatePackRow";
 
-const PACK_IDS = [1, 2, 3, 4, 5, 6, 21, 22, 23, 24, 25, 26];
+interface Season {
+  label: string;
+  packIds: number[];
+}
+
+const SEASONS: Season[] = [
+  { label: "Season 1", packIds: [1, 2, 3, 4, 5, 6] },
+  { label: "Season 2", packIds: [21, 22, 23, 24, 25, 26] },
+  { label: "Season 3", packIds: [31, 32, 33, 34, 35, 36] },
+];
 
 export const SimulatePacksPage = () => {
   const { isSmallScreen } = useResponsiveValues();
+  const [selectedSeason, setSelectedSeason] = useState<number | null>(null);
 
   return (
     <DelayedLoading ms={0}>
@@ -27,6 +38,8 @@ export const SimulatePacksPage = () => {
           pt={isSmallScreen ? "25px" : "70px"}
           px={isSmallScreen ? "15px" : "30px"}
           pb={3}
+          alignItems="flex-end"
+          justifyContent="space-between"
         >
           <Heading
             zIndex={10}
@@ -35,12 +48,43 @@ export const SimulatePacksPage = () => {
           >
             Simulate Packs
           </Heading>
+          {selectedSeason !== null && (
+            <Button
+              variant="ghost"
+              color="white"
+              fontSize={isSmallScreen ? 12 : 16}
+              fontFamily="Oxanium"
+              onClick={() => setSelectedSeason(null)}
+              _hover={{ bg: "whiteAlpha.200" }}
+              mb={-1}
+            >
+              Back
+            </Button>
+          )}
         </Flex>
-        <Box>
-          {PACK_IDS.map((packId) => (
-            <SimulatePackRow key={packId} packId={packId} />
-          ))}
-        </Box>
+
+        {selectedSeason === null ? (
+          <Flex flexDir="column" gap={4} p={isSmallScreen ? 4 : 8}>
+            {SEASONS.map((season, index) => (
+              <Button
+                key={index}
+                variant="secondarySolid"
+                fontFamily="Oxanium"
+                fontSize={isSmallScreen ? 18 : 28}
+                h={isSmallScreen ? "80px" : "120px"}
+                onClick={() => setSelectedSeason(index)}
+              >
+                {season.label}
+              </Button>
+            ))}
+          </Flex>
+        ) : (
+          <Flex flexDir="column">
+            {SEASONS[selectedSeason].packIds.map((packId) => (
+              <SimulatePackRow key={packId} packId={packId} />
+            ))}
+          </Flex>
+        )}
       </Flex>
     </DelayedLoading>
   );
