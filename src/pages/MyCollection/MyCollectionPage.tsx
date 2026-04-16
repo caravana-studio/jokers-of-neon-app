@@ -13,6 +13,7 @@ import { useTranslation } from "react-i18next";
 import { getUserCards } from "../../api/getUserCards";
 import { DelayedLoading } from "../../components/DelayedLoading";
 import { MobileDecoration } from "../../components/MobileDecoration";
+import { useSeasonNumber } from "../../constants/season";
 import { useDojo } from "../../dojo/useDojo";
 import { useInformationPopUp } from "../../providers/InformationPopUpProvider";
 import { BLUE } from "../../theme/colors";
@@ -34,6 +35,8 @@ const sortSpecialCollections = (collections: Collection[]): Collection[] => {
 
 export const MyCollectionPage = () => {
   const { isSmallScreen } = useResponsiveValues();
+  const seasonNumber = useSeasonNumber();
+  const currentSeason = Math.max(1, Math.floor(seasonNumber));
   const {
     account: { account },
   } = useDojo();
@@ -71,6 +74,13 @@ export const MyCollectionPage = () => {
       </VStack>
     ),
     [t],
+  );
+  const visibleCollections = useMemo(
+    () =>
+      myCollection.filter(
+        (collection) => collection.id >= 25 || collection.id <= currentSeason
+      ),
+    [currentSeason, myCollection]
   );
 
   useEffect(() => {
@@ -137,7 +147,7 @@ export const MyCollectionPage = () => {
               <Spinner color="white" />
             </Flex>
           ) : (
-            myCollection.map((collection) => (
+            visibleCollections.map((collection) => (
               <CollectionGrid key={collection.id} collection={collection} />
             ))
           )}
