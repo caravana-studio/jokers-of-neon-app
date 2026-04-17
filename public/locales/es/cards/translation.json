@@ -2,6 +2,7 @@
   "activated": "Activada",
   "silenced": "SILENCIADA",
   "by": "por",
+  "current-effect": "Efecto actual:",
   "modifiers": {
     "608": {
       "name": "Cambiar a Tréboles",

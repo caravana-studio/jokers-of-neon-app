@@ -458,6 +458,28 @@ export function setupWorld(provider: DojoProvider) {
     }
   };
 
+  const build_game_views_getSpecialEffectOverrides_calldata = (
+    gameId: BigNumberish
+  ): DojoCall => {
+    return {
+      contractName: "game_views",
+      entrypoint: "get_special_effect_overrides",
+      calldata: [gameId],
+    };
+  };
+
+  const game_views_getSpecialEffectOverrides = async (gameId: BigNumberish) => {
+    try {
+      return await provider.call(
+        DOJO_NAMESPACE,
+        build_game_views_getSpecialEffectOverrides_calldata(gameId)
+      );
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+
   const build_gg_sync_system_getQuestsCompleted_calldata = (
     playerAddress: string
   ): DojoCall => {
@@ -2336,12 +2358,15 @@ export function setupWorld(provider: DojoProvider) {
       getPowerUps: game_views_getPowerUps,
       buildGetPowerUpsCalldata: build_game_views_getPowerUps_calldata,
       getSpecialCards: game_views_getSpecialCards,
+      buildGetSpecialCardsCalldata: build_game_views_getSpecialCards_calldata,
+      getSpecialEffectOverrides: game_views_getSpecialEffectOverrides,
+      buildGetSpecialEffectOverridesCalldata:
+        build_game_views_getSpecialEffectOverrides_calldata,
       getGameTracker: game_views_getGameTracker,
       buildGetGameTrackerCalldata: build_game_views_getGameTracker_calldata,
       getDebuffPokerHands: game_views_getDebuffPokerHands,
       buildGetDebuffPokerHandsCalldata:
         build_game_views_getDebuffPokerHands_calldata,
-      buildGetSpecialCardsCalldata: build_game_views_getSpecialCards_calldata,
     },
     gg_sync_system: {
       getQuestsCompleted: gg_sync_system_getQuestsCompleted,

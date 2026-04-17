@@ -58,6 +58,14 @@ export const MobileCardHighlight = ({
     temporaryPrice,
     details,
   } = getDataFn();
+  const originalEffectCardId = card.specialEffectOverrideOriginalEffectCardId;
+  const hasOriginalEffectTitle =
+    card.isSpecial &&
+    typeof originalEffectCardId === "number" &&
+    originalEffectCardId > 0;
+  const originalEffectTitle = hasOriginalEffectTitle
+    ? getCardData(originalEffectCardId).name
+    : "";
 
   const { isSmallScreen } = useResponsiveValues();
 
@@ -65,6 +73,9 @@ export const MobileCardHighlight = ({
   const [loading, setLoading] = useState(false);
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
   const { t } = useTranslation(["game", "docs", "cards"]);
+  const descriptionWithCurrentEffect = hasOriginalEffectTitle
+    ? `^violet(${t("current-effect", { ns: "cards" })})^ ${description}`
+    : description;
   const [duration, setDuration] = useState(Duration.PERMANENT);
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -171,6 +182,16 @@ export const MobileCardHighlight = ({
         >
           {name}
         </Heading>
+        {hasOriginalEffectTitle && (
+          <Text
+            fontSize={isSmallScreen ? "12px" : "13px"}
+            color="whiteAlpha.900"
+            fontWeight={600}
+            textTransform="unset"
+          >
+            ({originalEffectTitle})
+          </Text>
+        )}
         <Text size="l" textTransform="lowercase" fontWeight={600}>
           - {t(`game.card-types.${type}`)} -
         </Text>
@@ -219,7 +240,7 @@ export const MobileCardHighlight = ({
           size="xl"
           fontSize={isSmallScreen ? "14px" : "17px"}
         >
-          {colorizeText(description)}
+          {colorizeText(descriptionWithCurrentEffect)}
         </Text>
       </Flex>
       {showExtraInfo && (

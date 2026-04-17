@@ -26,7 +26,20 @@ export const CardTooltip = ({
     modifiedCard.card_id ?? 0,
     { showCumulativeProgress }
   );
+  const originalEffectCardId = card.specialEffectOverrideOriginalEffectCardId;
+  const hasOriginalEffectTitle =
+    card.isSpecial &&
+    typeof originalEffectCardId === "number" &&
+    originalEffectCardId > 0;
+  const originalEffectData = hasOriginalEffectTitle
+    ? getCardData(originalEffectCardId)
+    : undefined;
+  const originalEffectTitle = originalEffectData?.name ?? "";
+  const rarityToDisplay = originalEffectData?.rarity ?? rarity;
   const { t } = useTranslation("cards");
+  const descriptionWithCurrentEffect = hasOriginalEffectTitle
+    ? `^violet(${t("current-effect")})^ ${description}`
+    : description;
 
   const location = useLocation();
   const inDocs = location.pathname.includes("/docs");
@@ -39,9 +52,21 @@ export const CardTooltip = ({
         <Flex flexDir={"column"} gap={1} p={1}>
           <Flex mb={1}>
             <Flex width="230px">
-              <Text fontSize="18px" lineHeight={"20px"} textAlign="left">
-                {name}
-              </Text>
+              <Flex direction="column" gap={0.5}>
+                <Text fontSize="18px" lineHeight={"20px"} textAlign="left">
+                  {name}
+                </Text>
+                {hasOriginalEffectTitle && (
+                  <Text
+                    fontSize="12px"
+                    lineHeight={"14px"}
+                    textAlign="left"
+                    color="whiteAlpha.900"
+                  >
+                    ({originalEffectTitle})
+                  </Text>
+                )}
+              </Flex>
             </Flex>
             <Flex width="20px" justifyContent={"center"}>
               <Heading
@@ -50,7 +75,7 @@ export const CardTooltip = ({
                 fontSize="20px"
                 textAlign="right"
               >
-                {rarity}
+                {rarityToDisplay}
               </Heading>
             </Flex>
           </Flex>
@@ -68,7 +93,7 @@ export const CardTooltip = ({
                 </Text>
               )}
               <Text fontSize="15px" textAlign="justify">
-                {colorizeText(description)}
+                {colorizeText(descriptionWithCurrentEffect)}
               </Text>
             </Flex>
           </Flex>
