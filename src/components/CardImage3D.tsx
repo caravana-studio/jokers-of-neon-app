@@ -1,3 +1,5 @@
+import { Box } from "@chakra-ui/react";
+import { keyframes } from "@emotion/react";
 import { ReactNode, useEffect, useRef, useState } from "react";
 import Tilt from "react-parallax-tilt";
 import { TILT_OPTIONS } from "../constants/visualProps";
@@ -10,6 +12,70 @@ import { BrokenCard } from "./BrokenCard";
 import CachedImage from "./CachedImage";
 import { CardTooltip } from "./CardTooltip";
 import { TemporalBadge } from "./TemporalBadge";
+
+const specialEffectOverrideSweep = keyframes`
+  0% {
+    clip-path: inset(0 0 100% 0);
+  }
+  32.258% {
+    clip-path: inset(0 0 100% 0);
+  }
+  48.387% {
+    clip-path: inset(0 0 0 0);
+  }
+  51.613% {
+    clip-path: inset(0 0 0 0);
+  }
+  67.742% {
+    clip-path: inset(100% 0 0 0);
+  }
+  100% {
+    clip-path: inset(100% 0 0 0);
+  }
+`;
+
+const specialEffectOverrideSweepLine = keyframes`
+  0% {
+    top: -18%;
+    opacity: 0;
+  }
+  32.258% {
+    top: -18%;
+    opacity: 0;
+  }
+  32.4% {
+    top: -10%;
+    opacity: 1;
+  }
+  48.387% {
+    top: 100%;
+    opacity: 1;
+  }
+  48.55% {
+    top: 100%;
+    opacity: 0;
+  }
+  51.613% {
+    top: -18%;
+    opacity: 0;
+  }
+  51.75% {
+    top: -10%;
+    opacity: 1;
+  }
+  67.742% {
+    top: 100%;
+    opacity: 1;
+  }
+  67.9% {
+    top: 100%;
+    opacity: 0;
+  }
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+`;
 
 interface ICardImage3DProps {
   card: Card;
@@ -89,13 +155,85 @@ export const CardImage3D = ({
   const showSilencedEffect = Boolean(
     card.isSpecial && card.silenced && state === GameStateEnum.Rage
   );
+  const hasSpecialEffectOverrideBlend =
+    card.isSpecial &&
+    typeof card.specialEffectOverrideOriginalEffectCardId === "number" &&
+    typeof card.specialEffectOverrideCopiedEffectCardId === "number";
 
-  const showPlain = (isSmallScreen && small) || !isClassic || showSilencedEffect;
+  const showPlain =
+    (isSmallScreen && small) ||
+    !isClassic ||
+    showSilencedEffect ||
+    hasSpecialEffectOverrideBlend;
 
   const calculatedHeight = height ?? "100%";
   const plainImageSrc =
     imageSrc ??
     `/Cards/${cid}${resolvedSkinId > 0 ? `_sk${resolvedSkinId}` : ""}.png`;
+  // Keep copied_effect_card_id visible most of the cycle.
+  const baseEffectImageSrc = `/Cards/${card.specialEffectOverrideCopiedEffectCardId}${
+    resolvedSkinId > 0 ? `_sk${resolvedSkinId}` : ""
+  }.png`;
+  const sweepEffectImageSrc = `/Cards/${card.specialEffectOverrideOriginalEffectCardId}${
+    resolvedSkinId > 0 ? `_sk${resolvedSkinId}` : ""
+  }.png`;
+  const overrideSweepImage = (
+    <Box
+      position="absolute"
+      width={width}
+      height={calculatedHeight}
+      borderRadius={borderRadius}
+      zIndex={-1}
+      overflow="hidden"
+      pointerEvents={isSmallScreen ? "none" : "all"}
+    >
+      <CachedImage
+        position="absolute"
+        inset={0}
+        borderRadius={borderRadius}
+        src={baseEffectImageSrc}
+        width={width}
+        height={calculatedHeight}
+      />
+      <Box
+        position="absolute"
+        inset={0}
+        borderRadius={borderRadius}
+        sx={{
+          animation: `${specialEffectOverrideSweep} 6.2s linear infinite`,
+          willChange: "clip-path, opacity",
+          overflow: "hidden",
+        }}
+      >
+        <CachedImage
+          position="absolute"
+          inset={0}
+          borderRadius={borderRadius}
+          src={sweepEffectImageSrc}
+          width={width}
+          height={calculatedHeight}
+          sx={{
+            filter: "saturate(1.05)",
+          }}
+        />
+      </Box>
+      <Box
+        position="absolute"
+        left={0}
+        right={0}
+        height="20%"
+        pointerEvents="none"
+        sx={{
+          animation: `${specialEffectOverrideSweepLine} 6.2s linear infinite`,
+          background:
+            "linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0.45), rgba(255,255,255,0))",
+          mixBlendMode: "screen",
+          filter: "blur(6px)",
+          willChange: "top, opacity",
+        }}
+      />
+    </Box>
+  );
 
   const plainImg = (
     <CachedImage
@@ -144,7 +282,9 @@ export const CardImage3D = ({
       {/** Only render layered stack when layer 0 exists to avoid mixed skins */}
       {/** availableLayers[0] is checked below before rendering additional layers */}
       {hideTooltip ? (
-        availableLayers[0] && !showPlain && shouldUse3dLayers ? (
+        hasSpecialEffectOverrideBlend ? (
+          overrideSweepImage
+        ) : availableLayers[0] && !showPlain && shouldUse3dLayers ? (
           layer0Img
         ) : (
           plainImg
@@ -154,7 +294,9 @@ export const CardImage3D = ({
           card={card}
           showCumulativeProgress={showCumulativeProgress}
         >
-          {availableLayers[0] && !showPlain && shouldUse3dLayers
+          {hasSpecialEffectOverrideBlend
+            ? overrideSweepImage
+            : availableLayers[0] && !showPlain && shouldUse3dLayers
             ? layer0Img
             : plainImg}
         </CardTooltip>

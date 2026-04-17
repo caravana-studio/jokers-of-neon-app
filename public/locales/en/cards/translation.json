@@ -2,6 +2,7 @@
   "activated": "Activated",
   "silenced": "SILENCED",
   "by": "by",
+  "current-effect": "Current effect:",
   "traditionalCards": {
     "0": {
       "name": "2 of Clubs",

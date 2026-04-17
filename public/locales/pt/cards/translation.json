@@ -2,6 +2,7 @@
   "activated": "Activado",
   "silenced": "SILENCIADA",
   "by": "por",
+  "current-effect": "Efeito atual:",
   "modifiers": {
     "608": {
       "name": "Mudar para Paus",
