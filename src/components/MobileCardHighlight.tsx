@@ -60,7 +60,9 @@ export const MobileCardHighlight = ({
   } = getDataFn();
   const originalEffectCardId = card.specialEffectOverrideOriginalEffectCardId;
   const hasOriginalEffectTitle =
-    card.isSpecial && typeof originalEffectCardId === "number";
+    card.isSpecial &&
+    typeof originalEffectCardId === "number" &&
+    originalEffectCardId > 0;
   const originalEffectTitle = hasOriginalEffectTitle
     ? getCardData(originalEffectCardId).name
     : "";

@@ -28,7 +28,9 @@ export const CardTooltip = ({
   );
   const originalEffectCardId = card.specialEffectOverrideOriginalEffectCardId;
   const hasOriginalEffectTitle =
-    card.isSpecial && typeof originalEffectCardId === "number";
+    card.isSpecial &&
+    typeof originalEffectCardId === "number" &&
+    originalEffectCardId > 0;
   const originalEffectData = hasOriginalEffectTitle
     ? getCardData(originalEffectCardId)
     : undefined;

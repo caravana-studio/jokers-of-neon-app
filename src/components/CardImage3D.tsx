@@ -158,7 +158,9 @@ export const CardImage3D = ({
   const hasSpecialEffectOverrideBlend =
     card.isSpecial &&
     typeof card.specialEffectOverrideOriginalEffectCardId === "number" &&
-    typeof card.specialEffectOverrideCopiedEffectCardId === "number";
+    card.specialEffectOverrideOriginalEffectCardId > 0 &&
+    typeof card.specialEffectOverrideCopiedEffectCardId === "number" &&
+    card.specialEffectOverrideCopiedEffectCardId > 0;
 
   const showPlain =
     (isSmallScreen && small) ||
@@ -170,14 +172,7 @@ export const CardImage3D = ({
   const plainImageSrc =
     imageSrc ??
     `/Cards/${cid}${resolvedSkinId > 0 ? `_sk${resolvedSkinId}` : ""}.png`;
-  // Keep copied_effect_card_id visible most of the cycle.
-  const baseEffectImageSrc = `/Cards/${card.specialEffectOverrideCopiedEffectCardId}${
-    resolvedSkinId > 0 ? `_sk${resolvedSkinId}` : ""
-  }.png`;
-  const sweepEffectImageSrc = `/Cards/${card.specialEffectOverrideOriginalEffectCardId}${
-    resolvedSkinId > 0 ? `_sk${resolvedSkinId}` : ""
-  }.png`;
-  const overrideSweepImage = (
+  const overrideSweepImage = hasSpecialEffectOverrideBlend ? (
     <Box
       position="absolute"
       width={width}
@@ -191,7 +186,9 @@ export const CardImage3D = ({
         position="absolute"
         inset={0}
         borderRadius={borderRadius}
-        src={baseEffectImageSrc}
+        src={`/Cards/${card.specialEffectOverrideCopiedEffectCardId}${
+          resolvedSkinId > 0 ? `_sk${resolvedSkinId}` : ""
+        }.png`}
         width={width}
         height={calculatedHeight}
       />
@@ -209,7 +206,9 @@ export const CardImage3D = ({
           position="absolute"
           inset={0}
           borderRadius={borderRadius}
-          src={sweepEffectImageSrc}
+          src={`/Cards/${card.specialEffectOverrideOriginalEffectCardId}${
+            resolvedSkinId > 0 ? `_sk${resolvedSkinId}` : ""
+          }.png`}
           width={width}
           height={calculatedHeight}
           sx={{
@@ -233,7 +232,7 @@ export const CardImage3D = ({
         }}
       />
     </Box>
-  );
+  ) : null;
 
   const plainImg = (
     <CachedImage
