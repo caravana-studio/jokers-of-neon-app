@@ -464,7 +464,7 @@
     },
     "10311": {
       "name": "Redoblar",
-      "description": "Suma los ^blue(puntos)^ base de la mano jugada."
+      "description": "Duplica los ^blue(puntos)^ base de la mano jugada."
     },
     "10312": {
       "name": "Bendición Real",
@@ -472,11 +472,11 @@
     },
     "10313": {
       "name": "Disposofobia",
-      "description": "TRÍO, PÓKER y REPÓKER tienen ^yellow(50% de probabilidad)^ de acumular recompensas: ^yellow(+15 monedas)^, ^blue(+15 puntos)^ y ^violet(+1 multi)^, respectivamente. Actualmente ^yellow(+{{cash}} monedas)^, ^blue(+{{points}} puntos)^ y ^violet(+{{multi}} multi)^."
+      "description": "TRÍO acumula ^yellow(+15 monedas)^, PÓKER ^blue(+15 puntos)^ y REPÓKER ^violet(+1 multi)^, cada uno con ^yellow(50% de probabilidad)^. Actualmente: TRÍO ^yellow(+{{cash}} monedas)^, PÓKER ^blue(+{{points}} puntos)^ y REPÓKER ^violet(+{{multi}} multi)^."
     },
     "10314": {
       "name": "Ouroboros",
-      "description": "Cada ronda copia el efecto de una carta especial aleatoria."
+      "description": "Cada ronda copia el efecto de una carta especial que tengas equipada."
     }
   },
   "power-ups": {

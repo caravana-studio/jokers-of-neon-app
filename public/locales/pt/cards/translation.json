@@ -464,7 +464,7 @@
     },
     "10311": {
       "name": "Dobrar a Aposta",
-      "description": "Adiciona os ^blue(pontos)^ base da mão jogada."
+      "description": "Duplica os ^blue(pontos)^ base da mão jogada."
     },
     "10312": {
       "name": "Bênção Real",
@@ -472,11 +472,11 @@
     },
     "10313": {
       "name": "Disposofobia",
-      "description": "TRINCA, QUADRA e QUINTETO têm ^yellow(50% de chance)^ de acumular recompensas: ^yellow(+15 moedas)^, ^blue(+15 pontos)^ e ^violet(+1 multi)^, respectivamente. Atualmente ^yellow(+{{cash}} moedas)^, ^blue(+{{points}} pontos)^ e ^violet(+{{multi}} multi)^."
+      "description": "TRINCA acumula ^yellow(+15 moedas)^, QUADRA ^blue(+15 pontos)^ e QUINTETO ^violet(+1 multi)^, cada um com ^yellow(50% de chance)^. Atualmente: TRINCA ^yellow(+{{cash}} moedas)^, QUADRA ^blue(+{{points}} pontos)^ e QUINTETO ^violet(+{{multi}} multi)^."
     },
     "10314": {
       "name": "Ouroboros",
-      "description": "A cada rodada, copia o efeito de uma carta especial aleatória."
+      "description": "A cada rodada, copia o efeito de uma carta especial equipada."
     }
   },
   "power-ups": {
