@@ -6,17 +6,17 @@ import { DojoContext } from "../DojoContext";
 export const useUsername = () => {
   const [username, setUsername] = useState<string | null>(null);
   const dojoCtx = useContext(DojoContext);
-  const isUsingBurner = dojoCtx?.useBurnerAcc;
+  const isBurnerAccount = dojoCtx?.accountType === "burner";
 
   useEffect(() => {
-    if (!isUsingBurner && controller) {
+    if (!isBurnerAccount && controller) {
       controller.username()?.then((username) => {
         if (username) {
           setUsername(username);
         }
       });
     }
-  }, [controller, dojoCtx?.useBurnerAcc, dojoCtx?.accountType]);
+  }, [controller, dojoCtx?.accountType]);
 
-  return isUsingBurner ? window.localStorage.getItem(LOGGED_USER) : username;
+  return isBurnerAccount ? window.localStorage.getItem(LOGGED_USER) : username;
 };

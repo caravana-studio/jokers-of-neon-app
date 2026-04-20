@@ -403,7 +403,9 @@
     "season-1": "TEMPORADA 1",
     "early-access": "ACCESO ANTICIPADO",
     "login": "INICIAR SESIÓN",
+    "continue-with-controller": "Continuar con controller",
     "guest": "INVITADO",
+    "continue-with-apple": "Continuar con Apple",
     "terms": {
       "agreement": "Al continuar, aceptas los",
       "link": "Términos y Condiciones"

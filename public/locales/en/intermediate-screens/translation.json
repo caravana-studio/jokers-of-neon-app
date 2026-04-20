@@ -404,7 +404,9 @@
     "season-1": "SEASON 1",
     "early-access": "EARLY ACCESS",
     "login": "LOGIN",
+    "continue-with-controller": "Continue with controller",
     "guest": "PLAY AS GUEST",
+    "continue-with-apple": "Continue with Apple",
     "terms": {
       "agreement": "By continuing you are agreeing to Jokers of Neon's",
       "link": "Terms and Conditions"
