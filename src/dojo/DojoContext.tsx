@@ -132,6 +132,7 @@ const DojoContextProvider = ({
   const {
     finalAccount,
     accountType,
+    isAppleGuestSession,
     switchToController,
     isLoadingWallet,
     controllerAccount,
@@ -207,7 +208,7 @@ const DojoContextProvider = ({
       value={{
         ...value,
         masterAccount,
-        useBurnerAcc: accountType === "burner",
+        useBurnerAcc: accountType === "burner" && !isAppleGuestSession,
         switchToController: switchToController,
         logout: logout,
         accountType: accountType,
