@@ -24,6 +24,7 @@ import {
   LOGGED_USER,
 } from "../constants/localStorage";
 import { APP_VERSION } from "../constants/version";
+import { CavosWalletConnect } from "../pages/CavosWalletConnect/CavosWalletConnect";
 import { PreThemeLoadingPage } from "../pages/PreThemeLoadingPage";
 import { AppType, useAppContext } from "../providers/AppContextProvider";
 import { fetchVersion } from "../queries/fetchVersion";
@@ -329,8 +330,13 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
   const shouldBlockWithWalletScreen =
     appType !== AppType.SHOP &&
     (!finalAccount || (EARLY_ACCESS_VERSION && (!isUserAllowed || allowedLoading)));
+  const shouldUseCavosWalletConnect = true;
 
   if (shouldBlockWithWalletScreen) {
+    if (shouldUseCavosWalletConnect) {
+      return <CavosWalletConnect />;
+    }
+
     return (
       <PreThemeLoadingPage
         backgroundSize="cover"
