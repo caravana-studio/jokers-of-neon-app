@@ -295,6 +295,11 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             const newGameId = response?.data?.slot?.game_id;
             console.log(`game ${newGameId} created`);
             if (newGameId) {
+              logEvent("game_session_started", {
+                game_id: newGameId,
+                is_tournament: isTournament,
+                source: "create_game_success",
+              });
               setGameId(newGameId);
               replaceCards(hand);
               fetchDeck(client, newGameId, getCardData);
