@@ -282,7 +282,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setIsTournament(isTournament);
     resetLevel();
     setGameLoading(true);
-    logEvent("create_game");
+    logEvent("create_game", { is_tournament: isTournament });
     if (usernameLS) {
       try {
         console.log("Creating game...");

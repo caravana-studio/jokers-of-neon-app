@@ -1,3 +1,5 @@
+import { trackMixpanelEvent } from "./mixpanel";
+
 export const GA_TRACKING_ID = 'G-XXXXXXX';
 
 declare global {
@@ -12,4 +14,6 @@ export const logEvent = (action: string, params = {}) => {
   } else {
     console.warn('gtag not ready');
   }
+
+  trackMixpanelEvent(action, params);
 };

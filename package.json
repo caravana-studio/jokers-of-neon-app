@@ -94,6 +94,7 @@
     "i18next-http-backend": "^2.6.1",
     "i18next-resources-to-backend": "^1.2.1",
     "lucide-react": "^0.460.0",
+    "mixpanel-browser": "^2.78.0",
     "mobx": "^6.9.0",
     "motion": "^12.23.22",
     "ogl": "^1.0.11",

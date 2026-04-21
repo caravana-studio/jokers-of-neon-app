@@ -38,6 +38,7 @@ import { LoadingScreenHandle } from "./types/LoadingProgress.ts";
 import AudioManager from "./audio/AudioManager.ts";
 import { preloadImages, preloadVideos } from "./utils/cacheUtils.ts";
 import { isNative } from "./utils/capacitorUtils.ts";
+import { initMixpanel } from "./utils/mixpanel.ts";
 import { preloadSpineAnimations } from "./utils/preloadAnimations.ts";
 import { registerAppUrlOpenListener } from "./utils/registerAppUrlOpenListener.ts";
 import { registerServiceWorker } from "./utils/registerServiceWorker.ts";
@@ -76,6 +77,7 @@ const shouldBypassMaintenanceFromUrl = (): boolean => {
 };
 
 initDatadogRum();
+initMixpanel("full-game");
 registerAppUrlOpenListener();
 
 const CONNECTION_CHECK_TIMEOUT_MS = 6000;

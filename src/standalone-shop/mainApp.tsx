@@ -30,6 +30,7 @@ import customTheme from "../theme/theme";
 import { LoadingScreenHandle } from "../types/LoadingProgress.ts";
 import { preloadImages, preloadVideos } from "../utils/cacheUtils.ts";
 import { isNative } from "../utils/capacitorUtils.ts";
+import { initMixpanel } from "../utils/mixpanel.ts";
 import { registerAppUrlOpenListener } from "../utils/registerAppUrlOpenListener.ts";
 import { registerServiceWorker } from "../utils/registerServiceWorker.ts";
 
@@ -49,6 +50,7 @@ const I18N_NAMESPACES = [
 const progressBarRef = createRef<LoadingScreenHandle>();
 
 initDatadogRum();
+initMixpanel("shop");
 registerAppUrlOpenListener();
 
 async function init() {
