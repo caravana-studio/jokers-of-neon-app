@@ -1,22 +1,17 @@
-import { Flex, Heading, Link, Spinner, Text } from "@chakra-ui/react";
 import { useBurnerManager } from "@dojoengine/create-burner";
 import { useAccount, useConnect, useDisconnect } from "@starknet-react/core";
 import {
   createContext,
-  ReactNode,
+  type MutableRefObject,
+  type ReactNode,
   useContext,
   useEffect,
   useRef,
   useState,
 } from "react";
-import { isMobile } from "react-device-detect";
-import { useTranslation } from "react-i18next";
-import { Account, AccountInterface } from "starknet";
+import { Account, type AccountInterface } from "starknet";
 import { SignInWithApple } from "@capacitor-community/apple-sign-in";
 import { checkEarlyAccess } from "../api/earlyAccess";
-import LanguageSwitcher from "../components/LanguageSwitcher";
-import { MobileDecoration } from "../components/MobileDecoration";
-import { PositionedVersion } from "../components/version/PositionedVersion";
 import {
   ACCOUNT_TYPE,
   APPLE_GUEST_SESSION,
@@ -24,15 +19,13 @@ import {
   LOGGED_USER,
 } from "../constants/localStorage";
 import { APP_VERSION } from "../constants/version";
-import { CavosWalletConnect } from "../pages/CavosWalletConnect/CavosWalletConnect";
-import { PreThemeLoadingPage } from "../pages/PreThemeLoadingPage";
 import { AppType, useAppContext } from "../providers/AppContextProvider";
 import { fetchVersion } from "../queries/fetchVersion";
 import { useGetLastGameId } from "../queries/useGetLastGameId";
 import { logEvent } from "../utils/analytics";
-import { isNative, isNativeIOS, nativePaddingTop } from "../utils/capacitorUtils";
+import { isNativeIOS } from "../utils/capacitorUtils";
 import { controller } from "./controller/controller";
-import { SetupResult } from "./setup";
+import type { SetupResult } from "./setup";
 
 const CHAIN = import.meta.env.VITE_CHAIN;
 const EARLY_ACCESS_VERSION = !!import.meta.env.VITE_EARLY_ACCESS_VERSION;
@@ -53,6 +46,7 @@ interface WalletContextType {
   switchToController: (
     onSuccess?: (payload: SwitchSuccessPayload) => void
   ) => void;
+  continueAsGuest: () => Promise<boolean>;
   logout: () => void;
   isLoadingWallet: boolean;
   burnerAccount: Account | AccountInterface | null;
@@ -60,7 +54,12 @@ interface WalletContextType {
   isControllerConnected: boolean | undefined;
   isControllerConnecting: boolean | undefined;
   isAppleGuestSession: boolean;
-  onSuccessCallback: React.MutableRefObject<
+  isSigningInWithApple: boolean;
+  isLoadingLastGameId: boolean;
+  allowGuest: boolean;
+  shouldUseAppleLoginForGuest: boolean;
+  shouldBlockWithWalletScreen: boolean;
+  onSuccessCallback: MutableRefObject<
     ((payload: SwitchSuccessPayload) => void) | null
   >;
 }
@@ -74,20 +73,20 @@ type WalletProviderProps = {
 
 export const WalletProvider = ({ children, value }: WalletProviderProps) => {
   const { connect, connectors } = useConnect();
-  const { lastGameId, isLoading, error: lastGameIdError } = useGetLastGameId();
+  const {
+    lastGameId,
+    isLoading: isLoadingLastGameId,
+    error: lastGameIdError,
+  } = useGetLastGameId();
   const {
     account: controllerAccount,
     isConnected: isControllerConnected,
     isConnecting: isControllerConnecting,
   } = useAccount();
-  const { t } = useTranslation("intermediate-screens", {
-    keyPrefix: "wallet-provider",
-  });
 
   const [isUserAllowed, setIsUserAllowed] =
     useState<boolean>(!EARLY_ACCESS_VERSION);
   const [allowedLoading, setAllowedLoading] = useState<boolean>(false);
-  const [showNotAllowed, setShowNotAllowed] = useState<boolean>(false);
   const [isAppleLoginEnabled, setIsAppleLoginEnabled] = useState(false);
   const [isSigningInWithApple, setIsSigningInWithApple] = useState(false);
   const [isAppleGuestSession, setIsAppleGuestSession] = useState<boolean>(
@@ -104,20 +103,14 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
 
   const { disconnect } = useDisconnect();
 
-  const {
-    create,
-    list,
-    get,
-    select,
-    account: burnerAccount,
-    isDeploying,
-    clear,
-  } = useBurnerManager({
+  const { account: burnerAccount, isDeploying } = useBurnerManager({
     burnerManager: value.burnerManager,
   });
 
   const [connectionStatus, setConnectionStatus] =
     useState<ConnectionStatus>("selecting");
+  const [isControllerConnectAttemptActive, setIsControllerConnectAttemptActive] =
+    useState(false);
   const [finalAccount, setFinalAccount] = useState<
     Account | AccountInterface | null
   >(null);
@@ -165,7 +158,9 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
 
   const connectWallet = async () => {
     try {
-      await connect({ connector: connectors[0] });
+      if (connectors[0]) {
+        await connect({ connector: connectors[0] });
+      }
     } catch (error) {
       console.error("Failed to connect wallet:", error);
     }
@@ -177,6 +172,7 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
       isControllerConnected === true &&
       controllerAccount
     ) {
+      setIsControllerConnectAttemptActive(false);
       setAccountType("controller");
       localStorage.setItem(ACCOUNT_TYPE, "controller");
       setFinalAccount(controllerAccount);
@@ -193,12 +189,37 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
   ]);
 
   useEffect(() => {
+    if (!isControllerConnectAttemptActive) {
+      return;
+    }
+
+    if (isControllerConnected === true && controllerAccount) {
+      setIsControllerConnectAttemptActive(false);
+      return;
+    }
+
+    if (isControllerConnecting) {
+      return;
+    }
+
+    setIsControllerConnectAttemptActive(false);
+    setConnectionStatus("selecting");
+  }, [
+    isControllerConnectAttemptActive,
+    isControllerConnected,
+    isControllerConnecting,
+    controllerAccount,
+  ]);
+
+  useEffect(() => {
     if (accountType && !finalAccount) {
       if (accountType === "burner") {
         setFinalAccount(burnerAccount);
       } else {
         connectWallet();
-        controllerAccount && setFinalAccount(controllerAccount);
+        if (controllerAccount) {
+          setFinalAccount(controllerAccount);
+        }
       }
     }
   }, [accountType, finalAccount, burnerAccount, controllerAccount]);
@@ -211,7 +232,6 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
           setIsUserAllowed(registered);
           setAllowedLoading(false);
           if (!registered) {
-            setShowNotAllowed(true);
             setAccountType(null);
             setFinalAccount(null);
             disconnect();
@@ -225,12 +245,13 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
           disconnect();
         });
     }
-  }, [finalAccount]);
+  }, [finalAccount, disconnect]);
 
   const logout = () => {
     disconnect();
     setAccountType(null);
     setFinalAccount(null);
+    setIsControllerConnectAttemptActive(false);
     setIsAppleGuestSession(false);
     localStorage.removeItem(ACCOUNT_TYPE);
     localStorage.removeItem(APPLE_GUEST_SESSION);
@@ -260,6 +281,7 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     }
 
     setConnectionStatus("connecting_controller");
+    setIsControllerConnectAttemptActive(true);
     if (isControllerConnected === false && isControllerConnecting === false) {
       connectWallet();
     }
@@ -273,7 +295,6 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     setConnectionStatus("connecting_burner");
     const guestId = lastGameIdError ? fallbackGuestIdRef.current : lastGameId + 1;
     const username = `joker_guest_${guestId}`;
-    console.log("setting username: ", username);
     setIsAppleGuestSession(fromAppleLogin);
     localStorage.setItem(
       APPLE_GUEST_SESSION,
@@ -284,10 +305,14 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     localStorage.setItem(LOGGED_USER, username);
   };
 
-  const handleGuestClick = async () => {
+  const continueAsGuest = async (): Promise<boolean> => {
+    if (isLoadingLastGameId || isSigningInWithApple) {
+      return false;
+    }
+
     if (!shouldUseAppleLoginForGuest) {
       startGuestFlow();
-      return;
+      return true;
     }
 
     setIsSigningInWithApple(true);
@@ -300,6 +325,7 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
         ),
       });
       startGuestFlow(true);
+      return true;
     } catch (error) {
       const message =
         error instanceof Error ? error.message : String(error ?? "unknown_error");
@@ -310,178 +336,15 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
       if (!cancelled) {
         console.error("Apple Sign In failed", error);
       }
+      return false;
     } finally {
       setIsSigningInWithApple(false);
     }
   };
 
-  const buttonStyles = {
-    color: "white",
-    height: isMobile ? "40px" : "50px",
-    width: allowGuest
-      ? isMobile
-        ? "110px"
-        : "230px"
-      : isMobile
-        ? "180px"
-        : "300px",
-  };
-
   const shouldBlockWithWalletScreen =
     appType !== AppType.SHOP &&
     (!finalAccount || (EARLY_ACCESS_VERSION && (!isUserAllowed || allowedLoading)));
-  const shouldUseCavosWalletConnect = true;
-
-  if (shouldBlockWithWalletScreen) {
-    if (shouldUseCavosWalletConnect) {
-      return <CavosWalletConnect />;
-    }
-
-    return (
-      <PreThemeLoadingPage
-        backgroundSize="cover"
-        backgroundPosition="bottom center"
-      >
-        <PositionedVersion />
-        <MobileDecoration
-          top={nativePaddingTop}
-          bottom={isNative ? "30px" : "0px"}
-        />
-        <Flex
-          flexDirection={"column"}
-          gap={0}
-          w="100%"
-          justifyContent={"center"}
-          alignItems={"center"}
-        >
-          <img
-            width={isMobile ? "90%" : "60%"}
-            src="logos/logo.png"
-            alt="logo"
-          />
-          {EARLY_ACCESS_VERSION && (
-            <Flex flexDir="column" mb={isMobile ? 3 : "50px"}>
-              {showNotAllowed ? (
-                <Flex flexDir="column" gap={1}>
-                  <Heading
-                    textAlign={"center"}
-                    lineHeight={1}
-                    letterSpacing={1}
-                    fontSize={isMobile ? 17 : 25}
-                  >
-                    {t("not-allowed")}
-                  </Heading>
-                  <Heading
-                    textAlign={"center"}
-                    lineHeight={1}
-                    letterSpacing={1}
-                    fontSize={isMobile ? 12 : 17}
-                    textTransform={"lowercase"}
-                  >
-                    {t("register-at")}{" "}
-                    <a
-                      href="https://register.caravana.studio"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      https://register.caravana.studio
-                    </a>
-                  </Heading>
-                </Flex>
-              ) : (
-                <>
-                  <Heading
-                    textAlign={"center"}
-                    lineHeight={1}
-                    variant={"italic"}
-                    letterSpacing={1}
-                    fontSize={isMobile ? 20 : 30}
-                  >
-                    {t("season-1")}
-                  </Heading>
-                  <Heading
-                    textAlign={"center"}
-                    lineHeight={1}
-                    letterSpacing={1}
-                    fontSize={15}
-                  >
-                    {t("early-access")}
-                  </Heading>
-                </>
-              )}
-            </Flex>
-          )}
-        </Flex>
-        <Flex flexDirection={"row"} gap={"30px"}>
-          {allowedLoading ? (
-            <Spinner color="white" size="sm" />
-          ) : (
-            <button
-              style={buttonStyles}
-              className="login-button"
-              onClick={() => {
-                logEvent("connect_controller_click");
-                setConnectionStatus("connecting_controller");
-                if (
-                  isControllerConnected === false &&
-                  isControllerConnecting === false
-                ) {
-                  connectWallet();
-                }
-              }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                {isAppleLoginEnabled ? t("continue-with-controller") : t("login")}
-                {/* <img src={Icons.CARTRIDGE} width={isMobile ? "16px" : "22px"} /> */}
-              </div>
-            </button>
-          )}
-          {allowGuest && (
-            <button
-              style={buttonStyles}
-              className="login-button secondary"
-              disabled={isLoading || isSigningInWithApple}
-              onClick={handleGuestClick}
-            >
-              {shouldUseAppleLoginForGuest ? t("continue-with-apple") : t("guest")}
-            </button>
-          )}
-        </Flex>
-        <LanguageSwitcher />
-        <Flex
-          position="absolute"
-          bottom={"50px"}
-          width="100%"
-          justifyContent="center"
-        >
-          <Text
-            w="70%"
-            textAlign={"center"}
-            color="white"
-            letterSpacing={1}
-            mt={"20px"}
-            fontSize={isMobile ? 12 : 17}
-          >
-            {t("terms.agreement")}{" "}
-            <Link
-              href="https://jokersofneon.com/terms-and-conditions"
-              isExternal
-              color="white"
-              textDecoration="underline"
-            >
-              {t("terms.link")}
-            </Link>
-          </Text>
-        </Flex>
-      </PreThemeLoadingPage>
-    );
-  }
 
   const isLoadingWallet =
     (connectionStatus === "connecting_controller" &&
@@ -495,12 +358,18 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
         finalAccount,
         accountType,
         switchToController,
+        continueAsGuest,
         isLoadingWallet,
         burnerAccount,
         controllerAccount,
         isControllerConnected,
         isControllerConnecting,
         isAppleGuestSession,
+        isSigningInWithApple,
+        isLoadingLastGameId,
+        allowGuest,
+        shouldUseAppleLoginForGuest,
+        shouldBlockWithWalletScreen,
         onSuccessCallback,
         logout,
       }}

@@ -103,39 +103,47 @@ export const EmailCodeView = ({
     </Flex>
 
     <Flex
-      as="button"
-      type="button"
       mt={{ base: 2.5, md: 0.5 }}
+      w="100%"
+      flexDir="row"
+      flexWrap="nowrap"
       alignItems="center"
       justifyContent="center"
-      color="#A3A4AA"
-      onClick={onUseAnotherEmail}
+      gap={{ base: 6, sm: 8 }}
     >
-      <Text
-        fontFamily="Oxanium"
-        fontSize={{ base: "13px", sm: "15px", md: "16px" }}
-        lineHeight={1}
+      <Flex
+        as="button"
+        type="button"
+        alignItems="center"
+        justifyContent="center"
+        color="#A3A4AA"
+        onClick={onUseAnotherEmail}
       >
-        {labels.useAnotherEmail}
-      </Text>
-    </Flex>
+        <Text
+          fontFamily="Oxanium"
+          fontSize={{ base: "13px", sm: "15px", md: "16px" }}
+          lineHeight={1}
+        >
+          {labels.useAnotherEmail}
+        </Text>
+      </Flex>
 
-    <Flex
-      as="button"
-      type="button"
-      mt={2}
-      alignItems="center"
-      justifyContent="center"
-      color="#A3A4AA"
-      onClick={onResendCode}
-    >
-      <Text
-        fontFamily="Oxanium"
-        fontSize={{ base: "13px", sm: "15px", md: "16px" }}
-        lineHeight={1}
+      <Flex
+        as="button"
+        type="button"
+        alignItems="center"
+        justifyContent="center"
+        color="#A3A4AA"
+        onClick={onResendCode}
       >
-        {labels.resendCode}
-      </Text>
+        <Text
+          fontFamily="Oxanium"
+          fontSize={{ base: "13px", sm: "15px", md: "16px" }}
+          lineHeight={1}
+        >
+          {labels.resendCode}
+        </Text>
+      </Flex>
     </Flex>
   </Flex>
 );

@@ -3,6 +3,8 @@ import { keyframes } from "@emotion/react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useWallet } from "../../dojo/WalletContext";
 import LanguageSwitcher from "../../components/LanguageSwitcher";
 import { MobileDecoration } from "../../components/MobileDecoration";
 import { useSeasonNumber } from "../../constants/season";
@@ -29,6 +31,8 @@ const bossFloatAnimation = keyframes`
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export const CavosWalletConnect = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const seasonNumber = useSeasonNumber();
   const [optionsPhase, setOptionsPhase] = useState<OptionsPhase>("primary");
   const [authView, setAuthView] = useState<"auth" | "email" | "code">("auth");
@@ -36,6 +40,16 @@ export const CavosWalletConnect = () => {
   const [submittedEmail, setSubmittedEmail] = useState("");
   const [verificationCode, setVerificationCode] = useState("");
   const stageTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const {
+    switchToController,
+    continueAsGuest,
+    allowGuest,
+    accountType,
+    finalAccount,
+    isSigningInWithApple,
+    isLoadingLastGameId,
+    isLoadingWallet,
+  } = useWallet();
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "wallet-provider",
   });
@@ -47,6 +61,16 @@ export const CavosWalletConnect = () => {
       }
     };
   }, []);
+
+  useEffect(() => {
+    if (
+      finalAccount &&
+      accountType === "controller" &&
+      location.pathname === "/login"
+    ) {
+      navigate("/", { replace: true });
+    }
+  }, [finalAccount, accountType, location.pathname, navigate]);
 
   const handleMoreOptionsToggle = () => {
     if (optionsPhase === "opening" || optionsPhase === "closing") {
@@ -73,6 +97,17 @@ export const CavosWalletConnect = () => {
 
   const handleContinueWithEmailClick = () => {
     setAuthView("email");
+  };
+
+  const handleContinueWithControllerClick = () => {
+    switchToController();
+  };
+
+  const handleGuestModeClick = async () => {
+    const started = await continueAsGuest();
+    if (started && location.pathname === "/login") {
+      navigate("/", { replace: true });
+    }
   };
 
   const handleEmailContinue = () => {
@@ -114,6 +149,9 @@ export const CavosWalletConnect = () => {
 
   const isEmailValid = EMAIL_REGEX.test(email.trim());
   const isVerificationCodeValid = verificationCode.length === 6;
+  const isControllerActionDisabled = isLoadingWallet;
+  const isGuestActionDisabled =
+    isLoadingWallet || isSigningInWithApple || isLoadingLastGameId;
 
   return (
     <PreThemeLoadingPage backgroundSize="cover" backgroundPosition="top center">
@@ -231,7 +269,12 @@ export const CavosWalletConnect = () => {
                   goBack: t("go-back"),
                 }}
                 onContinueWithEmailClick={handleContinueWithEmailClick}
+                onContinueWithControllerClick={handleContinueWithControllerClick}
+                onGuestModeClick={handleGuestModeClick}
                 onMoreOptionsToggle={handleMoreOptionsToggle}
+                showGuestMode={allowGuest}
+                isControllerActionDisabled={isControllerActionDisabled}
+                isGuestActionDisabled={isGuestActionDisabled}
               />
             ) : authView === "email" ? (
               <EmailLoginView

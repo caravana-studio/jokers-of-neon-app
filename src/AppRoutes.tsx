@@ -5,6 +5,7 @@ import { AnimatedPage } from "./components/AnimatedPage";
 import { GameStoreLoader } from "./components/GameStoreLoader";
 import { ShopStoreLoader } from "./components/ShopStoreLoader";
 import { ClaimMultipleRewardsPage } from "./pages/ClaimMultipleRewardsPage";
+import { CavosWalletConnect } from "./pages/CavosWalletConnect/CavosWalletConnect";
 import { DeckPage } from "./pages/Deck/DeckPage";
 import { DocsPage } from "./pages/Docs/Docs";
 import { DynamicStorePage } from "./pages/DynamicStore/DynamicStorePage";
@@ -12,7 +13,6 @@ import { ExternalPack } from "./pages/ExternalPack/ExternalPack";
 import { FreePackPage } from "./pages/FreePackPage";
 import { GamePage } from "./pages/Game/GamePage";
 import { GameOver } from "./pages/GameOver/GameOver";
-import { Login } from "./pages/Login";
 import { ManagePage } from "./pages/Manage/ManagePage";
 import { MapPage } from "./pages/Map/MapPage";
 import { MyCollectionPage } from "./pages/MyCollection/MyCollectionPage";
@@ -62,8 +62,14 @@ export const AppRoutes = () => {
         path="/login"
         element={
           <AnimatedPage>
-            <Login />
+            <CavosWalletConnect />
           </AnimatedPage>
+        }
+      />
+      <Route
+        path="/cavos-wallet-connect"
+        element={
+          <Navigate to="/login" replace />
         }
       />
       <Route

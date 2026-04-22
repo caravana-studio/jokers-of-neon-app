@@ -21,14 +21,24 @@ interface AuthOptionsViewProps {
   optionsPhase: OptionsPhase;
   labels: AuthOptionsLabels;
   onContinueWithEmailClick: () => void;
+  onContinueWithControllerClick: () => void;
+  onGuestModeClick: () => void;
   onMoreOptionsToggle: () => void;
+  showGuestMode: boolean;
+  isControllerActionDisabled?: boolean;
+  isGuestActionDisabled?: boolean;
 }
 
 export const AuthOptionsView = ({
   optionsPhase,
   labels,
   onContinueWithEmailClick,
+  onContinueWithControllerClick,
+  onGuestModeClick,
   onMoreOptionsToggle,
+  showGuestMode,
+  isControllerActionDisabled = false,
+  isGuestActionDisabled = false,
 }: AuthOptionsViewProps) => {
   const isLifted = optionsPhase === "opening" || optionsPhase === "secondary";
   const isBackLabel = optionsPhase === "secondary" || optionsPhase === "closing";
@@ -129,18 +139,28 @@ export const AuthOptionsView = ({
                 label={labels.continueWithController}
                 bg="#eeb402"
                 color="#0B0B0D"
+                onClick={onContinueWithControllerClick}
+                disabled={isControllerActionDisabled}
               />
-              <Flex flexDir="column" alignItems="center" gap={3} w="100%">
-                <Text
-                  color="#A3A4AA"
-                  fontFamily="Oxanium"
-                  fontSize={{ base: "13px", sm: "15px", md: "16px" }}
-                  lineHeight={1}
-                >
-                  {labels.justTryQuestion}
-                </Text>
-                <AuthButton label={labels.guestMode} bg="#A245BC" color="white" />
-              </Flex>
+              {showGuestMode && (
+                <Flex flexDir="column" alignItems="center" gap={3} w="100%">
+                  <Text
+                    color="#A3A4AA"
+                    fontFamily="Oxanium"
+                    fontSize={{ base: "13px", sm: "15px", md: "16px" }}
+                    lineHeight={1}
+                  >
+                    {labels.justTryQuestion}
+                  </Text>
+                  <AuthButton
+                    label={labels.guestMode}
+                    bg="#A245BC"
+                    color="white"
+                    onClick={onGuestModeClick}
+                    disabled={isGuestActionDisabled}
+                  />
+                </Flex>
+              )}
             </Flex>
           </motion.div>
         )}
