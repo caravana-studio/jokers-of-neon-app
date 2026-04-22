@@ -21,6 +21,11 @@ export type CardData = {
   [key: string]: any;
 };
 
+export type HighlightedCardData = {
+  cardId: number;
+  skinId: number;
+};
+
 interface CardRotateProps {
   children: React.ReactNode;
   onSendToBack: () => void;
@@ -83,7 +88,7 @@ interface StackProps {
   cardsData: CardData[];
   animationConfig?: { stiffness: number; damping: number };
   sendToBackOnClick?: boolean;
-  onCardChange?: (cardId: number) => void;
+  onCardChange?: (card: HighlightedCardData) => void;
   onAllSeen?: () => void;
   ownedCardIds?: Set<string>;
 }
@@ -114,6 +119,11 @@ export default function Stack({
   const randomRotationCache = useRef<Map<CardData["id"], number>>(new Map());
   const seenTopCardIds = useRef<Set<CardData["id"]>>(new Set());
   const lastAdvanceAtRef = useRef(0);
+
+  const toHighlightedCardData = (card: CardData): HighlightedCardData => ({
+    cardId: card.cardId,
+    skinId: card.skinId ?? 0,
+  });
 
   const getGlowClassName = (intensity?: Intensity) => {
     switch (intensity) {
@@ -171,7 +181,7 @@ export default function Stack({
     if (topCard) {
       seenTopCardIds.current.add(topCard.id);
       if (onCardChange) {
-        onCardChange(topCard.cardId);
+        onCardChange(toHighlightedCardData(topCard));
       }
     }
   }, [cardsData]);
@@ -205,8 +215,8 @@ export default function Stack({
           seenTopCardIds.current.add(nextTopId);
         }
       }
-      // The top card is always the last element rendered; notify with that card's id.
-      onCardChange?.(newCards[newCards.length - 1].cardId);
+      // The top card is always the last element rendered; notify with its full identity.
+      onCardChange?.(toHighlightedCardData(nextTopCard));
 
       // Track seen cards
       setSeenCards((prev) => {
