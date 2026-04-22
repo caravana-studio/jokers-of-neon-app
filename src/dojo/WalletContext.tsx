@@ -266,6 +266,7 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
 
   const shouldUseAppleLoginForGuest =
     allowGuest && isNativeIOS && isAppleLoginEnabled;
+  const shouldUseAppleLoginForController = isNativeIOS && isAppleLoginEnabled;
 
   const startGuestFlow = (fromAppleLogin = false) => {
     logEvent("play_as_guest");
@@ -431,7 +432,9 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
                   justifyContent: "center",
                 }}
               >
-                {isAppleLoginEnabled ? t("continue-with-controller") : t("login")}
+                {shouldUseAppleLoginForController
+                  ? t("continue-with-controller")
+                  : t("login")}
                 {/* <img src={Icons.CARTRIDGE} width={isMobile ? "16px" : "22px"} /> */}
               </div>
             </button>
