@@ -44,6 +44,7 @@ interface PackRowProps {
 const PACK_SIZES: Record<number, number> = {
   1: 3, 2: 3, 3: 4, 4: 4, 5: 5, 6: 10,
   21: 3, 22: 3, 23: 4, 24: 4, 25: 5, 26: 10,
+  31: 3, 32: 3, 33: 4, 34: 4, 35: 5, 36: 10,
 };
 
 const PACK_INVENTORY_POLL_ATTEMPTS = 6;
@@ -70,7 +71,7 @@ export const PackRow = ({
     keyPrefix: "shop.packs",
   });
   const translationPackId = packId % 10;
-  const isLimitedEdition = [5, 6, 25, 26].includes(packId);
+  const isLimitedEdition = [5, 6, 25, 26, 35, 36].includes(packId);
   const { isSmallScreen } = useResponsiveValues();
   const navigate = useNavigate();
   const toast = useToast();
