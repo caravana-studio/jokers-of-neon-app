@@ -1,4 +1,4 @@
-import { Button, Flex, Heading } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 import { ReactNode, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
@@ -58,7 +58,6 @@ export const LeaderboardPageLayout = ({
                 w="70%"
                 h="100%"
                 alignItems={"center"}
-                mt={4}
               >
                 <Flex
                   px={isSmallScreen ? 2 : 6}
@@ -80,35 +79,48 @@ export const LeaderboardPageLayout = ({
                 <Flex
                   minH={0}
                   flexGrow={1}
-                  flexDir={isSmallScreen ? "column" : "row"}
+                  flexDir="column"
                   w="100%"
                   alignItems={"center"}
-                  justifyContent={"center"}
+                  justifyContent="flex-start"
+                  overflowY="auto"
+                  pt={isSmallScreen ? 2 : 4}
                 >
                   <Flex
-                    w={isSmallScreen ? "100%" : "50%"}
+                    w="100%"
                     zIndex={10}
                     flexDir={"column"}
                     alignItems={"center"}
-                    justifyContent={isSmallScreen ? "flex-start" : "center"}
-                    h={isSmallScreen ? "unset" : "100%"}
+                    justifyContent="flex-start"
+                    mb={isSmallScreen ? 2 : 4}
+                    flexShrink={0}
                   >
-                    <Podium seePrizes={seePrizes} isTournamentLeaderboard />
+                    <Podium
+                      seePrizes={seePrizes}
+                      isTournamentLeaderboard
+                      desktopMt={0}
+                    />
                   </Flex>
-                  <Flex
-                    w={isSmallScreen ? "100%" : "50%"}
-                    overflowY="auto"
-                    h="100%"
-                    mt={{ base: 0, sm: 12 }}
+                  <Box
+                    w={isSmallScreen ? "100%" : "78%"}
+                    minH={0}
+                    flexShrink={0}
                   >
                     <Leaderboard
                       hidePodium
                       lines={100}
-                      mb={isSmallScreen ? "100px" : "200px"}
+                      mb="0"
                       seePrizes={seePrizes}
                       isTournamentLeaderboard
+                      fullWidth
+                      compactSpacing
                     />
-                  </Flex>
+                  </Box>
+                  <Box
+                    w="100%"
+                    h={isSmallScreen ? "100px" : "180px"}
+                    flexShrink={0}
+                  />
                 </Flex>
               </Flex>
             </Flex>
