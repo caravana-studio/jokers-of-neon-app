@@ -167,7 +167,7 @@ const SeasonLeaderboardSection = ({
       title={t("sections.season")}
       clockDate={finishDate ?? undefined}
       isSmallScreen={isSmallScreen}
-      mt={6}
+      mt={4}
     >
       <Leaderboard
         lines={50}
