@@ -27,6 +27,7 @@ export const LeaderboardPageLayout = ({
   const { t } = useTranslation("home", { keyPrefix: "leaderboard" });
   const { isSmallScreen } = useResponsiveValues();
   const [seePrizes, setSeePrizes] = useState(false);
+  const [seeXpPrizes, setSeeXpPrizes] = useState(false);
   const seasonNumber = useSeasonNumber();
   const currentSeason = Math.max(1, Math.floor(seasonNumber));
   const [selectedXpSeason, setSelectedXpSeason] = useState(currentSeason);
@@ -207,12 +208,18 @@ export const LeaderboardPageLayout = ({
                     </Button>
                   ))}
                 </Flex>
+                <SeePrizesSwitcher
+                  id="xp-see-prizes"
+                  value={seeXpPrizes}
+                  onChange={setSeeXpPrizes}
+                />
               </Flex>
               <Flex flex={1} minH={0} overflowY="auto">
                 <XpLeaderboard
                   lines={100}
                   mb="0"
                   seasonId={selectedXpSeason}
+                  seePrizes={seeXpPrizes}
                   fullWidth
                   compactSpacing
                 />
