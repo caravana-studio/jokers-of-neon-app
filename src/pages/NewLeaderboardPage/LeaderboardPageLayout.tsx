@@ -1,6 +1,7 @@
 import { Button, Flex, Heading } from "@chakra-ui/react";
 import { ReactNode, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useLocation } from "react-router-dom";
 import { AllTimeXpLeaderboard } from "../../components/AllTimeXpLeaderboard";
 import { Clock } from "../../components/Clock";
 import { DelayedLoading } from "../../components/DelayedLoading";
@@ -24,6 +25,7 @@ export const LeaderboardPageLayout = ({
   entriesSection,
 }: LeaderboardPageLayoutProps) => {
   const { tournament } = useTournamentSettings();
+  const { search } = useLocation();
   const { t } = useTranslation("home", { keyPrefix: "leaderboard" });
   const { isSmallScreen } = useResponsiveValues();
   const [seePrizes, setSeePrizes] = useState(false);
@@ -32,6 +34,8 @@ export const LeaderboardPageLayout = ({
   const currentSeason = Math.max(1, Math.floor(seasonNumber));
   const [selectedXpSeason, setSelectedXpSeason] = useState(currentSeason);
   const isTournamentActive = Boolean(tournament?.isActive);
+  const shouldShowTournamentTab =
+    isTournamentActive || new URLSearchParams(search).has("seeTournament");
 
   useEffect(() => {
     setSelectedXpSeason((previousSeason) =>
@@ -45,7 +49,7 @@ export const LeaderboardPageLayout = ({
   );
 
   const tabs = [
-    ...(isTournamentActive
+    ...(shouldShowTournamentTab
       ? [
           <Tab key="tournament" title={t("tabs.tournament-leaderboard")}>
             <Flex w="100%" h="100%" flexDir="column" alignItems="center">
