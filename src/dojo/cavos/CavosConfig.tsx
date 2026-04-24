@@ -2,8 +2,9 @@ import { CavosProvider as CavosSDKProvider, useCavos } from "@cavos/react";
 import React, { createContext, ReactNode, useContext } from "react";
 import { getContractByName } from "@dojoengine/core";
 import { getManifest } from "../getManifest";
-import { slotInstance } from "../../config/cartridgeUrls";
+import { rpcUrl, slotInstance } from "../../config/cartridgeUrls";
 import { getSlotChainId } from "../controller/controller";
+import { setupWorld } from "../typescript/contracts.gen";
 
 const CAVOS_APP_ID =
   import.meta.env.VITE_CAVOS_APP_ID || "";
@@ -18,39 +19,29 @@ const VRF_PROVIDER_ADDRESS =
   import.meta.env.VITE_VRF_PROVIDER_ADDRESS ||
   "0x051fea4450da9d6aee758bdeba88b2f665bcbf549d2c61421aa724e9ac0ced8f";
 
+const CAVOS_SLOT_RELAYER_ADDRESS =
+  import.meta.env.VITE_CAVOS_SLOT_RELAYER_ADDRESS ||
+  "0x22e94ff47f8fa53124b4465775d79f57d345ade18a77602a33a37cd0bfd0bb2";
 
-const CAVOS_SLOT_RPC_URL = slotInstance
-  ? `https://api.cartridge.gg/x/${slotInstance}/katana`
-  : "http://localhost:5050";
+const CAVOS_SLOT_RELAYER_PRIVATE_KEY =
+  import.meta.env.VITE_CAVOS_SLOT_RELAYER_PRIVATE_KEY ||
+  "0x49a3b5e422219fbe4fabf9d853666818155287ff9e3715f241e75e80b4ff43c";
 
 export const CAVOS_ENABLED = !!CAVOS_APP_ID;
 
-const getSlotChainIdHex = (): string | undefined => {
-  if (!slotInstance) return undefined;
-  return getSlotChainId(slotInstance);
+const getGeneratedContractNames = (): string[] => {
+  const mockProvider = {
+    execute: () => Promise.resolve({}),
+    call: () => Promise.resolve({}),
+  };
+
+  return Object.keys(setupWorld(mockProvider as any));
 };
 
 const getAllowedContracts = (): string[] => {
   const manifest = getManifest();
   const contracts: string[] = [];
-
-  const systemNames = [
-    "action_system",
-    "game_system",
-    "play_system",
-    "shop_system",
-    "map_system",
-    "lives_system",
-    "daily_missions_system",
-    "season_system",
-    "ticket_system",
-    "pack_system",
-    "level_xp_system",
-    "gg_sync_system",
-    "mods_info_system",
-    "poker_hand_system",
-    "permission_system",
-  ];
+  const systemNames = getGeneratedContractNames();
 
   for (const name of systemNames) {
     const contract = getContractByName(manifest, DOJO_NAMESPACE, name);
@@ -119,20 +110,20 @@ export const CavosWrapper: React.FC<CavosWrapperProps> = ({ children }) => {
   }
 
   const allowedContracts = getAllowedContracts();
-  const slotChainId = getSlotChainIdHex();
 
   return (
     <CavosSDKProvider
       config={{
         appId: CAVOS_APP_ID,
         network: "mainnet",
-        paymasterApiKey: CAVOS_PAYMASTER_API_KEY || undefined,
+        paymasterApiKey: CAVOS_PAYMASTER_API_KEY,
         enableLogging: true,
+        starknetRpcUrl: rpcUrl,
         slot: {
-          rpcUrl: 'https://api.cartridge.gg/x/jokers-core-season2/katana',
-          chainId: '0x57505f4a4f4b4552535f434f52455f534541534f4e32',
-          relayerAddress: "0x22e94ff47f8fa53124b4465775d79f57d345ade18a77602a33a37cd0bfd0bb2",
-          relayerPrivateKey: "0x49a3b5e422219fbe4fabf9d853666818155287ff9e3715f241e75e80b4ff43c",
+          rpcUrl,
+          chainId: getSlotChainId(slotInstance),
+          relayerAddress: CAVOS_SLOT_RELAYER_ADDRESS,
+          relayerPrivateKey: CAVOS_SLOT_RELAYER_PRIVATE_KEY,
         },
         session: {
           defaultPolicy: {
