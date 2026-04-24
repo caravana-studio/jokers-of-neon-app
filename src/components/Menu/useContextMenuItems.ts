@@ -9,6 +9,7 @@ import { useTournamentSettings } from "../../queries/useTournamentSettings";
 import { useGameStore } from "../../state/useGameStore";
 import { useSeasonProgressStore } from "../../state/useSeasonProgressStore";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
+import { isCollectorPackId } from "../../utils/packUtils";
 
 const PLAYS_PULSE_SEEN_KEY = "jn-plays-pulse-seen";
 
@@ -111,7 +112,7 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
   const hasCollectorPacks =
     !loadingDistribution &&
     !!distribution?.packs?.some(
-      (pack) => [5, 6, 25, 26, 35, 36].includes(pack.packId),
+      (pack) => isCollectorPackId(pack.packId),
     );
   const collectorNotificationCount = hasCollectorPacks ? 1 : 0;
   const [hasSeenPlays, setHasSeenPlays] = useState(() => {
