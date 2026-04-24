@@ -1,4 +1,4 @@
-const DEFAULT_API_BASE_URL = "http://localhost:3001";
+import { getGameApiBaseUrl } from "../config/gameApiUrl";
 
 type MintedCard = {
   recipient: string;
@@ -26,9 +26,7 @@ export async function claimFreePack(recipient: string): Promise<MintedCard[]> {
     );
   }
 
-  const baseUrl =
-    import.meta.env.VITE_GAME_API_URL?.replace(/\/$/, "") ||
-    DEFAULT_API_BASE_URL;
+  const baseUrl = getGameApiBaseUrl();
   const requestUrl = `${baseUrl}/api/pack/free`;
 
   const response = await fetch(requestUrl, {

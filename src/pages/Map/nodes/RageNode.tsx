@@ -40,6 +40,7 @@ const RageNode = memo(({ data }: any) => {
 
   const {
     setup: { client },
+    account: { account },
   } = useDojo();
 
   const { stateInMap, reachable } = useNodeReachability(data.id);
@@ -50,7 +51,7 @@ const RageNode = memo(({ data }: any) => {
   const content = `${t("power", { power: data.rageData.power })}`;
 
   const refetchAndNavigate = async () => {
-    await refetchGameStore(client, gameId);
+    await refetchGameStore(client, gameId, account.address);
     navigate(GameStateEnum.Rage);
   };
 

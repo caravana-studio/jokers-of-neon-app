@@ -6,6 +6,12 @@ type AnimationStore = {
   setPlayAnimation: (playing: boolean) => void;
   discardAnimation: boolean;
   setDiscardAnimation: (playing: boolean) => void;
+  playRollbackPulseToken: number;
+  discardRollbackPulseToken: number;
+  playRollbackPulseDurationMs: number;
+  discardRollbackPulseDurationMs: number;
+  triggerPlayRollbackPulse: (durationMs?: number) => void;
+  triggerDiscardRollbackPulse: (durationMs?: number) => void;
   destroyedSpecialCardId: number | undefined;
   setDestroyedSpecialCardId: (id: number | undefined) => void;
   levelUpHand: LevelUpPlayEvent | undefined;
@@ -20,6 +26,24 @@ export const useAnimationStore = create<AnimationStore>((set, get) => ({
   discardAnimation: false,
   setDiscardAnimation: (playing: boolean) => {
     set({ discardAnimation: playing });
+  },
+  playRollbackPulseToken: 0,
+  discardRollbackPulseToken: 0,
+  playRollbackPulseDurationMs: 750,
+  discardRollbackPulseDurationMs: 750,
+  triggerPlayRollbackPulse: (durationMs = 750) => {
+    const { playRollbackPulseToken } = get();
+    set({
+      playRollbackPulseToken: playRollbackPulseToken + 1,
+      playRollbackPulseDurationMs: durationMs,
+    });
+  },
+  triggerDiscardRollbackPulse: (durationMs = 750) => {
+    const { discardRollbackPulseToken } = get();
+    set({
+      discardRollbackPulseToken: discardRollbackPulseToken + 1,
+      discardRollbackPulseDurationMs: durationMs,
+    });
   },
   destroyedSpecialCardId: undefined,
   setDestroyedSpecialCardId: (id: number | undefined) => {

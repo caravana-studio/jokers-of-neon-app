@@ -5,7 +5,7 @@ import {
   USDC_ADDRESS,
   SHOP_CONTRACT_ADDRESS,
   SHOP_TREASURY_ADDRESS,
-  API_URL,
+  getApiUrl,
   MARKETPLACE_API_KEY,
 } from "../config/contracts";
 
@@ -101,7 +101,7 @@ export function useCryptoPurchase() {
         product_id: apiProductId ?? productId.toString(),
         address,
       };
-      const requestUrl = `${API_URL}/api/purchase/crypto`;
+      const requestUrl = `${getApiUrl()}/api/purchase/crypto`;
       console.log("[useCryptoPurchase] calling API:", requestUrl, apiPayload);
 
       let mintedCards: MintedCard[] | undefined;

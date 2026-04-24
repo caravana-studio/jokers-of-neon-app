@@ -11,6 +11,7 @@ import { PinkBox } from "../components/PinkBox";
 import { RewardItem } from "../components/RewardsDetail";
 import { BOSS_LEVEL } from "../constants/general";
 import { PLAYS_DATA } from "../constants/plays";
+import { getShopTierUnlockConfig } from "../constants/shopTierUnlock";
 import {
   DEFAULT_TRACKER_VIEW,
   getGameTracker,
@@ -57,7 +58,13 @@ const SummaryDetail = ({ win }: SummaryPageProps) => {
   const [skip, setSkip] = useState(false);
   const [animationEnded, setAnimationEnded] = useState(false);
   const [isNavigating, setIsNavigating] = useState(false);
-  const { totalScore, level, round, id: gameId } = useGameStore();
+  const {
+    totalScore,
+    level,
+    round,
+    id: gameId,
+    shopTierUnlockedEvent,
+  } = useGameStore();
   const [gameTracker, setGameTracker] = useState(DEFAULT_TRACKER_VIEW);
 
   useEffect(() => {
@@ -149,7 +156,25 @@ const SummaryDetail = ({ win }: SummaryPageProps) => {
             setIsNavigating(true);
             navigateToMap();
           } else {
-            navigate(`/gameover/${gameId}`);
+            const hasShopTierUnlockedEventForCurrentGame = Boolean(
+              shopTierUnlockedEvent?.unlock_id &&
+                getShopTierUnlockConfig(shopTierUnlockedEvent.unlock_id)
+            );
+
+            console.log("[unlock-debug] loose continue navigation decision", {
+              gameId,
+              shopTierUnlockedEvent,
+              hasShopTierUnlockedEventForCurrentGame,
+              resolvedUnlockConfig: shopTierUnlockedEvent?.unlock_id
+                ? getShopTierUnlockConfig(shopTierUnlockedEvent.unlock_id)
+                : undefined,
+            });
+
+            if (hasShopTierUnlockedEventForCurrentGame) {
+              navigate(`/shop-tier-unlocked/${gameId}`);
+            } else {
+              navigate(`/gameover/${gameId}`);
+            }
           }
         }}
         actionHidden={!animationEnded}
@@ -177,6 +202,7 @@ const SummaryDetail = ({ win }: SummaryPageProps) => {
             skip={skip}
             label={labels[0]}
             value={compactRound}
+            rollingSound={false}
             showCashSymbol={false}
             coloredValue
           />
@@ -184,6 +210,7 @@ const SummaryDetail = ({ win }: SummaryPageProps) => {
             skip={skip}
             label={labels[1]}
             value={gameTracker.highestHand}
+            rollingSound={false}
             showCashSymbol={false}
             coloredValue
           />
@@ -192,6 +219,7 @@ const SummaryDetail = ({ win }: SummaryPageProps) => {
             label={labels[2]}
             showCashSymbol={false}
             value={`${tPlays(`${mostPlayedHandName}.name`)} (${gameTracker.mostPlayedHandCount})`}
+            rollingSound={false}
             coloredValue
           />
 
@@ -201,6 +229,7 @@ const SummaryDetail = ({ win }: SummaryPageProps) => {
             showCashSymbol={false}
             value={gameTracker.cardsPlayedCount}
             rollingDelay={(DELAY_START + STAGGER) * 1000}
+            rollingSound={false}
             coloredValue
           />
           <RewardItem
@@ -209,6 +238,7 @@ const SummaryDetail = ({ win }: SummaryPageProps) => {
             showCashSymbol={false}
             value={gameTracker.cardsDiscardedCount}
             rollingDelay={(DELAY_START + STAGGER) * 1000}
+            rollingSound={false}
             coloredValue
           />
           <RewardItem
@@ -217,6 +247,7 @@ const SummaryDetail = ({ win }: SummaryPageProps) => {
             showCashSymbol={false}
             value={gameTracker.rageWins}
             rollingDelay={(DELAY_START + STAGGER) * 1000}
+            rollingSound={false}
             coloredValue
           />
           <Box h="20px" />

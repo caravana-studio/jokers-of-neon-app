@@ -1,10 +1,51 @@
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, useEffect, useState } from "react";
+import { useSeasonNumber } from "../constants/season";
+import { resolveSeasonalAssetPath } from "../utils/assetAvailability";
 
-export const PreThemeLoadingPage = ({children} : PropsWithChildren) => {
+interface PreThemeLoadingPageProps {
+  backgroundSize?: string;
+  backgroundPosition?: string;
+  backgroundRepeat?: string;
+}
+
+export const PreThemeLoadingPage = ({
+  children,
+  backgroundSize = "cover",
+  backgroundPosition = "center",
+  backgroundRepeat = "no-repeat",
+}: PropsWithChildren<PreThemeLoadingPageProps>) => {
+  const seasonNumber = useSeasonNumber();
+  const fallbackBackgroundSrc = "/bg/home-bg.jpg";
+  const [backgroundSrc, setBackgroundSrc] = useState<string>(
+    fallbackBackgroundSrc
+  );
+
+  useEffect(() => {
+    let isMounted = true;
+    setBackgroundSrc(fallbackBackgroundSrc);
+
+    const resolveBackground = async () => {
+      const resolvedBackground = await resolveSeasonalAssetPath(
+        fallbackBackgroundSrc,
+        seasonNumber
+      );
+
+      if (!isMounted) return;
+      setBackgroundSrc(resolvedBackground);
+    };
+
+    void resolveBackground();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [seasonNumber]);
+
   return (
     <div
       style={{
-        height: "100%",
+        height: "100svh",
+        minHeight: "100svh",
         position: "fixed",
         inset: 0,
         width: "100%",
@@ -14,9 +55,10 @@ export const PreThemeLoadingPage = ({children} : PropsWithChildren) => {
         alignItems: "center",
         fontFamily: "Orbitron",
         fontSize: 30,
-        background: `url(bg/home-bg.jpg)`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
+        backgroundImage: `url(${backgroundSrc})`,
+        backgroundSize,
+        backgroundPosition,
+        backgroundRepeat,
         flexWrap: "wrap",
       }}
     >

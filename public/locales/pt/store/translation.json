@@ -16,6 +16,9 @@
       "manage-items": "Itens",
       "next": "Próximo",
       "unlock-slot": "Novo espaço",
+      "my-specials": "Meus especiais",
+      "all-slots-occupied": "Todos os espaços estão ocupados",
+      "no-space-overlay": "Você não tem espaços disponíveis para comprar mais especiais",
       "titles": {
         "traditionals": "Cartas tradicionais e neon",
         "modifiers": "Cartas modificadoras",
@@ -126,8 +129,9 @@
     }
   },
   "config": {
-    "shop": "Loja",
-    "0": { "name": "" },
+    "0": {
+      "name": ""
+    },
     "1": {
       "name": "Baralho",
       "content": "{{traditionals}} cartas tradicionais ou neon, {{modifiers}} modificadores, queimar uma carta do seu baralho"
@@ -151,6 +155,16 @@
     "6": {
       "name": "Mix",
       "content": "{{lootboxes}} caixas, {{powerups}} power-ups, {{levelups}} upgrades de nível"
+    },
+    "shop": "Loja",
+    "items-content": {
+      "traditionalsNeon": "{{count}} cartas tradicionais ou neon",
+      "modifiers": "{{count}} modificadores",
+      "specials": "{{count}} cartas especiais",
+      "powerups": "{{count}} power-ups",
+      "levelups": "{{count}} upgrades de nível",
+      "lootboxes": "{{count}} caixas",
+      "burn": "queimar uma carta do seu baralho"
     }
   },
   "loot-box-rates": {

@@ -7,6 +7,7 @@ import { CardPlayEvent } from "../../types/ScoreData";
 import { allToHeartsOptimisticConverter } from "./converters/allToHeartsConverter";
 import { neonSynergyOptimisticConverter } from "./converters/neonSynergyConverter";
 import { straightToHighStraightOptimisticConverter } from "./converters/straightToHighStraightConverter";
+import { wildDeucesOptimisticConverter } from "./converters/wildDeucesConverter";
 import { OptimisticConverterBehavior } from "./converters/types";
 import { sortCardPlayEvents } from "../sortCardPlayEvents";
 
@@ -24,6 +25,7 @@ const OPTIMISTIC_CONVERTER_BEHAVIORS: Partial<
   [specialCardIds.NEON_SYNERGY]: neonSynergyOptimisticConverter,
   [specialCardIds.STRAIGHT_TO_HIGH_STRAIGHT]:
     straightToHighStraightOptimisticConverter,
+  [specialCardIds.WILD_DEUCES]: wildDeucesOptimisticConverter,
 };
 
 export const getActiveConverterSpecialCards = (specialCards: Card[]): Card[] => {

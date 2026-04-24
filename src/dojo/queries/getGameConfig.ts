@@ -1,22 +1,25 @@
+const toPositiveInt = (value: unknown): number | undefined => {
+  const parsed = Number(value);
+  if (!Number.isFinite(parsed) || parsed <= 0) return undefined;
+  return parsed;
+};
 
-export const getGameConfig = async (client: any, encodedModId: string) => {
-  const safeToNumber = (
-    value: unknown,
-    fallback: number,
-    min: number = 0
-  ) => {
-    const parsed = Number(value);
-    return Number.isFinite(parsed) && parsed >= min ? parsed : fallback;
-  };
+const DEFAULT_CONFIG = {
+  maxPowerUpSlots: 4,
+  maxSpecialCards: 7,
+};
 
+export const getGameConfig = async (client: any, playerAddress: string) => {
   try {
-    let tx_result = await client.mods_info_system.getGameConfig(encodedModId);
+    const tx_result =
+      await client.mods_info_system.getGameConfigForPlayer(playerAddress);
     return {
-      maxPowerUpSlots: safeToNumber(tx_result?.max_power_up_slots, 4, 1),
-      maxSpecialCards: safeToNumber(tx_result?.max_special_slots, 7, 1),
+      maxPowerUpSlots: toPositiveInt(tx_result.max_power_up_slots),
+      maxSpecialCards: toPositiveInt(tx_result.max_special_slots),
     };
   } catch (e) {
-    console.log(e);
+    console.log(e, "returning default config", DEFAULT_CONFIG);
+    return DEFAULT_CONFIG;
   }
-  return { maxPowerUpSlots: 4, maxSpecialCards: 7 };
+  return {};
 };

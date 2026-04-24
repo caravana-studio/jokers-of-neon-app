@@ -1,11 +1,9 @@
-import { Button, Flex, Heading, Text } from "@chakra-ui/react";
+import { Flex, Heading } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
 import { DailyGames } from "../../components/DailyGames/DailyGames.tsx";
 import { DelayedLoading } from "../../components/DelayedLoading.tsx";
 import { MobileDecoration } from "../../components/MobileDecoration.tsx";
-import { useGetMyGames } from "../../queries/useGetMyGames.ts";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 import { logEvent } from "../../utils/analytics.ts";
 import { GamesListBox } from "./GamesListBox.tsx";
@@ -29,10 +27,7 @@ export const MyGames = () => {
     logEvent("open_my_games_page");
   }, []);
 
-  const { isLoading } = useGetMyGames();
   const { isSmallScreen } = useResponsiveValues();
-
-  const navigate = useNavigate();
 
   return (
     <DelayedLoading ms={100}>
@@ -55,34 +50,13 @@ export const MyGames = () => {
           alignItems={"center"}
         >
           <Heading
-            mb={3}
+            mb={8}
             zIndex={2}
             variant="italic"
             size={isSmallScreen ? "sm" : "md"}
           >
             {t("title")}
           </Heading>
-          <Flex
-            px={[2, 4]}
-            py={isSmallScreen ? 0 : 4}
-            width={{ base: "90%", sm: "70%", md: "900px" }}
-            justifyContent={isSmallScreen ? "space-between" : "center"}
-            gap={8}
-            alignItems={"center"}
-            zIndex={2}
-            mb={5}
-          >
-            <Text fontSize={isSmallScreen ? 12 : 20}>{t("learn")}</Text>
-            <Button
-              size={"sm"}
-              width={isSmallScreen ? "90px" : "110px"}
-              h={isSmallScreen ? "25px" : undefined}
-              onClick={() => navigate("/tutorial")}
-              disabled={isLoading}
-            >
-              {t("tuto")}
-            </Button>
-          </Flex>
           <GamesListBox isTournament={false} />
         </Flex>
         <Flex

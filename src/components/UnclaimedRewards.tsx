@@ -9,7 +9,13 @@ import { VIOLET } from "../theme/colors";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import { IconComponent } from "./IconComponent";
 
-export const UnclaimedRewards = () => {
+interface UnclaimedRewardsProps {
+  onRewardsAvailabilityChange?: (hasRewards: boolean) => void;
+}
+
+export const UnclaimedRewards = ({
+  onRewardsAvailabilityChange,
+}: UnclaimedRewardsProps) => {
   const { isSmallScreen } = useResponsiveValues();
   const { t } = useTranslation("home", {
     keyPrefix: "packs",
@@ -23,16 +29,23 @@ export const UnclaimedRewards = () => {
   const [rewardsLeftToClaim, setRewardsLeftToClaim] = useState<number[]>([]);
 
   useEffect(() => {
-    if (account?.address) {
-      fetchProfile(account.address)
-        .then((profile) => {
-          setRewardsLeftToClaim(profile.claimablePacks ?? []);
-        })
-        .catch(() => {
-          setRewardsLeftToClaim([]);
-        });
+    if (!account?.address) {
+      setRewardsLeftToClaim([]);
+      return;
     }
+
+    fetchProfile(account.address)
+      .then((profile) => {
+        setRewardsLeftToClaim(profile.claimablePacks ?? []);
+      })
+      .catch(() => {
+        setRewardsLeftToClaim([]);
+      });
   }, [account?.address]);
+
+  useEffect(() => {
+    onRewardsAvailabilityChange?.(rewardsLeftToClaim.length > 0);
+  }, [onRewardsAvailabilityChange, rewardsLeftToClaim.length]);
 
   return (
     rewardsLeftToClaim.length > 0 && (
@@ -40,7 +53,7 @@ export const UnclaimedRewards = () => {
         zIndex={999}
         position="absolute"
         left="0"
-        bottom={isSmallScreen ? "110px" : "190px"}
+        bottom={isSmallScreen ? "30px" : "70px"}
         backgroundColor="black"
         w={isSmallScreen ? "140px" : "240px"}
         h={isSmallScreen ? "70px" : "110px"}
@@ -79,7 +92,7 @@ export const UnclaimedRewards = () => {
               size="xs"
               variant="secondarySolid"
               onClick={() => {
-                navigate("/unclaimed-rewards")
+                navigate("/unclaimed-rewards");
                 setRewardsLeftToClaim([]);
               }}
             >

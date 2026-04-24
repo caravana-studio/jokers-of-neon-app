@@ -12,10 +12,6 @@ import {
 } from "../../utils/leaderboardPeriods";
 import { SeePrizesSwitcher } from "./SeePrizesSwitcher";
 
-const HIDE_DAILY_WEEKLY_LEADERBOARDS =
-  String(import.meta.env.VITE_HIDE_DAILY_WEEKLY_LEADERBOARDS).toLowerCase() ===
-  "true";
-
 type SectionProps = {
   title?: string;
   clockDate?: Date;
@@ -168,12 +164,10 @@ const SeasonLeaderboardSection = ({
 
   return (
     <LeaderboardSection
-      title={
-        HIDE_DAILY_WEEKLY_LEADERBOARDS ? undefined : t("sections.season")
-      }
+      title={t("sections.season")}
       clockDate={finishDate ?? undefined}
       isSmallScreen={isSmallScreen}
-      mt={HIDE_DAILY_WEEKLY_LEADERBOARDS ? 0 : 6}
+      mt={4}
     >
       <Leaderboard
         lines={50}
@@ -231,48 +225,38 @@ export const GameLeaderboardTab = ({ isSmallScreen }: GameLeaderboardTabProps) =
           />
         </Flex>
         <Flex
-          flexDir={
-            isSmallScreenLayout || HIDE_DAILY_WEEKLY_LEADERBOARDS
-              ? "column"
-              : "row"
-          }
+          flexDir={isSmallScreenLayout ? "column" : "row"}
           flexGrow={1}
           minH={0}
           gap={isSmallScreenLayout ? 0 : 4}
           overflowY={isSmallScreenLayout ? "auto" : "hidden"}
           pb={isSmallScreenLayout ? "100px" : "200px"}
         >
-          {!HIDE_DAILY_WEEKLY_LEADERBOARDS && (
-            <Flex
-              w={isSmallScreenLayout ? "100%" : "50%"}
-              h={isSmallScreenLayout ? "auto" : "100%"}
-              overflowY={isSmallScreenLayout ? "visible" : "auto"}
-            >
-              <Flex w="100%" flexDir="column">
-                <DailyLeaderboardSection
-                  date={periods.daily.date}
-                  resetAt={periods.daily.resetAt}
-                  isSmallScreen={isSmallScreenLayout}
-                  seePrizes={seePrizes}
-                  prizes={dailyPrizes}
-                />
-                <WeeklyLeaderboardSection
-                  startDate={periods.weekly.startDate}
-                  currentDate={periods.weekly.currentDate}
-                  resetAt={periods.weekly.resetAt}
-                  isSmallScreen={isSmallScreenLayout}
-                  seePrizes={seePrizes}
-                  prizes={weeklyPrizes}
-                />
-              </Flex>
-            </Flex>
-          )}
           <Flex
-            w={
-              isSmallScreenLayout || HIDE_DAILY_WEEKLY_LEADERBOARDS
-                ? "100%"
-                : "50%"
-            }
+            w={isSmallScreenLayout ? "100%" : "50%"}
+            h={isSmallScreenLayout ? "auto" : "100%"}
+            overflowY={isSmallScreenLayout ? "visible" : "auto"}
+          >
+            <Flex w="100%" flexDir="column">
+              <DailyLeaderboardSection
+                date={periods.daily.date}
+                resetAt={periods.daily.resetAt}
+                isSmallScreen={isSmallScreenLayout}
+                seePrizes={seePrizes}
+                prizes={dailyPrizes}
+              />
+              <WeeklyLeaderboardSection
+                startDate={periods.weekly.startDate}
+                currentDate={periods.weekly.currentDate}
+                resetAt={periods.weekly.resetAt}
+                isSmallScreen={isSmallScreenLayout}
+                seePrizes={seePrizes}
+                prizes={weeklyPrizes}
+              />
+            </Flex>
+          </Flex>
+          <Flex
+            w={isSmallScreenLayout ? "100%" : "50%"}
             h={isSmallScreenLayout ? "auto" : "100%"}
             overflowY={isSmallScreenLayout ? "visible" : "auto"}
           >

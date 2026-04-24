@@ -7,7 +7,7 @@ import { useCavosSafe } from "../cavos/CavosConfig";
 export const useUsername = () => {
   const [username, setUsername] = useState<string | null>(null);
   const dojoCtx = useContext(DojoContext);
-  const isUsingBurner = dojoCtx?.useBurnerAcc;
+  const isBurnerAccount = dojoCtx?.accountType === "burner";
   const isCavos = dojoCtx?.accountType === "cavos";
 
   const cavos = useCavosSafe();
@@ -15,16 +15,16 @@ export const useUsername = () => {
   useEffect(() => {
     if (isCavos && cavos?.user?.email) {
       setUsername(cavos.user.email);
-    } else if (!isUsingBurner && !isCavos && controller) {
+    } else if (!isBurnerAccount && !isCavos && controller) {
       controller.username()?.then((username) => {
         if (username) {
           setUsername(username);
         }
       });
     }
-  }, [controller, dojoCtx?.useBurnerAcc, dojoCtx?.accountType, isCavos, cavos?.user?.email]);
+  }, [isBurnerAccount, isCavos, cavos?.user?.email]);
 
-  if (isUsingBurner) return window.localStorage.getItem(LOGGED_USER);
+  if (isBurnerAccount) return window.localStorage.getItem(LOGGED_USER);
   if (isCavos) return cavos?.user?.email ?? cavos?.user?.name ?? null;
   return username;
 };

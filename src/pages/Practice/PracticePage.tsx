@@ -1,7 +1,7 @@
 import { Box, Heading } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 import { RemoveScroll } from "react-remove-scroll";
-import { LevelUpFirstDiscartedHandAnimation } from "../../components/animations/LevelUpFirstDiscartedHandAnimation";
+import { ChangeLevelAnimation } from "../../components/animations/ChangeLevelAnimation";
 import { SecondChanceCardAnimation } from "../../components/animations/SecondChanceCardAnimation";
 import { SpecialCardAnimation } from "../../components/animations/SpecialCardAnimation";
 import { DelayedLoading } from "../../components/DelayedLoading";
@@ -53,7 +53,7 @@ export const PracticePage = () => {
 
   return (
     <DelayedLoading ms={200}>
-      <LevelUpFirstDiscartedHandAnimation />
+      <ChangeLevelAnimation />
       {animateSecondChanceCard && <SecondChanceCardAnimation />}
       {animateSpecialCardDefault && (
         <SpecialCardAnimation

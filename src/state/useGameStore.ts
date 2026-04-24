@@ -12,16 +12,94 @@ import { getPowerUps } from "../dojo/queries/getPowerUps";
 import { getRageCards } from "../dojo/queries/getRageCards";
 import { getDebuffedPokerHands } from "../dojo/queries/getDebuffedPokerHands";
 import { getSpecialCardsView } from "../dojo/queries/getSpecialCardsView";
+import {
+  getSpecialEffectOverridesView,
+  SpecialEffectOverrideView,
+} from "../dojo/queries/getSpecialEffectOverridesView";
 import { GameStateEnum } from "../dojo/typescript/custom";
 import { Card } from "../types/Card";
 import { LevelPokerHand } from "../types/LevelPokerHand";
 import { ModCardsConfig } from "../types/ModConfig";
 import { PowerUp } from "../types/Powerup/PowerUp";
 import { RoundRewards } from "../types/RoundRewards";
+import { ShopTierUnlockedEvent } from "../types/ScoreData";
 import { Plays } from "../enums/plays";
 import { getRageNodeData } from "../utils/getRageNodeData";
 import { m5, p25 } from "../utils/mocks/powerUpMocks";
 import { MultipliedClubs } from "../utils/mocks/specialCardMocks";
+
+const hasDuplicateSpecialCardIds = (specialCards: Card[]): boolean => {
+  const seen = new Set<number>();
+
+  for (const card of specialCards) {
+    const cardId = card.card_id;
+    if (typeof cardId !== "number" || cardId <= 0) continue;
+
+    if (seen.has(cardId)) {
+      return true;
+    }
+
+    seen.add(cardId);
+  }
+
+  return false;
+};
+
+const applySpecialEffectOverridesToCards = (
+  specialCards: Card[],
+  overrides: SpecialEffectOverrideView[]
+): Card[] => {
+  if (overrides.length === 0) {
+    return specialCards;
+  }
+
+  const cardsWithOverrides = [...specialCards];
+  const overriddenIndexes = new Set<number>();
+
+  for (const override of overrides) {
+    if (
+      override.original_effect_card_id <= 0 ||
+      override.copied_effect_card_id <= 0
+    ) {
+      continue;
+    }
+
+    let cardIndex = cardsWithOverrides.findIndex((card) => card.idx === override.idx);
+
+    // Fallback for environments where idx mapping is not available yet.
+    if (cardIndex === -1) {
+      const matchingIndexes = cardsWithOverrides
+        .map((card, index) => ({ card, index }))
+        .filter(
+          ({ card, index }) =>
+            !overriddenIndexes.has(index) &&
+            card.card_id === override.copied_effect_card_id
+        )
+        .map(({ index }) => index);
+
+      if (matchingIndexes.length > 1) {
+        // With duplicate copied ids, usually the second slot is the copied one.
+        cardIndex = matchingIndexes[1];
+      } else {
+        cardIndex = matchingIndexes[0] ?? -1;
+      }
+    }
+
+    if (cardIndex === -1) {
+      continue;
+    }
+
+    overriddenIndexes.add(cardIndex);
+    cardsWithOverrides[cardIndex] = {
+      ...cardsWithOverrides[cardIndex],
+      specialEffectOverrideOriginalEffectCardId:
+        override.original_effect_card_id,
+      specialEffectOverrideCopiedEffectCardId: override.copied_effect_card_id,
+    };
+  }
+
+  return cardsWithOverrides;
+};
 
 type GameStore = {
   id: number;
@@ -52,6 +130,7 @@ type GameStore = {
   powerUps: (PowerUp | null)[];
   preSelectedPowerUps: number[];
   roundRewards: RoundRewards | undefined;
+  pendingTutorialRewardsRedirect: boolean;
   gameLoading: boolean;
   gameError: boolean;
   modCardsConfig: ModCardsConfig | undefined;
@@ -60,8 +139,13 @@ type GameStore = {
   nodeRound: number;
   shopId: number;
   inBossRound: boolean;
+  shopTierUnlockedEvent: ShopTierUnlockedEvent | undefined;
 
-  refetchGameStore: (client: any, gameId: number) => Promise<void>;
+  refetchGameStore: (
+    client: any,
+    gameId: number,
+    playerAddress?: string
+  ) => Promise<void>;
   setGameId: (gameId: number) => void;
   removeGameId: () => void;
   play: () => void;
@@ -94,6 +178,7 @@ type GameStore = {
   refetchSpecialCards: (client: any, gameId: number) => Promise<void>;
   unPreSelectAllPowerUps: () => void;
   setRoundRewards: (rewards: RoundRewards | undefined) => void;
+  setPendingTutorialRewardsRedirect: (pending: boolean) => void;
   setGameLoading: (loading: boolean) => void;
   setGameError: (error: boolean) => void;
   toggleSpecialSwitcher: () => void;
@@ -110,17 +195,49 @@ type GameStore = {
   fetchGameStoreForTutorial: () => void;
   setInBossRound: (inBossRound: boolean) => void;
   setIsTournament: (isTournament: boolean) => void;
+  setShopTierUnlockedEvent: (
+    event: ShopTierUnlockedEvent | undefined
+  ) => void;
+  clearShopTierUnlockedEvent: () => void;
 };
 
-const doRefetchGameStore = async (client: any, gameId: number, set: any) => {
+const doRefetchGameStore = async (
+  client: any,
+  gameId: number,
+  playerAddress: string | undefined,
+  set: any,
+  get: any
+) => {
   const { round, game } = await getGameView(client, gameId);
-  const specialCards = await getSpecialCardsView(client, gameId);
+  const specialCardsFromView = await getSpecialCardsView(client, gameId);
+  let specialCards = specialCardsFromView;
+  const isRoundStart =
+    game.state === GameStateEnum.Round && round.current_score === 0;
+  const shouldFetchSpecialEffectOverrides =
+    isRoundStart && hasDuplicateSpecialCardIds(specialCardsFromView);
+
+  if (shouldFetchSpecialEffectOverrides) {
+    const specialEffectOverrides = await getSpecialEffectOverridesView(
+      client,
+      gameId
+    );
+    specialCards = applySpecialEffectOverridesToCards(
+      specialCardsFromView,
+      specialEffectOverrides
+    );
+  }
+
   const rageCards = getRageCards(round.rages);
   const powerUps = await getPowerUps(client, gameId);
-  const { maxPowerUpSlots, maxSpecialCards } = await getGameConfig(
-    client,
-    game.mod_id
-  );
+  const {
+    maxPowerUpSlots: configMaxPowerUpSlots,
+    maxSpecialCards: configMaxSpecialCards,
+  } = await getGameConfig(client, playerAddress ?? game.owner);
+  const currentStoreState = get();
+  const maxPowerUpSlots =
+    configMaxPowerUpSlots ?? currentStoreState.maxPowerUpSlots;
+  const maxSpecialCards =
+    configMaxSpecialCards ?? currentStoreState.maxSpecialCards;
 
   const modCardsConfig = await fetchCardsConfig(client, game.mod_id);
 
@@ -208,22 +325,24 @@ export const useGameStore = create<GameStore>((set, get) => ({
   modId: "jokers_of_neon_classic",
   isClassic: true,
   isTournament: false,
-  maxSpecialCards: 7,
+  maxSpecialCards: 1,
   maxPowerUpSlots: 4,
   powerUps: [],
   preSelectedPowerUps: [],
   gameLoading: true,
   gameError: false,
   roundRewards: undefined,
+  pendingTutorialRewardsRedirect: false,
   modCardsConfig: undefined,
   specialSwitcherOn: true,
   plays: [],
   nodeRound: 0,
   shopId: 0,
   inBossRound: false,
+  shopTierUnlockedEvent: undefined,
 
-  refetchGameStore: async (client, gameId) => {
-    await doRefetchGameStore(client, gameId, set);
+  refetchGameStore: async (client, gameId, playerAddress) => {
+    await doRefetchGameStore(client, gameId, playerAddress, set, get);
   },
 
   refetchSpecialCards: async (client, gameId) => {
@@ -234,13 +353,18 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   setGameId: (gameId) => {
-    set({ id: gameId });
+    set({ id: gameId, shopTierUnlockedEvent: undefined });
     localStorage.setItem(GAME_ID, gameId.toString());
   },
 
   removeGameId: () => {
     localStorage.removeItem(GAME_ID);
-    set({ id: 0, state: GameStateEnum.NotSet, isTournament: false });
+    set({
+      id: 0,
+      state: GameStateEnum.NotSet,
+      isTournament: false,
+      shopTierUnlockedEvent: undefined,
+    });
   },
 
   play: () => {
@@ -437,6 +561,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
     set({ roundRewards: rewards });
   },
 
+  setPendingTutorialRewardsRedirect: (pending: boolean) => {
+    set({ pendingTutorialRewardsRedirect: pending });
+  },
+
   toggleSpecialSwitcher: () => {
     set((state) => ({ specialSwitcherOn: !state.specialSwitcherOn }));
   },
@@ -526,5 +654,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   setIsTournament: (isTournament) => {
     set({ isTournament });
+  },
+
+  setShopTierUnlockedEvent: (event) => {
+    console.log("[unlock-debug] useGameStore.setShopTierUnlockedEvent", event);
+    set({ shopTierUnlockedEvent: event });
+  },
+
+  clearShopTierUnlockedEvent: () => {
+    console.log("[unlock-debug] useGameStore.clearShopTierUnlockedEvent");
+    set({ shopTierUnlockedEvent: undefined });
   },
 }));

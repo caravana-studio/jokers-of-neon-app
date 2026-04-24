@@ -11,6 +11,7 @@ export const GameStoreLoader = ({ children }: PropsWithChildren) => {
   const [isLoading, setIsLoading] = useState(true);
   const {
     setup: { client },
+    account: { account },
   } = useDojo();
   const { refetchGameStore, id: gameId, state } = useGameStore();
   const { refetchCurrentHandStore } = useCurrentHandStore();
@@ -22,7 +23,7 @@ export const GameStoreLoader = ({ children }: PropsWithChildren) => {
       if (state === GameStateEnum.NotSet) {
         const allPromises = [
           refetchCurrentHandStore(client, gameId),
-          refetchGameStore(client, gameId),
+          refetchGameStore(client, gameId, account.address),
         ];
 
         Promise.all(allPromises).then(() => {

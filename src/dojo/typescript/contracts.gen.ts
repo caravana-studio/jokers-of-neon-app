@@ -458,6 +458,28 @@ export function setupWorld(provider: DojoProvider) {
     }
   };
 
+  const build_game_views_getSpecialEffectOverrides_calldata = (
+    gameId: BigNumberish
+  ): DojoCall => {
+    return {
+      contractName: "game_views",
+      entrypoint: "get_special_effect_overrides",
+      calldata: [gameId],
+    };
+  };
+
+  const game_views_getSpecialEffectOverrides = async (gameId: BigNumberish) => {
+    try {
+      return await provider.call(
+        DOJO_NAMESPACE,
+        build_game_views_getSpecialEffectOverrides_calldata(gameId)
+      );
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+
   const build_gg_sync_system_getQuestsCompleted_calldata = (
     playerAddress: string
   ): DojoCall => {
@@ -1050,20 +1072,47 @@ export function setupWorld(provider: DojoProvider) {
   };
 
   const build_mods_info_system_getGameConfig_calldata = (
-    modId: BigNumberish
+    modId: BigNumberish,
+    gameId?: BigNumberish
   ): DojoCall => {
     return {
       contractName: "mods_info_system",
       entrypoint: "get_game_config",
-      calldata: [modId],
+      calldata:
+        gameId === undefined || gameId === null ? [modId] : [modId, gameId],
     };
   };
 
-  const mods_info_system_getGameConfig = async (modId: BigNumberish) => {
+  const mods_info_system_getGameConfig = async (
+    modId: BigNumberish,
+    gameId?: BigNumberish
+  ) => {
     try {
       return await provider.call(
         DOJO_NAMESPACE,
-        build_mods_info_system_getGameConfig_calldata(modId)
+        build_mods_info_system_getGameConfig_calldata(modId, gameId)
+      );
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+
+  const build_mods_info_system_getGameConfigForPlayer_calldata = (
+    player: string
+  ): DojoCall => {
+    return {
+      contractName: "mods_info_system",
+      entrypoint: "get_game_config_for_player",
+      calldata: [player],
+    };
+  };
+
+  const mods_info_system_getGameConfigForPlayer = async (player: string) => {
+    try {
+      return await provider.call(
+        DOJO_NAMESPACE,
+        build_mods_info_system_getGameConfigForPlayer_calldata(player)
       );
     } catch (error) {
       console.error(error);
@@ -2219,6 +2268,42 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
+
+	const build_shop_views_getUnlockList_calldata = (): DojoCall => {
+		return {
+			contractName: "shop_views",
+			entrypoint: "get_unlock_list",
+			calldata: [],
+		};
+	};
+
+	const shop_views_getUnlockList = async () => {
+		try {
+			return await provider.call("jokers_of_neon_core", build_shop_views_getUnlockList_calldata());
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
+	const build_shop_views_getPlayerTier_calldata = (player: string): DojoCall => {
+		return {
+			contractName: "shop_views",
+			entrypoint: "get_player_tier",
+			calldata: [player],
+		};
+	};
+
+	const shop_views_getPlayerTier = async (player: string) => {
+		try {
+			return await provider.call("jokers_of_neon_core", build_shop_views_getPlayerTier_calldata(player));
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
+
   return {
     action_system: {
       changeModifierCard: action_system_changeModifierCard,
@@ -2273,12 +2358,15 @@ export function setupWorld(provider: DojoProvider) {
       getPowerUps: game_views_getPowerUps,
       buildGetPowerUpsCalldata: build_game_views_getPowerUps_calldata,
       getSpecialCards: game_views_getSpecialCards,
+      buildGetSpecialCardsCalldata: build_game_views_getSpecialCards_calldata,
+      getSpecialEffectOverrides: game_views_getSpecialEffectOverrides,
+      buildGetSpecialEffectOverridesCalldata:
+        build_game_views_getSpecialEffectOverrides_calldata,
       getGameTracker: game_views_getGameTracker,
       buildGetGameTrackerCalldata: build_game_views_getGameTracker_calldata,
       getDebuffPokerHands: game_views_getDebuffPokerHands,
       buildGetDebuffPokerHandsCalldata:
         build_game_views_getDebuffPokerHands_calldata,
-      buildGetSpecialCardsCalldata: build_game_views_getSpecialCards_calldata,
     },
     gg_sync_system: {
       getQuestsCompleted: gg_sync_system_getQuestsCompleted,
@@ -2354,6 +2442,9 @@ export function setupWorld(provider: DojoProvider) {
         build_mods_info_system_getCumulativeInfo_calldata,
       getGameConfig: mods_info_system_getGameConfig,
       buildGetGameConfigCalldata: build_mods_info_system_getGameConfig_calldata,
+      getGameConfigForPlayer: mods_info_system_getGameConfigForPlayer,
+      buildGetGameConfigForPlayerCalldata:
+        build_mods_info_system_getGameConfigForPlayer_calldata,
       getGameMods: mods_info_system_getGameMods,
       buildGetGameModsCalldata: build_mods_info_system_getGameMods_calldata,
       getRageCardsIds: mods_info_system_getRageCardsIds,
@@ -2456,6 +2547,10 @@ export function setupWorld(provider: DojoProvider) {
       buildGetLootBoxResultCalldata: build_shop_views_getLootBoxResult_calldata,
       getShopItems: shop_views_getShopItems,
       buildGetShopItemsCalldata: build_shop_views_getShopItems_calldata,
+			getUnlockList: shop_views_getUnlockList,
+			buildGetUnlockListCalldata: build_shop_views_getUnlockList_calldata,
+			getPlayerTier: shop_views_getPlayerTier,
+			buildGetPlayerTierCalldata: build_shop_views_getPlayerTier_calldata,
     },
     silence: {
       process: silence_process,

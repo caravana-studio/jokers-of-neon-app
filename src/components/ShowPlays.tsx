@@ -5,12 +5,19 @@ import { Button, Flex, Text } from "@chakra-ui/react";
 import { InfoIcon } from "@chakra-ui/icons";
 import { useTranslation } from "react-i18next";
 import { isTutorial } from "../utils/isTutorial";
+import {
+  PROGRESSIVE_TUTORIAL_IDS,
+} from "../utils/progressiveTutorialStorage";
+import { useTutorialStore } from "../state/useTutorialStore";
 
 export const ShowPlays = () => {
   const [hoveredButton, setHoveredButton] = useState(false);
   const navigate = useNavigate();
   const { t } = useTranslation(["game"]);
   const inTutorial = isTutorial();
+  const markTutorialCompleted = useTutorialStore(
+    (state) => state.markTutorialCompleted
+  );
 
   return (
     <Button
@@ -27,6 +34,7 @@ export const ShowPlays = () => {
       onMouseLeave={() => setHoveredButton(false)}
       onClick={(e) => {
         e.stopPropagation();
+        void markTutorialCompleted(PROGRESSIVE_TUTORIAL_IDS.GAME_FIRST_ENTRY);
         navigate("/plays", { state: { isTutorial: inTutorial } });
       }}
     >

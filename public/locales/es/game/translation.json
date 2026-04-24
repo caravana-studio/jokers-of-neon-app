@@ -195,6 +195,8 @@
     "push-reminders": "Las misiones diarias están a punto de expirar",
     "push-events": "Eventos especiales",
     "push-daily-packs": "Nuevo pack diario disponible",
+    "skip-all-tutorials": "Saltar todos los tutoriales",
+    "skip-all-tutorials-help": "Si está activado, se deshabilitan los tutoriales en todo el juego.",
     "timezone": "Zona horaria",
     "enable-notifications": "Habilitar notificaciones",
     "android-notifications-help": "Por favor activa las notificaciones para Jokers of Neon en los ajustes del sistema."
@@ -202,7 +204,9 @@
   "animations": {
     "labels": {
       "level": "NIVEL",
-      "head": "MANO MEJORADA"
+      "head": "MANO MEJORADA",
+      "head-up": "MANO MEJORADA",
+      "head-down": "MANO DEGRADADA"
     }
   },
   "rage-cards": {

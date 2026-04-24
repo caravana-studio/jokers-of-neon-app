@@ -16,7 +16,6 @@ const COMMON_SETTINGS: Partial<Step> = {
   disableScrollParentFix: isMobile ? true : false,
   hideBackButton: true,
   data: { timeout: 0 },
-  showSkipButton: true,
 };
 
 export const TUTORIAL_STEPS: Step[] = [];
@@ -31,6 +30,21 @@ export const MODIFIERS_TUTORIAL_STEPS: Step[] = [];
 
 export const JOYRIDE_LOCALES = {};
 
+export const TUTORIAL_FLOATER_PROPS = {
+  options: {
+    preventOverflow: {
+      enabled: true,
+      boundariesElement: "window" as const,
+      padding: 16,
+    },
+    flip: {
+      enabled: true,
+      boundariesElement: "window" as const,
+      padding: 16,
+    },
+  },
+};
+
 export const TUTORIAL_STYLE = {
   options: {
     arrowColor: "#DAA1E8",
@@ -38,8 +52,8 @@ export const TUTORIAL_STYLE = {
     overlayColor: "rgba(0, 0, 0, 0.7)",
     primaryColor: "#DAA1E8",
     textColor: "#FFFFFF",
-    width: 350,
-    zIndex: 1000,
+    width: "min(350px, calc(100vw - 24px))",
+    zIndex: 20000,
   },
   buttonClose: {
     color: "#DAA1E8",
@@ -54,6 +68,8 @@ export const TUTORIAL_STYLE = {
   tooltip: {
     borderRadius: "12px",
     boxShadow: "0 0 15px rgba(218, 161, 232, 0.5)",
+    maxWidth: "min(350px, calc(100vw - 24px))",
+    width: "calc(100vw - 24px)",
   },
   spotlight: {
     borderRadius: "12px",

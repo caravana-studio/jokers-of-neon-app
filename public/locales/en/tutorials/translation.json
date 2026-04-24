@@ -106,11 +106,97 @@
       "content-mobile": "Drag the modifier to the discard button to remove it. This won't cost you a discard."
     }
   },
+  "progressiveGame": {
+    "firstEntry": {
+      "title": "Welcome to your first Jokers of Neon run",
+      "objective": "Your goal is to score points by making poker hands.",
+      "selectTitle": "Build your hand",
+      "selectContent": "You can select up to 5 cards from your hand to build poker hands.",
+      "playsTitle": "Don't know poker hands?",
+      "playsContent": "We got you covered. Tap this button to see all possible hands."
+    },
+    "firstTwoSelected": {
+      "playTitle": "Keep going",
+      "playContent": "You have 3 plays per round.",
+      "discardTitle": "Use your discards",
+      "discardContent": "You can also discard your cards to draw new ones."
+    },
+    "firstModifier": {
+      "title": "Modifier card",
+      "content": "This is a modifier card. Modifiers apply an effect to a specific card.",
+      "howToUseTitle": "How to use it",
+      "howToUseContent": "For example, this one turns one of your cards into {{effect}}. To use it, drag it to one of the preselected cards in the center of the screen.",
+      "effects": {
+        "club": "clubs",
+        "diamonds": "diamonds",
+        "hearts": "hearts",
+        "spades": "spades",
+        "neon": "neon",
+        "wildcard": "wildcard",
+        "card": "another type"
+      }
+    },
+    "firstSpecialCard": {
+      "title": "Special cards",
+      "content": "Special cards have global effects over the whole game. They are the most powerful cards, so make sure to buy them if you want to go far.",
+      "alwaysOnTitle": "Always active",
+      "alwaysOnContent": "Special cards stay active all the time. As long as you keep them, their effects stay active."
+    },
+    "firstPowerUp": {
+      "title": "Power-ups",
+      "content": "Power-ups are consumables that give you extra points or multi for a specific play.",
+      "activateTitle": "Activate power-ups",
+      "activateContent": "Tap to activate them. Once activated, they will be applied on your next play."
+    },
+    "firstNeonCard": {
+      "title": "Neon cards",
+      "content": "Neon cards are used to build poker hands just like traditional cards, but they are stronger. They give double points and +1 multi.",
+      "neonPlaysTitle": "Neon plays",
+      "neonPlaysContent": "If you make a hand with only neon cards, its level will increase 4 times, giving even more points and multi."
+    },
+    "firstScore": {
+      "title": "Nice!",
+      "content": "You scored {{score}} points. You need {{targetScore}} points to clear the round.",
+      "contentFirstPlayClear": "You scored {{score}} points. You needed {{targetScore}} to clear the round, and you did it on your first play."
+    }
+  },
+  "progressiveRewards": {
+    "firstEntry": {
+      "title": "Round rewards",
+      "overview": "Here you can see everything you earned after finishing the round.",
+      "efficiencyTitle": "Play efficiently",
+      "efficiencyContent": "The more hands and discards you keep, the more rewards you get.",
+      "totalTitle": "Final total",
+      "totalContent": "This is the final amount you take from this round."
+    }
+  },
+  "progressiveMap": {
+    "firstEntry": {
+      "title": "Welcome to the map",
+      "welcome": "Welcome to the level 1 map.",
+      "pathsTitle": "Choose your path",
+      "pathsContent": "You can choose different paths to move forward.",
+      "shopTitle": "Available shops",
+      "shopContent": "Choose one available shop to move forward. Each shop type offers different items.",
+      "shopTypesTitle": "Shop types",
+      "shopTypesContent": "Each type of shop offers different items."
+    }
+  },
+  "progressiveShop": {
+    "firstEntry": {
+      "title": "Welcome to your first shop",
+      "welcome": "You will be able to buy items to improve your deck.",
+      "rerollTitle": "Reroll items",
+      "rerollContent": "Items are random, but you can reroll if you don't like what you got.",
+      "nextTitle": "Move on",
+      "nextContent": "Whenever you are ready, click next to move on."
+    }
+  },
   "joyride": {
     "back": "Back",
     "next": "Next",
     "skip": "Skip",
     "close": "Close",
-    "last": "Finish"
+    "last": "Continue"
   }
 }

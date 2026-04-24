@@ -1,7 +1,6 @@
 import { getSeasonNumber } from "../constants/season";
+import { getGameApiBaseUrl } from "../config/gameApiUrl";
 import type { SimplifiedCard } from "../pages/ExternalPack/ExternalPack";
-
-const DEFAULT_API_BASE_URL = "http://localhost:3001";
 
 export type ClaimSeasonRewardParams = {
   address: string;
@@ -119,9 +118,7 @@ export async function claimSeasonReward({
     throw new Error("claimSeasonReward: seasonId must be a finite number");
   }
 
-  const baseUrl =
-    import.meta.env.VITE_GAME_API_URL?.replace(/\/$/, "") ||
-    DEFAULT_API_BASE_URL;
+  const baseUrl = getGameApiBaseUrl();
   const requestUrl = `${baseUrl}/api/season/claim-rewards`;
   const apiKey = getApiKey();
 
@@ -170,9 +167,7 @@ export async function claimUnclaimedRewards({
     throw new Error("claimUnclaimedRewards: address is required");
   }
 
-  const baseUrl =
-    import.meta.env.VITE_GAME_API_URL?.replace(/\/$/, "") ||
-    DEFAULT_API_BASE_URL;
+  const baseUrl = getGameApiBaseUrl();
   const requestUrl = `${baseUrl}/api/profile/claim-packs`;
   const apiKey = getApiKey();
 

@@ -38,6 +38,14 @@ export const NeonSynergy: Card = {
   isSpecial: true,
 };
 
+export const WildDeuces: Card = {
+  img: "10301.png",
+  id: "10301",
+  idx: 10301,
+  card_id: 10301,
+  isSpecial: true,
+};
+
 export const MultipliedClubs: Card = {
   img: "10001.png",
   id: "10001",

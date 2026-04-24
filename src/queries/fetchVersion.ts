@@ -7,13 +7,17 @@ const FETCH_VERSION_TIMEOUT_MS = 6000;
 export interface VersionResponse {
   version: string;
   maintenance?: boolean;
+  applelogin?: string;
   slot?: Record<string, string>;
+  api?: Record<string, string>;
 }
 
-const FALLBACK_VERSION_RESPONSE: VersionResponse = { version: APP_VERSION };
+const FALLBACK_VERSION_RESPONSE: VersionResponse = {
+  version: APP_VERSION,
+};
 let fetchVersionPromise: Promise<VersionResponse> | null = null;
 
-const isSlotMap = (value: unknown): value is Record<string, string> => {
+const isStringMap = (value: unknown): value is Record<string, string> => {
   if (!value || typeof value !== "object") {
     return false;
   }
@@ -29,7 +33,9 @@ const normalizeVersionResponse = (data: unknown): VersionResponse => {
   const candidate = data as {
     version?: unknown;
     maintenance?: unknown;
+    applelogin?: unknown;
     slot?: unknown;
+    api?: unknown;
   };
 
   const version =
@@ -43,7 +49,12 @@ const normalizeVersionResponse = (data: unknown): VersionResponse => {
       typeof candidate.maintenance === "boolean"
         ? candidate.maintenance
         : undefined,
-    slot: isSlotMap(candidate.slot) ? candidate.slot : undefined,
+    applelogin:
+      typeof candidate.applelogin === "string" && candidate.applelogin.trim()
+        ? candidate.applelogin.trim()
+        : undefined,
+    slot: isStringMap(candidate.slot) ? candidate.slot : undefined,
+    api: isStringMap(candidate.api) ? candidate.api : undefined,
   };
 };
 

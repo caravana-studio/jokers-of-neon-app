@@ -20,16 +20,49 @@ import { RARITY_LABELS } from "../../marketplace/types/marketplace";
 
 export function BrowseListingsPage() {
   const { t } = useTranslation("marketplace");
-  const { listings, total, loading, loadingMore, error, filter, setFilter, loadMore, hasMore } =
-    useListings();
+  const specialListingsState = useListings("special");
+  const traditionalListingsState = useListings("traditional");
+  const { filter, setFilter } = specialListingsState;
 
   // Client-side name search across the loaded batch
   const [nameSearch, setNameSearch] = useState("");
-  const displayed = nameSearch
-    ? listings.filter((l) =>
+  const specialDisplayed = nameSearch
+    ? specialListingsState.listings.filter((l) =>
         l.card_name?.toLowerCase().includes(nameSearch.toLowerCase())
       )
-    : listings;
+    : specialListingsState.listings;
+  const traditionalDisplayed = nameSearch
+    ? traditionalListingsState.listings.filter((l) =>
+        l.card_name?.toLowerCase().includes(nameSearch.toLowerCase())
+      )
+    : traditionalListingsState.listings;
+
+  const shownCount = specialDisplayed.length + traditionalDisplayed.length;
+  const loadedCount =
+    specialListingsState.listings.length + traditionalListingsState.listings.length;
+  const total = specialListingsState.total + traditionalListingsState.total;
+  const hasAnyLoaded =
+    specialListingsState.loadedCount + traditionalListingsState.loadedCount > 0;
+
+  const showSpecialSection =
+    specialDisplayed.length > 0 ||
+    specialListingsState.loading ||
+    Boolean(specialListingsState.error) ||
+    (!nameSearch && specialListingsState.hasMore);
+  const showTraditionalSection =
+    traditionalDisplayed.length > 0 ||
+    traditionalListingsState.loading ||
+    Boolean(traditionalListingsState.error) ||
+    (!nameSearch && traditionalListingsState.hasMore);
+  const isInitialLoading =
+    !hasAnyLoaded &&
+    specialListingsState.loading &&
+    traditionalListingsState.loading;
+  const hasOnlyApiErrors =
+    !hasAnyLoaded &&
+    !specialListingsState.loading &&
+    !traditionalListingsState.loading &&
+    Boolean(specialListingsState.error || traditionalListingsState.error);
 
   return (
     <VStack spacing={5} align="stretch">
@@ -119,49 +152,130 @@ export function BrowseListingsPage() {
       {/* Result count */}
       <Text fontSize={14} color="whiteAlpha.600" fontFamily="Oxanium">
         {nameSearch
-          ? t("browse.countFiltered", { shown: displayed.length, loaded: listings.length, total })
-          : t(total !== 1 ? "browse.count_plural" : "browse.count", { shown: listings.length, total })}
+          ? t("browse.countFiltered", { shown: shownCount, loaded: loadedCount, total })
+          : t(total !== 1 ? "browse.count_plural" : "browse.count", { shown: shownCount, total })}
       </Text>
 
       {/* Grid */}
-      {loading ? (
+      {isInitialLoading ? (
         <Flex justify="center" py={20}>
           <Spinner color="neonGreen" size="xl" />
         </Flex>
-      ) : error ? (
+      ) : hasOnlyApiErrors ? (
         <VStack py={10} spacing={2}>
           <Text color="red.400" textAlign="center" fontFamily="Oxanium">
-            {error.includes("Failed to fetch")
+            {specialListingsState.error?.includes("Failed to fetch") ||
+            traditionalListingsState.error?.includes("Failed to fetch")
               ? t("browse.errorApi")
-              : error}
+              : specialListingsState.error ?? traditionalListingsState.error}
           </Text>
         </VStack>
-      ) : displayed.length === 0 ? (
+      ) : shownCount === 0 ? (
         <Text color="whiteAlpha.600" textAlign="center" py={10} fontFamily="Oxanium">
           {nameSearch ? t("browse.noMatch", { query: nameSearch }) : t("browse.noListings")}
         </Text>
       ) : (
-        <SimpleGrid templateColumns={MARKETPLACE_CARD_GRID_TEMPLATE_COLUMNS} spacing={4}>
-          {displayed.map((listing) => (
-            <ListingCard key={listing.id} listing={listing} />
-          ))}
-        </SimpleGrid>
-      )}
+        <VStack spacing={8} align="stretch">
+          {showSpecialSection && (
+            <Box>
+              <Flex align="center" gap={3} mb={4}>
+                <Heading size="m" variant="neonPink">
+                  {t("sell.specialCards")}
+                </Heading>
+                <Box flex={1} h="1px" bg="whiteAlpha.200" />
+              </Flex>
+              {specialListingsState.loading && specialListingsState.loadedCount === 0 ? (
+                <Flex justify="center" py={10}>
+                  <Spinner color="neonGreen" />
+                </Flex>
+              ) : specialListingsState.error ? (
+                <Text color="red.400" textAlign="center" py={6} fontFamily="Oxanium">
+                  {specialListingsState.error.includes("Failed to fetch")
+                    ? t("browse.errorApi")
+                    : specialListingsState.error}
+                </Text>
+              ) : (
+                <>
+                  <SimpleGrid templateColumns={MARKETPLACE_CARD_GRID_TEMPLATE_COLUMNS} spacing={4}>
+                    {specialDisplayed.map((listing) => (
+                      <ListingCard key={listing.id} listing={listing} />
+                    ))}
+                  </SimpleGrid>
 
-      {/* Load more */}
-      {hasMore && !nameSearch && (
-        <Flex justify="center" pt={2} pb={4}>
-          <Button
-            size="md"
-            variant="outline"
-            px={8}
-            onClick={loadMore}
-            isLoading={loadingMore}
-            loadingText={t("browse.loading")}
-          >
-            {t("browse.loadMore", { remaining: total - listings.length })}
-          </Button>
-        </Flex>
+                  {specialListingsState.hasMore && !nameSearch && (
+                    <Flex justify="center" pt={2} pb={1}>
+                      <Button
+                        size="md"
+                        variant="outline"
+                        px={8}
+                        onClick={specialListingsState.loadMore}
+                        isLoading={specialListingsState.loadingMore}
+                        loadingText={t("browse.loading")}
+                      >
+                        {t("browse.loadMore", {
+                          remaining: Math.max(
+                            specialListingsState.total - specialListingsState.loadedCount,
+                            0
+                          ),
+                        })}
+                      </Button>
+                    </Flex>
+                  )}
+                </>
+              )}
+            </Box>
+          )}
+
+          {showTraditionalSection && (
+            <Box>
+              <Flex align="center" gap={3} mb={4}>
+                <Heading size="m">{t("sell.traditionalCards")}</Heading>
+                <Box flex={1} h="1px" bg="whiteAlpha.200" />
+              </Flex>
+              {traditionalListingsState.loading &&
+              traditionalListingsState.loadedCount === 0 ? (
+                <Flex justify="center" py={10}>
+                  <Spinner color="neonGreen" />
+                </Flex>
+              ) : traditionalListingsState.error ? (
+                <Text color="red.400" textAlign="center" py={6} fontFamily="Oxanium">
+                  {traditionalListingsState.error.includes("Failed to fetch")
+                    ? t("browse.errorApi")
+                    : traditionalListingsState.error}
+                </Text>
+              ) : (
+                <>
+                  <SimpleGrid templateColumns={MARKETPLACE_CARD_GRID_TEMPLATE_COLUMNS} spacing={4}>
+                    {traditionalDisplayed.map((listing) => (
+                      <ListingCard key={listing.id} listing={listing} />
+                    ))}
+                  </SimpleGrid>
+
+                  {traditionalListingsState.hasMore && !nameSearch && (
+                    <Flex justify="center" pt={2} pb={1}>
+                      <Button
+                        size="md"
+                        variant="outline"
+                        px={8}
+                        onClick={traditionalListingsState.loadMore}
+                        isLoading={traditionalListingsState.loadingMore}
+                        loadingText={t("browse.loading")}
+                      >
+                        {t("browse.loadMore", {
+                          remaining: Math.max(
+                            traditionalListingsState.total -
+                              traditionalListingsState.loadedCount,
+                            0
+                          ),
+                        })}
+                      </Button>
+                    </Flex>
+                  )}
+                </>
+              )}
+            </Box>
+          )}
+        </VStack>
       )}
     </VStack>
   );

@@ -1,5 +1,6 @@
-import { Button, Flex } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { Button, Flex, Image, Text } from "@chakra-ui/react";
+import { keyframes } from "@emotion/react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { Preferences } from "@capacitor/preferences";
@@ -22,6 +23,7 @@ import {
   GUEST_LOGIN_MODAL_SHOWN,
   SKIPPED_VERSION,
 } from "../../constants/localStorage";
+import { useSeasonNumber } from "../../constants/season";
 import { APP_VERSION } from "../../constants/version";
 import { useDojo } from "../../dojo/DojoContext";
 import { useGameContext } from "../../providers/GameProvider";
@@ -36,28 +38,54 @@ import { registerPushNotifications } from "../../utils/notifications/registerPus
 import { getMajor, getMinor, getPatch } from "../../utils/versionUtils";
 import { useProfileStore } from "../../state/useProfileStore";
 
+const bossFloatAnimation = keyframes`
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -26px, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+`;
+
 export const NewHome = () => {
   const { t } = useTranslation(["home"]);
   const { t: tCommon } = useTranslation("intermediate-screens", {
     keyPrefix: "common",
   });
   const { isSmallScreen } = useResponsiveValues();
-  const { settings, loading } = useDistributionSettings();
+  const { settings } = useDistributionSettings();
   const navigate = useNavigate();
   const { prepareNewGame, executeCreateGame } = useGameContext();
   const { data: games } = useGetMyGames();
   const { fetchProfileData } = useProfileStore();
+  const seasonNumber = useSeasonNumber();
 
-  const [isTutorialModalOpen, setTutorialModalOpen] = useState(false);
   const [isVersionModalOpen, setVersionModalOpen] = useState(false);
   const [isGuestLoginModalOpen, setGuestLoginModalOpen] = useState(false);
   const [version, setVersion] = useState<string | null>(null);
+  const [hasUnclaimedRewards, setHasUnclaimedRewards] = useState(false);
+  const [desktopBannerScale, setDesktopBannerScale] = useState(1);
+  const desktopBannerViewportRef = useRef<HTMLDivElement | null>(null);
+  const desktopBannerContentRef = useRef<HTMLDivElement | null>(null);
 
   const banners = settings?.home?.banners || [];
+  const desktopBannerFitKey = banners
+    .map((banner, index) => `${banner.type}-${banner.endTime ?? "no-end"}-${index}`)
+    .join("|");
   const {
     setup: { useBurnerAcc, switchToController, client },
     account,
   } = useDojo();
+
+  const desktopBannerWidth =
+    desktopBannerScale < 0.9
+      ? "40vw"
+      : desktopBannerScale < 0.97
+        ? "38vw"
+        : "36vw";
 
   useEffect(() => {
     logEvent("open_home_page");
@@ -125,6 +153,60 @@ export const NewHome = () => {
     checkGuestModal();
   }, [useBurnerAcc]);
 
+  useLayoutEffect(() => {
+    if (isSmallScreen) {
+      setDesktopBannerScale(1);
+      return;
+    }
+
+    const viewport = desktopBannerViewportRef.current;
+    const content = desktopBannerContentRef.current;
+
+    if (!viewport || !content) {
+      return;
+    }
+
+    const fitBannersToViewport = () => {
+      const viewportStyles = window.getComputedStyle(viewport);
+      const paddingTop = Number.parseFloat(viewportStyles.paddingTop || "0") || 0;
+      const paddingBottom =
+        Number.parseFloat(viewportStyles.paddingBottom || "0") || 0;
+      const availableHeight = Math.max(
+        0,
+        viewport.clientHeight - paddingTop - paddingBottom
+      );
+      const contentHeight = content.scrollHeight;
+
+      if (!availableHeight || !contentHeight) {
+        setDesktopBannerScale(1);
+        return;
+      }
+
+      const nextScale = Math.max(
+        0.55,
+        Math.min(1, availableHeight / contentHeight)
+      );
+      setDesktopBannerScale((prevScale) =>
+        Math.abs(prevScale - nextScale) < 0.01 ? prevScale : nextScale
+      );
+    };
+
+    fitBannersToViewport();
+
+    const resizeObserver = new ResizeObserver(() => {
+      fitBannersToViewport();
+    });
+
+    resizeObserver.observe(viewport);
+    resizeObserver.observe(content);
+    window.addEventListener("resize", fitBannersToViewport);
+
+    return () => {
+      resizeObserver.disconnect();
+      window.removeEventListener("resize", fitBannersToViewport);
+    };
+  }, [isSmallScreen, desktopBannerFitKey]);
+
   const handleCreateGame = async () => {
     prepareNewGame();
     executeCreateGame();
@@ -135,17 +217,8 @@ export const NewHome = () => {
     if (games && games.length > 0) {
       navigate("/my-games");
     } else {
-      setTutorialModalOpen(true);
+      handleCreateGame();
     }
-  };
-
-  const handleCloseTutorialModal = () => {
-    setTutorialModalOpen(false);
-  };
-
-  const handleConfirmTutorial = () => {
-    navigate("/tutorial");
-    setTutorialModalOpen(false);
   };
 
   const handleGuestLoginClick = () => {
@@ -188,20 +261,19 @@ export const NewHome = () => {
     }
   };
 
-  const handleSkipTutorial = () => {
-    handleCreateGame();
-    setTutorialModalOpen(false);
-    logEvent("tutorial_skipped");
-    logEvent("tutorial_done");
-  };
-
   return (
     <DelayedLoading ms={100}>
       <XpBoosterModal />
-      <FreePack
-        onClaimClick={useBurnerAcc ? handleOpenGuestLoginModal : undefined}
-      />
-      {!useBurnerAcc && <UnclaimedRewards />}
+      {(useBurnerAcc || !hasUnclaimedRewards) && (
+        <FreePack
+          onClaimClick={useBurnerAcc ? handleOpenGuestLoginModal : undefined}
+        />
+      )}
+      {!useBurnerAcc && (
+        <UnclaimedRewards
+          onRewardsAvailabilityChange={setHasUnclaimedRewards}
+        />
+      )}
       <PositionedDiscordLink />
       <MobileDecoration />
       {/*       <RemoveScroll>
@@ -210,75 +282,75 @@ export const NewHome = () => {
       <Flex
         height="100%"
         width={"100%"}
-        justifyContent="space-between"
-        flexDirection="column"
-        alignItems="center"
-        gap={4}
+        position="relative"
       >
-        <Flex
-          flexDirection="column"
-          alignItems="center"
-          gap={{ base: 6, sm: 8, md: 6 }}
-          w={"100%"}
-          zIndex={1}
-          mt={4}
-        >
+        {isSmallScreen ? (
           <Flex
-            w={"100%"}
-            h={"100%"}
-            justifyContent="center"
-            minH={isSmallScreen ? "unset" : "40vh"}
-            flexGrow={1}
-            flexDir="column"
-            px={isSmallScreen ? 2 : 8}
-            gap={3}
+            justifyContent="space-between"
+            flexDirection="column"
+            alignItems="center"
+            gap={4}
+            h="100%"
+            w="100%"
           >
             <Flex
-              h={isSmallScreen ? "120px" : "250px"}
-              w="100%"
-              justifyContent={"space-between"}
+              flexDirection="column"
+              alignItems="center"
+              gap={{ base: 6, sm: 8, md: 6 }}
+              w={"100%"}
+              zIndex={1}
+              mt={4}
             >
               <Flex
-                w={isSmallScreen ? "240px" : "500px"}
-                justifyContent={"flex-start"}
-                alignItems="start"
+                w={"100%"}
+                h={"100%"}
+                justifyContent="center"
+                minH="unset"
+                flexGrow={1}
+                flexDir="column"
+                px={2}
+                gap={3}
               >
-                <SpineAnimation
-                  jsonUrl={`/spine-animations/logo/JokerLogo.json`}
-                  atlasUrl={`/spine-animations/logo/JokerLogo.atlas`}
-                  initialAnimation={"animation"}
-                  loopAnimation={"animation"}
-                  scale={2.5}
-                  yOffset={-800}
-                />
-              </Flex>
-              {
-                <Flex
-                  w={isSmallScreen ? "auto" : "200px"}
-                  flexDir={isSmallScreen ? "column" : "row"}
-                  justifyContent={isSmallScreen ? "flex-start" : "flex-end"}
-                  mr={isSmallScreen ? 2 : 8}
-                  mt={isSmallScreen ? 2 : 8}
-                  alignItems={isSmallScreen ? "flex-end" : "start"}
-                  gap={isSmallScreen ? 1.5 : 0}
-                >
-                  {!useBurnerAcc && <ProfileTile />}
-                  {useBurnerAcc && (
-                    <Button
-                      size="xs"
-                      onClick={handleLoginClick}
-                      rightIcon={
-                        <img
-                          src={Icons.CARTRIDGE}
-                          width={"14px"}
-                          style={{ marginLeft: "2px" }}
-                        />
-                      }
-                    >
-                      {tCommon("login")}
-                    </Button>
-                  )}
-                  {isSmallScreen && (
+                <Flex h="120px" w="100%" justifyContent={"space-between"}>
+                  <Flex
+                    w="240px"
+                    justifyContent={"flex-start"}
+                    alignItems="start"
+                  >
+                    <SpineAnimation
+                      jsonUrl={`/spine-animations/logo/JokerLogo.json`}
+                      atlasUrl={`/spine-animations/logo/JokerLogo.atlas`}
+                      initialAnimation={"animation"}
+                      loopAnimation={"animation"}
+                      scale={2.5}
+                      yOffset={-800}
+                    />
+                  </Flex>
+                  <Flex
+                    w="auto"
+                    flexDir="column"
+                    justifyContent="flex-start"
+                    mr={2}
+                    mt={2}
+                    alignItems="flex-end"
+                    gap={1.5}
+                  >
+                    {!useBurnerAcc && <ProfileTile />}
+                    {useBurnerAcc && (
+                      <Button
+                        size="xs"
+                        onClick={handleLoginClick}
+                        rightIcon={
+                          <img
+                            src={Icons.CARTRIDGE}
+                            width={"14px"}
+                            style={{ marginLeft: "2px" }}
+                          />
+                        }
+                      >
+                        {tCommon("login")}
+                      </Button>
+                    )}
                     <Flex
                       alignItems="center"
                       gap={1}
@@ -292,64 +364,183 @@ export const NewHome = () => {
                         height="22px"
                       />
                     </Flex>
-                  )}
+                  </Flex>
                 </Flex>
-              }
-            </Flex>
-            <Flex
-              flexDir={"column"}
-              gap={1.5}
-              alignItems={"center"}
-              w="100%"
-              mt={isSmallScreen ? "-25px" : 0}
-            >
-              <Flex
-                flexDir={isSmallScreen ? "column" : "row"}
-                gap={1.5}
-                w="100%"
-              >
-                {banners[0] && <BannerRenderer banner={banners[0]} />}
-                {banners[1] && <BannerRenderer banner={banners[1]} />}
+                <Flex
+                  flexDir={"column"}
+                  gap={1.5}
+                  alignItems={"center"}
+                  w="100%"
+                  mt="-25px"
+                >
+                  <Flex flexDir="column" gap={1.5} w="100%">
+                    {banners[0] && <BannerRenderer banner={banners[0]} />}
+                    {banners[1] && <BannerRenderer banner={banners[1]} />}
+                  </Flex>
+                  {banners[2] && <BannerRenderer banner={banners[2]} />}
+                </Flex>
               </Flex>
-              {banners[2] && isSmallScreen && (
-                <BannerRenderer banner={banners[2]} />
+            </Flex>
+            <MobileBottomBar
+              firstButton={{
+                label: games && games.length > 0 ? t("my-games") : t("play"),
+                onClick: handlePlayClick,
+              }}
+            />
+          </Flex>
+        ) : (
+          <Flex
+            h="100%"
+            w="100%"
+            position="relative"
+            overflow="hidden"
+            pt={10}
+            pb="190px"
+            px={8}
+            gap={5}
+          >
+            <Flex
+              position="absolute"
+              left="18px"
+              bottom="-30px"
+              h={{ base: "65%", md: "75%", lg: "80%", xl: "88%" }}
+              maxW={{ base: "48vw", md: "53vw", lg: "58vw" }}
+              zIndex={2}
+              pointerEvents="none"
+              justifyContent="flex-start"
+              alignItems="flex-end"
+            >
+              <Image
+                src={`/boss/s${seasonNumber}.png`}
+                h="100%"
+                w="auto"
+                maxW="100%"
+                objectFit="contain"
+                objectPosition="left bottom"
+                animation={`${bossFloatAnimation} 6.8s ease-in-out infinite`}
+                transformOrigin="left bottom"
+                willChange="transform"
+              />
+            </Flex>
+
+            <Flex flex="1 1 0" minW={0} position="relative">
+              <Flex
+                position="absolute"
+                top="-8px"
+                left={{ lg: "85px", xl: "110px" }}
+                flexDir="column"
+                alignItems="center"
+                zIndex={1}
+              >
+                <Flex
+                  w="500px"
+                  h="250px"
+                  justifyContent="flex-start"
+                  alignItems="start"
+                >
+                  <SpineAnimation
+                    jsonUrl={`/spine-animations/logo/JokerLogo.json`}
+                    atlasUrl={`/spine-animations/logo/JokerLogo.atlas`}
+                    initialAnimation={"animation"}
+                    loopAnimation={"animation"}
+                    scale={2.5}
+                    yOffset={-800}
+                  />
+                </Flex>
+              </Flex>
+
+              <Text
+                position="absolute"
+                top="190px"
+                left={{ base: "50px", lg: "85px", xl: "110px" }}
+                w="500px"
+                textAlign="center"
+                fontFamily="Sonara"
+                fontStyle="italic"
+                fontSize={{ base: "24px", md: "28px", lg: "30px", xl: "34px" }}
+                lineHeight={1}
+                color="white"
+                textTransform="uppercase"
+                textShadow="0 0 10px black"
+                zIndex={3}
+              >
+                SEASON {seasonNumber}
+              </Text>
+
+              {!useBurnerAcc && (
+                <Flex position="absolute" left="-12px" bottom="5px" zIndex={1001}>
+                  <ProfileTile />
+                </Flex>
               )}
             </Flex>
-          </Flex>
-        </Flex>
-        {!isSmallScreen && (
-          <Flex position="absolute" bottom="90px">
-            <Button
-              onClick={handlePlayClick}
-              w="300px"
-              variant="secondarySolid"
+
+            <Flex
+              flex="0 1 auto"
+              w={desktopBannerWidth}
+              maxW="40vw"
+              minW="28vw"
+              h="100%"
+              zIndex={3}
+              pt={16}
+              mr={6}
+              ref={desktopBannerViewportRef}
+              overflow="hidden"
             >
-              {games && games.length > 0 ? t("my-games") : t("play")}
-            </Button>
+              <Flex
+                ref={desktopBannerContentRef}
+                w="100%"
+                flexDir="column"
+                gap={3}
+                pr={1}
+                transform={`scale(${desktopBannerScale})`}
+                transformOrigin="top right"
+                transition="transform 0.2s ease-out"
+              >
+                {banners.map((banner, index) => (
+                  <BannerRenderer
+                    key={`${banner.type}-${banner.endTime ?? "no-end"}-${index}`}
+                    banner={banner}
+                  />
+                ))}
+              </Flex>
+            </Flex>
+
+            {useBurnerAcc && (
+              <Flex position="absolute" right="50px" top="36px" zIndex={5}>
+                <Button
+                  size="sm"
+                  onClick={handleLoginClick}
+                  rightIcon={
+                    <img
+                      src={Icons.CARTRIDGE}
+                      width={"14px"}
+                      style={{ marginLeft: "2px" }}
+                    />
+                  }
+                >
+                  {tCommon("login")}
+                </Button>
+              </Flex>
+            )}
+
+            <Flex
+              position="absolute"
+              bottom="90px"
+              left="50%"
+              transform="translateX(-50%)"
+              zIndex={4}
+            >
+              <Button
+                onClick={handlePlayClick}
+                w="300px"
+                variant="secondarySolid"
+              >
+                {games && games.length > 0 ? t("my-games") : t("play")}
+              </Button>
+            </Flex>
           </Flex>
-        )}
-        {isSmallScreen && (
-          <MobileBottomBar
-            firstButton={{
-              label: games && games.length > 0 ? t("my-games") : t("play"),
-              onClick: handlePlayClick,
-            }}
-          />
         )}
       </Flex>
-
-      {isTutorialModalOpen && (
-        <ConfirmationModal
-          close={handleCloseTutorialModal}
-          title={t("tutorialModal.title")}
-          description={t("tutorialModal.description")}
-          confirmText={t("tutorialModal.confirm-text")}
-          cancelText={t("tutorialModal.cancel-text")}
-          onCancel={handleSkipTutorial}
-          onConfirm={handleConfirmTutorial}
-          showCloseButton
-        />
-      )}
       {isVersionModalOpen && (
         <ConfirmationModal
           close={handleSkipVersion}

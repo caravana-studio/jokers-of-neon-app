@@ -23,6 +23,7 @@
     "node": ">=20"
   },
   "dependencies": {
+    "@capacitor-community/apple-sign-in": "^7.1.0",
     "@capacitor-community/native-audio": "^7.0.1",
     "@capacitor-firebase/messaging": "^7.5.0",
     "@capacitor/android": "^7.4.1",
@@ -37,8 +38,8 @@
     "@capacitor/preferences": "^7.0.2",
     "@capacitor/push-notifications": "^7.0.4",
     "@capacitor/share": "^7.0.2",
-    "@cartridge/connector": "0.13.9",
     "@cavos/react": "^1.1.12",
+    "@cartridge/connector": "0.13.12",
     "@chakra-ui/anatomy": "^2.1.1",
     "@chakra-ui/icons": "^2.1.1",
     "@chakra-ui/react": "^2.8.2",

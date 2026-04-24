@@ -78,11 +78,13 @@ export const useShopStore = create<ShopStore>((set, get) => ({
   refetchShopStore: async (client, gameId) => {
     const shopItems = await getShopItems(client, gameId);
     if (shopItems) {
+      const sortedPokerHandItems = shopItems.pokerHandItems.sort(sortByPokerHand);
+
       set({
         specialCards: shopItems.specialCards.sort(sortByCardId),
         modifierCards: shopItems.modifierCards.sort(sortByCardId),
         commonCards: shopItems.commonCards.sort(sortByCardId),
-        pokerHandItems: shopItems.pokerHandItems.sort(sortByPokerHand),
+        pokerHandItems: sortedPokerHandItems,
         packs: shopItems.packs.sort(sortByPackId),
         specialSlotItem: shopItems.specialSlotItem,
         burnItem: shopItems.burnItem,

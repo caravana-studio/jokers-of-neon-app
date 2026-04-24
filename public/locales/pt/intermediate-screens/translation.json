@@ -144,7 +144,7 @@
     "claiming-in-progress": "Reclamando...",
     "intro": {
       "summary": "Como carrego XP?",
-      "learn-more": "Mostre como",
+      "learn-more": "ver mais",
       "popup-title": "Como o XP impulsiona sua temporada",
       "points": {
         "1": "As missões diárias na Home dão XP e reiniciam todos os dias. Cada missão mostra exatamente quanta XP está valendo.",
@@ -205,6 +205,8 @@
     "current-position": "Você está na posição número {{position}}, deseja mantê-lo?",
     "login": "Login",
     "skip": "Pular",
+    "continue-without-account": "Continuar sem conta",
+    "guest-login-prompt": "Você quer fazer login e salvar seu progresso?",
     "gameOver-msj": "FIM DE JOGO",
     "table": {
       "gameOver-leader-msj": "Parabéns! Você é o melhor jogador da classificação!",
@@ -253,6 +255,64 @@
       "final-score": "- Pontuação final: {{score}} -",
       "continue-btn": "continuar",
       "endless-mode": "Modo infinito"
+    }
+  },
+  "shop-tier-unlocked": {
+    "new-item": "NOVO ITEM",
+    "unlocked": "DESBLOQUEADO",
+    "placeholder": "PLACEHOLDER",
+    "rarity-label": "RARIDADE {{rarity}}",
+    "description": "{{item}} de raridade {{rarity}} agora está disponível na loja.",
+    "unlockable-descriptions": {
+      "modifiers_c": "As Modificadoras ja comecam desbloqueadas desde o inicio.",
+      "specials_c": "As Especiais sao o centro de cada partida: efeitos globais que podem mudar maos, shops e o ritmo do jogo.",
+      "traditionals": "Agora voce tambem pode comprar cartas tradicionais nos shops e montar seu baralho com mais liberdade.",
+      "modifiers_ba": "Novas modificadoras de maior raridade e efeitos mais fortes foram desbloqueadas.",
+      "powerups_cb": "Consumiveis de uso imediato que adicionam pontos ou multiplicador nos momentos decisivos.",
+      "slot_2": "Agora voce pode comprar ate 2 slots de cartas especiais nos shops.",
+      "levelups": "Evolua suas maos favoritas para que fiquem mais fortes a cada rodada.",
+      "specials_b": "Cartas especiais mais poderosas e de maior raridade foram desbloqueadas.",
+      "slot_3": "Agora voce pode comprar ate 3 slots de cartas especiais nos shops.",
+      "lootboxes": "As loot boxes entregam recompensas surpresa com conteudo valioso para sua colecao.",
+      "neon": "As cartas Neon funcionam como as tradicionais para montar jogadas, mas sao mais poderosas. Faca uma jogada composta somente por cartas Neon para aumentar ainda mais o poder delas.",
+      "specials_a": "Cartas especiais de maior raridade, com efeitos mais fortes, ja estao disponiveis.",
+      "powerups_as": "Power-ups de maior raridade trazem efeitos mais potentes para viradas decisivas.",
+      "slot_4": "Agora voce pode comprar ate 4 slots de cartas especiais nos shops.",
+      "specials_s": "As cartas especiais mais raras e poderosas agora estao desbloqueadas.",
+      "slot_5": "Agora voce pode comprar ate 5 slots de cartas especiais nos shops.",
+      "slot_6": "Agora voce pode comprar ate 6 slots de cartas especiais nos shops.",
+      "burn": "A Burn Card permite remover cartas do baralho para refinar a estrategia.",
+      "play_4": "De agora em diante, cada run comeca com 4 jogadas.",
+      "play_5": "De agora em diante, cada run comeca com 5 jogadas.",
+      "discard_4": "De agora em diante, cada run comeca com 4 descartes.",
+      "discard_5": "De agora em diante, cada run comeca com 5 descartes.",
+      "slot_7": "Agora voce pode comprar ate 7 slots de cartas especiais nos shops."
+    },
+    "next-run-hint": "Consiga-os na loja na sua próxima run.",
+    "continue-btn": "CONTINUAR",
+    "go-home-btn": "IR PARA INÍCIO",
+    "play-again-btn": "JOGAR NOVAMENTE",
+    "items": {
+      "modifiers": "MODIFICADORAS",
+      "specials": "SPECIAL CARDS",
+      "traditional-cards": "CARTAS TRADICIONAIS",
+      "power-ups": "POWER UPS",
+      "level-ups": "UPGRADES DE NIVEL",
+      "loot-boxes": "CAIXAS",
+      "neon-cards": "CARTAS NEON",
+      "burn-card": "BURN A CARD",
+      "slot": "SLOT EXTRA",
+      "play": "1 JOGADA EXTRA",
+      "discard": "1 DESCARTE EXTRA"
+    },
+    "rarity": {
+      "c": "C",
+      "b": "B",
+      "a": "A",
+      "s": "S",
+      "cb": "C-B",
+      "ba": "B-A",
+      "as": "A-S"
     }
   },
   "special-cards": {
@@ -343,7 +403,9 @@
     "season-1": "TEMPORADA 1",
     "early-access": "ACESSO ANTECIPADO",
     "login": "ENTRAR",
+    "continue-with-controller": "Continuar com controller",
     "guest": "CONVIDADO",
+    "continue-with-apple": "Continuar com Apple",
     "terms": {
       "agreement": "Ao continuar, você concorda com os",
       "link": "Termos e Condições"

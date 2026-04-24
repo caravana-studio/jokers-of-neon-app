@@ -1,6 +1,8 @@
-import { Button, Flex, Heading } from "@chakra-ui/react";
-import { useEffect } from "react";
+import { keyframes } from "@emotion/react";
+import { Button, Flex, Heading, Text } from "@chakra-ui/react";
+import { useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import Joyride from "react-joyride";
 import { useNavigate } from "react-router-dom";
 import { DelayedLoading } from "../../components/DelayedLoading";
 import { DefaultInfo } from "../../components/Info/DefaultInfo";
@@ -8,9 +10,14 @@ import { MobileBottomBar } from "../../components/MobileBottomBar";
 import { MobileDecoration } from "../../components/MobileDecoration";
 import { PositionedGameDeck } from "../../components/PositionedGameDeck";
 import { PriceBox } from "../../components/PriceBox";
+import {
+  TUTORIAL_FLOATER_PROPS,
+  TUTORIAL_STYLE,
+} from "../../constants/gameTutorial";
 import { GameStateEnum } from "../../dojo/typescript/custom";
 import { useShopActions } from "../../dojo/useShopActions";
 import { useCustomNavigate } from "../../hooks/useCustomNavigate";
+import { useProgressiveShopTutorial } from "../../hooks/useProgressiveShopTutorial";
 import { useRedirectByGameState } from "../../hooks/useRedirectByGameState";
 import { useGameContext } from "../../providers/GameProvider";
 import { useStore } from "../../providers/StoreProvider";
@@ -22,7 +29,7 @@ import { logEvent } from "../../utils/analytics";
 import { useNextLevelButton } from "../store/StoreElements/useNextLevelButton";
 import { getComponent } from "./storeComponents/getComponent";
 import { StoreTopBar } from "./storeComponents/TopBar/StoreTopBar";
-import { storesConfig } from "./storesConfig";
+import { getStoreConfigById } from "./storesConfig";
 
 const DECK_SHOP_CONFIG_ID = 1;
 const GLOBAL_SHOP_CONFIG_ID = 2;
@@ -30,6 +37,18 @@ const SPECIALS_SHOP_CONFIG_ID = 3;
 const LEVEL_UPS_SHOP_CONFIG_ID = 4;
 const MODIFIERS_SHOP_CONFIG_ID = 5;
 const MIX_SHOP_CONFIG_ID = 6;
+
+const unlockSlotPulseAnimation = keyframes`
+  0% {
+    box-shadow: 0 0 10px 3px ${BLUE};
+  }
+  50% {
+    box-shadow: 0 0 16px 8px ${BLUE};
+  }
+  100% {
+    box-shadow: 0 0 10px 3px ${BLUE};
+  }
+`;
 
 export const SHOP_ID_MAP = {
   [DECK_SHOP_CONFIG_ID]: "deck",
@@ -43,10 +62,46 @@ export const DynamicStorePage = () => {
   const { t } = useTranslation("store", { keyPrefix: "store.dynamic" });
 
   const { setLoading } = useStore();
-  const { specialSlotItem } = useShopStore();
+  const {
+    specialSlotItem,
+    loadedItems,
+    commonCards,
+    modifierCards,
+    specialCards,
+    packs,
+    pokerHandItems,
+    powerUps,
+    burnItem,
+  } = useShopStore();
   const { shopId } = useGameStore();
-  const store = storesConfig.find(
-    (s) => s.id === SHOP_ID_MAP[shopId as keyof typeof SHOP_ID_MAP]
+
+  const sectionCounts = useMemo(
+    () => ({
+      traditionals: commonCards.length,
+      modifiers: modifierCards.length,
+      specials: specialCards.length,
+      "loot-boxes": packs.length,
+      "level-up-table": pokerHandItems.length,
+      "power-ups": powerUps.length,
+      burn: burnItem && Number(burnItem.cost) > 0 ? 1 : 0,
+    }),
+    [
+      burnItem,
+      commonCards.length,
+      modifierCards.length,
+      packs.length,
+      pokerHandItems.length,
+      powerUps.length,
+      specialCards.length,
+    ]
+  );
+
+  const store = useMemo(
+    () =>
+      getStoreConfigById(SHOP_ID_MAP[shopId as keyof typeof SHOP_ID_MAP], {
+        sectionCounts,
+      }),
+    [sectionCounts, shopId]
   );
 
   useEffect(() => {
@@ -54,18 +109,124 @@ export const DynamicStorePage = () => {
   }, [shopId]);
 
   const { isSmallScreen } = useResponsiveValues();
+  const {
+    run: runShopTutorial,
+    steps: shopTutorialSteps,
+    locale: shopTutorialLocale,
+    handleCallback: onShopTutorialCallback,
+  } = useProgressiveShopTutorial({
+    canStart: loadedItems,
+  });
 
   const distribution =
     store?.distribution[isSmallScreen ? "mobile" : "desktop"];
+  const sectionAvailability = useMemo(
+    () => ({
+      traditionals: sectionCounts.traditionals > 0,
+      modifiers: sectionCounts.modifiers > 0,
+      specials: sectionCounts.specials > 0,
+      "loot-boxes": sectionCounts["loot-boxes"] > 0,
+      "level-up-table": sectionCounts["level-up-table"] > 0,
+      "power-ups": sectionCounts["power-ups"] > 0,
+      burn: sectionCounts.burn > 0,
+    }),
+    [sectionCounts]
+  );
+
+  const resolvedDistribution = useMemo(() => {
+    if (!distribution) return undefined;
+    if (!loadedItems) return distribution;
+
+    const isColumnAvailable = (id: string) =>
+      sectionAvailability[id as keyof typeof sectionAvailability] ?? true;
+
+    const availableColumns = distribution.rows
+      .flatMap((row) => row.columns)
+      .filter((col) => isColumnAvailable(col.id))
+      .filter(
+        (col, index, self) => self.findIndex((c) => c.id === col.id) === index
+      );
+
+    if (!availableColumns.length) {
+      return distribution;
+    }
+
+    if (availableColumns.length === 1) {
+      return {
+        rows: [
+          {
+            height: 100,
+            columns: [
+              {
+                id: availableColumns[0].id,
+                width: 100,
+              },
+            ],
+          },
+        ],
+      };
+    }
+
+    if (
+      (store?.id === "deck" || store?.id === "mix") &&
+      availableColumns.length === 2
+    ) {
+      return {
+        rows: availableColumns.map((col) => ({
+          height: 50,
+          columns: [
+            {
+              id: col.id,
+              width: 100,
+            },
+          ],
+        })),
+      };
+    }
+
+    const filteredRows = distribution.rows
+      .map((row) => ({
+        ...row,
+        columns: row.columns.filter((col) => isColumnAvailable(col.id)),
+      }))
+      .filter((row) => row.columns.length > 0);
+
+    if (!filteredRows.length) {
+      return distribution;
+    }
+
+    const totalHeight = filteredRows.reduce((sum, row) => sum + row.height, 0);
+
+    return {
+      rows: filteredRows.map((row) => {
+        const totalWidth = row.columns.reduce((sum, col) => sum + col.width, 0);
+        return {
+          ...row,
+          height: totalHeight > 0 ? (row.height / totalHeight) * 100 : row.height,
+          columns: row.columns.map((col) => ({
+            ...col,
+            width: totalWidth > 0 ? (col.width / totalWidth) * 100 : col.width,
+          })),
+        };
+      }),
+    };
+  }, [distribution, loadedItems, sectionAvailability, store?.id]);
   const navigate = useNavigate();
   const customNavigate = useCustomNavigate();
   const { onShopSkip } = useGameContext();
-  const { specialSlots, maxSpecialCards, id: gameId } = useGameStore();
-  const slotsLen = specialSlots;
+  const {
+    specialSlots,
+    maxSpecialCards,
+    specialCards: playerSpecialCards,
+    id: gameId,
+  } = useGameStore();
+
+  const noAvailableSpecialSlots = playerSpecialCards.length >= specialSlots;
+  const canBuyMoreSpecialSlots = specialSlots < maxSpecialCards;
 
   const { skipShop } = useShopActions();
 
-  const { nextLevelButton, nextLevelButtonProps } = useNextLevelButton();
+  const { nextLevelButtonProps } = useNextLevelButton();
 
   useRedirectByGameState();
 
@@ -96,6 +257,7 @@ export const DynamicStorePage = () => {
 
   const nextButton = (
     <Button
+      className="progressive-shop-next-button"
       onClick={handleNextLevelClick}
       h={{ base: "28px", sm: "unset" }}
       w={{ base: "100%", sm: "280px" }}
@@ -108,7 +270,23 @@ export const DynamicStorePage = () => {
 
   return (
     <DelayedLoading>
+      <Joyride
+        steps={shopTutorialSteps}
+        run={runShopTutorial}
+        continuous
+        showProgress={false}
+        callback={onShopTutorialCallback}
+        styles={TUTORIAL_STYLE}
+        floaterProps={TUTORIAL_FLOATER_PROPS}
+        locale={shopTutorialLocale}
+        disableCloseOnEsc
+        disableOverlayClose
+        hideCloseButton
+        spotlightClicks={false}
+        disableScrolling
+      />
       <Flex
+        className="shop-tutorial-root"
         height="100%"
         width="100%"
         flexDirection="column"
@@ -141,14 +319,29 @@ export const DynamicStorePage = () => {
             gap={{ base: 1.5, sm: 6 }}
             px={{ base: 2, sm: 0 }}
           >
-            {distribution?.rows.map((row, rowIndex) => (
+            {resolvedDistribution?.rows.map((row, rowIndex) => (
               <Flex
                 key={rowIndex}
                 h={`${row.height}%`}
                 w="100%"
                 gap={{ base: 1.5, sm: 6 }}
               >
-                {row.columns.map((col, colIndex) => (
+                {row.columns.map((col, colIndex) => {
+                  const isSpecialsColumn = col.id === "specials";
+                  const showUnlockSlotButton =
+                    isSpecialsColumn && canBuyMoreSpecialSlots;
+                  const showManageSpecialsButton =
+                    isSpecialsColumn &&
+                    noAvailableSpecialSlots &&
+                    !canBuyMoreSpecialSlots;
+                  const showUnlockSlotButtonInHeader =
+                    showUnlockSlotButton && !noAvailableSpecialSlots;
+                  const showUnlockSlotButtonInOverlay =
+                    showUnlockSlotButton && noAvailableSpecialSlots;
+                  const hasSpecialsAction =
+                    showUnlockSlotButtonInHeader || showManageSpecialsButton;
+
+                  return (
                   <Flex
                     key={colIndex}
                     w={`${col.width}%`}
@@ -168,7 +361,9 @@ export const DynamicStorePage = () => {
                       alignItems="center"
                       justifyContent={{
                         base:
-                          col.id === "specials" ? "space-between" : "center",
+                          isSpecialsColumn && hasSpecialsAction
+                            ? "space-between"
+                            : "center",
                         sm: "space-between",
                       }}
                     >
@@ -178,7 +373,7 @@ export const DynamicStorePage = () => {
                         </Heading>
                         <DefaultInfo title={col.id} />
                       </Flex>
-                      {col.id === "specials" && slotsLen != maxSpecialCards && (
+                      {showUnlockSlotButtonInHeader && (
                         <Flex gap={isSmallScreen ? 2 : 8} alignItems="center">
                           <PriceBox
                             price={specialSlotItem?.cost ?? 0}
@@ -192,6 +387,11 @@ export const DynamicStorePage = () => {
                             px={{ base: 3, sm: 6 }}
                             borderRadius={7}
                             boxShadow={`0 0 10px 5px ${BLUE}`}
+                            animation={
+                              noAvailableSpecialSlots
+                                ? `${unlockSlotPulseAnimation} 1.4s ease-in-out infinite`
+                                : undefined
+                            }
                             onClick={() => {
                               navigate("/preview/slot");
                             }}
@@ -200,10 +400,91 @@ export const DynamicStorePage = () => {
                           </Button>
                         </Flex>
                       )}
+                      {showManageSpecialsButton && (
+                        <Flex gap={isSmallScreen ? 2 : 6} alignItems="center">
+                          <Text
+                            fontSize={{ base: "9px", sm: "12px" }}
+                            textAlign="right"
+                            lineHeight={1.2}
+                          >
+                            {t("all-slots-occupied")}
+                          </Text>
+                          <Button
+                            size="xs"
+                            fontSize={{ base: "9px", sm: "12px" }}
+                            px={{ base: 3, sm: 6 }}
+                            borderRadius={7}
+                            onClick={() => {
+                              navigate("/manage");
+                            }}
+                          >
+                            {t("my-specials")}
+                          </Button>
+                        </Flex>
+                      )}
                     </Flex>
-                    {getComponent(col.id, col.doubleRow ?? false)}
+
+                    <Flex position="relative" flexGrow={1}>
+                      {isSpecialsColumn && noAvailableSpecialSlots && (
+                        <Flex
+                          position="absolute"
+                          inset={0}
+                          zIndex={2}
+                          pointerEvents="none"
+                          flexDirection="column"
+                          justifyContent="center"
+                          alignItems="center"
+                          gap={2}
+                        >
+                          <Text
+                            textAlign="center"
+                            fontSize={{ base: "11px", sm: "15px" }}
+                            fontWeight="600"
+                            color="white"
+                            bg="rgba(0, 0, 0, 0.75)"
+                            borderRadius="8px"
+                            px={{ base: 2, sm: 3 }}
+                            py={1}
+                          >
+                            {t("no-space-overlay")}
+                          </Text>
+                          {showUnlockSlotButtonInOverlay && (
+                            <Flex gap={isSmallScreen ? 2 : 6} alignItems="center">
+                              <PriceBox
+                                price={specialSlotItem?.cost ?? 0}
+                                purchased={false}
+                                discountPrice={specialSlotItem?.discount_cost}
+                                absolutePosition={false}
+                              />
+                              <Button
+                                size="xs"
+                                fontSize={{ base: "9px", sm: "12px" }}
+                                px={{ base: 3, sm: 6 }}
+                                borderRadius={7}
+                                boxShadow={`0 0 10px 5px ${BLUE}`}
+                                animation={`${unlockSlotPulseAnimation} 1.4s ease-in-out infinite`}
+                                pointerEvents="auto"
+                                onClick={() => {
+                                  navigate("/preview/slot");
+                                }}
+                              >
+                                {t("unlock-slot")}
+                              </Button>
+                            </Flex>
+                          )}
+                        </Flex>
+                      )}
+
+                      <Flex
+                        w="100%"
+                        h="100%"
+                      >
+                        {getComponent(col.id, col.doubleRow ?? false)}
+                      </Flex>
+                    </Flex>
                   </Flex>
-                ))}
+                  );
+                })}
               </Flex>
             ))}
           </Flex>
@@ -228,7 +509,10 @@ export const DynamicStorePage = () => {
               },
               label: t("manage-items"),
             }}
-            secondButton={nextLevelButtonProps}
+            secondButton={{
+              ...nextLevelButtonProps,
+              className: "progressive-shop-next-button",
+            }}
           />
         )}
         {!isSmallScreen && <PositionedGameDeck inStore />}

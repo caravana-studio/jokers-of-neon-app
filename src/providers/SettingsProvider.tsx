@@ -167,6 +167,7 @@ const buildDefaultPreferences = (): UserPreferences => ({
   push_daily_packs_enabled: true,
   push_extra1_enabled: true,
   push_extra2_enabled: true,
+  skip_all_tutorials: false,
   timezone: getDefaultTimezone(),
   language: getDefaultLanguage(),
   sound_volume: DEFAULT_SOUND_VOLUME,
@@ -201,6 +202,9 @@ interface SettingsContextType {
   setPushExtra1Enabled: (value: boolean) => void;
   pushExtra2Enabled: boolean;
   setPushExtra2Enabled: (value: boolean) => void;
+  skipAllTutorials: boolean;
+  setSkipAllTutorials: (value: boolean) => void;
+  preferencesLoaded: boolean;
   timezone: string;
   setTimezone: (value: string) => void;
   language: string;
@@ -268,12 +272,16 @@ export const SettingsProvider = ({
   const [pushExtra2Enabled, setPushExtra2EnabledState] = useState(
     defaultPreferences.push_extra2_enabled
   );
+  const [skipAllTutorials, setSkipAllTutorialsState] = useState(
+    defaultPreferences.skip_all_tutorials
+  );
   const [timezone, setTimezoneState] = useState(
     defaultPreferences.timezone
   );
   const [language, setLanguageState] = useState(
     defaultPreferences.language
   );
+  const [preferencesLoaded, setPreferencesLoaded] = useState(false);
   const [isMusicPlaying, setIsMusicPlaying] = useState(false);
   const [sound, setSound] = useState<Howl | undefined>(undefined);
   const [nativePlaybackKey, setNativePlaybackKey] = useState(0);
@@ -369,6 +377,12 @@ export const SettingsProvider = ({
           defaultPreferences.push_extra2_enabled
         )
       );
+      setSkipAllTutorialsState(
+        normalizeBoolean(
+          preferences.skip_all_tutorials,
+          defaultPreferences.skip_all_tutorials
+        )
+      );
       setTimezoneState(timezoneValue);
       setLanguageState(languageValue);
     },
@@ -452,6 +466,12 @@ export const SettingsProvider = ({
         sanitized.push_extra2_enabled = normalizeBoolean(
           patch.push_extra2_enabled,
           defaultPreferences.push_extra2_enabled
+        );
+      }
+      if (patch.skip_all_tutorials !== undefined) {
+        sanitized.skip_all_tutorials = normalizeBoolean(
+          patch.skip_all_tutorials,
+          defaultPreferences.skip_all_tutorials
         );
       }
 
@@ -607,6 +627,14 @@ export const SettingsProvider = ({
           )
         );
       }
+      if (patch.skip_all_tutorials !== undefined) {
+        setSkipAllTutorialsState(
+          normalizeBoolean(
+            patch.skip_all_tutorials,
+            defaultPreferences.skip_all_tutorials
+          )
+        );
+      }
 
       if (patch.timezone !== undefined) {
         setTimezoneState(
@@ -664,10 +692,14 @@ export const SettingsProvider = ({
 
   useEffect(() => {
     let isActive = true;
+    setPreferencesLoaded(false);
 
     const loadPreferences = async () => {
       try {
-        if (!walletAddress) return;
+        if (!walletAddress) {
+          applyPreferences(defaultPreferences);
+          return;
+        }
         const preferences = await getUserPreferences(walletAddress);
         if (!isActive) return;
 
@@ -685,6 +717,10 @@ export const SettingsProvider = ({
       } catch (error) {
         console.warn("SettingsProvider: failed to load preferences", error);
         applyPreferences(defaultPreferences);
+      } finally {
+        if (isActive) {
+          setPreferencesLoaded(true);
+        }
       }
     };
 
@@ -693,7 +729,13 @@ export const SettingsProvider = ({
     return () => {
       isActive = false;
     };
-  }, [applyPreferences, defaultPreferences, toApiPreferences, walletAddress]);
+  }, [
+    applyPreferences,
+    defaultPreferences,
+    setPreferencesLoaded,
+    toApiPreferences,
+    walletAddress,
+  ]);
 
   useEffect(() => {
     let newActiveSongPath: string;
@@ -999,6 +1041,13 @@ export const SettingsProvider = ({
     [updateSettings]
   );
 
+  const setSkipAllTutorials = useCallback(
+    (value: boolean) => {
+      updateSettings({ skip_all_tutorials: value });
+    },
+    [updateSettings]
+  );
+
   const setTimezone = useCallback(
     (value: string) => {
       updateSettings({ timezone: value });
@@ -1042,6 +1091,9 @@ export const SettingsProvider = ({
         setPushExtra1Enabled,
         pushExtra2Enabled,
         setPushExtra2Enabled,
+        skipAllTutorials,
+        setSkipAllTutorials,
+        preferencesLoaded,
         timezone,
         setTimezone,
         language,

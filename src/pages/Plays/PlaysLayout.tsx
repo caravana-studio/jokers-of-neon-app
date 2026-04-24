@@ -46,8 +46,8 @@ export const PlaysLayout = () => {
           variant="solid"
           onClick={() =>
             isTutorial
-              ? navigate("/demo")
-              : navigate("/demo", { state: { skipRageAnimation: true } })
+              ? navigate("/round")
+              : navigate("/round", { state: { skipRageAnimation: true } })
           }
         >
           {t("game.plays.go-back-btn")}

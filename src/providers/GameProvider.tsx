@@ -14,6 +14,7 @@ import {
   clearRound,
   discardSfx,
   negativeMultiSfx,
+  popSfx,
 } from "../constants/sfx.ts";
 
 // Number of pitch variants for scoring sounds (points_0.mp3 to points_17.mp3)
@@ -52,11 +53,16 @@ import {
 import { buildOptimisticPowerUpEvents } from "../utils/playEvents/buildOptimisticPowerUpEvents.ts";
 import { filterOptimisticEventsFromPlayEvents } from "../utils/playEvents/filterOptimisticEventsFromPlayEvents.ts";
 import { filterSilentCardEventsFromPlayEvents } from "../utils/playEvents/filterSilentCardEventsFromPlayEvents.ts";
+import {
+  PROGRESSIVE_TUTORIAL_IDS,
+} from "../utils/progressiveTutorialStorage";
+import { resolvePostActionKind } from "../utils/playEvents/postAction.ts";
+import type { PostActionKind } from "../utils/playEvents/postAction.ts";
 import { useCardData } from "./CardDataProvider.tsx";
 import { gameProviderDefaults } from "./gameProviderDefaults.ts";
 import { PracticeGameContext } from "./PracticeGameProvider.tsx";
 import { useSettings } from "./SettingsProvider.tsx";
-import { TutorialGameContext } from "./TutorialGameProvider.tsx";
+import { useTutorialStore } from "../state/useTutorialStore.ts";
 
 export interface IGameContext {
   executeCreateGame: (isTournament?: boolean) => void;
@@ -86,13 +92,8 @@ const GameContext = createContext<IGameContext>(gameProviderDefaults);
 
 export const useGameContext = () => {
   const location = useLocation();
-  const inTutorial = location.pathname === "/tutorial";
   const inPractice = location.pathname === "/practice";
-  const context = inTutorial
-    ? TutorialGameContext
-    : inPractice
-      ? PracticeGameContext
-      : GameContext;
+  const context = inPractice ? PracticeGameContext : GameContext;
   return useContext(context);
 };
 
@@ -106,6 +107,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     addPoints,
     addMulti,
     remainingPlays,
+    totalPlays,
     discard: stateDiscard,
     play: statePlay,
     rollbackPlay,
@@ -134,10 +136,14 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setState,
     addRerolls,
     advanceLevel,
+    targetScore,
     refetchDebuffedPlayerHands,
     refetchSpecialCards,
     refetchPlays,
     setIsTournament,
+    setShopTierUnlockedEvent,
+    clearShopTierUnlockedEvent,
+    setPendingTutorialRewardsRedirect,
   } = useGameStore();
 
   const {
@@ -159,8 +165,13 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const { fetchDeck } = useDeckStore();
 
-  const { setPlayAnimation, setDiscardAnimation, setLevelUpHand } =
-    useAnimationStore();
+  const {
+    setPlayAnimation,
+    setDiscardAnimation,
+    setLevelUpHand,
+    triggerPlayRollbackPulse,
+    triggerDiscardRollbackPulse,
+  } = useAnimationStore();
 
   const { getCardData } = useCardData();
 
@@ -185,7 +196,9 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const { showErrorToast } = useCustomToast();
 
-  const { sfxVolume, animationSpeed } = useSettings();
+  const { sfxVolume, animationSpeed, skipAllTutorials } = useSettings();
+  const completedTutorials = useTutorialStore((state) => state.completed);
+  const tutorialsLoaded = useTutorialStore((state) => state.loaded);
 
   const { play: discardSound } = useAudio(discardSfx, sfxVolume);
   // Use pitched audio for scoring sounds (points_0.mp3 to points_17.mp3)
@@ -194,6 +207,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const { play: negativeMultiSound } = useAudio(negativeMultiSfx, sfxVolume);
   const { play: clearRoundSound } = useAudio(clearRound, sfxVolume);
   const { play: clearLevelSound } = useAudio(clearLevel, sfxVolume);
+  const { play: popSound } = useAudio(popSfx, sfxVolume);
 
   const playAnimationDuration = getPlayAnimationDuration(level, animationSpeed);
 
@@ -219,6 +233,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     showSpecials();
     resetPowerUps();
     resetSpecials();
+    clearShopTierUnlockedEvent();
+    setPendingTutorialRewardsRedirect(false);
     refetchSpecialCardsData(modId, gameId, specialCards);
     setState(GameStateEnum.NotSet);
   };
@@ -287,7 +303,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
               setPreSelectionLocked(false);
               setRoundRewards(undefined);
               setState(GameStateEnum.NotSet);
-              navigate("/demo");
+              navigate("/round");
             } else {
               showErrorToast("Error creating game");
               console.error("Error creating game", response);
@@ -318,6 +334,23 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   };
 
   const handlePlaySideEffects = (response: PlayEvents) => {
+    console.log("[unlock-debug] handlePlaySideEffects", {
+      gameId,
+      gameState: response.gameOver ? "GameOver" : "InProgress",
+      shopTierUnlockedEventFromResponse: response.shopTierUnlockedEvent,
+    });
+
+    if (response.shopTierUnlockedEvent) {
+      console.log("[unlock-debug] storing shop tier unlocked event", {
+        game_id: gameId,
+        unlock_id: response.shopTierUnlockedEvent.unlock_id,
+      });
+      setShopTierUnlockedEvent({
+        game_id: gameId,
+        unlock_id: response.shopTierUnlockedEvent.unlock_id,
+      });
+    }
+
     fetchDeck(client, gameId, getCardData);
     refetchDebuffedPlayerHands(client, gameId);
     refetchSpecialCardsData(modId, gameId, specialCards);
@@ -330,18 +363,84 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         addRerolls(response.detailEarned.rerolls);
     }
 
-    if (latestPathRef.current !== "/demo") {
-      refetchGameStore(client, gameId).catch((error) => {
+    if (latestPathRef.current !== "/round") {
+      refetchGameStore(client, gameId, account.address).catch((error) => {
         console.error("Error refetching game state after background action", error);
       });
     }
   };
 
+  const applyPostActionRollback = (
+    response: PlayEvents,
+    fallbackActionType: PostActionKind
+  ) => {
+    if (!response.postActionEvent) {
+      return;
+    }
+
+    const actionType = resolvePostActionKind(
+      response.postActionEvent.action_type,
+      fallbackActionType
+    );
+
+    if (actionType === "play") {
+      rollbackPlay();
+      return;
+    }
+
+    if (actionType === "discard") {
+      rollbackDiscard();
+    }
+  };
+
+  const triggerPostActionPulse = (
+    actionType: PostActionKind,
+    durationMs?: number
+  ) => {
+    if (actionType === "play") {
+      triggerPlayRollbackPulse(durationMs);
+      return;
+    }
+
+    triggerDiscardRollbackPulse(durationMs);
+  };
+
+  const handlePostActionAnimationStart = (
+    response: PlayEvents,
+    fallbackActionType: PostActionKind,
+    pulseDurationMs: number
+  ) => {
+    applyPostActionRollback(response, fallbackActionType);
+    triggerPostActionPulse(fallbackActionType, pulseDurationMs);
+  };
+
   const runResolvedPlayAnimation = (
     response: PlayEvents,
     setAnimation: (playing: boolean) => void,
-    pitchState?: { index: number }
+    pitchState?: { index: number },
+    actionContext?: PostActionKind
   ): number => {
+    const firstScoreTutorialPending =
+      !skipAllTutorials &&
+      tutorialsLoaded &&
+      !completedTutorials[PROGRESSIVE_TUTORIAL_IDS.GAME_FIRST_SCORE];
+    const levelPassedInfo = response.levelPassed;
+    const detailEarned = response.detailEarned;
+    const reachedRewardsFlow =
+      Boolean(levelPassedInfo && detailEarned) &&
+      Number(levelPassedInfo?.level_passed ?? 0) === 0;
+    const clearedOnFirstPlay =
+      typeof detailEarned?.hands_left === "number" &&
+      totalPlays > 0 &&
+      detailEarned.hands_left === totalPlays - 1;
+    const deferRewardsNavigation =
+      firstScoreTutorialPending &&
+      reachedRewardsFlow &&
+      clearedOnFirstPlay &&
+      response.score >= targetScore;
+
+    setPendingTutorialRewardsRedirect(deferRewardsNavigation);
+
     console.log("events", response);
     return animatePlayDiscard({
       playEvents: response,
@@ -381,13 +480,24 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       address: account.address,
       clearRoundSound,
       clearLevelSound,
+      popSound,
+      deferRewardsNavigation,
+      actionContext,
+      onPostActionAnimationStart: (resolvedActionType, pulseDurationMs) => {
+        handlePostActionAnimationStart(
+          response,
+          resolvedActionType,
+          pulseDurationMs
+        );
+      },
     });
   };
 
   const queueResolvedPlayAnimation = (
     response: PlayEvents,
     setAnimation: (playing: boolean) => void,
-    pitchState?: { index: number }
+    pitchState?: { index: number },
+    actionContext?: PostActionKind
   ) => {
     playAnimationQueueRef.current = playAnimationQueueRef.current
       .catch(() => undefined)
@@ -395,7 +505,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         const animationDuration = runResolvedPlayAnimation(
           response,
           setAnimation,
-          pitchState
+          pitchState,
+          actionContext
         );
         if (animationDuration <= 0) {
           return Promise.resolve();
@@ -412,18 +523,20 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setAnimation,
     onStateChange,
     rollback,
+    actionType,
   }: {
     action: () => Promise<PlayEvents | undefined>;
     setAnimation: (playing: boolean) => void;
     onStateChange: () => void;
     rollback: () => void;
+    actionType: PostActionKind;
   }) => {
     setPreSelectionLocked(true);
     onStateChange();
     action()
       .then((response) => {
         if (response) {
-          runResolvedPlayAnimation(response, setAnimation);
+          runResolvedPlayAnimation(response, setAnimation, undefined, actionType);
           handlePlaySideEffects(response);
         } else {
           rollback();
@@ -534,7 +647,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
           queueResolvedPlayAnimation(
             filteredResponse,
             setPlayAnimation,
-            playPitchState
+            playPitchState,
+            "play"
           );
           handlePlaySideEffects(response);
         } else {
@@ -562,6 +676,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       setAnimation: setDiscardAnimation,
       onStateChange: stateDiscard,
       rollback: rollbackDiscard,
+      actionType: "discard",
     });
   };
 
@@ -622,7 +737,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         return success;
       })
       .catch(() => {
-        refetchGameStore(client, gameId);
+        refetchGameStore(client, gameId, account.address);
         return false;
       })
       .finally(() => {
@@ -662,7 +777,10 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     }
 
     if (gameState === GameStateEnum.GameOver) {
-      if (location.pathname === "/demo") {
+      console.log("[unlock-debug] game state changed to GameOver", {
+        pathname: location.pathname,
+      });
+      if (location.pathname === "/round") {
         let cancelled = false;
         let timeoutId: number | undefined;
 
@@ -690,7 +808,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       }
     } else if (
       gameState === GameStateEnum.Store &&
-      location.pathname === "/demo"
+      location.pathname === "/round"
     ) {
       console.log("redirecting to store");
       navigate("/store");

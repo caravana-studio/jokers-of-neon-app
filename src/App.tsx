@@ -25,6 +25,7 @@ import { PageTransitionsProvider } from "./providers/PageTransitionsProvider";
 import { RevenueCatProvider } from "./providers/RevenueCatProvider";
 import { SeasonPassProvider } from "./providers/SeasonPassProvider";
 import { useSkinPreferencesStore } from "./state/useSkinPreferencesStore";
+import { useTutorialStore } from "./state/useTutorialStore";
 import ZoomPrevention from "./utils/ZoomPrevention";
 import { registerPushListeners } from "./utils/notifications/registerPushListeners";
 
@@ -39,6 +40,8 @@ function App() {
   const lastSkinPreferencesAddress = useSkinPreferencesStore(
     (store) => store.lastUserAddress
   );
+  const initializeTutorials = useTutorialStore((store) => store.initialize);
+  const resetTutorials = useTutorialStore((store) => store.reset);
 
   const navigate = useNavigate();
   const username = useUsername();
@@ -65,6 +68,16 @@ function App() {
     refetchSkinPreferences,
     resetSkinPreferences,
   ]);
+
+  useEffect(() => {
+    if (!account?.address) {
+      resetTutorials();
+      void initializeTutorials();
+      return;
+    }
+
+    void initializeTutorials(account.address);
+  }, [account?.address, initializeTutorials, resetTutorials]);
 
   useEffect(() => {
     const askForTracking = async () => {

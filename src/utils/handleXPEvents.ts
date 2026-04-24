@@ -1,5 +1,3 @@
-import { postDailyMissionXP } from "../api/postDailyMissionXP";
-import { DAILY_MISSIONS } from "../data/dailyMissions";
 import { DojoEvent } from "../types/DojoEvent";
 import { getDailyMissionCompleteEvent } from "./playEvents/getDailyMissionCompleteEvent";
 import { getLevelCompleteEvent } from "./playEvents/getLevelCompleteEvent";
@@ -21,20 +19,8 @@ export const handleXPEvents = async (
 
   if (dailyMissionEvent && dailyMissionEvent.length > 0) {
     achievementSound();
-    const dailyMissionIds = dailyMissionEvent.map(
-      (mission) => mission.dailyMissionId
-    );
 
     showDailyMissionToast(dailyMissionEvent);
-
-    dailyMissionIds.forEach((id) => {
-      const missionDifficulty = DAILY_MISSIONS[id];
-      missionDifficulty &&
-        postDailyMissionXP({
-          address,
-          missionDifficulty,
-        }).catch((e) => console.error("Error posting daily mission XP", e));
-    });
 
     // Register daily mission milestone for referral tracking
     registerMilestone(address, "daily_mission_completed", undefined, accountType, username ?? undefined)

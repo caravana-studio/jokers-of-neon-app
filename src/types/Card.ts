@@ -28,6 +28,8 @@ export interface Card {
   temporary_price?: number;
   selling_price?: number;
   type?: CardTypes;
+  specialEffectOverrideOriginalEffectCardId?: number;
+  specialEffectOverrideCopiedEffectCardId?: number;
 }
 
 export interface StaticEffectCard extends Effect {

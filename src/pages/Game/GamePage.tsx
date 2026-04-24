@@ -1,7 +1,7 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { RemoveScroll } from "react-remove-scroll";
 import { useLocation } from "react-router-dom";
-import { LevelUpFirstDiscartedHandAnimation } from "../../components/animations/LevelUpFirstDiscartedHandAnimation";
+import { ChangeLevelAnimation } from "../../components/animations/ChangeLevelAnimation";
 import { SecondChanceCardAnimation } from "../../components/animations/SecondChanceCardAnimation";
 import { SpecialCardAnimation } from "../../components/animations/SpecialCardAnimation";
 import { DelayedLoading } from "../../components/DelayedLoading";
@@ -35,6 +35,7 @@ export const GamePage = () => {
   const { state } = useLocation();
 
   const skipRageAnimationRef = useRef(state?.skipRageAnimation ?? false);
+  const [isRageAnimationVisible, setIsRageAnimationVisible] = useState(false);
 
   const { isSmallScreen } = useResponsiveValues();
 
@@ -52,8 +53,10 @@ export const GamePage = () => {
 
   return (
     <DelayedLoading ms={200}>
-      {!skipRageAnimationRef.current && <RageRoundAnimation />}
-      <LevelUpFirstDiscartedHandAnimation />
+      {!skipRageAnimationRef.current && (
+        <RageRoundAnimation onVisibilityChange={setIsRageAnimationVisible} />
+      )}
+      <ChangeLevelAnimation />
       {animateSecondChanceCard && <SecondChanceCardAnimation />}
       {animateSpecialCardDefault && (
         <SpecialCardAnimation
@@ -64,10 +67,10 @@ export const GamePage = () => {
       )}
       {isSmallScreen ? (
         <CardHighlightProvider>
-          <MobileGameContent />
+          <MobileGameContent tutorialsBlocked={isRageAnimationVisible} />
         </CardHighlightProvider>
       ) : (
-        <GameContent />
+        <GameContent tutorialsBlocked={isRageAnimationVisible} />
       )}
       <RemoveScroll>
         <></>

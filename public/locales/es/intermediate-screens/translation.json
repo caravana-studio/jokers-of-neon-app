@@ -144,7 +144,7 @@
     "claiming-in-progress": "Reclamando...",
     "intro": {
       "summary": "¿Cómo cargo XP?",
-      "learn-more": "Muéstrame cómo",
+      "learn-more": "ver más",
       "popup-title": "Cómo el XP impulsa tu temporada",
       "points": {
         "1": "Las misiones diarias del Home te dan XP y se reinician cada día. En cada misión puedes ver exactamente cuánta XP entrega.",
@@ -205,6 +205,8 @@
     "current-position": "Estás en la posición número {{position}}, ¿quieres mantenerlo?",
     "login": "Iniciar sesión",
     "skip": "Saltar",
+    "continue-without-account": "Continuar sin cuenta",
+    "guest-login-prompt": "¿Quieres iniciar sesión y guardar tu progreso?",
     "gameOver-msj": "FIN DEL JUEGO",
     "table": {
       "gameOver-leader-msj": "¡Felicitaciones! ¡Eres el mejor jugador en la clasificación!",
@@ -253,6 +255,64 @@
       "final-score": "- Puntuación final: {{score}} -",
       "continue-btn": "Continuar",
       "endless-mode": "Modo infinito"
+    }
+  },
+  "shop-tier-unlocked": {
+    "new-item": "NUEVO ITEM",
+    "unlocked": "DESBLOQUEADO",
+    "placeholder": "PLACEHOLDER",
+    "rarity-label": "RAREZA {{rarity}}",
+    "description": "{{item}} de rareza {{rarity}} ya está disponible en la tienda.",
+    "unlockable-descriptions": {
+      "modifiers_c": "Las Modificadoras ya vienen desbloqueadas desde el inicio.",
+      "specials_c": "Las Especiales son el núcleo de cada partida: aplican efectos globales que pueden cambiar tus manos, los shops y el ritmo del juego.",
+      "traditionals": "Ahora también puedes comprar cartas tradicionales en los shops y construir tu mazo con más libertad.",
+      "modifiers_ba": "Nuevas modificadoras más poderosas y de mayor rareza para potenciar tus jugadas.",
+      "powerups_cb": "Consumibles de uso inmediato que suman puntos o multiplicador en momentos clave.",
+      "slot_2": "Ahora puedes comprar hasta 2 espacios de cartas especiales en los shops.",
+      "levelups": "Mejora de nivel tus manos favoritas para que ganen más fuerza en cada ronda.",
+      "specials_b": "Llegan cartas especiales más poderosas y de mayor rareza para estrategias avanzadas.",
+      "slot_3": "Ahora puedes comprar hasta 3 espacios de cartas especiales en los shops.",
+      "lootboxes": "Las loot boxes traen recompensas sorpresa con contenido valioso para tu colección.",
+      "neon": "Las cartas Neon funcionan como las tradicionales para armar jugadas, pero son más poderosas. Haz una jugada compuesta por cartas Neon para potenciarlas todavía más.",
+      "specials_a": "Se desbloquean cartas especiales de mayor rareza con efectos más fuertes y decisivos.",
+      "powerups_as": "Power-ups de mayor rareza con efectos más potentes para giros clave en cada ronda.",
+      "slot_4": "Ahora puedes comprar hasta 4 espacios de cartas especiales en los shops.",
+      "specials_s": "Las cartas especiales más raras y poderosas ya forman parte del juego.",
+      "slot_5": "Ahora puedes comprar hasta 5 espacios de cartas especiales en los shops.",
+      "slot_6": "Ahora puedes comprar hasta 6 espacios de cartas especiales en los shops.",
+      "burn": "La Burn Card te permite remover cartas del mazo para refinar tu estrategia.",
+      "play_4": "A partir de ahora, cada run empieza con 4 jugadas.",
+      "play_5": "A partir de ahora, cada run empieza con 5 jugadas.",
+      "discard_4": "A partir de ahora, cada run empieza con 4 descartes.",
+      "discard_5": "A partir de ahora, cada run empieza con 5 descartes.",
+      "slot_7": "Ahora puedes comprar hasta 7 espacios de cartas especiales en los shops."
+    },
+    "next-run-hint": "Consíguelos en la tienda en tu próxima run.",
+    "continue-btn": "CONTINUAR",
+    "go-home-btn": "IR AL INICIO",
+    "play-again-btn": "JUGAR OTRA",
+    "items": {
+      "modifiers": "MODIFICADORAS",
+      "specials": "SPECIAL CARDS",
+      "traditional-cards": "CARTAS TRADICIONALES",
+      "power-ups": "POTENCIADORES",
+      "level-ups": "MEJORAS DE NIVEL",
+      "loot-boxes": "CAJAS",
+      "neon-cards": "CARTAS DE NEON",
+      "burn-card": "BURN A CARD",
+      "slot": "ESPACIO EXTRA",
+      "play": "1 JUGADA EXTRA",
+      "discard": "1 DESCARTE EXTRA"
+    },
+    "rarity": {
+      "c": "C",
+      "b": "B",
+      "a": "A",
+      "s": "S",
+      "cb": "C-B",
+      "ba": "B-A",
+      "as": "A-S"
     }
   },
   "special-cards": {
@@ -343,7 +403,9 @@
     "season-1": "TEMPORADA 1",
     "early-access": "ACCESO ANTICIPADO",
     "login": "INICIAR SESIÓN",
+    "continue-with-controller": "Continuar con controller",
     "guest": "INVITADO",
+    "continue-with-apple": "Continuar con Apple",
     "terms": {
       "agreement": "Al continuar, aceptas los",
       "link": "Términos y Condiciones"

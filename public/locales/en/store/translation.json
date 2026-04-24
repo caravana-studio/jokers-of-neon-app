@@ -16,6 +16,9 @@
       "manage-items": "Manage items",
       "next": "Next",
       "unlock-slot": "Unlock slot",
+      "my-specials": "My specials",
+      "all-slots-occupied": "All slots are occupied",
+      "no-space-overlay": "You have no available slots to buy more specials",
       "titles": {
         "traditionals": "Traditional and neon cards",
         "modifiers": "Modifier cards",
@@ -126,8 +129,9 @@
     }
   },
   "config": {
-    "shop": "Shop",
-    "0": { "name": "" },
+    "0": {
+      "name": ""
+    },
     "1": {
       "name": "Deck",
       "content": "{{traditionals}} traditional or neon cards, {{modifiers}} modifiers, burn a card from your deck"
@@ -151,6 +155,16 @@
     "6": {
       "name": "Mix",
       "content": "{{lootboxes}} loot boxes, {{powerups}} power-ups, {{levelups}} level ups"
+    },
+    "shop": "Shop",
+    "items-content": {
+      "traditionalsNeon": "{{count}} traditional or neon cards",
+      "modifiers": "{{count}} modifiers",
+      "specials": "{{count}} special cards",
+      "powerups": "{{count}} power-ups",
+      "levelups": "{{count}} level ups",
+      "lootboxes": "{{count}} loot boxes",
+      "burn": "burn a card from your deck"
     }
   },
   "loot-box-rates": {

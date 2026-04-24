@@ -29,7 +29,7 @@ interface TournamentSettings {
 const defaultTournamentSettings: TournamentSettings = {
   isActive: false,
   isFinished: false,
-  startCountingAtGameId: 0,
+  startCountingAtGameId: 5,
   prizes: {},
 };
 
@@ -65,7 +65,8 @@ export const useTournamentSettings = () => {
         );
         if (!response.ok) {
           console.error("Failed to fetch tournament settings");
-          return defaultTournamentSettings;
+          setTournament(defaultTournamentSettings);
+          return;
         }
         const data = await response.json();
 
@@ -77,7 +78,7 @@ export const useTournamentSettings = () => {
             data["finishDate"] && new Date(data["finishDate"]) < CURRENT_DATE,
           startDate: data["startDate"] && new Date(data["startDate"]),
           endDate: data["finishDate"] && new Date(data["finishDate"]),
-          startCountingAtGameId: data["start-counting-at-game-id"] || 0,
+          startCountingAtGameId: 5,
           prizes: getPrizes(data["prizes"]),
         });
       } catch (err) {
@@ -85,7 +86,7 @@ export const useTournamentSettings = () => {
           "Failed to fetch tournament settings. Unknown error occurred",
           err,
         );
-        return defaultTournamentSettings;
+        setTournament(defaultTournamentSettings);
       } finally {
         setLoading(false);
       }

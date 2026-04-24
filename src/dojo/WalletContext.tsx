@@ -13,16 +13,24 @@ import {
 import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { Account, AccountInterface } from "starknet";
+import { SignInWithApple } from "@capacitor-community/apple-sign-in";
 import { checkEarlyAccess } from "../api/earlyAccess";
 import LanguageSwitcher from "../components/LanguageSwitcher";
 import { MobileDecoration } from "../components/MobileDecoration";
 import { PositionedVersion } from "../components/version/PositionedVersion";
-import { ACCOUNT_TYPE, GAME_ID, LOGGED_USER } from "../constants/localStorage";
+import {
+  ACCOUNT_TYPE,
+  APPLE_GUEST_SESSION,
+  GAME_ID,
+  LOGGED_USER,
+} from "../constants/localStorage";
+import { APP_VERSION } from "../constants/version";
 import { PreThemeLoadingPage } from "../pages/PreThemeLoadingPage";
 import { AppType, useAppContext } from "../providers/AppContextProvider";
+import { fetchVersion } from "../queries/fetchVersion";
 import { useGetLastGameId } from "../queries/useGetLastGameId";
 import { logEvent } from "../utils/analytics";
-import { isNative, nativePaddingTop } from "../utils/capacitorUtils";
+import { isNative, isNativeIOS, nativePaddingTop } from "../utils/capacitorUtils";
 import { controller } from "./controller/controller";
 import { SetupResult } from "./setup";
 import { CavosAccountAdapter } from "./cavos/CavosAccountAdapter";
@@ -55,6 +63,7 @@ interface WalletContextType {
   controllerAccount: AccountInterface | null | undefined;
   isControllerConnected: boolean | undefined;
   isControllerConnecting: boolean | undefined;
+  isAppleGuestSession: boolean;
   onSuccessCallback: React.MutableRefObject<
     ((payload: SwitchSuccessPayload) => void) | null
   >;
@@ -86,6 +95,11 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     useState<boolean>(!EARLY_ACCESS_VERSION);
   const [allowedLoading, setAllowedLoading] = useState<boolean>(false);
   const [showNotAllowed, setShowNotAllowed] = useState<boolean>(false);
+  const [isAppleLoginEnabled, setIsAppleLoginEnabled] = useState(false);
+  const [isSigningInWithApple, setIsSigningInWithApple] = useState(false);
+  const [isAppleGuestSession, setIsAppleGuestSession] = useState<boolean>(
+    () => window.localStorage.getItem(APPLE_GUEST_SESSION) === "true"
+  );
 
   // Cavos email login state
   const [cavosEmail, setCavosEmail] = useState("");
@@ -138,6 +152,28 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
 
   useEffect(() => {
     logEvent("open_wallet_page");
+  }, []);
+
+  useEffect(() => {
+    let mounted = true;
+
+    fetchVersion()
+      .then((versionData) => {
+        if (!mounted) {
+          return;
+        }
+        setIsAppleLoginEnabled(versionData.applelogin === APP_VERSION);
+      })
+      .catch((error) => {
+        console.warn("Failed to read applelogin from version settings", error);
+        if (mounted) {
+          setIsAppleLoginEnabled(false);
+        }
+      });
+
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   const connectWallet = async () => {
@@ -310,7 +346,9 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     }
     setAccountType(null);
     setFinalAccount(null);
+    setIsAppleGuestSession(false);
     localStorage.removeItem(ACCOUNT_TYPE);
+    localStorage.removeItem(APPLE_GUEST_SESSION);
     setConnectionStatus("selecting");
     setCavosMagicLinkSent(false);
     setCavosEmail("");
@@ -342,6 +380,57 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     setConnectionStatus("connecting_controller");
     if (isControllerConnected === false && isControllerConnecting === false) {
       connectWallet();
+    }
+  };
+
+  const shouldUseAppleLoginForGuest =
+    allowGuest && isNativeIOS && isAppleLoginEnabled;
+  const shouldUseAppleLoginForController = isNativeIOS && isAppleLoginEnabled;
+
+  const startGuestFlow = (fromAppleLogin = false) => {
+    logEvent("play_as_guest");
+    setConnectionStatus("connecting_burner");
+    const guestId = lastGameIdError ? fallbackGuestIdRef.current : lastGameId + 1;
+    const username = `joker_guest_${guestId}`;
+    console.log("setting username: ", username);
+    setIsAppleGuestSession(fromAppleLogin);
+    localStorage.setItem(
+      APPLE_GUEST_SESSION,
+      fromAppleLogin ? "true" : "false"
+    );
+
+    localStorage.removeItem(GAME_ID);
+    localStorage.setItem(LOGGED_USER, username);
+  };
+
+  const handleGuestClick = async () => {
+    if (!shouldUseAppleLoginForGuest) {
+      startGuestFlow();
+      return;
+    }
+
+    setIsSigningInWithApple(true);
+    try {
+      const result = await SignInWithApple.authorize();
+      logEvent("apple_login_success", {
+        has_email: String(Boolean(result?.response?.email)),
+        has_name: String(
+          Boolean(result?.response?.givenName || result?.response?.familyName)
+        ),
+      });
+      startGuestFlow(true);
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : String(error ?? "unknown_error");
+      const cancelled = message.toLowerCase().includes("canceled");
+      logEvent(cancelled ? "apple_login_cancelled" : "apple_login_error", {
+        message,
+      });
+      if (!cancelled) {
+        console.error("Apple Sign In failed", error);
+      }
+    } finally {
+      setIsSigningInWithApple(false);
     }
   };
 
@@ -390,7 +479,10 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
 
   if (shouldBlockWithWalletScreen) {
     return (
-      <PreThemeLoadingPage>
+      <PreThemeLoadingPage
+        backgroundSize="cover"
+        backgroundPosition="bottom center"
+      >
         <PositionedVersion />
         <MobileDecoration
           top={nativePaddingTop}
@@ -488,7 +580,9 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
                     justifyContent: "center",
                   }}
                 >
-                  {t("login")}
+                  {shouldUseAppleLoginForController
+                    ? t("continue-with-controller")
+                    : t("login")}
                 </div>
               </button>
             )}
@@ -496,21 +590,10 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
               <button
                 style={buttonStyles}
                 className="login-button secondary"
-                disabled={isLoading}
-                onClick={() => {
-                  logEvent("play_as_guest");
-                  setConnectionStatus("connecting_burner");
-                  const guestId = lastGameIdError
-                    ? fallbackGuestIdRef.current
-                    : lastGameId + 1;
-                  const username = `joker_guest_${guestId}`;
-                  console.log("setting username: ", username);
-
-                  localStorage.removeItem(GAME_ID);
-                  localStorage.setItem(LOGGED_USER, username);
-                }}
+                disabled={isLoading || isSigningInWithApple}
+                onClick={handleGuestClick}
               >
-                {t("guest")}
+                {shouldUseAppleLoginForGuest ? t("continue-with-apple") : t("guest")}
               </button>
             )}
           </Flex>
@@ -682,6 +765,7 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
         controllerAccount,
         isControllerConnected,
         isControllerConnecting,
+        isAppleGuestSession,
         onSuccessCallback,
         logout,
       }}

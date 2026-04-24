@@ -1,6 +1,5 @@
 import { useSyncExternalStore } from "react";
-
-const DEFAULT_API_BASE_URL = "http://localhost:3001";
+import { getGameApiBaseUrl, preloadGameApiUrl } from "../config/gameApiUrl";
 
 const seasonFromEnv = Number(import.meta.env.VITE_SEASON_NUMBER);
 const fallbackSeasonNumber =
@@ -39,9 +38,6 @@ const setSeasonNumber = (nextSeasonNumber: number) => {
   notifyListeners();
 };
 
-const getApiBaseUrl = () =>
-  import.meta.env.VITE_GAME_API_URL?.replace(/\/$/, "") || DEFAULT_API_BASE_URL;
-
 export const getSeasonNumber = () => seasonNumber;
 
 export const useSeasonNumber = () =>
@@ -59,16 +55,20 @@ export const preloadCurrentSeasonId = async (): Promise<number> => {
     return preloadPromise;
   }
 
-  const requestUrl = `${getApiBaseUrl()}/api/game/current-season-id`;
-  const apiKey = import.meta.env.VITE_GAME_API_KEY;
-  const headers = apiKey ? { "X-API-Key": apiKey } : undefined;
+  preloadPromise = (async () => {
+    try {
+      await preloadGameApiUrl();
 
-  preloadPromise = fetch(requestUrl, {
-    method: "GET",
-    headers,
-    cache: "no-store",
-  })
-    .then(async (response) => {
+      const requestUrl = `${getGameApiBaseUrl()}/api/game/current-season-id`;
+      const apiKey = import.meta.env.VITE_GAME_API_KEY;
+      const headers = apiKey ? { "X-API-Key": apiKey } : undefined;
+
+      const response = await fetch(requestUrl, {
+        method: "GET",
+        headers,
+        cache: "no-store",
+      });
+
       if (!response.ok) {
         const errorDetails = await response.text().catch(() => "");
         throw new Error(
@@ -91,14 +91,14 @@ export const preloadCurrentSeasonId = async (): Promise<number> => {
 
       setSeasonNumber(parsedSeason);
       return parsedSeason;
-    })
-    .catch((error) => {
+    } catch (error) {
       console.warn(
         "[season] Failed to preload current season id. Falling back to local default.",
         error
       );
       return seasonNumber;
-    });
+    }
+  })();
 
   return preloadPromise;
 };

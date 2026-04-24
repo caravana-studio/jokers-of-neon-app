@@ -2,8 +2,8 @@ import { GameOverContent } from "./GameOverContent";
 import { IconComponent } from "../../components/IconComponent";
 import { Icons } from "../../constants/icons";
 import { useGameOver } from "../../hooks/useGameOver";
-import { useLogout } from "../../hooks/useLogout";
 import { useGameContext } from "../../providers/GameProvider";
+import { useNavigate } from "react-router-dom";
 
 export const GameOverGuest = () => {
   const {
@@ -16,7 +16,7 @@ export const GameOverGuest = () => {
     isLoading,
   } = useGameOver();
   const { initiateTransferFlow } = useGameContext();
-  const { handleLogout } = useLogout();
+  const navigate = useNavigate();
 
   return (
     <GameOverContent
@@ -27,7 +27,20 @@ export const GameOverGuest = () => {
       onShareClick={onShareClick}
       onSecondButtonClick={onSecondButtonClick}
       isLoading={isLoading}
+      guestCtaMessage={t("game-over.guest-login-prompt")}
       firstButton={{
+        onClick: () => {
+          navigate("/", { replace: true });
+        },
+        label: t("game-over.continue-without-account").toUpperCase(),
+        whiteSpace: "normal",
+        lineHeight: "1.2",
+        textAlign: "center",
+        px: 1,
+        wordBreak: "normal",
+        overflowWrap: "normal",
+      }}
+      secondButton={{
         onClick: () => {
           initiateTransferFlow();
         },
@@ -39,12 +52,6 @@ export const GameOverGuest = () => {
             height={"12px"}
           />
         ),
-      }}
-      secondButton={{
-        onClick: () => {
-          handleLogout();
-        },
-        label: t("skip").toUpperCase(),
       }}
     />
   );

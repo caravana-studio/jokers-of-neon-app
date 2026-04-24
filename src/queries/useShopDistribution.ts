@@ -25,23 +25,23 @@ const FORCE_DEFAULTS_ON_SHOP =
 
 const DEFAULT_SHOP_DISTRIBUTIONS: Record<ShopEnvironment, ShopDistribution> = {
   android: {
-    season_pass: "season_pass_s2",
+    season_pass: "season_pass_s3",
     packs: [],
   },
   ios: {
-    season_pass: "season_pass_s2",
+    season_pass: "season_pass_s3",
     packs: [
-      { shopId: "pack_advanced_s2", packId: 22 },
-      { shopId: "pack_epic_s2", packId: 23 },
-      { shopId: "pack_legendary_s2", packId: 24 },
+      { shopId: "pack_advanced_s3", packId: 32 },
+      { shopId: "pack_epic_s3", packId: 33 },
+      { shopId: "pack_legendary_s3", packId: 34 },
     ],
   },
   web: {
-    season_pass: "season_pass_s2",
+    season_pass: "season_pass_s3",
     packs: [
-      { shopId: "pack_advanced_s2", packId: 22 },
-      { shopId: "pack_epic_s2", packId: 23 },
-      { shopId: "pack_legendary_s2", packId: 24 },
+      { shopId: "pack_advanced_s3", packId: 32 },
+      { shopId: "pack_epic_s3", packId: 33 },
+      { shopId: "pack_legendary_s3", packId: 34 },
     ],
   },
 };

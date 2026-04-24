@@ -1,4 +1,5 @@
 import { afterEach, expect, test, vi } from "vitest";
+import { CHANGE_LEVEL_ANIMATION_DURATION_MS } from "../../../constants/animationDurations";
 import { EventTypeEnum } from "../../../dojo/typescript/custom";
 import { PlayEvents } from "../../../types/ScoreData";
 import { animateOptimisticCardPlay } from "../../playEvents/animateOptimisticCardPlay";
@@ -171,4 +172,100 @@ test("cancelling optimistic animation clears animated state", async () => {
 
   expect(setAnimatedCard).toHaveBeenCalledWith(undefined);
   expect(setAnimatedPowerUp).toHaveBeenCalledWith(undefined);
+});
+
+test("level-up animation finishes before rewards navigation", () => {
+  vi.useFakeTimers();
+
+  const setLevelUpHand = vi.fn();
+  const setRoundRewards = vi.fn();
+  const navigate = vi.fn();
+
+  const playEvents: PlayEvents = {
+    play: { points: 10, multi: 2 },
+    gameOver: false,
+    cards: [],
+    score: 250,
+    levelUpPlayEvent: {
+      hand: 1,
+      old_level: 1,
+      old_points: 50,
+      old_multi: 1,
+      level: 2,
+      points: 80,
+      multi: 2,
+    },
+    levelPassed: {
+      level: 2,
+      player_score: 250,
+      round: 1,
+      level_passed: 1,
+    },
+    detailEarned: {
+      round_defeat: 0,
+      level_bonus: 0,
+      hands_left: 0,
+      hands_left_cash: 0,
+      discard_left: 0,
+      discard_left_cash: 0,
+      rage_card_defeated: 0,
+      rage_card_defeated_cash: 0,
+      rerolls: 0,
+      rewards_special_card: 0,
+      total: 100,
+    },
+  };
+
+  const totalDuration = animatePlayDiscard({
+    playEvents,
+    playAnimationDuration: 100,
+    setPlayIsNeon: () => undefined,
+    setAnimatedCard: () => undefined,
+    setAnimatedPowerUp: () => undefined,
+    setLevelUpHand,
+    pointsSound: () => undefined,
+    acumSound: () => undefined,
+    negativeMultiSound: () => undefined,
+    setPoints: () => undefined,
+    setMulti: () => undefined,
+    addPoints: () => undefined,
+    addMulti: () => undefined,
+    changeCardsSuit: () => undefined,
+    changeCardsNeon: () => undefined,
+    setAnimation: () => undefined,
+    setPreSelectionLocked: () => undefined,
+    clearPreSelection: () => undefined,
+    refetchPowerUps: () => undefined,
+    preSelectedPowerUps: [],
+    navigate,
+    setRoundRewards,
+    replaceCards: () => undefined,
+    remainingPlays: 1,
+    setAnimateSecondChanceCard: () => undefined,
+    setCardTransformationLock: () => undefined,
+    specialCards: [],
+    setAnimateSpecialCardDefault: () => undefined,
+    addCash: () => undefined,
+    setCurrentScore: () => undefined,
+    resetRage: () => undefined,
+    unPreSelectAllPowerUps: () => undefined,
+    address: "0x0",
+    clearRoundSound: () => undefined,
+    clearLevelSound: () => undefined,
+  });
+
+  expect(totalDuration).toBe(1000 + CHANGE_LEVEL_ANIMATION_DURATION_MS);
+
+  vi.advanceTimersByTime(1000);
+  expect(setLevelUpHand).toHaveBeenCalledTimes(1);
+  expect(navigate).not.toHaveBeenCalled();
+  expect(setRoundRewards).not.toHaveBeenCalled();
+
+  vi.advanceTimersByTime(CHANGE_LEVEL_ANIMATION_DURATION_MS);
+  expect(navigate).not.toHaveBeenCalled();
+  expect(setRoundRewards).not.toHaveBeenCalled();
+
+  vi.advanceTimersByTime(1000);
+  expect(setRoundRewards).toHaveBeenCalledTimes(1);
+  expect(navigate).toHaveBeenCalledWith("/rewards");
 });
