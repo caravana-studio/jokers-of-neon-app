@@ -31,6 +31,7 @@ import { useAnimationStore } from "../state/useAnimationStore.ts";
 import { useCurrentHandStore } from "../state/useCurrentHandStore.ts";
 import { useDeckStore } from "../state/useDeckStore.ts";
 import { useGameStore } from "../state/useGameStore.ts";
+import { useUnlockProgressStore } from "../state/useUnlockProgressStore.ts";
 import { Card } from "../types/Card";
 import { CardPlayEvent, PlayEvents, PowerUpScore } from "../types/ScoreData";
 import { logEvent } from "../utils/analytics.ts";
@@ -221,10 +222,58 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const activeOptimisticAnimationRef =
     useRef<OptimisticAnimationController | null>(null);
   const latestPathRef = useRef(location.pathname);
+  const unlockTierRefreshAtGameStartRef = useRef<number>(0);
+  const unlockTierRefreshAtGameEndRef = useRef<number>(0);
+  const refreshUnlockProgress = useUnlockProgressStore(
+    (state) => state.refreshUnlockProgress
+  );
+  const clearUnlockProgress = useUnlockProgressStore(
+    (state) => state.clearUnlockProgress
+  );
 
   useEffect(() => {
     latestPathRef.current = location.pathname;
   }, [location.pathname]);
+
+  useEffect(() => {
+    if (account?.address) {
+      return;
+    }
+    unlockTierRefreshAtGameStartRef.current = 0;
+    unlockTierRefreshAtGameEndRef.current = 0;
+    clearUnlockProgress();
+  }, [account?.address, clearUnlockProgress]);
+
+  useEffect(() => {
+    if (!client || !account?.address || gameId <= 0) {
+      return;
+    }
+
+    if (unlockTierRefreshAtGameStartRef.current === gameId) {
+      return;
+    }
+
+    unlockTierRefreshAtGameStartRef.current = gameId;
+    void refreshUnlockProgress(client, account.address);
+  }, [account?.address, client, gameId, refreshUnlockProgress]);
+
+  useEffect(() => {
+    if (
+      !client ||
+      !account?.address ||
+      gameId <= 0 ||
+      gameState !== GameStateEnum.GameOver
+    ) {
+      return;
+    }
+
+    if (unlockTierRefreshAtGameEndRef.current === gameId) {
+      return;
+    }
+
+    unlockTierRefreshAtGameEndRef.current = gameId;
+    void refreshUnlockProgress(client, account.address);
+  }, [account?.address, client, gameId, gameState, refreshUnlockProgress]);
 
   const resetLevel = () => {
     setRoundRewards(undefined);

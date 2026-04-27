@@ -114,7 +114,7 @@ export const ExternalPack = ({
     providedPackId ?? locationState?.packId ?? Number(params.packId ?? 1);
   const normalizedPackId = packId % 10 || packId;
   const isLimitedEditionPack = normalizedPackId > 4;
-  const shouldUseMonochromeBackground = packId === 25 || packId === 26;
+  const shouldUseMonochromeBackground = [25, 26, 35, 36].includes(packId);
   const returnPath = returnTo ?? locationState?.returnTo ?? "/";
 
   const { t: tDocs } = useTranslation("docs");

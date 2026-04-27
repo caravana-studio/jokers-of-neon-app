@@ -35,6 +35,7 @@ import { SkinBadge, SKIN_NAME_COLOR } from "../../marketplace/components/SkinBad
 const SKIN_SEASON_LABEL: Record<number, string> = {
   2: "Season 1",
   3: "Season 2",
+  4: "Season 3",
 };
 import { groupCards, CardGridItem, CardSection } from "../../marketplace/components/UserCardGrid";
 import { RARITY_LABELS, RARITY_COLORS } from "../../marketplace/types/marketplace";

@@ -1,6 +1,7 @@
-import { Button, Flex, Heading } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 import { ReactNode, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useLocation } from "react-router-dom";
 import { AllTimeXpLeaderboard } from "../../components/AllTimeXpLeaderboard";
 import { Clock } from "../../components/Clock";
 import { DelayedLoading } from "../../components/DelayedLoading";
@@ -24,13 +25,17 @@ export const LeaderboardPageLayout = ({
   entriesSection,
 }: LeaderboardPageLayoutProps) => {
   const { tournament } = useTournamentSettings();
+  const { search } = useLocation();
   const { t } = useTranslation("home", { keyPrefix: "leaderboard" });
   const { isSmallScreen } = useResponsiveValues();
   const [seePrizes, setSeePrizes] = useState(false);
+  const [seeXpPrizes, setSeeXpPrizes] = useState(false);
   const seasonNumber = useSeasonNumber();
   const currentSeason = Math.max(1, Math.floor(seasonNumber));
   const [selectedXpSeason, setSelectedXpSeason] = useState(currentSeason);
   const isTournamentActive = Boolean(tournament?.isActive);
+  const shouldShowTournamentTab =
+    isTournamentActive || new URLSearchParams(search).has("seeTournament");
 
   useEffect(() => {
     setSelectedXpSeason((previousSeason) =>
@@ -44,7 +49,7 @@ export const LeaderboardPageLayout = ({
   );
 
   const tabs = [
-    ...(isTournamentActive
+    ...(shouldShowTournamentTab
       ? [
           <Tab key="tournament" title={t("tabs.tournament-leaderboard")}>
             <Flex w="100%" h="100%" flexDir="column" alignItems="center">
@@ -53,7 +58,6 @@ export const LeaderboardPageLayout = ({
                 w="70%"
                 h="100%"
                 alignItems={"center"}
-                mt={4}
               >
                 <Flex
                   px={isSmallScreen ? 2 : 6}
@@ -75,35 +79,48 @@ export const LeaderboardPageLayout = ({
                 <Flex
                   minH={0}
                   flexGrow={1}
-                  flexDir={isSmallScreen ? "column" : "row"}
+                  flexDir="column"
                   w="100%"
                   alignItems={"center"}
-                  justifyContent={"center"}
+                  justifyContent="flex-start"
+                  overflowY="auto"
+                  pt={isSmallScreen ? 2 : 4}
                 >
                   <Flex
-                    w={isSmallScreen ? "100%" : "50%"}
+                    w="100%"
                     zIndex={10}
                     flexDir={"column"}
                     alignItems={"center"}
-                    justifyContent={isSmallScreen ? "flex-start" : "center"}
-                    h={isSmallScreen ? "unset" : "100%"}
+                    justifyContent="flex-start"
+                    mb={isSmallScreen ? 2 : 4}
+                    flexShrink={0}
                   >
-                    <Podium seePrizes={seePrizes} isTournamentLeaderboard />
+                    <Podium
+                      seePrizes={seePrizes}
+                      isTournamentLeaderboard
+                      desktopMt={0}
+                    />
                   </Flex>
-                  <Flex
-                    w={isSmallScreen ? "100%" : "50%"}
-                    overflowY="auto"
-                    h="100%"
-                    mt={{ base: 0, sm: 12 }}
+                  <Box
+                    w={isSmallScreen ? "100%" : "78%"}
+                    minH={0}
+                    flexShrink={0}
                   >
                     <Leaderboard
                       hidePodium
                       lines={100}
-                      mb={isSmallScreen ? "100px" : "200px"}
+                      mb="0"
                       seePrizes={seePrizes}
                       isTournamentLeaderboard
+                      fullWidth
+                      compactSpacing
                     />
-                  </Flex>
+                  </Box>
+                  <Box
+                    w="100%"
+                    h={isSmallScreen ? "100px" : "180px"}
+                    flexShrink={0}
+                  />
                 </Flex>
               </Flex>
             </Flex>
@@ -207,12 +224,18 @@ export const LeaderboardPageLayout = ({
                     </Button>
                   ))}
                 </Flex>
+                <SeePrizesSwitcher
+                  id="xp-see-prizes"
+                  value={seeXpPrizes}
+                  onChange={setSeeXpPrizes}
+                />
               </Flex>
               <Flex flex={1} minH={0} overflowY="auto">
                 <XpLeaderboard
                   lines={100}
                   mb="0"
                   seasonId={selectedXpSeason}
+                  seePrizes={seeXpPrizes}
                   fullWidth
                   compactSpacing
                 />

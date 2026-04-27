@@ -6,7 +6,8 @@ import { useSeasonPass } from "../../providers/SeasonPassProvider";
 import { useShopDistribution } from "../../queries/useShopDistribution";
 import { CollectorPacksShopModal } from "../../components/CollectorPacksShopModal";
 
-const COLLECTOR_IDS = new Set([5, 6, 25, 26]);
+const COLLECTOR_IDS = new Set([5, 6, 25, 26, 35, 36]);
+const COLLECTOR_BACKGROUND_PRIORITY = [36, 26, 6, 35, 25, 5];
 
 export function ShopPage() {
   const { distribution, loading } = useShopDistribution();
@@ -22,9 +23,11 @@ export function ShopPage() {
   }
 
   const hasCollectorPacks = distribution?.packs?.some((p) => COLLECTOR_IDS.has(p.packId));
-  const collectorBackground = distribution?.packs?.some((p) => p.packId === 26)
-    ? "/packs/bg/26.jpg"
-    : "/packs/bg/25.jpg";
+  const collectorBackgroundPackId =
+    COLLECTOR_BACKGROUND_PRIORITY.find((packId) =>
+      distribution?.packs?.some((pack) => pack.packId === packId)
+    ) ?? 5;
+  const collectorBackground = `/packs/bg/${collectorBackgroundPackId}.jpg`;
 
   const getPackPrice = (shopId: string) =>
     offerings?.packs?.find((p) => p.id === shopId)?.formattedPrice;

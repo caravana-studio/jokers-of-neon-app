@@ -16,6 +16,7 @@ import { useTranslation } from "react-i18next";
 import { TESTERS } from "../constants/testers.ts";
 import { useUsername } from "../dojo/utils/useUsername.tsx";
 import { useGetLeaderboard } from "../queries/useGetLeaderboard";
+import { useSeason } from "../queries/useSeason";
 import {
   Prize,
   useTournamentSettings,
@@ -24,6 +25,7 @@ import { VIOLET_LIGHT } from "../theme/colors.tsx";
 import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
 import { formatNumber } from "../utils/formatNumber.ts";
 import { normalizeGameId } from "../utils/normalizeGameId.ts";
+import { getPrizePackIdsForSeason } from "../utils/prizePackIds";
 import { RollingNumber } from "./RollingNumber";
 
 const CURRENT_LEADER_STYLES = {
@@ -32,6 +34,11 @@ const CURRENT_LEADER_STYLES = {
   borderBottom: "1px solid white",
   backgroundColor: "black",
   color: "white !important",
+};
+
+type LeaderPrizeLog = {
+  username: string;
+  packs: string[];
 };
 
 export const getPrizeText = (t: TFunction, prize: Prize | undefined) => {
@@ -101,6 +108,7 @@ export const Leaderboard = ({
   const { t } = useTranslation("home", { keyPrefix: "leaderboard" });
   const { isSmallScreen } = useResponsiveValues();
   const { tournament } = useTournamentSettings();
+  const { season } = useSeason();
   const isTournament = isTournamentLeaderboard;
 
   const { data: fullLeaderboard, isLoading } = useGetLeaderboard(
@@ -127,6 +135,21 @@ export const Leaderboard = ({
   const shouldReserveRowForCurrentPlayer =
     Boolean(actualPlayer) && !currentPlayerIsInReducedLeaderboard;
   const leaderboardPrizes = prizes ?? tournament?.prizes;
+  const currentSeasonNumber = Number(season?.number ?? 3);
+
+  const handleLogLeaders = () => {
+    const leadersWithPrizes: LeaderPrizeLog[] = (fullLeaderboard ?? [])
+      .slice(0, 50)
+      .map((leader) => ({
+        username: leader.player_name ?? "",
+        packs: getPrizePackIdsForSeason(
+          leaderboardPrizes?.[leader.position],
+          currentSeasonNumber,
+        ),
+      }));
+
+    console.log(leadersWithPrizes);
+  };
 
   return (
     <Box
@@ -143,7 +166,7 @@ export const Leaderboard = ({
             size="xs"
             fontSize={[8, 12]}
             m={2}
-            onClick={() => console.log(fullLeaderboard)}
+            onClick={handleLogLeaders}
           >
             Log leaders
           </Button>

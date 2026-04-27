@@ -11,12 +11,16 @@ import { useGameContext } from "../../providers/GameProvider";
 import { useCardHighlight } from "../../providers/HighlightProvider/CardHighlightProvider";
 import { usePowerupHighlight } from "../../providers/HighlightProvider/PowerupHighlightProvider";
 import { useGameStore } from "../../state/useGameStore";
+import { useUnlockProgressStore } from "../../state/useUnlockProgressStore";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { Card } from "../../types/Card";
 import { PowerUp } from "../../types/Powerup/PowerUp";
+import { isUnlockableUnlocked } from "../../utils/shopTooltipUnlocks";
 import { ManagePageContent } from "./ManagePageContent";
 import { ManagePageContentMobile } from "./ManagePageContent.mobile";
 import { SellButton } from "./SellButton";
+
+const POWERUPS_CB_UNLOCK_ID = "powerups_cb";
 
 export const ManagePage = () => {
   const { t } = useTranslation("intermediate-screens");
@@ -55,6 +59,13 @@ export const ManagePage = () => {
   };
 
   const { refetchGameStore, id: gameId } = useGameStore();
+  const showPowerupsSection = useUnlockProgressStore((state) =>
+    isUnlockableUnlocked(
+      state.unlockEntries,
+      state.playerTier,
+      POWERUPS_CB_UNLOCK_ID
+    )
+  );
 
   const handlePowerupClick = (powerup: PowerUp) => {
     highlightPowerup(powerup);
@@ -99,6 +110,7 @@ export const ManagePage = () => {
         <ManagePageContentMobile
           discardedCards={discardedCards}
           discardedPowerups={discardedPowerups}
+          showPowerupsSection={showPowerupsSection}
           preselectedCard={highlightedSpecialCard as Card}
           preselectedPowerup={highlightedPowerup as PowerUp | undefined}
           onCardClick={handleCardClick}
@@ -109,6 +121,7 @@ export const ManagePage = () => {
         <ManagePageContent
           discardedCards={discardedCards}
           discardedPowerups={discardedPowerups}
+          showPowerupsSection={showPowerupsSection}
           preselectedCard={highlightedSpecialCard as Card}
           preselectedPowerup={highlightedPowerup as PowerUp | undefined}
           onCardClick={handleCardClick}

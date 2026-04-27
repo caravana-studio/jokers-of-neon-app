@@ -1,43 +1,21 @@
 import { Box, Button, Collapse, Flex, Spinner, Text } from "@chakra-ui/react";
-import { useEffect, useMemo, useState } from "react";
+import { useState } from "react";
 import { TESTERS } from "../constants/testers";
-import {
-  getPlayerTier,
-  getUnlockList,
-  UnlockEntryView,
-} from "../dojo/queries/getShopUnlockProgress";
 import { useUsername } from "../dojo/utils/useUsername";
-import { useDojo } from "../dojo/useDojo";
-
-interface DebugState {
-  tier: number;
-  totalRuns?: number;
-  maxLevel?: number;
-  maxRound?: number;
-  entries: UnlockEntryView[];
-}
+import { useUnlockProgressStore } from "../state/useUnlockProgressStore";
 
 const PANEL_Z_INDEX = 9999;
 
-const getAddress = (value: unknown): string => {
-  if (typeof value === "string") return value;
-  if (typeof value === "bigint") return `0x${value.toString(16)}`;
-  if (value && typeof value === "object" && "toString" in value) {
-    return (value as { toString: () => string }).toString();
-  }
-  return "";
-};
-
 export const UnlockProgressDebugWidget = () => {
-  const { setup, account } = useDojo();
   const username = useUsername();
   const [isOpen, setIsOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [data, setData] = useState<DebugState>({
-    tier: 0,
-    entries: [],
-  });
+  const playerTier = useUnlockProgressStore((state) => state.playerTier);
+  const totalRuns = useUnlockProgressStore((state) => state.totalRuns);
+  const maxLevel = useUnlockProgressStore((state) => state.maxLevel);
+  const maxRound = useUnlockProgressStore((state) => state.maxRound);
+  const unlockEntries = useUnlockProgressStore((state) => state.unlockEntries);
+  const isLoading = useUnlockProgressStore((state) => state.loading);
+  const error = useUnlockProgressStore((state) => state.error);
 
   const formatLevelRound = (
     level?: number,
@@ -84,53 +62,7 @@ export const UnlockProgressDebugWidget = () => {
     return met ? "green.300" : "whiteAlpha.700";
   };
 
-  const playerAddress = useMemo(
-    () => getAddress(account?.account?.address),
-    [account?.account?.address]
-  );
-
   const isTester = Boolean(username && TESTERS.includes(username));
-
-  useEffect(() => {
-    if (!isTester) return;
-    if (!isOpen) return;
-    if (!setup?.client || !playerAddress) return;
-
-    let cancelled = false;
-
-    const load = async () => {
-      setIsLoading(true);
-      setError(null);
-      try {
-        const [playerTier, unlockEntries] = await Promise.all([
-          getPlayerTier(setup.client, playerAddress),
-          getUnlockList(setup.client),
-        ]);
-
-        if (cancelled) return;
-
-        setData({
-          tier: playerTier.tier,
-          totalRuns: playerTier.totalRuns,
-          maxLevel: playerTier.maxLevel,
-          maxRound: playerTier.maxRound,
-          entries: unlockEntries,
-        });
-      } catch (err) {
-        if (cancelled) return;
-        console.error("[unlock-debug] failed to load unlock progress", err);
-        setError("Failed to load unlock progress");
-      } finally {
-        if (!cancelled) setIsLoading(false);
-      }
-    };
-
-    void load();
-
-    return () => {
-      cancelled = true;
-    };
-  }, [isOpen, isTester, setup?.client, playerAddress]);
 
   if (!isTester) {
     return null;
@@ -166,21 +98,15 @@ export const UnlockProgressDebugWidget = () => {
         >
           <Flex justifyContent="space-between" alignItems="center" mb={2}>
             <Text fontSize="xs" color="whiteAlpha.900" fontWeight="bold">
-              player tier: {data.tier}
+              player tier: {playerTier}
             </Text>
             {isLoading && <Spinner size="xs" />}
           </Flex>
 
           <Text fontSize="xs" color="whiteAlpha.800" mb={2}>
-            runs: {data.totalRuns ?? 0} · max round:{" "}
-            {formatLevelRound(data.maxLevel, data.maxRound)}
+            runs: {totalRuns ?? 0} · max round:{" "}
+            {formatLevelRound(maxLevel, maxRound)}
           </Text>
-
-          {!playerAddress && (
-            <Text fontSize="xs" color="orange.200">
-              wallet not connected
-            </Text>
-          )}
 
           {error && (
             <Text fontSize="xs" color="red.200" mb={2}>
@@ -189,16 +115,16 @@ export const UnlockProgressDebugWidget = () => {
           )}
 
           <Flex direction="column" gap={1}>
-            {data.entries.map((entry) => {
-              const isUnlocked = entry.order <= data.tier;
+            {unlockEntries.map((entry) => {
+              const isUnlocked = entry.order <= playerTier;
               const hasRunsRequirement =
                 entry.runs !== undefined && entry.runs > 0;
               const hasRoundRequirement =
                 entry.maxLevel !== undefined || entry.maxRound !== undefined;
-              const runsMet = meetsRunsRequirement(data.totalRuns, entry.runs);
+              const runsMet = meetsRunsRequirement(totalRuns, entry.runs);
               const roundMet = meetsRoundRequirement(
-                data.maxLevel,
-                data.maxRound,
+                maxLevel,
+                maxRound,
                 entry.maxLevel,
                 entry.maxRound
               );

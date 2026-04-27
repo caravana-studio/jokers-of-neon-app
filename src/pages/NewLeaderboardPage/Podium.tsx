@@ -11,9 +11,14 @@ import { formatNumber } from "../../utils/formatNumber";
 interface PodiumProps {
   seePrizes?: boolean;
   isTournamentLeaderboard?: boolean;
+  desktopMt?: string | number;
 }
 
-export const Podium = ({ seePrizes = false, isTournamentLeaderboard = false }: PodiumProps) => {
+export const Podium = ({
+  seePrizes = false,
+  isTournamentLeaderboard = false,
+  desktopMt = "-100px",
+}: PodiumProps) => {
   const { t } = useTranslation("home", { keyPrefix: "leaderboard" });
   const { isSmallScreen } = useResponsiveValues();
   const { id: gameId } = useGameStore();
@@ -30,7 +35,7 @@ export const Podium = ({ seePrizes = false, isTournamentLeaderboard = false }: P
   return (
     <Flex
       w={isSmallScreen ? "220px" : "400px"}
-      mt={isSmallScreen ? 6 : "-100px"}
+      mt={isSmallScreen ? 6 : desktopMt}
       alignItems="center"
       justifyContent="center"
       position="relative"
