@@ -21,17 +21,20 @@ export class CavosAccountAdapter {
   private _executeOnSlot: (calls: Call | Call[]) => Promise<string>;
   private _getSlotProvider: () => RpcProvider | null;
   private _isSlotDeployed: () => boolean;
+  private _getCavosSdk: () => any;
 
   constructor(
     address: string,
     executeOnSlot: (calls: Call | Call[]) => Promise<string>,
     getSlotProvider: () => RpcProvider | null,
-    isSlotDeployed: () => boolean
+    isSlotDeployed: () => boolean,
+    getCavosSdk: () => any = () => null
   ) {
     this.address = address;
     this._executeOnSlot = executeOnSlot;
     this._getSlotProvider = getSlotProvider;
     this._isSlotDeployed = isSlotDeployed;
+    this._getCavosSdk = getCavosSdk;
   }
 
   private _getProvider(): RpcProvider {
@@ -68,6 +71,38 @@ export class CavosAccountAdapter {
     );
   }
 
+  private async _tryExecuteOnSlotFastPath(
+    calls: Call[]
+  ): Promise<string | null> {
+    const sdk = this._getCavosSdk();
+    const slotTransactionManager = sdk?.slotTransactionManager;
+
+    if (
+      !slotTransactionManager?.getSessionStatus ||
+      !slotTransactionManager?.createDirectAccount ||
+      !slotTransactionManager?.getNoFeeResourceBounds
+    ) {
+      return null;
+    }
+
+    try {
+      const status = await slotTransactionManager.getSessionStatus();
+      if (!status.registered || status.expired || !status.active) {
+        return null;
+      }
+
+      const account = slotTransactionManager.createDirectAccount(false);
+      const result = await account.execute(calls, {
+        resourceBounds: slotTransactionManager.getNoFeeResourceBounds(),
+      });
+
+      return result.transaction_hash;
+    } catch (error) {
+      console.warn("[CavosAdapter] Fast Slot execute path unavailable:", error);
+      return null;
+    }
+  }
+
   async execute(
     calls: Call | Call[],
     _details?: any
@@ -77,9 +112,15 @@ export class CavosAccountAdapter {
       callsArray.map(c => `${c.contractAddress?.slice(0,10)}...${c.entrypoint}`));
 
     await this._waitForSlotDeploy();
-    console.log("[CavosAdapter] Slot ready, calling executeOnSlot...");
 
     try {
+      const fastTxHash = await this._tryExecuteOnSlotFastPath(callsArray);
+      if (fastTxHash) {
+        console.log("[CavosAdapter] Fast Slot execute returned txHash:", fastTxHash);
+        return { transaction_hash: fastTxHash };
+      }
+
+      console.log("[CavosAdapter] Slot ready, calling executeOnSlot...");
       const txHash = await this._executeOnSlot(calls);
       console.log("[CavosAdapter] executeOnSlot returned txHash:", txHash);
       return { transaction_hash: txHash };

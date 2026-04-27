@@ -263,7 +263,8 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
       cavos.address,
       cavos.executeOnSlot,
       () => cavosRef.current?.getSlotProvider?.() as any,
-      () => !!cavosRef.current?.walletStatus?.isSlotDeployed
+      () => !!cavosRef.current?.walletStatus?.isSlotDeployed,
+      () => (cavosRef.current as any)?.cavos
     );
   }, [cavos?.isAuthenticated, cavos?.address, cavos?.executeOnSlot]);
 
