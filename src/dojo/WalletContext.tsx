@@ -105,6 +105,9 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
   const [cavosEmail, setCavosEmail] = useState("");
   const [cavosMagicLinkSent, setCavosMagicLinkSent] = useState(false);
   const [cavosError, setCavosError] = useState("");
+  const [cavosOAuthProvider, setCavosOAuthProvider] = useState<
+    "google" | "apple" | null
+  >(null);
 
   const appType = useAppContext();
 
@@ -461,6 +464,44 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     }
   };
 
+  const handleCavosOAuthLogin = async (provider: "google" | "apple") => {
+    console.log("[CAVOS] handleCavosOAuthLogin called", {
+      provider,
+      hasLogin: !!cavos?.login,
+    });
+
+    if (!cavos?.login) {
+      console.warn("[CAVOS] login not available");
+      return;
+    }
+
+    setCavosError("");
+    setCavosMagicLinkSent(false);
+    setCavosOAuthProvider(provider);
+    setConnectionStatus("connecting_cavos");
+    logEvent("cavos_oauth_click", { provider });
+
+    try {
+      await cavos.login(provider);
+      logEvent("cavos_oauth_started", { provider });
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : String(error ?? "unknown_error");
+      const cancelled = message.toLowerCase().includes("cancel");
+      logEvent(cancelled ? "cavos_oauth_cancelled" : "cavos_oauth_error", {
+        provider,
+        message,
+      });
+      if (!cancelled) {
+        console.error(`[CAVOS] OAuth ${provider} login failed`, error);
+      }
+      setCavosError(message || "Error during social login");
+      setConnectionStatus("selecting");
+    } finally {
+      setCavosOAuthProvider(null);
+    }
+  };
+
   const buttonStyles = {
     color: "white",
     height: isMobile ? "40px" : "50px",
@@ -606,6 +647,49 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
               gap="10px"
               w={isMobile ? "90%" : "400px"}
             >
+              <Text
+                color="white"
+                fontSize={isMobile ? 12 : 14}
+                letterSpacing={1}
+                opacity={0.7}
+              >
+                {t("login-with-social", "continue with")}
+              </Text>
+              <Flex gap="10px" w="100%">
+                <button
+                  style={{
+                    color: "white",
+                    height: isMobile ? "32px" : "40px",
+                    width: "100%",
+                  }}
+                  className="login-button secondary"
+                  onClick={() => handleCavosOAuthLogin("google")}
+                  disabled={connectionStatus === "connecting_cavos"}
+                >
+                  {cavosOAuthProvider === "google" ? (
+                    <Spinner size="xs" color="white" />
+                  ) : (
+                    t("continue-with-google", "Continue with Google")
+                  )}
+                </button>
+                <button
+                  style={{
+                    color: "white",
+                    height: isMobile ? "32px" : "40px",
+                    width: "100%",
+                  }}
+                  className="login-button secondary"
+                  onClick={() => handleCavosOAuthLogin("apple")}
+                  disabled={connectionStatus === "connecting_cavos"}
+                >
+                  {cavosOAuthProvider === "apple" ? (
+                    <Spinner size="xs" color="white" />
+                  ) : (
+                    t("continue-with-apple-cavos", "Continue with Apple")
+                  )}
+                </button>
+              </Flex>
+
               <Text
                 color="white"
                 fontSize={isMobile ? 12 : 14}
