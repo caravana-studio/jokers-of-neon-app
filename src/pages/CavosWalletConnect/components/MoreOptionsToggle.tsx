@@ -28,7 +28,7 @@ export const MoreOptionsToggle = ({
     <Flex
       as="button"
       type="button"
-      mt={{ base: 2.5, md: 0.5 }}
+      mt={{ base: 0.5, md: 0.5 }}
       alignItems="center"
       gap={1.5}
       color="#A3A4AA"

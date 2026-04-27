@@ -59,13 +59,13 @@ export const AuthOptionsView = ({
       alignItems="center"
       w="100%"
       maxW={{ base: "356px", sm: "420px", md: "520px" }}
-      gap={{ base: 6, md: 0 }}
+      gap={0}
       pb={{ base: "16px", md: "8px" }}
-      mt={{ base: "20px", md: "10px" }}
+      mt={{ base: "8px", md: "10px" }}
     >
       <Flex
         w="100%"
-        minH={{ base: "170px", sm: "210px", md: "196px" }}
+        minH={{ base: "148px", sm: "210px", md: "196px" }}
         position="relative"
       >
         {showPrimaryOptions && (
@@ -85,7 +85,7 @@ export const AuthOptionsView = ({
               inset: 0,
             }}
           >
-            <Flex flexDir="column" alignItems="center" gap={{ base: 6, md: 5 }} w="100%">
+            <Flex flexDir="column" alignItems="center" gap={{ base: 3.5, md: 5 }} w="100%">
               <AuthButton
                 iconSrc={Icons.APPLE}
                 iconAlt="Apple"
@@ -140,9 +140,9 @@ export const AuthOptionsView = ({
             <Flex
               flexDir="column"
               alignItems="center"
-              gap={{ base: 6, md: 5 }}
+              gap={{ base: 4, md: 5 }}
               w="100%"
-              pt={{ base: "86px", md: "70px" }}
+              pt={{ base: "26px", md: "70px" }}
             >
               <AuthButton
                 iconComponent={Icons.CONTROLLER}
@@ -154,7 +154,7 @@ export const AuthOptionsView = ({
                 disabled={isControllerActionDisabled}
               />
               {showGuestMode && (
-                <Flex flexDir="column" alignItems="center" gap={3} w="100%">
+                <Flex flexDir="column" alignItems="center" gap={2.5} w="100%">
                   <Text
                     color="#A3A4AA"
                     fontFamily="Oxanium"

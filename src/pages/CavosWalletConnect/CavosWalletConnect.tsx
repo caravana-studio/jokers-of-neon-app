@@ -189,12 +189,12 @@ export const CavosWalletConnect = () => {
     <PreThemeLoadingPage backgroundSize="cover" backgroundPosition="top center">
       <MobileDecoration
         top={nativePaddingTop}
-        bottom={isNative ? "30px" : "0px"}
+        bottom={"0px"}
       />
 
       <Flex
         position="fixed"
-        top={{ base: "50px", sm: "70px" }}
+        top={{ base: "80px", sm: "70px" }}
         left="50%"
         transform="translateX(-50%)"
         w="100%"
@@ -223,7 +223,7 @@ export const CavosWalletConnect = () => {
       <Flex
         position="fixed"
         inset={0}
-        background="linear-gradient(to top, #000 0%, #000 46%, rgba(0, 0, 0, 0.92) 56%, rgba(0, 0, 0, 0.68) 67%, rgba(0, 0, 0, 0.35) 76%, rgba(0, 0, 0, 0) 86%)"
+        background="linear-gradient(to top, #000 0%, #000 36%, rgba(0, 0, 0, 0.92) 46%, rgba(0, 0, 0, 0.68) 57%, rgba(0, 0, 0, 0.35) 66%, rgba(0, 0, 0, 0) 76%)"
         pointerEvents="none"
         zIndex={1}
       />
@@ -238,7 +238,7 @@ export const CavosWalletConnect = () => {
         alignItems="center"
         px={10}
         pt={{ base: "50px", md: "52px" }}
-        pb={{ base: "45px", md: "76px" }}
+        pb={{ base: "40px", md: "76px" }}
       >
         <Flex
           position="relative"
@@ -251,7 +251,7 @@ export const CavosWalletConnect = () => {
         >
           <Flex
             position="absolute"
-            bottom={{ base: "-6px", sm: "-4px", md: "10px" }}
+            bottom={{ base: "-18px", sm: "-4px", md: "10px" }}
             left="50%"
             transform="translateX(-50%)"
             flexDir="column"
