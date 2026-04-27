@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import type { MintedCard } from "../../marketplace/hooks/useCryptoPurchase";
 import { cardImageUrl } from "../../marketplace/utils/formatPrice";
+import { getPackSeason, isCollectorPackId } from "../../utils/packUtils";
 import PackTear from "../ExternalPack/PackTear";
 import { SplitPackOnce } from "../ExternalPack/SplitPackOnce";
 import Stack, { Intensity } from "./CardStack/Stack";
@@ -39,7 +40,10 @@ export function ExternalPacksPage() {
   const extraPackWidth = packWidth + 50;
   const packArtHeight = packWidth * 1.5;
   const packArtOffsetY = (packHeight - packArtHeight) / 2;
-  const tearColor: "white" | "black" = packId && packId >= 25 ? "white" : "black";
+  const tearColor: "white" | "black" =
+    packId && isCollectorPackId(packId) && getPackSeason(packId) >= 2
+      ? "white"
+      : "black";
 
   const cardsData = useMemo(() => {
     if (!mintedCards) return [];

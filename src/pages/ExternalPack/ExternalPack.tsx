@@ -37,6 +37,7 @@ import { Intensity } from "../../types/intensity";
 import { isNativeAndroid } from "../../utils/capacitorUtils";
 import { colorizeText } from "../../utils/getTooltip";
 import Stack, { type HighlightedCardData } from "./CardStack/Stack";
+import { getPackSeason, isCollectorPackId } from "../../utils/packUtils";
 import PackTear from "./PackTear";
 import { SplitPackOnce } from "./SplitPackOnce";
 
@@ -114,7 +115,8 @@ export const ExternalPack = ({
     providedPackId ?? locationState?.packId ?? Number(params.packId ?? 1);
   const normalizedPackId = packId % 10 || packId;
   const isLimitedEditionPack = normalizedPackId > 4;
-  const shouldUseMonochromeBackground = [25, 26, 35, 36].includes(packId);
+  const shouldUseMonochromeBackground =
+    isCollectorPackId(packId) && getPackSeason(packId) >= 2;
   const returnPath = returnTo ?? locationState?.returnTo ?? "/";
 
   const { t: tDocs } = useTranslation("docs");

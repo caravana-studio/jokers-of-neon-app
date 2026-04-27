@@ -41,9 +41,9 @@ export function useCryptoPurchase() {
     setError(null);
   };
 
-  // productId: numeric pack ID (e.g. 22) or string season pass ID (e.g. "season_pass_s2")
+  // productId: numeric pack ID (e.g. 42) or string season pass ID (e.g. "season_pass_s4")
   // priceAtoms: price in USDC atoms (6 decimals), from useShopPrice
-  // apiProductId: string ID sent to the game API (e.g. "pack_advanced_s2"); defaults to productId.toString()
+  // apiProductId: string ID sent to the game API (e.g. "pack_advanced_s4"); defaults to productId.toString()
   const buy = async (productId: number | string, priceAtoms: bigint, apiProductId?: string): Promise<CryptoPurchaseResult> => {
     if (!account || !address) {
       throw new Error("Wallet not connected");

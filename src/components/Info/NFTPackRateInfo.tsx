@@ -7,6 +7,7 @@ import { VIOLET, VIOLET_LIGHT } from "../../theme/colors";
 import { InformationIcon } from "./InformationIcon";
 import { useInformationPopUp } from "../../providers/InformationPopUpProvider";
 import { PACK_RATES, CARD_TYPE_METADATA } from "../../data/lootBoxRates";
+import { getPackTier } from "../../utils/packUtils";
 
 interface NFTPackRateInfoProps {
   name: string;
@@ -146,7 +147,8 @@ const ItemSectionComponent = ({ section, sectionRef }: ItemSectionProps) => {
 
 // Helper function to convert pack rates data to ItemSection format
 const convertPackRatesToSections = (packId: number, t: any): ItemSection[] => {
-  const packRates = PACK_RATES[packId];
+  const normalizedPackId = getPackTier(packId);
+  const packRates = PACK_RATES[normalizedPackId];
   if (!packRates) return [];
 
   return packRates.map((section) => ({
