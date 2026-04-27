@@ -1,3 +1,4 @@
+import { Browser } from "@capacitor/browser";
 import { useBurnerManager } from "@dojoengine/create-burner";
 import { useAccount, useConnect, useDisconnect } from "@starknet-react/core";
 import {
@@ -24,7 +25,7 @@ import { AppType, useAppContext } from "../providers/AppContextProvider";
 import { fetchVersion } from "../queries/fetchVersion";
 import { useGetLastGameId } from "../queries/useGetLastGameId";
 import { logEvent } from "../utils/analytics";
-import { isNativeIOS } from "../utils/capacitorUtils";
+import { isNative, isNativeIOS } from "../utils/capacitorUtils";
 import { controller } from "./controller/controller";
 import { CavosAccountAdapter } from "./cavos/CavosAccountAdapter";
 import { useCavosSafe } from "./cavos/CavosConfig";
@@ -33,6 +34,9 @@ import type { SetupResult } from "./setup";
 const CHAIN = import.meta.env.VITE_CHAIN;
 const EARLY_ACCESS_VERSION = !!import.meta.env.VITE_EARLY_ACCESS_VERSION;
 const CAVOS_ENABLED = !!import.meta.env.VITE_CAVOS_APP_ID;
+const CAVOS_NATIVE_REDIRECT_URI =
+  import.meta.env.VITE_CAVOS_NATIVE_REDIRECT_URI ||
+  "jokers://open";
 
 type ConnectionStatus =
   | "selecting"
@@ -506,6 +510,83 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     }
   };
 
+  const runCavosOAuthLogin = async (provider: CavosOAuthProvider) => {
+    if (!cavos?.login) {
+      throw new Error("Cavos login not available");
+    }
+
+    if (!isNative) {
+      await cavos.login(provider);
+      return;
+    }
+
+    const sdk = cavos.cavos as any;
+    const oauthWalletManager = sdk?.oauthWalletManager;
+    const originalWindowOpen = window.open;
+    const originalGetGoogleOAuthUrl =
+      oauthWalletManager?.getGoogleOAuthUrl?.bind(oauthWalletManager);
+    const originalGetAppleOAuthUrl =
+      oauthWalletManager?.getAppleOAuthUrl?.bind(oauthWalletManager);
+
+    const authWindow = {
+      closed: false,
+      document: {
+        write: () => {},
+      },
+      close: () => {
+        authWindow.closed = true;
+        Browser.close().catch(() => {});
+      },
+      location: {
+        get href() {
+          return "";
+        },
+        set href(url: string) {
+          if (!url) {
+            return;
+          }
+          Browser.open({ url }).catch((error) => {
+            console.error("[CAVOS] Failed to open OAuth URL", error);
+            authWindow.closed = true;
+          });
+        },
+      },
+    };
+
+    try {
+      if (originalGetGoogleOAuthUrl) {
+        oauthWalletManager.getGoogleOAuthUrl = () =>
+          originalGetGoogleOAuthUrl(CAVOS_NATIVE_REDIRECT_URI);
+      }
+      if (originalGetAppleOAuthUrl) {
+        oauthWalletManager.getAppleOAuthUrl = () =>
+          originalGetAppleOAuthUrl(CAVOS_NATIVE_REDIRECT_URI);
+      }
+
+      window.open = ((url?: string | URL) => {
+        const urlString = url?.toString() ?? "";
+        if (!urlString) {
+          return authWindow as unknown as Window;
+        }
+        Browser.open({ url: urlString }).catch((error) => {
+          console.error("[CAVOS] Failed to open OAuth URL", error);
+          authWindow.closed = true;
+        });
+        return authWindow as unknown as Window;
+      }) as typeof window.open;
+
+      await cavos.login(provider);
+    } finally {
+      window.open = originalWindowOpen;
+      if (originalGetGoogleOAuthUrl) {
+        oauthWalletManager.getGoogleOAuthUrl = originalGetGoogleOAuthUrl;
+      }
+      if (originalGetAppleOAuthUrl) {
+        oauthWalletManager.getAppleOAuthUrl = originalGetAppleOAuthUrl;
+      }
+    }
+  };
+
   const continueWithCavosOAuth = async (
     provider: CavosOAuthProvider
   ): Promise<boolean> => {
@@ -521,7 +602,7 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     logEvent("cavos_oauth_click", { provider });
 
     try {
-      await cavos.login(provider);
+      await runCavosOAuthLogin(provider);
       logEvent("cavos_oauth_started", { provider });
       return true;
     } catch (error) {
