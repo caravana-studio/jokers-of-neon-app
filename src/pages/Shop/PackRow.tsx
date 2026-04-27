@@ -32,6 +32,7 @@ import { listenForPurchase } from "../../queries/listenForPurchase";
 import { BLUE } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { isNative } from "../../utils/capacitorUtils";
+import { getPackSize, getPackTier, isCollectorPackId } from "../../utils/packUtils";
 import { PaymentMethodModal } from "./PaymentMethodModal";
 
 interface PackRowProps {
@@ -40,12 +41,6 @@ interface PackRowProps {
   price?: string;
   fullBleed?: boolean;
 }
-
-const PACK_SIZES: Record<number, number> = {
-  1: 3, 2: 3, 3: 4, 4: 4, 5: 5, 6: 10,
-  21: 3, 22: 3, 23: 4, 24: 4, 25: 5, 26: 10,
-  31: 3, 32: 3, 33: 4, 34: 4, 35: 5, 36: 10,
-};
 
 const PACK_INVENTORY_POLL_ATTEMPTS = 6;
 const PACK_INVENTORY_POLL_DELAY_MS = 1500;
@@ -70,8 +65,8 @@ export const PackRow = ({
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "shop.packs",
   });
-  const translationPackId = packId % 10;
-  const isLimitedEdition = [5, 6, 25, 26, 35, 36].includes(packId);
+  const translationPackId = getPackTier(packId);
+  const isLimitedEdition = isCollectorPackId(packId);
   const { isSmallScreen } = useResponsiveValues();
   const navigate = useNavigate();
   const toast = useToast();
@@ -271,7 +266,7 @@ export const PackRow = ({
           ? []
           : await resolveMintedCardsFromInventoryDiff(
               prePurchaseCards,
-              PACK_SIZES[packId] ?? 0,
+              getPackSize(packId),
             );
 
       const resolvedMintedCards = [
@@ -432,7 +427,7 @@ export const PackRow = ({
                 {t(`${translationPackId}.description.2`)}
               </Text>
               <Text fontSize={isSmallScreen ? 12 : 18} lineHeight={1}>
-                {t(`size`)}: {PACK_SIZES[packId]}
+                {t(`size`)}: {getPackSize(packId)}
               </Text>
             </Flex>
             <Flex
