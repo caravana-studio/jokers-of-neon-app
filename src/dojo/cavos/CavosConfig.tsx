@@ -1,8 +1,8 @@
 import { CavosProvider as CavosSDKProvider, useCavos } from "@cavos/react";
-import React, { createContext, ReactNode, useContext } from "react";
+import React, { createContext, ReactNode, useContext, useEffect, useRef } from "react";
 import { getContractByName } from "@dojoengine/core";
 import { getManifest } from "../getManifest";
-import { rpcUrl, slotInstance } from "../../config/cartridgeUrls";
+import { rpcUrl as slotRpcUrl, slotInstance } from "../../config/cartridgeUrls";
 import { getSlotChainId } from "../controller/controller";
 import { setupWorld } from "../typescript/contracts.gen";
 
@@ -11,6 +11,10 @@ const CAVOS_APP_ID =
 
 const CAVOS_PAYMASTER_API_KEY =
   import.meta.env.VITE_CAVOS_PAYMASTER_API_KEY || "";
+
+const CAVOS_STARKNET_RPC_URL =
+  import.meta.env.VITE_STARKNET_RPC_URL ||
+  "https://api.cartridge.gg/x/starknet/mainnet";
 
 const DOJO_NAMESPACE =
   import.meta.env.VITE_DOJO_NAMESPACE || "jokers_of_neon_core";
@@ -105,6 +109,24 @@ interface CavosWrapperProps {
 }
 
 export const CavosWrapper: React.FC<CavosWrapperProps> = ({ children }) => {
+  const instanceIdRef = useRef(Math.random().toString(36).slice(2, 8));
+
+  useEffect(() => {
+    console.log("[CAVOS-DEBUG] CavosWrapper mounted", {
+      instanceId: instanceIdRef.current,
+      hasAppId: !!CAVOS_APP_ID,
+      network: "mainnet",
+      starknetRpcUrl: CAVOS_STARKNET_RPC_URL,
+      slotRpcUrl,
+    });
+
+    return () => {
+      console.log("[CAVOS-DEBUG] CavosWrapper unmounted", {
+        instanceId: instanceIdRef.current,
+      });
+    };
+  }, []);
+
   if (!CAVOS_APP_ID) {
     return <>{children}</>;
   }
@@ -118,9 +140,9 @@ export const CavosWrapper: React.FC<CavosWrapperProps> = ({ children }) => {
         network: "mainnet",
         paymasterApiKey: CAVOS_PAYMASTER_API_KEY,
         enableLogging: true,
-        starknetRpcUrl: rpcUrl,
+        starknetRpcUrl: CAVOS_STARKNET_RPC_URL,
         slot: {
-          rpcUrl,
+          rpcUrl: slotRpcUrl,
           chainId: getSlotChainId(slotInstance),
           relayerAddress: CAVOS_SLOT_RELAYER_ADDRESS,
           relayerPrivateKey: CAVOS_SLOT_RELAYER_PRIVATE_KEY,

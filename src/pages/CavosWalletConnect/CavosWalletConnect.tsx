@@ -55,6 +55,7 @@ export const CavosWalletConnect = () => {
     isLoadingWallet,
     isCavosEnabled,
     cavosOAuthProvider,
+    cavosError,
   } = useWallet();
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "wallet-provider",
@@ -351,6 +352,21 @@ export const CavosWalletConnect = () => {
             )}
           </motion.div>
         </AnimatePresence>
+
+        {cavosError && (
+          <Text
+            w={{ base: "90%", md: "70%" }}
+            maxW="520px"
+            textAlign="center"
+            color="#ff9b9b"
+            fontFamily="Oxanium"
+            fontSize={{ base: "12px", md: "14px" }}
+            lineHeight={1.25}
+            textShadow="0 0 8px rgba(0,0,0,0.9)"
+          >
+            {cavosError}
+          </Text>
+        )}
 
         <LanguageSwitcher />
 

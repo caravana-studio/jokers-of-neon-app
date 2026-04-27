@@ -231,6 +231,21 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
   // The adapter is created once via useMemo, but these refs always point to current values.
   const cavosRef = useRef(cavos);
   cavosRef.current = cavos;
+  const isCavosReadyForSlotTransactions =
+    cavos?.isAuthenticated === true &&
+    cavos?.isLoading === false &&
+    cavos?.walletStatus?.isDeployed === true &&
+    cavos?.walletStatus?.isSlotDeployed === true &&
+    cavos?.walletStatus?.isDeploying !== true &&
+    cavos?.walletStatus?.isRegistering !== true &&
+    cavos?.walletStatus?.isSlotDeploying !== true;
+  const isCavosSetupInProgress =
+    cavos?.isAuthenticated === true &&
+    !isCavosReadyForSlotTransactions &&
+    (cavos.isLoading === true ||
+      cavos.walletStatus?.isDeploying === true ||
+      cavos.walletStatus?.isRegistering === true ||
+      cavos.walletStatus?.isSlotDeploying === true);
 
   // Build Cavos account adapter as soon as authenticated.
   // The adapter's execute() will wait for Slot deployment internally.
@@ -259,11 +274,14 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
       isAuthenticated: cavos?.isAuthenticated,
       hasAdapter: !!cavosAccountAdapter,
       walletReady: cavos?.walletStatus?.isReady,
+      mainnetDeployed: cavos?.walletStatus?.isDeployed,
+      slotDeployed: cavos?.walletStatus?.isSlotDeployed,
+      readyForSlotTransactions: isCavosReadyForSlotTransactions,
     });
 
     if (
       connectionStatus === "connecting_cavos" &&
-      cavos?.isAuthenticated &&
+      isCavosReadyForSlotTransactions &&
       cavosAccountAdapter
     ) {
       console.log("[CAVOS] Setting finalAccount with Cavos adapter");
@@ -273,7 +291,7 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
       setCavosMagicLinkSent(false);
       setCavosEmail("");
     }
-  }, [connectionStatus, cavos?.isAuthenticated, cavosAccountAdapter]);
+  }, [connectionStatus, isCavosReadyForSlotTransactions, cavosAccountAdapter]);
 
   // Auto-reconnect Cavos on page reload or magic link callback.
   // Covers two cases:
@@ -282,7 +300,7 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
   useEffect(() => {
     if (
       !finalAccount &&
-      cavos?.isAuthenticated &&
+      isCavosReadyForSlotTransactions &&
       cavosAccountAdapter &&
       (accountType === "cavos" || connectionStatus === "selecting")
     ) {
@@ -293,7 +311,45 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
       setCavosMagicLinkSent(false);
       setCavosEmail("");
     }
-  }, [accountType, finalAccount, cavos?.isAuthenticated, cavosAccountAdapter, connectionStatus]);
+  }, [accountType, finalAccount, isCavosReadyForSlotTransactions, cavosAccountAdapter, connectionStatus]);
+
+  useEffect(() => {
+    const didSlotSetupFail =
+      !finalAccount &&
+      cavos?.isAuthenticated === true &&
+      cavos.walletStatus?.isDeployed === true &&
+      cavos.walletStatus?.isSlotDeployed !== true &&
+      cavos.walletStatus?.isDeploying !== true &&
+      cavos.walletStatus?.isRegistering !== true &&
+      cavos.walletStatus?.isSlotDeploying !== true &&
+      (connectionStatus === "connecting_cavos" || accountType === "cavos");
+
+    if (!didSlotSetupFail) {
+      return;
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      setConnectionStatus("selecting");
+      setCavosOAuthProvider(null);
+      setCavosError(
+        "Wallet connected, but Slot setup failed. Check the Slot relayer configuration and try again."
+      );
+    }, 2000);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
+  }, [
+    accountType,
+    connectionStatus,
+    finalAccount,
+    cavos?.isAuthenticated,
+    cavos?.walletStatus?.isDeployed,
+    cavos?.walletStatus?.isSlotDeployed,
+    cavos?.walletStatus?.isDeploying,
+    cavos?.walletStatus?.isRegistering,
+    cavos?.walletStatus?.isSlotDeploying,
+  ]);
 
   useEffect(() => {
     if (
@@ -645,6 +701,13 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
       setCavosOAuthProvider(null);
     }
   };
+  const isCavosAutoConnecting =
+    !!cavos &&
+    cavos.isAuthenticated &&
+    !finalAccount &&
+    (accountType === "cavos" || connectionStatus === "selecting") &&
+    isCavosSetupInProgress;
+
   const shouldBlockWithWalletScreen =
     appType !== AppType.SHOP &&
     (!finalAccount || (EARLY_ACCESS_VERSION && (!isUserAllowed || allowedLoading)));
@@ -656,7 +719,8 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
       (!burnerAccount || isDeploying)) ||
     (connectionStatus === "connecting_cavos" &&
       !!cavos &&
-      !cavos.isAuthenticated);
+      isCavosSetupInProgress) ||
+    isCavosAutoConnecting;
 
   return (
     <WalletContext.Provider
