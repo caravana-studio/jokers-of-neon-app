@@ -39,6 +39,7 @@ export const CavosWalletConnect = () => {
   const [email, setEmail] = useState("");
   const [submittedEmail, setSubmittedEmail] = useState("");
   const [verificationCode, setVerificationCode] = useState("");
+  const [isSendingMagicLink, setIsSendingMagicLink] = useState(false);
   const stageTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const {
     switchToController,
@@ -122,18 +123,23 @@ export const CavosWalletConnect = () => {
 
   const handleEmailContinue = async () => {
     const normalizedEmail = email.trim();
-    if (!EMAIL_REGEX.test(normalizedEmail)) {
+    if (!EMAIL_REGEX.test(normalizedEmail) || isSendingMagicLink) {
       return;
     }
 
-    const sent = await sendCavosMagicLink(normalizedEmail);
-    if (!sent) {
-      return;
-    }
+    setIsSendingMagicLink(true);
+    try {
+      const sent = await sendCavosMagicLink(normalizedEmail);
+      if (!sent) {
+        return;
+      }
 
-    setSubmittedEmail(normalizedEmail);
-    setVerificationCode("");
-    setAuthView("code");
+      setSubmittedEmail(normalizedEmail);
+      setVerificationCode("");
+      setAuthView("code");
+    } finally {
+      setIsSendingMagicLink(false);
+    }
   };
 
   const handleVerificationCodeChange = (value: string) => {
@@ -148,6 +154,7 @@ export const CavosWalletConnect = () => {
   const handleUseAnotherEmail = () => {
     setAuthView("email");
     setVerificationCode("");
+    setIsSendingMagicLink(false);
     resetCavosAuthState();
   };
 
@@ -163,13 +170,17 @@ export const CavosWalletConnect = () => {
     setEmail("");
     setSubmittedEmail("");
     setVerificationCode("");
+    setIsSendingMagicLink(false);
     resetCavosAuthState();
   };
 
   const isEmailValid = EMAIL_REGEX.test(email.trim());
   const isVerificationCodeValid = verificationCode.length === 6;
   const isCavosAuthDisabled =
-    isLoadingWallet || !isCavosEnabled || Boolean(cavosOAuthProvider);
+    isLoadingWallet ||
+    isSendingMagicLink ||
+    !isCavosEnabled ||
+    Boolean(cavosOAuthProvider);
   const isControllerActionDisabled = isLoadingWallet;
   const isGuestActionDisabled =
     isLoadingWallet || isSigningInWithApple || isLoadingLastGameId;
@@ -311,7 +322,8 @@ export const CavosWalletConnect = () => {
                 }}
                 onEmailChange={setEmail}
                 onContinue={handleEmailContinue}
-                isContinueDisabled={!isEmailValid || isCavosAuthDisabled}
+                isContinueDisabled={!isEmailValid || !isCavosEnabled}
+                isSubmitting={isSendingMagicLink}
                 onTryAnotherLoginOption={handleTryAnotherLoginOption}
               />
             ) : (

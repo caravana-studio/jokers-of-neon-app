@@ -39,7 +39,7 @@ interface DojoContextType extends SetupResult {
   switchToController: (
     onSuccess?: (payload: SwitchSuccessPayload) => void
   ) => void;
-  logout: () => void;
+  logout: () => Promise<void>;
   accountType: "burner" | "controller" | "cavos" | null;
 }
 

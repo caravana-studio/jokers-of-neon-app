@@ -14,6 +14,7 @@ interface EmailLoginViewProps {
   onEmailChange: (value: string) => void;
   onContinue: () => void;
   isContinueDisabled: boolean;
+  isSubmitting?: boolean;
   onTryAnotherLoginOption: () => void;
 }
 
@@ -23,6 +24,7 @@ export const EmailLoginView = ({
   onEmailChange,
   onContinue,
   isContinueDisabled,
+  isSubmitting = false,
   onTryAnotherLoginOption,
 }: EmailLoginViewProps) => (
   <Flex
@@ -80,6 +82,7 @@ export const EmailLoginView = ({
         color="white"
         onClick={onContinue}
         disabled={isContinueDisabled}
+        isLoading={isSubmitting}
       />
     </Flex>
 

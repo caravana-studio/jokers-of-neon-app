@@ -26,6 +26,7 @@ import { fetchVersion } from "../queries/fetchVersion";
 import { useGetLastGameId } from "../queries/useGetLastGameId";
 import { logEvent } from "../utils/analytics";
 import { isNative, isNativeIOS } from "../utils/capacitorUtils";
+import { useAccountStore } from "./accountStore";
 import { controller } from "./controller/controller";
 import { CavosAccountAdapter } from "./cavos/CavosAccountAdapter";
 import { useCavosSafe } from "./cavos/CavosConfig";
@@ -61,7 +62,7 @@ interface WalletContextType {
   continueWithCavosOAuth: (provider: CavosOAuthProvider) => Promise<boolean>;
   sendCavosMagicLink: (email: string) => Promise<boolean>;
   resetCavosAuthState: () => void;
-  logout: () => void;
+  logout: () => Promise<void>;
   isLoadingWallet: boolean;
   burnerAccount: Account | AccountInterface | null;
   controllerAccount: AccountInterface | null | undefined;
@@ -376,22 +377,42 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     }
   }, [finalAccount, disconnect]);
 
-  const logout = () => {
-    disconnect();
-    if (cavos?.logout) {
-      cavos.logout();
-    }
+  const clearCavosStorage = () => {
+    localStorage.removeItem("cavos_auth_result");
+    localStorage.removeItem("cavos_magic_link_pre_auth");
+    localStorage.removeItem("cavos_pending_verification");
+    localStorage.removeItem("cavos_pending_deploy_tx");
+    localStorage.removeItem("cavos_pending_slot_deploy_tx");
+    sessionStorage.removeItem("cavos_oauth_session");
+    sessionStorage.removeItem("cavos_oauth_pre_auth");
+    sessionStorage.removeItem("cavos_fallback_redirect");
+  };
+
+  const logout = async () => {
+    const logoutAccountType = accountType;
+
+    await Promise.allSettled([
+      Promise.resolve(disconnect()),
+      cavos?.logout ? cavos.logout() : Promise.resolve(),
+    ]);
+
+    clearCavosStorage();
+    useAccountStore.getState().clearAccount();
     setAccountType(null);
     setFinalAccount(null);
     setIsControllerConnectAttemptActive(false);
     setIsAppleGuestSession(false);
     localStorage.removeItem(ACCOUNT_TYPE);
     localStorage.removeItem(APPLE_GUEST_SESSION);
+    localStorage.removeItem(GAME_ID);
+    localStorage.removeItem(LOGGED_USER);
     setConnectionStatus("selecting");
     setCavosMagicLinkSent(false);
     setCavosEmail("");
     setCavosError("");
     setCavosOAuthProvider(null);
+    onSuccessCallback.current = null;
+    logEvent("logout", { account_type: logoutAccountType ?? "unknown" });
   };
 
   const switchToController = (
@@ -500,6 +521,7 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     try {
       await cavos.sendMagicLink(normalizedEmail);
       setCavosMagicLinkSent(true);
+      setConnectionStatus("selecting");
       logEvent("cavos_magic_link_sent");
       return true;
     } catch (err: any) {
