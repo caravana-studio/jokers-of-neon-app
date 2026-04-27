@@ -24,7 +24,16 @@ const PACK_PACKAGE_IDS: Record<number, string> = {
   24: "pack_legendary_s2",
   23: "pack_epic_s2",
   22: "pack_advanced_s2",
+  36: "pack_collector_xl_s3",
+  35: "pack_collector_s3",
+  34: "pack_legendary_s3",
+  33: "pack_epic_s3",
+  32: "pack_advanced_s3",
+  31: "pack_basic_s3",
 };
+
+const COLLECTOR_PACK_IDS = new Set([5, 6, 25, 26, 35, 36]);
+const COLLECTOR_BACKGROUND_PRIORITY = [36, 26, 6, 35, 25, 5];
 
 const discountOnShopFromEnv = Number(import.meta.env.VITE_DISCOUNT_ON_SHOP);
 const DISCOUNT_ON_SHOP =
@@ -41,28 +50,20 @@ export const ShopPage = () => {
   const { seasonPassUnlocked, loading: loadingSeasonPass } = useSeasonPass();
   const { offerings } = useRevenueCat();
   const seasonPassPrice = offerings?.seasonPass?.formattedPrice;
-  const getPackPrice = (packId: number) => {
-    const packageId = PACK_PACKAGE_IDS[packId];
-    if (!packageId) {
-      return undefined;
-    }
+  const getPackPrice = (packId: number, shopId: string) => {
+    const packageId = PACK_PACKAGE_IDS[packId] ?? shopId;
     return offerings?.packs?.find((pack) => pack.id === packageId)
       ?.formattedPrice;
   };
   const { distribution, loading } = useShopDistribution();
-  const collectorPackIds = new Set([5, 6, 25, 26]);
   const hasCollectorPacks =
     !loading &&
-    !!distribution?.packs?.some((pack) => collectorPackIds.has(pack.packId));
-  const collectorBackground = distribution?.packs?.some(
-    (pack) => pack.packId === 6 || pack.packId === 26
-  )
-    ? distribution?.packs?.some((pack) => pack.packId === 26)
-      ? "/packs/bg/26.jpg"
-      : "/packs/bg/6.jpg"
-    : distribution?.packs?.some((pack) => pack.packId === 25)
-      ? "/packs/bg/25.jpg"
-      : "/packs/bg/5.jpg";
+    !!distribution?.packs?.some((pack) => COLLECTOR_PACK_IDS.has(pack.packId));
+  const collectorBackgroundPackId =
+    COLLECTOR_BACKGROUND_PRIORITY.find((packId) =>
+      distribution?.packs?.some((pack) => pack.packId === packId)
+    ) ?? 5;
+  const collectorBackground = `/packs/bg/${collectorBackgroundPackId}.jpg`;
 
   const appType = useAppContext();
   const isShop = appType === AppType.SHOP;
@@ -116,7 +117,7 @@ export const ShopPage = () => {
                 <PackRow
                   packId={pack.packId}
                   packageId={pack.shopId}
-                  price={getPackPrice(pack.packId)}
+                  price={getPackPrice(pack.packId, pack.shopId)}
                   fullBleed={isShop}
                 />
               );

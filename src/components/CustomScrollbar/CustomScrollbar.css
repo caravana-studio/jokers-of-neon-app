@@ -1,7 +1,6 @@
 .scrollable-container {
     height: 100%;
-    scrollbar-width: thin;
-    padding: 0 10px 10px 10px;
+    padding: 0 8px 8px 8px;
     overflow-x: hidden;
     overflow-y: auto;
     max-height: 400px;
@@ -13,21 +12,30 @@
     margin: 0 0 0 0;
 }
 
-.scrollable-container::-webkit-scrollbar {
-    width: 16px; 
-}
+@media (hover: hover) and (pointer: fine) {
+    .scrollable-container {
+        scrollbar-width: thin;
+        scrollbar-color: rgba(255, 255, 255, 0.28) transparent;
+    }
 
-.scrollable-container ::-webkit-scrollbar-track {
-    background: url('../../assets/scrollbar_container.svg') no-repeat center;
-    background-size: cover;
-}
+    .scrollable-container::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
 
-.scrollable-container ::-webkit-scrollbar-thumb {
-    background: url('../../assets/scrollbar_thumb.svg') no-repeat center;
-    background-size: cover;
-}
+    .scrollable-container::-webkit-scrollbar-track {
+        background: transparent;
+    }
 
-.scrollable-container ::-webkit-scrollbar-thumb:hover {
-    background: url('../../assets/scrollbar_thumb.svg') no-repeat center;
-    background-size: cover;
-} 
+    .scrollable-container::-webkit-scrollbar-thumb {
+        background-color: rgba(255, 255, 255, 0.28);
+        border-radius: 999px;
+        border: 2px solid transparent;
+        background-clip: content-box;
+        min-height: 28px;
+    }
+
+    .scrollable-container::-webkit-scrollbar-thumb:hover {
+        background-color: rgba(255, 255, 255, 0.45);
+    }
+}

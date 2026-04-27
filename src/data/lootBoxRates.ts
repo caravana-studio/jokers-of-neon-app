@@ -972,3 +972,21 @@ export const PACK_RATES: Record<number, PackRatesData> = {
     },
   ],
 };
+
+PACK_RATES[31] = PACK_RATES[21];
+PACK_RATES[32] = PACK_RATES[22];
+PACK_RATES[33] = PACK_RATES[23];
+PACK_RATES[34] = PACK_RATES[24];
+PACK_RATES[35] = PACK_RATES[25];
+PACK_RATES[36] = PACK_RATES[26].map((section) =>
+  section.itemNumber === 6
+    ? {
+        itemNumber: 6,
+        rates: [
+          { itemType: CardItemType.SPECIAL_B, percentage: 60.0 },
+          { itemType: CardItemType.SPECIAL_A, percentage: 30.0 },
+          { itemType: CardItemType.SPECIAL_S, percentage: 10.0 },
+        ],
+      }
+    : section,
+);
