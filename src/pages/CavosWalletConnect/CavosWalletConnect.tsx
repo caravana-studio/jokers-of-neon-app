@@ -198,8 +198,8 @@ export const CavosWalletConnect = () => {
         left="50%"
         transform="translateX(-50%)"
         w="100%"
-        maxW={{ base: "430px", md: "520px" }}
-        h={{ base: "360px", sm: "430px", md: "500px" }}
+        maxW={{ base: "430px", md: "520px", lg: "600px", xl: "700px" }}
+        h={{ base: "360px", sm: "430px", md: "500px", lg: "600px", xl: "700px" }}
         justifyContent="center"
         alignItems="flex-end"
         pointerEvents="none"
@@ -244,7 +244,7 @@ export const CavosWalletConnect = () => {
           position="relative"
           w="100%"
           maxW={{ base: "430px", md: "520px" }}
-          h={{ base: "360px", sm: "430px", md: "500px" }}
+          h={{ base: "360px", sm: "430px", md: "500px", lg: "600px", xl: "700px" }}
           justifyContent="center"
           alignItems="flex-end"
           pointerEvents="none"
@@ -262,7 +262,7 @@ export const CavosWalletConnect = () => {
             <Image
               src="/logos/logo.png"
               alt="Jokers of Neon"
-              w={{ base: "260px", sm: "410px", md: "450px" }}
+              w={{ base: "260px", sm: "410px", md: "450px", lg: "500px", xl: "600px" }}
               h="auto"
             />
             <Text
