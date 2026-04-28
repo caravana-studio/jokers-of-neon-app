@@ -39,7 +39,7 @@ export const RegularBanner = ({
         </Heading>
         {date && <Clock date={date} />}
       </Flex>
-      <Flex w="100%" flexDir="column">
+      <Flex w="100%" flexDir="column" gap={1}>
         {children}
       </Flex>
     </Flex>
