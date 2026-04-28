@@ -30,6 +30,7 @@ interface AuthOptionsViewProps {
   isCavosAuthDisabled?: boolean;
   isControllerActionDisabled?: boolean;
   isGuestActionDisabled?: boolean;
+  cavosOAuthProvider?: "google" | "apple" | null;
 }
 
 export const AuthOptionsView = ({
@@ -45,6 +46,7 @@ export const AuthOptionsView = ({
   isCavosAuthDisabled = false,
   isControllerActionDisabled = false,
   isGuestActionDisabled = false,
+  cavosOAuthProvider = null,
 }: AuthOptionsViewProps) => {
   const isLifted = optionsPhase === "opening" || optionsPhase === "secondary";
   const isBackLabel = optionsPhase === "secondary" || optionsPhase === "closing";
@@ -94,6 +96,7 @@ export const AuthOptionsView = ({
                 color="#0B0B0D"
                 onClick={onContinueWithAppleClick}
                 disabled={isCavosAuthDisabled}
+                isLoading={cavosOAuthProvider === "apple"}
               />
 
               <AuthButton
@@ -104,6 +107,7 @@ export const AuthOptionsView = ({
                 color="#0B0B0D"
                 onClick={onContinueWithGoogleClick}
                 disabled={isCavosAuthDisabled}
+                isLoading={cavosOAuthProvider === "google"}
               />
 
               <AuthButton

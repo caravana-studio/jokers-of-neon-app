@@ -311,6 +311,7 @@ export const CavosWalletConnect = () => {
                 isCavosAuthDisabled={isCavosAuthDisabled}
                 isControllerActionDisabled={isControllerActionDisabled}
                 isGuestActionDisabled={isGuestActionDisabled}
+                cavosOAuthProvider={cavosOAuthProvider}
               />
             ) : authView === "email" ? (
               <EmailLoginView

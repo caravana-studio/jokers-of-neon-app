@@ -46,9 +46,7 @@ export const AuthButton = ({
     cursor={disabled || isLoading ? "not-allowed" : "pointer"}
     opacity={disabled || isLoading ? 0.55 : 1}
   >
-    {isLoading ? (
-      <Spinner color={color} size="sm" />
-    ) : iconSrc ? (
+    {iconSrc ? (
       <Image
         src={iconSrc}
         alt={iconAlt ?? ""}
@@ -66,5 +64,6 @@ export const AuthButton = ({
     <Text lineHeight={1} fontSize={{ base: "14px", sm: "17px" }} color={color}>
       {label}
     </Text>
+    {isLoading && <Spinner color={color} size="sm" />}
   </Flex>
 );

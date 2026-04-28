@@ -291,6 +291,7 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
       setFinalAccount(cavosAccountAdapter as unknown as AccountInterface);
       setCavosMagicLinkSent(false);
       setCavosEmail("");
+      setCavosOAuthProvider(null);
     }
   }, [connectionStatus, isCavosReadyForSlotTransactions, cavosAccountAdapter]);
 
@@ -311,6 +312,7 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
       setFinalAccount(cavosAccountAdapter as unknown as AccountInterface);
       setCavosMagicLinkSent(false);
       setCavosEmail("");
+      setCavosOAuthProvider(null);
     }
   }, [accountType, finalAccount, isCavosReadyForSlotTransactions, cavosAccountAdapter, connectionStatus]);
 
@@ -696,10 +698,9 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
         console.error(`[CAVOS] OAuth ${provider} login failed`, error);
       }
       setCavosError(message || "Error during social login");
+      setCavosOAuthProvider(null);
       setConnectionStatus("selecting");
       return false;
-    } finally {
-      setCavosOAuthProvider(null);
     }
   };
   const isCavosAutoConnecting =
