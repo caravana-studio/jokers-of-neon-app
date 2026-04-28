@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useContext, useState } from "react";
 import { LOGGED_USER } from "../../constants/localStorage";
 import { useUsernameStore } from "../../state/useUsernameStore";
 import { DojoContext } from "../DojoContext";

@@ -29,6 +29,10 @@ const MINT_GAME_EVENT_KEY =
   import.meta.env.VITE_MINT_GAME_EVENT_KEY ||
   "0x2f01dd863550300355e99ebfc08524ac0d60d424c59eda114a54140df28d8ac";
 
+type TransactionResult = { success: boolean };
+
+const inFlightClaimLivesByAccount = new Map<string, Promise<TransactionResult>>();
+
 export const useGameActions = () => {
   const {
     setup: { client },
@@ -262,21 +266,38 @@ export const useGameActions = () => {
   };
 
   const claimLives = async (seasonId = getSeasonNumber()) => {
-    try {
-      const response = await client.lives_system.claim(account, seasonId);
-      const transaction_hash = response?.transaction_hash ?? "";
-
-      const tx = await account.waitForTransaction(transaction_hash, {
-        retryInterval: 100,
+    const claimKey = `${account.address}:${seasonId}`;
+    const inFlightClaim = inFlightClaimLivesByAccount.get(claimKey);
+    if (inFlightClaim) {
+      console.log("[claimLives] Reusing in-flight claim", {
+        address: account.address,
+        seasonId,
       });
-
-      const success = updateTransactionToast(transaction_hash, tx.isSuccess());
-
-      return { success };
-    } catch (e) {
-      console.log(e);
-      return { success: false };
+      return inFlightClaim;
     }
+
+    const claimPromise = (async (): Promise<TransactionResult> => {
+      try {
+        const response = await client.lives_system.claim(account, seasonId);
+        const transaction_hash = response?.transaction_hash ?? "";
+
+        const tx = await account.waitForTransaction(transaction_hash, {
+          retryInterval: 100,
+        });
+
+        const success = updateTransactionToast(transaction_hash, tx.isSuccess());
+
+        return { success };
+      } catch (e) {
+        console.log(e);
+        return { success: false };
+      }
+    })().finally(() => {
+      inFlightClaimLivesByAccount.delete(claimKey);
+    });
+
+    inFlightClaimLivesByAccount.set(claimKey, claimPromise);
+    return claimPromise;
   };
 
   const play = async (

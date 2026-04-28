@@ -39,8 +39,8 @@ interface DojoContextType extends SetupResult {
   switchToController: (
     onSuccess?: (payload: SwitchSuccessPayload) => void
   ) => void;
-  logout: () => void;
-  accountType: "burner" | "controller" | null;
+  logout: () => Promise<void>;
+  accountType: "burner" | "controller" | "cavos" | null;
 }
 
 export interface DojoResult {
@@ -187,12 +187,16 @@ const DojoContextProvider = ({
     } else if (accountType === "burner" && burnerAccount) {
       console.log("Burner is ready. Finalizing state in DojoContext...");
       useAccountStore.getState().setAccount(burnerAccount);
+    } else if (accountType === "cavos" && finalAccount) {
+      console.log("Cavos is ready. Finalizing state in DojoContext...");
+      useAccountStore.getState().setAccount(finalAccount);
     }
   }, [
     accountType,
     isControllerConnected,
     controllerAccount,
     burnerAccount,
+    finalAccount,
     onSuccessCallback,
   ]);
 

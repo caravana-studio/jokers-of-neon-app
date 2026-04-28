@@ -1,22 +1,19 @@
-import { Flex, Heading, Link, Spinner, Text } from "@chakra-ui/react";
+import { Browser } from "@capacitor/browser";
 import { useBurnerManager } from "@dojoengine/create-burner";
 import { useAccount, useConnect, useDisconnect } from "@starknet-react/core";
 import {
   createContext,
-  ReactNode,
+  type MutableRefObject,
+  type ReactNode,
   useContext,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from "react";
-import { isMobile } from "react-device-detect";
-import { useTranslation } from "react-i18next";
-import { Account, AccountInterface } from "starknet";
+import { Account, type AccountInterface } from "starknet";
 import { SignInWithApple } from "@capacitor-community/apple-sign-in";
 import { checkEarlyAccess } from "../api/earlyAccess";
-import LanguageSwitcher from "../components/LanguageSwitcher";
-import { MobileDecoration } from "../components/MobileDecoration";
-import { PositionedVersion } from "../components/version/PositionedVersion";
 import {
   ACCOUNT_TYPE,
   APPLE_GUEST_SESSION,
@@ -24,22 +21,31 @@ import {
   LOGGED_USER,
 } from "../constants/localStorage";
 import { APP_VERSION } from "../constants/version";
-import { PreThemeLoadingPage } from "../pages/PreThemeLoadingPage";
 import { AppType, useAppContext } from "../providers/AppContextProvider";
 import { fetchVersion } from "../queries/fetchVersion";
 import { useGetLastGameId } from "../queries/useGetLastGameId";
 import { logEvent } from "../utils/analytics";
-import { isNative, isNativeIOS, nativePaddingTop } from "../utils/capacitorUtils";
+import { isNative, isNativeIOS } from "../utils/capacitorUtils";
+import { useAccountStore } from "./accountStore";
 import { controller } from "./controller/controller";
-import { SetupResult } from "./setup";
+import { CavosAccountAdapter } from "./cavos/CavosAccountAdapter";
+import { useCavosSafe } from "./cavos/CavosConfig";
+import type { SetupResult } from "./setup";
 
 const CHAIN = import.meta.env.VITE_CHAIN;
 const EARLY_ACCESS_VERSION = !!import.meta.env.VITE_EARLY_ACCESS_VERSION;
+const CAVOS_ENABLED = !!import.meta.env.VITE_CAVOS_APP_ID;
+const CAVOS_NATIVE_REDIRECT_URI =
+  import.meta.env.VITE_CAVOS_NATIVE_REDIRECT_URI ||
+  "jokers://open";
 
 type ConnectionStatus =
   | "selecting"
   | "connecting_burner"
-  | "connecting_controller";
+  | "connecting_controller"
+  | "connecting_cavos";
+
+type CavosOAuthProvider = "google" | "apple";
 
 interface SwitchSuccessPayload {
   username: string;
@@ -48,18 +54,32 @@ interface SwitchSuccessPayload {
 
 interface WalletContextType {
   finalAccount: Account | AccountInterface | null;
-  accountType: "burner" | "controller" | null;
+  accountType: "burner" | "controller" | "cavos" | null;
   switchToController: (
     onSuccess?: (payload: SwitchSuccessPayload) => void
   ) => void;
-  logout: () => void;
+  continueAsGuest: () => Promise<boolean>;
+  continueWithCavosOAuth: (provider: CavosOAuthProvider) => Promise<boolean>;
+  sendCavosMagicLink: (email: string) => Promise<boolean>;
+  resetCavosAuthState: () => void;
+  logout: () => Promise<void>;
   isLoadingWallet: boolean;
   burnerAccount: Account | AccountInterface | null;
   controllerAccount: AccountInterface | null | undefined;
   isControllerConnected: boolean | undefined;
   isControllerConnecting: boolean | undefined;
   isAppleGuestSession: boolean;
-  onSuccessCallback: React.MutableRefObject<
+  isSigningInWithApple: boolean;
+  isLoadingLastGameId: boolean;
+  allowGuest: boolean;
+  shouldUseAppleLoginForGuest: boolean;
+  shouldBlockWithWalletScreen: boolean;
+  isCavosEnabled: boolean;
+  isCavosMagicLinkSent: boolean;
+  cavosMagicLinkEmail: string;
+  cavosError: string;
+  cavosOAuthProvider: CavosOAuthProvider | null;
+  onSuccessCallback: MutableRefObject<
     ((payload: SwitchSuccessPayload) => void) | null
   >;
 }
@@ -73,25 +93,35 @@ type WalletProviderProps = {
 
 export const WalletProvider = ({ children, value }: WalletProviderProps) => {
   const { connect, connectors } = useConnect();
-  const { lastGameId, isLoading, error: lastGameIdError } = useGetLastGameId();
+  const {
+    lastGameId,
+    isLoading: isLoadingLastGameId,
+    error: lastGameIdError,
+  } = useGetLastGameId();
   const {
     account: controllerAccount,
     isConnected: isControllerConnected,
     isConnecting: isControllerConnecting,
   } = useAccount();
-  const { t } = useTranslation("intermediate-screens", {
-    keyPrefix: "wallet-provider",
-  });
+
+  // Cavos SDK hook (safe — returns null when CavosProvider is not in tree)
+  const cavos = useCavosSafe();
 
   const [isUserAllowed, setIsUserAllowed] =
     useState<boolean>(!EARLY_ACCESS_VERSION);
   const [allowedLoading, setAllowedLoading] = useState<boolean>(false);
-  const [showNotAllowed, setShowNotAllowed] = useState<boolean>(false);
   const [isAppleLoginEnabled, setIsAppleLoginEnabled] = useState(false);
   const [isSigningInWithApple, setIsSigningInWithApple] = useState(false);
   const [isAppleGuestSession, setIsAppleGuestSession] = useState<boolean>(
     () => window.localStorage.getItem(APPLE_GUEST_SESSION) === "true"
   );
+
+  // Cavos email login state
+  const [cavosEmail, setCavosEmail] = useState("");
+  const [cavosMagicLinkSent, setCavosMagicLinkSent] = useState(false);
+  const [cavosError, setCavosError] = useState("");
+  const [cavosOAuthProvider, setCavosOAuthProvider] =
+    useState<CavosOAuthProvider | null>(null);
 
   const appType = useAppContext();
 
@@ -103,20 +133,14 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
 
   const { disconnect } = useDisconnect();
 
-  const {
-    create,
-    list,
-    get,
-    select,
-    account: burnerAccount,
-    isDeploying,
-    clear,
-  } = useBurnerManager({
+  const { account: burnerAccount, isDeploying } = useBurnerManager({
     burnerManager: value.burnerManager,
   });
 
   const [connectionStatus, setConnectionStatus] =
     useState<ConnectionStatus>("selecting");
+  const [isControllerConnectAttemptActive, setIsControllerConnectAttemptActive] =
+    useState(false);
   const [finalAccount, setFinalAccount] = useState<
     Account | AccountInterface | null
   >(null);
@@ -124,9 +148,10 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
   const lsAccountType = (localStorage.getItem(ACCOUNT_TYPE) ?? null) as
     | "burner"
     | "controller"
+    | "cavos"
     | null;
   const [accountType, setAccountType] = useState<
-    "burner" | "controller" | null
+    "burner" | "controller" | "cavos" | null
   >(lsAccountType);
 
   const onSuccessCallback = useRef<
@@ -164,11 +189,170 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
 
   const connectWallet = async () => {
     try {
-      await connect({ connector: connectors[0] });
+      if (connectors[0]) {
+        await connect({ connector: connectors[0] });
+      }
     } catch (error) {
       console.error("Failed to connect wallet:", error);
     }
   };
+
+  // Log Cavos state changes for debugging
+  useEffect(() => {
+    if (cavos) {
+      console.log("[CAVOS] State update:", {
+        isAuthenticated: cavos.isAuthenticated,
+        isLoading: cavos.isLoading,
+        address: cavos.address,
+        user: cavos.user,
+        walletStatus: cavos.walletStatus,
+        hasActiveSession: cavos.hasActiveSession,
+        hasExecuteOnSlot: !!cavos.executeOnSlot,
+        isSlotDeploying: cavos.walletStatus?.isSlotDeploying,
+        isSlotDeployed: cavos.walletStatus?.isSlotDeployed,
+        hasSlotProvider: !!cavos.getSlotProvider?.(),
+      });
+    }
+  }, [
+    cavos?.isAuthenticated,
+    cavos?.isLoading,
+    cavos?.address,
+    cavos?.walletStatus?.isReady,
+    cavos?.walletStatus?.isDeployed,
+    cavos?.walletStatus?.isDeploying,
+    cavos?.walletStatus?.isRegistering,
+    cavos?.walletStatus?.isSessionActive,
+    cavos?.walletStatus?.isSlotDeploying,
+    cavos?.walletStatus?.isSlotDeployed,
+    cavos?.hasActiveSession,
+  ]);
+
+  // Refs to avoid stale closures in CavosAccountAdapter callbacks.
+  // The adapter is created once via useMemo, but these refs always point to current values.
+  const cavosRef = useRef(cavos);
+  cavosRef.current = cavos;
+  const isCavosReadyForSlotTransactions =
+    cavos?.isAuthenticated === true &&
+    cavos?.isLoading === false &&
+    cavos?.walletStatus?.isDeployed === true &&
+    cavos?.walletStatus?.isSlotDeployed === true &&
+    cavos?.walletStatus?.isDeploying !== true &&
+    cavos?.walletStatus?.isRegistering !== true &&
+    cavos?.walletStatus?.isSlotDeploying !== true;
+  const isCavosSetupInProgress =
+    cavos?.isAuthenticated === true &&
+    !isCavosReadyForSlotTransactions &&
+    (cavos.isLoading === true ||
+      cavos.walletStatus?.isDeploying === true ||
+      cavos.walletStatus?.isRegistering === true ||
+      cavos.walletStatus?.isSlotDeploying === true);
+
+  // Build Cavos account adapter as soon as authenticated.
+  // The adapter's execute() will wait for Slot deployment internally.
+  const cavosAccountAdapter = useMemo(() => {
+    if (!cavos?.isAuthenticated || !cavos?.address || !cavos?.executeOnSlot) {
+      console.log("[CAVOS] Adapter not ready:", {
+        isAuthenticated: cavos?.isAuthenticated,
+        address: cavos?.address,
+        hasExecuteOnSlot: !!cavos?.executeOnSlot,
+      });
+      return null;
+    }
+    console.log("[CAVOS] Creating CavosAccountAdapter for address:", cavos.address);
+    return new CavosAccountAdapter(
+      cavos.address,
+      cavos.executeOnSlot,
+      () => cavosRef.current?.getSlotProvider?.() as any,
+      () => !!cavosRef.current?.walletStatus?.isSlotDeployed,
+      () => (cavosRef.current as any)?.cavos
+    );
+  }, [cavos?.isAuthenticated, cavos?.address, cavos?.executeOnSlot]);
+
+  // Handle Cavos authentication state changes
+  useEffect(() => {
+    console.log("[CAVOS] Auth effect check:", {
+      connectionStatus,
+      isAuthenticated: cavos?.isAuthenticated,
+      hasAdapter: !!cavosAccountAdapter,
+      walletReady: cavos?.walletStatus?.isReady,
+      mainnetDeployed: cavos?.walletStatus?.isDeployed,
+      slotDeployed: cavos?.walletStatus?.isSlotDeployed,
+      readyForSlotTransactions: isCavosReadyForSlotTransactions,
+    });
+
+    if (
+      connectionStatus === "connecting_cavos" &&
+      isCavosReadyForSlotTransactions &&
+      cavosAccountAdapter
+    ) {
+      console.log("[CAVOS] Setting finalAccount with Cavos adapter");
+      setAccountType("cavos");
+      localStorage.setItem(ACCOUNT_TYPE, "cavos");
+      setFinalAccount(cavosAccountAdapter as unknown as AccountInterface);
+      setCavosMagicLinkSent(false);
+      setCavosEmail("");
+      setCavosOAuthProvider(null);
+    }
+  }, [connectionStatus, isCavosReadyForSlotTransactions, cavosAccountAdapter]);
+
+  // Auto-reconnect Cavos on page reload or magic link callback.
+  // Covers two cases:
+  // 1. Page reload with accountType=cavos in localStorage
+  // 2. Magic link opens the app fresh — SDK auto-authenticates but connectionStatus is "selecting"
+  useEffect(() => {
+    if (
+      !finalAccount &&
+      isCavosReadyForSlotTransactions &&
+      cavosAccountAdapter &&
+      (accountType === "cavos" || connectionStatus === "selecting")
+    ) {
+      console.log("[CAVOS] Auto-connecting Cavos account (reload or magic link)");
+      setAccountType("cavos");
+      localStorage.setItem(ACCOUNT_TYPE, "cavos");
+      setFinalAccount(cavosAccountAdapter as unknown as AccountInterface);
+      setCavosMagicLinkSent(false);
+      setCavosEmail("");
+      setCavosOAuthProvider(null);
+    }
+  }, [accountType, finalAccount, isCavosReadyForSlotTransactions, cavosAccountAdapter, connectionStatus]);
+
+  useEffect(() => {
+    const didSlotSetupFail =
+      !finalAccount &&
+      cavos?.isAuthenticated === true &&
+      cavos.walletStatus?.isDeployed === true &&
+      cavos.walletStatus?.isSlotDeployed !== true &&
+      cavos.walletStatus?.isDeploying !== true &&
+      cavos.walletStatus?.isRegistering !== true &&
+      cavos.walletStatus?.isSlotDeploying !== true &&
+      (connectionStatus === "connecting_cavos" || accountType === "cavos");
+
+    if (!didSlotSetupFail) {
+      return;
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      setConnectionStatus("selecting");
+      setCavosOAuthProvider(null);
+      setCavosError(
+        "Wallet connected, but Slot setup failed. Check the Slot relayer configuration and try again."
+      );
+    }, 2000);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
+  }, [
+    accountType,
+    connectionStatus,
+    finalAccount,
+    cavos?.isAuthenticated,
+    cavos?.walletStatus?.isDeployed,
+    cavos?.walletStatus?.isSlotDeployed,
+    cavos?.walletStatus?.isDeploying,
+    cavos?.walletStatus?.isRegistering,
+    cavos?.walletStatus?.isSlotDeploying,
+  ]);
 
   useEffect(() => {
     if (
@@ -176,6 +360,7 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
       isControllerConnected === true &&
       controllerAccount
     ) {
+      setIsControllerConnectAttemptActive(false);
       setAccountType("controller");
       localStorage.setItem(ACCOUNT_TYPE, "controller");
       setFinalAccount(controllerAccount);
@@ -192,13 +377,39 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
   ]);
 
   useEffect(() => {
+    if (!isControllerConnectAttemptActive) {
+      return;
+    }
+
+    if (isControllerConnected === true && controllerAccount) {
+      setIsControllerConnectAttemptActive(false);
+      return;
+    }
+
+    if (isControllerConnecting) {
+      return;
+    }
+
+    setIsControllerConnectAttemptActive(false);
+    setConnectionStatus("selecting");
+  }, [
+    isControllerConnectAttemptActive,
+    isControllerConnected,
+    isControllerConnecting,
+    controllerAccount,
+  ]);
+
+  useEffect(() => {
     if (accountType && !finalAccount) {
       if (accountType === "burner") {
         setFinalAccount(burnerAccount);
-      } else {
+      } else if (accountType === "controller") {
         connectWallet();
-        controllerAccount && setFinalAccount(controllerAccount);
+        if (controllerAccount) {
+          setFinalAccount(controllerAccount);
+        }
       }
+      // cavos auto-reconnect handled by the effect above
     }
   }, [accountType, finalAccount, burnerAccount, controllerAccount]);
 
@@ -210,7 +421,6 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
           setIsUserAllowed(registered);
           setAllowedLoading(false);
           if (!registered) {
-            setShowNotAllowed(true);
             setAccountType(null);
             setFinalAccount(null);
             disconnect();
@@ -224,16 +434,44 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
           disconnect();
         });
     }
-  }, [finalAccount]);
+  }, [finalAccount, disconnect]);
 
-  const logout = () => {
-    disconnect();
+  const clearCavosStorage = () => {
+    localStorage.removeItem("cavos_auth_result");
+    localStorage.removeItem("cavos_magic_link_pre_auth");
+    localStorage.removeItem("cavos_pending_verification");
+    localStorage.removeItem("cavos_pending_deploy_tx");
+    localStorage.removeItem("cavos_pending_slot_deploy_tx");
+    sessionStorage.removeItem("cavos_oauth_session");
+    sessionStorage.removeItem("cavos_oauth_pre_auth");
+    sessionStorage.removeItem("cavos_fallback_redirect");
+  };
+
+  const logout = async () => {
+    const logoutAccountType = accountType;
+
+    await Promise.allSettled([
+      Promise.resolve(disconnect()),
+      cavos?.logout ? cavos.logout() : Promise.resolve(),
+    ]);
+
+    clearCavosStorage();
+    useAccountStore.getState().clearAccount();
     setAccountType(null);
     setFinalAccount(null);
+    setIsControllerConnectAttemptActive(false);
     setIsAppleGuestSession(false);
     localStorage.removeItem(ACCOUNT_TYPE);
     localStorage.removeItem(APPLE_GUEST_SESSION);
+    localStorage.removeItem(GAME_ID);
+    localStorage.removeItem(LOGGED_USER);
     setConnectionStatus("selecting");
+    setCavosMagicLinkSent(false);
+    setCavosEmail("");
+    setCavosError("");
+    setCavosOAuthProvider(null);
+    onSuccessCallback.current = null;
+    logEvent("logout", { account_type: logoutAccountType ?? "unknown" });
   };
 
   const switchToController = (
@@ -259,6 +497,7 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     }
 
     setConnectionStatus("connecting_controller");
+    setIsControllerConnectAttemptActive(true);
     if (isControllerConnected === false && isControllerConnecting === false) {
       connectWallet();
     }
@@ -266,7 +505,6 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
 
   const shouldUseAppleLoginForGuest =
     allowGuest && isNativeIOS && isAppleLoginEnabled;
-  const shouldUseAppleLoginForController = isNativeIOS && isAppleLoginEnabled;
 
   const startGuestFlow = (fromAppleLogin = false) => {
     logEvent("play_as_guest");
@@ -283,10 +521,14 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     localStorage.setItem(LOGGED_USER, username);
   };
 
-  const handleGuestClick = async () => {
+  const continueAsGuest = async (): Promise<boolean> => {
+    if (isLoadingLastGameId || isSigningInWithApple) {
+      return false;
+    }
+
     if (!shouldUseAppleLoginForGuest) {
       startGuestFlow();
-      return;
+      return true;
     }
 
     setIsSigningInWithApple(true);
@@ -299,6 +541,7 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
         ),
       });
       startGuestFlow(true);
+      return true;
     } catch (error) {
       const message =
         error instanceof Error ? error.message : String(error ?? "unknown_error");
@@ -309,181 +552,177 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
       if (!cancelled) {
         console.error("Apple Sign In failed", error);
       }
+      return false;
     } finally {
       setIsSigningInWithApple(false);
     }
   };
 
-  const buttonStyles = {
-    color: "white",
-    height: isMobile ? "40px" : "50px",
-    width: allowGuest
-      ? isMobile
-        ? "110px"
-        : "230px"
-      : isMobile
-        ? "180px"
-        : "300px",
+  const resetCavosAuthState = () => {
+    setCavosError("");
+    setCavosMagicLinkSent(false);
+    setCavosEmail("");
+    setCavosOAuthProvider(null);
   };
+
+  const sendCavosMagicLink = async (email: string): Promise<boolean> => {
+    const normalizedEmail = email.trim();
+    if (!cavos?.sendMagicLink || !normalizedEmail) {
+      console.warn("[CAVOS] sendMagicLink not available or email empty");
+      return false;
+    }
+
+    setCavosError("");
+    setCavosEmail(normalizedEmail);
+    setCavosOAuthProvider(null);
+    setConnectionStatus("connecting_cavos");
+
+    try {
+      await cavos.sendMagicLink(normalizedEmail);
+      setCavosMagicLinkSent(true);
+      setConnectionStatus("selecting");
+      logEvent("cavos_magic_link_sent");
+      return true;
+    } catch (err: any) {
+      console.error("[CAVOS] Error sending magic link:", err);
+      setCavosError(err?.message || "Error sending magic link");
+      setConnectionStatus("selecting");
+      return false;
+    }
+  };
+
+  const runCavosOAuthLogin = async (provider: CavosOAuthProvider) => {
+    if (!cavos?.login) {
+      throw new Error("Cavos login not available");
+    }
+
+    if (!isNative) {
+      await cavos.login(provider);
+      return;
+    }
+
+    const sdk = cavos.cavos as any;
+    const oauthWalletManager = sdk?.oauthWalletManager;
+    const originalWindowOpen = window.open;
+    const originalGetGoogleOAuthUrl =
+      oauthWalletManager?.getGoogleOAuthUrl?.bind(oauthWalletManager);
+    const originalGetAppleOAuthUrl =
+      oauthWalletManager?.getAppleOAuthUrl?.bind(oauthWalletManager);
+
+    const authWindow = {
+      closed: false,
+      document: {
+        write: () => {},
+      },
+      close: () => {
+        authWindow.closed = true;
+        Browser.close().catch(() => {});
+      },
+      location: {
+        get href() {
+          return "";
+        },
+        set href(url: string) {
+          if (!url) {
+            return;
+          }
+          Browser.open({ url }).catch((error) => {
+            console.error("[CAVOS] Failed to open OAuth URL", error);
+            authWindow.closed = true;
+          });
+        },
+      },
+    };
+
+    try {
+      if (originalGetGoogleOAuthUrl) {
+        oauthWalletManager.getGoogleOAuthUrl = () =>
+          originalGetGoogleOAuthUrl(CAVOS_NATIVE_REDIRECT_URI);
+      }
+      if (originalGetAppleOAuthUrl) {
+        oauthWalletManager.getAppleOAuthUrl = () =>
+          originalGetAppleOAuthUrl(CAVOS_NATIVE_REDIRECT_URI);
+      }
+
+      window.open = ((url?: string | URL) => {
+        const urlString = url?.toString() ?? "";
+        if (!urlString) {
+          return authWindow as unknown as Window;
+        }
+        Browser.open({ url: urlString }).catch((error) => {
+          console.error("[CAVOS] Failed to open OAuth URL", error);
+          authWindow.closed = true;
+        });
+        return authWindow as unknown as Window;
+      }) as typeof window.open;
+
+      await cavos.login(provider);
+    } finally {
+      window.open = originalWindowOpen;
+      if (originalGetGoogleOAuthUrl) {
+        oauthWalletManager.getGoogleOAuthUrl = originalGetGoogleOAuthUrl;
+      }
+      if (originalGetAppleOAuthUrl) {
+        oauthWalletManager.getAppleOAuthUrl = originalGetAppleOAuthUrl;
+      }
+    }
+  };
+
+  const continueWithCavosOAuth = async (
+    provider: CavosOAuthProvider
+  ): Promise<boolean> => {
+    if (!cavos?.login) {
+      console.warn("[CAVOS] login not available");
+      return false;
+    }
+
+    setCavosError("");
+    setCavosMagicLinkSent(false);
+    setCavosOAuthProvider(provider);
+    setConnectionStatus("connecting_cavos");
+    logEvent("cavos_oauth_click", { provider });
+
+    try {
+      await runCavosOAuthLogin(provider);
+      logEvent("cavos_oauth_started", { provider });
+      return true;
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : String(error ?? "unknown_error");
+      const cancelled = message.toLowerCase().includes("cancel");
+      logEvent(cancelled ? "cavos_oauth_cancelled" : "cavos_oauth_error", {
+        provider,
+        message,
+      });
+      if (!cancelled) {
+        console.error(`[CAVOS] OAuth ${provider} login failed`, error);
+      }
+      setCavosError(message || "Error during social login");
+      setCavosOAuthProvider(null);
+      setConnectionStatus("selecting");
+      return false;
+    }
+  };
+  const isCavosAutoConnecting =
+    !!cavos &&
+    cavos.isAuthenticated &&
+    !finalAccount &&
+    (accountType === "cavos" || connectionStatus === "selecting") &&
+    isCavosSetupInProgress;
 
   const shouldBlockWithWalletScreen =
     appType !== AppType.SHOP &&
     (!finalAccount || (EARLY_ACCESS_VERSION && (!isUserAllowed || allowedLoading)));
 
-  if (shouldBlockWithWalletScreen) {
-    return (
-      <PreThemeLoadingPage
-        backgroundSize="cover"
-        backgroundPosition="bottom center"
-      >
-        <PositionedVersion />
-        <MobileDecoration
-          top={nativePaddingTop}
-          bottom={isNative ? "30px" : "0px"}
-        />
-        <Flex
-          flexDirection={"column"}
-          gap={0}
-          w="100%"
-          justifyContent={"center"}
-          alignItems={"center"}
-        >
-          <img
-            width={isMobile ? "90%" : "60%"}
-            src="logos/logo.png"
-            alt="logo"
-          />
-          {EARLY_ACCESS_VERSION && (
-            <Flex flexDir="column" mb={isMobile ? 3 : "50px"}>
-              {showNotAllowed ? (
-                <Flex flexDir="column" gap={1}>
-                  <Heading
-                    textAlign={"center"}
-                    lineHeight={1}
-                    letterSpacing={1}
-                    fontSize={isMobile ? 17 : 25}
-                  >
-                    {t("not-allowed")}
-                  </Heading>
-                  <Heading
-                    textAlign={"center"}
-                    lineHeight={1}
-                    letterSpacing={1}
-                    fontSize={isMobile ? 12 : 17}
-                    textTransform={"lowercase"}
-                  >
-                    {t("register-at")}{" "}
-                    <a
-                      href="https://register.caravana.studio"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      https://register.caravana.studio
-                    </a>
-                  </Heading>
-                </Flex>
-              ) : (
-                <>
-                  <Heading
-                    textAlign={"center"}
-                    lineHeight={1}
-                    variant={"italic"}
-                    letterSpacing={1}
-                    fontSize={isMobile ? 20 : 30}
-                  >
-                    {t("season-1")}
-                  </Heading>
-                  <Heading
-                    textAlign={"center"}
-                    lineHeight={1}
-                    letterSpacing={1}
-                    fontSize={15}
-                  >
-                    {t("early-access")}
-                  </Heading>
-                </>
-              )}
-            </Flex>
-          )}
-        </Flex>
-        <Flex flexDirection={"row"} gap={"30px"}>
-          {allowedLoading ? (
-            <Spinner color="white" size="sm" />
-          ) : (
-            <button
-              style={buttonStyles}
-              className="login-button"
-              onClick={() => {
-                logEvent("connect_controller_click");
-                setConnectionStatus("connecting_controller");
-                if (
-                  isControllerConnected === false &&
-                  isControllerConnecting === false
-                ) {
-                  connectWallet();
-                }
-              }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                {shouldUseAppleLoginForController
-                  ? t("continue-with-controller")
-                  : t("login")}
-                {/* <img src={Icons.CARTRIDGE} width={isMobile ? "16px" : "22px"} /> */}
-              </div>
-            </button>
-          )}
-          {allowGuest && (
-            <button
-              style={buttonStyles}
-              className="login-button secondary"
-              disabled={isLoading || isSigningInWithApple}
-              onClick={handleGuestClick}
-            >
-              {shouldUseAppleLoginForGuest ? t("continue-with-apple") : t("guest")}
-            </button>
-          )}
-        </Flex>
-        <LanguageSwitcher />
-        <Flex
-          position="absolute"
-          bottom={"50px"}
-          width="100%"
-          justifyContent="center"
-        >
-          <Text
-            w="70%"
-            textAlign={"center"}
-            color="white"
-            letterSpacing={1}
-            mt={"20px"}
-            fontSize={isMobile ? 12 : 17}
-          >
-            {t("terms.agreement")}{" "}
-            <Link
-              href="https://jokersofneon.com/terms-and-conditions"
-              isExternal
-              color="white"
-              textDecoration="underline"
-            >
-              {t("terms.link")}
-            </Link>
-          </Text>
-        </Flex>
-      </PreThemeLoadingPage>
-    );
-  }
-
   const isLoadingWallet =
     (connectionStatus === "connecting_controller" &&
       (isControllerConnected === false || controllerAccount === undefined)) ||
     (connectionStatus === "connecting_burner" &&
-      (!burnerAccount || isDeploying));
+      (!burnerAccount || isDeploying)) ||
+    (connectionStatus === "connecting_cavos" &&
+      !!cavos &&
+      isCavosSetupInProgress) ||
+    isCavosAutoConnecting;
 
   return (
     <WalletContext.Provider
@@ -491,12 +730,26 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
         finalAccount,
         accountType,
         switchToController,
+        continueAsGuest,
+        continueWithCavosOAuth,
+        sendCavosMagicLink,
+        resetCavosAuthState,
         isLoadingWallet,
         burnerAccount,
         controllerAccount,
         isControllerConnected,
         isControllerConnecting,
         isAppleGuestSession,
+        isSigningInWithApple,
+        isLoadingLastGameId,
+        allowGuest,
+        shouldUseAppleLoginForGuest,
+        shouldBlockWithWalletScreen,
+        isCavosEnabled: CAVOS_ENABLED,
+        isCavosMagicLinkSent: cavosMagicLinkSent,
+        cavosMagicLinkEmail: cavosEmail,
+        cavosError,
+        cavosOAuthProvider,
         onSuccessCallback,
         logout,
       }}

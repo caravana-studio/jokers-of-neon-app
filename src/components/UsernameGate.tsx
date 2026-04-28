@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { LOGGED_USER } from "../constants/localStorage";
 import { useDojo } from "../dojo/DojoContext";
+import { useCavosSafe } from "../dojo/cavos/CavosConfig";
 import { controller } from "../dojo/controller/controller";
 import { useCustomToast } from "../hooks/useCustomToast";
 import { useUsernameStore } from "../state/useUsernameStore";
@@ -21,6 +22,16 @@ function isValidStoredGuestUsername(username: string | null): username is string
   );
 }
 
+function getValidPrefill(value?: string | null): string {
+  const candidate = String(value ?? "")
+    .trim()
+    .split("@")[0]
+    .replace(/[^A-Za-z0-9._-]/g, "")
+    .slice(0, 15);
+
+  return candidate.length >= 3 ? candidate : "";
+}
+
 export const UsernameGate = () => {
   const {
     account: { account },
@@ -31,6 +42,7 @@ export const UsernameGate = () => {
   const createUsernameForAddress = useUsernameStore(
     (store) => store.createUsernameForAddress
   );
+  const cavos = useCavosSafe();
   const { showErrorToast } = useCustomToast();
   const [prefill, setPrefill] = useState("");
   const [saving, setSaving] = useState(false);
@@ -48,6 +60,15 @@ export const UsernameGate = () => {
   useEffect(() => {
     if (!modalOpen) return;
 
+    if (accountType === "cavos") {
+      const cavosPrefill =
+        getValidPrefill(cavos?.user?.email) || getValidPrefill(cavos?.user?.name);
+      if (cavosPrefill) {
+        setPrefill(cavosPrefill);
+        return;
+      }
+    }
+
     let cancelled = false;
     controller
       ?.username?.()
@@ -61,7 +82,7 @@ export const UsernameGate = () => {
     return () => {
       cancelled = true;
     };
-  }, [modalOpen]);
+  }, [accountType, cavos?.user?.email, cavos?.user?.name, modalOpen]);
 
   useEffect(() => {
     if (!address || !isBurner || !isMissing) return;

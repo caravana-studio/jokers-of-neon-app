@@ -17,6 +17,7 @@ import { APP_VERSION } from "./constants/version";
 import { DojoProvider } from "./dojo/DojoContext.tsx";
 import { setup } from "./dojo/setup.ts";
 import { WalletProvider } from "./dojo/WalletContext.tsx";
+import { WalletGate } from "./dojo/WalletGate.tsx";
 import localI18n from "./i18n.ts";
 import "./index.css";
 import { initDatadogRum } from "./monitoring/datadogRum.ts";
@@ -32,6 +33,7 @@ import {
 } from "./providers/AppContextProvider.tsx";
 import { SettingsProvider } from "./providers/SettingsProvider.tsx";
 import { StarknetProvider } from "./providers/StarknetProvider.tsx";
+import { CavosWrapper } from "./dojo/cavos/CavosConfig.tsx";
 import { fetchVersion, VERSION_URL } from "./queries/fetchVersion.ts";
 import customTheme from "./theme/theme";
 import { LoadingScreenHandle } from "./types/LoadingProgress.ts";
@@ -124,27 +126,31 @@ async function init() {
       <FadeInOut isVisible fadeInDelay={shouldSkipPresentation ? 0.5 : 1.5}>
         <AppContextProvider appType={AppType.FULL_GAME}>
           <StarknetProvider>
-            <I18nextProvider i18n={localI18n} defaultNS={undefined}>
-              <QueryClientProvider client={queryClient}>
-                <ChakraBaseProvider theme={theme}>
-                  <WalletProvider value={setupResult}>
-                    <DojoProvider value={setupResult}>
+            <CavosWrapper>
+              <I18nextProvider i18n={localI18n} defaultNS={undefined}>
+                <QueryClientProvider client={queryClient}>
+                  <ChakraBaseProvider theme={theme}>
+                    <WalletProvider value={setupResult}>
                       <BrowserRouter>
-                        <DatadogUserContext />
-                        <Toaster />
-                        <SettingsProvider
-                          introSongPath={"music/intro-track.mp3"}
-                          baseSongPath={"music/game-track.mp3"}
-                          rageSongPath={"music/rage_soundtrack.mp3"}
-                        >
-                          <App />
-                        </SettingsProvider>
+                        <WalletGate>
+                          <DojoProvider value={setupResult}>
+                            <DatadogUserContext />
+                            <Toaster />
+                            <SettingsProvider
+                              introSongPath={"music/intro-track.mp3"}
+                              baseSongPath={"music/game-track.mp3"}
+                              rageSongPath={"music/rage_soundtrack.mp3"}
+                            >
+                              <App />
+                            </SettingsProvider>
+                          </DojoProvider>
+                        </WalletGate>
                       </BrowserRouter>
-                    </DojoProvider>
-                  </WalletProvider>
-                </ChakraBaseProvider>
-              </QueryClientProvider>
-            </I18nextProvider>
+                    </WalletProvider>
+                  </ChakraBaseProvider>
+                </QueryClientProvider>
+              </I18nextProvider>
+            </CavosWrapper>
           </StarknetProvider>
         </AppContextProvider>
       </FadeInOut>

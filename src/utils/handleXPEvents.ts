@@ -11,7 +11,7 @@ export const handleXPEvents = async (
   events: DojoEvent[],
   achievementSound: () => void,
   address: string,
-  accountType?: "burner" | "controller" | null,
+  accountType?: "burner" | "controller" | "cavos" | null,
   username?: string | null
 ) => {
   const dailyMissionEvent = getDailyMissionCompleteEvent(events);
