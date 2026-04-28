@@ -3,6 +3,7 @@ import Capacitor
 import FBSDKCoreKit
 import AppsFlyerLib
 import FirebaseCore
+import FirebaseAnalytics
 import FirebaseMessaging
 import UserNotifications
 
@@ -25,6 +26,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
         // Firebase
         FirebaseApp.configure()
+        Analytics.setAnalyticsCollectionEnabled(true)
+        NSLog("[Firebase] Analytics enabled. App instance ID: %@", Analytics.appInstanceID() ?? "nil")
 
         // Notifications delegate (helps foreground presentation)
         UNUserNotificationCenter.current().delegate = self
