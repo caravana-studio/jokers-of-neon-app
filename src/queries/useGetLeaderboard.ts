@@ -144,12 +144,17 @@ const fetchGameNode = async (
   if (!normalizedGameId) {
     return null;
   }
+  const gameIdNumber = Number(normalizedGameId);
+
+  if (!Number.isSafeInteger(gameIdNumber)) {
+    return null;
+  }
 
   try {
     const rawData: GameTournamentResponse = await mainnetGraphQLClient.request(
       GAME_TOURNAMENT_QUERY,
       {
-        gameId: normalizedGameId,
+        gameId: gameIdNumber,
       }
     );
 

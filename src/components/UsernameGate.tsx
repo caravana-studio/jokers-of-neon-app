@@ -73,8 +73,9 @@ export const UsernameGate = () => {
     controller
       ?.username?.()
       ?.then((controllerUsername) => {
-        if (!cancelled && controllerUsername) {
-          setPrefill(controllerUsername.slice(0, 15));
+        const controllerPrefill = getValidPrefill(controllerUsername);
+        if (!cancelled && controllerPrefill) {
+          setPrefill(controllerPrefill);
         }
       })
       .catch(() => {});
