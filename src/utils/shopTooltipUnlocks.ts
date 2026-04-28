@@ -1,7 +1,5 @@
 import { normalizeShopUnlockableId } from "../constants/shopTierUnlock";
 import {
-  getPlayerTier,
-  getUnlockList,
   UnlockEntryView,
 } from "../dojo/queries/getShopUnlockProgress";
 
@@ -112,6 +110,22 @@ export const getUnlockedShopTooltipItems = (
   return unlocked;
 };
 
+export const isUnlockableUnlocked = (
+  entries: UnlockEntryView[],
+  playerTier: number,
+  unlockableId: string
+): boolean => {
+  const normalizedUnlockableId = normalizeShopUnlockableId(unlockableId);
+  const unlockEntry = entries.find(
+    (entry) =>
+      normalizeShopUnlockableId(entry.unlockId) === normalizedUnlockableId
+  );
+
+  return (
+    typeof unlockEntry?.order === "number" && playerTier >= unlockEntry.order
+  );
+};
+
 export const getShopTooltipItems = (
   shopId: number,
   unlockedItems?: Set<ShopTooltipItemKey> | null
@@ -136,54 +150,4 @@ export const buildShopTooltipContent = (
       })
     )
     .join(", ");
-};
-
-const getAddress = (value: unknown): string => {
-  if (typeof value === "string") return value;
-  if (typeof value === "bigint") return `0x${value.toString(16)}`;
-  if (value && typeof value === "object" && "toString" in value) {
-    return (value as { toString: () => string }).toString();
-  }
-  return "";
-};
-
-const unlockSetPromiseCache = new Map<
-  string,
-  Promise<Set<ShopTooltipItemKey> | null>
->();
-
-export const getUnlockedShopTooltipItemsForPlayer = async (
-  client: any,
-  accountAddress: unknown
-): Promise<Set<ShopTooltipItemKey> | null> => {
-  const playerAddress = getAddress(accountAddress);
-  if (!client || !playerAddress) return null;
-
-  const cacheKey = playerAddress.toLowerCase();
-  const inFlight = unlockSetPromiseCache.get(cacheKey);
-  if (inFlight) return inFlight;
-
-  const request = Promise.all([
-    getPlayerTier(client, playerAddress),
-    getUnlockList(client),
-  ])
-    .then(([playerTier, unlockEntries]) => {
-      const unlocked = getUnlockedShopTooltipItems(
-        unlockEntries,
-        playerTier.tier
-      );
-      unlockSetPromiseCache.delete(cacheKey);
-      return unlocked;
-    })
-    .catch((error) => {
-      console.error(
-        "[shop-tooltip] failed to fetch unlock progress for player",
-        error
-      );
-      unlockSetPromiseCache.delete(cacheKey);
-      return null;
-    });
-
-  unlockSetPromiseCache.set(cacheKey, request);
-  return request;
 };

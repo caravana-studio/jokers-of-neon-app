@@ -1,15 +1,19 @@
 import { Box, Flex, Spinner } from "@chakra-ui/react";
 import { PackRow } from "../Shop/PackRow";
 import { SeasonPassRow } from "../Shop/SeasonPassRow";
+import { useSeasonNumber } from "../../constants/season";
 import { useRevenueCat } from "../../providers/RevenueCatProvider";
 import { useSeasonPass } from "../../providers/SeasonPassProvider";
 import { useShopDistribution } from "../../queries/useShopDistribution";
 import { CollectorPacksShopModal } from "../../components/CollectorPacksShopModal";
-
-const COLLECTOR_IDS = new Set([5, 6, 25, 26, 35, 36]);
-const COLLECTOR_BACKGROUND_PRIORITY = [36, 26, 6, 35, 25, 5];
+import {
+  getPackTier,
+  getSeasonalPackId,
+  isCollectorPackId,
+} from "../../utils/packUtils";
 
 export function ShopPage() {
+  const seasonNumber = useSeasonNumber();
   const { distribution, loading } = useShopDistribution();
   const { offerings } = useRevenueCat();
   const { seasonPassUnlocked } = useSeasonPass();
@@ -22,11 +26,20 @@ export function ShopPage() {
     );
   }
 
-  const hasCollectorPacks = distribution?.packs?.some((p) => COLLECTOR_IDS.has(p.packId));
+  const collectorPackIds =
+    distribution?.packs
+      ?.filter((pack) => isCollectorPackId(pack.packId))
+      .map((pack) => pack.packId) ?? [];
+  const hasCollectorPacks = collectorPackIds.length > 0;
   const collectorBackgroundPackId =
-    COLLECTOR_BACKGROUND_PRIORITY.find((packId) =>
-      distribution?.packs?.some((pack) => pack.packId === packId)
-    ) ?? 5;
+    [...collectorPackIds].sort((leftPackId, rightPackId) => {
+      const tierDifference =
+        getPackTier(rightPackId) - getPackTier(leftPackId);
+      if (tierDifference !== 0) {
+        return tierDifference;
+      }
+      return rightPackId - leftPackId;
+    })[0] ?? getSeasonalPackId(5, seasonNumber);
   const collectorBackground = `/packs/bg/${collectorBackgroundPackId}.jpg`;
 
   const getPackPrice = (shopId: string) =>

@@ -1,21 +1,19 @@
 import { Box, Tooltip } from "@chakra-ui/react";
-import { memo, useEffect, useMemo, useState } from "react";
+import { memo, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Handle, Position } from "reactflow";
 import CachedImage from "../../../components/CachedImage";
 import { GameStateEnum } from "../../../dojo/typescript/custom";
-import { useDojo } from "../../../dojo/useDojo";
 import { useCustomNavigate } from "../../../hooks/useCustomNavigate";
 import { useMap } from "../../../providers/MapProvider";
 import { useStore } from "../../../providers/StoreProvider";
 import { useGameStore } from "../../../state/useGameStore";
 import { useMapNavigationStore } from "../../../state/useMapNavigationStore";
+import { useUnlockProgressStore } from "../../../state/useUnlockProgressStore";
 import { BLUE, VIOLET } from "../../../theme/colors";
 import { useResponsiveValues } from "../../../theme/responsiveSettings";
 import {
   buildShopTooltipContent,
-  getUnlockedShopTooltipItemsForPlayer,
-  ShopTooltipItemKey,
 } from "../../../utils/shopTooltipUnlocks";
 import { TooltipContent } from "../TooltipContent";
 import { NodeType } from "../types";
@@ -29,12 +27,11 @@ const StoreNode = memo(({ data }: any) => {
   const { t } = useTranslation("store", { keyPrefix: "config" });
   const { t: tMap } = useTranslation("map");
   const { id: gameId, setShopId } = useGameStore();
-  const { setup, account } = useDojo();
   const navigate = useCustomNavigate();
   const { handleNodeNavigation } = useNodeNavigation();
-  const [unlockedShopItems, setUnlockedShopItems] = useState<
-    Set<ShopTooltipItemKey> | null
-  >(null);
+  const unlockedShopItems = useUnlockProgressStore(
+    (state) => state.unlockedShopItems
+  );
 
   const { setSelectedNodeData, selectedNodeData } = useMap();
   const isNodeTransactionPending = useMapNavigationStore((s) => s.isNodeTransactionPending);
@@ -44,28 +41,6 @@ const StoreNode = memo(({ data }: any) => {
   const { refetch } = useStore();
 
   const { stateInMap, reachable } = useNodeReachability(data.id);
-
-  useEffect(() => {
-    let cancelled = false;
-    if (!setup?.client || !account?.account?.address) return;
-
-    void getUnlockedShopTooltipItemsForPlayer(
-      setup.client,
-      account.account.address
-    )
-      .then((items) => {
-        if (!cancelled) {
-          setUnlockedShopItems(items);
-        }
-      })
-      .catch((error) => {
-        console.error("[store-node] failed to load unlocks for tooltip", error);
-      });
-
-    return () => {
-      cancelled = true;
-    };
-  }, [setup?.client, account?.account?.address]);
 
   const title = `${tMap('legend.nodes.shop.title')} ${t(`${data.shopId}.name`)}`;
   const content = useMemo(

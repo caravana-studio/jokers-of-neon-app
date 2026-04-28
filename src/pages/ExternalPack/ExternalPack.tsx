@@ -36,7 +36,8 @@ import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { Intensity } from "../../types/intensity";
 import { isNativeAndroid } from "../../utils/capacitorUtils";
 import { colorizeText } from "../../utils/getTooltip";
-import Stack from "./CardStack/Stack";
+import Stack, { type HighlightedCardData } from "./CardStack/Stack";
+import { getPackSeason, isCollectorPackId } from "../../utils/packUtils";
 import PackTear from "./PackTear";
 import { SplitPackOnce } from "./SplitPackOnce";
 
@@ -114,7 +115,8 @@ export const ExternalPack = ({
     providedPackId ?? locationState?.packId ?? Number(params.packId ?? 1);
   const normalizedPackId = packId % 10 || packId;
   const isLimitedEditionPack = normalizedPackId > 4;
-  const shouldUseMonochromeBackground = [25, 26, 35, 36].includes(packId);
+  const shouldUseMonochromeBackground =
+    isCollectorPackId(packId) && getPackSeason(packId) >= 2;
   const returnPath = returnTo ?? locationState?.returnTo ?? "/";
 
   const { t: tDocs } = useTranslation("docs");
@@ -152,9 +154,12 @@ export const ExternalPack = ({
   const [obtainedCards, setObtainedCards] = useState<SimplifiedCard[]>(
     initialCardsSource ?? [],
   );
-  const [highlightedCard, setHighlightedCard] = useState<number | null>(null);
+  const [highlightedCard, setHighlightedCard] = useState<SimplifiedCard | null>(
+    null,
+  );
   const resolvedHighlightedCard =
-    highlightedCard ?? obtainedCards?.[0]?.card_id ?? null;
+    highlightedCard ?? obtainedCards?.[0] ?? null;
+  const resolvedHighlightedCardId = resolvedHighlightedCard?.card_id ?? null;
 
   const {
     name,
@@ -166,8 +171,8 @@ export const ExternalPack = ({
     temporaryPrice,
     details,
   } =
-    resolvedHighlightedCard !== null
-      ? getCardData(resolvedHighlightedCard)
+    resolvedHighlightedCardId !== null
+      ? getCardData(resolvedHighlightedCardId)
       : {
           name: "",
           description: "",
@@ -175,9 +180,7 @@ export const ExternalPack = ({
         };
 
   const navigate = useNavigate();
-  const highlightedCardSkin =
-    obtainedCards.find((card) => card.card_id === highlightedCard)?.skin_id ??
-    0;
+  const highlightedCardSkin = resolvedHighlightedCard?.skin_id ?? 0;
   const isSkinned = highlightedCardSkin > 0;
   const resolvedRarityStyle = rarity
     ? RARITY_BADGE_STYLES[rarity as RARITY]
@@ -258,7 +261,7 @@ export const ExternalPack = ({
   // Ensure the first render highlights the first real card instead of the fallback (ID 0 / 2 de trébol).
   useEffect(() => {
     if (resolvedHighlightedCard === null && obtainedCards.length > 0) {
-      setHighlightedCard(obtainedCards[0].card_id);
+      setHighlightedCard(obtainedCards[0]);
     }
   }, [obtainedCards, resolvedHighlightedCard]);
 
@@ -585,8 +588,11 @@ export const ExternalPack = ({
                   }}
                   cardsData={cardsData}
                   ownedCardIds={ownedCardIds}
-                  onCardChange={(cardId) => {
-                    setHighlightedCard(cardId);
+                  onCardChange={(card: HighlightedCardData) => {
+                    setHighlightedCard({
+                      card_id: card.cardId,
+                      skin_id: card.skinId,
+                    });
                   }}
                   onAllSeen={() => setAllCardsSeen(true)}
                 />

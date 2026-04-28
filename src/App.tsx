@@ -13,7 +13,9 @@ import { Layout } from "./components/Layout";
 import { useDojo } from "./dojo/DojoContext";
 import { useGameActions } from "./dojo/useGameActions";
 import { useUsername } from "./dojo/utils/useUsername";
+import { useWallet } from "./dojo/WalletContext";
 import { useAppsFlyerReferral } from "./hooks/useAppsFlyerReferral";
+import { setAnalyticsUserId, setAnalyticsUserProperty } from "./utils/analytics";
 import { initAppsFlyerReferralListener, initWebReferralDetection } from "./utils/appsflyerReferral";
 import { fetchAndStoreAgeSignals } from "./utils/ageSignals";
 import { BackgroundAnimationProvider } from "./providers/BackgroundAnimationProvider";
@@ -45,11 +47,20 @@ function App() {
 
   const navigate = useNavigate();
   const username = useUsername();
+  const { accountType } = useWallet();
 
   const { claimLives } = useGameActions();
-  
+
   // Handle AppsFlyer referral data
   useAppsFlyerReferral();
+
+  useEffect(() => {
+    const address = account?.address ?? null;
+    void setAnalyticsUserId(address);
+    if (address) {
+      void setAnalyticsUserProperty("account_type", accountType ?? "unknown");
+    }
+  }, [account?.address, accountType]);
 
   useEffect(() => {
     if (!account?.address) {
