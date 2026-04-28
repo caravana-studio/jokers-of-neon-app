@@ -22,6 +22,27 @@ type UsernameStore = {
   reset: () => void;
 };
 
+function getErrorMessage(error: unknown, fallback: string): string {
+  return error instanceof Error ? error.message : fallback;
+}
+
+function logUsernameError(action: string, address: string, error: unknown): void {
+  if (error instanceof UsernameApiError) {
+    console.error(`[Usernames] ${action} failed`, {
+      address,
+      status: error.status,
+      code: error.code,
+      message: error.message,
+    });
+    return;
+  }
+
+  console.error(`[Usernames] ${action} failed`, {
+    address,
+    error,
+  });
+}
+
 export const useUsernameStore = create<UsernameStore>((set, get) => ({
   address: null,
   username: null,
@@ -66,11 +87,12 @@ export const useUsernameStore = create<UsernameStore>((set, get) => ({
       });
       return record.username;
     } catch (error) {
+      logUsernameError("load", normalizedAddress, error);
       set({
         address: normalizedAddress,
         username: null,
         status: "error",
-        error: error instanceof Error ? error.message : "Failed to load username",
+        error: getErrorMessage(error, "Failed to load username"),
       });
       return null;
     }
@@ -90,11 +112,12 @@ export const useUsernameStore = create<UsernameStore>((set, get) => ({
       });
       return record;
     } catch (error) {
+      logUsernameError("create", normalizedAddress, error);
       set({
         address: normalizedAddress,
         username: null,
         status: "missing",
-        error: error instanceof Error ? error.message : "Failed to create username",
+        error: getErrorMessage(error, "Failed to create username"),
       });
       throw error;
     }
@@ -114,15 +137,11 @@ export const useUsernameStore = create<UsernameStore>((set, get) => ({
       });
       return record;
     } catch (error) {
+      logUsernameError("update", normalizedAddress, error);
       set({
         address: normalizedAddress,
         status: get().username ? "ready" : "missing",
-        error:
-          error instanceof UsernameApiError
-            ? error.message
-            : error instanceof Error
-              ? error.message
-              : "Failed to update username",
+        error: getErrorMessage(error, "Failed to update username"),
       });
       throw error;
     }
