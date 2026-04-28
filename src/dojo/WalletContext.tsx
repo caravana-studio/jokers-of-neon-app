@@ -272,8 +272,7 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     logEvent("play_as_guest");
     setConnectionStatus("connecting_burner");
     const guestId = lastGameIdError ? fallbackGuestIdRef.current : lastGameId + 1;
-    const username = `joker_guest_${guestId}`;
-    console.log("setting username: ", username);
+    const username = `guest_${String(guestId).slice(-8)}`;
     setIsAppleGuestSession(fromAppleLogin);
     localStorage.setItem(
       APPLE_GUEST_SESSION,

@@ -34,6 +34,7 @@ export type ProfileStore = {
 
 
   reset: () => void;
+  setProfileUsername: (username: string) => void;
 };
 
 export const useProfileStore = create<ProfileStore>((set, get) => ({
@@ -55,10 +56,16 @@ export const useProfileStore = create<ProfileStore>((set, get) => ({
       const sanitizedTotalXp = sanitizeNumber(profile.totalXp);
       const sanitizedCurrentXp = sanitizeNumber(profile.currentXp);
 
-      if (profile.username === "" && username) {
+      const profileLooksEmpty =
+        profile.avatarId <= 0 &&
+        profile.maxAvailableGames <= 0 &&
+        profile.totalXp <= 0 &&
+        profile.currentXp <= 0;
+
+      if ((profile.username === "" || profileLooksEmpty) && username) {
         const fallbackAvatarId =
           toInt(profile.avatarId) > 0 ? toInt(profile.avatarId) : 1;
-        await createProfileApi(userAddress, username, fallbackAvatarId);
+        await createProfileApi(userAddress, fallbackAvatarId);
         profile = await fetchProfile(userAddress);
       }
 
@@ -181,6 +188,20 @@ export const useProfileStore = create<ProfileStore>((set, get) => ({
       console.log("Error updating avatar", e);
       set({ pendingAvatarId: null });
     }
+  },
+
+  setProfileUsername: (username) => {
+    const current = get().profileData;
+    if (!current) return;
+    set({
+      profileData: {
+        ...current,
+        profile: {
+          ...current.profile,
+          username,
+        },
+      },
+    });
   },
 
   reset: () => set({ profileData: null, pendingAvatarId: null, previousLevel: null, previousGamesCount: null }),

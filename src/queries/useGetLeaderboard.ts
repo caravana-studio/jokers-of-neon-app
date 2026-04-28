@@ -1,13 +1,15 @@
 import { gql } from "graphql-tag";
 import { useQuery } from "react-query";
+import { resolveUsernameMap } from "../api/usernames";
 import { decodeString } from "../dojo/utils/decodeString";
 import mainnetGraphQLClient from "../mainnetGraphQLClient";
 import { normalizeGameId } from "../utils/normalizeGameId";
 import { snakeToCamel } from "../utils/snakeToCamel";
+import { addressKey, formatAddress } from "../utils/starknetAddress";
 import { useTournamentSettings } from "./useTournamentSettings";
 
 export const LEADERBOARD_QUERY_KEY = "leaderboard";
-const guestNamePattern = /^joker_guest_\d+$/;
+const guestNamePattern = /^(joker_guest_\d+|guest_[a-z0-9]+)$/i;
 const excludedNamePattern = /^chichilo\d+$/i;
 
 const DOJO_NAMESPACE =
@@ -112,6 +114,26 @@ const mapLeaderboardEntry = (node: GameEdge["node"]) => ({
   isTournament: node.is_tournament,
 });
 
+type LeaderboardEntry = ReturnType<typeof mapLeaderboardEntry> & {
+  position?: number;
+};
+
+async function applyUsernameDisplayNames(
+  entries: LeaderboardEntry[]
+): Promise<LeaderboardEntry[]> {
+  const usernameMap = await resolveUsernameMap(entries.map((entry) => entry.wallet)).catch(
+    () => new Map<string, string>()
+  );
+
+  return entries.map((entry) => ({
+    ...entry,
+    player_name:
+      usernameMap.get(addressKey(entry.wallet)) ||
+      entry.player_name ||
+      formatAddress(entry.wallet, 6),
+  }));
+}
+
 const isExcludedLeaderboardName = (playerName?: string) =>
   Boolean(playerName && excludedNamePattern.test(playerName.trim()));
 
@@ -197,11 +219,21 @@ const fetchGraphQLData = async (
     return true;
   });
 
-  const processedEntries = await Promise.all(
-    edges
-      .filter((edge) => edge.node.player_score > 0)
-      .map(async (edge) => mapLeaderboardEntry(edge.node))
+  const mappedEntries = edges
+    .filter((edge) => edge.node.player_score > 0)
+    .map((edge) => mapLeaderboardEntry(edge.node));
+
+  const mappedCurrentGameEntry = currentGameNode
+    ? mapLeaderboardEntry(currentGameNode)
+    : null;
+
+  const entriesWithDisplayNames = await applyUsernameDisplayNames(
+    mappedCurrentGameEntry
+      ? [...mappedEntries, mappedCurrentGameEntry]
+      : mappedEntries
   );
+
+  const processedEntries = mappedEntries.map((entry, index) => entriesWithDisplayNames[index]);
 
   const leaderboardMap = new Map<
     string,
@@ -226,13 +258,11 @@ const fetchGraphQLData = async (
     isTournament: boolean;
   } | null = null;
 
-  if (currentGameNode) {
-    const mappedCurrentGameEntry = mapLeaderboardEntry(currentGameNode);
-    currentGameEntry = isExcludedLeaderboardName(
-      mappedCurrentGameEntry.player_name
-    )
+  if (mappedCurrentGameEntry) {
+    const displayCurrentGameEntry = entriesWithDisplayNames[entriesWithDisplayNames.length - 1];
+    currentGameEntry = isExcludedLeaderboardName(displayCurrentGameEntry.player_name)
       ? null
-      : mappedCurrentGameEntry;
+      : displayCurrentGameEntry;
   }
 
   processedEntries.forEach((entry) => {
@@ -246,14 +276,15 @@ const fetchGraphQLData = async (
       currentGameEntry = entry;
     }
 
-    const existing = leaderboardMap.get(entry.player_name);
+    const playerKey = addressKey(entry.wallet) || entry.player_name;
+    const existing = leaderboardMap.get(playerKey);
     if (
       !existing ||
       entry.level > existing.level ||
       (entry.level === existing.level &&
         entry.player_score > existing.player_score)
     ) {
-      leaderboardMap.set(entry.player_name, entry);
+      leaderboardMap.set(playerKey, entry);
     }
   });
 

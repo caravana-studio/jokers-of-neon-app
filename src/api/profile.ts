@@ -400,15 +400,10 @@ export async function fetchProfileLevelConfigByLevel(
 
 export async function createProfile(
   address: string,
-  username: string,
   avatarId: number
 ): Promise<CreateProfileApiResponse> {
   if (!address) {
     throw new Error("createProfile: address is required");
-  }
-
-  if (!username) {
-    throw new Error("createProfile: username is required");
   }
 
   if (Number.isNaN(Number(avatarId))) {
@@ -427,7 +422,6 @@ export async function createProfile(
     },
     body: JSON.stringify({
       address,
-      username,
       avatar_id: avatarId,
     }),
   });

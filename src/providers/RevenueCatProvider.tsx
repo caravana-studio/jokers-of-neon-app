@@ -27,10 +27,10 @@ import {
 } from "react";
 import { useAccount } from "@starknet-react/core";
 import { DojoContext } from "../dojo/DojoContext";
-import { useUsername } from "../dojo/utils/useUsername";
 import { isNative as realNative } from "../utils/capacitorUtils";
 import { getRevenueCatApiKey } from "../utils/getRevenueCatApiKey";
 import { registerMilestone } from "../utils/appsflyerReferral";
+import { normalizeStarknetAddress } from "../utils/starknetAddress";
 
 const FIRST_PURCHASE_KEY = "referral_first_purchase_tracked";
 const ANON_RC_USER = "jokers_anon_guest";
@@ -288,18 +288,16 @@ export const RevenueCatProvider = ({ children }: PropsWithChildren) => {
   const { address: starknetAddress } = useAccount();
   const dojoAddress = dojoCtx?.account?.account?.address ?? null;
   const address = dojoAddress || starknetAddress || null;
-  const username = useUsername();
   const accountType = dojoCtx?.accountType ?? null;
 
-  const userId =
-    address && username ? `${username},${address}` : ANON_RC_USER;
+  const userId = address ? normalizeStarknetAddress(address) : ANON_RC_USER;
   const [offerings, setOfferings] =
     useState<RevenueCatFormattedOfferings | null>(null);
   const [loading, setLoading] = useState(false);
   const [purchasesClient, setPurchasesClient] =
     useState<PurchasesClient | null>(isNative ? CapacitorPurchases : null);
   const purchasesRef = useRef<PurchasesClient | null>(purchasesClient);
-  const lastUsernameRef = useRef<string | null>(null);
+  const lastUserIdRef = useRef<string | null>(null);
 
   useEffect(() => {
     purchasesRef.current = purchasesClient;
@@ -330,7 +328,7 @@ export const RevenueCatProvider = ({ children }: PropsWithChildren) => {
   }, []);
 
   const configureRevenueCat = useCallback(async () => {
-    if (lastUsernameRef.current === userId) {
+    if (lastUserIdRef.current === userId) {
       return;
     }
 
@@ -354,7 +352,7 @@ export const RevenueCatProvider = ({ children }: PropsWithChildren) => {
         setPurchasesClient(purchasesInstance);
       }
 
-      lastUsernameRef.current = userId;
+      lastUserIdRef.current = userId;
       await fetchOfferings();
     } catch (error) {
       console.error("Failed to configure RevenueCat", error);

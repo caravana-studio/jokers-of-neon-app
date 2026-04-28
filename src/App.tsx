@@ -10,6 +10,7 @@ import { createProfile, fetchProfile } from "./api/profile";
 import { AppRoutes } from "./AppRoutes";
 import { Background } from "./components/Background";
 import { Layout } from "./components/Layout";
+import { UsernameGate } from "./components/UsernameGate";
 import { useDojo } from "./dojo/DojoContext";
 import { useGameActions } from "./dojo/useGameActions";
 import { useUsername } from "./dojo/utils/useUsername";
@@ -26,6 +27,8 @@ import { RevenueCatProvider } from "./providers/RevenueCatProvider";
 import { SeasonPassProvider } from "./providers/SeasonPassProvider";
 import { useSkinPreferencesStore } from "./state/useSkinPreferencesStore";
 import { useTutorialStore } from "./state/useTutorialStore";
+import { useUsernameStore } from "./state/useUsernameStore";
+import { normalizeStarknetAddress } from "./utils/starknetAddress";
 import ZoomPrevention from "./utils/ZoomPrevention";
 import { registerPushListeners } from "./utils/notifications/registerPushListeners";
 
@@ -45,6 +48,7 @@ function App() {
 
   const navigate = useNavigate();
   const username = useUsername();
+  const usernameStatus = useUsernameStore((store) => store.status);
 
   const { claimLives } = useGameActions();
   
@@ -94,14 +98,6 @@ function App() {
       }
     };
 
-    claimLives().catch(() => {});
-
-    fetchProfile(account.address).then((profile) => {
-      if (profile.username === "" && username) {
-        createProfile(account.address, username, 1);
-      }
-    });
-
     askForTracking();
 
     // Fetch Play Age Signals once at startup for compliance checks
@@ -118,7 +114,37 @@ function App() {
     initWebReferralDetection();
 
     registerPushListeners(navigate);
-  }, []);
+  }, [navigate]);
+
+  useEffect(() => {
+    if (!account?.address || !username || usernameStatus !== "ready") {
+      return;
+    }
+
+    claimLives().catch(() => {});
+
+    fetchProfile(account.address)
+      .then((profile) => {
+        const profileLooksEmpty =
+          profile.avatarId <= 0 &&
+          profile.maxAvailableGames <= 0 &&
+          profile.totalXp <= 0 &&
+          profile.currentXp <= 0;
+
+        if (
+          normalizeStarknetAddress(profile.address) !==
+            normalizeStarknetAddress(account.address) ||
+          profileLooksEmpty
+        ) {
+          createProfile(account.address, 1).catch((error) => {
+            console.warn("Failed to create profile", error);
+          });
+        }
+      })
+      .catch((error) => {
+        console.warn("Failed to fetch profile", error);
+      });
+  }, [account?.address, username, usernameStatus]);
 
   return (
     <RevenueCatProvider>
@@ -132,6 +158,7 @@ function App() {
                     <Background>
                       <BackgroundAnimationProvider>
                         <Layout>
+                          <UsernameGate />
                           <AnimatePresence mode="wait">
                             <AppRoutes />
                           </AnimatePresence>

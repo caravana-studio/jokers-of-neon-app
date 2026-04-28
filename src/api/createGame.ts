@@ -3,7 +3,6 @@ import { getGameApiBaseUrl } from "../config/gameApiUrl";
 
 export type CreateGameParams = {
   userAddress: string;
-  playerName: string;
   seasonId?: number;
   isTournament?: boolean;
   seed?: string;
@@ -11,7 +10,6 @@ export type CreateGameParams = {
 
 interface CreateGamePayload {
   user_address: string;
-  player_name: string;
   season_id: number;
   is_tournament: boolean;
   seed?: string;
@@ -19,17 +17,12 @@ interface CreateGamePayload {
 
 export async function createGame({
   userAddress,
-  playerName,
   seasonId = getSeasonNumber(),
   isTournament = false,
   seed,
 }: CreateGameParams) {
   if (!userAddress) {
     throw new Error("createGame: userAddress is required");
-  }
-
-  if (!playerName) {
-    throw new Error("createGame: playerName is required");
   }
 
   const apiKey = import.meta.env.VITE_GAME_API_KEY;
@@ -44,7 +37,6 @@ export async function createGame({
 
   const payload: CreateGamePayload = {
     user_address: userAddress,
-    player_name: playerName,
     season_id: seasonId,
     is_tournament: isTournament,
   };
