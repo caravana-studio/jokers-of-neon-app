@@ -14,7 +14,7 @@ export const useUsername = () => {
 
   useEffect(() => {
     if (isCavos && cavos?.user?.email) {
-      setUsername(cavos.user.email);
+      setUsername(cavos.user.email?.split("@")[0]);
     } else if (!isBurnerAccount && !isCavos && controller) {
       controller.username()?.then((username) => {
         if (username) {
@@ -25,6 +25,6 @@ export const useUsername = () => {
   }, [isBurnerAccount, isCavos, cavos?.user?.email]);
 
   if (isBurnerAccount) return window.localStorage.getItem(LOGGED_USER);
-  if (isCavos) return cavos?.user?.email ?? cavos?.user?.name ?? null;
+  if (isCavos) return cavos?.user?.email?.split("@")[0] ?? cavos?.user?.name ?? null;
   return username;
 };
