@@ -26,6 +26,7 @@ interface AuthOptionsViewProps {
   onContinueWithControllerClick: () => void;
   onGuestModeClick: () => void;
   onMoreOptionsToggle: () => void;
+  showAppleLogin: boolean;
   showGuestMode: boolean;
   isCavosAuthDisabled?: boolean;
   isControllerActionDisabled?: boolean;
@@ -43,6 +44,7 @@ export const AuthOptionsView = ({
   onContinueWithControllerClick,
   onGuestModeClick,
   onMoreOptionsToggle,
+  showAppleLogin,
   showGuestMode,
   isCavosAuthDisabled = false,
   isControllerActionDisabled = false,
@@ -90,16 +92,18 @@ export const AuthOptionsView = ({
             }}
           >
             <Flex flexDir="column" alignItems="center" gap={{ base: 3.5, md: 5 }} w="100%">
-              <AuthButton
-                iconSrc={Icons.APPLE}
-                iconAlt="Apple"
-                label={labels.continueWithApple}
-                bg="#ECECEC"
-                color="#0B0B0D"
-                onClick={onContinueWithAppleClick}
-                disabled={isCavosAuthDisabled}
-                isLoading={cavosOAuthProvider === "apple"}
-              />
+              {showAppleLogin && (
+                <AuthButton
+                  iconSrc={Icons.APPLE}
+                  iconAlt="Apple"
+                  label={labels.continueWithApple}
+                  bg="#ECECEC"
+                  color="#0B0B0D"
+                  onClick={onContinueWithAppleClick}
+                  disabled={isCavosAuthDisabled}
+                  isLoading={cavosOAuthProvider === "apple"}
+                />
+              )}
 
               <AuthButton
                 iconSrc={Icons.GOOGLE}

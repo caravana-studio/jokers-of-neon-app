@@ -8,7 +8,7 @@ import { useWallet } from "../../dojo/WalletContext";
 import LanguageSwitcher from "../../components/LanguageSwitcher";
 import { MobileDecoration } from "../../components/MobileDecoration";
 import { useSeasonNumber } from "../../constants/season";
-import { isNative, nativePaddingTop } from "../../utils/capacitorUtils";
+import { isNativeAndroid, nativePaddingTop } from "../../utils/capacitorUtils";
 import { PreThemeLoadingPage } from "../PreThemeLoadingPage";
 import { AuthOptionsView } from "./components/AuthOptionsView";
 import { EmailCodeView } from "./components/EmailCodeView";
@@ -185,6 +185,7 @@ export const CavosWalletConnect = () => {
   const isControllerActionDisabled = isLoadingWallet;
   const isGuestActionDisabled =
     isLoadingWallet || isSigningInWithApple || isLoadingLastGameId;
+  const showAppleLogin = !isNativeAndroid;
 
   return (
     <PreThemeLoadingPage backgroundSize="cover" backgroundPosition="top center">
@@ -307,6 +308,7 @@ export const CavosWalletConnect = () => {
                 onContinueWithControllerClick={handleContinueWithControllerClick}
                 onGuestModeClick={handleGuestModeClick}
                 onMoreOptionsToggle={handleMoreOptionsToggle}
+                showAppleLogin={showAppleLogin}
                 showGuestMode={allowGuest}
                 isCavosAuthDisabled={isCavosAuthDisabled}
                 isControllerActionDisabled={isControllerActionDisabled}
