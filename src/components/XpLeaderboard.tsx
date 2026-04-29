@@ -20,6 +20,7 @@ import { VIOLET_LIGHT } from "../theme/colors";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import { getPrizePackIdsForSeason } from "../utils/prizePackIds";
 import { useDojo } from "../dojo/DojoContext";
+import { addressKey } from "../utils/starknetAddress";
 import { CustomTr, getPrizeText } from "./Leaderboard";
 import { SeasonPass } from "./SeasonPass/SeasonPass";
 
@@ -57,7 +58,7 @@ export const XpLeaderboard = ({
   const {
     account: { account },
   } = useDojo();
-  const currentAddress = account?.address?.toLowerCase?.();
+  const currentAddress = addressKey(account?.address);
   const currentSeasonNumber = Math.max(1, Math.floor(seasonId));
 
   const handleLogLeaders = () => {
@@ -114,7 +115,7 @@ export const XpLeaderboard = ({
             <Tbody>
               {leaderboard.slice(0, lines).map((entry) => {
                 const isCurrentUser =
-                  entry.address?.toLowerCase?.() === currentAddress;
+                  addressKey(entry.address) === currentAddress;
                 const textColor = isCurrentUser ? "white !important" : VIOLET_LIGHT;
                 return (
                   <CustomTr key={entry.address} highlighted={isCurrentUser}>

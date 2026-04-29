@@ -1,12 +1,11 @@
 import { create } from "zustand";
 import type { Account, AccountInterface } from "starknet";
 import {
-  fetchProfile,
+  fetchOrCreateProfile,
   fetchProfileLevelConfigByAddress,
   fetchProfileLevelConfigByLevel,
   fetchProfileStats,
   updateProfileAvatar,
-  createProfile as createProfileApi,
 } from "../api/profile";
 import { registerMilestone } from "../utils/appsflyerReferral";
 
@@ -34,6 +33,7 @@ export type ProfileStore = {
 
 
   reset: () => void;
+  setProfileUsername: (username: string) => void;
 };
 
 export const useProfileStore = create<ProfileStore>((set, get) => ({
@@ -47,20 +47,13 @@ export const useProfileStore = create<ProfileStore>((set, get) => ({
     set({ loading: true });
 
     try {
-      let profile = await fetchProfile(userAddress);
+      const profile = await fetchOrCreateProfile(userAddress);
       const badgesCount = profile.badgesIds.length;
       const sanitizeNumber = (value: number) =>
         Number.isFinite(value) ? value : 0;
       const toInt = (value: number) => Math.trunc(sanitizeNumber(value));
       const sanitizedTotalXp = sanitizeNumber(profile.totalXp);
       const sanitizedCurrentXp = sanitizeNumber(profile.currentXp);
-
-      if (profile.username === "" && username) {
-        const fallbackAvatarId =
-          toInt(profile.avatarId) > 0 ? toInt(profile.avatarId) : 1;
-        await createProfileApi(userAddress, username, fallbackAvatarId);
-        profile = await fetchProfile(userAddress);
-      }
 
       const userLevel = toInt(profile.level);
 
@@ -181,6 +174,20 @@ export const useProfileStore = create<ProfileStore>((set, get) => ({
       console.log("Error updating avatar", e);
       set({ pendingAvatarId: null });
     }
+  },
+
+  setProfileUsername: (username) => {
+    const current = get().profileData;
+    if (!current) return;
+    set({
+      profileData: {
+        ...current,
+        profile: {
+          ...current.profile,
+          username,
+        },
+      },
+    });
   },
 
   reset: () => set({ profileData: null, pendingAvatarId: null, previousLevel: null, previousGamesCount: null }),

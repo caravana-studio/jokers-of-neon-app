@@ -1,11 +1,14 @@
 import { Divider, Flex } from "@chakra-ui/react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { UsernameModal } from "../../components/UsernameModal";
 import { Icons } from "../../constants/icons";
 import { TESTERS } from "../../constants/testers";
 import { useDojo } from "../../dojo/DojoContext";
 import { useUsername } from "../../dojo/utils/useUsername";
-import { ProfileStore } from "../../state/useProfileStore";
+import { ProfileStore, useProfileStore } from "../../state/useProfileStore";
+import { useUsernameStore } from "../../state/useUsernameStore";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { DelayedLoading } from "../../components/DelayedLoading";
 import { PositionedDiscordLink } from "../../components/DiscordLink";
@@ -30,6 +33,26 @@ export const ProfileContent = ({
   const username = useUsername();
   const navigate = useNavigate();
   const { t } = useTranslation("game");
+  const [usernameModalOpen, setUsernameModalOpen] = useState(false);
+  const [usernameSaving, setUsernameSaving] = useState(false);
+  const updateUsernameForAddress = useUsernameStore(
+    (store) => store.updateUsernameForAddress
+  );
+  const setProfileUsername = useProfileStore((store) => store.setProfileUsername);
+
+  const handleUpdateUsername = async (nextUsername: string) => {
+    setUsernameSaving(true);
+    try {
+      const record = await updateUsernameForAddress(
+        setup.account.account.address,
+        nextUsername
+      );
+      setProfileUsername(record.username);
+      setUsernameModalOpen(false);
+    } finally {
+      setUsernameSaving(false);
+    }
+  };
 
   return (
     <DelayedLoading ms={100}>
@@ -76,6 +99,16 @@ export const ProfileContent = ({
                 avatarId
               )
             }
+            onEditUsername={() => setUsernameModalOpen(true)}
+          />
+
+          <UsernameModal
+            isOpen={usernameModalOpen}
+            title={t("username-modal.title.edit")}
+            initialUsername={profile.username}
+            isSaving={usernameSaving}
+            onClose={() => setUsernameModalOpen(false)}
+            onSave={handleUpdateUsername}
           />
 
           {/* <UserBadges currentBadges={currentBadges} totalBadges={totalBadges} /> */}

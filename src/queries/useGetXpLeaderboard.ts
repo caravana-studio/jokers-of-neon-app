@@ -1,7 +1,9 @@
 import { gql } from "graphql-tag";
 import { useQuery } from "react-query";
+import { resolveUsernameMap } from "../api/usernames";
 import { decodeString } from "../dojo/utils/decodeString";
 import mainnetGraphQLClient from "../mainnetGraphQLClient";
+import { addressKey } from "../utils/starknetAddress";
 
 export const XP_LEADERBOARD_QUERY_KEY = "xp-leaderboard";
 const MAX_XP_LEADERBOARD_PLAYERS = 50;
@@ -79,16 +81,20 @@ const fetchXpLeaderboard = async (seasonId: number) => {
     rawData?.jokersOfNeonProfile20GameDataModels?.edges ?? [];
 
   const blockedUsernames = new Set(["test111"]);
-  const excludedNamePattern = /^(joker_guest_\d+|chichilo\d+|burner\d+)$/i;
+  const excludedNamePattern = /^(joker_guest_\d+|guest_?[a-z0-9]+|chichilo\d+|burner\d+)$/i;
 
   const ownerToPlayerName = new Map<string, string>();
   gameDataEdges.forEach((edge) => {
-    const owner = edge.node.owner?.toLowerCase?.();
+    const owner = addressKey(edge.node.owner);
     const decodedName = decodeString(edge.node.player_name ?? "");
     if (owner && decodedName) {
       ownerToPlayerName.set(owner, decodedName);
     }
   });
+
+  const usernameMap = await resolveUsernameMap(
+    edges.map((edge) => edge.node.address).filter(Boolean)
+  ).catch(() => new Map<string, string>());
 
   const processed = edges
     .map((edge) => ({
@@ -96,7 +102,9 @@ const fetchXpLeaderboard = async (seasonId: number) => {
       level: Number(edge.node.level ?? 0),
       seasonXp: Number(edge.node.season_xp ?? 0),
       playerName:
-        ownerToPlayerName.get(edge.node.address?.toLowerCase?.() ?? "") ?? "",
+        usernameMap.get(addressKey(edge.node.address)) ??
+        ownerToPlayerName.get(addressKey(edge.node.address)) ??
+        "",
       hasSeasonPass: Boolean(edge.node.has_season_pass),
     }))
     .filter((entry) => {
@@ -105,11 +113,10 @@ const fetchXpLeaderboard = async (seasonId: number) => {
       const isBlocked =
         blockedUsernames.has(normalizedName ?? "") ||
         blockedUsernames.has(normalizedAddress ?? "");
-      const hasValidName = Boolean(entry.playerName);
       const isExcludedByPattern = Boolean(
         normalizedName && excludedNamePattern.test(normalizedName)
       );
-      return entry.address && hasValidName && !isBlocked && !isExcludedByPattern;
+      return entry.address && !isBlocked && !isExcludedByPattern;
     });
 
   const sorted = processed.sort((a, b) => {

@@ -8,6 +8,7 @@ import {
 import { useLocation, useNavigate } from "react-router-dom";
 import { AccountInterface } from "starknet";
 import { createGame } from "../api/createGame.ts";
+import { fetchUsernameByAddress } from "../api/usernames.ts";
 import {
   acumSfx,
   clearLevel,
@@ -319,7 +320,11 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     console.log(account);
 
     try {
-      await transferGame(account, gameId, newUsername ?? "");
+      const usernameRecord = await fetchUsernameByAddress(account.address).catch(
+        () => null
+      );
+      const usernameForTransfer = usernameRecord?.username ?? newUsername ?? "";
+      await transferGame(account, gameId, usernameForTransfer);
       console.log("Game transfer successful.");
     } catch (error) {
       console.error("Failed to transfer game:", error);
@@ -338,7 +343,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         console.log("Creating game...");
         createGame({
           userAddress: account.address,
-          playerName: usernameLS,
           isTournament,
         })
           .then(async (response) => {

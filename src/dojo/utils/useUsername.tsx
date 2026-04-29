@@ -1,30 +1,38 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useContext, useState } from "react";
 import { LOGGED_USER } from "../../constants/localStorage";
-import { controller } from "../controller/controller";
+import { useUsernameStore } from "../../state/useUsernameStore";
 import { DojoContext } from "../DojoContext";
-import { useCavosSafe } from "../cavos/CavosConfig";
 
 export const useUsername = () => {
-  const [username, setUsername] = useState<string | null>(null);
   const dojoCtx = useContext(DojoContext);
+  const accountAddress = dojoCtx?.account?.account?.address;
   const isBurnerAccount = dojoCtx?.accountType === "burner";
-  const isCavos = dojoCtx?.accountType === "cavos";
+  const username = useUsernameStore((store) => store.username);
+  const status = useUsernameStore((store) => store.status);
+  const loadUsername = useUsernameStore((store) => store.loadUsername);
+  const reset = useUsernameStore((store) => store.reset);
 
-  const cavos = useCavosSafe();
+  const [guestUsername, setGuestUsername] = useState<string | null>(() =>
+    typeof window === "undefined" ? null : window.localStorage.getItem(LOGGED_USER)
+  );
 
   useEffect(() => {
-    if (isCavos && cavos?.user?.email) {
-      setUsername(cavos.user.email?.split("@")[0]);
-    } else if (!isBurnerAccount && !isCavos && controller) {
-      controller.username()?.then((username) => {
-        if (username) {
-          setUsername(username);
-        }
-      });
+    if (!accountAddress) {
+      reset();
+      return;
     }
-  }, [isBurnerAccount, isCavos, cavos?.user?.email]);
 
-  if (isBurnerAccount) return window.localStorage.getItem(LOGGED_USER);
-  if (isCavos) return cavos?.user?.email?.split("@")[0] ?? cavos?.user?.name ?? null;
-  return username;
+    void loadUsername(accountAddress);
+  }, [accountAddress, loadUsername, reset]);
+
+  useEffect(() => {
+    if (!isBurnerAccount) {
+      setGuestUsername(null);
+      return;
+    }
+
+    setGuestUsername(window.localStorage.getItem(LOGGED_USER));
+  }, [isBurnerAccount, status]);
+
+  return username ?? (isBurnerAccount ? guestUsername : null);
 };
