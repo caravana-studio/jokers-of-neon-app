@@ -1,4 +1,5 @@
 import { getGameApiBaseUrl } from "../config/gameApiUrl";
+import { normalizeStarknetAddress } from "../utils/starknetAddress";
 
 type GetProfileApiResponse = {
   success?: boolean;
@@ -444,4 +445,37 @@ export async function createProfile(
   }
 
   return json;
+}
+
+export function profileShouldBeCreated(
+  profile: ProfileApiData,
+  address: string
+): boolean {
+  const profileLooksEmpty =
+    profile.avatarId <= 0 &&
+    profile.maxAvailableGames <= 0 &&
+    profile.totalXp <= 0 &&
+    profile.currentXp <= 0;
+
+  return (
+    normalizeStarknetAddress(profile.address) !==
+      normalizeStarknetAddress(address) ||
+    profileLooksEmpty
+  );
+}
+
+export async function fetchOrCreateProfile(
+  address: string,
+  fallbackAvatarId = 1
+): Promise<ProfileApiData> {
+  let profile = await fetchProfile(address);
+
+  if (profileShouldBeCreated(profile, address)) {
+    const avatarId =
+      profile.avatarId > 0 ? Math.trunc(profile.avatarId) : fallbackAvatarId;
+    await createProfile(address, avatarId);
+    profile = await fetchProfile(address);
+  }
+
+  return profile;
 }

@@ -1,12 +1,11 @@
 import { create } from "zustand";
 import type { Account, AccountInterface } from "starknet";
 import {
-  fetchProfile,
+  fetchOrCreateProfile,
   fetchProfileLevelConfigByAddress,
   fetchProfileLevelConfigByLevel,
   fetchProfileStats,
   updateProfileAvatar,
-  createProfile as createProfileApi,
 } from "../api/profile";
 import { registerMilestone } from "../utils/appsflyerReferral";
 
@@ -48,26 +47,13 @@ export const useProfileStore = create<ProfileStore>((set, get) => ({
     set({ loading: true });
 
     try {
-      let profile = await fetchProfile(userAddress);
+      const profile = await fetchOrCreateProfile(userAddress);
       const badgesCount = profile.badgesIds.length;
       const sanitizeNumber = (value: number) =>
         Number.isFinite(value) ? value : 0;
       const toInt = (value: number) => Math.trunc(sanitizeNumber(value));
       const sanitizedTotalXp = sanitizeNumber(profile.totalXp);
       const sanitizedCurrentXp = sanitizeNumber(profile.currentXp);
-
-      const profileLooksEmpty =
-        profile.avatarId <= 0 &&
-        profile.maxAvailableGames <= 0 &&
-        profile.totalXp <= 0 &&
-        profile.currentXp <= 0;
-
-      if ((profile.username === "" || profileLooksEmpty) && username) {
-        const fallbackAvatarId =
-          toInt(profile.avatarId) > 0 ? toInt(profile.avatarId) : 1;
-        await createProfileApi(userAddress, fallbackAvatarId);
-        profile = await fetchProfile(userAddress);
-      }
 
       const userLevel = toInt(profile.level);
 

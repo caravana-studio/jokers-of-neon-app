@@ -27,10 +27,10 @@ import {
 } from "react";
 import { useAccount } from "@starknet-react/core";
 import { DojoContext } from "../dojo/DojoContext";
+import { useUsername } from "../dojo/utils/useUsername";
 import { isNative as realNative } from "../utils/capacitorUtils";
 import { getRevenueCatApiKey } from "../utils/getRevenueCatApiKey";
 import { registerMilestone } from "../utils/appsflyerReferral";
-import { normalizeStarknetAddress } from "../utils/starknetAddress";
 
 const FIRST_PURCHASE_KEY = "referral_first_purchase_tracked";
 const ANON_RC_USER = "jokers_anon_guest";
@@ -289,8 +289,10 @@ export const RevenueCatProvider = ({ children }: PropsWithChildren) => {
   const dojoAddress = dojoCtx?.account?.account?.address ?? null;
   const address = dojoAddress || starknetAddress || null;
   const accountType = dojoCtx?.accountType ?? null;
+  const username = useUsername();
 
-  const userId = address ? normalizeStarknetAddress(address) : ANON_RC_USER;
+  const userId =
+    address && username ? `${username},${address}` : ANON_RC_USER;
   const [offerings, setOfferings] =
     useState<RevenueCatFormattedOfferings | null>(null);
   const [loading, setLoading] = useState(false);
