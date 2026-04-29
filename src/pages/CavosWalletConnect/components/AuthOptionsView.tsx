@@ -29,6 +29,7 @@ interface AuthOptionsViewProps {
   showGuestMode: boolean;
   isCavosAuthDisabled?: boolean;
   isControllerActionDisabled?: boolean;
+  isControllerActionLoading?: boolean;
   isGuestActionDisabled?: boolean;
   cavosOAuthProvider?: "google" | "apple" | null;
 }
@@ -45,6 +46,7 @@ export const AuthOptionsView = ({
   showGuestMode,
   isCavosAuthDisabled = false,
   isControllerActionDisabled = false,
+  isControllerActionLoading = false,
   isGuestActionDisabled = false,
   cavosOAuthProvider = null,
 }: AuthOptionsViewProps) => {
@@ -156,6 +158,7 @@ export const AuthOptionsView = ({
                 color="#0B0B0D"
                 onClick={onContinueWithControllerClick}
                 disabled={isControllerActionDisabled}
+                isLoading={isControllerActionLoading}
               />
               {showGuestMode && (
                 <Flex flexDir="column" alignItems="center" gap={2.5} w="100%">

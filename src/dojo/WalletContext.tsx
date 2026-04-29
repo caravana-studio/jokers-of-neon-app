@@ -187,13 +187,18 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     };
   }, []);
 
-  const connectWallet = async () => {
+  const connectWallet = async (): Promise<boolean> => {
     try {
       if (connectors[0]) {
         await connect({ connector: connectors[0] });
+        return true;
       }
+
+      console.warn("No controller connector available");
+      return false;
     } catch (error) {
       console.error("Failed to connect wallet:", error);
+      return false;
     }
   };
 
@@ -356,7 +361,9 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
 
   useEffect(() => {
     if (
-      connectionStatus === "connecting_controller" &&
+      (connectionStatus === "connecting_controller" ||
+        isControllerConnectAttemptActive ||
+        (!finalAccount && accountType !== "cavos" && accountType !== "burner")) &&
       isControllerConnected === true &&
       controllerAccount
     ) {
@@ -371,32 +378,12 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     }
   }, [
     connectionStatus,
+    isControllerConnectAttemptActive,
+    accountType,
+    finalAccount,
     isControllerConnected,
     controllerAccount,
     burnerAccount,
-  ]);
-
-  useEffect(() => {
-    if (!isControllerConnectAttemptActive) {
-      return;
-    }
-
-    if (isControllerConnected === true && controllerAccount) {
-      setIsControllerConnectAttemptActive(false);
-      return;
-    }
-
-    if (isControllerConnecting) {
-      return;
-    }
-
-    setIsControllerConnectAttemptActive(false);
-    setConnectionStatus("selecting");
-  }, [
-    isControllerConnectAttemptActive,
-    isControllerConnected,
-    isControllerConnecting,
-    controllerAccount,
   ]);
 
   useEffect(() => {
@@ -498,8 +485,13 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
 
     setConnectionStatus("connecting_controller");
     setIsControllerConnectAttemptActive(true);
-    if (isControllerConnected === false && isControllerConnecting === false) {
-      connectWallet();
+    if (isControllerConnected !== true && isControllerConnecting !== true) {
+      connectWallet().then((connected) => {
+        if (!connected) {
+          setIsControllerConnectAttemptActive(false);
+          setConnectionStatus("selecting");
+        }
+      });
     }
   };
 
@@ -714,9 +706,14 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     appType !== AppType.SHOP &&
     (!finalAccount || (EARLY_ACCESS_VERSION && (!isUserAllowed || allowedLoading)));
 
+  const isControllerLoginInProgress =
+    connectionStatus === "connecting_controller" ||
+    isControllerConnectAttemptActive ||
+    isControllerConnecting === true;
+
   const isLoadingWallet =
-    (connectionStatus === "connecting_controller" &&
-      (isControllerConnected === false || controllerAccount === undefined)) ||
+    (isControllerLoginInProgress &&
+      (isControllerConnected !== true || !controllerAccount)) ||
     (connectionStatus === "connecting_burner" &&
       (!burnerAccount || isDeploying)) ||
     (connectionStatus === "connecting_cavos" &&

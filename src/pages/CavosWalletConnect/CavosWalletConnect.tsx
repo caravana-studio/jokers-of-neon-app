@@ -310,6 +310,7 @@ export const CavosWalletConnect = () => {
                 showGuestMode={allowGuest}
                 isCavosAuthDisabled={isCavosAuthDisabled}
                 isControllerActionDisabled={isControllerActionDisabled}
+                isControllerActionLoading={isControllerActionDisabled}
                 isGuestActionDisabled={isGuestActionDisabled}
                 cavosOAuthProvider={cavosOAuthProvider}
               />
