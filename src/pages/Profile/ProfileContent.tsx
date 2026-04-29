@@ -1,4 +1,4 @@
-import { Button, Divider, Flex } from "@chakra-ui/react";
+import { Divider, Flex } from "@chakra-ui/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -99,16 +99,8 @@ export const ProfileContent = ({
                 avatarId
               )
             }
+            onEditUsername={() => setUsernameModalOpen(true)}
           />
-          <Button
-            size="xs"
-            alignSelf="center"
-            mb={4}
-            variant="secondarySolid"
-            onClick={() => setUsernameModalOpen(true)}
-          >
-            {t("username-modal.title.edit")}
-          </Button>
 
           <UsernameModal
             isOpen={usernameModalOpen}
