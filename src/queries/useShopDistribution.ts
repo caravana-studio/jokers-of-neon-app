@@ -1,4 +1,11 @@
 import { useEffect, useState } from "react";
+import { useSeasonNumber } from "../constants/season";
+import {
+  getPackPackageId,
+  getPackTier,
+  getSeasonPassPackageId,
+  getSeasonalPackId,
+} from "../utils/packUtils";
 import { isNativeAndroid, isNativeIOS } from "../utils/capacitorUtils";
 
 type ShopEnvironment = "android" | "ios" | "web";
@@ -23,27 +30,27 @@ const FORCE_DEFAULTS_ON_SHOP =
   String(import.meta.env.VITE_FORCE_DEFAULTS_ON_SHOP).toLowerCase() ===
   "true";
 
-const DEFAULT_SHOP_DISTRIBUTIONS: Record<ShopEnvironment, ShopDistribution> = {
-  android: {
-    season_pass: "season_pass_s3",
-    packs: [],
-  },
-  ios: {
-    season_pass: "season_pass_s3",
-    packs: [
-      { shopId: "pack_advanced_s3", packId: 32 },
-      { shopId: "pack_epic_s3", packId: 33 },
-      { shopId: "pack_legendary_s3", packId: 34 },
-    ],
-  },
-  web: {
-    season_pass: "season_pass_s3",
-    packs: [
-      { shopId: "pack_advanced_s3", packId: 32 },
-      { shopId: "pack_epic_s3", packId: 33 },
-      { shopId: "pack_legendary_s3", packId: 34 },
-    ],
-  },
+const DEFAULT_SHOP_TIERS = [2, 3, 4];
+
+const getDefaultShopDistribution = (
+  environment: ShopEnvironment,
+  season: number
+): ShopDistribution => {
+  const packs =
+    environment === "android"
+      ? []
+      : DEFAULT_SHOP_TIERS.map((tier) => {
+          const packId = getSeasonalPackId(tier, season);
+          return {
+            packId,
+            shopId: getPackPackageId(packId, season) ?? "",
+          };
+        }).filter((pack) => pack.shopId.length > 0);
+
+  return {
+    season_pass: getSeasonPassPackageId(season),
+    packs,
+  };
 };
 
 const getEnvironment = (): ShopEnvironment => {
@@ -57,17 +64,60 @@ const getEnvironment = (): ShopEnvironment => {
 };
 
 export const useShopDistribution = () => {
+  const seasonNumber = useSeasonNumber();
   const [distribution, setDistribution] = useState<ShopDistribution | null>(
     null
   );
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let cancelled = false;
+
+    const normalizeDistribution = (
+      source: ShopDistribution,
+      season: number
+    ): ShopDistribution => {
+      const seenPackIds = new Set<number>();
+      const packs: ShopPack[] = [];
+
+      for (const pack of source.packs ?? []) {
+        const tier = getPackTier(Number(pack.packId));
+        if (tier <= 0) {
+          continue;
+        }
+
+        const seasonalPackId = getSeasonalPackId(tier, season);
+        if (seasonalPackId <= 0 || seenPackIds.has(seasonalPackId)) {
+          continue;
+        }
+
+        seenPackIds.add(seasonalPackId);
+        packs.push({
+          packId: seasonalPackId,
+          shopId:
+            getPackPackageId(seasonalPackId, season) ??
+            (typeof pack.shopId === "string" ? pack.shopId : ""),
+        });
+      }
+
+      return {
+        season_pass: getSeasonPassPackageId(season),
+        packs: packs.filter((pack) => pack.shopId.length > 0),
+      };
+    };
+
     const fetchShopDistribution = async () => {
+      setLoading(true);
       const environment = getEnvironment();
+      const defaultDistribution = getDefaultShopDistribution(
+        environment,
+        seasonNumber
+      );
       if (FORCE_DEFAULTS_ON_SHOP) {
-        setDistribution({ ...DEFAULT_SHOP_DISTRIBUTIONS[environment] });
-        setLoading(false);
+        if (!cancelled) {
+          setDistribution(defaultDistribution);
+          setLoading(false);
+        }
         return;
       }
 
@@ -75,30 +125,42 @@ export const useShopDistribution = () => {
         const response = await fetch(SHOP_DISTRIBUTION_URL);
         if (!response.ok) {
           console.error("Failed to fetch shop distribution settings");
-          setDistribution({ ...DEFAULT_SHOP_DISTRIBUTIONS[environment] });
+          if (!cancelled) {
+            setDistribution(defaultDistribution);
+          }
           return;
         }
 
         const data: ShopDistributionResponse = await response.json();
         const environmentDistribution =
-          data?.[environment] ??
-          data?.web ??
-          DEFAULT_SHOP_DISTRIBUTIONS[environment];
+          data?.[environment] ?? data?.web ?? defaultDistribution;
 
-        setDistribution({ ...environmentDistribution });
+        if (!cancelled) {
+          setDistribution(
+            normalizeDistribution(environmentDistribution, seasonNumber)
+          );
+        }
       } catch (err) {
         console.error(
           "Failed to fetch shop distribution settings. Unknown error occurred",
           err
         );
-        setDistribution({ ...DEFAULT_SHOP_DISTRIBUTIONS[environment] });
+        if (!cancelled) {
+          setDistribution(defaultDistribution);
+        }
       } finally {
-        setLoading(false);
+        if (!cancelled) {
+          setLoading(false);
+        }
       }
     };
 
-    fetchShopDistribution();
-  }, []);
+    void fetchShopDistribution();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [seasonNumber]);
 
   return { distribution, loading };
 };

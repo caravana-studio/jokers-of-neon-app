@@ -4,36 +4,21 @@ import { CollectorPacksShopModal } from "../../components/CollectorPacksShopModa
 import { DelayedLoading } from "../../components/DelayedLoading";
 import { MobileDecoration } from "../../components/MobileDecoration";
 import { DiscountSign } from "../../components/DiscountSign";
+import { useSeasonNumber } from "../../constants/season";
 import { AppType, useAppContext } from "../../providers/AppContextProvider";
 import { useRevenueCat } from "../../providers/RevenueCatProvider";
 import { useSeasonPass } from "../../providers/SeasonPassProvider";
 import { useShopDistribution } from "../../queries/useShopDistribution";
 import { BLUE } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
+import {
+  getPackPackageId,
+  getPackTier,
+  getSeasonalPackId,
+  isCollectorPackId,
+} from "../../utils/packUtils";
 import { PackRow } from "./PackRow";
 import { SeasonPassRow } from "./SeasonPassRow";
-
-const PACK_PACKAGE_IDS: Record<number, string> = {
-  6: "pack_collector_xl",
-  5: "pack_collector",
-  4: "pack_legendary",
-  3: "pack_epic",
-  2: "pack_advanced",
-  26: "pack_collector_xl_s2",
-  25: "pack_collector_s2",
-  24: "pack_legendary_s2",
-  23: "pack_epic_s2",
-  22: "pack_advanced_s2",
-  36: "pack_collector_xl_s3",
-  35: "pack_collector_s3",
-  34: "pack_legendary_s3",
-  33: "pack_epic_s3",
-  32: "pack_advanced_s3",
-  31: "pack_basic_s3",
-};
-
-const COLLECTOR_PACK_IDS = new Set([5, 6, 25, 26, 35, 36]);
-const COLLECTOR_BACKGROUND_PRIORITY = [36, 26, 6, 35, 25, 5];
 
 const discountOnShopFromEnv = Number(import.meta.env.VITE_DISCOUNT_ON_SHOP);
 const DISCOUNT_ON_SHOP =
@@ -43,6 +28,7 @@ const DISCOUNT_ON_SHOP =
 
 export const ShopPage = () => {
   const { isSmallScreen } = useResponsiveValues();
+  const seasonNumber = useSeasonNumber();
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "shop",
   });
@@ -50,19 +36,32 @@ export const ShopPage = () => {
   const { seasonPassUnlocked, loading: loadingSeasonPass } = useSeasonPass();
   const { offerings } = useRevenueCat();
   const seasonPassPrice = offerings?.seasonPass?.formattedPrice;
+
   const getPackPrice = (packId: number, shopId: string) => {
-    const packageId = PACK_PACKAGE_IDS[packId] ?? shopId;
-    return offerings?.packs?.find((pack) => pack.id === packageId)
+    const packageIds = [
+      shopId,
+      getPackPackageId(packId),
+    ].filter((packageId): packageId is string => Boolean(packageId));
+
+    return offerings?.packs?.find((pack) => packageIds.includes(pack.id))
       ?.formattedPrice;
   };
+
   const { distribution, loading } = useShopDistribution();
-  const hasCollectorPacks =
-    !loading &&
-    !!distribution?.packs?.some((pack) => COLLECTOR_PACK_IDS.has(pack.packId));
+  const collectorPackIds =
+    distribution?.packs
+      ?.filter((pack) => isCollectorPackId(pack.packId))
+      .map((pack) => pack.packId) ?? [];
+  const hasCollectorPacks = !loading && collectorPackIds.length > 0;
   const collectorBackgroundPackId =
-    COLLECTOR_BACKGROUND_PRIORITY.find((packId) =>
-      distribution?.packs?.some((pack) => pack.packId === packId)
-    ) ?? 5;
+    [...collectorPackIds].sort((leftPackId, rightPackId) => {
+      const tierDifference =
+        getPackTier(rightPackId) - getPackTier(leftPackId);
+      if (tierDifference !== 0) {
+        return tierDifference;
+      }
+      return rightPackId - leftPackId;
+    })[0] ?? getSeasonalPackId(5, seasonNumber);
   const collectorBackground = `/packs/bg/${collectorBackgroundPackId}.jpg`;
 
   const appType = useAppContext();
@@ -115,6 +114,7 @@ export const ShopPage = () => {
             {distribution?.packs?.map((pack) => {
               return (
                 <PackRow
+                  key={pack.packId}
                   packId={pack.packId}
                   packageId={pack.shopId}
                   price={getPackPrice(pack.packId, pack.shopId)}

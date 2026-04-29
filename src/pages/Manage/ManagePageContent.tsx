@@ -12,6 +12,7 @@ export interface ManagePageContentProps {
   lastIndexTab?: number;
   discardedCards: Card[];
   discardedPowerups?: PowerUp[];
+  showPowerupsSection?: boolean;
   preselectedCard?: Card;
   preselectedPowerup?: PowerUp;
   onCardClick: (card: Card) => void;
@@ -26,6 +27,7 @@ interface ManageContentDesktopProps extends ManagePageContentProps {
 export const ManagePageContent = ({
   discardedCards,
   discardedPowerups,
+  showPowerupsSection = true,
   preselectedCard,
   preselectedPowerup,
   onCardClick,
@@ -51,11 +53,13 @@ export const ManagePageContent = ({
             preselectedCard={preselectedCard}
             onCardClick={onCardClick}
           />
-          <Powerups
-            preselectedPowerUp={preselectedPowerup}
-            onPowerupClick={onPowerupClick}
-            discardedPowerups={discardedPowerups}
-          />
+          {showPowerupsSection && (
+            <Powerups
+              preselectedPowerUp={preselectedPowerup}
+              onPowerupClick={onPowerupClick}
+              discardedPowerups={discardedPowerups}
+            />
+          )}
         </Flex>
         <Flex mt={[0, 0, 0, 4]} justifyContent="center">{goBackButton}</Flex>
       </Flex>
