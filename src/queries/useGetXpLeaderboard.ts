@@ -81,7 +81,7 @@ const fetchXpLeaderboard = async (seasonId: number) => {
     rawData?.jokersOfNeonProfile20GameDataModels?.edges ?? [];
 
   const blockedUsernames = new Set(["test111"]);
-  const excludedNamePattern = /^(joker_guest_\d+|guest_[a-z0-9]+|chichilo\d+|burner\d+)$/i;
+  const excludedNamePattern = /^(joker_guest_\d+|guest_?[a-z0-9]+|chichilo\d+|burner\d+)$/i;
 
   const ownerToPlayerName = new Map<string, string>();
   gameDataEdges.forEach((edge) => {

@@ -107,12 +107,12 @@ export const ProfileContent = ({
             variant="secondarySolid"
             onClick={() => setUsernameModalOpen(true)}
           >
-            Edit username
+            {t("username-modal.title.edit")}
           </Button>
 
           <UsernameModal
             isOpen={usernameModalOpen}
-            title="Edit username"
+            title={t("username-modal.title.edit")}
             initialUsername={profile.username}
             isSaving={usernameSaving}
             onClose={() => setUsernameModalOpen(false)}

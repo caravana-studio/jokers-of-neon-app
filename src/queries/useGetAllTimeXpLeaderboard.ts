@@ -57,7 +57,7 @@ const fetchAllTimeXpLeaderboard = async () => {
 
   const edges = rawData?.jokersOfNeonProfile20ProfileModels?.edges ?? [];
   const blockedUsernames = new Set(["test111"]);
-  const excludedNamePattern = /^(joker_guest_\d+|guest_[a-z0-9]+|chichilo\d+|burner\d+)$/i;
+  const excludedNamePattern = /^(joker_guest_\d+|guest_?[a-z0-9]+|chichilo\d+|burner\d+)$/i;
   const usernameMap = await resolveUsernameMap(
     edges.map((edge) => edge.node.address).filter(Boolean)
   ).catch(() => new Map<string, string>());

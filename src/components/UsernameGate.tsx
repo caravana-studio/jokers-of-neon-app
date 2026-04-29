@@ -10,12 +10,12 @@ import { UsernameModal } from "./UsernameModal";
 
 function guestUsernameForAddress(address: string): string {
   const normalized = normalizeStarknetAddress(address).replace(/^0x/, "");
-  return `guest_${normalized.slice(-8)}`;
+  return `guest${normalized.slice(-8)}`;
 }
 
 function isValidStoredGuestUsername(username: string | null): username is string {
   return Boolean(
-    username &&
+      username &&
       username.length >= 3 &&
       username.length <= 15 &&
       /^[A-Za-z0-9._-]+$/.test(username)

@@ -9,7 +9,7 @@ import { addressKey, formatAddress } from "../utils/starknetAddress";
 import { useTournamentSettings } from "./useTournamentSettings";
 
 export const LEADERBOARD_QUERY_KEY = "leaderboard";
-const guestNamePattern = /^(joker_guest_\d+|guest_[a-z0-9]+)$/i;
+const guestNamePattern = /^(joker_guest_\d+|guest_?[a-z0-9]+)$/i;
 const excludedNamePattern = /^chichilo\d+$/i;
 
 const DOJO_NAMESPACE =
