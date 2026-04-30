@@ -1,7 +1,7 @@
 import { CavosProvider as CavosSDKProvider, useCavos } from "@cavos/react";
 import React, { createContext, ReactNode, useContext, useEffect, useRef } from "react";
 import { getContractByName } from "@dojoengine/core";
-import { getManifest } from "../getManifest";
+import { getManifest, getManifestSource } from "../getManifest";
 import { rpcUrl as slotRpcUrl, slotInstance } from "../../config/cartridgeUrls";
 import { getSlotChainId } from "../controller/controller";
 import { setupWorld } from "../typescript/contracts.gen";
@@ -33,6 +33,29 @@ const CAVOS_SLOT_RELAYER_PRIVATE_KEY =
 
 export const CAVOS_ENABLED = !!CAVOS_APP_ID;
 
+const CAVOS_SESSION_STORAGE_KEYS = [
+  "cavos_oauth_session",
+  "cavos_oauth_pre_auth",
+  "cavos_session_data",
+];
+
+const CAVOS_LOCAL_STORAGE_KEYS = [
+  "cavos_magic_link_pre_auth",
+  "cavos_auth_result",
+];
+
+const normalizeAddress = (address?: string | null): string | null => {
+  if (!address) {
+    return null;
+  }
+
+  try {
+    return `0x${BigInt(address).toString(16)}`;
+  } catch {
+    return address.toLowerCase();
+  }
+};
+
 const getGeneratedContractNames = (): string[] => {
   const mockProvider = {
     execute: () => Promise.resolve({}),
@@ -57,6 +80,52 @@ const getAllowedContracts = (): string[] => {
   contracts.push(VRF_PROVIDER_ADDRESS);
 
   return contracts;
+};
+
+const clearStoredCavosSession = () => {
+  CAVOS_SESSION_STORAGE_KEYS.forEach((key) => sessionStorage.removeItem(key));
+  CAVOS_LOCAL_STORAGE_KEYS.forEach((key) => localStorage.removeItem(key));
+};
+
+const clearStaleCavosSessionPolicy = (allowedContracts: string[]) => {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  const storedSession = sessionStorage.getItem("cavos_oauth_session");
+  if (!storedSession) {
+    return;
+  }
+
+  try {
+    const session = JSON.parse(storedSession);
+    const storedAllowedContracts = new Set(
+      (session?.sessionPolicy?.allowedContracts ?? [])
+        .map((address: string) => normalizeAddress(address))
+        .filter(Boolean)
+    );
+    const currentAllowedContracts = allowedContracts
+      .map((address) => normalizeAddress(address))
+      .filter(Boolean);
+
+    const isMissingCurrentContract = currentAllowedContracts.some(
+      (address) => !storedAllowedContracts.has(address)
+    );
+
+    if (!isMissingCurrentContract) {
+      return;
+    }
+
+    console.warn("[CAVOS] Clearing stale stored session policy", {
+      manifestSource: getManifestSource(),
+      storedAllowedContracts: storedAllowedContracts.size,
+      currentAllowedContracts: currentAllowedContracts.length,
+    });
+    clearStoredCavosSession();
+  } catch (error) {
+    console.warn("[CAVOS] Failed to inspect stored session policy; clearing it", error);
+    clearStoredCavosSession();
+  }
 };
 
 // Bridge context: exposes useCavos() result to components outside CavosProvider
@@ -132,6 +201,7 @@ export const CavosWrapper: React.FC<CavosWrapperProps> = ({ children }) => {
   }
 
   const allowedContracts = getAllowedContracts();
+  clearStaleCavosSessionPolicy(allowedContracts);
 
   return (
     <CavosSDKProvider

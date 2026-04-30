@@ -431,6 +431,7 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     localStorage.removeItem("cavos_pending_slot_deploy_tx");
     sessionStorage.removeItem("cavos_oauth_session");
     sessionStorage.removeItem("cavos_oauth_pre_auth");
+    sessionStorage.removeItem("cavos_session_data");
     sessionStorage.removeItem("cavos_fallback_redirect");
   };
 
