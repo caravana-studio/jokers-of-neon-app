@@ -437,10 +437,16 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
 
   const logout = async () => {
     const logoutAccountType = accountType;
+    const shouldDisconnectController = logoutAccountType === "controller";
+    const shouldLogoutCavos = logoutAccountType === "cavos";
 
     await Promise.allSettled([
-      Promise.resolve(disconnect()),
-      cavos?.logout ? cavos.logout() : Promise.resolve(),
+      shouldDisconnectController
+        ? Promise.resolve(disconnect())
+        : Promise.resolve(),
+      shouldLogoutCavos && cavos?.logout
+        ? cavos.logout()
+        : Promise.resolve(),
     ]);
 
     clearCavosStorage();
