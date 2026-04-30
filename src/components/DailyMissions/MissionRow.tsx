@@ -1,4 +1,4 @@
-import { Flex, Text } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import { IconComponent } from "../IconComponent";
 import { Icons } from "../../constants/icons";
 import { VIOLET_LIGHT } from "../../theme/colors";
@@ -24,13 +24,15 @@ export const MissionRow = ({ mission, fontSize, iconSize }: MissionRowProps) => 
 
   return (
     <Flex alignItems="center" gap={2} my={0}>
-      <IconComponent
-        icon={mission.completed ? Icons.CHECK : Icons.UNCHECK}
-        width={size}
-        height={size}
-        color={color}
-      />
-      <Text fontSize={textSize} color={color} lineHeight="1.4">
+      <Box w={size} h={size} flexShrink={0} lineHeight={0}>
+        <IconComponent
+          icon={mission.completed ? Icons.CHECK : Icons.UNCHECK}
+          width={size}
+          height={size}
+          color={color}
+        />
+      </Box>
+      <Text fontSize={textSize} color={color} lineHeight="1" minW={0}>
         {mission.description} -
         <span style={{ fontFamily: "Orbitron" }}> {mission.xp} XP</span>
       </Text>
