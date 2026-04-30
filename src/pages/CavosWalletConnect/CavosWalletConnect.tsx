@@ -53,6 +53,7 @@ export const CavosWalletConnect = () => {
     isSigningInWithApple,
     isLoadingLastGameId,
     isLoadingWallet,
+    isControllerLoginInProgress,
     isCavosEnabled,
     cavosOAuthProvider,
     cavosError,
@@ -177,14 +178,16 @@ export const CavosWalletConnect = () => {
 
   const isEmailValid = EMAIL_REGEX.test(email.trim());
   const isVerificationCodeValid = verificationCode.length === 6;
-  const isCavosAuthDisabled =
+  const isAuthActionInProgress =
     isLoadingWallet ||
     isSendingMagicLink ||
-    !isCavosEnabled ||
+    isSigningInWithApple ||
     Boolean(cavosOAuthProvider);
-  const isControllerActionDisabled = isLoadingWallet;
+  const isCavosAuthDisabled =
+    isAuthActionInProgress || !isCavosEnabled;
+  const isControllerActionDisabled = isAuthActionInProgress;
   const isGuestActionDisabled =
-    isLoadingWallet || isSigningInWithApple || isLoadingLastGameId;
+    isAuthActionInProgress || isLoadingLastGameId;
   const showAppleLogin = !isNativeAndroid;
 
   return (
@@ -312,8 +315,9 @@ export const CavosWalletConnect = () => {
                 showGuestMode={allowGuest}
                 isCavosAuthDisabled={isCavosAuthDisabled}
                 isControllerActionDisabled={isControllerActionDisabled}
-                isControllerActionLoading={isControllerActionDisabled}
+                isControllerActionLoading={isControllerLoginInProgress}
                 isGuestActionDisabled={isGuestActionDisabled}
+                isMoreOptionsDisabled={isAuthActionInProgress}
                 cavosOAuthProvider={cavosOAuthProvider}
               />
             ) : authView === "email" ? (

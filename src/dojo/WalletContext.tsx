@@ -68,6 +68,7 @@ interface WalletContextType {
   controllerAccount: AccountInterface | null | undefined;
   isControllerConnected: boolean | undefined;
   isControllerConnecting: boolean | undefined;
+  isControllerLoginInProgress: boolean;
   isAppleGuestSession: boolean;
   isSigningInWithApple: boolean;
   isLoadingLastGameId: boolean;
@@ -363,7 +364,7 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     if (
       (connectionStatus === "connecting_controller" ||
         isControllerConnectAttemptActive ||
-        (!finalAccount && accountType !== "cavos" && accountType !== "burner")) &&
+        accountType === "controller") &&
       isControllerConnected === true &&
       controllerAccount
     ) {
@@ -433,6 +434,7 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     sessionStorage.removeItem("cavos_oauth_pre_auth");
     sessionStorage.removeItem("cavos_session_data");
     sessionStorage.removeItem("cavos_fallback_redirect");
+    sessionStorage.removeItem("cavos_native_auth_redirect_received");
   };
 
   const logout = async () => {
@@ -607,6 +609,33 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
       oauthWalletManager?.getGoogleOAuthUrl?.bind(oauthWalletManager);
     const originalGetAppleOAuthUrl =
       oauthWalletManager?.getAppleOAuthUrl?.bind(oauthWalletManager);
+    let isNativeOAuthFinished = false;
+    let rejectNativeBrowserLogin: (error: Error) => void = () => {};
+    const nativeBrowserCancelledPromise = new Promise<never>((_resolve, reject) => {
+      rejectNativeBrowserLogin = reject;
+    });
+    const browserFinishedHandle = await Browser.addListener(
+      "browserFinished",
+      () => {
+        window.setTimeout(() => {
+          if (isNativeOAuthFinished) {
+            return;
+          }
+
+          const didReceiveRedirect =
+            sessionStorage.getItem("cavos_native_auth_redirect_received") ===
+            "true";
+          if (didReceiveRedirect) {
+            return;
+          }
+
+          authWindow.closed = true;
+          rejectNativeBrowserLogin(
+            new Error("Login cancelled. Please try again.")
+          );
+        }, 250);
+      }
+    );
 
     const authWindow = {
       closed: false,
@@ -634,6 +663,8 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     };
 
     try {
+      sessionStorage.removeItem("cavos_native_auth_redirect_received");
+
       if (originalGetGoogleOAuthUrl) {
         oauthWalletManager.getGoogleOAuthUrl = () =>
           originalGetGoogleOAuthUrl(CAVOS_NATIVE_REDIRECT_URI);
@@ -655,8 +686,10 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
         return authWindow as unknown as Window;
       }) as typeof window.open;
 
-      await cavos.login(provider);
+      await Promise.race([cavos.login(provider), nativeBrowserCancelledPromise]);
     } finally {
+      isNativeOAuthFinished = true;
+      void browserFinishedHandle.remove();
       window.open = originalWindowOpen;
       if (originalGetGoogleOAuthUrl) {
         oauthWalletManager.getGoogleOAuthUrl = originalGetGoogleOAuthUrl;
@@ -743,6 +776,7 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
         controllerAccount,
         isControllerConnected,
         isControllerConnecting,
+        isControllerLoginInProgress,
         isAppleGuestSession,
         isSigningInWithApple,
         isLoadingLastGameId,

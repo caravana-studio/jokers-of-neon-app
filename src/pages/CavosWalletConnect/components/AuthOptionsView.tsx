@@ -32,6 +32,7 @@ interface AuthOptionsViewProps {
   isControllerActionDisabled?: boolean;
   isControllerActionLoading?: boolean;
   isGuestActionDisabled?: boolean;
+  isMoreOptionsDisabled?: boolean;
   cavosOAuthProvider?: "google" | "apple" | null;
 }
 
@@ -50,6 +51,7 @@ export const AuthOptionsView = ({
   isControllerActionDisabled = false,
   isControllerActionLoading = false,
   isGuestActionDisabled = false,
+  isMoreOptionsDisabled = false,
   cavosOAuthProvider = null,
 }: AuthOptionsViewProps) => {
   const isLifted = optionsPhase === "opening" || optionsPhase === "secondary";
@@ -196,6 +198,7 @@ export const AuthOptionsView = ({
         onToggle={onMoreOptionsToggle}
         liftDistance={MORE_OPTIONS_LIFT}
         moveDuration={STAGE1_DURATION_S}
+        disabled={isMoreOptionsDisabled}
       />
     </Flex>
   );

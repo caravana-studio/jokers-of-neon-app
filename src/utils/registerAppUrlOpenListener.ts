@@ -32,6 +32,7 @@ export const registerAppUrlOpenListener = () => {
     ) {
       const authData = getCavosAuthData(url);
       if (authData) {
+        sessionStorage.setItem("cavos_native_auth_redirect_received", "true");
         localStorage.setItem("cavos_auth_result", authData);
       }
       Browser.close().catch(() => {});

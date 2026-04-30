@@ -10,6 +10,7 @@ interface MoreOptionsToggleProps {
   onToggle: () => void;
   liftDistance: number;
   moveDuration: number;
+  disabled?: boolean;
 }
 
 export const MoreOptionsToggle = ({
@@ -20,6 +21,7 @@ export const MoreOptionsToggle = ({
   onToggle,
   liftDistance,
   moveDuration,
+  disabled = false,
 }: MoreOptionsToggleProps) => (
   <motion.div
     animate={{ y: isLifted ? -liftDistance : 0 }}
@@ -33,6 +35,9 @@ export const MoreOptionsToggle = ({
       gap={1.5}
       color="#A3A4AA"
       onClick={onToggle}
+      disabled={disabled}
+      cursor={disabled ? "not-allowed" : "pointer"}
+      opacity={disabled ? 0.45 : 1}
     >
       <Box
         position="relative"
