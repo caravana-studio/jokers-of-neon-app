@@ -53,7 +53,6 @@ export const CavosWalletConnect = () => {
     isSigningInWithApple,
     isLoadingLastGameId,
     isLoadingWallet,
-    isControllerLoginInProgress,
     isCavosEnabled,
     cavosOAuthProvider,
     cavosError,
@@ -315,7 +314,7 @@ export const CavosWalletConnect = () => {
                 showGuestMode={allowGuest}
                 isCavosAuthDisabled={isCavosAuthDisabled}
                 isControllerActionDisabled={isControllerActionDisabled}
-                isControllerActionLoading={isControllerLoginInProgress}
+                isControllerActionLoading={false}
                 isGuestActionDisabled={isGuestActionDisabled}
                 isMoreOptionsDisabled={isAuthActionInProgress}
                 cavosOAuthProvider={cavosOAuthProvider}

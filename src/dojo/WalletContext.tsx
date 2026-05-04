@@ -68,7 +68,6 @@ interface WalletContextType {
   controllerAccount: AccountInterface | null | undefined;
   isControllerConnected: boolean | undefined;
   isControllerConnecting: boolean | undefined;
-  isControllerLoginInProgress: boolean;
   isAppleGuestSession: boolean;
   isSigningInWithApple: boolean;
   isLoadingLastGameId: boolean;
@@ -746,14 +745,7 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     appType !== AppType.SHOP &&
     (!finalAccount || (EARLY_ACCESS_VERSION && (!isUserAllowed || allowedLoading)));
 
-  const isControllerLoginInProgress =
-    connectionStatus === "connecting_controller" ||
-    isControllerConnectAttemptActive ||
-    isControllerConnecting === true;
-
   const isLoadingWallet =
-    (isControllerLoginInProgress &&
-      (isControllerConnected !== true || !controllerAccount)) ||
     (connectionStatus === "connecting_burner" &&
       (!burnerAccount || isDeploying)) ||
     (connectionStatus === "connecting_cavos" &&
@@ -776,7 +768,6 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
         controllerAccount,
         isControllerConnected,
         isControllerConnecting,
-        isControllerLoginInProgress,
         isAppleGuestSession,
         isSigningInWithApple,
         isLoadingLastGameId,
