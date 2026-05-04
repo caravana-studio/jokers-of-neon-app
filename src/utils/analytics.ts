@@ -1,3 +1,4 @@
+import { FirebaseAnalytics } from "@capacitor-firebase/analytics";
 import { Capacitor } from "@capacitor/core";
 
 declare global {
@@ -16,7 +17,8 @@ type NativeParamValue =
 
 const isNative = (): boolean => {
   try {
-    return Capacitor.isNativePlatform();
+    const platform = Capacitor.getPlatform();
+    return platform === "ios" || platform === "android";
   } catch {
     return false;
   }
@@ -79,9 +81,6 @@ const sanitizeNativeParams = (params: EventParams): Record<string, NativeParamVa
 
 const logNative = async (action: string, params: EventParams): Promise<void> => {
   try {
-    const { FirebaseAnalytics } = await import(
-      "@capacitor-firebase/analytics"
-    );
     await FirebaseAnalytics.logEvent({
       name: action,
       params: sanitizeNativeParams(params),
@@ -102,9 +101,6 @@ export const logEvent = (action: string, params: EventParams = {}): void => {
 export const setAnalyticsUserId = async (userId: string | null): Promise<void> => {
   if (isNative()) {
     try {
-      const { FirebaseAnalytics } = await import(
-        "@capacitor-firebase/analytics"
-      );
       await FirebaseAnalytics.setUserId({ userId: userId ?? "" });
     } catch (error) {
       console.warn("[analytics] native setUserId failed", error);
@@ -123,9 +119,6 @@ export const setAnalyticsUserProperty = async (
   const stringValue = value === null ? "" : String(value);
   if (isNative()) {
     try {
-      const { FirebaseAnalytics } = await import(
-        "@capacitor-firebase/analytics"
-      );
       await FirebaseAnalytics.setUserProperty({ key: name, value: stringValue });
     } catch (error) {
       console.warn("[analytics] native setUserProperty failed", error);
@@ -142,9 +135,6 @@ export const setAnalyticsCollectionEnabled = async (
 ): Promise<void> => {
   if (!isNative()) return;
   try {
-    const { FirebaseAnalytics } = await import(
-      "@capacitor-firebase/analytics"
-    );
     await FirebaseAnalytics.setEnabled({ enabled });
   } catch (error) {
     console.warn("[analytics] setEnabled failed", error);
