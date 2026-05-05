@@ -29,6 +29,10 @@ const bossFloatAnimation = keyframes`
 `;
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const RESEND_CODE_COOLDOWN_SECONDS = 90;
+
+const normalizeCavosErrorCode = (error: string) =>
+  error.trim().toLowerCase().replace(/[\s-]+/g, "_");
 
 export const CavosWalletConnect = () => {
   const navigate = useNavigate();
@@ -39,13 +43,16 @@ export const CavosWalletConnect = () => {
   const [email, setEmail] = useState("");
   const [submittedEmail, setSubmittedEmail] = useState("");
   const [verificationCode, setVerificationCode] = useState("");
-  const [isSendingMagicLink, setIsSendingMagicLink] = useState(false);
+  const [isSendingEmailOtp, setIsSendingEmailOtp] = useState(false);
+  const [isVerifyingEmailOtp, setIsVerifyingEmailOtp] = useState(false);
+  const [resendCooldownSeconds, setResendCooldownSeconds] = useState(0);
   const stageTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const {
     switchToController,
     continueAsGuest,
     continueWithCavosOAuth,
-    sendCavosMagicLink,
+    sendCavosEmailOtp,
+    verifyCavosEmailOtp,
     resetCavosAuthState,
     allowGuest,
     accountType,
@@ -68,6 +75,20 @@ export const CavosWalletConnect = () => {
       }
     };
   }, []);
+
+  useEffect(() => {
+    if (resendCooldownSeconds <= 0) {
+      return;
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      setResendCooldownSeconds((seconds) => Math.max(seconds - 1, 0));
+    }, 1000);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
+  }, [resendCooldownSeconds]);
 
   useEffect(() => {
     if (
@@ -124,22 +145,23 @@ export const CavosWalletConnect = () => {
 
   const handleEmailContinue = async () => {
     const normalizedEmail = email.trim();
-    if (!EMAIL_REGEX.test(normalizedEmail) || isSendingMagicLink) {
+    if (!EMAIL_REGEX.test(normalizedEmail) || isSendingEmailOtp) {
       return;
     }
 
-    setIsSendingMagicLink(true);
+    setIsSendingEmailOtp(true);
     try {
-      const sent = await sendCavosMagicLink(normalizedEmail);
+      const sent = await sendCavosEmailOtp(normalizedEmail);
       if (!sent) {
         return;
       }
 
       setSubmittedEmail(normalizedEmail);
       setVerificationCode("");
+      setResendCooldownSeconds(RESEND_CODE_COOLDOWN_SECONDS);
       setAuthView("code");
     } finally {
-      setIsSendingMagicLink(false);
+      setIsSendingEmailOtp(false);
     }
   };
 
@@ -148,20 +170,39 @@ export const CavosWalletConnect = () => {
     setVerificationCode(numericCode);
   };
 
-  const handleVerificationContinue = () => {
-    // Placeholder for next phase when verification behavior is wired.
+  const handleVerificationContinue = async () => {
+    if (!isVerificationCodeValid || isVerifyingEmailOtp) {
+      return;
+    }
+
+    setIsVerifyingEmailOtp(true);
+    try {
+      await verifyCavosEmailOtp(submittedEmail, verificationCode);
+    } finally {
+      setIsVerifyingEmailOtp(false);
+    }
   };
 
   const handleUseAnotherEmail = () => {
     setAuthView("email");
     setVerificationCode("");
-    setIsSendingMagicLink(false);
+    setIsSendingEmailOtp(false);
+    setIsVerifyingEmailOtp(false);
+    setResendCooldownSeconds(0);
     resetCavosAuthState();
   };
 
-  const handleResendCode = () => {
-    if (submittedEmail) {
-      sendCavosMagicLink(submittedEmail);
+  const handleResendCode = async () => {
+    if (submittedEmail && !isSendingEmailOtp && resendCooldownSeconds <= 0) {
+      setIsSendingEmailOtp(true);
+      try {
+        const sent = await sendCavosEmailOtp(submittedEmail);
+        if (sent) {
+          setResendCooldownSeconds(RESEND_CODE_COOLDOWN_SECONDS);
+        }
+      } finally {
+        setIsSendingEmailOtp(false);
+      }
     }
   };
 
@@ -171,7 +212,9 @@ export const CavosWalletConnect = () => {
     setEmail("");
     setSubmittedEmail("");
     setVerificationCode("");
-    setIsSendingMagicLink(false);
+    setIsSendingEmailOtp(false);
+    setIsVerifyingEmailOtp(false);
+    setResendCooldownSeconds(0);
     resetCavosAuthState();
   };
 
@@ -179,7 +222,8 @@ export const CavosWalletConnect = () => {
   const isVerificationCodeValid = verificationCode.length === 6;
   const isAuthActionInProgress =
     isLoadingWallet ||
-    isSendingMagicLink ||
+    isSendingEmailOtp ||
+    isVerifyingEmailOtp ||
     isSigningInWithApple ||
     Boolean(cavosOAuthProvider);
   const isCavosAuthDisabled =
@@ -188,6 +232,10 @@ export const CavosWalletConnect = () => {
   const isGuestActionDisabled =
     isAuthActionInProgress || isLoadingLastGameId;
   const showAppleLogin = !isNativeAndroid;
+  const localizedCavosError =
+    normalizeCavosErrorCode(cavosError) === "invalid_code"
+      ? t("errors.invalid-code")
+      : cavosError;
 
   return (
     <PreThemeLoadingPage backgroundSize="cover" backgroundPosition="top center">
@@ -331,7 +379,7 @@ export const CavosWalletConnect = () => {
                 onEmailChange={setEmail}
                 onContinue={handleEmailContinue}
                 isContinueDisabled={!isEmailValid || !isCavosEnabled}
-                isSubmitting={isSendingMagicLink}
+                isSubmitting={isSendingEmailOtp}
                 onTryAnotherLoginOption={handleTryAnotherLoginOption}
               />
             ) : (
@@ -339,28 +387,45 @@ export const CavosWalletConnect = () => {
                 code={verificationCode}
                 labels={{
                   title: t("verify-email-title"),
-                  subtitle: t("magic-link-subtitle", {
+                  subtitle: t("verify-email-subtitle", {
                     email: submittedEmail,
                     defaultValue:
-                      "We sent a secure login link to {{email}}. Open it to continue.",
+                      "Enter the 6-digit code sent to {{email}}",
                   }),
                   codePlaceholder: t("verification-code-placeholder"),
                   continue: t("continue"),
                   useAnotherEmail: t("use-another-email"),
-                  resendCode: t("resend-code"),
+                  resendCode:
+                    resendCooldownSeconds > 0
+                      ? `${t("resend-code")} (${resendCooldownSeconds}s)`
+                      : t("resend-code"),
                 }}
                 onCodeChange={handleVerificationCodeChange}
                 onContinue={handleVerificationContinue}
                 onUseAnotherEmail={handleUseAnotherEmail}
                 onResendCode={handleResendCode}
-                isContinueDisabled={!isVerificationCodeValid}
-                showCodeInput={false}
+                isContinueDisabled={
+                  !isVerificationCodeValid ||
+                  !submittedEmail ||
+                  isSendingEmailOtp ||
+                  isLoadingWallet
+                }
+                isSubmitting={isVerifyingEmailOtp || isLoadingWallet}
+                isResendDisabled={
+                  resendCooldownSeconds > 0 ||
+                  isSendingEmailOtp ||
+                  isVerifyingEmailOtp ||
+                  isLoadingWallet
+                }
+                isUseAnotherEmailDisabled={
+                  isSendingEmailOtp || isVerifyingEmailOtp || isLoadingWallet
+                }
               />
             )}
           </motion.div>
         </AnimatePresence>
 
-        {cavosError && (
+        {localizedCavosError && (
           <Text
             w={{ base: "90%", md: "70%" }}
             maxW="520px"
@@ -371,7 +436,7 @@ export const CavosWalletConnect = () => {
             lineHeight={1.25}
             textShadow="0 0 8px rgba(0,0,0,0.9)"
           >
-            {cavosError}
+            {localizedCavosError}
           </Text>
         )}
 

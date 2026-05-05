@@ -423,6 +423,9 @@
     "just-try-question": "Just want to try the game?",
     "guest-mode": "Guest mode",
     "season-label": "SEASON",
+    "errors": {
+      "invalid-code": "Invalid code. Please check it and try again."
+    },
     "terms": {
       "agreement": "By continuing you are agreeing to Jokers of Neon's",
       "link": "Terms and Conditions"

@@ -422,6 +422,9 @@
     "just-try-question": "Quer apenas experimentar o jogo?",
     "guest-mode": "Modo convidado",
     "season-label": "TEMPORADA",
+    "errors": {
+      "invalid-code": "Código inválido. Verifique e tente novamente."
+    },
     "terms": {
       "agreement": "Ao continuar, você concorda com os",
       "link": "Termos e Condições"

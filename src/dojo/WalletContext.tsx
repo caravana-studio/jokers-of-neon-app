@@ -60,7 +60,8 @@ interface WalletContextType {
   ) => void;
   continueAsGuest: () => Promise<boolean>;
   continueWithCavosOAuth: (provider: CavosOAuthProvider) => Promise<boolean>;
-  sendCavosMagicLink: (email: string) => Promise<boolean>;
+  sendCavosEmailOtp: (email: string) => Promise<boolean>;
+  verifyCavosEmailOtp: (email: string, code: string) => Promise<boolean>;
   resetCavosAuthState: () => void;
   logout: () => Promise<void>;
   isLoadingWallet: boolean;
@@ -75,8 +76,8 @@ interface WalletContextType {
   shouldUseAppleLoginForGuest: boolean;
   shouldBlockWithWalletScreen: boolean;
   isCavosEnabled: boolean;
-  isCavosMagicLinkSent: boolean;
-  cavosMagicLinkEmail: string;
+  isCavosEmailOtpSent: boolean;
+  cavosEmailOtpEmail: string;
   cavosError: string;
   cavosOAuthProvider: CavosOAuthProvider | null;
   onSuccessCallback: MutableRefObject<
@@ -118,7 +119,7 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
 
   // Cavos email login state
   const [cavosEmail, setCavosEmail] = useState("");
-  const [cavosMagicLinkSent, setCavosMagicLinkSent] = useState(false);
+  const [cavosEmailOtpSent, setCavosEmailOtpSent] = useState(false);
   const [cavosError, setCavosError] = useState("");
   const [cavosOAuthProvider, setCavosOAuthProvider] =
     useState<CavosOAuthProvider | null>(null);
@@ -294,16 +295,16 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
       setAccountType("cavos");
       localStorage.setItem(ACCOUNT_TYPE, "cavos");
       setFinalAccount(cavosAccountAdapter as unknown as AccountInterface);
-      setCavosMagicLinkSent(false);
+      setCavosEmailOtpSent(false);
       setCavosEmail("");
       setCavosOAuthProvider(null);
     }
   }, [connectionStatus, isCavosReadyForSlotTransactions, cavosAccountAdapter]);
 
-  // Auto-reconnect Cavos on page reload or magic link callback.
+  // Auto-reconnect Cavos on page reload or auth callback.
   // Covers two cases:
   // 1. Page reload with accountType=cavos in localStorage
-  // 2. Magic link opens the app fresh — SDK auto-authenticates but connectionStatus is "selecting"
+  // 2. OAuth callback opens the app fresh — SDK auto-authenticates but connectionStatus is "selecting"
   useEffect(() => {
     if (
       !finalAccount &&
@@ -315,7 +316,7 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
       setAccountType("cavos");
       localStorage.setItem(ACCOUNT_TYPE, "cavos");
       setFinalAccount(cavosAccountAdapter as unknown as AccountInterface);
-      setCavosMagicLinkSent(false);
+      setCavosEmailOtpSent(false);
       setCavosEmail("");
       setCavosOAuthProvider(null);
     }
@@ -461,7 +462,7 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     localStorage.removeItem(GAME_ID);
     localStorage.removeItem(LOGGED_USER);
     setConnectionStatus("selecting");
-    setCavosMagicLinkSent(false);
+    setCavosEmailOtpSent(false);
     setCavosEmail("");
     setCavosError("");
     setCavosOAuthProvider(null);
@@ -560,15 +561,15 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
 
   const resetCavosAuthState = () => {
     setCavosError("");
-    setCavosMagicLinkSent(false);
+    setCavosEmailOtpSent(false);
     setCavosEmail("");
     setCavosOAuthProvider(null);
   };
 
-  const sendCavosMagicLink = async (email: string): Promise<boolean> => {
+  const sendCavosEmailOtp = async (email: string): Promise<boolean> => {
     const normalizedEmail = email.trim();
-    if (!cavos?.sendMagicLink || !normalizedEmail) {
-      console.warn("[CAVOS] sendMagicLink not available or email empty");
+    if (!cavos?.sendOtp || !normalizedEmail) {
+      console.warn("[CAVOS] sendOtp not available or email empty");
       return false;
     }
 
@@ -578,14 +579,42 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     setConnectionStatus("connecting_cavos");
 
     try {
-      await cavos.sendMagicLink(normalizedEmail);
-      setCavosMagicLinkSent(true);
+      await cavos.sendOtp(normalizedEmail);
+      setCavosEmailOtpSent(true);
       setConnectionStatus("selecting");
-      logEvent("cavos_magic_link_sent");
+      logEvent("cavos_email_otp_sent");
       return true;
     } catch (err: any) {
-      console.error("[CAVOS] Error sending magic link:", err);
-      setCavosError(err?.message || "Error sending magic link");
+      console.error("[CAVOS] Error sending email OTP:", err);
+      setCavosError(err?.message || "Error sending verification code");
+      setConnectionStatus("selecting");
+      return false;
+    }
+  };
+
+  const verifyCavosEmailOtp = async (
+    email: string,
+    code: string
+  ): Promise<boolean> => {
+    const normalizedEmail = email.trim();
+    const normalizedCode = code.trim();
+    if (!cavos?.verifyOtp || !normalizedEmail || !normalizedCode) {
+      console.warn("[CAVOS] verifyOtp not available or email/code empty");
+      return false;
+    }
+
+    setCavosError("");
+    setCavosEmail(normalizedEmail);
+    setCavosOAuthProvider(null);
+    setConnectionStatus("connecting_cavos");
+
+    try {
+      await cavos.verifyOtp(normalizedEmail, normalizedCode);
+      logEvent("cavos_email_otp_verified");
+      return true;
+    } catch (err: any) {
+      console.error("[CAVOS] Error verifying email OTP:", err);
+      setCavosError(err?.message || "Error verifying code");
       setConnectionStatus("selecting");
       return false;
     }
@@ -708,7 +737,7 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     }
 
     setCavosError("");
-    setCavosMagicLinkSent(false);
+    setCavosEmailOtpSent(false);
     setCavosOAuthProvider(provider);
     setConnectionStatus("connecting_cavos");
     logEvent("cavos_oauth_click", { provider });
@@ -761,7 +790,8 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
         switchToController,
         continueAsGuest,
         continueWithCavosOAuth,
-        sendCavosMagicLink,
+        sendCavosEmailOtp,
+        verifyCavosEmailOtp,
         resetCavosAuthState,
         isLoadingWallet,
         burnerAccount,
@@ -775,8 +805,8 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
         shouldUseAppleLoginForGuest,
         shouldBlockWithWalletScreen,
         isCavosEnabled: CAVOS_ENABLED,
-        isCavosMagicLinkSent: cavosMagicLinkSent,
-        cavosMagicLinkEmail: cavosEmail,
+        isCavosEmailOtpSent: cavosEmailOtpSent,
+        cavosEmailOtpEmail: cavosEmail,
         cavosError,
         cavosOAuthProvider,
         onSuccessCallback,

@@ -18,6 +18,9 @@ interface EmailCodeViewProps {
   onUseAnotherEmail: () => void;
   onResendCode: () => void;
   isContinueDisabled: boolean;
+  isSubmitting?: boolean;
+  isResendDisabled?: boolean;
+  isUseAnotherEmailDisabled?: boolean;
   showCodeInput?: boolean;
 }
 
@@ -29,6 +32,9 @@ export const EmailCodeView = ({
   onUseAnotherEmail,
   onResendCode,
   isContinueDisabled,
+  isSubmitting = false,
+  isResendDisabled = false,
+  isUseAnotherEmailDisabled = false,
   showCodeInput = true,
 }: EmailCodeViewProps) => (
   <Flex
@@ -71,13 +77,15 @@ export const EmailCodeView = ({
       {showCodeInput && (
         <>
           <Input
-            type="text"
+            type="tel"
             inputMode="numeric"
             pattern="[0-9]*"
             autoComplete="one-time-code"
+            enterKeyHint="done"
             value={code}
             onChange={(event) => onCodeChange(event.target.value)}
             placeholder={labels.codePlaceholder}
+            disabled={isSubmitting}
             h={{ base: "35px", sm: "40px" }}
             w="100%"
             maxLength={6}
@@ -103,6 +111,7 @@ export const EmailCodeView = ({
             color="white"
             onClick={onContinue}
             disabled={isContinueDisabled}
+            isLoading={isSubmitting}
           />
         </>
       )}
@@ -123,6 +132,9 @@ export const EmailCodeView = ({
         alignItems="center"
         justifyContent="center"
         color="#A3A4AA"
+        cursor={isUseAnotherEmailDisabled ? "not-allowed" : "pointer"}
+        opacity={isUseAnotherEmailDisabled ? 0.55 : 1}
+        disabled={isUseAnotherEmailDisabled}
         onClick={onUseAnotherEmail}
       >
         <Text
@@ -140,6 +152,9 @@ export const EmailCodeView = ({
         alignItems="center"
         justifyContent="center"
         color="#A3A4AA"
+        cursor={isResendDisabled ? "not-allowed" : "pointer"}
+        opacity={isResendDisabled ? 0.55 : 1}
+        disabled={isResendDisabled}
         onClick={onResendCode}
       >
         <Text
