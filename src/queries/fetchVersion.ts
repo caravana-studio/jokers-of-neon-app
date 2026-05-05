@@ -7,7 +7,6 @@ const FETCH_VERSION_TIMEOUT_MS = 6000;
 export interface VersionResponse {
   version: string;
   maintenance?: boolean;
-  applelogin?: string;
   slot?: Record<string, string>;
   api?: Record<string, string>;
 }
@@ -33,7 +32,6 @@ const normalizeVersionResponse = (data: unknown): VersionResponse => {
   const candidate = data as {
     version?: unknown;
     maintenance?: unknown;
-    applelogin?: unknown;
     slot?: unknown;
     api?: unknown;
   };
@@ -48,10 +46,6 @@ const normalizeVersionResponse = (data: unknown): VersionResponse => {
     maintenance:
       typeof candidate.maintenance === "boolean"
         ? candidate.maintenance
-        : undefined,
-    applelogin:
-      typeof candidate.applelogin === "string" && candidate.applelogin.trim()
-        ? candidate.applelogin.trim()
         : undefined,
     slot: isStringMap(candidate.slot) ? candidate.slot : undefined,
     api: isStringMap(candidate.api) ? candidate.api : undefined,

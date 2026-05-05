@@ -12,20 +12,12 @@ import {
   useState,
 } from "react";
 import { Account, type AccountInterface } from "starknet";
-import { SignInWithApple } from "@capacitor-community/apple-sign-in";
 import { checkEarlyAccess } from "../api/earlyAccess";
-import {
-  ACCOUNT_TYPE,
-  APPLE_GUEST_SESSION,
-  GAME_ID,
-  LOGGED_USER,
-} from "../constants/localStorage";
-import { APP_VERSION } from "../constants/version";
+import { ACCOUNT_TYPE, GAME_ID, LOGGED_USER } from "../constants/localStorage";
 import { AppType, useAppContext } from "../providers/AppContextProvider";
-import { fetchVersion } from "../queries/fetchVersion";
 import { useGetLastGameId } from "../queries/useGetLastGameId";
 import { logEvent } from "../utils/analytics";
-import { isNative, isNativeIOS } from "../utils/capacitorUtils";
+import { isNative } from "../utils/capacitorUtils";
 import { useAccountStore } from "./accountStore";
 import { controller } from "./controller/controller";
 import { CavosAccountAdapter } from "./cavos/CavosAccountAdapter";
@@ -69,11 +61,8 @@ interface WalletContextType {
   controllerAccount: AccountInterface | null | undefined;
   isControllerConnected: boolean | undefined;
   isControllerConnecting: boolean | undefined;
-  isAppleGuestSession: boolean;
-  isSigningInWithApple: boolean;
   isLoadingLastGameId: boolean;
   allowGuest: boolean;
-  shouldUseAppleLoginForGuest: boolean;
   shouldBlockWithWalletScreen: boolean;
   isCavosEnabled: boolean;
   isCavosEmailOtpSent: boolean;
@@ -111,11 +100,6 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
   const [isUserAllowed, setIsUserAllowed] =
     useState<boolean>(!EARLY_ACCESS_VERSION);
   const [allowedLoading, setAllowedLoading] = useState<boolean>(false);
-  const [isAppleLoginEnabled, setIsAppleLoginEnabled] = useState(false);
-  const [isSigningInWithApple, setIsSigningInWithApple] = useState(false);
-  const [isAppleGuestSession, setIsAppleGuestSession] = useState<boolean>(
-    () => window.localStorage.getItem(APPLE_GUEST_SESSION) === "true"
-  );
 
   // Cavos email login state
   const [cavosEmail, setCavosEmail] = useState("");
@@ -164,28 +148,6 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
 
   useEffect(() => {
     logEvent("open_wallet_page");
-  }, []);
-
-  useEffect(() => {
-    let mounted = true;
-
-    fetchVersion()
-      .then((versionData) => {
-        if (!mounted) {
-          return;
-        }
-        setIsAppleLoginEnabled(versionData.applelogin === APP_VERSION);
-      })
-      .catch((error) => {
-        console.warn("Failed to read applelogin from version settings", error);
-        if (mounted) {
-          setIsAppleLoginEnabled(false);
-        }
-      });
-
-    return () => {
-      mounted = false;
-    };
   }, []);
 
   const connectWallet = async (): Promise<boolean> => {
@@ -456,9 +418,7 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     setAccountType(null);
     setFinalAccount(null);
     setIsControllerConnectAttemptActive(false);
-    setIsAppleGuestSession(false);
     localStorage.removeItem(ACCOUNT_TYPE);
-    localStorage.removeItem(APPLE_GUEST_SESSION);
     localStorage.removeItem(GAME_ID);
     localStorage.removeItem(LOGGED_USER);
     setConnectionStatus("selecting");
@@ -504,59 +464,23 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     }
   };
 
-  const shouldUseAppleLoginForGuest =
-    allowGuest && isNativeIOS && isAppleLoginEnabled;
-
-  const startGuestFlow = (fromAppleLogin = false) => {
+  const startGuestFlow = () => {
     logEvent("play_as_guest");
     setConnectionStatus("connecting_burner");
     const guestId = lastGameIdError ? fallbackGuestIdRef.current : lastGameId + 1;
     const username = `guest${String(guestId).slice(-8)}`;
-    setIsAppleGuestSession(fromAppleLogin);
-    localStorage.setItem(
-      APPLE_GUEST_SESSION,
-      fromAppleLogin ? "true" : "false"
-    );
 
     localStorage.removeItem(GAME_ID);
     localStorage.setItem(LOGGED_USER, username);
   };
 
   const continueAsGuest = async (): Promise<boolean> => {
-    if (isLoadingLastGameId || isSigningInWithApple) {
+    if (isLoadingLastGameId) {
       return false;
     }
 
-    if (!shouldUseAppleLoginForGuest) {
-      startGuestFlow();
-      return true;
-    }
-
-    setIsSigningInWithApple(true);
-    try {
-      const result = await SignInWithApple.authorize();
-      logEvent("apple_login_success", {
-        has_email: String(Boolean(result?.response?.email)),
-        has_name: String(
-          Boolean(result?.response?.givenName || result?.response?.familyName)
-        ),
-      });
-      startGuestFlow(true);
-      return true;
-    } catch (error) {
-      const message =
-        error instanceof Error ? error.message : String(error ?? "unknown_error");
-      const cancelled = message.toLowerCase().includes("canceled");
-      logEvent(cancelled ? "apple_login_cancelled" : "apple_login_error", {
-        message,
-      });
-      if (!cancelled) {
-        console.error("Apple Sign In failed", error);
-      }
-      return false;
-    } finally {
-      setIsSigningInWithApple(false);
-    }
+    startGuestFlow();
+    return true;
   };
 
   const resetCavosAuthState = () => {
@@ -798,11 +722,8 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
         controllerAccount,
         isControllerConnected,
         isControllerConnecting,
-        isAppleGuestSession,
-        isSigningInWithApple,
         isLoadingLastGameId,
         allowGuest,
-        shouldUseAppleLoginForGuest,
         shouldBlockWithWalletScreen,
         isCavosEnabled: CAVOS_ENABLED,
         isCavosEmailOtpSent: cavosEmailOtpSent,

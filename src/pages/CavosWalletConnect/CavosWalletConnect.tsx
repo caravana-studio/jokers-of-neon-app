@@ -57,7 +57,6 @@ export const CavosWalletConnect = () => {
     allowGuest,
     accountType,
     finalAccount,
-    isSigningInWithApple,
     isLoadingLastGameId,
     isLoadingWallet,
     isCavosEnabled,
@@ -224,7 +223,6 @@ export const CavosWalletConnect = () => {
     isLoadingWallet ||
     isSendingEmailOtp ||
     isVerifyingEmailOtp ||
-    isSigningInWithApple ||
     Boolean(cavosOAuthProvider);
   const isCavosAuthDisabled =
     isAuthActionInProgress || !isCavosEnabled;
