@@ -18,6 +18,7 @@ import { ConfirmationModal } from "./ConfirmationModal";
 type UsernameModalProps = {
   isOpen: boolean;
   initialUsername?: string | null;
+  currentUsername?: string | null;
   title?: string;
   isRequired?: boolean;
   isSaving?: boolean;
@@ -58,6 +59,7 @@ function getErrorMessage(error: unknown, fallback: string): string {
 export const UsernameModal = ({
   isOpen,
   initialUsername,
+  currentUsername,
   title,
   isRequired = false,
   isSaving = false,
@@ -69,17 +71,22 @@ export const UsernameModal = ({
   const [status, setStatus] = useState<AvailabilityStatus>("idle");
   const [message, setMessage] = useState<string | null>(null);
   const checkIdRef = useRef(0);
-  const normalizedInitialUsername = (initialUsername ?? "").trim().toLowerCase();
+  const normalizedCurrentUsername = (currentUsername ?? "").trim().toLowerCase();
 
   useEffect(() => {
     if (isOpen) {
       const nextValue = initialUsername ?? "";
       setValue(nextValue);
-      setStatus(nextValue ? "available" : "idle");
-      setMessage(nextValue ? t("username-modal.available") : null);
+      if (!nextValue) {
+        setStatus("idle");
+        setMessage(null);
+      } else {
+        setStatus("checking");
+        setMessage(null);
+      }
       checkIdRef.current += 1;
     }
-  }, [initialUsername, isOpen, t]);
+  }, [initialUsername, isOpen]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -102,8 +109,8 @@ export const UsernameModal = ({
     }
 
     if (
-      normalizedInitialUsername &&
-      nextUsername.toLowerCase() === normalizedInitialUsername
+      normalizedCurrentUsername &&
+      nextUsername.toLowerCase() === normalizedCurrentUsername
     ) {
       setStatus("available");
       setMessage(t("username-modal.available"));
@@ -134,7 +141,7 @@ export const UsernameModal = ({
     return () => {
       window.clearTimeout(timeoutId);
     };
-  }, [isOpen, normalizedInitialUsername, t, value]);
+  }, [isOpen, normalizedCurrentUsername, t, value]);
 
   const handleSubmit = async () => {
     if (status !== "available" || isSaving) return;

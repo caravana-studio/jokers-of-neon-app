@@ -106,6 +106,7 @@ export const ProfileContent = ({
             isOpen={usernameModalOpen}
             title={t("username-modal.title.edit")}
             initialUsername={profile.username}
+            currentUsername={profile.username}
             isSaving={usernameSaving}
             onClose={() => setUsernameModalOpen(false)}
             onSave={handleUpdateUsername}
