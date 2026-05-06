@@ -1,4 +1,5 @@
 import { Flex, Input, Text } from "@chakra-ui/react";
+import type { KeyboardEvent } from "react";
 import { AuthButton } from "./AuthButton";
 
 interface EmailCodeLabels {
@@ -23,6 +24,19 @@ interface EmailCodeViewProps {
   isUseAnotherEmailDisabled?: boolean;
   showCodeInput?: boolean;
 }
+
+const handleEnterKey =
+  (disabled: boolean, onContinue: () => void) =>
+  (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key !== "Enter") {
+      return;
+    }
+
+    event.preventDefault();
+    if (!disabled) {
+      onContinue();
+    }
+  };
 
 export const EmailCodeView = ({
   code,
@@ -84,6 +98,7 @@ export const EmailCodeView = ({
             enterKeyHint="done"
             value={code}
             onChange={(event) => onCodeChange(event.target.value)}
+            onKeyDown={handleEnterKey(isContinueDisabled || isSubmitting, onContinue)}
             placeholder={labels.codePlaceholder}
             disabled={isSubmitting}
             h={{ base: "35px", sm: "40px" }}
