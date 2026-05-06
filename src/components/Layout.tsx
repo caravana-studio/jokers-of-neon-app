@@ -1,5 +1,6 @@
 import { Flex } from "@chakra-ui/react";
 import { ReactNode } from "react";
+import { useLocation } from "react-router-dom";
 import { ReactFlowProvider } from "reactflow";
 import { MapProvider } from "../providers/MapProvider";
 import { StoreProvider } from "../providers/StoreProvider";
@@ -14,6 +15,8 @@ import { BottomMenu } from "./Menu/BottomMenu";
 
 export const Layout = ({ children }: { children: ReactNode }) => {
   const { isSmallScreen } = useResponsiveValues();
+  const location = useLocation();
+  const shouldHideNavigation = location.pathname === "/login";
 
   return (
     <ReactFlowProvider>
@@ -25,7 +28,9 @@ export const Layout = ({ children }: { children: ReactNode }) => {
             position="relative"
             pt={nativePaddingTop}
             pb={
-              isNative
+              shouldHideNavigation
+                ? "0px"
+                : isNative
                 ? "80px"
                 : isSmallScreen
                   ? "50px"
@@ -35,7 +40,7 @@ export const Layout = ({ children }: { children: ReactNode }) => {
             flexGrow={1}
             minH={0}
           >
-            {!isSmallScreen && <SidebarMenu />}
+            {!shouldHideNavigation && !isSmallScreen && <SidebarMenu />}
             <Flex
               zIndex={2}
               flexGrow={1}
@@ -49,7 +54,7 @@ export const Layout = ({ children }: { children: ReactNode }) => {
             </Flex>
             <UnlockProgressDebugWidget />
           </Flex>
-          {isSmallScreen && <BottomMenu />}
+          {!shouldHideNavigation && isSmallScreen && <BottomMenu />}
         </StoreProvider>
       </MapProvider>
     </ReactFlowProvider>

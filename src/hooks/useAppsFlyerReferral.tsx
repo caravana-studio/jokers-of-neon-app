@@ -56,7 +56,7 @@ export function useAppsFlyerReferral(): UseAppsFlyerReferralResult {
   // Process referral data
   const processReferral = useCallback(async (
     userAddress: string,
-    accType: "burner" | "controller" | null,
+    accType: "burner" | "controller" | "cavos" | null,
     user: string | null | undefined
   ) => {
     console.log("[useAppsFlyerReferral] processReferral called", { userAddress, accType, user });

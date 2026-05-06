@@ -4,6 +4,7 @@ import { useDojo } from "../dojo/DojoContext";
 import { useGetAllTimeXpLeaderboard } from "../queries/useGetAllTimeXpLeaderboard";
 import { VIOLET_LIGHT } from "../theme/colors";
 import { useResponsiveValues } from "../theme/responsiveSettings";
+import { addressKey, formatAddress } from "../utils/starknetAddress";
 import { CustomTr } from "./Leaderboard";
 
 interface AllTimeXpLeaderboardProps {
@@ -12,11 +13,6 @@ interface AllTimeXpLeaderboardProps {
   fullWidth?: boolean;
   compactSpacing?: boolean;
 }
-
-const formatAddress = (address: string) => {
-  if (address.length <= 10) return address;
-  return `${address.slice(0, 6)}...${address.slice(-4)}`;
-};
 
 export const AllTimeXpLeaderboard = ({
   lines = 100,
@@ -30,7 +26,7 @@ export const AllTimeXpLeaderboard = ({
   const {
     account: { account },
   } = useDojo();
-  const currentAddress = account?.address?.toLowerCase?.();
+  const currentAddress = addressKey(account?.address);
 
   return (
     <Box
@@ -60,7 +56,7 @@ export const AllTimeXpLeaderboard = ({
             <Tbody>
               {leaderboard.slice(0, lines).map((entry) => {
                 const isCurrentUser =
-                  entry.address?.toLowerCase?.() === currentAddress;
+                  addressKey(entry.address) === currentAddress;
                 const textColor = isCurrentUser ? "white !important" : VIOLET_LIGHT;
 
                 return (

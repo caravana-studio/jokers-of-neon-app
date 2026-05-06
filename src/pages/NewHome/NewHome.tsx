@@ -36,7 +36,6 @@ import { APP_URL, isNative } from "../../utils/capacitorUtils";
 import { getFirebasePushToken } from "../../utils/notifications/firebasePush";
 import { registerPushNotifications } from "../../utils/notifications/registerPushNotifications";
 import { getMajor, getMinor, getPatch } from "../../utils/versionUtils";
-import { useProfileStore } from "../../state/useProfileStore";
 
 const bossFloatAnimation = keyframes`
   0% {
@@ -62,7 +61,6 @@ export const NewHome = () => {
   const navigate = useNavigate();
   const { prepareNewGame, executeCreateGame } = useGameContext();
   const { data: games } = useGetMyGames();
-  const { fetchProfileData } = useProfileStore();
   const seasonNumber = useSeasonNumber();
 
   const [isVersionModalOpen, setVersionModalOpen] = useState(false);
@@ -80,7 +78,7 @@ export const NewHome = () => {
     .map((banner, index) => `${banner.type}-${banner.endTime ?? "no-end"}-${index}`)
     .join("|");
   const {
-    setup: { useBurnerAcc, switchToController, client },
+    setup: { useBurnerAcc },
     account,
   } = useDojo();
 
@@ -231,19 +229,11 @@ export const NewHome = () => {
 
   const handleGuestLoginClick = () => {
     setGuestLoginModalOpen(false);
-    switchToController();
+    navigate("/login");
   };
 
   const handleLoginClick = () => {
-    switchToController((newUsername) => {
-      fetchProfileData(
-        client,
-        newUsername.account.address,
-        newUsername.account,
-        newUsername.username,
-        "controller"
-      );
-    });
+    navigate("/login");
   };
 
   const handleOpenGuestLoginModal = () => {
@@ -348,13 +338,6 @@ export const NewHome = () => {
                       <Button
                         size="xs"
                         onClick={handleLoginClick}
-                        rightIcon={
-                          <img
-                            src={Icons.CARTRIDGE}
-                            width={"14px"}
-                            style={{ marginLeft: "2px" }}
-                          />
-                        }
                       >
                         {tCommon("login")}
                       </Button>
@@ -523,17 +506,7 @@ export const NewHome = () => {
 
             {useBurnerAcc && (
               <Flex position="absolute" right="50px" top="36px" zIndex={5}>
-                <Button
-                  size="sm"
-                  onClick={handleLoginClick}
-                  rightIcon={
-                    <img
-                      src={Icons.CARTRIDGE}
-                      width={"14px"}
-                      style={{ marginLeft: "2px" }}
-                    />
-                  }
-                >
+                <Button size="sm" onClick={handleLoginClick}>
                   {tCommon("login")}
                 </Button>
               </Flex>

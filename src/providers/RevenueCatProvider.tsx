@@ -288,8 +288,8 @@ export const RevenueCatProvider = ({ children }: PropsWithChildren) => {
   const { address: starknetAddress } = useAccount();
   const dojoAddress = dojoCtx?.account?.account?.address ?? null;
   const address = dojoAddress || starknetAddress || null;
-  const username = useUsername();
   const accountType = dojoCtx?.accountType ?? null;
+  const username = useUsername();
 
   const userId =
     address && username ? `${username},${address}` : ANON_RC_USER;
@@ -299,7 +299,7 @@ export const RevenueCatProvider = ({ children }: PropsWithChildren) => {
   const [purchasesClient, setPurchasesClient] =
     useState<PurchasesClient | null>(isNative ? CapacitorPurchases : null);
   const purchasesRef = useRef<PurchasesClient | null>(purchasesClient);
-  const lastUsernameRef = useRef<string | null>(null);
+  const lastUserIdRef = useRef<string | null>(null);
 
   useEffect(() => {
     purchasesRef.current = purchasesClient;
@@ -330,7 +330,7 @@ export const RevenueCatProvider = ({ children }: PropsWithChildren) => {
   }, []);
 
   const configureRevenueCat = useCallback(async () => {
-    if (lastUsernameRef.current === userId) {
+    if (lastUserIdRef.current === userId) {
       return;
     }
 
@@ -354,7 +354,7 @@ export const RevenueCatProvider = ({ children }: PropsWithChildren) => {
         setPurchasesClient(purchasesInstance);
       }
 
-      lastUsernameRef.current = userId;
+      lastUserIdRef.current = userId;
       await fetchOfferings();
     } catch (error) {
       console.error("Failed to configure RevenueCat", error);

@@ -8,11 +8,12 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { keyframes } from "@emotion/react";
-import { useState } from "react";
-import { useAccount, useConnect } from "@starknet-react/core";
+import { useContext, useState } from "react";
+import { useConnect } from "@starknet-react/core";
 import { useTranslation } from "react-i18next";
 import CachedImage from "../../components/CachedImage";
 import { SeasonPass } from "../../components/SeasonPass/SeasonPass";
+import { DojoContext } from "../../dojo/DojoContext";
 import { useCryptoPurchase } from "../../marketplace/hooks/useCryptoPurchase";
 import { useShopPrice } from "../../marketplace/hooks/useShopPrice";
 import { useUSDCBalance } from "../../marketplace/hooks/useUSDCBalance";
@@ -79,8 +80,9 @@ export const SeasonPassRow = ({
   const isSeason2 = seasonNumber === 2;
 
   const { purchaseSeasonPass, refetchSeasonPassUnlocked } = useSeasonPass();
+  const dojoCtx = useContext(DojoContext);
+  const starknetAddress = dojoCtx?.account.account?.address || null;
   const { connectors, connect } = useConnect();
-  const { address: starknetAddress } = useAccount();
   const { buy: buyWithCrypto, status: cryptoStatus } = useCryptoPurchase();
   const { priceAtoms, priceUsdc } = useShopPrice(id);
   const { balanceRaw } = useUSDCBalance();

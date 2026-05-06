@@ -1,4 +1,5 @@
-import { Box, Collapse, Flex, Heading, Text } from "@chakra-ui/react";
+import { Box, Collapse, Flex, Heading, IconButton, Text } from "@chakra-ui/react";
+import { Pencil } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ProgressBar } from "../../components/CompactRoundData/ProgressBar";
@@ -25,9 +26,11 @@ export interface ProfileStatsProps {
 export const ProfileStats: React.FC<
   ProfileStatsProps & {
     onUpdateAvatar?: (avatarId: number) => void;
+    onEditUsername?: () => void;
   }
 > = ({
   onUpdateAvatar,
+  onEditUsername,
   profilePicture,
   username,
   level,
@@ -105,7 +108,23 @@ export const ProfileStats: React.FC<
           }}
         />
       </Box>
-      <Heading fontSize={"sm"}>{username}</Heading>
+      <Flex alignItems="center" gap={2}>
+        <Heading fontSize={"sm"}>{username}</Heading>
+        {onEditUsername && (
+          <IconButton
+            aria-label="Edit username"
+            icon={<Pencil size={14} />}
+            minW="24px"
+            h="24px"
+            p={0}
+            size="xs"
+            variant="ghost"
+            color="white"
+            _hover={{ color: "white", bg: "whiteAlpha.200" }}
+            onClick={onEditUsername}
+          />
+        )}
+      </Flex>
       <Flex
         border={"1px"}
         borderColor={"white"}

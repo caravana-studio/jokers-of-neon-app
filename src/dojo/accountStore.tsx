@@ -5,6 +5,7 @@ import { create } from "zustand";
 interface AccountState {
   account: Account | AccountInterface | null;
   setAccount: (account: Account | AccountInterface) => void;
+  clearAccount: () => void;
   connector: ControllerConnector | null;
   setConnector: (connector: ControllerConnector) => void;
 }
@@ -12,6 +13,7 @@ interface AccountState {
 export const useAccountStore = create<AccountState>((set) => ({
   account: null,
   setAccount: (account) => set({ account }),
+  clearAccount: () => set({ account: null }),
   connector: null,
   setConnector: (connector) => set({ connector }),
 }));

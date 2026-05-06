@@ -4,6 +4,21 @@ import { Capacitor } from "@capacitor/core";
 
 let appUrlListenerRegistered = false;
 
+const getCavosAuthData = (url: string) => {
+  try {
+    const parsedUrl = new URL(url);
+    const hashParams = new URLSearchParams(parsedUrl.hash.replace(/^#/, ""));
+    return (
+      parsedUrl.searchParams.get("auth_data") ||
+      parsedUrl.searchParams.get("zk_auth_data") ||
+      hashParams.get("auth_data") ||
+      hashParams.get("zk_auth_data")
+    );
+  } catch (_error) {
+    return null;
+  }
+};
+
 export const registerAppUrlOpenListener = () => {
   if (appUrlListenerRegistered) return;
   appUrlListenerRegistered = true;
@@ -15,6 +30,11 @@ export const registerAppUrlOpenListener = () => {
       url.startsWith("jokers://open") ||
       url.startsWith("https://jokersofneon.com/open")
     ) {
+      const authData = getCavosAuthData(url);
+      if (authData) {
+        sessionStorage.setItem("cavos_native_auth_redirect_received", "true");
+        localStorage.setItem("cavos_auth_result", authData);
+      }
       Browser.close().catch(() => {});
     }
   });

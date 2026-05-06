@@ -3,6 +3,7 @@ import { Loading } from "../../components/Loading";
 import { useDojo } from "../../dojo/useDojo";
 import { useUsername } from "../../dojo/utils/useUsername";
 import { useProfileStore } from "../../state/useProfileStore";
+import { useUsernameStore } from "../../state/useUsernameStore";
 import { ProfileContent } from "./ProfileContent";
 
 export const ProfilePage = () => {
@@ -12,12 +13,13 @@ export const ProfilePage = () => {
   } = useDojo();
 
   const loggedInUser = useUsername();
+  const usernameStatus = useUsernameStore((store) => store.status);
 
   const { profileData, fetchProfileData, loading, updateAvatar } =
     useProfileStore();
 
   useEffect(() => {
-    if (client && account && loggedInUser && !loading) {
+    if (client && account && loggedInUser && usernameStatus === "ready" && !loading) {
       fetchProfileData(
         client,
         account.account.address,
@@ -26,7 +28,7 @@ export const ProfilePage = () => {
         accountType
       );
     }
-  }, [client, account, loggedInUser, profileData?.profile.username, accountType]);
+  }, [client, account, loggedInUser, usernameStatus, profileData?.profile.username, accountType]);
 
   return profileData !== null ? (
     <ProfileContent data={profileData} onUpdateAvatar={updateAvatar} />

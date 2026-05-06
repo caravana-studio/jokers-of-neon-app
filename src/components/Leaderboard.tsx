@@ -14,6 +14,7 @@ import {
 import { TFunction } from "i18next";
 import { useTranslation } from "react-i18next";
 import { TESTERS } from "../constants/testers.ts";
+import { useDojo } from "../dojo/DojoContext";
 import { useUsername } from "../dojo/utils/useUsername.tsx";
 import { useGetLeaderboard } from "../queries/useGetLeaderboard";
 import { useSeason } from "../queries/useSeason";
@@ -26,6 +27,7 @@ import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
 import { formatNumber } from "../utils/formatNumber.ts";
 import { normalizeGameId } from "../utils/normalizeGameId.ts";
 import { getPrizePackIdsForSeason } from "../utils/prizePackIds";
+import { addressKey } from "../utils/starknetAddress.ts";
 import { RollingNumber } from "./RollingNumber";
 
 const CURRENT_LEADER_STYLES = {
@@ -127,6 +129,10 @@ export const Leaderboard = ({
   );
 
   const username = useUsername();
+  const {
+    account: { account },
+  } = useDojo();
+  const currentAddress = addressKey(account?.address);
 
   const leaderboard = fullLeaderboard?.slice(hidePodium ? 3 : 0, lines);
   const currentPlayerIsInReducedLeaderboard = leaderboard?.some(
@@ -197,7 +203,8 @@ export const Leaderboard = ({
                   return index < limit;
                 })
                 .map((leader) => {
-                  const isCurrentPlayer = username === leader.player_name;
+                  const isCurrentPlayer =
+                    addressKey(leader.wallet) === currentAddress;
                   const isCurrentGame =
                     gameId !== undefined &&
                     normalizeGameId(leader.id) === normalizeGameId(gameId);
