@@ -14,6 +14,8 @@ export const ImageBanner = ({ url, navigateTo }: ImageBannerProps) => {
       backgroundImage={`url('${url}')`}
       backgroundSize="cover"
       backgroundPosition="center"
+      backgroundRepeat="no-repeat"
+      backgroundColor="rgba(0,0,0,0.5)"
       borderRadius={"15px"}
       w="100%"
       h={isSmallScreen ? "120px" : "250px"}
