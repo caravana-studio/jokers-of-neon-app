@@ -10,6 +10,8 @@ import SpineAnimation from "../components/SpineAnimation";
 import { useGameContext } from "../providers/GameProvider";
 import { useGetMyGames } from "../queries/useGetMyGames";
 import { useResponsiveValues } from "../theme/responsiveSettings";
+import { useEffect } from "react";
+import { ensureGameLoopBurnerSession } from "../utils/gameLoopBurner";
 
 export const Home = () => {
   const { t } = useTranslation(["home"]);
@@ -17,6 +19,12 @@ export const Home = () => {
   const navigate = useNavigate();
   const { prepareNewGame, executeCreateGame } = useGameContext();
   const { data: games } = useGetMyGames();
+
+  useEffect(() => {
+    void ensureGameLoopBurnerSession().catch((error) => {
+      console.error("Failed to preload game loop burner session", error);
+    });
+  }, []);
 
   const handleCreateGame = async () => {
     prepareNewGame();

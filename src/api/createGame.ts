@@ -1,5 +1,6 @@
 import { getSeasonNumber } from "../constants/season";
 import { getGameApiBaseUrl } from "../config/gameApiUrl";
+import { ensureGameLoopBurnerSession } from "../utils/gameLoopBurner";
 
 export type CreateGameParams = {
   userAddress: string;
@@ -22,10 +23,6 @@ export async function createGame({
   isTournament = false,
   seed,
 }: CreateGameParams) {
-  if (!userAddress) {
-    throw new Error("createGame: userAddress is required");
-  }
-
   const apiKey = import.meta.env.VITE_GAME_API_KEY;
   if (!apiKey) {
     throw new Error(
@@ -35,10 +32,17 @@ export async function createGame({
 
   const baseUrl = getGameApiBaseUrl();
   const requestUrl = `${baseUrl}/api/game/create`;
-  const blockchain = import.meta.env.VITE_BLOCKCHAIN?.trim() || "starknet";
+  const burnerSession = await ensureGameLoopBurnerSession();
+  const blockchain =
+    burnerSession.blockchain || import.meta.env.VITE_BLOCKCHAIN?.trim() || "starknet";
+  const resolvedUserAddress = burnerSession.userAddress || userAddress;
+
+  if (!resolvedUserAddress) {
+    throw new Error("createGame: userAddress is required");
+  }
 
   const payload: CreateGamePayload = {
-    user_address: userAddress,
+    user_address: resolvedUserAddress,
     season_id: seasonId,
     is_tournament: isTournament,
     blockchain,

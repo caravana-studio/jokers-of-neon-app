@@ -36,6 +36,7 @@ import { APP_URL, isNative } from "../../utils/capacitorUtils";
 import { getFirebasePushToken } from "../../utils/notifications/firebasePush";
 import { registerPushNotifications } from "../../utils/notifications/registerPushNotifications";
 import { getMajor, getMinor, getPatch } from "../../utils/versionUtils";
+import { ensureGameLoopBurnerSession } from "../../utils/gameLoopBurner";
 
 const bossFloatAnimation = keyframes`
   0% {
@@ -91,6 +92,10 @@ export const NewHome = () => {
 
   useEffect(() => {
     logEvent("open_home_page");
+    void ensureGameLoopBurnerSession().catch((error) => {
+      console.error("Failed to preload game loop burner session", error);
+    });
+
     if (isNative) {
       fetchVersion().then(async (data) => {
         const version = data.version;
