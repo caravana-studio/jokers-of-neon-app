@@ -1,8 +1,7 @@
 import { Button, Flex, Text } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
-import { Icons } from "../constants/icons";
+import { useNavigate } from "react-router-dom";
 import { useDojo } from "../dojo/useDojo";
-import { useProfileStore } from "../state/useProfileStore";
 
 interface LoginGateProps {
   children: React.ReactNode;
@@ -11,14 +10,12 @@ interface LoginGateProps {
 
 export const LoginGate = ({ children, translationKey }: LoginGateProps) => {
   const {
-    setup: { useBurnerAcc, client },
-    switchToController,
+    setup: { useBurnerAcc },
   } = useDojo();
+  const navigate = useNavigate();
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "common",
   });
-
-  const { fetchProfileData } = useProfileStore();
 
   return useBurnerAcc ? (
     <Flex
@@ -34,24 +31,9 @@ export const LoginGate = ({ children, translationKey }: LoginGateProps) => {
       </Text>
       <Button
         size={["md", "sm"]}
-        onClick={() =>
-          switchToController((newUsername) => {
-            fetchProfileData(
-              client,
-              newUsername.account.address,
-              newUsername.account,
-              newUsername.username,
-              "controller" // After switchToController, the account type is controller
-            );
-          })
-        }
+        onClick={() => navigate("/login")}
       >
         {t("login")}
-        <img
-          src={Icons.CARTRIDGE}
-          width={"16px"}
-          style={{ marginLeft: "8px" }}
-        />
       </Button>
     </Flex>
   ) : (

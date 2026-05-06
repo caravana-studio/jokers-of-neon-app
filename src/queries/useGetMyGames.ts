@@ -1,11 +1,11 @@
 import { gql } from "graphql-tag";
 import { useQuery } from "react-query";
+import { useDojo } from "../dojo/DojoContext";
 import { GameStateEnum } from "../dojo/typescript/custom";
-import { encodeString } from "../dojo/utils/decodeString";
-import { useUsername } from "../dojo/utils/useUsername";
 import graphQLClient from "../graphQLClient";
 import { GameSummary } from "../pages/MyGames/MyGames";
 import { snakeToCamel } from "../utils/snakeToCamel";
+import { normalizeStarknetAddress } from "../utils/starknetAddress";
 
 const translateGameState = (state: string) => {
   return state.replace(/_/g, " ");
@@ -19,9 +19,9 @@ const GAME_FIELD_NAME = `${CAMEL_CASE_NAMESPACE}GameModels`;
 
 // Query only for game data
 const GAMES_QUERY = gql`
-  query ($playerName: String) {
+  query ($owner: ContractAddress) {
     games: ${GAME_FIELD_NAME}(
-      where: { player_nameEQ: $playerName }
+      where: { ownerEQ: $owner }
       first: 10000
       order: { field: "LEVEL", direction: "DESC" }
     ) {
@@ -45,7 +45,6 @@ const GAMES_QUERY = gql`
 interface GameDataNode {
   player_score: number;
   level: number;
-  player_name: string;
   id: string;
   mod_id: string;
   state?: string;
@@ -61,21 +60,24 @@ interface GamesQueryResponse {
 }
 
 const fetchGames = async (
-  playerName: string
+  owner: string
 ): Promise<GamesQueryResponse> => {
   return await graphQLClient.request(GAMES_QUERY, {
-    playerName: encodeString(playerName),
+    owner: normalizeStarknetAddress(owner),
   });
 };
 
 export const useGetMyGames = () => {
-  const username = useUsername();
+  const {
+    account: { account },
+  } = useDojo();
+  const owner = account?.address ?? "";
 
   const { data, isLoading, error, refetch } = useQuery<GamesQueryResponse>(
-    [MY_GAMES_QUERY_KEY, username],
-    () => fetchGames(username ?? ""),
+    [MY_GAMES_QUERY_KEY, owner],
+    () => fetchGames(owner),
     {
-      enabled: !!username,
+      enabled: !!owner,
     }
   );
 

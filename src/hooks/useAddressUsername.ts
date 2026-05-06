@@ -1,10 +1,17 @@
 import { useEffect, useState } from "react";
+import { fetchUsernameByAddress } from "../api/usernames";
 import { truncateAddress } from "../marketplace/utils/formatPrice";
+import { addressKey } from "../utils/starknetAddress";
 
 const cache = new Map<string, string>();
 const pending = new Map<string, Promise<string>>();
 
 async function fetchUsername(address: string): Promise<string> {
+  const usernameRecord = await fetchUsernameByAddress(address).catch(() => null);
+  if (usernameRecord?.username) {
+    return usernameRecord.username;
+  }
+
   try {
     const res = await fetch("https://api.cartridge.gg/accounts/lookup", {
       method: "POST",
@@ -21,7 +28,7 @@ async function fetchUsername(address: string): Promise<string> {
 }
 
 function resolveUsername(address: string): Promise<string> {
-  const key = address.toLowerCase();
+  const key = addressKey(address);
   if (cache.has(key)) return Promise.resolve(cache.get(key)!);
   if (pending.has(key)) return pending.get(key)!;
   const p = fetchUsername(address).then((name) => {
@@ -35,7 +42,7 @@ function resolveUsername(address: string): Promise<string> {
 
 export function useAddressUsername(address?: string): string {
   const [display, setDisplay] = useState<string>(() =>
-    address ? (cache.get(address.toLowerCase()) ?? truncateAddress(address, 6)) : ""
+    address ? (cache.get(addressKey(address)) ?? truncateAddress(address, 6)) : ""
   );
 
   useEffect(() => {

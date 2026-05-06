@@ -1,22 +1,38 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useContext, useState } from "react";
 import { LOGGED_USER } from "../../constants/localStorage";
-import { controller } from "../controller/controller";
+import { useUsernameStore } from "../../state/useUsernameStore";
 import { DojoContext } from "../DojoContext";
 
 export const useUsername = () => {
-  const [username, setUsername] = useState<string | null>(null);
   const dojoCtx = useContext(DojoContext);
+  const accountAddress = dojoCtx?.account?.account?.address;
   const isBurnerAccount = dojoCtx?.accountType === "burner";
+  const username = useUsernameStore((store) => store.username);
+  const status = useUsernameStore((store) => store.status);
+  const loadUsername = useUsernameStore((store) => store.loadUsername);
+  const reset = useUsernameStore((store) => store.reset);
+
+  const [guestUsername, setGuestUsername] = useState<string | null>(() =>
+    typeof window === "undefined" ? null : window.localStorage.getItem(LOGGED_USER)
+  );
 
   useEffect(() => {
-    if (!isBurnerAccount && controller) {
-      controller.username()?.then((username) => {
-        if (username) {
-          setUsername(username);
-        }
-      });
+    if (!accountAddress) {
+      reset();
+      return;
     }
-  }, [controller, dojoCtx?.accountType]);
 
-  return isBurnerAccount ? window.localStorage.getItem(LOGGED_USER) : username;
+    void loadUsername(accountAddress);
+  }, [accountAddress, loadUsername, reset]);
+
+  useEffect(() => {
+    if (!isBurnerAccount) {
+      setGuestUsername(null);
+      return;
+    }
+
+    setGuestUsername(window.localStorage.getItem(LOGGED_USER));
+  }, [isBurnerAccount, status]);
+
+  return username ?? (isBurnerAccount ? guestUsername : null);
 };

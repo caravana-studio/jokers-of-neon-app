@@ -407,6 +407,25 @@
     "continue-with-controller": "Continue with controller",
     "guest": "PLAY AS GUEST",
     "continue-with-apple": "Continue with Apple",
+    "continue-with-google": "Continue with Google",
+    "continue-with-email": "Continue with email",
+    "continue": "Continue",
+    "email-placeholder": "Enter your email",
+    "try-another-login-option": "Try another login option",
+    "verify-email-title": "Check your email",
+    "verify-email-subtitle": "Enter the 6-digit code sent to {{email}}",
+    "magic-link-subtitle": "We sent a secure login link to {{email}}. Open it to continue.",
+    "verification-code-placeholder": "6-digit code",
+    "use-another-email": "Use another email",
+    "resend-code": "Resend code",
+    "more-options": "More options",
+    "go-back": "Go back",
+    "just-try-question": "Just want to try the game?",
+    "guest-mode": "Guest mode",
+    "season-label": "SEASON",
+    "errors": {
+      "invalid-code": "Invalid code. Please check it and try again."
+    },
     "terms": {
       "agreement": "By continuing you are agreeing to Jokers of Neon's",
       "link": "Terms and Conditions"

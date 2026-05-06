@@ -36,7 +36,6 @@ import { APP_URL, isNative } from "../../utils/capacitorUtils";
 import { getFirebasePushToken } from "../../utils/notifications/firebasePush";
 import { registerPushNotifications } from "../../utils/notifications/registerPushNotifications";
 import { getMajor, getMinor, getPatch } from "../../utils/versionUtils";
-import { useProfileStore } from "../../state/useProfileStore";
 
 const bossFloatAnimation = keyframes`
   0% {
@@ -50,6 +49,8 @@ const bossFloatAnimation = keyframes`
   }
 `;
 
+const DESKTOP_BANNER_MIN_FIT_SCALE = 0.55;
+
 export const NewHome = () => {
   const { t } = useTranslation(["home"]);
   const { t: tCommon } = useTranslation("intermediate-screens", {
@@ -60,7 +61,6 @@ export const NewHome = () => {
   const navigate = useNavigate();
   const { prepareNewGame, executeCreateGame } = useGameContext();
   const { data: games } = useGetMyGames();
-  const { fetchProfileData } = useProfileStore();
   const seasonNumber = useSeasonNumber();
 
   const [isVersionModalOpen, setVersionModalOpen] = useState(false);
@@ -68,6 +68,8 @@ export const NewHome = () => {
   const [version, setVersion] = useState<string | null>(null);
   const [hasUnclaimedRewards, setHasUnclaimedRewards] = useState(false);
   const [desktopBannerScale, setDesktopBannerScale] = useState(1);
+  const [isDesktopBannerScrollable, setIsDesktopBannerScrollable] =
+    useState(false);
   const desktopBannerViewportRef = useRef<HTMLDivElement | null>(null);
   const desktopBannerContentRef = useRef<HTMLDivElement | null>(null);
 
@@ -76,7 +78,7 @@ export const NewHome = () => {
     .map((banner, index) => `${banner.type}-${banner.endTime ?? "no-end"}-${index}`)
     .join("|");
   const {
-    setup: { useBurnerAcc, switchToController, client },
+    setup: { useBurnerAcc },
     account,
   } = useDojo();
 
@@ -156,6 +158,7 @@ export const NewHome = () => {
   useLayoutEffect(() => {
     if (isSmallScreen) {
       setDesktopBannerScale(1);
+      setIsDesktopBannerScrollable(false);
       return;
     }
 
@@ -182,12 +185,15 @@ export const NewHome = () => {
         return;
       }
 
-      const nextScale = Math.max(
-        0.55,
-        Math.min(1, availableHeight / contentHeight)
-      );
+      const fitScale = availableHeight / contentHeight;
+      const shouldScroll = fitScale < DESKTOP_BANNER_MIN_FIT_SCALE;
+      const nextScale = shouldScroll ? 1 : Math.min(1, fitScale);
+
       setDesktopBannerScale((prevScale) =>
         Math.abs(prevScale - nextScale) < 0.01 ? prevScale : nextScale
+      );
+      setIsDesktopBannerScrollable((prevShouldScroll) =>
+        prevShouldScroll === shouldScroll ? prevShouldScroll : shouldScroll
       );
     };
 
@@ -223,19 +229,11 @@ export const NewHome = () => {
 
   const handleGuestLoginClick = () => {
     setGuestLoginModalOpen(false);
-    switchToController();
+    navigate("/login");
   };
 
   const handleLoginClick = () => {
-    switchToController((newUsername) => {
-      fetchProfileData(
-        client,
-        newUsername.account.address,
-        newUsername.account,
-        newUsername.username,
-        "controller"
-      );
-    });
+    navigate("/login");
   };
 
   const handleOpenGuestLoginModal = () => {
@@ -340,13 +338,6 @@ export const NewHome = () => {
                       <Button
                         size="xs"
                         onClick={handleLoginClick}
-                        rightIcon={
-                          <img
-                            src={Icons.CARTRIDGE}
-                            width={"14px"}
-                            style={{ marginLeft: "2px" }}
-                          />
-                        }
                       >
                         {tCommon("login")}
                       </Button>
@@ -395,7 +386,7 @@ export const NewHome = () => {
             position="relative"
             overflow="hidden"
             pt={10}
-            pb="190px"
+            pb="140px"
             px={8}
             gap={5}
           >
@@ -484,7 +475,11 @@ export const NewHome = () => {
               pt={16}
               mr={6}
               ref={desktopBannerViewportRef}
-              overflow="hidden"
+              overflowX="hidden"
+              overflowY={isDesktopBannerScrollable ? "auto" : "hidden"}
+              sx={{
+                scrollbarGutter: "stable",
+              }}
             >
               <Flex
                 ref={desktopBannerContentRef}
@@ -492,7 +487,11 @@ export const NewHome = () => {
                 flexDir="column"
                 gap={3}
                 pr={1}
-                transform={`scale(${desktopBannerScale})`}
+                transform={
+                  isDesktopBannerScrollable
+                    ? "none"
+                    : `scale(${desktopBannerScale})`
+                }
                 transformOrigin="top right"
                 transition="transform 0.2s ease-out"
               >
@@ -507,17 +506,7 @@ export const NewHome = () => {
 
             {useBurnerAcc && (
               <Flex position="absolute" right="50px" top="36px" zIndex={5}>
-                <Button
-                  size="sm"
-                  onClick={handleLoginClick}
-                  rightIcon={
-                    <img
-                      src={Icons.CARTRIDGE}
-                      width={"14px"}
-                      style={{ marginLeft: "2px" }}
-                    />
-                  }
-                >
+                <Button size="sm" onClick={handleLoginClick}>
                   {tCommon("login")}
                 </Button>
               </Flex>

@@ -7,6 +7,7 @@ import { IconComponent } from "./IconComponent";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import { useEffect } from "react";
 import { useProfileStore } from "../state/useProfileStore";
+import { useUsernameStore } from "../state/useUsernameStore";
 import { useDojo } from "../dojo/useDojo";
 import { useUsername } from "../dojo/utils/useUsername";
 import { useTranslation } from "react-i18next";
@@ -27,9 +28,10 @@ export const ProfileTile = () => {
     accountType,
   } = useDojo();
   const { profileData, fetchProfileData, loading } = useProfileStore();
+  const usernameStatus = useUsernameStore((store) => store.status);
 
   useEffect(() => {
-    if (client && account && loggedInUser && !loading) {
+    if (client && account && loggedInUser && usernameStatus === "ready" && !loading) {
       fetchProfileData(
         client,
         account.account.address,
@@ -38,7 +40,7 @@ export const ProfileTile = () => {
         accountType
       );
     }
-  }, [client, account, loggedInUser, profileData?.profile.username, accountType]);
+  }, [client, account, loggedInUser, usernameStatus, profileData?.profile.username, accountType]);
 
   return (
     <Flex position="relative">

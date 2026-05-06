@@ -172,6 +172,22 @@
     "confirm": "Confirm",
     "close": "Close"
   },
+  "username-modal": {
+    "title": {
+      "pick": "Pick your username",
+      "edit": "Edit username"
+    },
+    "placeholder": "Username",
+    "save": "Save",
+    "info": "You can edit your username later in your profile page",
+    "available": "Username is available",
+    "taken": "Username is taken",
+    "errors": {
+      "min-length": "Username must be at least 3 characters",
+      "invalid-characters": "Do not use special characters",
+      "save-failed": "Unable to save username"
+    }
+  },
   "points": "points",
   "settings-modal": {
     "title": "Settings",

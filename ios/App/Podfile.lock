@@ -10,13 +10,14 @@ PODS:
     - Capacitor
   - CapacitorBrowser (7.0.2):
     - Capacitor
-  - CapacitorCommunityAppleSignIn (7.1.0):
-    - Capacitor
   - CapacitorCommunityNativeAudio (7.0.1):
     - Capacitor
   - CapacitorCordova (7.4.3)
   - CapacitorDevice (7.0.3):
     - Capacitor
+  - CapacitorFirebaseAnalytics (7.5.0):
+    - Capacitor
+    - CapacitorFirebaseAnalytics/Analytics (= 7.5.0)
   - CapacitorFirebaseAnalytics/Analytics (7.5.0):
     - Capacitor
     - FirebaseAnalytics (~> 11.7.0)
@@ -36,20 +37,20 @@ PODS:
     - Capacitor
   - CordovaPlugins (7.4.3):
     - CapacitorCordova
-  - FBAEMKit (18.0.1):
-    - FBSDKCoreKit_Basics (= 18.0.1)
-  - FBSDKCoreKit (18.0.1):
-    - FBAEMKit (= 18.0.1)
-    - FBSDKCoreKit_Basics (= 18.0.1)
-  - FBSDKCoreKit_Basics (18.0.1)
-  - FBSDKGamingServicesKit (18.0.1):
-    - FBSDKCoreKit (= 18.0.1)
-    - FBSDKCoreKit_Basics (= 18.0.1)
-    - FBSDKShareKit (= 18.0.1)
-  - FBSDKLoginKit (18.0.1):
-    - FBSDKCoreKit (= 18.0.1)
-  - FBSDKShareKit (18.0.1):
-    - FBSDKCoreKit (= 18.0.1)
+  - FBAEMKit (18.0.2):
+    - FBSDKCoreKit_Basics (= 18.0.2)
+  - FBSDKCoreKit (18.0.2):
+    - FBAEMKit (= 18.0.2)
+    - FBSDKCoreKit_Basics (= 18.0.2)
+  - FBSDKCoreKit_Basics (18.0.2)
+  - FBSDKGamingServicesKit (18.0.2):
+    - FBSDKCoreKit (= 18.0.2)
+    - FBSDKCoreKit_Basics (= 18.0.2)
+    - FBSDKShareKit (= 18.0.2)
+  - FBSDKLoginKit (18.0.2):
+    - FBSDKCoreKit (= 18.0.2)
+  - FBSDKShareKit (18.0.2):
+    - FBSDKCoreKit (= 18.0.2)
   - FirebaseAnalytics (11.7.0):
     - FirebaseAnalytics/AdIdSupport (= 11.7.0)
     - FirebaseCore (~> 11.7.0)
@@ -158,11 +159,10 @@ DEPENDENCIES:
   - "CapacitorApp (from `../../node_modules/@capacitor/app`)"
   - "CapacitorAppLauncher (from `../../node_modules/@capacitor/app-launcher`)"
   - "CapacitorBrowser (from `../../node_modules/@capacitor/browser`)"
-  - "CapacitorCommunityAppleSignIn (from `../../node_modules/@capacitor-community/apple-sign-in`)"
   - "CapacitorCommunityNativeAudio (from `../../node_modules/@capacitor-community/native-audio`)"
   - "CapacitorCordova (from `../../node_modules/@capacitor/ios`)"
   - "CapacitorDevice (from `../../node_modules/@capacitor/device`)"
-  - "CapacitorFirebaseAnalytics/Analytics (from `../../node_modules/@capacitor-firebase/analytics`)"
+  - "CapacitorFirebaseAnalytics (from `../../node_modules/@capacitor-firebase/analytics`)"
   - "CapacitorFirebaseMessaging (from `../../node_modules/@capacitor-firebase/messaging`)"
   - "CapacitorHaptics (from `../../node_modules/@capacitor/haptics`)"
   - CapacitorPluginAppTrackingTransparency (from `../../node_modules/capacitor-plugin-app-tracking-transparency`)
@@ -208,8 +208,6 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capacitor/app-launcher"
   CapacitorBrowser:
     :path: "../../node_modules/@capacitor/browser"
-  CapacitorCommunityAppleSignIn:
-    :path: "../../node_modules/@capacitor-community/apple-sign-in"
   CapacitorCommunityNativeAudio:
     :path: "../../node_modules/@capacitor-community/native-audio"
   CapacitorCordova:
@@ -241,11 +239,10 @@ SPEC CHECKSUMS:
   CapacitorApp: 26587c2ce485d88ddb39adb21cac64f8e481afe3
   CapacitorAppLauncher: b70f649f609bab6412eccdd413bd7f0dd42df4a9
   CapacitorBrowser: 22541e48442de44dc629c214388290d6eecc6ae9
-  CapacitorCommunityAppleSignIn: 271cb2860576fd2961508bbfa7a82117d93eadca
   CapacitorCommunityNativeAudio: 035096f7f8830ccb6f49afe51a0e2b20da748f47
   CapacitorCordova: 435121e81a2df4d0034f0fb11fcefab5104cfdb5
   CapacitorDevice: b64654eb4d404373e733c01d835055ba59286e5c
-  CapacitorFirebaseAnalytics: 27ad621b8f41c2cd2b2169f2db6f476cdac49011
+  CapacitorFirebaseAnalytics: 58129772c703183a292d3c47cbbf437e60e182a2
   CapacitorFirebaseMessaging: 1ac12c0dab16d1e4edcf9cb878620507ac868a4e
   CapacitorHaptics: b3fb2869e72c4466e18ce9ccbeb60a3d8723b3d4
   CapacitorPluginAppTrackingTransparency: 92ae9c1cfb5cf477753db9269689332a686f675a
@@ -253,12 +250,12 @@ SPEC CHECKSUMS:
   CapacitorPushNotifications: 7604512af53bbfdf1dd8fb2256b9ef1e8a69cdc2
   CapacitorShare: a4f4f86eabd4b3ff52ba6a11b754713c6926a8d1
   CordovaPlugins: 39454af61b66c5495293b4be216bd851e0cd32ab
-  FBAEMKit: b2ed182002dbcb65d5a60059c9693d322186cd00
-  FBSDKCoreKit: 7f96852f2539bdb88ba8d47e5ab4ae70a6f8d691
-  FBSDKCoreKit_Basics: 22d4c1a509ded4e45116f3bb167a14907550f62e
-  FBSDKGamingServicesKit: acde62310212678446f81b0a14da88231b918feb
-  FBSDKLoginKit: f48c06446995cd209332831f692cea28b26e51da
-  FBSDKShareKit: d3fef7f6690e173369134beb5f43983d7338e933
+  FBAEMKit: 56a4f5a9607957b547b6458b17a98c5bb2736367
+  FBSDKCoreKit: 54f1240567e16862ab71c53c33dc347db5c524c5
+  FBSDKCoreKit_Basics: eb530cd6a79030dbb11df460aafb2767bcad9028
+  FBSDKGamingServicesKit: a967e47b5cbf759fb3e42a87f11a999aa7c36b24
+  FBSDKLoginKit: 6a70798793e499335a98fab1a758d7da34af196e
+  FBSDKShareKit: e52c6b1584c77c708bcb4001c9a48223c115cbd9
   FirebaseAnalytics: bc9e565af9044ba8d6c6e4157e4edca8e5fdf7ec
   FirebaseCore: 3227e35f4197a924206fbcdc0349325baf4f5de4
   FirebaseCoreInternal: d6c17dafc8dc33614733a8b52df78fcb4394c881
@@ -274,6 +271,6 @@ SPEC CHECKSUMS:
   RevenueCat: 0423a85e1f2ef06f1002b18cae53fe856f60ea53
   RevenuecatPurchasesCapacitor: 49b9f126a56072857abd60f759516aa391ae900c
 
-PODFILE CHECKSUM: 5f89a150c1d299e069b2971bf780f6ecdc32911d
+PODFILE CHECKSUM: 231563ee86693ae7eaa8426f4b4b74ff4887932c
 
 COCOAPODS: 1.16.2

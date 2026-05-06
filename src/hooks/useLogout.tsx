@@ -1,23 +1,28 @@
-import { useDisconnect } from "@starknet-react/core";
 import { useNavigate } from "react-router-dom";
-import { GAME_ID, LOGGED_USER } from "../constants/localStorage";
+import { useRef } from "react";
 import { useDojo } from "../dojo/useDojo";
 import { useGameStore } from "../state/useGameStore";
 
 export const useLogout = () => {
   const navigate = useNavigate();
   const { logout } = useDojo();
+  const isLoggingOutRef = useRef(false);
 
-  const { disconnect } = useDisconnect();
   const { removeGameId } = useGameStore();
 
-  const handleLogout = () => {
-    localStorage.removeItem(GAME_ID);
-    localStorage.removeItem(LOGGED_USER);
-    logout();
-    disconnect();
-    removeGameId();
-    navigate("/");
+  const handleLogout = async () => {
+    if (isLoggingOutRef.current) {
+      return;
+    }
+
+    isLoggingOutRef.current = true;
+    try {
+      await logout();
+      removeGameId();
+      navigate("/");
+    } finally {
+      isLoggingOutRef.current = false;
+    }
   };
 
   return { handleLogout };

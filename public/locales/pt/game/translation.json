@@ -172,6 +172,22 @@
     "confirm": "Confirmar",
     "close": "Fechar"
   },
+  "username-modal": {
+    "title": {
+      "pick": "Escolha seu nome de usuário",
+      "edit": "Editar nome de usuário"
+    },
+    "placeholder": "Nome de usuário",
+    "save": "Salvar",
+    "info": "Você poderá editar seu nome de usuário depois na página de perfil",
+    "available": "Nome de usuário disponível",
+    "taken": "Nome de usuário indisponível",
+    "errors": {
+      "min-length": "O nome de usuário deve ter pelo menos 3 caracteres",
+      "invalid-characters": "Não use caracteres especiais",
+      "save-failed": "Não foi possível salvar o nome de usuário"
+    }
+  },
   "points": "pontos",
   "settings-modal": {
     "title": "Configuração",

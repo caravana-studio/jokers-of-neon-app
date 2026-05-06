@@ -7,7 +7,7 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import { useAccount, useConnect } from "@starknet-react/core";
+import { useConnect } from "@starknet-react/core";
 import { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -72,9 +72,9 @@ export const PackRow = ({
   const toast = useToast();
   const dojoCtx = useContext(DojoContext);
   const account = dojoCtx?.account.account ?? null;
+  const starknetAddress = account?.address || null;
   const username = useUsername();
   const { connectors, connect } = useConnect();
-  const { address: starknetAddress } = useAccount();
   const { purchasePackageById, offerings } = useRevenueCat();
   const { buy: buyWithCrypto, status: cryptoStatus } = useCryptoPurchase();
   const { priceAtoms, priceUsdc } = useShopPrice(packId);

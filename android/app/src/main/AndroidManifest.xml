@@ -58,7 +58,10 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="https" android:host="jokersofneon.onelink.me" />
+                <data
+                    android:scheme="https"
+                    android:host="jokersofneon.onelink.me"
+                    android:pathPrefix="/2BD9" />
             </intent-filter>
         </activity>
         <activity 

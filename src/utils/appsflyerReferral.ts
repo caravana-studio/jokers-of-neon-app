@@ -178,7 +178,7 @@ export interface ProcessReferralResult {
 export async function processReferralData(
   referralData: AppsFlyerReferralData,
   userAddress: string,
-  accountType?: "burner" | "controller" | null,
+  accountType?: "burner" | "controller" | "cavos" | null,
   username?: string | null
 ): Promise<ProcessReferralResult> {
   // Validate referral data
@@ -302,7 +302,7 @@ export async function registerMilestone(
     | "season_pass_purchased"
     | "pack_purchased",
   milestoneValue?: number,
-  accountType?: "burner" | "controller" | null,
+  accountType?: "burner" | "controller" | "cavos" | null,
   username?: string | null
 ): Promise<boolean> {
   const { apiKey, baseUrl } = getApiConfig();

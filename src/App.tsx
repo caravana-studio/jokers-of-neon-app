@@ -6,10 +6,11 @@ import { AppTrackingTransparency } from "capacitor-plugin-app-tracking-transpare
 import { AnimatePresence } from "framer-motion";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { createProfile, fetchProfile } from "./api/profile";
+import { fetchOrCreateProfile } from "./api/profile";
 import { AppRoutes } from "./AppRoutes";
 import { Background } from "./components/Background";
 import { Layout } from "./components/Layout";
+import { UsernameGate } from "./components/UsernameGate";
 import { useDojo } from "./dojo/DojoContext";
 import { useGameActions } from "./dojo/useGameActions";
 import { useUsername } from "./dojo/utils/useUsername";
@@ -28,6 +29,7 @@ import { RevenueCatProvider } from "./providers/RevenueCatProvider";
 import { SeasonPassProvider } from "./providers/SeasonPassProvider";
 import { useSkinPreferencesStore } from "./state/useSkinPreferencesStore";
 import { useTutorialStore } from "./state/useTutorialStore";
+import { useUsernameStore } from "./state/useUsernameStore";
 import ZoomPrevention from "./utils/ZoomPrevention";
 import { registerPushListeners } from "./utils/notifications/registerPushListeners";
 
@@ -47,6 +49,7 @@ function App() {
 
   const navigate = useNavigate();
   const username = useUsername();
+  const usernameStatus = useUsernameStore((store) => store.status);
   const { accountType } = useWallet();
 
   const { claimLives } = useGameActions();
@@ -105,14 +108,6 @@ function App() {
       }
     };
 
-    claimLives().catch(() => {});
-
-    fetchProfile(account.address).then((profile) => {
-      if (profile.username === "" && username) {
-        createProfile(account.address, username, 1);
-      }
-    });
-
     askForTracking();
 
     // Fetch Play Age Signals once at startup for compliance checks
@@ -129,7 +124,20 @@ function App() {
     initWebReferralDetection();
 
     registerPushListeners(navigate);
-  }, []);
+  }, [navigate]);
+
+  useEffect(() => {
+    if (!account?.address || !username || usernameStatus !== "ready") {
+      return;
+    }
+
+    claimLives().catch(() => {});
+
+    fetchOrCreateProfile(account.address)
+      .catch((error) => {
+        console.warn("Failed to fetch or create profile", error);
+      });
+  }, [account?.address, username, usernameStatus]);
 
   return (
     <RevenueCatProvider>
@@ -143,6 +151,7 @@ function App() {
                     <Background>
                       <BackgroundAnimationProvider>
                         <Layout>
+                          <UsernameGate />
                           <AnimatePresence mode="wait">
                             <AppRoutes />
                           </AnimatePresence>
