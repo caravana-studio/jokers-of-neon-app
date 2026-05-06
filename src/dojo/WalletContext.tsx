@@ -13,11 +13,13 @@ import {
 } from "react";
 import { Account, type AccountInterface } from "starknet";
 import { checkEarlyAccess } from "../api/earlyAccess";
+import { fetchUsernameByAddress } from "../api/usernames";
 import { ACCOUNT_TYPE, GAME_ID, LOGGED_USER } from "../constants/localStorage";
 import { AppType, useAppContext } from "../providers/AppContextProvider";
-import { useGetLastGameId } from "../queries/useGetLastGameId";
 import { logEvent } from "../utils/analytics";
 import { isNative } from "../utils/capacitorUtils";
+import { ensureGameLoopBurnerSession } from "../utils/gameLoopBurner";
+import { normalizeStarknetAddress } from "../utils/starknetAddress";
 import { useAccountStore } from "./accountStore";
 import { controller } from "./controller/controller";
 import { CavosAccountAdapter } from "./cavos/CavosAccountAdapter";
@@ -30,6 +32,11 @@ const CAVOS_ENABLED = !!import.meta.env.VITE_CAVOS_APP_ID;
 const CAVOS_NATIVE_REDIRECT_URI =
   import.meta.env.VITE_CAVOS_NATIVE_REDIRECT_URI ||
   "jokers://open";
+
+function guestUsernameForAddress(address: string): string {
+  const normalized = normalizeStarknetAddress(address).replace(/^0x/, "");
+  return `guest${normalized.slice(-8)}`;
+}
 
 type ConnectionStatus =
   | "selecting"
@@ -84,11 +91,6 @@ type WalletProviderProps = {
 export const WalletProvider = ({ children, value }: WalletProviderProps) => {
   const { connect, connectors } = useConnect();
   const {
-    lastGameId,
-    isLoading: isLoadingLastGameId,
-    error: lastGameIdError,
-  } = useGetLastGameId();
-  const {
     account: controllerAccount,
     isConnected: isControllerConnected,
     isConnecting: isControllerConnecting,
@@ -138,13 +140,11 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
   const [accountType, setAccountType] = useState<
     "burner" | "controller" | "cavos" | null
   >(lsAccountType);
+  const isLoadingLastGameId = false;
 
   const onSuccessCallback = useRef<
     ((payload: SwitchSuccessPayload) => void) | null
   >(null);
-  const fallbackGuestIdRef = useRef<number>(
-    Math.floor(Math.random() * (100000 - 50000 + 1)) + 50000
-  );
 
   useEffect(() => {
     logEvent("open_wallet_page");
@@ -464,23 +464,32 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     }
   };
 
-  const startGuestFlow = () => {
+  const startGuestFlow = async (): Promise<boolean> => {
     logEvent("play_as_guest");
-    setConnectionStatus("connecting_burner");
-    const guestId = lastGameIdError ? fallbackGuestIdRef.current : lastGameId + 1;
-    const username = `guest${String(guestId).slice(-8)}`;
 
-    localStorage.removeItem(GAME_ID);
-    localStorage.setItem(LOGGED_USER, username);
+    try {
+      const burnerSession = await ensureGameLoopBurnerSession();
+      const burnerAddress = normalizeStarknetAddress(
+        burnerSession.burnerAddress
+      );
+      const usernameRecord = await fetchUsernameByAddress(burnerAddress).catch(
+        () => null
+      );
+      const username =
+        usernameRecord?.username ?? guestUsernameForAddress(burnerAddress);
+
+      localStorage.removeItem(GAME_ID);
+      localStorage.setItem(LOGGED_USER, username);
+      setConnectionStatus("connecting_burner");
+      return true;
+    } catch (error) {
+      console.error("Failed to start guest flow with API burner", error);
+      return false;
+    }
   };
 
   const continueAsGuest = async (): Promise<boolean> => {
-    if (isLoadingLastGameId) {
-      return false;
-    }
-
-    startGuestFlow();
-    return true;
+    return startGuestFlow();
   };
 
   const resetCavosAuthState = () => {
