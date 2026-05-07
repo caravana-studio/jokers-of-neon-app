@@ -60,7 +60,14 @@ const isValidAssetResponse = (
   return contentType.startsWith(expectedPrefix);
 };
 
-const verifyUrlExists = async (url: string): Promise<boolean> => {
+type AssetAvailabilityResult = {
+  exists: boolean;
+  cacheable: boolean;
+};
+
+const verifyUrlExists = async (
+  url: string
+): Promise<AssetAvailabilityResult> => {
   try {
     const headResponse = await fetch(url, {
       method: "HEAD",
@@ -68,7 +75,7 @@ const verifyUrlExists = async (url: string): Promise<boolean> => {
     });
 
     if (isValidAssetResponse(headResponse, url, true)) {
-      return true;
+      return { exists: true, cacheable: true };
     }
   } catch {
     // Ignore HEAD errors and fall back to GET below.
@@ -80,9 +87,12 @@ const verifyUrlExists = async (url: string): Promise<boolean> => {
       cache: "no-store",
     });
 
-    return isValidAssetResponse(getResponse, url, false);
+    return {
+      exists: isValidAssetResponse(getResponse, url, false),
+      cacheable: true,
+    };
   } catch {
-    return false;
+    return { exists: false, cacheable: false };
   }
 };
 
@@ -98,13 +108,14 @@ export const doesAssetExist = async (url: string): Promise<boolean> => {
   }
 
   const nextCheck = verifyUrlExists(url)
-    .then((exists) => {
-      availabilityCache.set(url, exists);
+    .then(({ exists, cacheable }) => {
+      if (cacheable) {
+        availabilityCache.set(url, exists);
+      }
       pendingChecks.delete(url);
       return exists;
     })
     .catch(() => {
-      availabilityCache.set(url, false);
       pendingChecks.delete(url);
       return false;
     });
