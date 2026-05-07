@@ -12,6 +12,7 @@ interface CreateGamePayload {
   user_address: string;
   season_id: number;
   is_tournament: boolean;
+  blockchain: string;
   seed?: string;
 }
 
@@ -34,11 +35,13 @@ export async function createGame({
 
   const baseUrl = getGameApiBaseUrl();
   const requestUrl = `${baseUrl}/api/game/create`;
+  const blockchain = import.meta.env.VITE_BLOCKCHAIN?.trim() || "starknet";
 
   const payload: CreateGamePayload = {
     user_address: userAddress,
     season_id: seasonId,
     is_tournament: isTournament,
+    blockchain,
   };
 
   if (seed) {
