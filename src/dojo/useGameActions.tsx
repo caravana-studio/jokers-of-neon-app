@@ -14,6 +14,10 @@ import { achievementSfx } from "../constants/sfx";
 import { useAudio } from "../hooks/useAudio";
 import { useSettings } from "../providers/SettingsProvider";
 import { handleXPEvents } from "../utils/handleXPEvents";
+import {
+  logFailedTransactionReceipt,
+  logTransactionError,
+} from "../utils/logTransactionError";
 import { getModifiersForContract } from "./utils/getModifiersForContract";
 import { getSeasonNumber } from "../constants/season";
 import { useUsername } from "./utils/useUsername";
@@ -44,6 +48,18 @@ export const useGameActions = () => {
   const { sfxVolume } = useSettings();
   const { play: achievementSound } = useAudio(achievementSfx, sfxVolume);
 
+  const logActionError = (
+    action: string,
+    error: unknown,
+    context: Record<string, unknown> = {}
+  ) => {
+    logTransactionError(`Game action failed: ${action}`, error, {
+      accountAddress: account.address,
+      accountType,
+      ...context,
+    });
+  };
+
   const surrenderGame = async (gameId: number) => {
     try {
       showTransactionToast();
@@ -65,12 +81,17 @@ export const useGameActions = () => {
           gameId,
         };
       } else {
-        console.error("Error surrendering game:", tx);
+        logFailedTransactionReceipt("Game action reverted: surrenderGame", tx, {
+          accountAddress: account.address,
+          accountType,
+          gameId,
+          transactionHash: transaction_hash,
+        });
         return createGameEmptyResponse;
       }
     } catch (e) {
       failedTransactionToast();
-      console.log(e);
+      logActionError("surrenderGame", e, { gameId });
       return createGameEmptyResponse;
     }
   };
@@ -103,13 +124,22 @@ export const useGameActions = () => {
       if (tx.isSuccess()) {
         console.log("Success in transfer " + gameId);
       } else {
-        console.error("Error transfer game:", tx);
+        logFailedTransactionReceipt("Game action reverted: transferGame", tx, {
+          accountAddress: account.address,
+          accountType,
+          gameId,
+          transactionHash: transaction_hash,
+          newAccountAddress: new_account.address,
+        });
       }
 
       updateTransactionToast(transaction_hash, tx.isSuccess());
     } catch (e) {
       failedTransactionToast();
-      console.log(e);
+      logActionError("transferGame", e, {
+        gameId,
+        newAccountAddress: new_account.address,
+      });
     }
   };
 
@@ -149,7 +179,7 @@ export const useGameActions = () => {
       return;
     } catch (e) {
       failedTransactionToast();
-      console.log(e);
+      logActionError("discard", e, { gameId, cards, modifiers, modifiers1 });
       return;
     }
   };
@@ -191,7 +221,7 @@ export const useGameActions = () => {
       }
     } catch (e) {
       failedTransactionToast();
-      console.log(e);
+      logActionError("changeModifierCard", e, { gameId, card });
       return {
         success: false,
         cards: [],
@@ -226,7 +256,7 @@ export const useGameActions = () => {
 
       return { success };
     } catch (e) {
-      console.log(e);
+      logActionError("sellSpecialCard", e, { gameId, card });
       failedTransactionToast();
       return { success: false };
     }
@@ -259,7 +289,7 @@ export const useGameActions = () => {
 
       return { success };
     } catch (e) {
-      console.log(e);
+      logActionError("sellPowerup", e, { gameId, powerupIdx });
       failedTransactionToast();
       return { success: false };
     }
@@ -289,7 +319,7 @@ export const useGameActions = () => {
 
         return { success };
       } catch (e) {
-        console.log(e);
+        logActionError("claimLives", e, { seasonId });
         return { success: false };
       }
     })().finally(() => {
@@ -340,7 +370,7 @@ export const useGameActions = () => {
       }
       return;
     } catch (e) {
-      console.log(e);
+      logActionError("play", e, { gameId, cards, modifiers, modifiers1, powerUps });
       failedTransactionToast();
       return;
     }

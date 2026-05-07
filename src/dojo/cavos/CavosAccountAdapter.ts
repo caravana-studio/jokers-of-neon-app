@@ -5,6 +5,10 @@ import {
   Signature,
   TypedData,
 } from "starknet";
+import {
+  logFailedTransactionReceipt,
+  logTransactionError,
+} from "../../utils/logTransactionError";
 
 /**
  * Adapts the Cavos SDK's executeOnSlot function to look like a starknet Account.
@@ -66,6 +70,15 @@ export class CavosAccountAdapter {
       }
     }
 
+    logTransactionError(
+      "Cavos Slot deployment timed out",
+      new Error("Slot wallet deployment timed out"),
+      {
+        address: this.address,
+        maxWait,
+        interval,
+      }
+    );
     throw new Error(
       "Slot wallet deployment timed out. Please refresh and try again."
     );
@@ -87,6 +100,7 @@ export class CavosAccountAdapter {
 
     try {
       const status = await slotTransactionManager.getSessionStatus();
+      console.log("[CavosAdapter] Fast Slot session status:", status);
       if (!status.registered || status.expired || !status.active) {
         return null;
       }
@@ -98,18 +112,35 @@ export class CavosAccountAdapter {
 
       return result.transaction_hash;
     } catch (error) {
-      console.warn("[CavosAdapter] Fast Slot execute path unavailable:", error);
+      logTransactionError("Cavos fast Slot execute path unavailable", error, {
+        address: this.address,
+        calls: calls.map((call) => ({
+          contractAddress: call.contractAddress,
+          entrypoint: call.entrypoint,
+          calldataLength: call.calldata?.length ?? 0,
+        })),
+      });
       return null;
     }
   }
 
   async execute(
     calls: Call | Call[],
-    _details?: any
+    details?: any
   ): Promise<InvokeFunctionResponse> {
     const callsArray = Array.isArray(calls) ? calls : [calls];
-    console.log("[CavosAdapter] execute() called with", callsArray.length, "calls:",
-      callsArray.map(c => `${c.contractAddress?.slice(0,10)}...${c.entrypoint}`));
+    console.log(
+      "[CavosAdapter] execute() called with",
+      callsArray.length,
+      "calls:",
+      callsArray.map((call) => ({
+        contractAddress: call.contractAddress,
+        entrypoint: call.entrypoint,
+        calldataLength: call.calldata?.length ?? 0,
+      })),
+      "details:",
+      details
+    );
 
     await this._waitForSlotDeploy();
 
@@ -125,7 +156,15 @@ export class CavosAccountAdapter {
       console.log("[CavosAdapter] executeOnSlot returned txHash:", txHash);
       return { transaction_hash: txHash };
     } catch (error) {
-      console.error("[CavosAdapter] executeOnSlot failed:", error);
+      logTransactionError("Cavos executeOnSlot failed", error, {
+        address: this.address,
+        calls: callsArray.map((call) => ({
+          contractAddress: call.contractAddress,
+          entrypoint: call.entrypoint,
+          calldata: call.calldata,
+        })),
+        details,
+      });
       throw error;
     }
   }
@@ -138,6 +177,7 @@ export class CavosAccountAdapter {
     const retryInterval = options?.retryInterval ?? 1000;
     const maxAttempts = 120;
     let attempts = 0;
+    let lastProviderError: unknown = null;
 
     while (attempts < maxAttempts) {
       try {
@@ -145,6 +185,17 @@ export class CavosAccountAdapter {
         if (receipt) {
           const executionStatus = (receipt as any).execution_status;
           const isSuccess = executionStatus === "SUCCEEDED";
+          if (!isSuccess) {
+            logFailedTransactionReceipt(
+              "Cavos waitForTransaction received non-success receipt",
+              receipt,
+              {
+                address: this.address,
+                txHash,
+                attempts: attempts + 1,
+              }
+            );
+          }
           return {
             ...receipt,
             isSuccess: () => isSuccess,
@@ -155,13 +206,36 @@ export class CavosAccountAdapter {
             value: receipt,
           };
         }
-      } catch {
-        // tx not yet available, retry
+      } catch (error) {
+        lastProviderError = error;
+        if (attempts === 0 || (attempts + 1) % 10 === 0) {
+          logTransactionError(
+            "Cavos waitForTransaction provider error while polling receipt",
+            error,
+            {
+              address: this.address,
+              txHash,
+              attempts: attempts + 1,
+              retryInterval,
+            }
+          );
+        }
       }
       await new Promise((r) => setTimeout(r, retryInterval));
       attempts++;
     }
 
+    logTransactionError(
+      "Cavos waitForTransaction timed out",
+      new Error(`Transaction ${txHash} timed out after ${maxAttempts} attempts`),
+      {
+        address: this.address,
+        txHash,
+        maxAttempts,
+        retryInterval,
+        lastProviderError: serializeForTimeout(lastProviderError),
+      }
+    );
     throw new Error(`Transaction ${txHash} timed out after ${maxAttempts} attempts`);
   }
 
@@ -177,3 +251,19 @@ export class CavosAccountAdapter {
     return this._getProvider().getNonceForAddress(this.address);
   }
 }
+
+const serializeForTimeout = (error: unknown) => {
+  if (!error) {
+    return null;
+  }
+
+  if (error instanceof Error) {
+    return {
+      name: error.name,
+      message: error.message,
+      stack: error.stack,
+    };
+  }
+
+  return error;
+};
