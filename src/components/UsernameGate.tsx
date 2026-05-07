@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { LOGGED_USER } from "../constants/localStorage";
 import { useDojo } from "../dojo/DojoContext";
-import { useCavosSafe } from "../dojo/cavos/CavosConfig";
+import { useCavosSafe } from "../dojo/cavos/CavosBridgeContext";
 import { controller } from "../dojo/controller/controller";
 import { useCustomToast } from "../hooks/useCustomToast";
 import { useUsernameStore } from "../state/useUsernameStore";

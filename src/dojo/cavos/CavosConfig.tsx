@@ -1,10 +1,11 @@
 import { CavosProvider as CavosSDKProvider, useCavos } from "@cavos/react";
-import React, { createContext, ReactNode, useContext, useEffect, useRef } from "react";
+import React, { ReactNode, useEffect, useRef } from "react";
 import { getContractByName } from "@dojoengine/core";
 import { getManifest, getManifestSource } from "../getManifest";
 import { rpcUrl as slotRpcUrl, slotInstance } from "../../config/cartridgeUrls";
 import { getSlotChainId } from "../controller/controller";
 import { setupWorld } from "../typescript/contracts.gen";
+import { CavosBridgeContext } from "./CavosBridgeContext";
 
 const CAVOS_APP_ID =
   import.meta.env.VITE_CAVOS_APP_ID || "";
@@ -127,15 +128,6 @@ const clearStaleCavosSessionPolicy = (allowedContracts: string[]) => {
     clearStoredCavosSession();
   }
 };
-
-// Bridge context: exposes useCavos() result to components outside CavosProvider
-const CavosBridgeContext = createContext<ReturnType<typeof useCavos> | null>(null);
-
-/**
- * Safe hook — returns the Cavos SDK state when CavosProvider is in the tree, null otherwise.
- * Can be called unconditionally from any component.
- */
-export const useCavosSafe = () => useContext(CavosBridgeContext);
 
 /**
  * Inner component that calls useCavos() (which requires CavosProvider above)

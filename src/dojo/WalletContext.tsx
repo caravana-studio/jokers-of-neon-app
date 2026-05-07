@@ -21,7 +21,7 @@ import { isNative } from "../utils/capacitorUtils";
 import { useAccountStore } from "./accountStore";
 import { controller } from "./controller/controller";
 import { CavosAccountAdapter } from "./cavos/CavosAccountAdapter";
-import { useCavosSafe } from "./cavos/CavosConfig";
+import { useCavosSafe } from "./cavos/CavosBridgeContext";
 import type { SetupResult } from "./setup";
 
 const CHAIN = import.meta.env.VITE_CHAIN;
@@ -130,7 +130,9 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     Account | AccountInterface | null
   >(null);
 
-  const lsAccountType = (localStorage.getItem(ACCOUNT_TYPE) ?? null) as
+  const lsAccountType = (appType === AppType.MINIAPP
+    ? null
+    : (localStorage.getItem(ACCOUNT_TYPE) ?? null)) as
     | "burner"
     | "controller"
     | "cavos"
@@ -482,6 +484,31 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     startGuestFlow();
     return true;
   };
+
+  useEffect(() => {
+    if (appType !== AppType.MINIAPP) {
+      return;
+    }
+
+    if (
+      finalAccount ||
+      accountType ||
+      connectionStatus !== "selecting" ||
+      isLoadingLastGameId
+    ) {
+      return;
+    }
+
+    startGuestFlow();
+  }, [
+    appType,
+    finalAccount,
+    accountType,
+    connectionStatus,
+    isLoadingLastGameId,
+    lastGameId,
+    lastGameIdError,
+  ]);
 
   const resetCavosAuthState = () => {
     setCavosError("");
