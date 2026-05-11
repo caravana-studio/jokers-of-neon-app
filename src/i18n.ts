@@ -3,8 +3,19 @@ import { initReactI18next } from "react-i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 import resourcesToBackend from "i18next-resources-to-backend";
 
-const loadResources = (language: string, namespace: string) =>
-  import(`../public/locales/${language}/${namespace}/translation.json`);
+const loadResources = async (language: string, namespace: string) => {
+  const response = await fetch(
+    `/locales/${language}/${namespace}/translation.json`
+  );
+
+  if (!response.ok) {
+    throw new Error(
+      `Could not load translations for ${language}/${namespace}: ${response.status}`
+    );
+  }
+
+  return response.json();
+};
 
 i18n
   .use(LanguageDetector)

@@ -7,17 +7,8 @@ export const STATIC_IMAGE_URLS = [
   "/icon.png",
   "/loader.gif",
 ];
-export const ALL_GLOBS = {
-  bg: import.meta.glob("/public/bg/**/*.png", { eager: true }),
-  redirect: import.meta.glob("/public**/*.png", { eager: true }),
-  logos: import.meta.glob("/public/logos/**/*.png", { eager: true }),
-  borders: import.meta.glob("/public/borders/**/*.png", { eager: true }),
-  sort: import.meta.glob("/public/sort/**/*.png", { eager: true }),
-  store: import.meta.glob("/public/store/**/*.png", { eager: true }),
-  specialsBox: import.meta.glob("/public/specials-box/**/*.png", {
-    eager: true,
-  }),
-  backs: import.meta.glob("/public/Cards/Backs/**/*.png", { eager: true }),
-  map: import.meta.glob("/public/map/**/*.png", { eager: true }),
-  assets: import.meta.glob("/src/assets/**/*.png", { eager: true }),
-};
+
+// Preloading every public image via Vite globs breaks local/ngrok dev because
+// Vite rewrites them as module imports from /public/*. Keep startup lean here
+// and rely on explicit URLs plus on-demand fetches for the remaining assets.
+export const ALL_GLOBS = {};

@@ -43,7 +43,9 @@ export const getDefaultImageUrls = async (): Promise<string[]> => {
 };
 
 export const extractImageUrls = (globbed: Record<string, unknown>) => {
-  return Object.keys(globbed).map((key) => key.replace("/public/", ""));
+  return Object.values(globbed).filter(
+    (value): value is string => typeof value === "string"
+  );
 };
 
 export const preloadGlobImages = (globs: any): string[] => {
