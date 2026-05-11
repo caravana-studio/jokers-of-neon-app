@@ -165,6 +165,7 @@
   },
   "my-games": {
     "title": "Games",
+    "back-to-home": "Back to home",
     "go-back": "Go back",
     "start-game": "New game",
     "show-finished-games": "Show finished games",

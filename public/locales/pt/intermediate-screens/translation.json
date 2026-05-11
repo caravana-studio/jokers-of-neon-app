@@ -165,6 +165,7 @@
   },
   "my-games": {
     "title": "Jogos",
+    "back-to-home": "Voltar ao início",
     "go-back": "Voltar",
     "start-game": "Novo jogo",
     "show-finished-games": "Mostrar jogos terminados",
