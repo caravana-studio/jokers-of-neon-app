@@ -8,7 +8,12 @@ import {
 import { useLocation, useNavigate } from "react-router-dom";
 import { AccountInterface } from "starknet";
 import { createGame } from "../api/createGame.ts";
-import { fetchUsernameByAddress } from "../api/usernames.ts";
+import {
+  createUsername,
+  fetchUsernameByAddress,
+  UsernameApiError,
+} from "../api/usernames.ts";
+import { LOGGED_USER } from "../constants/localStorage.ts";
 import {
   acumSfx,
   clearLevel,
@@ -38,6 +43,7 @@ import { CardPlayEvent, PlayEvents, PowerUpScore } from "../types/ScoreData";
 import { logEvent } from "../utils/analytics.ts";
 import { getPlayAnimationDuration } from "../utils/getPlayAnimationDuration.ts";
 import { isCardSilent } from "../utils/isCardSilent.ts";
+import { normalizeStarknetAddress } from "../utils/starknetAddress.ts";
 import {
   OptimisticAnimationController,
   animateOptimisticCardPlay,
@@ -182,7 +188,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const navigate = useNavigate();
   const {
     switchToController,
-    setup: { client },
+    setup: { accountType, client },
     account: { account },
   } = useDojo();
 
@@ -296,6 +302,46 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const usernameLS = useUsername();
 
+  const ensureGuestUsernameForGameCreation = async (): Promise<string | null> => {
+    if (usernameLS) {
+      return usernameLS;
+    }
+
+    if (accountType !== "burner" || !account?.address) {
+      return usernameLS;
+    }
+
+    const normalizedAddress = normalizeStarknetAddress(account.address);
+    const existingRecord = await fetchUsernameByAddress(normalizedAddress).catch(
+      () => null
+    );
+
+    if (existingRecord?.username) {
+      window.localStorage.setItem(LOGGED_USER, existingRecord.username);
+      return existingRecord.username;
+    }
+
+    const candidate = `guest${normalizedAddress.replace(/^0x/, "").slice(-8)}`;
+    window.localStorage.setItem(LOGGED_USER, candidate);
+
+    try {
+      const createdRecord = await createUsername(normalizedAddress, candidate);
+      return createdRecord.username;
+    } catch (error) {
+      if (
+        error instanceof UsernameApiError &&
+        error.code === "ADDRESS_USERNAME_EXISTS"
+      ) {
+        const record = await fetchUsernameByAddress(normalizedAddress).catch(
+          () => null
+        );
+        return record?.username ?? candidate;
+      }
+
+      throw error;
+    }
+  };
+
   const initiateTransferFlow = () => {
     console.log("GameProvider: Initiating transfer flow...");
     // The callback now expects a payload object with all the fresh data.
@@ -338,46 +384,43 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setGameLoading(true);
     console.log("Executing create game for username", usernameLS);
     logEvent("create_game");
-    if (usernameLS) {
-      try {
-        console.log("Creating game...");
-        createGame({
-          userAddress: account.address,
-          isTournament,
-        })
-          .then(async (response) => {
-            const newGameId = response?.data?.slot?.game_id;
-            console.log(`game ${newGameId} created`);
-            if (newGameId) {
-              setGameId(newGameId);
-              replaceCards(hand);
-              fetchDeck(client, newGameId, getCardData);
-              clearPreSelection();
+    if (!account?.address) {
+      console.error("No account address available to create game");
+      showErrorToast("Error creating game");
+      setGameError(true);
+      navigate("/my-games");
+      return;
+    }
 
-              setPreSelectionLocked(false);
-              setRoundRewards(undefined);
-              setState(GameStateEnum.NotSet);
-              navigate("/round");
-            } else {
-              showErrorToast("Error creating game");
-              console.error("Error creating game", response);
-              setGameError(true);
-              navigate("/my-games");
-            }
-          })
-          .catch((error) => {
-            console.error("Error creating game", error);
-            showErrorToast("Error creating game");
-            setGameError(true);
-            navigate("/my-games");
-          });
-      } catch (error) {
-        console.error("Error registering user in tournament", error);
+    try {
+      await ensureGuestUsernameForGameCreation();
+      console.log("Creating game...");
+      const response = await createGame({
+        userAddress: account.address,
+        isTournament,
+      });
+      const newGameId = response?.data?.slot?.game_id;
+      console.log(`game ${newGameId} created`);
+
+      if (!newGameId) {
+        showErrorToast("Error creating game");
+        console.error("Error creating game", response);
         setGameError(true);
         navigate("/my-games");
+        return;
       }
-    } else {
-      console.error("No username");
+
+      setGameId(newGameId);
+      replaceCards(hand);
+      fetchDeck(client, newGameId, getCardData);
+      clearPreSelection();
+      setPreSelectionLocked(false);
+      setRoundRewards(undefined);
+      setState(GameStateEnum.NotSet);
+      navigate("/round");
+    } catch (error) {
+      console.error("Error creating game", error);
+      showErrorToast("Error creating game");
       setGameError(true);
       navigate("/my-games");
     }

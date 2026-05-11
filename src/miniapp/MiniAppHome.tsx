@@ -9,7 +9,12 @@ import { useGetMyGames } from "../queries/useGetMyGames";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import { LeaderboardBanner } from "../pages/NewHome/banners/LeaderboardBanner";
 import { ImageBanner } from "../pages/NewHome/banners/ImageBanner";
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import {
+  ensureGameLoopBurnerSession,
+  isGameLoopBurnerEnabled,
+} from "../utils/gameLoopBurner";
 
 export const MiniAppHome = () => {
   const { t } = useTranslation(["home"]);
@@ -17,6 +22,16 @@ export const MiniAppHome = () => {
   const { isSmallScreen } = useResponsiveValues();
   const { prepareNewGame, executeCreateGame } = useGameContext();
   const { data: games } = useGetMyGames();
+
+  useEffect(() => {
+    if (!isGameLoopBurnerEnabled()) {
+      return;
+    }
+
+    void ensureGameLoopBurnerSession().catch((error) => {
+      console.error("Failed to preload game loop burner session", error);
+    });
+  }, []);
 
   const hasGames = Boolean(games && games.length > 0);
 

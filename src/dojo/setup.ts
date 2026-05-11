@@ -15,6 +15,8 @@ import type { Message, ToriiClient } from "@dojoengine/torii-client";
 export type SetupResult = Awaited<ReturnType<typeof setup>>;
 const DOJO_NAMESPACE =
   import.meta.env.VITE_DOJO_NAMESPACE || "jokers_of_neon_core";
+const SHOULD_BOOTSTRAP_FRONTEND_BURNER =
+  (import.meta.env.VITE_BLOCKCHAIN?.trim() || "starknet") === "starknet";
 
 let sync: any;
 
@@ -165,7 +167,7 @@ export async function setup({ ...config }: DojoConfig) {
 
   try {
     await burnerManager.init();
-    if (burnerManager.list().length === 0) {
+    if (SHOULD_BOOTSTRAP_FRONTEND_BURNER && burnerManager.list().length === 0) {
       await burnerManager.create();
     }
   } catch (e) {

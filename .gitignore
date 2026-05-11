@@ -410,6 +410,7 @@ FodyWeavers.xsd
 /build
 /dist
 /dist-shop
+/dist-miniapp
 
 # misc
 .DS_Store
