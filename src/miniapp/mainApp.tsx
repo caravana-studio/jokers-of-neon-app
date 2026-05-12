@@ -32,6 +32,7 @@ import { isNative } from "../utils/capacitorUtils.ts";
 import { preloadSpineAnimations } from "../utils/preloadAnimations.ts";
 import { registerServiceWorker } from "../utils/registerServiceWorker.ts";
 import { WalletProvider } from "../dojo/WalletContext.tsx";
+import { MiniPayWalletGate } from "./MiniPayWalletGate.tsx";
 
 const I18N_NAMESPACES = [
   "game",
@@ -73,21 +74,23 @@ async function init() {
             <I18nextProvider i18n={localI18n} defaultNS={undefined}>
               <QueryClientProvider client={queryClient}>
                 <ChakraBaseProvider theme={theme}>
-                  <WalletProvider value={setupResult}>
-                    <DojoProvider value={setupResult}>
-                      <BrowserRouter>
-                        <DatadogUserContext />
-                        <Toaster />
-                        <SettingsProvider
-                          introSongPath={"music/intro-track.mp3"}
-                          baseSongPath={"music/game-track.mp3"}
-                          rageSongPath={"music/rage_soundtrack.mp3"}
-                        >
-                          <App />
-                        </SettingsProvider>
-                      </BrowserRouter>
-                    </DojoProvider>
-                  </WalletProvider>
+                  <MiniPayWalletGate>
+                    <WalletProvider value={setupResult}>
+                      <DojoProvider value={setupResult}>
+                        <BrowserRouter>
+                          <DatadogUserContext />
+                          <Toaster />
+                          <SettingsProvider
+                            introSongPath={"music/intro-track.mp3"}
+                            baseSongPath={"music/game-track.mp3"}
+                            rageSongPath={"music/rage_soundtrack.mp3"}
+                          >
+                            <App />
+                          </SettingsProvider>
+                        </BrowserRouter>
+                      </DojoProvider>
+                    </WalletProvider>
+                  </MiniPayWalletGate>
                 </ChakraBaseProvider>
               </QueryClientProvider>
             </I18nextProvider>

@@ -42,10 +42,6 @@ export function isGameLoopBurnerEnabled() {
   return getGameLoopBlockchain() !== DEFAULT_BLOCKCHAIN;
 }
 
-function getGameLoopUserAddress() {
-  return import.meta.env.VITE_GAME_LOOP_USER_ADDRESS?.trim() || "";
-}
-
 function notifyGameLoopBurnerSessionUpdated() {
   if (typeof window === "undefined") return;
   window.dispatchEvent(new CustomEvent(GAME_LOOP_BURNER_SESSION_EVENT));
@@ -128,7 +124,7 @@ export function createGameLoopBurnerAccount(
   });
 }
 
-function getInjectedProvider(): InjectedEvmProvider | null {
+export function getInjectedProvider(): InjectedEvmProvider | null {
   if (typeof window === "undefined") {
     return null;
   }
@@ -136,6 +132,10 @@ function getInjectedProvider(): InjectedEvmProvider | null {
   const provider = (window as Window & { ethereum?: InjectedEvmProvider })
     .ethereum;
   return provider ?? null;
+}
+
+export function hasMiniPayWallet() {
+  return Boolean(getInjectedProvider()?.isMiniPay);
 }
 
 async function requestInjectedAccounts(provider: InjectedEvmProvider) {
@@ -162,7 +162,7 @@ async function requestInjectedAccounts(provider: InjectedEvmProvider) {
 
 async function resolveGameLoopUserAddress() {
   const provider = getInjectedProvider();
-  if (provider) {
+  if (provider?.isMiniPay) {
     const accounts = await requestInjectedAccounts(provider);
     const address = accounts[0]?.trim();
 
@@ -171,13 +171,8 @@ async function resolveGameLoopUserAddress() {
     }
   }
 
-  const fallbackAddress = getGameLoopUserAddress();
-  if (fallbackAddress) {
-    return fallbackAddress;
-  }
-
   throw new Error(
-    "ensureGameLoopBurnerSession: Could not resolve an EVM wallet address from MiniPay"
+    "ensureGameLoopBurnerSession: Could not resolve a MiniPay wallet address from window.ethereum"
   );
 }
 

@@ -135,6 +135,11 @@
     "description": "Please check your connection and try again",
     "retry": "RETRY"
   },
+  "minipay-gate": {
+    "title": "MINIPAY REQUIRED",
+    "description": "This app only works when accessed from the MiniPay app",
+    "retry": "Retry"
+  },
   "season-progression": {
     "free-rewards": "FREE REWARDS",
     "season": "SEASON {{season}}",
