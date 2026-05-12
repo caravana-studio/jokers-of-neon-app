@@ -22,9 +22,11 @@ import { ShopTierUnlockedPage } from "../pages/ShopTierUnlocked/ShopTierUnlocked
 import { SummaryPage } from "../pages/SummaryPage";
 import { DynamicStorePage } from "../pages/DynamicStore/DynamicStorePage";
 import { ExternalPack } from "../pages/ExternalPack/ExternalPack";
+import { DocsPage } from "../pages/Docs/Docs";
 import { CardHighlightProvider } from "../providers/HighlightProvider/CardHighlightProvider";
 import { PowerupHighlightProvider } from "../providers/HighlightProvider/PowerupHighlightProvider";
 import { StoreProvider } from "../providers/StoreProvider";
+import { SettingsPage } from "../pages/SettingsPage";
 import { MiniAppHome } from "./MiniAppHome";
 
 export const AppRoutes = () => {
@@ -46,6 +48,44 @@ export const AppRoutes = () => {
           <AnimatedPage>
             <MyGames />
           </AnimatedPage>
+        }
+      />
+      <Route
+        path="/settings"
+        element={
+          <AnimatedPage>
+            <SettingsPage />
+          </AnimatedPage>
+        }
+      />
+      <Route
+        path="/settings-game"
+        element={
+          <AnimatedPage>
+            <SettingsPage />
+          </AnimatedPage>
+        }
+      />
+      <Route
+        path="/docs"
+        element={
+          <CardHighlightProvider>
+            <AnimatedPage>
+              <DocsPage lastIndexTab={0} />
+            </AnimatedPage>
+          </CardHighlightProvider>
+        }
+      />
+      <Route
+        path="/docs-game"
+        element={
+          <CardHighlightProvider>
+            <AnimatedPage>
+              <GameStoreLoader>
+                <DocsPage lastIndexTab={0} />
+              </GameStoreLoader>
+            </AnimatedPage>
+          </CardHighlightProvider>
         }
       />
       <Route

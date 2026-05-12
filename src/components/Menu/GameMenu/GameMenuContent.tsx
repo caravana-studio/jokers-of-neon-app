@@ -10,16 +10,12 @@ import {
   Text,
   Box,
 } from "@chakra-ui/react";
-import { useRef, useState } from "react";
-import { ControllerIcon } from "../../../icons/ControllerIcon";
+import { useRef } from "react";
+import { AppType, useAppContext } from "../../../providers/AppContextProvider";
 import { useGameStore } from "../../../state/useGameStore";
 import CachedImage from "../../CachedImage";
-import { DiscordLink } from "../../DiscordLink";
 import { DocsMenuBtn } from "../Buttons/DocsMenuBtn";
-import { LeaderboardMenuBtn } from "../Buttons/LeaderboardMenuBtn";
 import { LogoutMenuBtn } from "../Buttons/Logout/LogoutMenuBtn";
-import { MapMenuBtn } from "../Buttons/MapMenuBtn";
-import { MyGamesMenuBtn } from "../Buttons/MyGamesMenuBtn";
 import { SettingsMenuBtn } from "../Buttons/SettingsMenuBtn";
 import { BackMenuBtn } from "../Buttons/BackMenuBtn";
 import { DailyMissions } from "../../DailyMissions/DailyMissions";
@@ -36,6 +32,7 @@ export const GameMenuContent: React.FC<GameMenuContentProps> = ({
   const iconWidth = "26px";
   const fontSize = "18px";
   const { id, isTournament } = useGameStore();
+  const isMiniApp = useAppContext() === AppType.MINIAPP;
 
   const touchStartX = useRef(0);
 
@@ -91,30 +88,66 @@ export const GameMenuContent: React.FC<GameMenuContentProps> = ({
         <DrawerBody
           display="flex"
           flexDir="column"
-          justifyContent="space-between"
+          justifyContent={isMiniApp ? "center" : "space-between"}
           alignItems="center"
           py={4}
           fontSize={fontSize}
           overflow="hidden"
         >
-          {/* Daily Missions Section - Centered in middle */}
-          <Flex w="100%" justifyContent="center" alignItems="center" flex={1} overflow="hidden">
-            <Box w="100%" maxW="500px" overflow="hidden">
-              <DailyMissions showTitle={true} fontSize={fontSize} />
-            </Box>
-          </Flex>
+          {isMiniApp ? (
+            <Flex
+              flexDir="column"
+              gap={4}
+              w="100%"
+              maxW="500px"
+              alignItems="flex-start"
+              justifyContent="center"
+              flex={1}
+            >
+              <BackMenuBtn width={iconWidth} label onClose={onClose} />
+              <DocsMenuBtn width={iconWidth} label onClose={onClose} />
+              <SettingsMenuBtn width={iconWidth} label onClose={onClose} />
+              <LogoutMenuBtn width={iconWidth} label />
+            </Flex>
+          ) : (
+            <>
+              <Flex
+                w="100%"
+                justifyContent="center"
+                alignItems="center"
+                flex={1}
+                overflow="hidden"
+              >
+                <Box w="100%" maxW="500px" overflow="hidden">
+                  <DailyMissions showTitle={true} fontSize={fontSize} />
+                </Box>
+              </Flex>
 
-          {/* Menu Buttons - Bottom */}
-          <Flex flexDir="column" gap={4} w="100%" alignItems="flex-start" flex={1} justifyContent="center">
-            <BackMenuBtn width={iconWidth} label onClose={onClose} />
-            <DocsMenuBtn width={iconWidth} label onClose={onClose} />
-            <SettingsMenuBtn width={iconWidth} label onClose={onClose} />
-          </Flex>
+              <Flex
+                flexDir="column"
+                gap={4}
+                w="100%"
+                alignItems="flex-start"
+                flex={1}
+                justifyContent="center"
+              >
+                <BackMenuBtn width={iconWidth} label onClose={onClose} />
+                <DocsMenuBtn width={iconWidth} label onClose={onClose} />
+                <SettingsMenuBtn width={iconWidth} label onClose={onClose} />
+              </Flex>
+            </>
+          )}
         </DrawerBody>
 
-        <DrawerFooter justifyContent="flex-start" fontSize={fontSize} alignItems="center">
-          <LogoutMenuBtn width={iconWidth} label />
-        </DrawerFooter>
+        {!isMiniApp && (
+          <DrawerFooter
+            justifyContent="flex-start"
+            fontSize={fontSize}
+            alignItems="center"
+          >
+            <LogoutMenuBtn width={iconWidth} label />
+          </DrawerFooter>
+        )}
       </DrawerContent>
     </Drawer>
   );

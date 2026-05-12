@@ -212,6 +212,16 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
         key: "shop",
         notificationCount: collectorNotificationCount,
       },
+      ...(isMiniApp
+        ? [
+            {
+              icon: Icons.SETTINGS,
+              url: "/settings",
+              active: url === "/settings",
+              key: "settings",
+            },
+          ]
+        : []),
       /*{
         icon: Icons.PROFILE,
         url: "/profile",
@@ -241,7 +251,8 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
           (item) =>
             item.key !== "collection" &&
             item.key !== "shop" &&
-            item.key !== "tournament",
+            item.key !== "tournament" &&
+            item.key !== "season",
         )
       : items;
   }, [
@@ -340,5 +351,11 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
     },
   ];
 
-  return { mainMenuItems, inGameMenuItems: allInGameMenuItems, extraMenuItems };
+  return {
+    mainMenuItems,
+    inGameMenuItems: allInGameMenuItems,
+    extraMenuItems: isMiniApp
+      ? extraMenuItems.filter((item) => item.key !== "daily-missions")
+      : extraMenuItems,
+  };
 }
