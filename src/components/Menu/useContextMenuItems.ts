@@ -6,6 +6,7 @@ import { GameStateEnum } from "../../dojo/typescript/custom";
 import { useGetMyGames } from "../../queries/useGetMyGames";
 import { useShopDistribution } from "../../queries/useShopDistribution";
 import { useTournamentSettings } from "../../queries/useTournamentSettings";
+import { AppType, useAppContext } from "../../providers/AppContextProvider";
 import { useGameStore } from "../../state/useGameStore";
 import { useSeasonProgressStore } from "../../state/useSeasonProgressStore";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
@@ -85,6 +86,7 @@ interface MenuItem {
 }
 
 export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
+  const appType = useAppContext();
   const location = useLocation();
   const navigate = useNavigate();
   const url = location.pathname;
@@ -156,6 +158,7 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
     (state === GameStateEnum.Round || state === GameStateEnum.Rage) &&
     typeof gamesCount === "number" &&
     gamesCount < 5;
+  const isMiniApp = appType === AppType.MINIAPP;
 
   const mainMenuItems: MenuItem[] = useMemo(() => {
     const items: MenuItem[] = [
@@ -233,9 +236,17 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
       });
     }
 
-    return items;
+    return isMiniApp
+      ? items.filter(
+          (item) =>
+            item.key !== "collection" &&
+            item.key !== "shop" &&
+            item.key !== "tournament",
+        )
+      : items;
   }, [
     collectorNotificationCount,
+    isMiniApp,
     isSmallScreen,
     isTournamentActive,
     seasonNotificationCount,
