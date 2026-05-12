@@ -2,7 +2,6 @@ import { GameOverContent } from "./GameOverContent";
 import { IconComponent } from "../../components/IconComponent";
 import { Icons } from "../../constants/icons";
 import { useGameOver } from "../../hooks/useGameOver";
-import { useGameContext } from "../../providers/GameProvider";
 import { useNavigate } from "react-router-dom";
 
 export const GameOverGuest = () => {
@@ -15,7 +14,6 @@ export const GameOverGuest = () => {
     onSecondButtonClick,
     isLoading,
   } = useGameOver();
-  const { initiateTransferFlow } = useGameContext();
   const navigate = useNavigate();
 
   return (
@@ -42,7 +40,7 @@ export const GameOverGuest = () => {
       }}
       secondButton={{
         onClick: () => {
-          initiateTransferFlow();
+          navigate("/login");
         },
         label: t("game-over.login").toUpperCase(),
         icon: (
