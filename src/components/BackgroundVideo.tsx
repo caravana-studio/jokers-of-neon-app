@@ -91,10 +91,23 @@ const BackgroundVideo = ({ type, useTournamentTheme }: BackgroundVideoProps) => 
 
   const videoRef1 = useRef<HTMLVideoElement | null>(null);
   const videoRef2 = useRef<HTMLVideoElement | null>(null);
+  const transitionTimeoutRef = useRef<number | null>(null);
+  const fadeTimeoutRef = useRef<number | null>(null);
+  const hasLoadedVideoRef = useRef(false);
 
   const isLooseVideo = type === "loose";
 
   useEffect(() => {
+    if (transitionTimeoutRef.current) {
+      window.clearTimeout(transitionTimeoutRef.current);
+      transitionTimeoutRef.current = null;
+    }
+
+    if (fadeTimeoutRef.current) {
+      window.clearTimeout(fadeTimeoutRef.current);
+      fadeTimeoutRef.current = null;
+    }
+
     let isMounted = true;
 
     const loadVideo = async () => {
@@ -107,9 +120,20 @@ const BackgroundVideo = ({ type, useTournamentTheme }: BackgroundVideoProps) => 
       const newVideoSrc = cachedVideo || videoSource;
 
       if (!isMounted) return;
+      const hasLoadedVideo = hasLoadedVideoRef.current;
+
+      if (!hasLoadedVideo) {
+        setVideoSrc1(newVideoSrc);
+        setVideoSrc2(null);
+        setActiveVideo(1);
+        setIsFading(false);
+        hasLoadedVideoRef.current = true;
+        return;
+      }
+
       setIsFading(true); // Start fade transition
 
-      setTimeout(() => {
+      transitionTimeoutRef.current = window.setTimeout(() => {
         if (!isMounted) return;
 
         setActiveVideo((currentActiveVideo) => {
@@ -121,8 +145,12 @@ const BackgroundVideo = ({ type, useTournamentTheme }: BackgroundVideoProps) => 
           setVideoSrc1(newVideoSrc);
           return 1;
         });
+        hasLoadedVideoRef.current = true;
 
-        setTimeout(() => setIsFading(false), 800); // End fade transition after 500ms
+        fadeTimeoutRef.current = window.setTimeout(() => {
+          if (!isMounted) return;
+          setIsFading(false);
+        }, 800);
       }, 100); // Delay before starting transition
     };
 
@@ -130,13 +158,18 @@ const BackgroundVideo = ({ type, useTournamentTheme }: BackgroundVideoProps) => 
 
     return () => {
       isMounted = false;
+
+      if (transitionTimeoutRef.current) {
+        window.clearTimeout(transitionTimeoutRef.current);
+        transitionTimeoutRef.current = null;
+      }
+
+      if (fadeTimeoutRef.current) {
+        window.clearTimeout(fadeTimeoutRef.current);
+        fadeTimeoutRef.current = null;
+      }
     };
   }, [seasonNumber, type, useTournamentTheme]);
-
-  const immediateVideoSource = getBaseVideoSource(
-    type === BackgroundTypeEnum.RageBoss ? BackgroundTypeEnum.Rage : type,
-    useTournamentTheme
-  );
 
   return (
     <div
@@ -151,26 +184,28 @@ const BackgroundVideo = ({ type, useTournamentTheme }: BackgroundVideoProps) => 
         pointerEvents: "none",
       }}
     >
-      <video
-        ref={videoRef1}
-        src={videoSrc1 || immediateVideoSource}
-        autoPlay
-        loop
-        muted
-        playsInline
-        style={{
-          pointerEvents: "none",
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100%",
-          objectFit: "cover",
-          transition: "opacity 1s ease-in-out",
-          filter: isLooseVideo ? "grayscale(1)" : "none",
-          opacity: activeVideo === 1 ? 1 : isFading ? 0 : 0, // Fade out if inactive
-        }}
-      />
+      {videoSrc1 && (
+        <video
+          ref={videoRef1}
+          src={videoSrc1}
+          autoPlay
+          loop
+          muted
+          playsInline
+          style={{
+            pointerEvents: "none",
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            transition: "opacity 1s ease-in-out",
+            filter: isLooseVideo ? "grayscale(1)" : "none",
+            opacity: activeVideo === 1 ? 1 : isFading ? 0 : 0, // Fade out if inactive
+          }}
+        />
+      )}
       {videoSrc2 && (
         <video
           ref={videoRef2}
