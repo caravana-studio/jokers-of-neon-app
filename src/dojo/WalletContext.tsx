@@ -22,6 +22,7 @@ import { useAccountStore } from "./accountStore";
 import { controller } from "./controller/controller";
 import { CavosAccountAdapter } from "./cavos/CavosAccountAdapter";
 import { useCavosSafe } from "./cavos/CavosConfig";
+import { clearPersistedCavosNativeSession } from "./cavos/cavosNativeSessionPersistence";
 import type { SetupResult } from "./setup";
 
 const CHAIN = import.meta.env.VITE_CHAIN;
@@ -387,6 +388,7 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
   }, [finalAccount, disconnect]);
 
   const clearCavosStorage = () => {
+    clearPersistedCavosNativeSession();
     localStorage.removeItem("cavos_auth_result");
     localStorage.removeItem("cavos_magic_link_pre_auth");
     localStorage.removeItem("cavos_pending_verification");
