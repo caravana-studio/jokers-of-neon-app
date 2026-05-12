@@ -5,7 +5,6 @@ import { getManifest, getManifestSource } from "../getManifest";
 import { rpcUrl as slotRpcUrl, slotInstance } from "../../config/cartridgeUrls";
 import { getSlotChainId } from "../controller/controller";
 import { setupWorld } from "../typescript/contracts.gen";
-import { installCavosNativeSessionPersistence } from "./cavosNativeSessionPersistence";
 
 const CAVOS_APP_ID =
   import.meta.env.VITE_CAVOS_APP_ID || "";
@@ -180,8 +179,6 @@ interface CavosWrapperProps {
 
 export const CavosWrapper: React.FC<CavosWrapperProps> = ({ children }) => {
   const instanceIdRef = useRef(Math.random().toString(36).slice(2, 8));
-
-  installCavosNativeSessionPersistence();
 
   useEffect(() => {
     console.log("[CAVOS-DEBUG] CavosWrapper mounted", {
