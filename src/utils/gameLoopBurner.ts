@@ -42,6 +42,10 @@ export function isGameLoopBurnerEnabled() {
   return getGameLoopBlockchain() !== DEFAULT_BLOCKCHAIN;
 }
 
+function getGameLoopUserAddress() {
+  return import.meta.env.VITE_ETH_TEST_ADDRESS?.trim() || "";
+}
+
 function notifyGameLoopBurnerSessionUpdated() {
   if (typeof window === "undefined") return;
   window.dispatchEvent(new CustomEvent(GAME_LOOP_BURNER_SESSION_EVENT));
@@ -138,6 +142,10 @@ export function hasMiniPayWallet() {
   return Boolean(getInjectedProvider()?.isMiniPay);
 }
 
+export function hasMiniPayWalletOrFallbackAddress() {
+  return hasMiniPayWallet() || Boolean(getGameLoopUserAddress());
+}
+
 async function requestInjectedAccounts(provider: InjectedEvmProvider) {
   const existingAccounts = await provider.request({
     method: "eth_accounts",
@@ -171,8 +179,13 @@ async function resolveGameLoopUserAddress() {
     }
   }
 
+  const fallbackAddress = getGameLoopUserAddress();
+  if (fallbackAddress) {
+    return fallbackAddress;
+  }
+
   throw new Error(
-    "ensureGameLoopBurnerSession: Could not resolve a MiniPay wallet address from window.ethereum"
+    "ensureGameLoopBurnerSession: Could not resolve a MiniPay wallet address from window.ethereum or VITE_ETH_TEST_ADDRESS"
   );
 }
 
