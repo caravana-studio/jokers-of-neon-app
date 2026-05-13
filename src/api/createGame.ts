@@ -21,6 +21,21 @@ interface CreateGamePayload {
   seed?: string;
 }
 
+async function postCreateGame(
+  requestUrl: string,
+  apiKey: string,
+  payload: CreateGamePayload
+) {
+  return fetch(requestUrl, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-API-Key": apiKey,
+    },
+    body: JSON.stringify(payload),
+  });
+}
+
 export async function createGame({
   userAddress,
   seasonId = getSeasonNumber(),
@@ -60,14 +75,12 @@ export async function createGame({
     payload.seed = seed;
   }
 
-  const response = await fetch(requestUrl, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "X-API-Key": apiKey,
-    },
-    body: JSON.stringify(payload),
-  });
+  let response = await postCreateGame(requestUrl, apiKey, payload);
+
+  if (response.status === 409 && isGameLoopBurnerEnabled()) {
+    await ensureGameLoopBurnerSession({ forceRefresh: true });
+    response = await postCreateGame(requestUrl, apiKey, payload);
+  }
 
   if (!response.ok) {
     const errorDetails = await response.text().catch(() => "");

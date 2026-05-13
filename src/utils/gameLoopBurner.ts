@@ -146,6 +146,10 @@ export function hasMiniPayWalletOrFallbackAddress() {
   return hasMiniPayWallet() || Boolean(getGameLoopUserAddress());
 }
 
+type EnsureGameLoopBurnerSessionOptions = {
+  forceRefresh?: boolean;
+};
+
 async function requestInjectedAccounts(provider: InjectedEvmProvider) {
   const existingAccounts = await provider.request({
     method: "eth_accounts",
@@ -189,7 +193,9 @@ async function resolveGameLoopUserAddress() {
   );
 }
 
-export async function ensureGameLoopBurnerSession() {
+export async function ensureGameLoopBurnerSession(
+  options: EnsureGameLoopBurnerSessionOptions = {}
+) {
   if (!isGameLoopBurnerEnabled()) {
     throw new Error(
       "ensureGameLoopBurnerSession: VITE_BLOCKCHAIN must be set to a non-starknet value"
@@ -208,6 +214,7 @@ export async function ensureGameLoopBurnerSession() {
   const existingSession = getStoredGameLoopBurnerSession();
 
   if (
+    !options.forceRefresh &&
     existingSession &&
     existingSession.blockchain === blockchain &&
     existingSession.userAddress.toLowerCase() === userAddress.toLowerCase()
