@@ -220,14 +220,18 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
               active: url === "/settings",
               key: "settings",
             },
+            ...(isSmallScreen
+              ? [
+                  {
+                    icon: Icons.PROFILE,
+                    url: "/profile",
+                    active: url === "/profile",
+                    key: "profile",
+                  },
+                ]
+              : []),
           ]
         : []),
-      /*{
-        icon: Icons.PROFILE,
-        url: "/profile",
-        active: url === "/profile",
-        key: "profile",
-      },*/
     ];
 
     if (!isSmallScreen) {

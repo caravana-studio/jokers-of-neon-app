@@ -281,11 +281,13 @@ function useUsernameRequirement() {
 type RequireUsernameProps = {
   children: ReactNode;
   redirectTo?: string;
+  requireCompletion?: boolean;
 };
 
 export const RequireUsername = ({
   children,
   redirectTo = "/",
+  requireCompletion = false,
 }: RequireUsernameProps) => {
   const navigate = useNavigate();
   const { ensureUsername, hasUsername, modal } = useUsernameRequirement();
@@ -299,10 +301,15 @@ export const RequireUsername = ({
 
     let cancelled = false;
 
-    void ensureUsername({ required: false }).then((allowed) => {
+    void ensureUsername({ required: requireCompletion }).then((allowed) => {
       if (cancelled) return;
 
       if (!allowed) {
+        if (requireCompletion) {
+          setIsAllowed(false);
+          return;
+        }
+
         if (window.history.length > 1) {
           navigate(-1);
           return;
@@ -318,7 +325,7 @@ export const RequireUsername = ({
     return () => {
       cancelled = true;
     };
-  }, [ensureUsername, hasUsername, navigate, redirectTo]);
+  }, [ensureUsername, hasUsername, navigate, redirectTo, requireCompletion]);
 
   if (hasUsername || isAllowed) {
     return (

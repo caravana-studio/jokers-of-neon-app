@@ -48,7 +48,7 @@ export const AppRoutes = () => {
         path="/my-games"
         element={
           <AnimatedPage>
-            <RequireUsername>
+            <RequireUsername requireCompletion>
               <MyGames />
             </RequireUsername>
           </AnimatedPage>
@@ -58,7 +58,7 @@ export const AppRoutes = () => {
         path="/profile"
         element={
           <AnimatedPage>
-            <RequireUsername>
+            <RequireUsername requireCompletion>
               <ProfilePage />
             </RequireUsername>
           </AnimatedPage>

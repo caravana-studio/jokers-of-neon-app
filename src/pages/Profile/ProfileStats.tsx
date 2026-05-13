@@ -21,6 +21,8 @@ export interface ProfileStatsProps {
     prevLevelXp: number;
     nextLevelXp: number;
   };
+  hideTotalXp?: boolean;
+  hideXpProgress?: boolean;
 }
 
 export const ProfileStats: React.FC<
@@ -40,6 +42,8 @@ export const ProfileStats: React.FC<
   currentXp,
   totalXp,
   xpLine,
+  hideTotalXp = false,
+  hideXpProgress = false,
 }) => {
   const [profilePickerVisible, setProfilePickerVisible] = useState(false);
   const [profilePictureId, setProfilePictureId] = useState<number | string>(
@@ -158,54 +162,56 @@ export const ProfileStats: React.FC<
         {/* <ProfileStat title={t("streaks")} value={streak} suffix={t("days")} /> */}
         <ProfileStat title={t("games")} value={games} />
         <ProfileStat title={t("victories")} value={victories} />
-        <ProfileStat title={t("total-xp")} value={totalXp} />
+        {!hideTotalXp && <ProfileStat title={t("total-xp")} value={totalXp} />}
       </Flex>
-      <Box my={2} borderRadius="md" width="100%" maxW="600px">
-        <Flex justify="space-between" gap={1} align="center">
-          <Box>
-            <Text
-              fontSize="10px"
-              textTransform="uppercase"
-              fontWeight="500"
-              width={"auto"}
-            >
-              {t("my-xp")}
-            </Text>
-            <Heading
-              textAlign="right"
-              fontSize="sm"
-              mr={0.5}
-              mt={-1}
-              variant="italic"
-              width={"auto"}
-            >
-              {currentXp}
-            </Heading>
-          </Box>
+      {!hideXpProgress && (
+        <Box my={2} borderRadius="md" width="100%" maxW="600px">
+          <Flex justify="space-between" gap={1} align="center">
+            <Box>
+              <Text
+                fontSize="10px"
+                textTransform="uppercase"
+                fontWeight="500"
+                width={"auto"}
+              >
+                {t("my-xp")}
+              </Text>
+              <Heading
+                textAlign="right"
+                fontSize="sm"
+                mr={0.5}
+                mt={-1}
+                variant="italic"
+                width={"auto"}
+              >
+                {currentXp}
+              </Heading>
+            </Box>
 
-          <Box>
-            <Text
-              textAlign={"right"}
-              fontSize="10px"
-              textTransform="uppercase"
-              fontWeight="500"
-              width={"auto"}
-            >
-              {t("next-level")}
-            </Text>
-            <Heading
-              width={"auto"}
-              fontSize="sm"
-              ml={0.5}
-              mt={-1}
-              variant="italic"
-            >
-              {nextLevelXp}
-            </Heading>
-          </Box>
-        </Flex>
-        <ProgressBar progress={progress} color={VIOLET} />
-      </Box>
+            <Box>
+              <Text
+                textAlign={"right"}
+                fontSize="10px"
+                textTransform="uppercase"
+                fontWeight="500"
+                width={"auto"}
+              >
+                {t("next-level")}
+              </Text>
+              <Heading
+                width={"auto"}
+                fontSize="sm"
+                ml={0.5}
+                mt={-1}
+                variant="italic"
+              >
+                {nextLevelXp}
+              </Heading>
+            </Box>
+          </Flex>
+          <ProgressBar progress={progress} color={VIOLET} />
+        </Box>
+      )}
     </Flex>
   );
 };
