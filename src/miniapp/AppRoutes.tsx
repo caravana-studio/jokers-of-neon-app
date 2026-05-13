@@ -22,12 +22,12 @@ import { ShopTierUnlockedPage } from "../pages/ShopTierUnlocked/ShopTierUnlocked
 import { SummaryPage } from "../pages/SummaryPage";
 import { DynamicStorePage } from "../pages/DynamicStore/DynamicStorePage";
 import { ExternalPack } from "../pages/ExternalPack/ExternalPack";
-import { ProfilePage } from "../pages/Profile/ProfilePage";
 import { DocsPage } from "../pages/Docs/Docs";
 import { CardHighlightProvider } from "../providers/HighlightProvider/CardHighlightProvider";
 import { PowerupHighlightProvider } from "../providers/HighlightProvider/PowerupHighlightProvider";
 import { StoreProvider } from "../providers/StoreProvider";
 import { SettingsPage } from "../pages/SettingsPage";
+import { MiniAppProfilePage } from "./MiniAppProfilePage";
 import { MiniAppWeeklyLeaderboardPage } from "./MiniAppWeeklyLeaderboardPage";
 import { MiniAppHome } from "./MiniAppHome";
 
@@ -59,7 +59,7 @@ export const AppRoutes = () => {
         element={
           <AnimatedPage>
             <RequireUsername requireCompletion>
-              <ProfilePage />
+              <MiniAppProfilePage />
             </RequireUsername>
           </AnimatedPage>
         }

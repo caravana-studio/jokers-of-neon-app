@@ -7,8 +7,6 @@ import { Icons } from "../../constants/icons";
 import { TESTERS } from "../../constants/testers";
 import { useDojo } from "../../dojo/DojoContext";
 import { useUsername } from "../../dojo/utils/useUsername";
-import { useGameLoopBurnerSession } from "../../hooks/useGameLoopBurnerSession";
-import { AppType, useAppContext } from "../../providers/AppContextProvider";
 import { ProfileStore, useProfileStore } from "../../state/useProfileStore";
 import { useUsernameStore } from "../../state/useUsernameStore";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
@@ -30,10 +28,7 @@ export const ProfileContent = ({
   const { playerStats, profile, xpLine, currentBadges, totalBadges } = data;
 
   const btnWidth = "18px";
-  const appType = useAppContext();
-  const isMiniApp = appType === AppType.MINIAPP;
   const { setup } = useDojo();
-  const gameLoopBurnerSession = useGameLoopBurnerSession();
   const { isSmallScreen } = useResponsiveValues();
   const username = useUsername();
   const navigate = useNavigate();
@@ -44,15 +39,12 @@ export const ProfileContent = ({
     (store) => store.updateUsernameForAddress
   );
   const setProfileUsername = useProfileStore((store) => store.setProfileUsername);
-  const profileAddress = isMiniApp
-    ? gameLoopBurnerSession?.userAddress ?? setup.account.account.address
-    : setup.account.account.address;
 
   const handleUpdateUsername = async (nextUsername: string) => {
     setUsernameSaving(true);
     try {
       const record = await updateUsernameForAddress(
-        profileAddress,
+        setup.account.account.address,
         nextUsername
       );
       setProfileUsername(record.username);
@@ -98,14 +90,12 @@ export const ProfileContent = ({
             currentXp={profile.currentXp}
             totalXp={profile.totalXp}
             xpLine={xpLine}
-            hideXpProgress={isMiniApp}
-            hideTotalXp={isMiniApp}
             profilePicture={profile.avatarId}
             onUpdateAvatar={(avatarId) =>
               onUpdateAvatar(
                 setup.client,
                 setup.account.account,
-                profileAddress,
+                setup.account.account.address,
                 avatarId
               )
             }
@@ -124,61 +114,59 @@ export const ProfileContent = ({
 
           {/* <UserBadges currentBadges={currentBadges} totalBadges={totalBadges} /> */}
 
-          {!isMiniApp && (
-            <Flex flexDirection={"column"} gap={2} w={"100%"} color={"white"}>
-              {username && TESTERS.includes(username) && (
-                <>
-                  {isSmallScreen && (
-                    <Divider borderColor="white" borderWidth="1px" my={2} />
-                  )}
-                  <MenuBtn
-                    icon={Icons.LIST}
-                    description={"Test new features"}
-                    label={"Test new features"}
-                    onClick={() => navigate("/test")}
-                    arrowRight
-                    width={btnWidth}
-                  />
-                </>
-              )}
-              {isSmallScreen && (
-                <Divider borderColor="white" borderWidth="1px" my={2} />
-              )}
-              <MenuBtn
-                icon={Icons.SETTINGS}
-                description={t("game.game-menu.settings-btn")}
-                label={t("game.game-menu.settings-btn")}
-                onClick={() => navigate("/settings")}
-                arrowRight
-                width={btnWidth}
-              />
-              {isSmallScreen && (
-                <Divider borderColor="white" borderWidth="1px" my={2} />
-              )}
-              <DeleteAccBtn width={btnWidth} label={true} arrowRight />
+          <Flex flexDirection={"column"} gap={2} w={"100%"} color={"white"}>
+            {username && TESTERS.includes(username) && (
+              <>
+                {isSmallScreen && (
+                  <Divider borderColor="white" borderWidth="1px" my={2} />
+                )}
+                <MenuBtn
+                  icon={Icons.LIST}
+                  description={"Test new features"}
+                  label={"Test new features"}
+                  onClick={() => navigate("/test")}
+                  arrowRight
+                  width={btnWidth}
+                />
+              </>
+            )}
+            {isSmallScreen && (
+              <Divider borderColor="white" borderWidth="1px" my={2} />
+            )}
+            <MenuBtn
+              icon={Icons.SETTINGS}
+              description={t("game.game-menu.settings-btn")}
+              label={t("game.game-menu.settings-btn")}
+              onClick={() => navigate("/settings")}
+              arrowRight
+              width={btnWidth}
+            />
+            {isSmallScreen && (
+              <Divider borderColor="white" borderWidth="1px" my={2} />
+            )}
+            <DeleteAccBtn width={btnWidth} label={true} arrowRight />
 
-              {!setup.useBurnerAcc && (
-                <>
-                  {isSmallScreen && (
-                    <Divider borderColor="white" borderWidth="1px" my={2} />
-                  )}
-                  <LogoutMenuBtn width={btnWidth} label={true} arrowRight />
-                </>
-              )}
-              {isSmallScreen && (
-                <Divider borderColor="white" borderWidth="1px" my={2} />
-              )}
-              {/* 
-              {!setup.useBurnerAcc && (
-                <>
-                  {isSmallScreen && (
-                    <Divider borderColor="white" borderWidth="1px" my={2} />
-                  )}
-                  <ControllerIcon width={btnWidth} label={true} arrowRight />
-                </>
-              )} */}
-            </Flex>
-          )}
+            {!setup.useBurnerAcc && (
+              <>
+                {isSmallScreen && (
+                  <Divider borderColor="white" borderWidth="1px" my={2} />
+                )}
+                <LogoutMenuBtn width={btnWidth} label={true} arrowRight />
+              </>
+            )}
+            {isSmallScreen && (
+              <Divider borderColor="white" borderWidth="1px" my={2} />
+            )}
+            {/* 
+            {!setup.useBurnerAcc && (
+              <>
+                {isSmallScreen && (
+                  <Divider borderColor="white" borderWidth="1px" my={2} />
+                )}
+                <ControllerIcon width={btnWidth} label={true} arrowRight />
+              </>
+            )} */}
+          </Flex>
         </Flex>
       </Flex>
     </DelayedLoading>

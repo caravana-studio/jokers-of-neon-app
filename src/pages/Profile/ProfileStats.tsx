@@ -23,6 +23,7 @@ export interface ProfileStatsProps {
   };
   hideTotalXp?: boolean;
   hideXpProgress?: boolean;
+  hideLevel?: boolean;
 }
 
 export const ProfileStats: React.FC<
@@ -44,6 +45,7 @@ export const ProfileStats: React.FC<
   xpLine,
   hideTotalXp = false,
   hideXpProgress = false,
+  hideLevel = false,
 }) => {
   const [profilePickerVisible, setProfilePickerVisible] = useState(false);
   const [profilePictureId, setProfilePictureId] = useState<number | string>(
@@ -129,16 +131,18 @@ export const ProfileStats: React.FC<
           />
         )}
       </Flex>
-      <Flex
-        border={"1px"}
-        borderColor={"white"}
-        borderRadius={"full"}
-        px={8}
-        mb={2}
-        fontSize={"xs"}
-      >
-        {t("level")} {level}
-      </Flex>
+      {!hideLevel && (
+        <Flex
+          border={"1px"}
+          borderColor={"white"}
+          borderRadius={"full"}
+          px={8}
+          mb={2}
+          fontSize={"xs"}
+        >
+          {t("level")} {level}
+        </Flex>
+      )}
       <Collapse
         in={profilePickerVisible}
         animateOpacity

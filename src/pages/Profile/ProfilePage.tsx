@@ -1,8 +1,5 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { Loading } from "../../components/Loading";
-import { useGameLoopBurnerSession } from "../../hooks/useGameLoopBurnerSession";
-import { AppType, useAppContext } from "../../providers/AppContextProvider";
-import { addressKey } from "../../utils/starknetAddress";
 import { useDojo } from "../../dojo/useDojo";
 import { useUsername } from "../../dojo/utils/useUsername";
 import { useProfileStore } from "../../state/useProfileStore";
@@ -14,87 +11,21 @@ export const ProfilePage = () => {
     setup: { account, client },
     accountType,
   } = useDojo();
-  const appType = useAppContext();
-  const isMiniApp = appType === AppType.MINIAPP;
-  const gameLoopBurnerSession = useGameLoopBurnerSession();
-
   const loggedInUser = useUsername();
   const usernameStatus = useUsernameStore((store) => store.status);
-  const storedUsernameAddress = useUsernameStore((store) => store.address);
-  const storedUsername = useUsernameStore((store) => store.username);
-  const loadUsername = useUsernameStore((store) => store.loadUsername);
-
-  const { profileData, fetchProfileData, updateAvatar } =
-    useProfileStore();
-  const lastProfileRequestKeyRef = useRef<string | null>(null);
-
-  const profileAddress = isMiniApp
-    ? gameLoopBurnerSession?.userAddress ?? ""
-    : account?.account.address ?? "";
-  const hasMatchingStoredUsername =
-    addressKey(storedUsernameAddress) === addressKey(profileAddress);
-  const resolvedUsername = isMiniApp
-    ? hasMatchingStoredUsername
-      ? storedUsername
-      : null
-    : loggedInUser;
-  const isUsernameReady = isMiniApp
-    ? hasMatchingStoredUsername && usernameStatus === "ready"
-    : usernameStatus === "ready";
-  const profileRequestKey =
-    client &&
-    account &&
-    profileAddress &&
-    resolvedUsername &&
-    isUsernameReady
-      ? `${addressKey(profileAddress)}:${resolvedUsername}:${accountType ?? ""}`
-      : null;
+  const { profileData, fetchProfileData, loading, updateAvatar } = useProfileStore();
 
   useEffect(() => {
-    if (!isMiniApp || !profileAddress) return;
-
-    if (hasMatchingStoredUsername && usernameStatus !== "error") {
-      return;
+    if (client && account && loggedInUser && usernameStatus === "ready" && !loading) {
+      void fetchProfileData(
+        client,
+        account.account.address,
+        account.account,
+        loggedInUser,
+        accountType
+      );
     }
-
-    void loadUsername(profileAddress);
-  }, [
-    hasMatchingStoredUsername,
-    isMiniApp,
-    loadUsername,
-    profileAddress,
-    usernameStatus,
-  ]);
-
-  useEffect(() => {
-    if (!profileRequestKey || !client || !account) {
-      lastProfileRequestKeyRef.current = null;
-      return;
-    }
-
-    if (lastProfileRequestKeyRef.current === profileRequestKey) {
-      return;
-    }
-
-    lastProfileRequestKeyRef.current = profileRequestKey;
-
-    void fetchProfileData(
-      client,
-      profileAddress,
-      account.account,
-      resolvedUsername ?? undefined,
-      accountType
-    );
-  }, [
-    client,
-    account,
-    profileAddress,
-    resolvedUsername,
-    isUsernameReady,
-    accountType,
-    fetchProfileData,
-    profileRequestKey,
-  ]);
+  }, [client, account, loggedInUser, usernameStatus, profileData?.profile.username, accountType]);
 
   return profileData !== null ? (
     <ProfileContent data={profileData} onUpdateAvatar={updateAvatar} />
