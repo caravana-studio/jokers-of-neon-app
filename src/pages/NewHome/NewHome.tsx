@@ -33,8 +33,6 @@ import { useGetMyGames } from "../../queries/useGetMyGames";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { logEvent } from "../../utils/analytics";
 import { APP_URL, isNative } from "../../utils/capacitorUtils";
-import { getFirebasePushToken } from "../../utils/notifications/firebasePush";
-import { registerPushNotifications } from "../../utils/notifications/registerPushNotifications";
 import { getMajor, getMinor, getPatch } from "../../utils/versionUtils";
 
 const bossFloatAnimation = keyframes`
@@ -111,19 +109,6 @@ export const NewHome = () => {
         }
       });
 
-      let timeoutId: ReturnType<typeof setTimeout> | undefined;
-      if (!useBurnerAcc) {
-        timeoutId = setTimeout(async () => {
-          await registerPushNotifications();
-          await getFirebasePushToken(account?.account?.address);
-        }, 3000);
-      }
-
-      return () => {
-        if (timeoutId) {
-          clearTimeout(timeoutId);
-        }
-      };
     }
   }, []);
 
