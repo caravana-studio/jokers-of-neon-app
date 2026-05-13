@@ -20,8 +20,10 @@ export const Home = () => {
 
   const handleCreateGame = async () => {
     prepareNewGame();
-    executeCreateGame();
-    navigate("/entering-tournament");
+    const started = await executeCreateGame();
+    if (started) {
+      navigate("/entering-tournament");
+    }
   };
 
   const handlePlayClick = () => {

@@ -52,13 +52,16 @@ export const TournamentEntriesBar = () => {
     resetSeasonProgress,
   ]);
 
-  const handleCreateGame = () => {
+  const handleCreateGame = async () => {
     if (entries <= 0) {
       return;
     }
-    decrementTournamentEntries();
     prepareNewGame();
-    executeCreateGame(true);
+    const started = await executeCreateGame(true);
+    if (!started) {
+      return;
+    }
+    decrementTournamentEntries();
     navigate("/entering-tournament");
   };
 

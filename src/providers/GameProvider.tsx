@@ -9,6 +9,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { AccountInterface } from "starknet";
 import { createGame } from "../api/createGame.ts";
 import { fetchUsernameByAddress } from "../api/usernames.ts";
+import { useUsernameRequirement } from "../components/UsernameGate.tsx";
 import {
   acumSfx,
   clearLevel,
@@ -23,7 +24,6 @@ const PITCH_VARIANTS = 18;
 import { GameStateEnum } from "../dojo/typescript/custom.ts";
 import { useDojo } from "../dojo/useDojo.tsx";
 import { useGameActions } from "../dojo/useGameActions.tsx";
-import { useUsername } from "../dojo/utils/useUsername.tsx";
 import { useAudio } from "../hooks/useAudio.tsx";
 import { usePitchedAudio } from "../hooks/usePitchedAudio.tsx";
 import { useCustomToast } from "../hooks/useCustomToast.tsx";
@@ -32,6 +32,7 @@ import { useAnimationStore } from "../state/useAnimationStore.ts";
 import { useCurrentHandStore } from "../state/useCurrentHandStore.ts";
 import { useDeckStore } from "../state/useDeckStore.ts";
 import { useGameStore } from "../state/useGameStore.ts";
+import { useUsernameStore } from "../state/useUsernameStore.ts";
 import { useUnlockProgressStore } from "../state/useUnlockProgressStore.ts";
 import { Card } from "../types/Card";
 import { CardPlayEvent, PlayEvents, PowerUpScore } from "../types/ScoreData";
@@ -67,7 +68,7 @@ import { useSettings } from "./SettingsProvider.tsx";
 import { useTutorialStore } from "../state/useTutorialStore.ts";
 
 export interface IGameContext {
-  executeCreateGame: (isTournament?: boolean) => void;
+  executeCreateGame: (isTournament?: boolean) => Promise<boolean>;
   play: () => void;
   discard: () => void;
   changeModifierCard: (
@@ -197,6 +198,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   } = useGameActions();
 
   const { showErrorToast } = useCustomToast();
+  const { ensureUsername, modal: usernameRequirementModal } = useUsernameRequirement();
 
   const { sfxVolume, animationSpeed, skipAllTutorials } = useSettings();
   const completedTutorials = useTutorialStore((state) => state.completed);
@@ -294,8 +296,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     resetLevel();
   };
 
-  const usernameLS = useUsername();
-
   const initiateTransferFlow = () => {
     console.log("GameProvider: Initiating transfer flow...");
     // The callback now expects a payload object with all the fresh data.
@@ -332,13 +332,20 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   };
 
   const executeCreateGame = async (isTournament = false) => {
+    const canContinue = await ensureUsername({ required: true });
+    if (!canContinue) {
+      return false;
+    }
+
+    const usernameForGame = useUsernameStore.getState().username;
+
     setGameError(false);
     setIsTournament(isTournament);
     resetLevel();
     setGameLoading(true);
-    console.log("Executing create game for username", usernameLS);
+    console.log("Executing create game for username", usernameForGame);
     logEvent("create_game");
-    if (usernameLS) {
+    if (usernameForGame) {
       try {
         console.log("Creating game...");
         createGame({
@@ -381,6 +388,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       setGameError(true);
       navigate("/my-games");
     }
+
+    return true;
   };
 
   const refetchPowerUps = () => {
@@ -899,6 +908,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         prepareNewGame,
       }}
     >
+      {usernameRequirementModal}
       {children}
     </GameContext.Provider>
   );

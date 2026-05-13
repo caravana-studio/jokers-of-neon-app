@@ -46,8 +46,10 @@ export const TournamentEntries = () => {
 
   const handleCreateGame = async () => {
     prepareNewGame();
-    executeCreateGame(true);
-    navigate("/entering-tournament");
+    const started = await executeCreateGame(true);
+    if (started) {
+      navigate("/entering-tournament");
+    }
   };
 
   const { isSmallScreen } = useResponsiveValues();
