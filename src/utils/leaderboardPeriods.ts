@@ -73,6 +73,7 @@ export const getCurrentGameLeaderboardPeriods = (now = new Date()) => {
     },
     weekly: {
       startDate: formatUtcDate(currentWeekStart),
+      endDate: formatUtcDate(new Date(currentWeekStart.getTime() + 6 * DAY_IN_MS)),
       currentDate: formatUtcDate(currentGameDayStart),
       resetAt: nextWeeklyReset,
     },

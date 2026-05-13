@@ -11,7 +11,6 @@ import { ManagePage } from "../pages/Manage/ManagePage";
 import { MapPage } from "../pages/Map/MapPage";
 import { EnteringTournament } from "../pages/MyGames/EnteringTournament";
 import { MyGames } from "../pages/MyGames/MyGames";
-import { NewLeaderboardPage } from "../pages/NewLeaderboardPage/NewLeaderboardPage";
 import { OpenLootBox } from "../pages/OpenLootBox/Stages/OpenLootBox";
 import { OpenLootBoxCardSelection } from "../pages/OpenLootBox/Stages/OpenLootBoxCardSelection";
 import { PlaysLayout } from "../pages/Plays/PlaysLayout";
@@ -27,6 +26,7 @@ import { CardHighlightProvider } from "../providers/HighlightProvider/CardHighli
 import { PowerupHighlightProvider } from "../providers/HighlightProvider/PowerupHighlightProvider";
 import { StoreProvider } from "../providers/StoreProvider";
 import { SettingsPage } from "../pages/SettingsPage";
+import { MiniAppWeeklyLeaderboardPage } from "./MiniAppWeeklyLeaderboardPage";
 import { MiniAppHome } from "./MiniAppHome";
 
 export const AppRoutes = () => {
@@ -100,7 +100,7 @@ export const AppRoutes = () => {
         path="/leaderboard"
         element={
           <AnimatedPage>
-            <NewLeaderboardPage />
+            <MiniAppWeeklyLeaderboardPage />
           </AnimatedPage>
         }
       />
