@@ -1,7 +1,7 @@
 import { IGameContext } from "./GameProvider";
 
 export const gameProviderDefaults: IGameContext = {
-  executeCreateGame: () => {},
+  executeCreateGame: async () => false,
   play: () => {},
   discard: () => {},
   changeModifierCard: () =>

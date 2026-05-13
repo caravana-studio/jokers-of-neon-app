@@ -64,8 +64,10 @@ export const DailyGames = () => {
 
   const handleCreateGame = async () => {
     prepareNewGame();
-    executeCreateGame();
-    navigate("/entering-tournament");
+    const started = await executeCreateGame();
+    if (started) {
+      navigate("/entering-tournament");
+    }
   };
   const rechargeMs = RECHARGE_TIME * 60 * 60 * 1000;
 

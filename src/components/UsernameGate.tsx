@@ -1,11 +1,13 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { ReactNode, useCallback, useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { LOGGED_USER } from "../constants/localStorage";
-import { useDojo } from "../dojo/DojoContext";
+import { useDojo } from "../dojo/useDojo";
 import { useCavosSafe } from "../dojo/cavos/CavosConfig";
 import { controller } from "../dojo/controller/controller";
 import { useCustomToast } from "../hooks/useCustomToast";
 import { useUsernameStore } from "../state/useUsernameStore";
 import { normalizeStarknetAddress } from "../utils/starknetAddress";
+import { Loading } from "./Loading";
 import { UsernameModal } from "./UsernameModal";
 
 function guestUsernameForAddress(address: string): string {
@@ -15,7 +17,7 @@ function guestUsernameForAddress(address: string): string {
 
 function isValidStoredGuestUsername(username: string | null): username is string {
   return Boolean(
-      username &&
+    username &&
       username.length >= 3 &&
       username.length <= 15 &&
       /^[A-Za-z0-9._-]+$/.test(username)
@@ -32,33 +34,138 @@ function getValidPrefill(value?: string | null): string {
   return candidate.length >= 3 ? candidate : "";
 }
 
-export const UsernameGate = () => {
+type EnsureUsernameOptions = {
+  required?: boolean;
+};
+
+function useUsernameRequirement() {
   const {
-    account: { account },
-    setup: { accountType },
+    setup: { account },
+    accountType,
   } = useDojo();
   const status = useUsernameStore((store) => store.status);
   const username = useUsernameStore((store) => store.username);
+  const error = useUsernameStore((store) => store.error);
+  const loadUsername = useUsernameStore((store) => store.loadUsername);
   const createUsernameForAddress = useUsernameStore(
     (store) => store.createUsernameForAddress
   );
   const cavos = useCavosSafe();
   const { showErrorToast } = useCustomToast();
+  const [isOpen, setIsOpen] = useState(false);
+  const [isRequired, setIsRequired] = useState(false);
   const [prefill, setPrefill] = useState("");
   const [saving, setSaving] = useState(false);
-  const autoCreatingForRef = useRef<string | null>(null);
+  const pendingResolveRef = useRef<((value: boolean) => void) | null>(null);
+  const pendingPromiseRef = useRef<Promise<boolean> | null>(null);
 
-  const address = account?.address ?? "";
+  const address = account?.account?.address ?? "";
   const isBurner = accountType === "burner";
-  const isMissing = status === "missing" && !username;
+  const hasUsername = Boolean(username);
 
-  const modalOpen = useMemo(
-    () => Boolean(address && isMissing && !isBurner),
-    [address, isBurner, isMissing]
+  const resolvePending = useCallback((value: boolean) => {
+    pendingResolveRef.current?.(value);
+    pendingResolveRef.current = null;
+    pendingPromiseRef.current = null;
+  }, []);
+
+  const openPrompt = useCallback(
+    (required: boolean) => {
+      setIsRequired(required);
+      setIsOpen(true);
+
+      if (pendingPromiseRef.current) {
+        return pendingPromiseRef.current;
+      }
+
+      pendingPromiseRef.current = new Promise<boolean>((resolve) => {
+        pendingResolveRef.current = resolve;
+      });
+
+      return pendingPromiseRef.current;
+    },
+    []
+  );
+
+  const createBurnerUsername = useCallback(async () => {
+    if (!address) return false;
+
+    const normalizedAddress = normalizeStarknetAddress(address);
+    const storedGuestUsername = window.localStorage.getItem(LOGGED_USER);
+    const guestUsername = isValidStoredGuestUsername(storedGuestUsername)
+      ? storedGuestUsername
+      : guestUsernameForAddress(normalizedAddress);
+
+    window.localStorage.setItem(LOGGED_USER, guestUsername);
+
+    try {
+      await createUsernameForAddress(normalizedAddress, guestUsername);
+      return true;
+    } catch (error) {
+      const fallbackUsername = guestUsernameForAddress(normalizedAddress);
+      if (fallbackUsername !== guestUsername) {
+        window.localStorage.setItem(LOGGED_USER, fallbackUsername);
+        try {
+          await createUsernameForAddress(normalizedAddress, fallbackUsername);
+          return true;
+        } catch (fallbackError) {
+          console.error("Could not create guest username", fallbackError);
+        }
+      } else {
+        console.error("Could not create guest username", error);
+      }
+
+      showErrorToast("Could not create guest username");
+      return false;
+    }
+  }, [address, createUsernameForAddress, showErrorToast]);
+
+  const ensureUsername = useCallback(
+    async ({ required = false }: EnsureUsernameOptions = {}) => {
+      if (!address) {
+        return true;
+      }
+
+      if (useUsernameStore.getState().username) {
+        return true;
+      }
+
+      let currentStatus = useUsernameStore.getState().status;
+
+      if (currentStatus === "idle" || currentStatus === "loading" || currentStatus === "error") {
+        const loadedUsername = await loadUsername(address);
+        if (loadedUsername) {
+          return true;
+        }
+
+        const nextState = useUsernameStore.getState();
+        currentStatus = nextState.status;
+
+        if (nextState.username) {
+          return true;
+        }
+
+        if (currentStatus === "error") {
+          showErrorToast(nextState.error ?? "Failed to load username");
+          return false;
+        }
+      }
+
+      if (currentStatus !== "missing") {
+        return Boolean(useUsernameStore.getState().username);
+      }
+
+      if (isBurner) {
+        return createBurnerUsername();
+      }
+
+      return openPrompt(required);
+    },
+    [address, createBurnerUsername, isBurner, loadUsername, openPrompt, showErrorToast]
   );
 
   useEffect(() => {
-    if (!modalOpen) return;
+    if (!isOpen) return;
 
     if (accountType === "cavos") {
       const cavosPrefill =
@@ -70,6 +177,7 @@ export const UsernameGate = () => {
     }
 
     let cancelled = false;
+    setPrefill("");
     controller
       ?.username?.()
       ?.then((controllerUsername) => {
@@ -83,55 +191,117 @@ export const UsernameGate = () => {
     return () => {
       cancelled = true;
     };
-  }, [accountType, cavos?.user?.email, cavos?.user?.name, modalOpen]);
+  }, [accountType, cavos?.user?.email, cavos?.user?.name, isOpen]);
 
   useEffect(() => {
-    if (!address || !isBurner || !isMissing) return;
+    if (!isOpen || !username) return;
 
-    const normalizedAddress = normalizeStarknetAddress(address);
-    if (autoCreatingForRef.current === normalizedAddress) return;
-    autoCreatingForRef.current = normalizedAddress;
+    setIsOpen(false);
+    resolvePending(true);
+  }, [isOpen, resolvePending, username]);
 
-    const storedGuestUsername = window.localStorage.getItem(LOGGED_USER);
-    const guestUsername = isValidStoredGuestUsername(storedGuestUsername)
-      ? storedGuestUsername
-      : guestUsernameForAddress(normalizedAddress);
-
-    window.localStorage.setItem(LOGGED_USER, guestUsername);
-
-    createUsernameForAddress(normalizedAddress, guestUsername).catch((error) => {
-      const fallbackUsername = guestUsernameForAddress(normalizedAddress);
-      if (fallbackUsername !== guestUsername) {
-        window.localStorage.setItem(LOGGED_USER, fallbackUsername);
-        createUsernameForAddress(normalizedAddress, fallbackUsername).catch(() => {
-          showErrorToast("Could not create guest username");
-        });
-        return;
-      }
-      console.error("Could not create guest username", error);
-      showErrorToast("Could not create guest username");
-    });
-  }, [address, createUsernameForAddress, isBurner, isMissing, showErrorToast]);
+  useEffect(
+    () => () => {
+      resolvePending(false);
+    },
+    [resolvePending]
+  );
 
   const handleSave = async (nextUsername: string) => {
     if (!address) return;
+
     setSaving(true);
     try {
       await createUsernameForAddress(address, nextUsername);
-    } catch (error) {
-      throw error;
+      setIsOpen(false);
+      resolvePending(true);
     } finally {
       setSaving(false);
     }
   };
 
-  return (
+  const handleClose = () => {
+    setIsOpen(false);
+    resolvePending(false);
+  };
+
+  const modal = (
     <UsernameModal
-      isOpen={modalOpen}
-      isRequired
+      isOpen={isOpen}
+      isRequired={isRequired}
       isSaving={saving}
       initialUsername={prefill}
+      onClose={handleClose}
       onSave={handleSave}
     />
   );
+
+  return {
+    ensureUsername,
+    hasUsername,
+    modal,
+    usernameStatus: status,
+    usernameError: error,
+  };
+}
+
+type RequireUsernameProps = {
+  children: ReactNode;
+  redirectTo?: string;
 };
+
+export const RequireUsername = ({
+  children,
+  redirectTo = "/",
+}: RequireUsernameProps) => {
+  const navigate = useNavigate();
+  const { ensureUsername, hasUsername, modal } = useUsernameRequirement();
+  const [isAllowed, setIsAllowed] = useState(hasUsername);
+
+  useEffect(() => {
+    if (hasUsername) {
+      setIsAllowed(true);
+      return;
+    }
+
+    let cancelled = false;
+
+    void ensureUsername({ required: false }).then((allowed) => {
+      if (cancelled) return;
+
+      if (!allowed) {
+        if (window.history.length > 1) {
+          navigate(-1);
+          return;
+        }
+
+        navigate(redirectTo, { replace: true });
+        return;
+      }
+
+      setIsAllowed(true);
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [ensureUsername, hasUsername, navigate, redirectTo]);
+
+  if (hasUsername || isAllowed) {
+    return (
+      <>
+        {modal}
+        {children}
+      </>
+    );
+  }
+
+  return (
+    <>
+      {modal}
+      <Loading />
+    </>
+  );
+};
+
+export { useUsernameRequirement };
