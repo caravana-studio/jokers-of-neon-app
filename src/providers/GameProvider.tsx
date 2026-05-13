@@ -8,12 +8,8 @@ import {
 import { useLocation, useNavigate } from "react-router-dom";
 import { AccountInterface } from "starknet";
 import { createGame } from "../api/createGame.ts";
-import {
-  createUsername,
-  fetchUsernameByAddress,
-  UsernameApiError,
-} from "../api/usernames.ts";
-import { LOGGED_USER } from "../constants/localStorage.ts";
+import { fetchUsernameByAddress } from "../api/usernames.ts";
+import { useUsernameRequirement } from "../components/UsernameGate.tsx";
 import {
   acumSfx,
   clearLevel,
@@ -28,7 +24,6 @@ const PITCH_VARIANTS = 18;
 import { GameStateEnum } from "../dojo/typescript/custom.ts";
 import { useDojo } from "../dojo/useDojo.tsx";
 import { useGameActions } from "../dojo/useGameActions.tsx";
-import { useUsername } from "../dojo/utils/useUsername.tsx";
 import { useAudio } from "../hooks/useAudio.tsx";
 import { usePitchedAudio } from "../hooks/usePitchedAudio.tsx";
 import { useCustomToast } from "../hooks/useCustomToast.tsx";
@@ -43,7 +38,6 @@ import { CardPlayEvent, PlayEvents, PowerUpScore } from "../types/ScoreData";
 import { logEvent } from "../utils/analytics.ts";
 import { getPlayAnimationDuration } from "../utils/getPlayAnimationDuration.ts";
 import { isCardSilent } from "../utils/isCardSilent.ts";
-import { normalizeStarknetAddress } from "../utils/starknetAddress.ts";
 import {
   OptimisticAnimationController,
   animateOptimisticCardPlay,
@@ -73,7 +67,7 @@ import { useSettings } from "./SettingsProvider.tsx";
 import { useTutorialStore } from "../state/useTutorialStore.ts";
 
 export interface IGameContext {
-  executeCreateGame: (isTournament?: boolean) => void;
+  executeCreateGame: (isTournament?: boolean) => Promise<boolean>;
   play: () => void;
   discard: () => void;
   changeModifierCard: (
@@ -203,6 +197,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   } = useGameActions();
 
   const { showErrorToast } = useCustomToast();
+  const { ensureUsername, modal: usernameRequirementModal } = useUsernameRequirement();
 
   const { sfxVolume, animationSpeed, skipAllTutorials } = useSettings();
   const completedTutorials = useTutorialStore((state) => state.completed);
@@ -299,49 +294,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     localStorage.removeItem("GAME_ID");
     resetLevel();
   };
-
-  const usernameLS = useUsername();
-
-  const ensureGuestUsernameForGameCreation = async (): Promise<string | null> => {
-    if (usernameLS) {
-      return usernameLS;
-    }
-
-    if (accountType !== "burner" || !account?.address) {
-      return usernameLS;
-    }
-
-    const normalizedAddress = normalizeStarknetAddress(account.address);
-    const existingRecord = await fetchUsernameByAddress(normalizedAddress).catch(
-      () => null
-    );
-
-    if (existingRecord?.username) {
-      window.localStorage.setItem(LOGGED_USER, existingRecord.username);
-      return existingRecord.username;
-    }
-
-    const candidate = `guest${normalizedAddress.replace(/^0x/, "").slice(-8)}`;
-    window.localStorage.setItem(LOGGED_USER, candidate);
-
-    try {
-      const createdRecord = await createUsername(normalizedAddress, candidate);
-      return createdRecord.username;
-    } catch (error) {
-      if (
-        error instanceof UsernameApiError &&
-        error.code === "ADDRESS_USERNAME_EXISTS"
-      ) {
-        const record = await fetchUsernameByAddress(normalizedAddress).catch(
-          () => null
-        );
-        return record?.username ?? candidate;
-      }
-
-      throw error;
-    }
-  };
-
   const initiateTransferFlow = () => {
     console.log("GameProvider: Initiating transfer flow...");
     // The callback now expects a payload object with all the fresh data.
@@ -378,22 +330,25 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   };
 
   const executeCreateGame = async (isTournament = false) => {
+    const canContinue = await ensureUsername({ required: true });
+    if (!canContinue) {
+      return false;
+    }
+
     setGameError(false);
     setIsTournament(isTournament);
     resetLevel();
     setGameLoading(true);
-    console.log("Executing create game for username", usernameLS);
     logEvent("create_game");
     if (!account?.address) {
       console.error("No account address available to create game");
       showErrorToast("Error creating game");
       setGameError(true);
       navigate("/my-games");
-      return;
+      return false;
     }
 
     try {
-      await ensureGuestUsernameForGameCreation();
       console.log("Creating game...");
       const response = await createGame({
         userAddress: account.address,
@@ -407,7 +362,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         console.error("Error creating game", response);
         setGameError(true);
         navigate("/my-games");
-        return;
+        return false;
       }
 
       setGameId(newGameId);
@@ -423,7 +378,10 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       showErrorToast("Error creating game");
       setGameError(true);
       navigate("/my-games");
+      return false;
     }
+
+    return true;
   };
 
   const refetchPowerUps = () => {
@@ -942,6 +900,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         prepareNewGame,
       }}
     >
+      {usernameRequirementModal}
       {children}
     </GameContext.Provider>
   );

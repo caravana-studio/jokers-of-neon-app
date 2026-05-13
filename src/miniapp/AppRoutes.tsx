@@ -4,6 +4,7 @@ import "../App.scss";
 import { AnimatedPage } from "../components/AnimatedPage";
 import { GameStoreLoader } from "../components/GameStoreLoader";
 import { ShopStoreLoader } from "../components/ShopStoreLoader";
+import { RequireUsername } from "../components/UsernameGate";
 import { DeckPage } from "../pages/Deck/DeckPage";
 import { GamePage } from "../pages/Game/GamePage";
 import { GameOver } from "../pages/GameOver/GameOver";
@@ -21,6 +22,7 @@ import { ShopTierUnlockedPage } from "../pages/ShopTierUnlocked/ShopTierUnlocked
 import { SummaryPage } from "../pages/SummaryPage";
 import { DynamicStorePage } from "../pages/DynamicStore/DynamicStorePage";
 import { ExternalPack } from "../pages/ExternalPack/ExternalPack";
+import { ProfilePage } from "../pages/Profile/ProfilePage";
 import { DocsPage } from "../pages/Docs/Docs";
 import { CardHighlightProvider } from "../providers/HighlightProvider/CardHighlightProvider";
 import { PowerupHighlightProvider } from "../providers/HighlightProvider/PowerupHighlightProvider";
@@ -46,7 +48,19 @@ export const AppRoutes = () => {
         path="/my-games"
         element={
           <AnimatedPage>
-            <MyGames />
+            <RequireUsername>
+              <MyGames />
+            </RequireUsername>
+          </AnimatedPage>
+        }
+      />
+      <Route
+        path="/profile"
+        element={
+          <AnimatedPage>
+            <RequireUsername>
+              <ProfilePage />
+            </RequireUsername>
           </AnimatedPage>
         }
       />

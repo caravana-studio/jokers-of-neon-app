@@ -4,6 +4,7 @@ import "./App.scss";
 import { AnimatedPage } from "./components/AnimatedPage";
 import { GameStoreLoader } from "./components/GameStoreLoader";
 import { ShopStoreLoader } from "./components/ShopStoreLoader";
+import { RequireUsername } from "./components/UsernameGate";
 import { ClaimMultipleRewardsPage } from "./pages/ClaimMultipleRewardsPage";
 import { CavosWalletConnect } from "./pages/CavosWalletConnect/CavosWalletConnect";
 import { DeckPage } from "./pages/Deck/DeckPage";
@@ -123,7 +124,9 @@ export const AppRoutes = () => {
         element={
           <AnimatedPage>
             <LoginGate>
-              <ProfilePage />
+              <RequireUsername>
+                <ProfilePage />
+              </RequireUsername>
             </LoginGate>
           </AnimatedPage>
         }
@@ -167,7 +170,9 @@ export const AppRoutes = () => {
         path="/my-games"
         element={
           <AnimatedPage>
-            <MyGames />
+            <RequireUsername>
+              <MyGames />
+            </RequireUsername>
           </AnimatedPage>
         }
       />

@@ -5,9 +5,13 @@ import { useNavigate } from "react-router-dom";
 import { DelayedLoading } from "../../components/DelayedLoading";
 import { SimulatedLoadingBar } from "../../components/LoadingProgressBar/SimulatedLoadingProgressBar";
 import { MobileDecoration } from "../../components/MobileDecoration";
+import { useDojo } from "../../dojo/DojoContext";
 import { useUsername } from "../../dojo/utils/useUsername";
 import { useGameStore } from "../../state/useGameStore";
 import { LoadingProgress } from "../../types/LoadingProgress";
+import { isNative } from "../../utils/capacitorUtils";
+import { getFirebasePushToken } from "../../utils/notifications/firebasePush";
+import { registerPushNotifications } from "../../utils/notifications/registerPushNotifications";
 
 const stringTournamentId = import.meta.env.VITE_TOURNAMENT_ID;
 const tournamentId = stringTournamentId && Number(stringTournamentId);
@@ -18,6 +22,10 @@ export const EnteringTournament = () => {
     keyPrefix: "my-games",
   });
   const { gameLoading } = useGameStore();
+  const {
+    setup: { useBurnerAcc },
+    account,
+  } = useDojo();
 
   const navigate = useNavigate();
 
@@ -34,6 +42,17 @@ export const EnteringTournament = () => {
       clearTimeout(timeout); // Cancel timeout if component unmounts (navigation happened)
     };
   }, [navigate]);
+
+  useEffect(() => {
+    if (!isNative || useBurnerAcc) {
+      return;
+    }
+
+    void (async () => {
+      await registerPushNotifications();
+      await getFirebasePushToken(account?.account?.address);
+    })();
+  }, [account?.account?.address, useBurnerAcc]);
 
   const username = useUsername();
 

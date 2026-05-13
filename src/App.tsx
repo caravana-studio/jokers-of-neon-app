@@ -10,7 +10,6 @@ import { fetchOrCreateProfile } from "./api/profile";
 import { AppRoutes } from "./AppRoutes";
 import { Background } from "./components/Background";
 import { Layout } from "./components/Layout";
-import { UsernameGate } from "./components/UsernameGate";
 import { useDojo } from "./dojo/DojoContext";
 import { useGameActions } from "./dojo/useGameActions";
 import { useUsername } from "./dojo/utils/useUsername";
@@ -151,7 +150,6 @@ function App() {
                     <Background>
                       <BackgroundAnimationProvider>
                         <Layout>
-                          <UsernameGate />
                           <AnimatePresence mode="wait">
                             <AppRoutes />
                           </AnimatePresence>

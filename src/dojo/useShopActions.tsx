@@ -19,6 +19,7 @@ import {
   showTransactionToast,
   updateTransactionToast,
 } from "../utils/transactionNotifications";
+import { logTransactionError } from "../utils/logTransactionError";
 import { useDojo } from "./useDojo";
 import { useUsername } from "./utils/useUsername";
 
@@ -47,6 +48,18 @@ export const useShopActions = () => {
 
   const { sfxVolume } = useSettings();
   const { play: achievementSound } = useAudio(achievementSfx, sfxVolume);
+
+  const logActionError = (
+    action: string,
+    error: unknown,
+    context: Record<string, unknown> = {}
+  ) => {
+    logTransactionError(`Shop action failed: ${action}`, error, {
+      accountAddress: account.address,
+      accountType,
+      ...context,
+    });
+  };
 
   const skipShop = async (gameId: number) => {
     try {
@@ -81,7 +94,7 @@ export const useShopActions = () => {
       }
     } catch (e) {
       failedTransactionToast();
-      console.log(e);
+      logActionError("skipShop", e, { gameId });
       return {
         success: false,
         cards: [],
@@ -118,7 +131,7 @@ export const useShopActions = () => {
 
       return { success };
     } catch (e) {
-      console.log(e);
+      logActionError("buyCard", e, { gameId, card_idx, card_type });
       failedTransactionToast();
       return { success: false };
     }
@@ -157,7 +170,7 @@ export const useShopActions = () => {
 
       return updateTransactionToast(transaction_hash, tx.isSuccess());
     } catch (e) {
-      console.log(e);
+      logActionError("advanceNode", e, { gameId, nodeId });
       return failedTransactionToast();
     }
   };
@@ -183,7 +196,7 @@ export const useShopActions = () => {
 
       return updateTransactionToast(transaction_hash, tx.isSuccess());
     } catch (e) {
-      console.log(e);
+      logActionError("buyPowerUp", e, { gameId, power_up_idx });
       return failedTransactionToast();
     }
   };
@@ -211,7 +224,7 @@ export const useShopActions = () => {
 
       return { success };
     } catch (e) {
-      console.log(e);
+      logActionError("burnCards", e, { gameId, card_ids });
       failedTransactionToast();
       return { success: false };
     }
@@ -245,7 +258,7 @@ export const useShopActions = () => {
 
       return { success };
     } catch (e) {
-      console.log(e);
+      logActionError("buySpecialCard", e, { gameId, card_idx, isTemporary });
       failedTransactionToast();
       return { success: false };
     }
@@ -271,7 +284,7 @@ export const useShopActions = () => {
 
       return { success };
     } catch (e) {
-      console.log(e);
+      logActionError("buySpecialSlot", e, { gameId });
       failedTransactionToast();
       return { success: false };
     }
@@ -301,7 +314,7 @@ export const useShopActions = () => {
 
       return { success };
     } catch (e) {
-      console.log(e);
+      logActionError("buyPack", e, { gameId, pack_id });
       failedTransactionToast();
       return { success: false };
     }
@@ -331,7 +344,7 @@ export const useShopActions = () => {
 
       return { success };
     } catch (e) {
-      console.log(e);
+      logActionError("selectCardsFromPack", e, { gameId, cardIndexes });
       failedTransactionToast();
       return { success: false };
     }
@@ -361,7 +374,7 @@ export const useShopActions = () => {
 
       return { success };
     } catch (e) {
-      console.log(e);
+      logActionError("levelUpPokerHand", e, { gameId, item_id });
       failedTransactionToast();
       return { success: false };
     }
@@ -384,7 +397,7 @@ export const useShopActions = () => {
 
       return updateTransactionToast(transaction_hash, tx.isSuccess());
     } catch (e) {
-      console.log(e);
+      logActionError("storeReroll", e, { gameId });
       return failedTransactionToast();
     }
   };
