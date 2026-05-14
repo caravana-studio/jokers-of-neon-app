@@ -1,24 +1,26 @@
 import { Button, Flex, Heading } from "@chakra-ui/react";
+import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { DelayedLoading } from "../components/DelayedLoading";
 import { MobileBottomBar } from "../components/MobileBottomBar";
 import { MobileDecoration } from "../components/MobileDecoration";
 import SpineAnimation from "../components/SpineAnimation";
-import { MiniAppLeaderboardBanner } from "./MiniAppLeaderboardBanner";
 import { useGameContext } from "../providers/GameProvider";
+import { useDistributionSettings } from "../queries/useDistributionSettings";
 import { useGetMyGames } from "../queries/useGetMyGames";
 import { useResponsiveValues } from "../theme/responsiveSettings";
-import { ImageBanner } from "../pages/NewHome/banners/ImageBanner";
-import { useEffect } from "react";
-import { useTranslation } from "react-i18next";
 import { ensureMiniAppSession, getMiniAppBlockchain } from "./session/useMiniAppSession";
+import { MiniAppBannerRenderer } from "./MiniAppBannerRenderer";
 
 export const MiniAppHome = () => {
   const { t } = useTranslation(["home"]);
   const navigate = useNavigate();
   const { isSmallScreen } = useResponsiveValues();
+  const { settings } = useDistributionSettings();
   const { prepareNewGame, executeCreateGame } = useGameContext();
   const { data: games } = useGetMyGames();
+  const banners = settings?.miniapp?.banners ?? [];
 
   useEffect(() => {
     if (getMiniAppBlockchain() === "starknet") {
@@ -69,7 +71,6 @@ export const MiniAppHome = () => {
         <Flex
           flexDirection="column"
           alignItems="center"
-          gap={{ base: 4, sm: 6, md: 8 }}
           w="100%"
           zIndex={1}
           px={{ base: 3, sm: 4, md: 8 }}
@@ -92,25 +93,16 @@ export const MiniAppHome = () => {
             />
           </Flex>
 
-          {!isSmallScreen && (
-            <Heading
-              size="md"
-              variant="italic"
-              textAlign="center"
-              mt={-10}
-            >
-              {t("home.slogan")}
-            </Heading>
-          )}
-
           <Flex
             w="100%"
             maxW={isSmallScreen ? "100%" : "640px"}
             flexDirection="column"
             gap={3}
+            mt={-4}
           >
-            <MiniAppLeaderboardBanner />
-            <ImageBanner url="/bg/home-bg-s3.jpg" />
+            {banners.map((banner) => (
+              <MiniAppBannerRenderer key={banner.id} banner={banner} />
+            ))}
           </Flex>
 
           {!isSmallScreen && (

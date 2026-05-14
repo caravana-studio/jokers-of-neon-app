@@ -18,5 +18,21 @@
         "url": "https://jokersofneon.com/app/banners/s1-coming-soon.png"
       }
     ]
+  },
+  "miniapp": {
+    "banners": [
+      {
+        "id": "LEADERBOARD",
+        "position": 1,
+        "type": "LEADERBOARD"
+      },
+      {
+        "id": "App",
+        "position": 2,
+        "type": "image",
+        "url": "https://jokersofneon.com/app/banners/download-app.png",
+        "navigateTo": "https://play.jokersofneon.com/"
+      }
+    ]
   }
 }
