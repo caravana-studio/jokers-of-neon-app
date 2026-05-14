@@ -4,18 +4,18 @@ import { PropsWithChildren, useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { PositionedVersion } from "../components/version/PositionedVersion";
 import { PreThemeLoadingPage } from "../pages/PreThemeLoadingPage";
-import { hasMiniPayWalletOrFallbackAddress } from "../utils/gameLoopBurner";
+import { hasMiniAppWalletOrFallbackAddress } from "./session/useMiniAppSession";
 
 export const MiniPayWalletGate = ({ children }: PropsWithChildren) => {
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "minipay-gate",
   });
   const [hasWallet, setHasWallet] = useState(() =>
-    hasMiniPayWalletOrFallbackAddress()
+    hasMiniAppWalletOrFallbackAddress()
   );
 
   const retry = useCallback(() => {
-    setHasWallet(hasMiniPayWalletOrFallbackAddress());
+    setHasWallet(hasMiniAppWalletOrFallbackAddress());
   }, []);
 
   if (hasWallet) {

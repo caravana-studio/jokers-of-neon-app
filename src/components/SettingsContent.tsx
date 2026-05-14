@@ -27,16 +27,19 @@ import {
 } from "../constants/settingsLabels";
 import { useDojo } from "../dojo/DojoContext";
 import { Speed } from "../enums/settings";
-import { AppType, useAppContext } from "../providers/AppContextProvider";
 import { useSettings } from "../providers/SettingsProvider";
 import { NEON_PINK } from "../theme/colors";
 import { registerPushNotifications } from "../utils/notifications/registerPushNotifications";
 import AudioPlayer from "./AudioPlayer";
 import { Version } from "./version/Version";
 
-export const SettingsContent = () => {
-  const appType = useAppContext();
-  const isMiniApp = appType === AppType.MINIAPP;
+type SettingsContentProps = {
+  hideTimezone?: boolean;
+};
+
+export const SettingsContent = ({
+  hideTimezone = false,
+}: SettingsContentProps = {}) => {
   const {
     sfxVolume,
     setSfxVolume,
@@ -185,7 +188,7 @@ export const SettingsContent = () => {
           </MenuList>
         </Menu>
       </Flex>
-      {!isMiniApp && (
+      {!hideTimezone && (
         <Flex gap={2} alignItems={"center"}>
           <Text size="md" width={"50%"}>
             {timezoneLbl}

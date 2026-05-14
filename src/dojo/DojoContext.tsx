@@ -13,13 +13,8 @@ import { SetupResult } from "./setup";
 import { controller } from "./controller/controller";
 import { useWallet } from "./WalletContext";
 import { rpcUrl } from "../config/cartridgeUrls";
-import { useGameLoopBurnerSession } from "../hooks/useGameLoopBurnerSession";
 import { LoadingScreen } from "../pages/LoadingScreen/LoadingScreen";
 import { AppType, useAppContext } from "../providers/AppContextProvider";
-import {
-  createGameLoopBurnerAccount,
-  isGameLoopBurnerEnabled,
-} from "../utils/gameLoopBurner";
 
 interface DojoAccount {
   create: () => void;
@@ -108,7 +103,6 @@ export const DojoProvider = ({ children, value }: DojoProviderProps) => {
       <DojoContextProvider
         value={value}
         masterAccount={masterAccount}
-        rpcProvider={rpcProvider}
       >
         {children}
       </DojoContextProvider>
@@ -130,14 +124,12 @@ export const useDojo = (): DojoResult => {
 
 type DojoContextProviderProps = Omit<DojoProviderProps, "controllerAccount"> & {
   masterAccount: Account;
-  rpcProvider: RpcProvider;
 };
 
 const DojoContextProvider = ({
   children,
   value,
   masterAccount,
-  rpcProvider,
 }: DojoContextProviderProps) => {
   const appType = useAppContext();
   const {
@@ -169,25 +161,12 @@ const DojoContextProvider = ({
   const { create, list, get, select, isDeploying, clear } = useBurnerManager({
     burnerManager: value.burnerManager,
   });
-  const gameLoopBurnerSession = useGameLoopBurnerSession();
-  const gameLoopBurnerAccount = useMemo(
-    () =>
-      gameLoopBurnerSession && isGameLoopBurnerEnabled()
-        ? createGameLoopBurnerAccount(gameLoopBurnerSession, rpcProvider)
-        : null,
-    [gameLoopBurnerSession, rpcProvider]
-  );
-
   const resolvedAccount =
-    gameLoopBurnerAccount ??
     finalAccount ??
     (appType === AppType.SHOP ? shopFallbackAccount : null);
 
   useEffect(() => {
-    if (gameLoopBurnerAccount) {
-      console.log("Game loop burner is ready. Finalizing state in DojoContext...");
-      useAccountStore.getState().setAccount(gameLoopBurnerAccount);
-    } else if (
+    if (
       accountType === "controller" &&
       isControllerConnected &&
       controllerAccount
@@ -218,7 +197,6 @@ const DojoContextProvider = ({
       useAccountStore.getState().setAccount(finalAccount);
     }
   }, [
-    gameLoopBurnerAccount,
     accountType,
     isControllerConnected,
     controllerAccount,
@@ -236,7 +214,7 @@ const DojoContextProvider = ({
       value={{
         ...value,
         masterAccount,
-        useBurnerAcc: accountType === "burner" || !!gameLoopBurnerAccount,
+        useBurnerAcc: accountType === "burner",
         switchToController: switchToController,
         logout: logout,
         accountType: accountType,

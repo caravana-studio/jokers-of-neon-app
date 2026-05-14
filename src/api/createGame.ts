@@ -1,10 +1,5 @@
 import { getSeasonNumber } from "../constants/season";
 import { getGameApiBaseUrl } from "../config/gameApiUrl";
-import {
-  ensureGameLoopBurnerSession,
-  getGameLoopBlockchain,
-  isGameLoopBurnerEnabled,
-} from "../utils/gameLoopBurner";
 
 export type CreateGameParams = {
   userAddress: string;
@@ -17,7 +12,6 @@ interface CreateGamePayload {
   user_address: string;
   season_id: number;
   is_tournament: boolean;
-  blockchain: string;
   seed?: string;
 }
 
@@ -42,6 +36,10 @@ export async function createGame({
   isTournament = false,
   seed,
 }: CreateGameParams) {
+  if (!userAddress) {
+    throw new Error("createGame: userAddress is required");
+  }
+
   const apiKey = import.meta.env.VITE_GAME_API_KEY;
   if (!apiKey) {
     throw new Error(
@@ -51,36 +49,18 @@ export async function createGame({
 
   const baseUrl = getGameApiBaseUrl();
   const requestUrl = `${baseUrl}/api/game/create`;
-  let resolvedUserAddress = userAddress;
-  let blockchain = getGameLoopBlockchain();
-
-  if (isGameLoopBurnerEnabled()) {
-    const burnerSession = await ensureGameLoopBurnerSession();
-    resolvedUserAddress = burnerSession.userAddress || resolvedUserAddress;
-    blockchain = burnerSession.blockchain || blockchain;
-  }
-
-  if (!resolvedUserAddress) {
-    throw new Error("createGame: userAddress is required");
-  }
 
   const payload: CreateGamePayload = {
-    user_address: resolvedUserAddress,
+    user_address: userAddress,
     season_id: seasonId,
     is_tournament: isTournament,
-    blockchain,
   };
 
   if (seed) {
     payload.seed = seed;
   }
 
-  let response = await postCreateGame(requestUrl, apiKey, payload);
-
-  if (response.status === 409 && isGameLoopBurnerEnabled()) {
-    await ensureGameLoopBurnerSession({ forceRefresh: true });
-    response = await postCreateGame(requestUrl, apiKey, payload);
-  }
+  const response = await postCreateGame(requestUrl, apiKey, payload);
 
   if (!response.ok) {
     const errorDetails = await response.text().catch(() => "");

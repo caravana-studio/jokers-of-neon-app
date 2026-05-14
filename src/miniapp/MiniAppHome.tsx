@@ -4,17 +4,14 @@ import { DelayedLoading } from "../components/DelayedLoading";
 import { MobileBottomBar } from "../components/MobileBottomBar";
 import { MobileDecoration } from "../components/MobileDecoration";
 import SpineAnimation from "../components/SpineAnimation";
+import { MiniAppLeaderboardBanner } from "./MiniAppLeaderboardBanner";
 import { useGameContext } from "../providers/GameProvider";
 import { useGetMyGames } from "../queries/useGetMyGames";
 import { useResponsiveValues } from "../theme/responsiveSettings";
-import { LeaderboardBanner } from "../pages/NewHome/banners/LeaderboardBanner";
 import { ImageBanner } from "../pages/NewHome/banners/ImageBanner";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import {
-  ensureGameLoopBurnerSession,
-  isGameLoopBurnerEnabled,
-} from "../utils/gameLoopBurner";
+import { ensureMiniAppSession, getMiniAppBlockchain } from "./session/useMiniAppSession";
 
 export const MiniAppHome = () => {
   const { t } = useTranslation(["home"]);
@@ -24,11 +21,11 @@ export const MiniAppHome = () => {
   const { data: games } = useGetMyGames();
 
   useEffect(() => {
-    if (!isGameLoopBurnerEnabled()) {
+    if (getMiniAppBlockchain() === "starknet") {
       return;
     }
 
-    void ensureGameLoopBurnerSession().catch((error) => {
+    void ensureMiniAppSession().catch((error) => {
       console.error("Failed to preload game loop burner session", error);
     });
   }, []);
@@ -37,8 +34,16 @@ export const MiniAppHome = () => {
 
   const handleCreateGame = () => {
     prepareNewGame();
-    executeCreateGame();
+    const createGamePromise = executeCreateGame();
     navigate("/entering-tournament");
+
+    void createGamePromise.then((started) => {
+      if (started) {
+        return;
+      }
+
+      navigate("/my-games", { replace: true });
+    });
   };
 
   const handlePlayClick = () => {
@@ -104,7 +109,7 @@ export const MiniAppHome = () => {
             flexDirection="column"
             gap={3}
           >
-            <LeaderboardBanner />
+            <MiniAppLeaderboardBanner />
             <ImageBanner url="/bg/home-bg-s3.jpg" />
           </Flex>
 

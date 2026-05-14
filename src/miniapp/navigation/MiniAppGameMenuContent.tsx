@@ -3,35 +3,30 @@ import {
   DrawerBody,
   DrawerCloseButton,
   DrawerContent,
-  DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
   Flex,
   Text,
-  Box,
 } from "@chakra-ui/react";
 import { useRef } from "react";
-import { useGameStore } from "../../../state/useGameStore";
-import CachedImage from "../../CachedImage";
-import { DocsMenuBtn } from "../Buttons/DocsMenuBtn";
-import { LogoutMenuBtn } from "../Buttons/Logout/LogoutMenuBtn";
-import { SettingsMenuBtn } from "../Buttons/SettingsMenuBtn";
-import { BackMenuBtn } from "../Buttons/BackMenuBtn";
-import { DailyMissions } from "../../DailyMissions/DailyMissions";
+import { useGameStore } from "../../state/useGameStore";
+import CachedImage from "../../components/CachedImage";
+import { BackMenuBtn } from "../../components/Menu/Buttons/BackMenuBtn";
+import { DocsMenuBtn } from "../../components/Menu/Buttons/DocsMenuBtn";
+import { SettingsMenuBtn } from "../../components/Menu/Buttons/SettingsMenuBtn";
 
-interface GameMenuContentProps {
+interface MiniAppGameMenuContentProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-export const GameMenuContent: React.FC<GameMenuContentProps> = ({
+export const MiniAppGameMenuContent = ({
   isOpen,
   onClose,
-}) => {
+}: MiniAppGameMenuContentProps) => {
   const iconWidth = "26px";
   const fontSize = "18px";
   const { id, isTournament } = useGameStore();
-
   const touchStartX = useRef(0);
 
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -49,7 +44,7 @@ export const GameMenuContent: React.FC<GameMenuContentProps> = ({
 
   return (
     <Drawer
-      onClose={() => onClose()}
+      onClose={onClose}
       isOpen={isOpen}
       placement="left"
       size="full"
@@ -86,47 +81,26 @@ export const GameMenuContent: React.FC<GameMenuContentProps> = ({
         <DrawerBody
           display="flex"
           flexDir="column"
-          justifyContent="space-between"
+          justifyContent="center"
           alignItems="center"
           py={4}
           fontSize={fontSize}
           overflow="hidden"
         >
-          <>
-            <Flex
-              w="100%"
-              justifyContent="center"
-              alignItems="center"
-              flex={1}
-              overflow="hidden"
-            >
-              <Box w="100%" maxW="500px" overflow="hidden">
-                <DailyMissions showTitle={true} fontSize={fontSize} />
-              </Box>
-            </Flex>
-
-            <Flex
-              flexDir="column"
-              gap={4}
-              w="100%"
-              alignItems="flex-start"
-              flex={1}
-              justifyContent="center"
-            >
-              <BackMenuBtn width={iconWidth} label onClose={onClose} />
-              <DocsMenuBtn width={iconWidth} label onClose={onClose} />
-              <SettingsMenuBtn width={iconWidth} label onClose={onClose} />
-            </Flex>
-          </>
+          <Flex
+            flexDir="column"
+            gap={4}
+            w="100%"
+            maxW="500px"
+            alignItems="flex-start"
+            justifyContent="center"
+            flex={1}
+          >
+            <BackMenuBtn width={iconWidth} label onClose={onClose} />
+            <DocsMenuBtn width={iconWidth} label onClose={onClose} />
+            <SettingsMenuBtn width={iconWidth} label onClose={onClose} />
+          </Flex>
         </DrawerBody>
-
-        <DrawerFooter
-          justifyContent="flex-start"
-          fontSize={fontSize}
-          alignItems="center"
-        >
-          <LogoutMenuBtn width={iconWidth} label />
-        </DrawerFooter>
       </DrawerContent>
     </Drawer>
   );

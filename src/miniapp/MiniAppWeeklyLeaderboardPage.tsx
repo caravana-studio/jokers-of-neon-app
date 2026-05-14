@@ -16,14 +16,13 @@ import { CustomTr } from "../components/Leaderboard";
 import { DelayedLoading } from "../components/DelayedLoading";
 import CachedImage from "../components/CachedImage";
 import { MobileDecoration } from "../components/MobileDecoration";
-import { useGameLoopBurnerSession } from "../hooks/useGameLoopBurnerSession";
 import { useGetApiLeaderboard } from "../queries/useGetApiLeaderboard";
 import { VIOLET_LIGHT } from "../theme/colors";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import { formatNumber } from "../utils/formatNumber";
 import { getCurrentGameLeaderboardPeriods } from "../utils/leaderboardPeriods";
 import { addressKey } from "../utils/starknetAddress";
-import { getGameLoopBlockchain } from "../utils/gameLoopBurner";
+import { getMiniAppBlockchain, useMiniAppIdentity } from "./session/useMiniAppSession";
 
 const CURRENT_LEADER_STYLES = {
   position: "relative",
@@ -163,18 +162,18 @@ export const MiniAppWeeklyLeaderboardPage = () => {
   const { t } = useTranslation("home", { keyPrefix: "leaderboard" });
   const { isSmallScreen } = useResponsiveValues();
   const [now, setNow] = useState(() => new Date());
-  const session = useGameLoopBurnerSession();
+  const { userAddress } = useMiniAppIdentity();
   const periods = useMemo(() => getCurrentGameLeaderboardPeriods(now), [now]);
 
   const { data, isLoading, error } = useGetApiLeaderboard({
-    blockchain: getGameLoopBlockchain(),
+    blockchain: getMiniAppBlockchain(),
     startDate: periods.weekly.startDate,
     endDate: periods.weekly.endDate,
     isTournament: false,
     limit: 50,
   });
 
-  const currentUserAddress = addressKey(session?.userAddress);
+  const currentUserAddress = addressKey(userAddress);
   const entries = data?.entries ?? [];
   const topEntries = entries.slice(0, 3);
   const tableEntries = entries.slice(3);

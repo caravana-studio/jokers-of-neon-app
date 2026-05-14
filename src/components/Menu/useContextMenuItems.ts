@@ -6,7 +6,6 @@ import { GameStateEnum } from "../../dojo/typescript/custom";
 import { useGetMyGames } from "../../queries/useGetMyGames";
 import { useShopDistribution } from "../../queries/useShopDistribution";
 import { useTournamentSettings } from "../../queries/useTournamentSettings";
-import { AppType, useAppContext } from "../../providers/AppContextProvider";
 import { useGameStore } from "../../state/useGameStore";
 import { useSeasonProgressStore } from "../../state/useSeasonProgressStore";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
@@ -86,7 +85,6 @@ interface MenuItem {
 }
 
 export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
-  const appType = useAppContext();
   const location = useLocation();
   const navigate = useNavigate();
   const url = location.pathname;
@@ -158,8 +156,6 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
     (state === GameStateEnum.Round || state === GameStateEnum.Rage) &&
     typeof gamesCount === "number" &&
     gamesCount < 5;
-  const isMiniApp = appType === AppType.MINIAPP;
-
   const mainMenuItems: MenuItem[] = useMemo(() => {
     const items: MenuItem[] = [
       {
@@ -212,26 +208,6 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
         key: "shop",
         notificationCount: collectorNotificationCount,
       },
-      ...(isMiniApp
-        ? [
-            {
-              icon: Icons.SETTINGS,
-              url: "/settings",
-              active: url === "/settings",
-              key: "settings",
-            },
-            ...(isSmallScreen
-              ? [
-                  {
-                    icon: Icons.PROFILE,
-                    url: "/profile",
-                    active: url === "/profile",
-                    key: "profile",
-                  },
-                ]
-              : []),
-          ]
-        : []),
     ];
 
     if (!isSmallScreen) {
@@ -250,18 +226,9 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
       });
     }
 
-    return isMiniApp
-      ? items.filter(
-          (item) =>
-            item.key !== "collection" &&
-            item.key !== "shop" &&
-            item.key !== "tournament" &&
-            item.key !== "season",
-        )
-      : items;
+    return items;
   }, [
     collectorNotificationCount,
-    isMiniApp,
     isSmallScreen,
     isTournamentActive,
     seasonNotificationCount,
@@ -358,8 +325,6 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
   return {
     mainMenuItems,
     inGameMenuItems: allInGameMenuItems,
-    extraMenuItems: isMiniApp
-      ? extraMenuItems.filter((item) => item.key !== "daily-missions")
-      : extraMenuItems,
+    extraMenuItems,
   };
 }

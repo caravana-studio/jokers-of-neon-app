@@ -10,6 +10,7 @@ import { AccountInterface } from "starknet";
 import { createGame } from "../api/createGame.ts";
 import { fetchUsernameByAddress } from "../api/usernames.ts";
 import { useUsernameRequirement } from "../components/UsernameGate.tsx";
+import { createMiniAppGame } from "../miniapp/api/createMiniAppGame.ts";
 import {
   acumSfx,
   clearLevel,
@@ -28,6 +29,7 @@ import { useAudio } from "../hooks/useAudio.tsx";
 import { usePitchedAudio } from "../hooks/usePitchedAudio.tsx";
 import { useCustomToast } from "../hooks/useCustomToast.tsx";
 import { useCardAnimations } from "../providers/CardAnimationsProvider";
+import { AppType, useAppContext } from "./AppContextProvider";
 import { useAnimationStore } from "../state/useAnimationStore.ts";
 import { useCurrentHandStore } from "../state/useCurrentHandStore.ts";
 import { useDeckStore } from "../state/useDeckStore.ts";
@@ -100,6 +102,8 @@ export const useGameContext = () => {
 };
 
 export const GameProvider = ({ children }: PropsWithChildren) => {
+  const appType = useAppContext();
+  const isMiniApp = appType === AppType.MINIAPP;
   const {
     refetchGameStore,
     addCash,
@@ -350,10 +354,14 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
     try {
       console.log("Creating game...");
-      const response = await createGame({
-        userAddress: account.address,
-        isTournament,
-      });
+      const response = isMiniApp
+        ? await createMiniAppGame({
+            isTournament,
+          })
+        : await createGame({
+            userAddress: account.address,
+            isTournament,
+          });
       const newGameId = response?.data?.slot?.game_id;
       console.log(`game ${newGameId} created`);
 

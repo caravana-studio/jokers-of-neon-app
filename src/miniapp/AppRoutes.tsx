@@ -4,14 +4,12 @@ import "../App.scss";
 import { AnimatedPage } from "../components/AnimatedPage";
 import { GameStoreLoader } from "../components/GameStoreLoader";
 import { ShopStoreLoader } from "../components/ShopStoreLoader";
-import { RequireUsername } from "../components/UsernameGate";
 import { DeckPage } from "../pages/Deck/DeckPage";
 import { GamePage } from "../pages/Game/GamePage";
 import { GameOver } from "../pages/GameOver/GameOver";
 import { ManagePage } from "../pages/Manage/ManagePage";
 import { MapPage } from "../pages/Map/MapPage";
 import { EnteringTournament } from "../pages/MyGames/EnteringTournament";
-import { MyGames } from "../pages/MyGames/MyGames";
 import { OpenLootBox } from "../pages/OpenLootBox/Stages/OpenLootBox";
 import { OpenLootBoxCardSelection } from "../pages/OpenLootBox/Stages/OpenLootBoxCardSelection";
 import { PlaysLayout } from "../pages/Plays/PlaysLayout";
@@ -26,10 +24,12 @@ import { DocsPage } from "../pages/Docs/Docs";
 import { CardHighlightProvider } from "../providers/HighlightProvider/CardHighlightProvider";
 import { PowerupHighlightProvider } from "../providers/HighlightProvider/PowerupHighlightProvider";
 import { StoreProvider } from "../providers/StoreProvider";
-import { SettingsPage } from "../pages/SettingsPage";
+import { MiniAppMyGamesPage } from "./MiniAppMyGamesPage";
 import { MiniAppProfilePage } from "./MiniAppProfilePage";
+import { MiniAppSettingsPage } from "./MiniAppSettingsPage";
 import { MiniAppWeeklyLeaderboardPage } from "./MiniAppWeeklyLeaderboardPage";
 import { MiniAppHome } from "./MiniAppHome";
+import { RequireMiniAppUsername } from "./session/useMiniAppUsernameRequirement";
 
 export const AppRoutes = () => {
   const location = useLocation();
@@ -48,9 +48,9 @@ export const AppRoutes = () => {
         path="/my-games"
         element={
           <AnimatedPage>
-            <RequireUsername requireCompletion>
-              <MyGames />
-            </RequireUsername>
+            <RequireMiniAppUsername requireCompletion>
+              <MiniAppMyGamesPage />
+            </RequireMiniAppUsername>
           </AnimatedPage>
         }
       />
@@ -58,9 +58,9 @@ export const AppRoutes = () => {
         path="/profile"
         element={
           <AnimatedPage>
-            <RequireUsername requireCompletion>
+            <RequireMiniAppUsername requireCompletion>
               <MiniAppProfilePage />
-            </RequireUsername>
+            </RequireMiniAppUsername>
           </AnimatedPage>
         }
       />
@@ -68,7 +68,7 @@ export const AppRoutes = () => {
         path="/settings"
         element={
           <AnimatedPage>
-            <SettingsPage />
+            <MiniAppSettingsPage />
           </AnimatedPage>
         }
       />
@@ -76,7 +76,7 @@ export const AppRoutes = () => {
         path="/settings-game"
         element={
           <AnimatedPage>
-            <SettingsPage />
+            <MiniAppSettingsPage />
           </AnimatedPage>
         }
       />

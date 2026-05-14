@@ -7,7 +7,7 @@ import { DelayedLoading } from "../components/DelayedLoading";
 import { MobileDecoration } from "../components/MobileDecoration";
 import { PositionedDiscordLink } from "../components/DiscordLink";
 import { useDojo } from "../dojo/useDojo";
-import { useGameLoopBurnerSession } from "../hooks/useGameLoopBurnerSession";
+import { useMiniAppIdentity } from "./session/useMiniAppSession";
 import { useProfileStore } from "../state/useProfileStore";
 import { useUsernameStore } from "../state/useUsernameStore";
 import { useResponsiveValues } from "../theme/responsiveSettings";
@@ -21,8 +21,7 @@ export const MiniAppProfilePage = () => {
   } = useDojo();
   const { isSmallScreen } = useResponsiveValues();
   const { t } = useTranslation("game");
-  const session = useGameLoopBurnerSession();
-  const profileAddress = session?.userAddress ?? "";
+  const { userAddress: profileAddress } = useMiniAppIdentity();
   const usernameStatus = useUsernameStore((store) => store.status);
   const storedUsernameAddress = useUsernameStore((store) => store.address);
   const storedUsername = useUsernameStore((store) => store.username);

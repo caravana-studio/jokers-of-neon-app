@@ -13,28 +13,23 @@ import {
 } from "react";
 import { Account, type AccountInterface, RpcProvider } from "starknet";
 import { checkEarlyAccess } from "../api/earlyAccess";
-import {
-  createUsername,
-  fetchUsernameByAddress,
-  UsernameApiError,
-} from "../api/usernames";
 import { ACCOUNT_TYPE, GAME_ID, LOGGED_USER } from "../constants/localStorage";
+import { rpcUrl } from "../config/cartridgeUrls";
 import { AppType, useAppContext } from "../providers/AppContextProvider";
 import { useGetLastGameId } from "../queries/useGetLastGameId";
 import { logEvent } from "../utils/analytics";
 import { isNative } from "../utils/capacitorUtils";
+import { ensureGuestUsernameRecord } from "../utils/guestUsername";
 import {
   clearGameLoopBurnerSession,
   createGameLoopBurnerAccount,
   ensureGameLoopBurnerSession,
   isGameLoopBurnerEnabled,
 } from "../utils/gameLoopBurner";
-import { normalizeStarknetAddress } from "../utils/starknetAddress";
 import { useAccountStore } from "./accountStore";
 import { controller } from "./controller/controller";
 import { CavosAccountAdapter } from "./cavos/CavosAccountAdapter";
 import { useCavosSafe } from "./cavos/CavosBridgeContext";
-import { rpcUrl } from "../config/cartridgeUrls";
 import { useGameLoopBurnerSession } from "../hooks/useGameLoopBurnerSession";
 import type { SetupResult } from "./setup";
 
@@ -44,44 +39,6 @@ const CAVOS_ENABLED = !!import.meta.env.VITE_CAVOS_APP_ID;
 const CAVOS_NATIVE_REDIRECT_URI =
   import.meta.env.VITE_CAVOS_NATIVE_REDIRECT_URI ||
   "jokers://open";
-
-function guestUsernameForAddress(address: string): string {
-  const normalized = normalizeStarknetAddress(address).replace(/^0x/, "");
-  return `guest${normalized.slice(-8)}`;
-}
-
-async function ensureGuestUsernameRecord(address: string): Promise<string> {
-  const normalizedAddress = normalizeStarknetAddress(address);
-  const existingRecord = await fetchUsernameByAddress(normalizedAddress).catch(
-    () => null
-  );
-
-  if (existingRecord?.username) {
-    window.localStorage.setItem(LOGGED_USER, existingRecord.username);
-    return existingRecord.username;
-  }
-
-  const candidate = guestUsernameForAddress(normalizedAddress);
-  window.localStorage.setItem(LOGGED_USER, candidate);
-
-  try {
-    const createdRecord = await createUsername(normalizedAddress, candidate);
-    return createdRecord.username;
-  } catch (error) {
-    if (
-      error instanceof UsernameApiError &&
-      error.code === "ADDRESS_USERNAME_EXISTS"
-    ) {
-      const record = await fetchUsernameByAddress(normalizedAddress);
-      if (record?.username) {
-        window.localStorage.setItem(LOGGED_USER, record.username);
-        return record.username;
-      }
-    }
-
-    throw error;
-  }
-}
 
 type ConnectionStatus =
   | "selecting"
@@ -568,10 +525,9 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     if (isGameLoopBurnerEnabled()) {
       try {
         const burnerSession = await ensureGameLoopBurnerSession();
-        const burnerAddress = normalizeStarknetAddress(
+        const username = await ensureGuestUsernameRecord(
           burnerSession.burnerAddress
         );
-        const username = await ensureGuestUsernameRecord(burnerAddress);
 
         localStorage.removeItem(GAME_ID);
         localStorage.setItem(LOGGED_USER, username);

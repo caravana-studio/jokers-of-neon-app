@@ -2,11 +2,11 @@ import { Flex } from "@chakra-ui/react";
 import { ReactNode } from "react";
 import { useLocation } from "react-router-dom";
 import { ReactFlowProvider } from "reactflow";
-import { BottomMenu } from "../components/Menu/BottomMenu";
 import { MapProvider } from "../providers/MapProvider";
 import { StoreProvider } from "../providers/StoreProvider";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import { isNative, nativePaddingTop } from "../utils/capacitorUtils";
+import { MiniAppBottomMenu } from "./navigation/MiniAppBottomMenu";
 
 export const MiniAppLayout = ({ children }: { children: ReactNode }) => {
   const { isSmallScreen } = useResponsiveValues();
@@ -47,7 +47,7 @@ export const MiniAppLayout = ({ children }: { children: ReactNode }) => {
               {children}
             </Flex>
           </Flex>
-          {!shouldHideNavigation && isSmallScreen && <BottomMenu />}
+          {!shouldHideNavigation && isSmallScreen && <MiniAppBottomMenu />}
         </StoreProvider>
       </MapProvider>
     </ReactFlowProvider>
