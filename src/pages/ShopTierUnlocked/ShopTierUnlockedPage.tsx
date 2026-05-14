@@ -109,13 +109,17 @@ export const ShopTierUnlockedPage = () => {
     navigate("/my-games", { replace: true });
   };
 
-  const handlePlayAgain = async () => {
+  const handlePlayAgain = () => {
     clearShopTierUnlockedEvent();
     prepareNewGame();
-    const started = await executeCreateGame();
-    if (started) {
-      navigate("/entering-tournament", { replace: true });
-    }
+    const createGamePromise = executeCreateGame();
+    navigate("/entering-tournament", { replace: true });
+
+    void createGamePromise.then((started) => {
+      if (!started) {
+        navigate("/my-games", { replace: true });
+      }
+    });
   };
 
   const handleSkipIntroAnimation = () => {

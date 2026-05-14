@@ -62,12 +62,16 @@ export const DailyGames = () => {
 
   const { isSmallScreen } = useResponsiveValues();
 
-  const handleCreateGame = async () => {
+  const handleCreateGame = () => {
     prepareNewGame();
-    const started = await executeCreateGame();
-    if (started) {
-      navigate("/entering-tournament");
-    }
+    const createGamePromise = executeCreateGame();
+    navigate("/entering-tournament");
+
+    void createGamePromise.then((started) => {
+      if (!started) {
+        navigate("/my-games", { replace: true });
+      }
+    });
   };
   const rechargeMs = RECHARGE_TIME * 60 * 60 * 1000;
 

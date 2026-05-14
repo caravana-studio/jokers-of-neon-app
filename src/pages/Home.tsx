@@ -18,12 +18,16 @@ export const Home = () => {
   const { prepareNewGame, executeCreateGame } = useGameContext();
   const { data: games } = useGetMyGames();
 
-  const handleCreateGame = async () => {
+  const handleCreateGame = () => {
     prepareNewGame();
-    const started = await executeCreateGame();
-    if (started) {
-      navigate("/entering-tournament");
-    }
+    const createGamePromise = executeCreateGame();
+    navigate("/entering-tournament");
+
+    void createGamePromise.then((started) => {
+      if (!started) {
+        navigate("/my-games", { replace: true });
+      }
+    });
   };
 
   const handlePlayClick = () => {
