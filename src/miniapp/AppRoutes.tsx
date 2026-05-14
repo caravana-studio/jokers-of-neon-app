@@ -6,7 +6,6 @@ import { GameStoreLoader } from "../components/GameStoreLoader";
 import { ShopStoreLoader } from "../components/ShopStoreLoader";
 import { DeckPage } from "../pages/Deck/DeckPage";
 import { GamePage } from "../pages/Game/GamePage";
-import { GameOver } from "../pages/GameOver/GameOver";
 import { ManagePage } from "../pages/Manage/ManagePage";
 import { MapPage } from "../pages/Map/MapPage";
 import { EnteringTournament } from "../pages/MyGames/EnteringTournament";
@@ -25,6 +24,7 @@ import { CardHighlightProvider } from "../providers/HighlightProvider/CardHighli
 import { PowerupHighlightProvider } from "../providers/HighlightProvider/PowerupHighlightProvider";
 import { StoreProvider } from "../providers/StoreProvider";
 import { MiniAppMyGamesPage } from "./MiniAppMyGamesPage";
+import { MiniAppGameOverPage } from "./MiniAppGameOverPage";
 import { MiniAppProfilePage } from "./MiniAppProfilePage";
 import { MiniAppSettingsPage } from "./MiniAppSettingsPage";
 import { MiniAppWeeklyLeaderboardPage } from "./MiniAppWeeklyLeaderboardPage";
@@ -162,7 +162,7 @@ export const AppRoutes = () => {
         path="/gameover/:gameId"
         element={
           <AnimatedPage>
-            <GameOver />
+            <MiniAppGameOverPage />
           </AnimatedPage>
         }
       />

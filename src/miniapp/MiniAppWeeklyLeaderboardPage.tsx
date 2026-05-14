@@ -3,34 +3,19 @@ import {
   Flex,
   Heading,
   Spinner,
-  Table,
-  TableContainer,
-  Tbody,
-  Td,
   Text,
 } from "@chakra-ui/react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Clock } from "../components/Clock";
-import { CustomTr } from "../components/Leaderboard";
 import { DelayedLoading } from "../components/DelayedLoading";
 import CachedImage from "../components/CachedImage";
 import { MobileDecoration } from "../components/MobileDecoration";
-import { useGetApiLeaderboard } from "../queries/useGetApiLeaderboard";
 import { VIOLET_LIGHT } from "../theme/colors";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import { formatNumber } from "../utils/formatNumber";
-import { getCurrentGameLeaderboardPeriods } from "../utils/leaderboardPeriods";
-import { addressKey } from "../utils/starknetAddress";
-import { getMiniAppBlockchain, useMiniAppIdentity } from "./session/useMiniAppSession";
-
-const CURRENT_LEADER_STYLES = {
-  position: "relative",
-  borderTop: "1px solid white",
-  borderBottom: "1px solid white",
-  backgroundColor: "black",
-  color: "white !important",
-};
+import { MiniAppLeaderboardTable } from "./leaderboard/MiniAppLeaderboardTable";
+import { useMiniAppWeeklyLeaderboard } from "./leaderboard/useMiniAppWeeklyLeaderboard";
 
 const MiniAppLeaderboardPodium = ({
   entries,
@@ -162,21 +147,9 @@ export const MiniAppWeeklyLeaderboardPage = () => {
   const { t } = useTranslation("home", { keyPrefix: "leaderboard" });
   const { isSmallScreen } = useResponsiveValues();
   const [now, setNow] = useState(() => new Date());
-  const { userAddress } = useMiniAppIdentity();
-  const periods = useMemo(() => getCurrentGameLeaderboardPeriods(now), [now]);
-
-  const { data, isLoading, error } = useGetApiLeaderboard({
-    blockchain: getMiniAppBlockchain(),
-    startDate: periods.weekly.startDate,
-    endDate: periods.weekly.endDate,
-    isTournament: false,
-    limit: 50,
-  });
-
-  const currentUserAddress = addressKey(userAddress);
-  const entries = data?.entries ?? [];
+  const { periods, entries, currentUserAddress, isLoading, error } =
+    useMiniAppWeeklyLeaderboard(now);
   const topEntries = entries.slice(0, 3);
-  const tableEntries = entries.slice(3);
 
   useEffect(() => {
     const intervalId = window.setInterval(() => {
@@ -234,74 +207,15 @@ export const MiniAppWeeklyLeaderboardPage = () => {
                 <Box
                   w={isSmallScreen ? "100%" : "78%"}
                   mt={2}
-                  px={isSmallScreen ? 4 : 8}
                 >
-                  {!entries.length ? (
-                    <Flex justifyContent="center" pt={6}>
-                      <Text color="white">{t("title")}</Text>
-                    </Flex>
-                  ) : (
-                    <TableContainer overflowX="hidden" overflowY="auto">
-                      <Table
-                        variant="leaderboard"
-                        sx={{
-                          borderCollapse: "separate",
-                          borderSpacing: "0 5px",
-                          tableLayout: "fixed",
-                          "& td": {
-                            border: "none",
-                            padding: 0,
-                            overflow: "hidden",
-                          },
-                        }}
-                      >
-                        <Tbody>
-                          {tableEntries.map((entry) => {
-                            const isCurrentPlayer =
-                              Boolean(currentUserAddress) &&
-                              addressKey(entry.owner) === currentUserAddress;
-
-                            return (
-                              <CustomTr
-                                key={entry.id}
-                                highlighted={isCurrentPlayer}
-                                sx={isCurrentPlayer ? CURRENT_LEADER_STYLES : {}}
-                              >
-                                <Td w={isSmallScreen ? "50px" : "70px"}>
-                                  #{entry.position}
-                                </Td>
-                                <Td color="white !important">
-                                  <Text>{entry.displayName}</Text>
-                                </Td>
-                                <Td maxW="150px" p="12px 20px" whiteSpace="normal">
-                                  <Text
-                                    color={
-                                      isCurrentPlayer
-                                        ? "white !important"
-                                        : VIOLET_LIGHT
-                                    }
-                                    fontSize={isSmallScreen ? 10 : 14}
-                                    overflowWrap="break-word"
-                                    wordBreak="normal"
-                                    whiteSpace="normal"
-                                    lineHeight="1.2"
-                                  >
-                                    {t("level")}
-                                    {entry.level}
-                                    {" - "}
-                                    {t("round")}
-                                    {entry.round}
-                                    <br />
-                                    {formatNumber(entry.playerScore)} {t("points")}
-                                  </Text>
-                                </Td>
-                              </CustomTr>
-                            );
-                          })}
-                        </Tbody>
-                      </Table>
-                    </TableContainer>
-                  )}
+                  <MiniAppLeaderboardTable
+                    entries={entries.slice(3)}
+                    currentUserAddress={currentUserAddress}
+                    lines={47}
+                    isSmallScreen={Boolean(isSmallScreen)}
+                    t={t}
+                    px={isSmallScreen ? 4 : 8}
+                  />
                 </Box>
               </>
             )}
