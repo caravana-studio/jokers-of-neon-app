@@ -21,6 +21,10 @@ export const MissionRow = ({ mission, fontSize, iconSize }: MissionRowProps) => 
   const textSize = fontSize || defaultFontSize;
 
   const color = mission.completed ? VIOLET_LIGHT : "white";
+  const showProgress =
+    mission.target !== undefined &&
+    mission.target > 1 &&
+    mission.progress !== undefined;
 
   return (
     <Flex alignItems="center" gap={2} my={0}>
@@ -34,6 +38,13 @@ export const MissionRow = ({ mission, fontSize, iconSize }: MissionRowProps) => 
       </Box>
       <Text fontSize={textSize} color={color} lineHeight="1" minW={0}>
         {mission.description} -
+        {showProgress && (
+          <span style={{ fontFamily: "Orbitron" }}>
+            {" "}
+            {Math.min(mission.progress ?? 0, mission.target ?? 0)}/
+            {mission.target} -
+          </span>
+        )}
         <span style={{ fontFamily: "Orbitron" }}> {mission.xp} XP</span>
       </Text>
     </Flex>

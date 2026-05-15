@@ -36,7 +36,11 @@
     },
     "level": "level",
     "dailyMissions": "Daily Missions",
-    "noMissionsAvailable": "No missions available"
+    "noMissionsAvailable": "No missions available",
+    "dailyMissionGroups": {
+      "daily": "Daily",
+      "weekly": "Weekly"
+    }
   },
   "packs": {
     "title": "Packs",

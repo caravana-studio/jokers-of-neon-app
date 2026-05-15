@@ -248,6 +248,157 @@ export function setupWorld(provider: DojoProvider) {
     }
   };
 
+  const build_daily_missions_system_generateWeeklyMissions_calldata =
+    (): DojoCall => {
+      return {
+        contractName: "daily_missions_system",
+        entrypoint: "generate_weekly_missions",
+        calldata: [],
+      };
+    };
+
+  const daily_missions_system_generateWeeklyMissions = async (
+    snAccount: Account | AccountInterface
+  ) => {
+    try {
+      return await provider.execute(
+        snAccount,
+        build_daily_missions_system_generateWeeklyMissions_calldata(),
+        DOJO_NAMESPACE
+      );
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+
+  const build_daily_missions_system_getMissionsForPeriod_calldata = (
+    periodType: BigNumberish,
+    periodId: BigNumberish
+  ): DojoCall => {
+    return {
+      contractName: "daily_missions_system",
+      entrypoint: "get_missions_for_period",
+      calldata: [periodType, periodId],
+    };
+  };
+
+  const daily_missions_system_getMissionsForPeriod = async (
+    periodType: BigNumberish,
+    periodId: BigNumberish
+  ) => {
+    try {
+      return await provider.call(
+        DOJO_NAMESPACE,
+        build_daily_missions_system_getMissionsForPeriod_calldata(
+          periodType,
+          periodId
+        )
+      );
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+
+  const build_daily_missions_system_getPlayerMissionProgress_calldata = (
+    player: string,
+    periodType: BigNumberish,
+    periodId: BigNumberish
+  ): DojoCall => {
+    return {
+      contractName: "daily_missions_system",
+      entrypoint: "get_player_mission_progress",
+      calldata: [player, periodType, periodId],
+    };
+  };
+
+  const daily_missions_system_getPlayerMissionProgress = async (
+    player: string,
+    periodType: BigNumberish,
+    periodId: BigNumberish
+  ) => {
+    try {
+      return await provider.call(
+        DOJO_NAMESPACE,
+        build_daily_missions_system_getPlayerMissionProgress_calldata(
+          player,
+          periodType,
+          periodId
+        )
+      );
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+
+  const build_daily_missions_system_getThisWeekMissions_calldata =
+    (): DojoCall => {
+      return {
+        contractName: "daily_missions_system",
+        entrypoint: "get_this_week_missions",
+        calldata: [],
+      };
+    };
+
+  const daily_missions_system_getThisWeekMissions = async () => {
+    try {
+      return await provider.call(
+        DOJO_NAMESPACE,
+        build_daily_missions_system_getThisWeekMissions_calldata()
+      );
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+
+  const build_daily_missions_system_getTodayMissions_calldata =
+    (): DojoCall => {
+      return {
+        contractName: "daily_missions_system",
+        entrypoint: "get_today_missions",
+        calldata: [],
+      };
+    };
+
+  const daily_missions_system_getTodayMissions = async () => {
+    try {
+      return await provider.call(
+        DOJO_NAMESPACE,
+        build_daily_missions_system_getTodayMissions_calldata()
+      );
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+
+  const build_daily_missions_system_getGameDailyMissionProgress_calldata = (
+    gameId: BigNumberish
+  ): DojoCall => {
+    return {
+      contractName: "daily_missions_system",
+      entrypoint: "get_game_daily_mission_progress",
+      calldata: [gameId],
+    };
+  };
+
+  const daily_missions_system_getGameDailyMissionProgress = async (
+    gameId: BigNumberish
+  ) => {
+    try {
+      return await provider.call(
+        DOJO_NAMESPACE,
+        build_daily_missions_system_getGameDailyMissionProgress_calldata(gameId)
+      );
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+
   const build_game_system_newGame_calldata = (
     player: string,
     playerName: BigNumberish,
@@ -2339,6 +2490,26 @@ export function setupWorld(provider: DojoProvider) {
         daily_missions_system_getDailyMissionsXpForToday,
       buildGetDailyMissionsXpForTodayCalldata:
         build_daily_missions_system_getDailyMissionsXpForToday_calldata,
+      generateWeeklyMissions: daily_missions_system_generateWeeklyMissions,
+      buildGenerateWeeklyMissionsCalldata:
+        build_daily_missions_system_generateWeeklyMissions_calldata,
+      getMissionsForPeriod: daily_missions_system_getMissionsForPeriod,
+      buildGetMissionsForPeriodCalldata:
+        build_daily_missions_system_getMissionsForPeriod_calldata,
+      getPlayerMissionProgress:
+        daily_missions_system_getPlayerMissionProgress,
+      buildGetPlayerMissionProgressCalldata:
+        build_daily_missions_system_getPlayerMissionProgress_calldata,
+      getThisWeekMissions: daily_missions_system_getThisWeekMissions,
+      buildGetThisWeekMissionsCalldata:
+        build_daily_missions_system_getThisWeekMissions_calldata,
+      getTodayMissions: daily_missions_system_getTodayMissions,
+      buildGetTodayMissionsCalldata:
+        build_daily_missions_system_getTodayMissions_calldata,
+      getGameDailyMissionProgress:
+        daily_missions_system_getGameDailyMissionProgress,
+      buildGetGameDailyMissionProgressCalldata:
+        build_daily_missions_system_getGameDailyMissionProgress_calldata,
     },
     game_system: {
       newGame: game_system_newGame,

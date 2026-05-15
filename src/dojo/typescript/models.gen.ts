@@ -25,6 +25,45 @@ export interface DailyMissionsForDay {
 	hard_mission_id: number;
 }
 
+// Type definition for `jokers_of_neon_core::models::daily_missions::GameMissionCompleted` struct
+export interface GameMissionCompleted {
+	game_id: number;
+	mission_id: number;
+	completed: boolean;
+}
+
+// Type definition for `jokers_of_neon_core::models::daily_missions::GameMissionProgress` struct
+export interface GameMissionProgress {
+	game_id: number;
+	period_id: number;
+	mission_id: number;
+	progress: number;
+	completed: boolean;
+}
+
+// Type definition for `jokers_of_neon_core::models::daily_missions::MissionSlot` struct
+export interface MissionSlot {
+	period_type: number;
+	period_id: number;
+	difficulty: number;
+	mission_id: number;
+	template_id: number;
+	target: number;
+	param_1: number;
+	param_2: number;
+	xp: number;
+}
+
+// Type definition for `jokers_of_neon_core::models::daily_missions::PlayerMissionProgress` struct
+export interface PlayerMissionProgress {
+	player: string;
+	period_type: number;
+	period_id: number;
+	mission_id: number;
+	progress: number;
+	completed: boolean;
+}
+
 // Type definition for `jokers_of_neon_core::models::game_specials::GameSpecials` struct
 export interface GameSpecials {
 	game_id: number;
@@ -479,6 +518,20 @@ export interface DailyMissionCompletedEvent {
 	id: number;
 }
 
+// Type definition for `jokers_of_neon_core::models::events::MissionCompletedEvent` struct
+export interface MissionCompletedEvent {
+	player: string;
+	period_type: number;
+	period_id: number;
+	mission_id: number;
+	template_id: number;
+	difficulty: number;
+	target: number;
+	progress: number;
+	xp: number;
+	game_id: number;
+}
+
 // Type definition for `jokers_of_neon_core::models::events::DetailEarnedEvent` struct
 export interface DetailEarnedEvent {
 	player: string;
@@ -922,6 +975,10 @@ export interface SchemaType extends ISchemaType {
 		AchievementsTracker: AchievementsTracker,
 		DailyMissionTracker: DailyMissionTracker,
 		DailyMissionsForDay: DailyMissionsForDay,
+		GameMissionCompleted: GameMissionCompleted,
+		GameMissionProgress: GameMissionProgress,
+		MissionSlot: MissionSlot,
+		PlayerMissionProgress: PlayerMissionProgress,
 		GameSpecials: GameSpecials,
 		LivesConfig: LivesConfig,
 		PlayerLives: PlayerLives,
@@ -974,6 +1031,7 @@ export interface SchemaType extends ISchemaType {
 		CreateGameEvent: CreateGameEvent,
 		CurrentHandEvent: CurrentHandEvent,
 		DailyMissionCompletedEvent: DailyMissionCompletedEvent,
+		MissionCompletedEvent: MissionCompletedEvent,
 		DetailEarnedEvent: DetailEarnedEvent,
 		GameEvent: GameEvent,
 		GamePowerUpEvent: GamePowerUpEvent,
@@ -1025,6 +1083,37 @@ export const schema: SchemaType = {
 			easy_mission_id: 0,
 			medium_mission_id: 0,
 			hard_mission_id: 0,
+		},
+		GameMissionCompleted: {
+			game_id: 0,
+			mission_id: 0,
+			completed: false,
+		},
+		GameMissionProgress: {
+			game_id: 0,
+			period_id: 0,
+			mission_id: 0,
+			progress: 0,
+			completed: false,
+		},
+		MissionSlot: {
+			period_type: 0,
+			period_id: 0,
+			difficulty: 0,
+			mission_id: 0,
+			template_id: 0,
+			target: 0,
+			param_1: 0,
+			param_2: 0,
+			xp: 0,
+		},
+		PlayerMissionProgress: {
+			player: "",
+			period_type: 0,
+			period_id: 0,
+			mission_id: 0,
+			progress: 0,
+			completed: false,
 		},
 		GameSpecials: {
 			game_id: 0,
@@ -1439,6 +1528,18 @@ export const schema: SchemaType = {
 			player: "",
 			id: 0,
 		},
+		MissionCompletedEvent: {
+			player: "",
+			period_type: 0,
+			period_id: 0,
+			mission_id: 0,
+			template_id: 0,
+			difficulty: 0,
+			target: 0,
+			progress: 0,
+			xp: 0,
+			game_id: 0,
+		},
 		DetailEarnedEvent: {
 			player: "",
 			game_id: 0,
@@ -1852,6 +1953,10 @@ export enum ModelsMapping {
 	AchievementsTracker = 'jokers_of_neon_core-AchievementsTracker',
 	DailyMissionTracker = 'jokers_of_neon_core-DailyMissionTracker',
 	DailyMissionsForDay = 'jokers_of_neon_core-DailyMissionsForDay',
+	GameMissionCompleted = 'jokers_of_neon_core-GameMissionCompleted',
+	GameMissionProgress = 'jokers_of_neon_core-GameMissionProgress',
+	MissionSlot = 'jokers_of_neon_core-MissionSlot',
+	PlayerMissionProgress = 'jokers_of_neon_core-PlayerMissionProgress',
 	GameSpecials = 'jokers_of_neon_core-GameSpecials',
 	LivesConfig = 'jokers_of_neon_core-LivesConfig',
 	PlayerLives = 'jokers_of_neon_core-PlayerLives',
@@ -1909,6 +2014,7 @@ export enum ModelsMapping {
 	CreateGameEvent = 'jokers_of_neon_core-CreateGameEvent',
 	CurrentHandEvent = 'jokers_of_neon_core-CurrentHandEvent',
 	DailyMissionCompletedEvent = 'jokers_of_neon_core-DailyMissionCompletedEvent',
+	MissionCompletedEvent = 'jokers_of_neon_core-MissionCompletedEvent',
 	DetailEarnedEvent = 'jokers_of_neon_core-DetailEarnedEvent',
 	GameEvent = 'jokers_of_neon_core-GameEvent',
 	GamePowerUpEvent = 'jokers_of_neon_core-GamePowerUpEvent',

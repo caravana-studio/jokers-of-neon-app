@@ -25,9 +25,16 @@ export const handleXPEvents = async (
       showDailyMissionToast(dailyMissionEvent);
     }
 
-    // Register daily mission milestone for referral tracking
-    registerMilestone(address, "daily_mission_completed", undefined, accountType, username ?? undefined)
-      .catch((e) => console.error("Error registering daily mission milestone", e));
+    if (dailyMissionEvent.some((event) => event.periodType !== "weekly")) {
+      registerMilestone(
+        address,
+        "daily_mission_completed",
+        undefined,
+        accountType,
+        username ?? undefined
+      )
+        .catch((e) => console.error("Error registering daily mission milestone", e));
+    }
 
     // ONLY FOR GG CAMPAIGN
     //await handleAchievementPush(achievementEvent, achievementSound);

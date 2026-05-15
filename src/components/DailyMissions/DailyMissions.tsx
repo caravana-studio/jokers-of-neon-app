@@ -1,7 +1,10 @@
 import { Flex, Heading, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { getDailyMissions } from "../../dojo/queries/getDailyMissions";
+import {
+  getDailyMissions,
+  getWeeklyMissions,
+} from "../../dojo/queries/getDailyMissions";
 import { useDojo } from "../../dojo/useDojo";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { DailyMission } from "../../types/DailyMissions";
@@ -36,8 +39,12 @@ interface DailyMissionsProps {
   fontSize?: string;
 }
 
-export const DailyMissions = ({ showTitle = true, fontSize }: DailyMissionsProps) => {
+export const DailyMissions = ({
+  showTitle = true,
+  fontSize,
+}: DailyMissionsProps) => {
   const [dailyMissions, setDailyMissions] = useState<DailyMission[]>([]);
+  const [weeklyMissions, setWeeklyMissions] = useState<DailyMission[]>([]);
   const { t } = useTranslation("home", {
     keyPrefix: "home",
   });
@@ -49,13 +56,50 @@ export const DailyMissions = ({ showTitle = true, fontSize }: DailyMissionsProps
   } = useDojo();
 
   useEffect(() => {
-    account &&
-      getDailyMissions(client, account.address).then((missions) => {
-        setDailyMissions(missions);
-      });
+    if (!account) {
+      setDailyMissions([]);
+      setWeeklyMissions([]);
+      return;
+    }
+
+    Promise.all([
+      getDailyMissions(client, account.address),
+      getWeeklyMissions(client, account.address),
+    ]).then(([daily, weekly]) => {
+      setDailyMissions(daily);
+      setWeeklyMissions(weekly);
+    });
   }, [account, client]);
 
-  const sortedMissions = [...dailyMissions].sort((a, b) => a.xp - b.xp);
+  const sortedDailyMissions = [...dailyMissions].sort((a, b) => a.xp - b.xp);
+  const sortedWeeklyMissions = [...weeklyMissions].sort((a, b) => a.xp - b.xp);
+  const hasMissions = dailyMissions.length > 0 || weeklyMissions.length > 0;
+
+  const renderMissionGroup = (title: string, missions: DailyMission[]) => {
+    if (missions.length === 0) {
+      return null;
+    }
+
+    return (
+      <Flex w="100%" flexDir="column" gap={1} overflow="hidden">
+        <Text
+          fontSize={fontSize || (isSmallScreen ? "11px" : "12px")}
+          color="whiteAlpha.700"
+          textTransform="uppercase"
+          fontFamily="Orbitron"
+        >
+          {title}
+        </Text>
+        {missions.map((mission) => (
+          <MissionRow
+            key={`${mission.periodType}-${mission.missionId}`}
+            mission={mission}
+            fontSize={fontSize}
+          />
+        ))}
+      </Flex>
+    );
+  };
 
   return (
     <Flex w="100%" flexDir="column" gap={2} overflow="hidden">
@@ -67,14 +111,24 @@ export const DailyMissions = ({ showTitle = true, fontSize }: DailyMissionsProps
         </Flex>
       )}
       <Flex w="100%" flexDir="column" gap={1} overflow="hidden">
-        {dailyMissions.length === 0 ? (
-          <Text fontSize={fontSize || (isSmallScreen ? "12px" : "14px")} color="gray.400">
+        {!hasMissions ? (
+          <Text
+            fontSize={fontSize || (isSmallScreen ? "12px" : "14px")}
+            color="gray.400"
+          >
             {t("noMissionsAvailable")}
           </Text>
         ) : (
-          sortedMissions.map((mission, index) => (
-            <MissionRow key={index} mission={mission} fontSize={fontSize} />
-          ))
+          <>
+            {renderMissionGroup(
+              t("dailyMissionGroups.daily"),
+              sortedDailyMissions
+            )}
+            {renderMissionGroup(
+              t("dailyMissionGroups.weekly"),
+              sortedWeeklyMissions
+            )}
+          </>
         )}
       </Flex>
     </Flex>

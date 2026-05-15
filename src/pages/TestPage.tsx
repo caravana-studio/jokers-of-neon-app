@@ -5,6 +5,16 @@ import { validateUsername } from "../api/usernames";
 import { DelayedLoading } from "../components/DelayedLoading";
 import { MenuBtn } from "../components/Menu/Buttons/MenuBtn";
 import {
+  getMissionTemplateExamples,
+  MISSION_PERIOD,
+  renderMissionDescription,
+} from "../data/dailyMissions";
+import { encodeString } from "../dojo/utils/decodeString";
+import { DojoEvents } from "../enums/dojoEvents";
+import { getDailyMissionCompleteEvent } from "../utils/playEvents/getDailyMissionCompleteEvent";
+import { getEventKey } from "../utils/getEventKey";
+import { showDailyMissionToast } from "../utils/transactionNotifications";
+import {
   getShopTierUnlockConfig,
   SHOP_TIER_UNLOCK_IDS,
 } from "../constants/shopTierUnlock";
@@ -40,6 +50,7 @@ export const TestPage = () => {
   const { showErrorToast, showSuccessToast } = useCustomToast();
   const { id: currentGameId, setShopTierUnlockedEvent } = useGameStore();
   const [showUsernameTools, setShowUsernameTools] = useState(false);
+  const [showMissionTools, setShowMissionTools] = useState(false);
   const [showUnlockablesList, setShowUnlockablesList] = useState(false);
   const [usernameInput, setUsernameInput] = useState("");
   const [isSavingUsername, setIsSavingUsername] = useState(false);
@@ -56,6 +67,39 @@ export const TestPage = () => {
       unlock_id: unlockableId,
     });
     navigate(`/shop-tier-unlocked/${testGameId}`);
+  };
+
+  const missionExamples = getMissionTemplateExamples();
+
+  const simulateMissionCompletedEvent = (mission: (typeof missionExamples)[number]) => {
+    const isWeekly = mission.templateId.startsWith("weekly-");
+    const target = mission.target;
+    const missionEvent = {
+      from_address: "0x0",
+      keys: ["0x0", getEventKey(DojoEvents.DAILY_MISSION_COMPLETE)],
+      data: [
+        "0x0",
+        address || "0x0",
+        `0x${(isWeekly ? MISSION_PERIOD.WEEKLY : MISSION_PERIOD.DAILY).toString(16)}`,
+        "0x3039",
+        "0x0",
+        encodeString(isWeekly ? "weekly-medium" : "daily-medium"),
+        encodeString(mission.templateId),
+        "0x2",
+        `0x${target.toString(16)}`,
+        `0x${target.toString(16)}`,
+        `0x${(isWeekly ? 200 : 20).toString(16)}`,
+        isWeekly ? "0x0" : "0x3e7",
+        "0x0",
+      ],
+    };
+    const parsed = getDailyMissionCompleteEvent([missionEvent]) ?? [];
+    showDailyMissionToast(
+      parsed.map((event) => ({
+        ...event,
+        target,
+      }))
+    );
   };
 
   const getUnlockableTestLabel = (unlockableId: string) => {
@@ -166,6 +210,40 @@ export const TestPage = () => {
                 >
                   {username ? "Update" : "Create"}
                 </Button>
+              </Flex>
+            </Flex>
+          </Box>
+        )}
+        {isSmallScreen && <Divider borderColor="white" borderWidth="1px" my={2} />}
+        <MenuBtn
+          icon={Icons.LIST}
+          description="Simulate unified MissionCompletedEvent"
+          label={showMissionTools ? "Mission events (hide)" : "Mission events"}
+          onClick={() => setShowMissionTools((prev) => !prev)}
+          arrowRight
+          width="18px"
+        />
+        {showMissionTools && (
+          <Box pl={8} pt={1}>
+            <Flex flexDirection="column" gap={2}>
+              <Text fontSize="xs" color="whiteAlpha.700">
+                These buttons build a fake unified MissionCompletedEvent and run it
+                through the same parser/toast path used by live transactions.
+              </Text>
+              <Flex flexDirection="column" gap={1.5}>
+                {missionExamples.map((mission) => (
+                  <Button
+                    key={mission.templateId}
+                    variant="secondarySolid"
+                    size="sm"
+                    justifyContent="flex-start"
+                    whiteSpace="normal"
+                    minH="34px"
+                    onClick={() => simulateMissionCompletedEvent(mission)}
+                  >
+                    {renderMissionDescription(mission)}
+                  </Button>
+                ))}
               </Flex>
             </Flex>
           </Box>
