@@ -15,6 +15,7 @@ import { VIOLET_LIGHT } from "../../theme/colors";
 import { formatNumber } from "../../utils/formatNumber";
 import { normalizeGameId } from "../../utils/normalizeGameId";
 import { addressKey } from "../../utils/starknetAddress";
+import { MiniAppTournamentPrize } from "./useMiniAppTournamentSettings";
 
 const CURRENT_LEADER_STYLES = {
   position: "relative",
@@ -33,6 +34,16 @@ type MiniAppLeaderboardTableProps = {
   t: TFunction;
   px?: number | { base?: number; sm?: number; md?: number };
   width?: string | { base?: string; sm?: string; md?: string };
+  showPrizeColumn?: boolean;
+  prizes?: Record<number, MiniAppTournamentPrize>;
+};
+
+const getPrizeText = (prize?: MiniAppTournamentPrize) => {
+  if (!prize?.token) {
+    return "-";
+  }
+
+  return `${prize.token.amount} ${prize.token.type}`;
 };
 
 export const MiniAppLeaderboardTable = ({
@@ -44,6 +55,8 @@ export const MiniAppLeaderboardTable = ({
   t,
   px = 0,
   width = "100%",
+  showPrizeColumn = false,
+  prizes,
 }: MiniAppLeaderboardTableProps) => {
   const visibleEntries = entries.slice(0, lines);
   const currentGameEntry =
@@ -100,7 +113,11 @@ export const MiniAppLeaderboardTable = ({
                     <Td color="white !important">
                       <Text>{entry.displayName}</Text>
                     </Td>
-                    <Td maxW="150px" p="12px 20px" whiteSpace="normal">
+                    <Td
+                      maxW={showPrizeColumn ? "120px" : "150px"}
+                      p={showPrizeColumn ? "12px 8px" : "12px 20px"}
+                      whiteSpace="normal"
+                    >
                       <Text
                         color={
                           isCurrentUser || isCurrentGame
@@ -122,6 +139,29 @@ export const MiniAppLeaderboardTable = ({
                         {formatNumber(entry.playerScore)} {t("points")}
                       </Text>
                     </Td>
+                    {showPrizeColumn && (
+                      <Td
+                        w={isSmallScreen ? "76px" : "96px"}
+                        p="12px 8px"
+                        whiteSpace="normal"
+                      >
+                        <Text
+                          color={
+                            isCurrentUser || isCurrentGame
+                              ? "white !important"
+                              : VIOLET_LIGHT
+                          }
+                          fontSize={isSmallScreen ? 10 : 14}
+                          textAlign="right"
+                          overflowWrap="break-word"
+                          wordBreak="break-word"
+                          whiteSpace="normal"
+                          lineHeight="1.2"
+                        >
+                          {getPrizeText(prizes?.[entry.position])}
+                        </Text>
+                      </Td>
+                    )}
                   </CustomTr>
                 );
               })}
@@ -131,11 +171,16 @@ export const MiniAppLeaderboardTable = ({
                     <Td>...</Td>
                     <Td>...</Td>
                     <Td>...</Td>
+                    {showPrizeColumn && <Td>...</Td>}
                   </Tr>
                   <CustomTr highlighted key={`current-game-${currentGameEntry.id}`}>
                     <Td>#{currentGameEntry.position}</Td>
                     <Td>{currentGameEntry.displayName}</Td>
-                    <Td maxW="150px" p="12px 20px" whiteSpace="normal">
+                    <Td
+                      maxW={showPrizeColumn ? "120px" : "150px"}
+                      p={showPrizeColumn ? "12px 8px" : "12px 20px"}
+                      whiteSpace="normal"
+                    >
                       <Text
                         color="white !important"
                         fontSize={isSmallScreen ? 10 : 14}
@@ -153,6 +198,25 @@ export const MiniAppLeaderboardTable = ({
                         {formatNumber(currentGameEntry.playerScore)} {t("points")}
                       </Text>
                     </Td>
+                    {showPrizeColumn && (
+                      <Td
+                        w={isSmallScreen ? "76px" : "96px"}
+                        p="12px 8px"
+                        whiteSpace="normal"
+                      >
+                        <Text
+                          color="white !important"
+                          fontSize={isSmallScreen ? 10 : 14}
+                          textAlign="right"
+                          overflowWrap="break-word"
+                          wordBreak="break-word"
+                          whiteSpace="normal"
+                          lineHeight="1.2"
+                        >
+                          {getPrizeText(prizes?.[currentGameEntry.position])}
+                        </Text>
+                      </Td>
+                    )}
                   </CustomTr>
                 </>
               )}
