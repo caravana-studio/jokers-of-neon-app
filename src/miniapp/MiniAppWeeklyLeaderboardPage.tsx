@@ -15,21 +15,40 @@ import { VIOLET_LIGHT } from "../theme/colors";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import { formatNumber } from "../utils/formatNumber";
 import { MiniAppLeaderboardTable } from "./leaderboard/MiniAppLeaderboardTable";
+import {
+  MiniAppTournamentPrize,
+  useMiniAppTournamentSettings,
+} from "./leaderboard/useMiniAppTournamentSettings";
 import { useMiniAppWeeklyLeaderboard } from "./leaderboard/useMiniAppWeeklyLeaderboard";
 
 const MiniAppLeaderboardPodium = ({
   entries,
+  showPrizeLine,
+  prizes,
 }: {
   entries: Array<{
+    position: number;
     displayName: string;
     playerScore: number;
     level: number;
     round: number;
   }>;
+  showPrizeLine: boolean;
+  prizes: Record<number, MiniAppTournamentPrize>;
 }) => {
   const { t } = useTranslation("home", { keyPrefix: "leaderboard" });
   const { isSmallScreen } = useResponsiveValues();
   const leaders = entries.slice(0, 3);
+
+  const getPrizeText = (position: number) => {
+    const prize = prizes[position];
+
+    if (!prize?.token) {
+      return "\u00A0";
+    }
+
+    return `${prize.token.amount} ${prize.token.type}`;
+  };
 
   const renderStats = (index: number) => (
     <Flex flexDir="column" gap={isSmallScreen ? 0 : 1} alignItems="center">
@@ -46,6 +65,11 @@ const MiniAppLeaderboardPodium = ({
       <Text color={VIOLET_LIGHT}>
         {formatNumber(leaders[index].playerScore)} {t("points")}
       </Text>
+      {showPrizeLine && (
+        <Text color="white" minH={isSmallScreen ? "15px" : "21px"}>
+          {getPrizeText(leaders[index].position)}
+        </Text>
+      )}
     </Flex>
   );
 
@@ -149,6 +173,7 @@ export const MiniAppWeeklyLeaderboardPage = () => {
   const [now, setNow] = useState(() => new Date());
   const { periods, entries, currentUserAddress, isLoading, error } =
     useMiniAppWeeklyLeaderboard(now);
+  const { tournament } = useMiniAppTournamentSettings();
   const topEntries = entries.slice(0, 3);
 
   useEffect(() => {
@@ -202,7 +227,11 @@ export const MiniAppWeeklyLeaderboardPage = () => {
             ) : (
               <>
                 {topEntries.length > 0 && (
-                  <MiniAppLeaderboardPodium entries={topEntries} />
+                  <MiniAppLeaderboardPodium
+                    entries={topEntries}
+                    showPrizeLine={tournament.isActive}
+                    prizes={tournament.prizes}
+                  />
                 )}
                 <Box
                   w={isSmallScreen ? "100%" : "78%"}
@@ -215,6 +244,8 @@ export const MiniAppWeeklyLeaderboardPage = () => {
                     isSmallScreen={Boolean(isSmallScreen)}
                     t={t}
                     px={isSmallScreen ? 4 : 8}
+                    showPrizeColumn={tournament.isActive}
+                    prizes={tournament.prizes}
                   />
                 </Box>
               </>
