@@ -11,17 +11,26 @@ import {
   useRef,
   useState,
 } from "react";
-import { Account, type AccountInterface } from "starknet";
+import { Account, type AccountInterface, RpcProvider } from "starknet";
 import { checkEarlyAccess } from "../api/earlyAccess";
 import { ACCOUNT_TYPE, GAME_ID, LOGGED_USER } from "../constants/localStorage";
+import { rpcUrl } from "../config/cartridgeUrls";
 import { AppType, useAppContext } from "../providers/AppContextProvider";
 import { useGetLastGameId } from "../queries/useGetLastGameId";
 import { logEvent } from "../utils/analytics";
 import { isNative } from "../utils/capacitorUtils";
+import { ensureGuestUsernameRecord } from "../utils/guestUsername";
+import {
+  clearGameLoopBurnerSession,
+  createGameLoopBurnerAccount,
+  ensureGameLoopBurnerSession,
+  isGameLoopBurnerEnabled,
+} from "../utils/gameLoopBurner";
 import { useAccountStore } from "./accountStore";
 import { controller } from "./controller/controller";
 import { CavosAccountAdapter } from "./cavos/CavosAccountAdapter";
-import { useCavosSafe } from "./cavos/CavosConfig";
+import { useCavosSafe } from "./cavos/CavosBridgeContext";
+import { useGameLoopBurnerSession } from "../hooks/useGameLoopBurnerSession";
 import type { SetupResult } from "./setup";
 
 const CHAIN = import.meta.env.VITE_CHAIN;
@@ -117,10 +126,26 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     !EARLY_ACCESS_VERSION;
 
   const { disconnect } = useDisconnect();
+  const gameLoopEnabled = isGameLoopBurnerEnabled();
+  const rpcProvider = useMemo(
+    () =>
+      new RpcProvider({
+        nodeUrl: rpcUrl,
+      }),
+    []
+  );
 
   const { account: burnerAccount, isDeploying } = useBurnerManager({
     burnerManager: value.burnerManager,
   });
+  const gameLoopBurnerSession = useGameLoopBurnerSession();
+  const gameLoopBurnerAccount = useMemo(
+    () =>
+      gameLoopEnabled && gameLoopBurnerSession
+        ? createGameLoopBurnerAccount(gameLoopBurnerSession, rpcProvider)
+        : null,
+    [gameLoopEnabled, gameLoopBurnerSession, rpcProvider]
+  );
 
   const [connectionStatus, setConnectionStatus] =
     useState<ConnectionStatus>("selecting");
@@ -130,7 +155,9 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     Account | AccountInterface | null
   >(null);
 
-  const lsAccountType = (localStorage.getItem(ACCOUNT_TYPE) ?? null) as
+  const lsAccountType = (appType === AppType.MINIAPP
+    ? null
+    : (localStorage.getItem(ACCOUNT_TYPE) ?? null)) as
     | "burner"
     | "controller"
     | "cavos"
@@ -334,7 +361,19 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
       setAccountType("controller");
       localStorage.setItem(ACCOUNT_TYPE, "controller");
       setFinalAccount(controllerAccount);
-    } else if (connectionStatus === "connecting_burner" && burnerAccount) {
+    } else if (
+      connectionStatus === "connecting_burner" &&
+      gameLoopEnabled &&
+      gameLoopBurnerAccount
+    ) {
+      setAccountType("burner");
+      localStorage.setItem(ACCOUNT_TYPE, "burner");
+      setFinalAccount(gameLoopBurnerAccount);
+    } else if (
+      connectionStatus === "connecting_burner" &&
+      !gameLoopEnabled &&
+      burnerAccount
+    ) {
       setAccountType("burner");
       localStorage.setItem(ACCOUNT_TYPE, "burner");
       setFinalAccount(burnerAccount);
@@ -346,13 +385,21 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     finalAccount,
     isControllerConnected,
     controllerAccount,
+    gameLoopEnabled,
+    gameLoopBurnerAccount,
     burnerAccount,
   ]);
 
   useEffect(() => {
     if (accountType && !finalAccount) {
       if (accountType === "burner") {
-        setFinalAccount(burnerAccount);
+        if (gameLoopEnabled) {
+          if (gameLoopBurnerAccount) {
+            setFinalAccount(gameLoopBurnerAccount);
+          }
+        } else {
+          setFinalAccount(burnerAccount);
+        }
       } else if (accountType === "controller") {
         connectWallet();
         if (controllerAccount) {
@@ -361,7 +408,14 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
       }
       // cavos auto-reconnect handled by the effect above
     }
-  }, [accountType, finalAccount, burnerAccount, controllerAccount]);
+  }, [
+    accountType,
+    finalAccount,
+    burnerAccount,
+    controllerAccount,
+    gameLoopEnabled,
+    gameLoopBurnerAccount,
+  ]);
 
   useEffect(() => {
     if (EARLY_ACCESS_VERSION && finalAccount) {
@@ -421,6 +475,7 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     localStorage.removeItem(ACCOUNT_TYPE);
     localStorage.removeItem(GAME_ID);
     localStorage.removeItem(LOGGED_USER);
+    clearGameLoopBurnerSession();
     setConnectionStatus("selecting");
     setCavosEmailOtpSent(false);
     setCavosEmail("");
@@ -464,24 +519,67 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     }
   };
 
-  const startGuestFlow = () => {
+  const startGuestFlow = async (): Promise<boolean> => {
     logEvent("play_as_guest");
+
+    if (isGameLoopBurnerEnabled()) {
+      try {
+        const burnerSession = await ensureGameLoopBurnerSession();
+        const username = await ensureGuestUsernameRecord(
+          burnerSession.burnerAddress
+        );
+
+        localStorage.removeItem(GAME_ID);
+        localStorage.setItem(LOGGED_USER, username);
+        setConnectionStatus("connecting_burner");
+        return true;
+      } catch (error) {
+        console.error("Failed to start guest flow with API burner", error);
+        return false;
+      }
+    }
+
     setConnectionStatus("connecting_burner");
     const guestId = lastGameIdError ? fallbackGuestIdRef.current : lastGameId + 1;
     const username = `guest${String(guestId).slice(-8)}`;
 
     localStorage.removeItem(GAME_ID);
     localStorage.setItem(LOGGED_USER, username);
+    return true;
   };
 
   const continueAsGuest = async (): Promise<boolean> => {
-    if (isLoadingLastGameId) {
+    if (!gameLoopEnabled && isLoadingLastGameId) {
       return false;
     }
 
-    startGuestFlow();
-    return true;
+    return startGuestFlow();
   };
+
+  useEffect(() => {
+    if (appType !== AppType.MINIAPP) {
+      return;
+    }
+
+    if (
+      finalAccount ||
+      accountType ||
+      connectionStatus !== "selecting" ||
+      (!gameLoopEnabled && isLoadingLastGameId)
+    ) {
+      return;
+    }
+
+    void startGuestFlow();
+  }, [
+    appType,
+    finalAccount,
+    accountType,
+    connectionStatus,
+    isLoadingLastGameId,
+    lastGameId,
+    lastGameIdError,
+  ]);
 
   const resetCavosAuthState = () => {
     setCavosError("");
@@ -700,7 +798,9 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
 
   const isLoadingWallet =
     (connectionStatus === "connecting_burner" &&
-      (!burnerAccount || isDeploying)) ||
+      (gameLoopEnabled
+        ? !gameLoopBurnerAccount
+        : !burnerAccount || isDeploying)) ||
     (connectionStatus === "connecting_cavos" &&
       !!cavos &&
       isCavosSetupInProgress) ||
@@ -718,7 +818,7 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
         verifyCavosEmailOtp,
         resetCavosAuthState,
         isLoadingWallet,
-        burnerAccount,
+        burnerAccount: gameLoopBurnerAccount ?? burnerAccount,
         controllerAccount,
         isControllerConnected,
         isControllerConnecting,

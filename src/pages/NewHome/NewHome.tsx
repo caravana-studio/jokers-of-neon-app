@@ -198,12 +198,16 @@ export const NewHome = () => {
     };
   }, [isSmallScreen, desktopBannerFitKey]);
 
-  const handleCreateGame = async () => {
+  const handleCreateGame = () => {
     prepareNewGame();
-    const started = await executeCreateGame();
-    if (started) {
-      navigate("/entering-tournament");
-    }
+    const createGamePromise = executeCreateGame();
+    navigate("/entering-tournament");
+
+    void createGamePromise.then((started) => {
+      if (!started) {
+        navigate("/my-games", { replace: true });
+      }
+    });
   };
 
   const handlePlayClick = () => {

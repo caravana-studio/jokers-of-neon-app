@@ -22,10 +22,15 @@ interface DistributionSettings {
   home: {
     banners: Banner[];
   };
+  miniapp?: {
+    banners: Banner[];
+  };
 }
 
 export const useDistributionSettings = () => {
-  const [settings, setSettings] = useState<DistributionSettings | null>(null);
+  const [settings, setSettings] = useState<DistributionSettings>(
+    defaultDistribution as DistributionSettings
+  );
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -36,7 +41,8 @@ export const useDistributionSettings = () => {
         );
         if (!response.ok) {
           console.error("Failed to fetch distribution settings");
-          return defaultDistribution;
+          setSettings(defaultDistribution as DistributionSettings);
+          return;
         }
         const data = await response.json();
         setSettings(data);
@@ -45,7 +51,7 @@ export const useDistributionSettings = () => {
         console.error(
           "Failed to fetch distribution settings. Unknown error occurred", err
         );
-        return defaultDistribution;
+        setSettings(defaultDistribution as DistributionSettings);
       } finally {
         setLoading(false);
       }

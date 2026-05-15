@@ -100,7 +100,10 @@ export const DojoProvider = ({ children, value }: DojoProviderProps) => {
           "0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
       }}
     >
-      <DojoContextProvider value={value} masterAccount={masterAccount}>
+      <DojoContextProvider
+        value={value}
+        masterAccount={masterAccount}
+      >
         {children}
       </DojoContextProvider>
     </BurnerProvider>
@@ -158,6 +161,9 @@ const DojoContextProvider = ({
   const { create, list, get, select, isDeploying, clear } = useBurnerManager({
     burnerManager: value.burnerManager,
   });
+  const resolvedAccount =
+    finalAccount ??
+    (appType === AppType.SHOP ? shopFallbackAccount : null);
 
   useEffect(() => {
     if (
@@ -198,9 +204,6 @@ const DojoContextProvider = ({
     finalAccount,
     onSuccessCallback,
   ]);
-
-  const resolvedAccount =
-    finalAccount ?? (appType === AppType.SHOP ? shopFallbackAccount : null);
 
   if (!resolvedAccount) {
     return <LoadingScreen />;

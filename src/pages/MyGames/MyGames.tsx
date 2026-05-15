@@ -22,7 +22,6 @@ export const MyGames = () => {
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "my-games",
   });
-
   useEffect(() => {
     logEvent("open_my_games_page");
   }, []);

@@ -10,6 +10,7 @@ import { AccountInterface } from "starknet";
 import { createGame } from "../api/createGame.ts";
 import { fetchUsernameByAddress } from "../api/usernames.ts";
 import { useUsernameRequirement } from "../components/UsernameGate.tsx";
+import { createMiniAppGame } from "../miniapp/api/createMiniAppGame.ts";
 import {
   acumSfx,
   clearLevel,
@@ -28,11 +29,11 @@ import { useAudio } from "../hooks/useAudio.tsx";
 import { usePitchedAudio } from "../hooks/usePitchedAudio.tsx";
 import { useCustomToast } from "../hooks/useCustomToast.tsx";
 import { useCardAnimations } from "../providers/CardAnimationsProvider";
+import { AppType, useAppContext } from "./AppContextProvider";
 import { useAnimationStore } from "../state/useAnimationStore.ts";
 import { useCurrentHandStore } from "../state/useCurrentHandStore.ts";
 import { useDeckStore } from "../state/useDeckStore.ts";
 import { useGameStore } from "../state/useGameStore.ts";
-import { useUsernameStore } from "../state/useUsernameStore.ts";
 import { useUnlockProgressStore } from "../state/useUnlockProgressStore.ts";
 import { Card } from "../types/Card";
 import { CardPlayEvent, PlayEvents, PowerUpScore } from "../types/ScoreData";
@@ -101,6 +102,8 @@ export const useGameContext = () => {
 };
 
 export const GameProvider = ({ children }: PropsWithChildren) => {
+  const appType = useAppContext();
+  const isMiniApp = appType === AppType.MINIAPP;
   const {
     refetchGameStore,
     addCash,
@@ -183,7 +186,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const navigate = useNavigate();
   const {
     switchToController,
-    setup: { client },
+    setup: { accountType, client },
     account: { account },
   } = useDojo();
 
@@ -295,7 +298,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     localStorage.removeItem("GAME_ID");
     resetLevel();
   };
-
   const initiateTransferFlow = () => {
     console.log("GameProvider: Initiating transfer flow...");
     // The callback now expects a payload object with all the fresh data.
@@ -337,56 +339,54 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       return false;
     }
 
-    const usernameForGame = useUsernameStore.getState().username;
-
     setGameError(false);
     setIsTournament(isTournament);
     resetLevel();
     setGameLoading(true);
-    console.log("Executing create game for username", usernameForGame);
     logEvent("create_game");
-    if (usernameForGame) {
-      try {
-        console.log("Creating game...");
-        createGame({
-          userAddress: account.address,
-          isTournament,
-        })
-          .then(async (response) => {
-            const newGameId = response?.data?.slot?.game_id;
-            console.log(`game ${newGameId} created`);
-            if (newGameId) {
-              setGameId(newGameId);
-              replaceCards(hand);
-              fetchDeck(client, newGameId, getCardData);
-              clearPreSelection();
-
-              setPreSelectionLocked(false);
-              setRoundRewards(undefined);
-              setState(GameStateEnum.NotSet);
-              navigate("/round");
-            } else {
-              showErrorToast("Error creating game");
-              console.error("Error creating game", response);
-              setGameError(true);
-              navigate("/my-games");
-            }
-          })
-          .catch((error) => {
-            console.error("Error creating game", error);
-            showErrorToast("Error creating game");
-            setGameError(true);
-            navigate("/my-games");
-          });
-      } catch (error) {
-        console.error("Error registering user in tournament", error);
-        setGameError(true);
-        navigate("/my-games");
-      }
-    } else {
-      console.error("No username");
+    if (!account?.address) {
+      console.error("No account address available to create game");
+      showErrorToast("Error creating game");
       setGameError(true);
       navigate("/my-games");
+      return false;
+    }
+
+    try {
+      console.log("Creating game...");
+      const response = isMiniApp
+        ? await createMiniAppGame({
+            isTournament,
+          })
+        : await createGame({
+            userAddress: account.address,
+            isTournament,
+          });
+      const newGameId = response?.data?.slot?.game_id;
+      console.log(`game ${newGameId} created`);
+
+      if (!newGameId) {
+        showErrorToast("Error creating game");
+        console.error("Error creating game", response);
+        setGameError(true);
+        navigate("/my-games");
+        return false;
+      }
+
+      setGameId(newGameId);
+      replaceCards(hand);
+      fetchDeck(client, newGameId, getCardData);
+      clearPreSelection();
+      setPreSelectionLocked(false);
+      setRoundRewards(undefined);
+      setState(GameStateEnum.NotSet);
+      navigate("/round");
+    } catch (error) {
+      console.error("Error creating game", error);
+      showErrorToast("Error creating game");
+      setGameError(true);
+      navigate("/my-games");
+      return false;
     }
 
     return true;

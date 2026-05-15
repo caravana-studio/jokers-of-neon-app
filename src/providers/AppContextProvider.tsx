@@ -3,6 +3,7 @@ import { createContext, useContext } from "react";
 export enum AppType {
   FULL_GAME = "full-game",
   SHOP = "shop",
+  MINIAPP = "miniapp",
 }
 
 interface IAppContextProviderProps {

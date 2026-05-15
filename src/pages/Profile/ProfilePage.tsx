@@ -11,16 +11,13 @@ export const ProfilePage = () => {
     setup: { account, client },
     accountType,
   } = useDojo();
-
   const loggedInUser = useUsername();
   const usernameStatus = useUsernameStore((store) => store.status);
-
-  const { profileData, fetchProfileData, loading, updateAvatar } =
-    useProfileStore();
+  const { profileData, fetchProfileData, loading, updateAvatar } = useProfileStore();
 
   useEffect(() => {
     if (client && account && loggedInUser && usernameStatus === "ready" && !loading) {
-      fetchProfileData(
+      void fetchProfileData(
         client,
         account.account.address,
         account.account,

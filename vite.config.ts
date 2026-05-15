@@ -10,11 +10,12 @@ import { defineConfig, type Plugin, type UserConfig } from "vite";
 import topLevelAwait from "vite-plugin-top-level-await";
 import wasm from "vite-plugin-wasm";
 
-type BuildTarget = "main" | "standaloneShop" | "all";
+type BuildTarget = "main" | "standaloneShop" | "miniapp" | "all";
 
 const rootDir = fileURLToPath(new URL(".", import.meta.url));
 const indexHtml = path.resolve(rootDir, "index.html");
 const standaloneShopHtml = path.resolve(rootDir, "standalone-shop.html");
+const miniappHtml = path.resolve(rootDir, "miniapp.html");
 const localCertDir = path.resolve(rootDir, ".cert");
 const isReactCompilerEnabled = process.env.VITE_REACT_COMPILER !== "false";
 
@@ -91,8 +92,9 @@ const resolveHttpsServerConfig = () => {
 
 const createConfig = (target: BuildTarget): UserConfig => {
   const isStandaloneShop = target === "standaloneShop";
+  const isMiniapp = target === "miniapp";
   const isAll = target === "all";
-  const assetBase = isStandaloneShop ? "/" : "./";
+  const assetBase = isStandaloneShop || isMiniapp ? "/" : "./";
   const https = resolveHttpsServerConfig();
   const config: UserConfig = {
     base: assetBase,
@@ -107,8 +109,10 @@ const createConfig = (target: BuildTarget): UserConfig => {
       rollupOptions: {
         input: isStandaloneShop
           ? { shop: standaloneShopHtml }
+          : isMiniapp
+          ? { miniapp: miniappHtml }
           : isAll
-          ? { main: indexHtml, shop: standaloneShopHtml }
+          ? { main: indexHtml, shop: standaloneShopHtml, miniapp: miniappHtml }
           : indexHtml,
       },
     },
@@ -136,6 +140,23 @@ const createConfig = (target: BuildTarget): UserConfig => {
       open: "/",
     };
     config.plugins?.push(htmlFallbackPlugin("/standalone-shop.html"));
+  }
+
+  if (isMiniapp) {
+    config.appType = "mpa";
+    config.build = {
+      ...config.build,
+      outDir: "dist-miniapp",
+    };
+    config.server = {
+      ...config.server,
+      open: "/",
+    };
+    config.preview = {
+      ...config.preview,
+      open: "/",
+    };
+    config.plugins?.push(htmlFallbackPlugin("/miniapp.html"));
   }
 
   return config;
@@ -179,6 +200,8 @@ export default defineConfig(({ mode }) => {
       ? "all"
       : process.env.STANDALONE_SHOP === "true" || mode === "standalone-shop"
       ? "standaloneShop"
+      : process.env.MINIAPP === "true" || mode === "miniapp"
+      ? "miniapp"
       : "main";
 
   return createConfig(target);

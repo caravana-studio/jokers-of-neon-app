@@ -10,6 +10,7 @@ import React from "react";
 import { num } from "starknet";
 import { rpcUrl, slotInstance } from "../config/cartridgeUrls";
 import { controller, getSlotChainId } from "../dojo/controller/controller";
+import { AppType, useAppContext } from "./AppContextProvider";
 
 const standaloneMainnetRpc = import.meta.env.VITE_STARKNET_RPC_URL?.trim();
 const isStandaloneShopMode = import.meta.env.MODE === "standalone-shop";
@@ -53,13 +54,16 @@ const slot: Chain = SLOT_INSTANCE && {
 }
 
 export function StarknetProvider({ children }: { children: React.ReactNode }) {
+  const appType = useAppContext();
   const provider = jsonRpcProvider({ rpc });
+  const connectors =
+    appType === AppType.MINIAPP ? [] : [controller as unknown as Connector];
 
   return (
     <StarknetConfig
       chains={SLOT_INSTANCE ? [slot, mainnet, sepolia] : [mainnet, sepolia]}
       provider={provider}
-      connectors={[controller as unknown as Connector]}
+      connectors={connectors}
       explorer={voyager}
       autoConnect
     >

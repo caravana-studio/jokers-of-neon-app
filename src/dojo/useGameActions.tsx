@@ -12,6 +12,7 @@ import { useDojo } from "./useDojo";
 
 import { achievementSfx } from "../constants/sfx";
 import { useAudio } from "../hooks/useAudio";
+import { AppType, useAppContext } from "../providers/AppContextProvider";
 import { useSettings } from "../providers/SettingsProvider";
 import { handleXPEvents } from "../utils/handleXPEvents";
 import {
@@ -38,6 +39,8 @@ type TransactionResult = { success: boolean };
 const inFlightClaimLivesByAccount = new Map<string, Promise<TransactionResult>>();
 
 export const useGameActions = () => {
+  const appType = useAppContext();
+  const shouldShowXpToasts = appType !== AppType.MINIAPP;
   const {
     setup: { client },
     account: { account },
@@ -172,7 +175,8 @@ export const useGameActions = () => {
           achievementSound,
           account.address,
           accountType,
-          username
+          username,
+          shouldShowXpToasts
         );
         return getPlayEvents(tx.value.events);
       }
@@ -207,7 +211,8 @@ export const useGameActions = () => {
           achievementSound,
           account.address,
           accountType,
-          username
+          username,
+          shouldShowXpToasts
         );
         return {
           success: true,
@@ -250,7 +255,8 @@ export const useGameActions = () => {
           achievementSound,
           account.address,
           accountType,
-          username
+          username,
+          shouldShowXpToasts
         );
       }
 
@@ -283,7 +289,8 @@ export const useGameActions = () => {
           achievementSound,
           account.address,
           accountType,
-          username
+          username,
+          shouldShowXpToasts
         );
       }
 
@@ -364,7 +371,8 @@ export const useGameActions = () => {
           achievementSound,
           account.address,
           accountType,
-          username
+          username,
+          shouldShowXpToasts
         );
         return getPlayEvents(events);
       }

@@ -2,18 +2,14 @@ import { ReactNode, useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { LOGGED_USER } from "../constants/localStorage";
 import { useDojo } from "../dojo/useDojo";
-import { useCavosSafe } from "../dojo/cavos/CavosConfig";
+import { useCavosSafe } from "../dojo/cavos/CavosBridgeContext";
 import { controller } from "../dojo/controller/controller";
 import { useCustomToast } from "../hooks/useCustomToast";
+import { guestUsernameForAddress } from "../utils/guestUsername";
 import { useUsernameStore } from "../state/useUsernameStore";
-import { normalizeStarknetAddress } from "../utils/starknetAddress";
+import { addressKey, normalizeStarknetAddress } from "../utils/starknetAddress";
 import { Loading } from "./Loading";
 import { UsernameModal } from "./UsernameModal";
-
-function guestUsernameForAddress(address: string): string {
-  const normalized = normalizeStarknetAddress(address).replace(/^0x/, "");
-  return `guest${normalized.slice(-8)}`;
-}
 
 function isValidStoredGuestUsername(username: string | null): username is string {
   return Boolean(
@@ -43,6 +39,7 @@ function useUsernameRequirement() {
     setup: { account },
     accountType,
   } = useDojo();
+  const storeAddress = useUsernameStore((store) => store.address);
   const status = useUsernameStore((store) => store.status);
   const username = useUsernameStore((store) => store.username);
   const error = useUsernameStore((store) => store.error);
@@ -59,9 +56,12 @@ function useUsernameRequirement() {
   const pendingResolveRef = useRef<((value: boolean) => void) | null>(null);
   const pendingPromiseRef = useRef<Promise<boolean> | null>(null);
 
-  const address = account?.account?.address ?? "";
+  const usernameAddress = account?.account?.address ?? "";
+  const normalizedUsernameAddress = normalizeStarknetAddress(usernameAddress);
   const isBurner = accountType === "burner";
-  const hasUsername = Boolean(username);
+  const hasUsername =
+    Boolean(username) &&
+    addressKey(storeAddress) === addressKey(normalizedUsernameAddress);
 
   const resolvePending = useCallback((value: boolean) => {
     pendingResolveRef.current?.(value);
@@ -88,25 +88,24 @@ function useUsernameRequirement() {
   );
 
   const createBurnerUsername = useCallback(async () => {
-    if (!address) return false;
+    if (!normalizedUsernameAddress) return false;
 
-    const normalizedAddress = normalizeStarknetAddress(address);
     const storedGuestUsername = window.localStorage.getItem(LOGGED_USER);
     const guestUsername = isValidStoredGuestUsername(storedGuestUsername)
       ? storedGuestUsername
-      : guestUsernameForAddress(normalizedAddress);
+      : guestUsernameForAddress(normalizedUsernameAddress);
 
     window.localStorage.setItem(LOGGED_USER, guestUsername);
 
     try {
-      await createUsernameForAddress(normalizedAddress, guestUsername);
+      await createUsernameForAddress(normalizedUsernameAddress, guestUsername);
       return true;
     } catch (error) {
-      const fallbackUsername = guestUsernameForAddress(normalizedAddress);
+      const fallbackUsername = guestUsernameForAddress(normalizedUsernameAddress);
       if (fallbackUsername !== guestUsername) {
         window.localStorage.setItem(LOGGED_USER, fallbackUsername);
         try {
-          await createUsernameForAddress(normalizedAddress, fallbackUsername);
+          await createUsernameForAddress(normalizedUsernameAddress, fallbackUsername);
           return true;
         } catch (fallbackError) {
           console.error("Could not create guest username", fallbackError);
@@ -118,22 +117,34 @@ function useUsernameRequirement() {
       showErrorToast("Could not create guest username");
       return false;
     }
-  }, [address, createUsernameForAddress, showErrorToast]);
+  }, [createUsernameForAddress, normalizedUsernameAddress, showErrorToast]);
 
   const ensureUsername = useCallback(
     async ({ required = false }: EnsureUsernameOptions = {}) => {
-      if (!address) {
+      if (!normalizedUsernameAddress) {
         return true;
       }
 
-      if (useUsernameStore.getState().username) {
+      const currentState = useUsernameStore.getState();
+
+      if (
+        currentState.username &&
+        addressKey(currentState.address) === addressKey(normalizedUsernameAddress)
+      ) {
         return true;
       }
 
-      let currentStatus = useUsernameStore.getState().status;
+      let currentStatus =
+        addressKey(currentState.address) === addressKey(normalizedUsernameAddress)
+          ? currentState.status
+          : "idle";
 
-      if (currentStatus === "idle" || currentStatus === "loading" || currentStatus === "error") {
-        const loadedUsername = await loadUsername(address);
+      if (
+        currentStatus === "idle" ||
+        currentStatus === "loading" ||
+        currentStatus === "error"
+      ) {
+        const loadedUsername = await loadUsername(normalizedUsernameAddress);
         if (loadedUsername) {
           return true;
         }
@@ -152,7 +163,11 @@ function useUsernameRequirement() {
       }
 
       if (currentStatus !== "missing") {
-        return Boolean(useUsernameStore.getState().username);
+        const nextState = useUsernameStore.getState();
+        return (
+          Boolean(nextState.username) &&
+          addressKey(nextState.address) === addressKey(normalizedUsernameAddress)
+        );
       }
 
       if (isBurner) {
@@ -161,7 +176,14 @@ function useUsernameRequirement() {
 
       return openPrompt(required);
     },
-    [address, createBurnerUsername, isBurner, loadUsername, openPrompt, showErrorToast]
+    [
+      createBurnerUsername,
+      isBurner,
+      loadUsername,
+      normalizedUsernameAddress,
+      openPrompt,
+      showErrorToast,
+    ]
   );
 
   useEffect(() => {
@@ -194,11 +216,11 @@ function useUsernameRequirement() {
   }, [accountType, cavos?.user?.email, cavos?.user?.name, isOpen]);
 
   useEffect(() => {
-    if (!isOpen || !username) return;
+    if (!isOpen || !hasUsername) return;
 
     setIsOpen(false);
     resolvePending(true);
-  }, [isOpen, resolvePending, username]);
+  }, [hasUsername, isOpen, resolvePending]);
 
   useEffect(
     () => () => {
@@ -208,11 +230,11 @@ function useUsernameRequirement() {
   );
 
   const handleSave = async (nextUsername: string) => {
-    if (!address) return;
+    if (!normalizedUsernameAddress) return;
 
     setSaving(true);
     try {
-      await createUsernameForAddress(address, nextUsername);
+      await createUsernameForAddress(normalizedUsernameAddress, nextUsername);
       setIsOpen(false);
       resolvePending(true);
     } finally {
@@ -248,11 +270,13 @@ function useUsernameRequirement() {
 type RequireUsernameProps = {
   children: ReactNode;
   redirectTo?: string;
+  requireCompletion?: boolean;
 };
 
 export const RequireUsername = ({
   children,
   redirectTo = "/",
+  requireCompletion = false,
 }: RequireUsernameProps) => {
   const navigate = useNavigate();
   const { ensureUsername, hasUsername, modal } = useUsernameRequirement();
@@ -266,10 +290,15 @@ export const RequireUsername = ({
 
     let cancelled = false;
 
-    void ensureUsername({ required: false }).then((allowed) => {
+    void ensureUsername({ required: requireCompletion }).then((allowed) => {
       if (cancelled) return;
 
       if (!allowed) {
+        if (requireCompletion) {
+          setIsAllowed(false);
+          return;
+        }
+
         if (window.history.length > 1) {
           navigate(-1);
           return;
@@ -285,7 +314,7 @@ export const RequireUsername = ({
     return () => {
       cancelled = true;
     };
-  }, [ensureUsername, hasUsername, navigate, redirectTo]);
+  }, [ensureUsername, hasUsername, navigate, redirectTo, requireCompletion]);
 
   if (hasUsername || isAllowed) {
     return (

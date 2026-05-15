@@ -116,6 +116,10 @@ function getBaseUrl(): string {
   return getGameApiBaseUrl();
 }
 
+function getProfileStatsBlockchain(): string {
+  return import.meta.env.VITE_BLOCKCHAIN?.trim() || "starknet";
+}
+
 function getApiKey(): string {
   const apiKey = import.meta.env.VITE_GAME_API_KEY;
   if (!apiKey) {
@@ -254,11 +258,12 @@ export async function fetchProfileStats(
 
   const apiKey = getApiKey();
   const baseUrl = getBaseUrl();
-  const requestUrl = `${baseUrl}/api/profile/stats/${encodeURIComponent(
-    address
-  )}`;
+  const requestUrl = new URL(
+    `${baseUrl}/api/profile/stats/${encodeURIComponent(address)}`
+  );
+  requestUrl.searchParams.set("blockchain", getProfileStatsBlockchain());
 
-  const response = await fetch(requestUrl, {
+  const response = await fetch(requestUrl.toString(), {
     method: "GET",
     headers: {
       "X-API-Key": apiKey,

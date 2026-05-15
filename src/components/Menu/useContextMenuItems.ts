@@ -156,7 +156,6 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
     (state === GameStateEnum.Round || state === GameStateEnum.Rage) &&
     typeof gamesCount === "number" &&
     gamesCount < 5;
-
   const mainMenuItems: MenuItem[] = useMemo(() => {
     const items: MenuItem[] = [
       {
@@ -209,12 +208,6 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
         key: "shop",
         notificationCount: collectorNotificationCount,
       },
-      /*{
-        icon: Icons.PROFILE,
-        url: "/profile",
-        active: url === "/profile",
-        key: "profile",
-      },*/
     ];
 
     if (!isSmallScreen) {
@@ -329,5 +322,9 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
     },
   ];
 
-  return { mainMenuItems, inGameMenuItems: allInGameMenuItems, extraMenuItems };
+  return {
+    mainMenuItems,
+    inGameMenuItems: allInGameMenuItems,
+    extraMenuItems,
+  };
 }

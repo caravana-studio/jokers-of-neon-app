@@ -44,12 +44,16 @@ export const TournamentEntries = () => {
     resetSeasonProgress,
   ]);
 
-  const handleCreateGame = async () => {
+  const handleCreateGame = () => {
     prepareNewGame();
-    const started = await executeCreateGame(true);
-    if (started) {
-      navigate("/entering-tournament");
-    }
+    const createGamePromise = executeCreateGame(true);
+    navigate("/entering-tournament");
+
+    void createGamePromise.then((started) => {
+      if (!started) {
+        navigate("/my-games", { replace: true });
+      }
+    });
   };
 
   const { isSmallScreen } = useResponsiveValues();

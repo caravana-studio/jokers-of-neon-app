@@ -12,7 +12,8 @@ export const handleXPEvents = async (
   achievementSound: () => void,
   address: string,
   accountType?: "burner" | "controller" | "cavos" | null,
-  username?: string | null
+  username?: string | null,
+  showToasts = true
 ) => {
   const dailyMissionEvent = getDailyMissionCompleteEvent(events);
   const levelCompleteEvents = getLevelCompleteEvent(events);
@@ -20,7 +21,9 @@ export const handleXPEvents = async (
   if (dailyMissionEvent && dailyMissionEvent.length > 0) {
     achievementSound();
 
-    showDailyMissionToast(dailyMissionEvent);
+    if (showToasts) {
+      showDailyMissionToast(dailyMissionEvent);
+    }
 
     // Register daily mission milestone for referral tracking
     registerMilestone(address, "daily_mission_completed", undefined, accountType, username ?? undefined)
@@ -31,6 +34,8 @@ export const handleXPEvents = async (
   }
 
   if (levelCompleteEvents && levelCompleteEvents.length > 0) {
-    showLevelCompleteToast(levelCompleteEvents);
+    if (showToasts) {
+      showLevelCompleteToast(levelCompleteEvents);
+    }
   }
 };

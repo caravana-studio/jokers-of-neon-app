@@ -33,7 +33,13 @@ import { registerPushNotifications } from "../utils/notifications/registerPushNo
 import AudioPlayer from "./AudioPlayer";
 import { Version } from "./version/Version";
 
-export const SettingsContent = () => {
+type SettingsContentProps = {
+  hideTimezone?: boolean;
+};
+
+export const SettingsContent = ({
+  hideTimezone = false,
+}: SettingsContentProps = {}) => {
   const {
     sfxVolume,
     setSfxVolume,
@@ -182,27 +188,29 @@ export const SettingsContent = () => {
           </MenuList>
         </Menu>
       </Flex>
-      <Flex gap={2} alignItems={"center"}>
-        <Text size="md" width={"50%"}>
-          {timezoneLbl}
-        </Text>
-        <Menu variant={"menuSettingsOutline"}>
-          <MenuButton width={"100%"}>
-            <Flex alignItems="center" gap={2}>
-              <MdArrowDropDown /> {timezone}
-            </Flex>
-          </MenuButton>
-          <MenuList zIndex={10000} maxH="300px" overflowY="auto">
-            {timezoneOptions.map((tz) => {
-              return (
-                <MenuItem key={tz} onClick={() => setTimezone(tz)}>
-                  {tz}
-                </MenuItem>
-              );
-            })}
-          </MenuList>
-        </Menu>
-      </Flex>
+      {!hideTimezone && (
+        <Flex gap={2} alignItems={"center"}>
+          <Text size="md" width={"50%"}>
+            {timezoneLbl}
+          </Text>
+          <Menu variant={"menuSettingsOutline"}>
+            <MenuButton width={"100%"}>
+              <Flex alignItems="center" gap={2}>
+                <MdArrowDropDown /> {timezone}
+              </Flex>
+            </MenuButton>
+            <MenuList zIndex={10000} maxH="300px" overflowY="auto">
+              {timezoneOptions.map((tz) => {
+                return (
+                  <MenuItem key={tz} onClick={() => setTimezone(tz)}>
+                    {tz}
+                  </MenuItem>
+                );
+              })}
+            </MenuList>
+          </Menu>
+        </Flex>
+      )}
       <Flex gap={2} alignItems={"center"}>
         <Text size="md" width={"50%"}>
           {sfxLbl}
