@@ -1,19 +1,14 @@
-import { Box, Button, Divider, Flex, Input, Text } from "@chakra-ui/react";
+import { Box, Button, Divider, Flex, Input, Select, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { validateUsername } from "../api/usernames";
 import { DelayedLoading } from "../components/DelayedLoading";
 import { MenuBtn } from "../components/Menu/Buttons/MenuBtn";
 import {
-  getMissionTemplateExamples,
-  MISSION_PERIOD,
+  MISSION_TEMPLATE_IDS,
   renderMissionDescription,
 } from "../data/dailyMissions";
 import { encodeString } from "../dojo/utils/decodeString";
-import { DojoEvents } from "../enums/dojoEvents";
-import { getDailyMissionCompleteEvent } from "../utils/playEvents/getDailyMissionCompleteEvent";
-import { getEventKey } from "../utils/getEventKey";
-import { showDailyMissionToast } from "../utils/transactionNotifications";
 import {
   getShopTierUnlockConfig,
   SHOP_TIER_UNLOCK_IDS,
@@ -36,6 +31,7 @@ export const TestPage = () => {
   const { isSmallScreen } = useResponsiveValues();
   const navigate = useNavigate();
   const {
+    setup: { client },
     account: { account },
   } = useDojo();
   const username = useUsername();
@@ -52,8 +48,12 @@ export const TestPage = () => {
   const [showUsernameTools, setShowUsernameTools] = useState(false);
   const [showMissionTools, setShowMissionTools] = useState(false);
   const [showUnlockablesList, setShowUnlockablesList] = useState(false);
+  const [missionPeriod, setMissionPeriod] = useState<"daily" | "weekly">("daily");
+  const [missionDifficulty, setMissionDifficulty] = useState(1);
+  const [selectedMissionTemplate, setSelectedMissionTemplate] = useState("daily-play-hand");
   const [usernameInput, setUsernameInput] = useState("");
   const [isSavingUsername, setIsSavingUsername] = useState(false);
+  const [isSettingMission, setIsSettingMission] = useState(false);
   const address = account?.address ?? "";
 
   useEffect(() => {
@@ -69,37 +69,48 @@ export const TestPage = () => {
     navigate(`/shop-tier-unlocked/${testGameId}`);
   };
 
-  const missionExamples = getMissionTemplateExamples();
+  const missionTemplates = MISSION_TEMPLATE_IDS.filter((templateId) =>
+    templateId.startsWith(`${missionPeriod}-`)
+  );
 
-  const simulateMissionCompletedEvent = (mission: (typeof missionExamples)[number]) => {
-    const isWeekly = mission.templateId.startsWith("weekly-");
-    const target = mission.target;
-    const missionEvent = {
-      from_address: "0x0",
-      keys: ["0x0", getEventKey(DojoEvents.DAILY_MISSION_COMPLETE)],
-      data: [
-        "0x0",
-        address || "0x0",
-        `0x${(isWeekly ? MISSION_PERIOD.WEEKLY : MISSION_PERIOD.DAILY).toString(16)}`,
-        "0x3039",
-        "0x0",
-        encodeString(isWeekly ? "weekly-medium" : "daily-medium"),
-        encodeString(mission.templateId),
-        "0x2",
-        `0x${target.toString(16)}`,
-        `0x${target.toString(16)}`,
-        `0x${(isWeekly ? 200 : 20).toString(16)}`,
-        isWeekly ? "0x0" : "0x3e7",
-        "0x0",
-      ],
-    };
-    const parsed = getDailyMissionCompleteEvent([missionEvent]) ?? [];
-    showDailyMissionToast(
-      parsed.map((event) => ({
-        ...event,
-        target,
-      }))
-    );
+  useEffect(() => {
+    if (!selectedMissionTemplate.startsWith(`${missionPeriod}-`)) {
+      setSelectedMissionTemplate(missionTemplates[0] ?? "");
+    }
+  }, [missionPeriod, missionTemplates, selectedMissionTemplate]);
+
+  const setMissionSlot = async () => {
+    if (!account) {
+      showErrorToast("No connected wallet");
+      return;
+    }
+    if (!selectedMissionTemplate) {
+      showErrorToast("Select a mission template");
+      return;
+    }
+
+    setIsSettingMission(true);
+    try {
+      const templateFelt = encodeString(selectedMissionTemplate);
+      if (missionPeriod === "weekly") {
+        await client.daily_missions_system.setThisWeekMission(
+          account,
+          missionDifficulty,
+          templateFelt
+        );
+      } else {
+        await client.daily_missions_system.setTodayMission(
+          account,
+          missionDifficulty,
+          templateFelt
+        );
+      }
+      showSuccessToast("Mission slot updated");
+    } catch (error) {
+      showErrorToast(getErrorMessage(error));
+    } finally {
+      setIsSettingMission(false);
+    }
   };
 
   const getUnlockableTestLabel = (unlockableId: string) => {
@@ -217,8 +228,8 @@ export const TestPage = () => {
         {isSmallScreen && <Divider borderColor="white" borderWidth="1px" my={2} />}
         <MenuBtn
           icon={Icons.LIST}
-          description="Simulate unified MissionCompletedV2Event"
-          label={showMissionTools ? "Mission events (hide)" : "Mission events"}
+          description="Set daily and weekly mission slots"
+          label={showMissionTools ? "Mission slots (hide)" : "Mission slots"}
           onClick={() => setShowMissionTools((prev) => !prev)}
           arrowRight
           width="18px"
@@ -227,24 +238,49 @@ export const TestPage = () => {
           <Box pl={8} pt={1}>
             <Flex flexDirection="column" gap={2}>
               <Text fontSize="xs" color="whiteAlpha.700">
-                These buttons build a fake unified MissionCompletedV2Event and run it
-                through the same parser/toast path used by live transactions.
+                Choose a mission template and write it to the active daily or
+                weekly slot for this environment.
               </Text>
-              <Flex flexDirection="column" gap={1.5}>
-                {missionExamples.map((mission) => (
-                  <Button
-                    key={mission.templateId}
-                    variant="secondarySolid"
-                    size="sm"
-                    justifyContent="flex-start"
-                    whiteSpace="normal"
-                    minH="34px"
-                    onClick={() => simulateMissionCompletedEvent(mission)}
-                  >
-                    {renderMissionDescription(mission)}
-                  </Button>
-                ))}
+              <Flex gap={2}>
+                <Select
+                  value={missionPeriod}
+                  onChange={(event) =>
+                    setMissionPeriod(event.target.value as "daily" | "weekly")
+                  }
+                >
+                  <option value="daily">Daily</option>
+                  <option value="weekly">Weekly</option>
+                </Select>
+                <Select
+                  value={missionDifficulty}
+                  onChange={(event) =>
+                    setMissionDifficulty(Number(event.target.value))
+                  }
+                >
+                  <option value={1}>Easy</option>
+                  <option value={2}>Medium</option>
+                  <option value={3}>Hard</option>
+                </Select>
               </Flex>
+              <Select
+                value={selectedMissionTemplate}
+                onChange={(event) => setSelectedMissionTemplate(event.target.value)}
+              >
+                {missionTemplates.map((templateId) => (
+                  <option key={templateId} value={templateId}>
+                    {renderMissionDescription({ templateId, target: 3 })}
+                  </option>
+                ))}
+              </Select>
+              <Button
+                variant="secondarySolid"
+                size="sm"
+                isLoading={isSettingMission}
+                isDisabled={!account || !selectedMissionTemplate}
+                onClick={setMissionSlot}
+              >
+                Set mission
+              </Button>
             </Flex>
           </Box>
         )}

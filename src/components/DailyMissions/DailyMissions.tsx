@@ -1,4 +1,4 @@
-import { Flex, Heading, Text } from "@chakra-ui/react";
+import { Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -45,6 +45,7 @@ export const DailyMissions = ({
 }: DailyMissionsProps) => {
   const [dailyMissions, setDailyMissions] = useState<DailyMission[]>([]);
   const [weeklyMissions, setWeeklyMissions] = useState<DailyMission[]>([]);
+  const [activePeriod, setActivePeriod] = useState<"daily" | "weekly">("daily");
   const { t } = useTranslation("home", {
     keyPrefix: "home",
   });
@@ -73,7 +74,8 @@ export const DailyMissions = ({
 
   const sortedDailyMissions = [...dailyMissions].sort((a, b) => a.xp - b.xp);
   const sortedWeeklyMissions = [...weeklyMissions].sort((a, b) => a.xp - b.xp);
-  const hasMissions = dailyMissions.length > 0 || weeklyMissions.length > 0;
+  const activeMissions =
+    activePeriod === "daily" ? sortedDailyMissions : sortedWeeklyMissions;
 
   const renderMissionGroup = (title: string, missions: DailyMission[]) => {
     if (missions.length === 0) {
@@ -103,15 +105,32 @@ export const DailyMissions = ({
 
   return (
     <Flex w="100%" flexDir="column" gap={2} overflow="hidden">
-      {showTitle && (
-        <Flex w="100%" justifyContent="space-between" alignItems="center" mb={1}>
+      <Flex
+        w="100%"
+        justifyContent={showTitle ? "space-between" : "flex-end"}
+        alignItems="center"
+        mb={1}
+      >
+        {showTitle && (
           <Heading variant="italic" fontSize={fontSize || (isSmallScreen ? "sm" : "md")}>
             {t("dailyMissions")}
           </Heading>
+        )}
+        <Flex gap={1}>
+          {(["daily", "weekly"] as const).map((period) => (
+            <Button
+              key={period}
+              size="xs"
+              variant={activePeriod === period ? "solid" : "outline"}
+              onClick={() => setActivePeriod(period)}
+            >
+              {t(`dailyMissionGroups.${period}`)}
+            </Button>
+          ))}
         </Flex>
-      )}
+      </Flex>
       <Flex w="100%" flexDir="column" gap={1} overflow="hidden">
-        {!hasMissions ? (
+        {activeMissions.length === 0 ? (
           <Text
             fontSize={fontSize || (isSmallScreen ? "12px" : "14px")}
             color="gray.400"
@@ -119,16 +138,7 @@ export const DailyMissions = ({
             {t("noMissionsAvailable")}
           </Text>
         ) : (
-          <>
-            {renderMissionGroup(
-              t("dailyMissionGroups.daily"),
-              sortedDailyMissions
-            )}
-            {renderMissionGroup(
-              t("dailyMissionGroups.weekly"),
-              sortedWeeklyMissions
-            )}
-          </>
+          renderMissionGroup(t(`dailyMissionGroups.${activePeriod}`), activeMissions)
         )}
       </Flex>
     </Flex>

@@ -36,6 +36,7 @@
     },
     "level": "level",
     "dailyMissions": "Daily Missions",
+    "weeklyMissions": "Weekly Missions",
     "noMissionsAvailable": "No missions available",
     "dailyMissionGroups": {
       "daily": "Daily",

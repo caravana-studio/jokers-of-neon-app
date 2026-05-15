@@ -399,6 +399,68 @@ export function setupWorld(provider: DojoProvider) {
     }
   };
 
+  const build_daily_missions_system_setTodayMission_calldata = (
+    difficulty: BigNumberish,
+    templateId: BigNumberish
+  ): DojoCall => {
+    return {
+      contractName: "daily_missions_system",
+      entrypoint: "set_today_mission",
+      calldata: [difficulty, templateId],
+    };
+  };
+
+  const daily_missions_system_setTodayMission = async (
+    snAccount: Account | AccountInterface,
+    difficulty: BigNumberish,
+    templateId: BigNumberish
+  ) => {
+    try {
+      return await provider.execute(
+        snAccount,
+        build_daily_missions_system_setTodayMission_calldata(
+          difficulty,
+          templateId
+        ),
+        DOJO_NAMESPACE
+      );
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+
+  const build_daily_missions_system_setThisWeekMission_calldata = (
+    difficulty: BigNumberish,
+    templateId: BigNumberish
+  ): DojoCall => {
+    return {
+      contractName: "daily_missions_system",
+      entrypoint: "set_this_week_mission",
+      calldata: [difficulty, templateId],
+    };
+  };
+
+  const daily_missions_system_setThisWeekMission = async (
+    snAccount: Account | AccountInterface,
+    difficulty: BigNumberish,
+    templateId: BigNumberish
+  ) => {
+    try {
+      return await provider.execute(
+        snAccount,
+        build_daily_missions_system_setThisWeekMission_calldata(
+          difficulty,
+          templateId
+        ),
+        DOJO_NAMESPACE
+      );
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+
   const build_game_system_newGame_calldata = (
     player: string,
     playerName: BigNumberish,
@@ -2510,6 +2572,12 @@ export function setupWorld(provider: DojoProvider) {
         daily_missions_system_getGameDailyMissionProgress,
       buildGetGameDailyMissionProgressCalldata:
         build_daily_missions_system_getGameDailyMissionProgress_calldata,
+      setTodayMission: daily_missions_system_setTodayMission,
+      buildSetTodayMissionCalldata:
+        build_daily_missions_system_setTodayMission_calldata,
+      setThisWeekMission: daily_missions_system_setThisWeekMission,
+      buildSetThisWeekMissionCalldata:
+        build_daily_missions_system_setThisWeekMission_calldata,
     },
     game_system: {
       newGame: game_system_newGame,
