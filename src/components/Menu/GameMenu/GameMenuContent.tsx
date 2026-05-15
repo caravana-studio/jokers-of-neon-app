@@ -11,6 +11,7 @@ import {
   Box,
 } from "@chakra-ui/react";
 import { useRef } from "react";
+import { useLocation } from "react-router-dom";
 import { useGameStore } from "../../../state/useGameStore";
 import CachedImage from "../../CachedImage";
 import { DocsMenuBtn } from "../Buttons/DocsMenuBtn";
@@ -18,6 +19,7 @@ import { LogoutMenuBtn } from "../Buttons/Logout/LogoutMenuBtn";
 import { SettingsMenuBtn } from "../Buttons/SettingsMenuBtn";
 import { BackMenuBtn } from "../Buttons/BackMenuBtn";
 import { DailyMissions } from "../../DailyMissions/DailyMissions";
+import { isNavigationLockedPath } from "../useContextMenuItems";
 
 interface GameMenuContentProps {
   isOpen: boolean;
@@ -31,6 +33,8 @@ export const GameMenuContent: React.FC<GameMenuContentProps> = ({
   const iconWidth = "26px";
   const fontSize = "18px";
   const { id, isTournament } = useGameStore();
+  const location = useLocation();
+  const isNavigationLocked = isNavigationLockedPath(location.pathname);
 
   const touchStartX = useRef(0);
 
@@ -99,6 +103,8 @@ export const GameMenuContent: React.FC<GameMenuContentProps> = ({
               alignItems="center"
               flex={1}
               overflow="hidden"
+              opacity={isNavigationLocked ? 0.5 : 1}
+              pointerEvents={isNavigationLocked ? "none" : "auto"}
             >
               <Box w="100%" maxW="500px" overflow="hidden">
                 <DailyMissions showTitle={true} fontSize={fontSize} />
@@ -114,8 +120,18 @@ export const GameMenuContent: React.FC<GameMenuContentProps> = ({
               justifyContent="center"
             >
               <BackMenuBtn width={iconWidth} label onClose={onClose} />
-              <DocsMenuBtn width={iconWidth} label onClose={onClose} />
-              <SettingsMenuBtn width={iconWidth} label onClose={onClose} />
+              <DocsMenuBtn
+                width={iconWidth}
+                label
+                onClose={onClose}
+                disabled={isNavigationLocked}
+              />
+              <SettingsMenuBtn
+                width={iconWidth}
+                label
+                onClose={onClose}
+                disabled={isNavigationLocked}
+              />
             </Flex>
           </>
         </DrawerBody>

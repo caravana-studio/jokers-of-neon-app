@@ -6,11 +6,13 @@ import { MenuBtn } from "./MenuBtn";
 export const BackMenuBtn = ({
   width,
   label,
-  onClose
+  onClose,
+  disabled,
 }: {
   width: string;
   label?: boolean;
   onClose: () => void;
+  disabled?: boolean;
 }) => {
   const { t } = useTranslation("game");
   const navigate = useNavigate();
@@ -21,6 +23,7 @@ export const BackMenuBtn = ({
       icon={Icons.HOME}
       label={label ? t("game.game-menu.back") : undefined}
       description={t("game.game-menu.back")}
+      disabled={disabled}
       onClick={() => {
         navigate("/");
         onClose();

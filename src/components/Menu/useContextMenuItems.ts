@@ -47,6 +47,13 @@ export const gameUrls = [
 export const isInGamePath = (pathname: string) =>
   gameUrls.some((path) => Boolean(matchPath({ path, end: true }, pathname)));
 
+const lockedNavigationPaths = ["/entering-tournament", "/gameover/:gameId"];
+
+export const isNavigationLockedPath = (pathname: string) =>
+  lockedNavigationPaths.some((path) =>
+    Boolean(matchPath({ path, end: true }, pathname)),
+  );
+
 export const getIcon = (state: GameStateEnum) => {
   switch (state) {
     case GameStateEnum.Rage:
@@ -156,6 +163,7 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
     (state === GameStateEnum.Round || state === GameStateEnum.Rage) &&
     typeof gamesCount === "number" &&
     gamesCount < 5;
+  const isNavigationLocked = isNavigationLockedPath(url);
   const mainMenuItems: MenuItem[] = useMemo(() => {
     const items: MenuItem[] = [
       {
@@ -250,7 +258,7 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
       icon: getIcon(state),
       url: "/redirect",
       onClick: handleGoToCurrentGameState,
-      disabled: state === GameStateEnum.Map,
+      disabled: isNavigationLocked || state === GameStateEnum.Map,
       active: gameUrls.slice(1).some((gameUrl) => {
         if (gameUrl.includes(":")) {
           const base = gameUrl.split(":")[0];
@@ -265,6 +273,7 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
       url: "/map",
       active: url === "/map",
       key: "map",
+      disabled: isNavigationLocked,
     },
 
     {
@@ -272,6 +281,7 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
       url: "/deck",
       active: url === "/deck",
       key: "deck",
+      disabled: isNavigationLocked,
     },
     {
       icon: Icons.CLUB,
@@ -279,6 +289,7 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
       active: url === "/plays",
       key: "plays",
       pulse: shouldPulsePlays,
+      disabled: isNavigationLocked,
     },
   ];
 
@@ -291,6 +302,7 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
           active: url === "/settings-game",
           key: "more",
           onClick: () => onMoreClick?.(),
+          disabled: false,
         },
       ]
     : inGameMenuItems;
@@ -301,24 +313,28 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
       url: "/",
       active: false,
       key: "back",
+      disabled: false,
     },
     {
       icon: Icons.LIST,
       url: "/docs-game",
       active: url === "/docs-game",
       key: "docs",
+      disabled: isNavigationLocked,
     },
     {
       icon: Icons.SETTINGS,
       url: "/settings-game",
       active: url === "/settings-game",
       key: "settings",
+      disabled: isNavigationLocked,
     },
     {
       icon: Icons.CHECK,
       url: "#",
       active: false,
       key: "daily-missions",
+      disabled: isNavigationLocked,
     },
   ];
 
