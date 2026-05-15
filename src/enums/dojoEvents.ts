@@ -29,6 +29,6 @@ export enum DojoEvents {
   POST_ACTION = "PostActionEvent",
 
   ACHIEVEMENT_COMPLETE = "AchievementCompletedEvent",
-  DAILY_MISSION_COMPLETE = "MissionCompletedEvent",
+  DAILY_MISSION_COMPLETE = "MissionCompletedV2Event",
   LEVEL_COMPLETE = "LevelCompletionXPEvent",
 }

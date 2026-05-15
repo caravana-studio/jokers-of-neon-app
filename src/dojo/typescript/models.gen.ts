@@ -518,8 +518,8 @@ export interface DailyMissionCompletedEvent {
 	id: number;
 }
 
-// Type definition for `jokers_of_neon_core::models::events::MissionCompletedEvent` struct
-export interface MissionCompletedEvent {
+// Type definition for `jokers_of_neon_core::models::events::MissionCompletedV2Event` struct
+export interface MissionCompletedV2Event {
 	player: string;
 	period_type: number;
 	period_id: number;
@@ -1031,7 +1031,7 @@ export interface SchemaType extends ISchemaType {
 		CreateGameEvent: CreateGameEvent,
 		CurrentHandEvent: CurrentHandEvent,
 		DailyMissionCompletedEvent: DailyMissionCompletedEvent,
-		MissionCompletedEvent: MissionCompletedEvent,
+		MissionCompletedV2Event: MissionCompletedV2Event,
 		DetailEarnedEvent: DetailEarnedEvent,
 		GameEvent: GameEvent,
 		GamePowerUpEvent: GamePowerUpEvent,
@@ -1528,7 +1528,7 @@ export const schema: SchemaType = {
 			player: "",
 			id: 0,
 		},
-		MissionCompletedEvent: {
+		MissionCompletedV2Event: {
 			player: "",
 			period_type: 0,
 			period_id: 0,
@@ -2014,7 +2014,7 @@ export enum ModelsMapping {
 	CreateGameEvent = 'jokers_of_neon_core-CreateGameEvent',
 	CurrentHandEvent = 'jokers_of_neon_core-CurrentHandEvent',
 	DailyMissionCompletedEvent = 'jokers_of_neon_core-DailyMissionCompletedEvent',
-	MissionCompletedEvent = 'jokers_of_neon_core-MissionCompletedEvent',
+	MissionCompletedV2Event = 'jokers_of_neon_core-MissionCompletedV2Event',
 	DetailEarnedEvent = 'jokers_of_neon_core-DetailEarnedEvent',
 	GameEvent = 'jokers_of_neon_core-GameEvent',
 	GamePowerUpEvent = 'jokers_of_neon_core-GamePowerUpEvent',

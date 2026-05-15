@@ -45,6 +45,42 @@ const getField = <T = unknown>(
   return value?.[key as keyof typeof value] as T | undefined;
 };
 
+const getReturnValues = (value: unknown): unknown[] => {
+  if (Array.isArray(value)) {
+    return value;
+  }
+  return Object.values(value ?? {});
+};
+
+const chunkSerializedArray = (value: unknown, itemSize: number): unknown[] => {
+  const values = getReturnValues(value);
+  const count = toNumber(values[0]);
+
+  if (
+    count !== undefined &&
+    values.length === 1 + count * itemSize &&
+    values.slice(1).every((item) => typeof item !== "object")
+  ) {
+    return Array.from({ length: count }, (_, index) => {
+      const start = 1 + index * itemSize;
+      return values.slice(start, start + itemSize);
+    });
+  }
+
+  if (
+    values.length > 0 &&
+    values.length % itemSize === 0 &&
+    values.every((item) => typeof item !== "object")
+  ) {
+    return Array.from({ length: values.length / itemSize }, (_, index) => {
+      const start = index * itemSize;
+      return values.slice(start, start + itemSize);
+    });
+  }
+
+  return values;
+};
+
 const decodeFeltString = (value: unknown): string => {
   if (value === undefined || value === null || value === 0 || value === "0") {
     return "";
@@ -98,7 +134,7 @@ const getMissionsForPeriod = async (
       ? await client.daily_missions_system.getThisWeekMissions()
       : await client.daily_missions_system.getTodayMissions();
 
-  const slots = (Array.isArray(slotsRaw) ? slotsRaw : Object.values(slotsRaw ?? {}))
+  const slots = chunkSerializedArray(slotsRaw, 9)
     .map(normalizeMissionSlot)
     .filter((slot) => slot.missionId && slot.templateId && slot.target > 0);
 
@@ -113,7 +149,7 @@ const getMissionsForPeriod = async (
       : [];
 
   const progressByMissionId = new Map(
-    (Array.isArray(progressRaw) ? progressRaw : Object.values(progressRaw ?? {}))
+    chunkSerializedArray(progressRaw, 6)
       .map(normalizeProgress)
       .filter((progress) => progress.missionId)
       .map((progress) => [progress.missionId, progress])

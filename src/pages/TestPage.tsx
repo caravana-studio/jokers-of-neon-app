@@ -217,7 +217,7 @@ export const TestPage = () => {
         {isSmallScreen && <Divider borderColor="white" borderWidth="1px" my={2} />}
         <MenuBtn
           icon={Icons.LIST}
-          description="Simulate unified MissionCompletedEvent"
+          description="Simulate unified MissionCompletedV2Event"
           label={showMissionTools ? "Mission events (hide)" : "Mission events"}
           onClick={() => setShowMissionTools((prev) => !prev)}
           arrowRight
@@ -227,7 +227,7 @@ export const TestPage = () => {
           <Box pl={8} pt={1}>
             <Flex flexDirection="column" gap={2}>
               <Text fontSize="xs" color="whiteAlpha.700">
-                These buttons build a fake unified MissionCompletedEvent and run it
+                These buttons build a fake unified MissionCompletedV2Event and run it
                 through the same parser/toast path used by live transactions.
               </Text>
               <Flex flexDirection="column" gap={1.5}>
