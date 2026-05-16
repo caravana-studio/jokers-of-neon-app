@@ -6,7 +6,7 @@ import { DelayedLoading } from "../components/DelayedLoading";
 import { MenuBtn } from "../components/Menu/Buttons/MenuBtn";
 import {
   MISSION_TEMPLATE_IDS,
-  renderMissionDescription,
+  renderMissionTemplatePlaceholder,
 } from "../data/dailyMissions";
 import { encodeString } from "../dojo/utils/decodeString";
 import {
@@ -268,7 +268,7 @@ export const TestPage = () => {
               >
                 {missionTemplates.map((templateId) => (
                   <option key={templateId} value={templateId}>
-                    {renderMissionDescription({ templateId, target: 3 })}
+                    {renderMissionTemplatePlaceholder(templateId)}
                   </option>
                 ))}
               </Select>

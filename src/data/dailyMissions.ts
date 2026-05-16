@@ -149,7 +149,7 @@ export const renderMissionDescription = ({
   param2,
 }: {
   templateId: string;
-  target?: number;
+  target?: number | string;
   param1?: number;
   param2?: number;
 }) => {
@@ -158,7 +158,7 @@ export const renderMissionDescription = ({
     ns: "achievements",
     target,
     quantity: target,
-    score: target?.toLocaleString(),
+    score: typeof target === "number" ? target.toLocaleString() : target,
     level: target,
     hand: getPokerHandLabel(param1),
     suit: getSuitLabel(param1),
@@ -177,6 +177,22 @@ export const renderMissionDescription = ({
     }),
   });
 };
+
+const getMissionTemplateTargetPlaceholder = (templateId: string) => {
+  if (templateId.includes("score")) {
+    return "{score}";
+  }
+  if (templateId.includes("level")) {
+    return "{level}";
+  }
+  return "{quantity}";
+};
+
+export const renderMissionTemplatePlaceholder = (templateId: string) =>
+  renderMissionDescription({
+    templateId,
+    target: getMissionTemplateTargetPlaceholder(templateId),
+  });
 
 export const getMissionTemplateExamples = () =>
   MISSION_TEMPLATE_IDS.map((templateId) => ({
