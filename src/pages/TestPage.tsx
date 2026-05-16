@@ -72,6 +72,12 @@ export const TestPage = () => {
   const missionTemplates = MISSION_TEMPLATE_IDS.filter((templateId) =>
     templateId.startsWith(`${missionPeriod}-`)
   );
+  const dailyMissionTemplateCount = MISSION_TEMPLATE_IDS.filter((templateId) =>
+    templateId.startsWith("daily-")
+  ).length;
+  const weeklyMissionTemplateCount = MISSION_TEMPLATE_IDS.filter((templateId) =>
+    templateId.startsWith("weekly-")
+  ).length;
 
   useEffect(() => {
     if (!selectedMissionTemplate.startsWith(`${missionPeriod}-`)) {
@@ -248,8 +254,8 @@ export const TestPage = () => {
                     setMissionPeriod(event.target.value as "daily" | "weekly")
                   }
                 >
-                  <option value="daily">Daily</option>
-                  <option value="weekly">Weekly</option>
+                  <option value="daily">Daily ({dailyMissionTemplateCount})</option>
+                  <option value="weekly">Weekly ({weeklyMissionTemplateCount})</option>
                 </Select>
                 <Select
                   value={missionDifficulty}
@@ -268,7 +274,7 @@ export const TestPage = () => {
               >
                 {missionTemplates.map((templateId) => (
                   <option key={templateId} value={templateId}>
-                    {renderMissionTemplatePlaceholder(templateId)}
+                    {renderMissionTemplatePlaceholder(templateId, missionDifficulty)} · {templateId}
                   </option>
                 ))}
               </Select>

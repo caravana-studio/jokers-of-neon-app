@@ -64,7 +64,7 @@
     "daily-add-trad": "Add {{quantity}} traditional cards to your deck",
     "daily-add-mod": "Add {{quantity}} modifier cards to your deck",
     "daily-add-neon": "Add {{quantity}} neon cards to your deck",
-    "daily-flush-suit": "Make a Flush of {{suit}}",
+    "daily-flush-suit": "Make a {{hand}} of {{suit}}",
     "daily-deck-size": "Add {{quantity}} cards to your deck",
     "daily-deck-neon": "Add {{quantity}} neon cards to your deck",
     "daily-deck-jokers": "Add {{quantity}} Jokers to your deck",

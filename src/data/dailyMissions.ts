@@ -142,6 +142,17 @@ const getSuitLabel = (suitId?: number) => {
   return i18n.t(`missionParams.suit.${suitId}`, { ns: "achievements" });
 };
 
+const getMissionHandLabel = (
+  templateId: string,
+  param1?: number,
+  param2?: number
+) => {
+  if (templateId === "daily-flush-suit") {
+    return getPokerHandLabel(param2 === 0 ? 7 : param2);
+  }
+  return getPokerHandLabel(param1);
+};
+
 export const renderMissionDescription = ({
   templateId,
   target,
@@ -160,9 +171,9 @@ export const renderMissionDescription = ({
     quantity: target,
     score: typeof target === "number" ? target.toLocaleString() : target,
     level: target,
-    hand: getPokerHandLabel(param1),
+    hand: getMissionHandLabel(templateId, param1, param2),
     suit: getSuitLabel(param1),
-    neonVariant: param2 === 1,
+    neonVariant: templateId === "daily-play-hand" && param2 === 1,
   });
 
   if (translated !== key) {
@@ -188,10 +199,27 @@ const getMissionTemplateTargetPlaceholder = (templateId: string) => {
   return "{quantity}";
 };
 
-export const renderMissionTemplatePlaceholder = (templateId: string) =>
+const getFlushHandParamByDifficulty = (difficulty?: number) => {
+  if (difficulty === 1) {
+    return 7;
+  }
+  if (difficulty === 2) {
+    return 2;
+  }
+  if (difficulty === 3) {
+    return 1;
+  }
+  return undefined;
+};
+
+export const renderMissionTemplatePlaceholder = (templateId: string, difficulty?: number) =>
   renderMissionDescription({
     templateId,
     target: getMissionTemplateTargetPlaceholder(templateId),
+    param2:
+      templateId === "daily-flush-suit"
+        ? getFlushHandParamByDifficulty(difficulty)
+        : undefined,
   });
 
 export const getMissionTemplateExamples = () =>
@@ -199,5 +227,5 @@ export const getMissionTemplateExamples = () =>
     templateId,
     target: templateId.includes("score") ? 10000 : 3,
     param1: templateId.includes("suit") || templateId.includes("flush") ? 4 : templateId.includes("hand") ? 7 : 0,
-    param2: templateId === "daily-play-hand" ? 1 : 0,
+    param2: templateId === "daily-flush-suit" ? 2 : templateId === "daily-play-hand" ? 1 : 0,
   }));
