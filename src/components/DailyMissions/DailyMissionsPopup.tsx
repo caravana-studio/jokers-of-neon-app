@@ -2,10 +2,12 @@ import { Box, Flex, Heading } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { IoMdClose } from "react-icons/io";
 import { VIOLET } from "../../theme/colors";
+import { useGameStore } from "../../state/useGameStore";
 import { DailyMissions } from "./DailyMissions";
 
 export const DailyMissionsPopup = () => {
   const { t } = useTranslation(["game"]);
+  const { id: gameId } = useGameStore();
 
   return (
     <Flex
@@ -70,7 +72,7 @@ export const DailyMissionsPopup = () => {
 
         {/* Content */}
         <Box px={4} py={4}>
-          <DailyMissions showTitle={false} fontSize="14px" />
+          <DailyMissions showTitle={false} fontSize="14px" gameId={gameId} />
         </Box>
       </Box>
     </Flex>

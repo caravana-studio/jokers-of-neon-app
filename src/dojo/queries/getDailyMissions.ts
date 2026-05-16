@@ -16,6 +16,10 @@ import {
 
 const LEGACY_FALLBACK_XP_BY_ORDER = [10, 20, 30];
 
+type MissionQueryOptions = {
+  gameId?: number;
+};
+
 const toNumber = (value: unknown): number | undefined => {
   if (typeof value === "number") {
     return value;
@@ -122,10 +126,20 @@ const normalizeProgress = (progress: any) => {
   };
 };
 
+const normalizeGameProgress = (progress: any) => {
+  const missionId = decodeFeltString(getField(progress, 2, "mission_id"));
+  return {
+    missionId,
+    progress: toNumber(getField(progress, 3, "progress")) ?? 0,
+    completed: Boolean(getField(progress, 4, "completed")),
+  };
+};
+
 const getMissionsForPeriod = async (
   client: any,
   userAddress: string,
-  periodType: MissionPeriodType
+  periodType: MissionPeriodType,
+  options: MissionQueryOptions = {}
 ): Promise<DailyMission[]> => {
   const periodTypeId =
     periodType === "weekly" ? MISSION_PERIOD.WEEKLY : MISSION_PERIOD.DAILY;
@@ -155,8 +169,25 @@ const getMissionsForPeriod = async (
       .map((progress) => [progress.missionId, progress])
   );
 
+  const gameProgressRaw =
+    periodType === "daily" && options.gameId && options.gameId > 0
+      ? await client.daily_missions_system.getGameDailyMissionProgress(
+          options.gameId
+        )
+      : [];
+
+  const gameProgressByMissionId = new Map(
+    chunkSerializedArray(gameProgressRaw, 5)
+      .map(normalizeGameProgress)
+      .filter((progress) => progress.missionId)
+      .map((progress) => [progress.missionId, progress])
+  );
+
   return slots.map((slot) => {
-    const progress = progressByMissionId.get(slot.missionId);
+    const playerProgress = progressByMissionId.get(slot.missionId);
+    const gameProgress = gameProgressByMissionId.get(slot.missionId);
+    const visibleProgress =
+      periodType === "daily" ? gameProgress : playerProgress;
     const xp = slot.xp ?? getFallbackMissionXp(slot.periodType, slot.difficulty);
     return {
       id: slot.templateId,
@@ -166,7 +197,10 @@ const getMissionsForPeriod = async (
       periodType: slot.periodType,
       periodId: slot.periodId,
       target: slot.target,
-      progress: progress?.progress ?? 0,
+      progress:
+        periodType === "daily" && !options.gameId
+          ? undefined
+          : visibleProgress?.progress ?? 0,
       param1: slot.param1,
       param2: slot.param2,
       xp,
@@ -176,7 +210,7 @@ const getMissionsForPeriod = async (
         param1: slot.param1,
         param2: slot.param2,
       }),
-      completed: progress?.completed ?? false,
+      completed: playerProgress?.completed || gameProgress?.completed || false,
     };
   });
 };
@@ -211,10 +245,11 @@ const getLegacyDailyMissions = async (
 
 export const getDailyMissions = async (
   client: any,
-  userAddress: string
+  userAddress: string,
+  options: MissionQueryOptions = {}
 ): Promise<DailyMission[]> => {
   try {
-    return await getMissionsForPeriod(client, userAddress, "daily");
+    return await getMissionsForPeriod(client, userAddress, "daily", options);
   } catch (e) {
     console.log("getDailyMissions new API error", e);
     try {

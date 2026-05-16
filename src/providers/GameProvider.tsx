@@ -13,6 +13,7 @@ import { useUsernameRequirement } from "../components/UsernameGate.tsx";
 import { createMiniAppGame } from "../miniapp/api/createMiniAppGame.ts";
 import {
   acumSfx,
+  achievementSfx,
   clearLevel,
   clearRound,
   discardSfx,
@@ -39,6 +40,7 @@ import { Card } from "../types/Card";
 import { CardPlayEvent, PlayEvents, PowerUpScore } from "../types/ScoreData";
 import { logEvent } from "../utils/analytics.ts";
 import { getPlayAnimationDuration } from "../utils/getPlayAnimationDuration.ts";
+import { handleXPEvents } from "../utils/handleXPEvents.ts";
 import { isCardSilent } from "../utils/isCardSilent.ts";
 import {
   OptimisticAnimationController,
@@ -206,7 +208,9 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const { sfxVolume, animationSpeed, skipAllTutorials } = useSettings();
   const completedTutorials = useTutorialStore((state) => state.completed);
   const tutorialsLoaded = useTutorialStore((state) => state.loaded);
+  const shouldShowXpToasts = appType !== AppType.MINIAPP;
 
+  const { play: achievementSound } = useAudio(achievementSfx, sfxVolume);
   const { play: discardSound } = useAudio(discardSfx, sfxVolume);
   // Use pitched audio for scoring sounds (points_0.mp3 to points_17.mp3)
   const { play: pointsSound } = usePitchedAudio("/music/sfx/points", PITCH_VARIANTS, sfxVolume);
@@ -371,6 +375,31 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         setGameError(true);
         navigate("/my-games");
         return false;
+      }
+
+      const transactionHash =
+        response?.data?.transaction_hash ??
+        response?.data?.slot?.transaction_hash ??
+        response?.transaction_hash;
+
+      if (transactionHash) {
+        account
+          .waitForTransaction(transactionHash, { retryInterval: 100 })
+          .then((tx) => {
+            if (tx.isSuccess()) {
+              return handleXPEvents(
+                tx.value.events,
+                achievementSound,
+                account.address,
+                accountType,
+                undefined,
+                shouldShowXpToasts
+              );
+            }
+          })
+          .catch((error) => {
+            console.error("Error handling create game XP events", error);
+          });
       }
 
       setGameId(newGameId);

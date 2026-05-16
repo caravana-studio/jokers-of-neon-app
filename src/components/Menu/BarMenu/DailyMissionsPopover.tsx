@@ -8,6 +8,7 @@ import {
 import { MotionBox } from "../../MotionBox";
 import { DailyMissions } from "../../DailyMissions/DailyMissions";
 import { VIOLET } from "../../../theme/colors";
+import { useGameStore } from "../../../state/useGameStore";
 
 interface DailyMissionsPopoverProps {
   isOpen: boolean;
@@ -22,6 +23,8 @@ export const DailyMissionsPopover = ({
   onClose,
   trigger,
 }: DailyMissionsPopoverProps) => {
+  const { id: gameId } = useGameStore();
+
   return (
     <Popover
       isOpen={isOpen}
@@ -54,7 +57,12 @@ export const DailyMissionsPopover = ({
           transition={{ duration: 0.15 }}
         >
           <PopoverBody p={4}>
-            <DailyMissions showTitle fontSize="13px" />
+            <DailyMissions
+              showTitle
+              fontSize="13px"
+              gameId={gameId}
+              refreshKey={isOpen}
+            />
           </PopoverBody>
         </MotionBox>
       </PopoverContent>

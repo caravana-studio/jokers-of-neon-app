@@ -37,11 +37,15 @@ function getNextResetDate() {
 interface DailyMissionsProps {
   showTitle?: boolean;
   fontSize?: string;
+  gameId?: number;
+  refreshKey?: unknown;
 }
 
 export const DailyMissions = ({
   showTitle = true,
   fontSize,
+  gameId,
+  refreshKey,
 }: DailyMissionsProps) => {
   const [dailyMissions, setDailyMissions] = useState<DailyMission[]>([]);
   const [weeklyMissions, setWeeklyMissions] = useState<DailyMission[]>([]);
@@ -64,13 +68,13 @@ export const DailyMissions = ({
     }
 
     Promise.all([
-      getDailyMissions(client, account.address),
+      getDailyMissions(client, account.address, { gameId }),
       getWeeklyMissions(client, account.address),
     ]).then(([daily, weekly]) => {
       setDailyMissions(daily);
       setWeeklyMissions(weekly);
     });
-  }, [account, client]);
+  }, [account, client, gameId, refreshKey]);
 
   const sortedDailyMissions = [...dailyMissions].sort((a, b) => a.xp - b.xp);
   const sortedWeeklyMissions = [...weeklyMissions].sort((a, b) => a.xp - b.xp);

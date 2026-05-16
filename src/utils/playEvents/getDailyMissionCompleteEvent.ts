@@ -9,6 +9,8 @@ import { getNumberValueFromEvent } from "../getNumberValueFromEvent";
 const MISSION_COMPLETE_EVENT_KEY = getEventKey(DojoEvents.DAILY_MISSION_COMPLETE);
 const LEGACY_DAILY_MISSION_XP_EVENT_KEY = getEventKey("DailyMissionXPEvent");
 
+const hasEventKey = (event: DojoEvent, key: string) => event.keys.includes(key);
+
 const decodeFeltStringFromEvent = (event: DojoEvent, index: number) => {
   const value = event.data.at(index);
   if (!value) {
@@ -22,25 +24,79 @@ const decodeFeltStringFromEvent = (event: DojoEvent, index: number) => {
 };
 
 const parseMissionCompletedEvent = (event: DojoEvent): DailyMissionCompleted => {
-  const missionId = decodeFeltStringFromEvent(event, 5);
-  const templateId = decodeFeltStringFromEvent(event, 6);
-  const periodTypeNumber = getNumberValueFromEvent(event, 2) ?? MISSION_PERIOD.DAILY;
-  const target = getNumberValueFromEvent(event, 8) ?? 0;
-  const progress = getNumberValueFromEvent(event, 9) ?? target;
-  const baseXp = getNumberValueFromEvent(event, 10) ?? 0;
+  const layouts = [
+    {
+      player: 1,
+      periodType: 2,
+      periodId: 3,
+      missionId: 5,
+      templateId: 6,
+      difficulty: 7,
+      target: 8,
+      progress: 9,
+      xp: 10,
+      gameId: 11,
+    },
+    {
+      player: undefined,
+      periodType: 0,
+      periodId: 1,
+      missionId: 3,
+      templateId: 4,
+      difficulty: 5,
+      target: 6,
+      progress: 7,
+      xp: 8,
+      gameId: 9,
+    },
+  ] as const;
 
-  return {
-    player: event.data.at(1) ?? "",
-    dailyMissionId: templateId || missionId,
-    missionId,
-    templateId,
-    periodType: periodTypeNumber === MISSION_PERIOD.WEEKLY ? "weekly" : "daily",
-    periodId: getNumberValueFromEvent(event, 3) ?? 0,
-    difficulty: getNumberValueFromEvent(event, 7) ?? 0,
-    target,
-    progress,
-    base_xp: baseXp,
-    gameId: getNumberValueFromEvent(event, 11) ?? 0,
+  const parsed = layouts
+    .map((layout) => {
+      const missionId = decodeFeltStringFromEvent(event, layout.missionId);
+      const templateId = decodeFeltStringFromEvent(event, layout.templateId);
+      const periodTypeNumber =
+        getNumberValueFromEvent(event, layout.periodType) ?? MISSION_PERIOD.DAILY;
+      const target = getNumberValueFromEvent(event, layout.target) ?? 0;
+      const progress = getNumberValueFromEvent(event, layout.progress) ?? target;
+      const baseXp = getNumberValueFromEvent(event, layout.xp) ?? 0;
+
+      const periodType =
+        periodTypeNumber === MISSION_PERIOD.WEEKLY
+          ? ("weekly" as const)
+          : ("daily" as const);
+
+      return {
+        player:
+          layout.player !== undefined
+            ? event.data.at(layout.player) ?? event.keys.at(2) ?? ""
+            : event.keys.at(2) ?? event.keys.at(1) ?? "",
+        dailyMissionId: templateId || missionId,
+        missionId,
+        templateId,
+        periodType,
+        periodId: getNumberValueFromEvent(event, layout.periodId) ?? 0,
+        difficulty: getNumberValueFromEvent(event, layout.difficulty) ?? 0,
+        target,
+        progress,
+        base_xp: baseXp,
+        gameId: getNumberValueFromEvent(event, layout.gameId) ?? 0,
+      };
+    })
+    .find((candidate) => candidate.base_xp > 0 && candidate.dailyMissionId);
+
+  return parsed ?? {
+    player: event.data.at(1) ?? event.keys.at(2) ?? "",
+    dailyMissionId: "",
+    missionId: "",
+    templateId: "",
+    periodType: "daily",
+    periodId: 0,
+    difficulty: 0,
+    target: 0,
+    progress: 0,
+    base_xp: 0,
+    gameId: 0,
   };
 };
 
@@ -63,11 +119,11 @@ export const getDailyMissionCompleteEvent = (
   return events
     .filter(
       (event) =>
-        event.keys[1] === MISSION_COMPLETE_EVENT_KEY ||
-        event.keys[1] === LEGACY_DAILY_MISSION_XP_EVENT_KEY
+        hasEventKey(event, MISSION_COMPLETE_EVENT_KEY) ||
+        hasEventKey(event, LEGACY_DAILY_MISSION_XP_EVENT_KEY)
     )
     .map((event) =>
-      event.keys[1] === MISSION_COMPLETE_EVENT_KEY
+      hasEventKey(event, MISSION_COMPLETE_EVENT_KEY)
         ? parseMissionCompletedEvent(event)
         : parseLegacyDailyMissionXpEvent(event)
     )

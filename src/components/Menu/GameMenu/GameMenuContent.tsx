@@ -101,7 +101,12 @@ export const GameMenuContent: React.FC<GameMenuContentProps> = ({
               overflow="hidden"
             >
               <Box w="100%" maxW="500px" overflow="hidden">
-                <DailyMissions showTitle={true} fontSize={fontSize} />
+                <DailyMissions
+                  showTitle={true}
+                  fontSize={fontSize}
+                  gameId={id}
+                  refreshKey={isOpen}
+                />
               </Box>
             </Flex>
 
