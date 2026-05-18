@@ -24,13 +24,19 @@ export const MenuBtn: React.FC<MenuBtnProps> = ({
   arrowRight,
 }) => {
   const opacity = disabled ? 0.5 : 1;
+  const cursor = disabled ? "not-allowed" : onClick ? "pointer" : "default";
+  const handleClick = () => {
+    if (disabled) return;
+    onClick?.();
+  };
+
   if (label) {
     return (
       <Flex
         justifyContent="space-between"
         alignItems="center"
-        cursor={onClick ? "pointer" : "default"}
-        onClick={() => onClick?.()}
+        cursor={cursor}
+        onClick={handleClick}
         opacity={opacity}
         w="100%"
       >
@@ -46,9 +52,9 @@ export const MenuBtn: React.FC<MenuBtnProps> = ({
     return (
       <Tooltip label={description} placement="right">
         <Flex
-          cursor={onClick ? "pointer" : "default"}
+          cursor={cursor}
           justifyContent="center"
-          onClick={() => onClick?.()}
+          onClick={handleClick}
           opacity={opacity}
         >
           <IconComponent icon={icon} width={width} height="auto" />
