@@ -13,6 +13,7 @@ import { PageTransitionsProvider } from "../providers/PageTransitionsProvider";
 import ZoomPrevention from "../utils/ZoomPrevention";
 import { AppRoutes } from "./AppRoutes";
 import { MiniAppLayout } from "./MiniAppLayout";
+import { MiniAppTermsGate } from "./MiniAppTermsGate";
 
 function App() {
   return (
@@ -24,11 +25,13 @@ function App() {
               <InformationPopUpProvider>
                 <Background>
                   <BackgroundAnimationProvider>
-                    <MiniAppLayout>
-                      <AnimatePresence mode="wait">
-                        <AppRoutes />
-                      </AnimatePresence>
-                    </MiniAppLayout>
+                    <MiniAppTermsGate>
+                      <MiniAppLayout>
+                        <AnimatePresence mode="wait">
+                          <AppRoutes />
+                        </AnimatePresence>
+                      </MiniAppLayout>
+                    </MiniAppTermsGate>
                   </BackgroundAnimationProvider>
                 </Background>
               </InformationPopUpProvider>
