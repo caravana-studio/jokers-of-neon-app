@@ -192,7 +192,7 @@
     "round-lbl": "R",
     "status-lbl": "Estado",
     "points-lbl": "Puntos",
-    "no-games": "No tienes ningún juego. ¡Inicia uno nuevo!",
+    "no-games": "Aquí verás tus juegos",
     "create-game": {
       "stage-1": "Preparando el escenario",
       "stage-2": "Trayendo una silla para {{username}}",
