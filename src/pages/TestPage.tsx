@@ -191,9 +191,9 @@ export const TestPage = () => {
         {isSmallScreen && <Divider borderColor="white" borderWidth="1px" my={2} />}
         <MenuBtn
           icon={Icons.LIST}
-          description="Vibration"
-          label="Vibration"
-          onClick={() => navigate("/vibration")}
+          description="Haptics and device vibration"
+          label="Haptics"
+          onClick={() => navigate("/test/haptics")}
           arrowRight
           width="18px"
         />
