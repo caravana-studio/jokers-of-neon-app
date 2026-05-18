@@ -15,10 +15,7 @@ import { VIOLET_LIGHT } from "../theme/colors";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import { formatNumber } from "../utils/formatNumber";
 import { MiniAppLeaderboardTable } from "./leaderboard/MiniAppLeaderboardTable";
-import {
-  MiniAppTournamentPrize,
-  useMiniAppTournamentSettings,
-} from "./leaderboard/useMiniAppTournamentSettings";
+import { MiniAppTournamentPrize } from "./leaderboard/useMiniAppTournamentSettings";
 import { useMiniAppWeeklyLeaderboard } from "./leaderboard/useMiniAppWeeklyLeaderboard";
 
 const MiniAppLeaderboardPodium = ({
@@ -171,9 +168,15 @@ export const MiniAppWeeklyLeaderboardPage = () => {
   const { t } = useTranslation("home", { keyPrefix: "leaderboard" });
   const { isSmallScreen } = useResponsiveValues();
   const [now, setNow] = useState(() => new Date());
-  const { periods, entries, currentUserAddress, isLoading, error } =
+  const {
+    entries,
+    currentUserAddress,
+    isLoading,
+    error,
+    tournament,
+    weeklyPeriod,
+  } =
     useMiniAppWeeklyLeaderboard(now);
-  const { tournament } = useMiniAppTournamentSettings();
   const topEntries = entries.slice(0, 3);
 
   useEffect(() => {
@@ -204,7 +207,7 @@ export const MiniAppWeeklyLeaderboardPage = () => {
             >
               {t("title")}
             </Heading>
-            <Clock date={periods.weekly.resetAt} />
+            <Clock date={weeklyPeriod.resetAt} />
           </Flex>
           <Flex
             flexGrow={1}

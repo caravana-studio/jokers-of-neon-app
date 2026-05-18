@@ -2,20 +2,11 @@ import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { PodiumBannerCard } from "../pages/NewHome/banners/PodiumBannerCard";
-import { useGetApiLeaderboard } from "../queries/useGetApiLeaderboard";
-import { getCurrentGameLeaderboardPeriods } from "../utils/leaderboardPeriods";
-import { getMiniAppBlockchain } from "./session/useMiniAppSession";
+import { useMiniAppWeeklyLeaderboard } from "./leaderboard/useMiniAppWeeklyLeaderboard";
 
 const useMiniAppPodiumLeaders = () => {
   const [now, setNow] = useState(() => new Date());
-  const periods = useMemo(() => getCurrentGameLeaderboardPeriods(now), [now]);
-  const { data } = useGetApiLeaderboard({
-    blockchain: getMiniAppBlockchain(),
-    startDate: periods.weekly.startDate,
-    endDate: periods.weekly.endDate,
-    isTournament: false,
-    limit: 3,
-  });
+  const { entries } = useMiniAppWeeklyLeaderboard(now, 3);
 
   useEffect(() => {
     const intervalId = window.setInterval(() => {
@@ -27,11 +18,11 @@ const useMiniAppPodiumLeaders = () => {
 
   return useMemo(
     () =>
-      (data?.entries ?? [])
+      entries
         .slice(0, 3)
         .map((player) => player.displayName)
         .filter((playerName): playerName is string => Boolean(playerName)),
-    [data?.entries]
+    [entries]
   );
 };
 
