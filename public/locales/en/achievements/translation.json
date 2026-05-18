@@ -59,7 +59,7 @@
   "missionTemplates": {
     "unknown": "Complete mission",
     "daily-play-hand": "Play {{hand}} in one run",
-    "daily-reach-level": "Reach level {{level}}",
+    "daily-reach-level": "Beat level {{level}}",
     "daily-buy-neon-joker": "Buy {{quantity}} Neon Jokers",
     "daily-add-trad": "Add {{quantity}} traditional cards to your deck",
     "daily-add-mod": "Add {{quantity}} modifier cards to your deck",
