@@ -77,6 +77,10 @@
     "daily-deck-neon-suit": "Adicione {{quantity}} cartas neon de {{suit}} ao baralho",
     "daily-deck-wild": "Adicione {{quantity}} cartas Wild ao baralho",
     "daily-add-suit": "Adicione {{quantity}} cartas de {{suit}} ao baralho",
+    "daily-use-power-ups": "Use {{quantity}} power ups em uma run",
+    "daily-sell-power-ups": "Venda {{quantity}} power ups em uma run",
+    "daily-burn-cards": "Queime {{quantity}} cartas em uma run",
+    "daily-wild-joker-hands": "Jogue {{quantity}} mãos usando Wild ou Joker",
     "weekly-start-games": "Inicie {{quantity}} partidas",
     "weekly-score": "Acumule {{score}} pontos",
     "weekly-lootboxes": "Compre {{quantity}} lootboxes",
@@ -99,7 +103,8 @@
     "weekly-rerolls": "Faça {{quantity}} rerolls",
     "weekly-special-slots": "Compre {{quantity}} slots especiais",
     "weekly-sell-power-ups": "Venda {{quantity}} power ups",
-    "weekly-complete-runs": "Complete {{quantity}} runs"
+    "weekly-complete-runs": "Complete {{quantity}} runs",
+    "weekly-win-rerolls": "Faça {{quantity}} rerolls em runs vencidas"
   },
   "levelComplete": {
     "title": "Nível {{level}} concluído +{{xp}}XP",

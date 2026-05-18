@@ -44,6 +44,10 @@ export const MISSION_TEMPLATE_IDS = [
   "daily-deck-neon-suit",
   "daily-deck-wild",
   "daily-add-suit",
+  "daily-use-power-ups",
+  "daily-sell-power-ups",
+  "daily-burn-cards",
+  "daily-wild-joker-hands",
   "weekly-start-games",
   "weekly-score",
   "weekly-lootboxes",
@@ -67,6 +71,7 @@ export const MISSION_TEMPLATE_IDS = [
   "weekly-special-slots",
   "weekly-sell-power-ups",
   "weekly-complete-runs",
+  "weekly-win-rerolls",
 ] as const;
 
 export type MissionTemplateId = (typeof MISSION_TEMPLATE_IDS)[number];
