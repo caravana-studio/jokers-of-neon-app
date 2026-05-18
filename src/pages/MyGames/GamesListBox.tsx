@@ -1,13 +1,14 @@
-import { Box, Checkbox, Flex, Text } from "@chakra-ui/react";
+import { Box, Button, Checkbox, Flex, Text } from "@chakra-ui/react";
 import { ComponentProps, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import { Loading } from "../../components/Loading";
-import { GameStateEnum } from "../../dojo/typescript/custom";
 import { useGameContext } from "../../providers/GameProvider";
 import { useGetMyGames } from "../../queries/useGetMyGames";
 import { useGameStore } from "../../state/useGameStore";
 import { BLUE, BLUE_LIGHT, VIOLET, VIOLET_LIGHT } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
+import { getInProgressGames } from "../../utils/inProgressGames";
 import { GameBox } from "./GameBox";
 
 interface GamesListBoxProps {
@@ -22,12 +23,13 @@ export const GamesListBox = ({
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "my-games",
   });
+  const navigate = useNavigate();
   const { data: games, isLoading, refetch } = useGetMyGames();
   const { isSmallScreen } = useResponsiveValues();
   const [showFinishedGames, setShowFinishedGames] = useState(false);
   const [surrenderedIds, setSurrenderedIds] = useState<number[]>([]);
 
-  const { resetLevel } = useGameContext();
+  const { prepareNewGame, executeCreateGame, resetLevel } = useGameContext();
   const { removeGameId } = useGameStore();
 
   const hasInitialized = useRef(false);
@@ -41,15 +43,27 @@ export const GamesListBox = ({
   }, [refetch, resetLevel, removeGameId]);
 
   const filteredGames = useMemo(() => {
-    return games.filter((game) => {
+    const visibleGames = showFinishedGames ? games : getInProgressGames(games);
+
+    return visibleGames.filter((game) => {
       if (isTournament && !Boolean(game.isTournament)) return false;
-      const notSurrendered = !surrenderedIds.includes(game.id);
-      const shouldShow = showFinishedGames
-        ? true
-        : game.status !== GameStateEnum.GameOver;
-      return notSurrendered && shouldShow;
+      return !surrenderedIds.includes(game.id);
     });
   }, [games, isTournament, showFinishedGames, surrenderedIds]);
+
+  const handleCreateGame = () => {
+    prepareNewGame();
+    const createGamePromise = executeCreateGame();
+    navigate("/entering-tournament");
+
+    void createGamePromise.then((started) => {
+      if (started) {
+        return;
+      }
+
+      navigate("/my-games", { replace: true });
+    });
+  };
 
   const handleSurrendered = (gameId: number) => {
     const storedGameId = localStorage.getItem("GAME_ID");
@@ -63,6 +77,7 @@ export const GamesListBox = ({
 
   const borderColor = isTournament ? BLUE_LIGHT : VIOLET_LIGHT;
   const shadowColor = isTournament ? BLUE : VIOLET;
+  const shouldScroll = isLoading || filteredGames.length > 0;
 
   return (
     <Box
@@ -70,14 +85,14 @@ export const GamesListBox = ({
       boxShadow={`0px 0px 20px 15px ${shadowColor}`}
       backgroundColor="rgba(0, 0, 0, 1)"
       borderRadius="20px"
-      display="grid"
+      display="flex"
       px={[4, 8]}
       py={isSmallScreen ? 0 : 4}
       width={width}
       flexGrow={1}
       minH={0}
       maxHeight="500px"
-      overflowY="auto"
+      overflowY={shouldScroll ? "auto" : "hidden"}
     >
       <Flex
         flexDirection="column"
@@ -85,7 +100,9 @@ export const GamesListBox = ({
         alignItems="flex-end"
         w="100%"
         gap={4}
-        my={4}
+        h="100%"
+        pt={shouldScroll ? 4 : 0}
+        pb={shouldScroll ? 4 : 0}
       >
         {!isSmallScreen && (
           <Checkbox
@@ -98,23 +115,34 @@ export const GamesListBox = ({
             {t("show-finished-games").toUpperCase()}
           </Checkbox>
         )}
-        <Flex flexDirection="column" gap={3} w="100%">
-          {isLoading && <Loading />}
-          {filteredGames.map((game) => (
-            <GameBox
-              key={game.id}
-              game={game}
-              onSurrendered={() => handleSurrendered(game.id)}
-              hideTournamentBadge={isTournament}
-            />
-          ))}
-
-          {filteredGames.length === 0 && !isLoading && (
-            <Text size="lg" textAlign="center">
-              {t("no-games")}
-            </Text>
-          )}
-        </Flex>
+        {filteredGames.length === 0 && !isLoading ? (
+          <Flex flexGrow={1} w="100%" justifyContent="center" alignItems="center">
+            <Flex
+              flexDirection="column"
+              alignItems="center"
+              justifyContent="center"
+              gap={4}
+              textAlign="center"
+            >
+              <Text size="lg">{t("no-games")}</Text>
+              <Button onClick={handleCreateGame} variant="secondarySolid">
+                {t("start-game")}
+              </Button>
+            </Flex>
+          </Flex>
+        ) : (
+          <Flex flexDirection="column" gap={3} w="100%">
+            {isLoading && <Loading />}
+            {filteredGames.map((game) => (
+              <GameBox
+                key={game.id}
+                game={game}
+                onSurrendered={() => handleSurrendered(game.id)}
+                hideTournamentBadge={isTournament}
+              />
+            ))}
+          </Flex>
+        )}
       </Flex>
     </Box>
   );
