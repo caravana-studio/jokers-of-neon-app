@@ -45,6 +45,7 @@ const I18N_NAMESPACES = [
   "achievements",
   "map",
   "docs",
+  "miniapp",
 ];
 
 const progressBarRef = createRef<LoadingScreenHandle>();
