@@ -5,6 +5,7 @@ import { validateUsername } from "../api/usernames";
 import { DelayedLoading } from "../components/DelayedLoading";
 import { MenuBtn } from "../components/Menu/Buttons/MenuBtn";
 import {
+  isMissionTemplateAvailableForDifficulty,
   MISSION_TEMPLATE_IDS,
   renderMissionTemplatePlaceholder,
 } from "../data/dailyMissions";
@@ -69,21 +70,30 @@ export const TestPage = () => {
     navigate(`/shop-tier-unlocked/${testGameId}`);
   };
 
-  const missionTemplates = MISSION_TEMPLATE_IDS.filter((templateId) =>
-    templateId.startsWith(`${missionPeriod}-`)
+  const missionTemplates = MISSION_TEMPLATE_IDS.filter(
+    (templateId) =>
+      templateId.startsWith(`${missionPeriod}-`) &&
+      isMissionTemplateAvailableForDifficulty(templateId, missionDifficulty),
   );
-  const dailyMissionTemplateCount = MISSION_TEMPLATE_IDS.filter((templateId) =>
-    templateId.startsWith("daily-")
+  const dailyMissionTemplateCount = MISSION_TEMPLATE_IDS.filter(
+    (templateId) =>
+      templateId.startsWith("daily-") &&
+      isMissionTemplateAvailableForDifficulty(templateId, missionDifficulty),
   ).length;
-  const weeklyMissionTemplateCount = MISSION_TEMPLATE_IDS.filter((templateId) =>
-    templateId.startsWith("weekly-")
+  const weeklyMissionTemplateCount = MISSION_TEMPLATE_IDS.filter(
+    (templateId) =>
+      templateId.startsWith("weekly-") &&
+      isMissionTemplateAvailableForDifficulty(templateId, missionDifficulty),
   ).length;
 
   useEffect(() => {
-    if (!selectedMissionTemplate.startsWith(`${missionPeriod}-`)) {
+    const selectedMissionAvailable = missionTemplates.some(
+      (templateId) => templateId === selectedMissionTemplate,
+    );
+    if (!selectedMissionAvailable) {
       setSelectedMissionTemplate(missionTemplates[0] ?? "");
     }
-  }, [missionPeriod, missionTemplates, selectedMissionTemplate]);
+  }, [missionTemplates, selectedMissionTemplate]);
 
   const setMissionSlot = async () => {
     if (!account) {

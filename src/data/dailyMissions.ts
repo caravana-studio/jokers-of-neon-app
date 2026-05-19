@@ -19,15 +19,14 @@ export const DAILY_XP_PER_DIFFICULTY: Record<DailyMissionDifficulty, number> = {
 };
 
 export const WEEKLY_XP_PER_DIFFICULTY: Record<DailyMissionDifficulty, number> = {
-  [DailyMissionDifficulty.EASY]: 100,
-  [DailyMissionDifficulty.MEDIUM]: 200,
-  [DailyMissionDifficulty.HARD]: 300,
+  [DailyMissionDifficulty.EASY]: 50,
+  [DailyMissionDifficulty.MEDIUM]: 75,
+  [DailyMissionDifficulty.HARD]: 100,
 };
 
 export const MISSION_TEMPLATE_IDS = [
   "daily-play-hand",
   "daily-reach-level",
-  "daily-buy-neon-joker",
   "daily-add-trad",
   "daily-add-mod",
   "daily-add-neon",
@@ -40,7 +39,6 @@ export const MISSION_TEMPLATE_IDS = [
   "daily-all-neon-hand",
   "daily-play-hand-count",
   "daily-score-single",
-  "daily-deck-suit",
   "daily-deck-neon-suit",
   "daily-deck-wild",
   "daily-add-suit",
@@ -48,7 +46,6 @@ export const MISSION_TEMPLATE_IDS = [
   "daily-sell-power-ups",
   "daily-burn-cards",
   "daily-wild-joker-hands",
-  "weekly-start-games",
   "weekly-score",
   "weekly-lootboxes",
   "weekly-specials",
@@ -75,6 +72,19 @@ export const MISSION_TEMPLATE_IDS = [
 ] as const;
 
 export type MissionTemplateId = (typeof MISSION_TEMPLATE_IDS)[number];
+
+export const isMissionTemplateAvailableForDifficulty = (
+  templateId: string,
+  difficulty: number
+) => {
+  if (templateId === "daily-play-hand") {
+    return difficulty === MISSION_DIFFICULTY_ID[DailyMissionDifficulty.EASY];
+  }
+  if (templateId === "daily-deck-neon-jokers") {
+    return difficulty !== MISSION_DIFFICULTY_ID[DailyMissionDifficulty.EASY];
+  }
+  return true;
+};
 
 export const LEGACY_DAILY_MISSIONS: Record<string, DailyMissionDifficulty> = {
   "score-1": DailyMissionDifficulty.EASY,
