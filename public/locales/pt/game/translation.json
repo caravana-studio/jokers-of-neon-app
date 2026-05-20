@@ -144,6 +144,7 @@
       "burn-title": "Selecione cartas para queimar",
       "filter-title": "Filtrar por",
       "suit": {
+        "selected": "o naipe selecionado",
         "club": "Paus",
         "spade": "Espadas",
         "heart": "Copas",

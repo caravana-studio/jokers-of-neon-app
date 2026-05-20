@@ -15,66 +15,20 @@ import { ProgressBar } from "../../components/CompactRoundData/ProgressBar";
 import { DelayedLoading } from "../../components/DelayedLoading";
 import { MobileBottomBar } from "../../components/MobileBottomBar";
 import { MobileDecoration } from "../../components/MobileDecoration";
+import {
+  getDailyMissions,
+  getWeeklyMissions,
+} from "../../dojo/queries/getDailyMissions";
+import { useDojo } from "../../dojo/useDojo";
 import { useInformationPopUp } from "../../providers/InformationPopUpProvider";
 import { BLUE, VIOLET } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
+import { DailyMission } from "../../types/DailyMissions";
 import {
   getNextDailyMissionResetDate,
   getNextWeeklyMissionResetDate,
 } from "../../utils/missionsTimers";
 import { DailyMissionCheckbox } from "./DailyMissionCheckbox";
-
-interface WeeklyMission {
-  title: string;
-  current: number;
-  target: number;
-  xp: number;
-}
-
-interface DailyMission {
-  title: string;
-  xp: number;
-  completed: boolean;
-}
-
-const WEEKLY_MISSIONS: WeeklyMission[] = [
-  {
-    title: "Burn 5 cards",
-    current: 4,
-    target: 5,
-    xp: 40,
-  },
-  {
-    title: "Burn 8 modifiers",
-    current: 3,
-    target: 8,
-    xp: 70,
-  },
-  {
-    title: "Sell 10 power-ups",
-    current: 10,
-    target: 10,
-    xp: 100,
-  },
-];
-
-const DAILY_MISSIONS: DailyMission[] = [
-  {
-    title: "Add 5 cards to your deck",
-    xp: 10,
-    completed: true,
-  },
-  {
-    title: "Reach level 2",
-    xp: 20,
-    completed: false,
-  },
-  {
-    title: "Add 25 cards to your deck",
-    xp: 30,
-    completed: true,
-  },
-];
 
 const MISSION_PANEL_STYLES = {
   background: "rgba(0, 0, 0, 0.4)",
@@ -127,17 +81,19 @@ const WeeklyMissionRow = ({
   mission,
   xpLabel,
 }: {
-  mission: WeeklyMission;
+  mission: DailyMission;
   xpLabel: string;
 }) => {
-  const percent = (mission.current / mission.target) * 100;
-  const progressLabel = `${mission.current}/${mission.target}`;
-  const completed = percent >= 100;
+  const progress = mission.progress ?? 0;
+  const target = mission.target ?? 0;
+  const percent = target > 0 ? (progress / target) * 100 : 0;
+  const progressLabel = `${progress}/${target}`;
+  const completed = mission.completed || (target > 0 && progress >= target);
 
   return (
     <Flex direction="column" gap={0.5} py={{ base: 1, sm: 2 }}>
       <Text fontSize={{ base: "15px", sm: "20px" }} lineHeight={1}>
-        {mission.title}
+        {mission.description}
       </Text>
       <Flex alignItems="center" gap={{ base: 3, sm: 5 }}>
         <Box flex={1}>
@@ -172,7 +128,7 @@ const DailyMissionRow = ({
     <Flex alignItems="center" gap={{ base: 3, sm: 4 }} minW={0}>
       <DailyMissionCheckbox completed={mission.completed} />
       <Text fontSize={{ base: "15px", sm: "20px" }} lineHeight={1.2}>
-        {mission.title}
+        {mission.description}
       </Text>
     </Flex>
     <MissionXp
@@ -188,24 +144,53 @@ export const MissionsPage = () => {
   const navigate = useNavigate();
   const { isSmallScreen } = useResponsiveValues();
   const { setInformation } = useInformationPopUp();
+  const {
+    setup: { client },
+    account: { account },
+  } = useDojo();
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "missions",
   });
-  const [now, setNow] = useState(() => new Date());
+  const [dailyMissions, setDailyMissions] = useState<DailyMission[]>([]);
+  const [weeklyMissions, setWeeklyMissions] = useState<DailyMission[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const intervalId = window.setInterval(() => {
-      setNow(new Date());
-    }, 60000);
+    if (!account) {
+      setDailyMissions([]);
+      setWeeklyMissions([]);
+      setLoading(false);
+      return;
+    }
 
-    return () => window.clearInterval(intervalId);
-  }, []);
+    let cancelled = false;
+    setLoading(true);
 
-  const dailyResetAt = useMemo(() => getNextDailyMissionResetDate(now), [now]);
-  const weeklyResetAt = useMemo(
-    () => getNextWeeklyMissionResetDate(now),
-    [now],
-  );
+    Promise.all([
+      getDailyMissions(client, account.address),
+      getWeeklyMissions(client, account.address),
+    ])
+      .then(([daily, weekly]) => {
+        if (cancelled) {
+          return;
+        }
+
+        setDailyMissions([...daily].sort((a, b) => a.xp - b.xp));
+        setWeeklyMissions([...weekly].sort((a, b) => a.xp - b.xp));
+      })
+      .finally(() => {
+        if (!cancelled) {
+          setLoading(false);
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [account, client]);
+
+  const dailyResetAt = getNextDailyMissionResetDate(new Date());
+  const weeklyResetAt = getNextWeeklyMissionResetDate(new Date());
 
   const infoContent = useMemo(
     () => (
@@ -230,11 +215,11 @@ export const MissionsPage = () => {
         </VStack>
       </VStack>
     ),
-    [t],
+    [t]
   );
 
   return (
-    <DelayedLoading ms={100}>
+    <DelayedLoading ms={100} loading={loading}>
       <MobileDecoration />
       <Flex
         w="100%"
@@ -291,9 +276,9 @@ export const MissionsPage = () => {
               {...MISSION_PANEL_STYLES}
             >
               <Flex flexDir="column" gap={{ base: 4, sm: 5 }}>
-                {WEEKLY_MISSIONS.map((mission) => (
+                {weeklyMissions.map((mission) => (
                   <WeeklyMissionRow
-                    key={mission.title}
+                    key={`weekly-${mission.missionId}`}
                     mission={mission}
                     xpLabel={t("xp-label")}
                   />
@@ -327,9 +312,9 @@ export const MissionsPage = () => {
               {...MISSION_PANEL_STYLES}
             >
               <Flex flexDir="column" gap={{ base: 5, sm: 6 }}>
-                {DAILY_MISSIONS.map((mission) => (
+                {dailyMissions.map((mission) => (
                   <DailyMissionRow
-                    key={mission.title}
+                    key={`daily-${mission.missionId}`}
                     mission={mission}
                     xpLabel={t("xp-label")}
                   />
@@ -363,26 +348,27 @@ export const MissionsPage = () => {
               </Flex>
             </Flex>
           </Flex>
+
+          <MobileBottomBar
+            firstButton={{
+              label: t("bottom-bar.season-progression"),
+              onClick: () => navigate("/season"),
+              variant: "secondarySolid",
+              fontSize: { base: "8px", sm: "10px", md: "15px" },
+              px: { base: 2, sm: 3, md: 7 },
+              h: { base: "32px", sm: "40px" },
+            }}
+            secondButton={{
+              label: t("bottom-bar.go-home"),
+              onClick: () => navigate("/"),
+              variant: "solid",
+              fontSize: { base: "8px", sm: "10px", md: "15px" },
+              px: { base: 2, sm: 3, md: 7 },
+              h: { base: "32px", sm: "40px" },
+            }}
+          />
         </Flex>
       </Flex>
-      <MobileBottomBar
-        firstButton={{
-          label: t("bottom-bar.season-progression"),
-          onClick: () => navigate("/season"),
-          variant: "secondarySolid",
-          fontSize: { base: "8px", sm: "10px", md: "15px" },
-          px: { base: 2, sm: 3, md: 7 },
-          h: { base: "32px", sm: "40px" },
-        }}
-        secondButton={{
-          label: t("bottom-bar.go-home"),
-          onClick: () => navigate("/"),
-          variant: "solid",
-          fontSize: { base: "8px", sm: "10px", md: "15px" },
-          px: { base: 2, sm: 3, md: 7 },
-          h: { base: "32px", sm: "40px" },
-        }}
-      />
     </DelayedLoading>
   );
 };

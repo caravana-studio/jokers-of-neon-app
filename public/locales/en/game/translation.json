@@ -145,6 +145,7 @@
       "burn-title": "Select cards to burn",
       "filter-title": "Filter by",
       "suit": {
+        "selected": "the selected suit",
         "club": "Clubs",
         "spade": "Spades",
         "heart": "Hearts",
