@@ -1,37 +1,16 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { getDailyMissions } from "../../../dojo/queries/getDailyMissions";
 import { useDojo } from "../../../dojo/useDojo";
 import { useResponsiveValues } from "../../../theme/responsiveSettings";
 import { DailyMission } from "../../../types/DailyMissions";
+import { getNextDailyMissionResetDate } from "../../../utils/missionsTimers";
 import { RegularBanner } from "./RegularBanner";
 import { useTranslation } from "react-i18next";
 import { MissionRow } from "../../../components/DailyMissions/MissionRow";
 
-const RESET_TIME = import.meta.env.VITE_RESET_TIME_UTC || "6";
-
-function getNextResetDate() {
-  const now = new Date();
-
-  const reset = new Date(
-    Date.UTC(
-      now.getUTCFullYear(),
-      now.getUTCMonth(),
-      now.getUTCDate(),
-      Number(RESET_TIME),
-      0,
-      0,
-      0
-    )
-  );
-
-  if (now >= reset) {
-    reset.setUTCDate(reset.getUTCDate() + 1);
-  }
-
-  return reset;
-}
-
 export const DailyMissionsBanner = () => {
+  const navigate = useNavigate();
   const [dailyMissions, setDailyMissions] = useState<DailyMission[]>([]);
   const { t } = useTranslation("home", {
     keyPrefix: "home",
@@ -48,13 +27,17 @@ export const DailyMissionsBanner = () => {
         setDailyMissions(missions);
       });
   }, []);
-  const date = getNextResetDate();
+  const date = getNextDailyMissionResetDate();
   const sortedMissions = [...dailyMissions].sort((a, b) => a.xp - b.xp);
 
   const { isSmallScreen } = useResponsiveValues();
 
   return (
-    <RegularBanner title={t("dailyMissions")} date={date}>
+    <RegularBanner
+      title={t("dailyMissions")}
+      date={date}
+      onClick={() => navigate("/missions")}
+    >
       {sortedMissions.map((mission) => (
         <MissionRow
           key={mission.description}
