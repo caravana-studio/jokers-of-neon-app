@@ -127,6 +127,90 @@ export const VibrationPage = () => {
       return;
     }
 
+    if (patternName === "engine-rev") {
+      await Haptics.vibrate({ duration: 70 });
+      await sleep(60);
+      await Haptics.vibrate({ duration: 120 });
+      await sleep(60);
+      await Haptics.vibrate({ duration: 180 });
+      await sleep(60);
+      await Haptics.vibrate({ duration: 260 });
+      return;
+    }
+
+    if (patternName === "warning-siren") {
+      await Haptics.notification({ type: NotificationType.Warning });
+      await sleep(140);
+      await Haptics.notification({ type: NotificationType.Warning });
+      return;
+    }
+
+    if (patternName === "success-celebration") {
+      await Haptics.notification({ type: NotificationType.Success });
+      await sleep(80);
+      await Haptics.impact({ style: ImpactStyle.Light });
+      await sleep(80);
+      await Haptics.impact({ style: ImpactStyle.Medium });
+      return;
+    }
+
+    if (patternName === "error-crash") {
+      await Haptics.impact({ style: ImpactStyle.Heavy });
+      await sleep(110);
+      await Haptics.notification({ type: NotificationType.Error });
+      await sleep(90);
+      await Haptics.vibrate({ duration: 260 });
+      return;
+    }
+
+    if (patternName === "morse-sos") {
+      await Haptics.vibrate({ duration: 70 });
+      await sleep(55);
+      await Haptics.vibrate({ duration: 70 });
+      await sleep(55);
+      await Haptics.vibrate({ duration: 70 });
+      await sleep(120);
+      await Haptics.vibrate({ duration: 220 });
+      await sleep(80);
+      await Haptics.vibrate({ duration: 220 });
+      await sleep(80);
+      await Haptics.vibrate({ duration: 220 });
+      await sleep(120);
+      await Haptics.vibrate({ duration: 70 });
+      await sleep(55);
+      await Haptics.vibrate({ duration: 70 });
+      await sleep(55);
+      await Haptics.vibrate({ duration: 70 });
+      return;
+    }
+
+    if (patternName === "door-knock") {
+      await Haptics.impact({ style: ImpactStyle.Medium });
+      await sleep(90);
+      await Haptics.impact({ style: ImpactStyle.Medium });
+      await sleep(240);
+      await Haptics.impact({ style: ImpactStyle.Heavy });
+      return;
+    }
+
+    if (patternName === "ramp-drop") {
+      await Haptics.vibrate({ duration: 260 });
+      await sleep(90);
+      await Haptics.impact({ style: ImpactStyle.Heavy });
+      await sleep(60);
+      await Haptics.impact({ style: ImpactStyle.Light });
+      return;
+    }
+
+    if (patternName === "carousel-spin") {
+      await runSelectionSequence(2);
+      await sleep(120);
+      await runSelectionSequence(5);
+      await sleep(90);
+      await Haptics.impact({ style: ImpactStyle.Medium });
+      return;
+    }
+
     await runSelectionSequence(4);
   };
 
@@ -390,7 +474,7 @@ export const VibrationPage = () => {
 
         <Section
           title="Patterns"
-          subtitle="Secuencias compuestas para sentir diferencias mas claras entre plataformas."
+          subtitle="Secuencias compuestas para sentir diferencias mas claras entre plataformas y motores hapticos."
         >
           <SimpleGrid columns={{ base: 1, sm: 2 }} spacing={3}>
             <Button
@@ -436,6 +520,94 @@ export const VibrationPage = () => {
               isDisabled={isRunning}
             >
               Selector scrub
+            </Button>
+            <Button
+              variant="outlinePrimaryGlow"
+              onClick={() =>
+                void runHaptic("Pattern engine rev", async () => {
+                  await runPattern("engine-rev");
+                })
+              }
+              isDisabled={isRunning}
+            >
+              Engine rev
+            </Button>
+            <Button
+              variant="outlinePrimaryGlow"
+              onClick={() =>
+                void runHaptic("Pattern warning siren", async () => {
+                  await runPattern("warning-siren");
+                })
+              }
+              isDisabled={isRunning}
+            >
+              Warning siren
+            </Button>
+            <Button
+              variant="outlinePrimaryGlow"
+              onClick={() =>
+                void runHaptic("Pattern success celebration", async () => {
+                  await runPattern("success-celebration");
+                })
+              }
+              isDisabled={isRunning}
+            >
+              Success celebration
+            </Button>
+            <Button
+              variant="outlinePrimaryGlow"
+              onClick={() =>
+                void runHaptic("Pattern error crash", async () => {
+                  await runPattern("error-crash");
+                })
+              }
+              isDisabled={isRunning}
+            >
+              Error crash
+            </Button>
+            <Button
+              variant="outlinePrimaryGlow"
+              onClick={() =>
+                void runHaptic("Pattern morse SOS", async () => {
+                  await runPattern("morse-sos");
+                })
+              }
+              isDisabled={isRunning}
+            >
+              Morse SOS
+            </Button>
+            <Button
+              variant="outlinePrimaryGlow"
+              onClick={() =>
+                void runHaptic("Pattern door knock", async () => {
+                  await runPattern("door-knock");
+                })
+              }
+              isDisabled={isRunning}
+            >
+              Door knock
+            </Button>
+            <Button
+              variant="outlinePrimaryGlow"
+              onClick={() =>
+                void runHaptic("Pattern ramp drop", async () => {
+                  await runPattern("ramp-drop");
+                })
+              }
+              isDisabled={isRunning}
+            >
+              Ramp drop
+            </Button>
+            <Button
+              variant="secondarySolid"
+              onClick={() =>
+                void runHaptic("Pattern carousel spin", async () => {
+                  await runPattern("carousel-spin");
+                })
+              }
+              isDisabled={isRunning}
+            >
+              Carousel spin
             </Button>
           </SimpleGrid>
         </Section>
