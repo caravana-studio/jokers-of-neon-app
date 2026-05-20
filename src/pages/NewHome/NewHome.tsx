@@ -33,6 +33,7 @@ import { useGetMyGames } from "../../queries/useGetMyGames";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { logEvent } from "../../utils/analytics";
 import { APP_URL, isNative } from "../../utils/capacitorUtils";
+import { hasInProgressGames } from "../../utils/inProgressGames";
 import { getMajor, getMinor, getPatch } from "../../utils/versionUtils";
 
 const bossFloatAnimation = keyframes`
@@ -59,6 +60,7 @@ export const NewHome = () => {
   const navigate = useNavigate();
   const { prepareNewGame, executeCreateGame } = useGameContext();
   const { data: games } = useGetMyGames();
+  const hasActiveGames = hasInProgressGames(games);
   const seasonNumber = useSeasonNumber();
 
   const [isVersionModalOpen, setVersionModalOpen] = useState(false);
@@ -211,7 +213,7 @@ export const NewHome = () => {
   };
 
   const handlePlayClick = () => {
-    if (games && games.length > 0) {
+    if (hasActiveGames) {
       navigate("/my-games");
     } else {
       handleCreateGame();
@@ -365,7 +367,7 @@ export const NewHome = () => {
             </Flex>
             <MobileBottomBar
               firstButton={{
-                label: games && games.length > 0 ? t("my-games") : t("play"),
+                label: hasActiveGames ? t("my-games") : t("play"),
                 onClick: handlePlayClick,
               }}
             />
@@ -515,7 +517,7 @@ export const NewHome = () => {
                 w="300px"
                 variant="secondarySolid"
               >
-                {games && games.length > 0 ? t("my-games") : t("play")}
+                {hasActiveGames ? t("my-games") : t("play")}
               </Button>
             </Flex>
           </Flex>

@@ -10,6 +10,7 @@ import { useGameContext } from "../providers/GameProvider";
 import { useDistributionSettings } from "../queries/useDistributionSettings";
 import { useGetMyGames } from "../queries/useGetMyGames";
 import { useResponsiveValues } from "../theme/responsiveSettings";
+import { hasInProgressGames } from "../utils/inProgressGames";
 import { ensureMiniAppSession, getMiniAppBlockchain } from "./session/useMiniAppSession";
 import { MiniAppBannerRenderer } from "./MiniAppBannerRenderer";
 
@@ -21,6 +22,7 @@ export const MiniAppHome = () => {
   const { prepareNewGame, executeCreateGame } = useGameContext();
   const { data: games } = useGetMyGames();
   const banners = settings?.miniapp?.banners ?? [];
+  const hasActiveGames = hasInProgressGames(games);
 
   useEffect(() => {
     if (getMiniAppBlockchain() === "starknet") {
@@ -31,8 +33,6 @@ export const MiniAppHome = () => {
       console.error("Failed to preload game loop burner session", error);
     });
   }, []);
-
-  const hasGames = Boolean(games && games.length > 0);
 
   const handleCreateGame = () => {
     prepareNewGame();
@@ -49,7 +49,7 @@ export const MiniAppHome = () => {
   };
 
   const handlePlayClick = () => {
-    if (hasGames) {
+    if (hasActiveGames) {
       navigate("/my-games");
       return;
     }
@@ -112,7 +112,7 @@ export const MiniAppHome = () => {
                 minW="280px"
                 variant="secondarySolid"
               >
-                {hasGames ? t("my-games") : t("play")}
+                {hasActiveGames ? t("my-games") : t("play")}
               </Button>
             </Flex>
           )}
@@ -121,7 +121,7 @@ export const MiniAppHome = () => {
         {isSmallScreen ? (
           <MobileBottomBar
             firstButton={{
-              label: hasGames ? t("my-games") : t("play"),
+              label: hasActiveGames ? t("my-games") : t("play"),
               onClick: handlePlayClick,
             }}
           />
