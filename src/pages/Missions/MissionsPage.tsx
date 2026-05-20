@@ -235,7 +235,7 @@ export const MissionsPage = () => {
 
   return (
     <DelayedLoading ms={100}>
-      <MobileDecoration fadeToBlack />
+      <MobileDecoration />
       <Flex
         w="100%"
         overflowY="auto"
@@ -243,6 +243,8 @@ export const MissionsPage = () => {
         px={{ base: 4, sm: 7, md: 10 }}
         pt={{ base: "35px", sm: "74px" }}
         position="relative"
+        flexGrow={1}
+        minH={0}
       >
         <Flex
           w="100%"
