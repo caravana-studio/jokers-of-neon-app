@@ -12,6 +12,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { Clock } from "../../components/Clock";
 import { ProgressBar } from "../../components/CompactRoundData/ProgressBar";
+import { DelayedLoading } from "../../components/DelayedLoading";
 import { MobileBottomBar } from "../../components/MobileBottomBar";
 import { MobileDecoration } from "../../components/MobileDecoration";
 import { useInformationPopUp } from "../../providers/InformationPopUpProvider";
@@ -84,10 +85,12 @@ const MISSION_PANEL_STYLES = {
 
 const MissionXp = ({
   xp,
+  xpLabel,
   completed,
   minWidth,
 }: {
   xp: number;
+  xpLabel: string;
   completed: boolean;
   minWidth?: string;
 }) => (
@@ -115,12 +118,18 @@ const MissionXp = ({
       textTransform="uppercase"
       textShadow={completed ? "0 0 12px rgba(255,255,255,0.75)" : "none"}
     >
-      XP
+      {xpLabel}
     </Text>
   </Flex>
 );
 
-const WeeklyMissionRow = ({ mission }: { mission: WeeklyMission }) => {
+const WeeklyMissionRow = ({
+  mission,
+  xpLabel,
+}: {
+  mission: WeeklyMission;
+  xpLabel: string;
+}) => {
   const percent = (mission.current / mission.target) * 100;
   const progressLabel = `${mission.current}/${mission.target}`;
   const completed = percent >= 100;
@@ -141,13 +150,24 @@ const WeeklyMissionRow = ({ mission }: { mission: WeeklyMission }) => {
             labelFontSize={{ base: "12px", sm: "15px" }}
           />
         </Box>
-        <MissionXp xp={mission.xp} completed={completed} minWidth="60px" />
+        <MissionXp
+          xp={mission.xp}
+          xpLabel={xpLabel}
+          completed={completed}
+          minWidth="60px"
+        />
       </Flex>
     </Flex>
   );
 };
 
-const DailyMissionRow = ({ mission }: { mission: DailyMission }) => (
+const DailyMissionRow = ({
+  mission,
+  xpLabel,
+}: {
+  mission: DailyMission;
+  xpLabel: string;
+}) => (
   <Flex justifyContent="space-between" alignItems="center" gap={3}>
     <Flex alignItems="center" gap={{ base: 3, sm: 4 }} minW={0}>
       <DailyMissionCheckbox completed={mission.completed} />
@@ -155,7 +175,12 @@ const DailyMissionRow = ({ mission }: { mission: DailyMission }) => (
         {mission.title}
       </Text>
     </Flex>
-    <MissionXp xp={mission.xp} completed={mission.completed} minWidth="70px" />
+    <MissionXp
+      xp={mission.xp}
+      xpLabel={xpLabel}
+      completed={mission.completed}
+      minWidth="70px"
+    />
   </Flex>
 );
 
@@ -164,7 +189,7 @@ export const MissionsPage = () => {
   const { isSmallScreen } = useResponsiveValues();
   const { setInformation } = useInformationPopUp();
   const { t } = useTranslation("intermediate-screens", {
-    keyPrefix: "season-progression",
+    keyPrefix: "missions",
   });
   const [now, setNow] = useState(() => new Date());
 
@@ -186,14 +211,22 @@ export const MissionsPage = () => {
     () => (
       <VStack align="start" spacing={4}>
         <Heading size="sm" variant="italic">
-          {t("intro.popup-title")}
+          {t("learn-more.popup-title")}
         </Heading>
         <Divider borderColor={BLUE} />
         <VStack align="start" spacing={3}>
-          <Text fontSize={{ base: "sm", md: "md" }}>{t("intro.points.1")}</Text>
-          <Text fontSize={{ base: "sm", md: "md" }}>{t("intro.points.2")}</Text>
-          <Text fontSize={{ base: "sm", md: "md" }}>{t("intro.points.3")}</Text>
-          <Text fontSize={{ base: "sm", md: "md" }}>{t("intro.points.4")}</Text>
+          <Text fontSize={{ base: "sm", md: "md" }}>
+            {t("learn-more.points.1")}
+          </Text>
+          <Text fontSize={{ base: "sm", md: "md" }}>
+            {t("learn-more.points.2")}
+          </Text>
+          <Text fontSize={{ base: "sm", md: "md" }}>
+            {t("learn-more.points.3")}
+          </Text>
+          <Text fontSize={{ base: "sm", md: "md" }}>
+            {t("learn-more.points.4")}
+          </Text>
         </VStack>
       </VStack>
     ),
@@ -201,7 +234,7 @@ export const MissionsPage = () => {
   );
 
   return (
-    <>
+    <DelayedLoading ms={100}>
       <MobileDecoration fadeToBlack />
       <Flex
         w="100%"
@@ -217,46 +250,64 @@ export const MissionsPage = () => {
           mx="auto"
           flexDir="column"
           justifyContent="space-between"
-          gap={6}
         >
-          <Flex flexDir="column" gap={5}>
-            <Flex justifyContent="space-between" alignItems="center" gap={4} px={2}>
+          <Flex flexDir="column" gap={4}>
+            <Flex
+              justifyContent="space-between"
+              alignItems="center"
+              gap={2}
+              px={2}
+            >
               <Heading
                 variant="italic"
                 fontSize={{ base: "15px", sm: "22px" }}
                 zIndex={10}
               >
-                Weekly Missions
+                {t("weekly-title")}
               </Heading>
-              <Clock
-                date={weeklyResetAt}
-                fontSize={isSmallScreen ? 12 : 16}
-                iconSize={isSmallScreen ? "12px" : "18px"}
-              />
+              <Flex w={{ base: "80px", sm: "120px" }} justifyContent="flex-end">
+                <Clock
+                  date={weeklyResetAt}
+                  fontSize={isSmallScreen ? 12 : 16}
+                  iconSize={isSmallScreen ? "12px" : "18px"}
+                />
+              </Flex>
             </Flex>
 
             <Box
               borderRadius={{ base: "24px", sm: "30px" }}
               px={{ base: 4, sm: 6 }}
-              py={{ base: 4, sm: 5 }}
+              py={{ base: 3, sm: 5 }}
               {...MISSION_PANEL_STYLES}
             >
               <Flex flexDir="column" gap={{ base: 4, sm: 5 }}>
                 {WEEKLY_MISSIONS.map((mission) => (
-                  <WeeklyMissionRow key={mission.title} mission={mission} />
+                  <WeeklyMissionRow
+                    key={mission.title}
+                    mission={mission}
+                    xpLabel={t("xp-label")}
+                  />
                 ))}
               </Flex>
             </Box>
 
-            <Flex justifyContent="space-between" alignItems="center" mt={4} gap={4} px={2}>
+            <Flex
+              justifyContent="space-between"
+              alignItems="center"
+              mt={2}
+              gap={2}
+              px={2}
+            >
               <Heading variant="italic" fontSize={{ base: "15px", sm: "22px" }}>
-                Daily Missions
+                {t("daily-title")}
               </Heading>
-              <Clock
-                date={dailyResetAt}
-                fontSize={isSmallScreen ? 12 : 16}
-                iconSize={isSmallScreen ? "12px" : "18px"}
-              />
+              <Flex w={{ base: "80px", sm: "120px" }} justifyContent="flex-end">
+                <Clock
+                  date={dailyResetAt}
+                  fontSize={isSmallScreen ? 12 : 16}
+                  iconSize={isSmallScreen ? "12px" : "18px"}
+                />
+              </Flex>
             </Flex>
 
             <Box
@@ -267,7 +318,11 @@ export const MissionsPage = () => {
             >
               <Flex flexDir="column" gap={{ base: 5, sm: 6 }}>
                 {DAILY_MISSIONS.map((mission) => (
-                  <DailyMissionRow key={mission.title} mission={mission} />
+                  <DailyMissionRow
+                    key={mission.title}
+                    mission={mission}
+                    xpLabel={t("xp-label")}
+                  />
                 ))}
               </Flex>
             </Box>
@@ -276,46 +331,48 @@ export const MissionsPage = () => {
               justifyContent="space-between"
               alignItems="center"
               gap={3}
-              flexWrap="wrap"
-              mt={4}
+              mt={1}
               px={2}
             >
-              <Text
-                fontSize={{ base: "15px", sm: "18px" }}
-                textShadow="0 0 8px rgba(255,255,255,0.18)"
-              >
-                What's XP and what is it for?
-              </Text>
-              <Button
-                variant="outlinePrimaryGlow"
-                size="sm"
-                onClick={() => setInformation(infoContent)}
-              >
-                Learn More
-              </Button>
+              <Flex>
+                <Text
+                  fontSize={{ base: "15px", sm: "18px" }}
+                  textShadow="0 0 8px rgba(255,255,255,0.18)"
+                >
+                  {t("learn-more.question")}
+                </Text>
+              </Flex>
+              <Flex>
+                <Button
+                  variant="outlinePrimaryGlow"
+                  size="sm"
+                  onClick={() => setInformation(infoContent)}
+                >
+                  {t("learn-more.cta")}
+                </Button>
+              </Flex>
             </Flex>
           </Flex>
-
-          <MobileBottomBar
-            firstButton={{
-              label: "Season",
-              onClick: () => navigate("/season"),
-              variant: "secondarySolid",
-              fontSize: { base: "8px", sm: "10px", md: "15px" },
-              px: { base: 2, sm: 3, md: 7 },
-              h: { base: "32px", sm: "40px" },
-            }}
-            secondButton={{
-              label: "Go Home",
-              onClick: () => navigate("/"),
-              variant: "solid",
-              fontSize: { base: "8px", sm: "10px", md: "15px" },
-              px: { base: 2, sm: 3, md: 7 },
-              h: { base: "32px", sm: "40px" },
-            }}
-          />
         </Flex>
       </Flex>
-    </>
+      <MobileBottomBar
+        firstButton={{
+          label: t("bottom-bar.season-progression"),
+          onClick: () => navigate("/season"),
+          variant: "secondarySolid",
+          fontSize: { base: "8px", sm: "10px", md: "15px" },
+          px: { base: 2, sm: 3, md: 7 },
+          h: { base: "32px", sm: "40px" },
+        }}
+        secondButton={{
+          label: t("bottom-bar.go-home"),
+          onClick: () => navigate("/"),
+          variant: "solid",
+          fontSize: { base: "8px", sm: "10px", md: "15px" },
+          px: { base: 2, sm: 3, md: 7 },
+          h: { base: "32px", sm: "40px" },
+        }}
+      />
+    </DelayedLoading>
   );
 };

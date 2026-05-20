@@ -159,8 +159,8 @@ export const getPageConfig = (
     },
     {
       path: "/missions",
-      getPageInfo: ({ match }) => ({
-        name: "Missions",
+      getPageInfo: ({ tGame, match }) => ({
+        name: tGame("game-menu.pages.missions"),
         icon: Icons.CHECK,
         url: match.pathname,
       }),

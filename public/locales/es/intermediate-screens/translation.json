@@ -159,6 +159,26 @@
       }
     }
   },
+  "missions": {
+    "weekly-title": "Misiones semanales",
+    "daily-title": "Misiones diarias",
+    "xp-label": "XP",
+    "bottom-bar": {
+      "season-progression": "Temporada",
+      "go-home": "Ir al inicio"
+    },
+    "learn-more": {
+      "question": "¿Qué es el XP y para qué sirve?",
+      "cta": "Aprende más",
+      "popup-title": "Cómo el XP de misiones impulsa tu temporada",
+      "points": {
+        "1": "Cada misión que completas te da XP al instante. Las misiones diarias se reinician todos los días y las semanales entregan bloques más grandes de progreso.",
+        "2": "Ese XP carga la barra de Season Progression, así que las misiones son una de las formas principales de hacerla avanzar.",
+        "3": "A medida que sube tu barra de XP, desbloqueas recompensas como packs, entradas de torneo y otros premios del progreso de temporada.",
+        "4": "Si quieres progresar más rápido, sigue tanto las misiones diarias como las semanales y complétalas con constancia."
+      }
+    }
+  },
   "map": {
     "level": "NIVEL"
   },
