@@ -160,8 +160,11 @@
     }
   },
   "missions": {
+    "title": "Missions",
     "weekly-title": "Weekly Missions",
     "daily-title": "Daily Missions",
+    "weekly-short-title": "Weekly",
+    "daily-short-title": "Daily",
     "xp-label": "XP",
     "bottom-bar": {
       "season-progression": "Season",

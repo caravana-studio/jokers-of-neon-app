@@ -241,7 +241,7 @@ export const MissionsPage = () => {
         overflowY="auto"
         overflowX="hidden"
         px={{ base: 4, sm: 7, md: 10 }}
-        pt={{ base: "35px", sm: "74px" }}
+        pt={{ base: "27px", sm: "74px" }}
         position="relative"
         flexGrow={1}
         minH={0}
@@ -253,7 +253,15 @@ export const MissionsPage = () => {
           flexDir="column"
           justifyContent="space-between"
         >
-          <Flex flexDir="column" gap={4}>
+          <Flex flexDir="column" gap={3}>
+            <Heading
+              variant="italic"
+              fontSize={{ base: "20px", sm: "30px" }}
+              px={2}
+              zIndex={10}
+            >
+              {t("title")}
+            </Heading>
             <Flex
               justifyContent="space-between"
               alignItems="center"
@@ -265,7 +273,7 @@ export const MissionsPage = () => {
                 fontSize={{ base: "15px", sm: "22px" }}
                 zIndex={10}
               >
-                {t("weekly-title")}
+                {t("weekly-short-title")}
               </Heading>
               <Flex w={{ base: "80px", sm: "120px" }} justifyContent="flex-end">
                 <Clock
@@ -301,7 +309,7 @@ export const MissionsPage = () => {
               px={2}
             >
               <Heading variant="italic" fontSize={{ base: "15px", sm: "22px" }}>
-                {t("daily-title")}
+                {t("daily-short-title")}
               </Heading>
               <Flex w={{ base: "80px", sm: "120px" }} justifyContent="flex-end">
                 <Clock
