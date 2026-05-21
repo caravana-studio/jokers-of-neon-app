@@ -105,6 +105,15 @@ export const TestPage = () => {
         {isSmallScreen && <Divider borderColor="white" borderWidth="1px" my={2} />}
         <MenuBtn
           icon={Icons.LIST}
+          description="Haptics test lab"
+          label="Haptics"
+          onClick={() => navigate("/test/haptics")}
+          arrowRight
+          width="18px"
+        />
+        {isSmallScreen && <Divider borderColor="white" borderWidth="1px" my={2} />}
+        <MenuBtn
+          icon={Icons.LIST}
           description="View and set username"
           label={showUsernameTools ? "Username (hide)" : "Username"}
           onClick={() => setShowUsernameTools((prev) => !prev)}
@@ -185,15 +194,6 @@ export const TestPage = () => {
           description="Practice play simulation"
           label="Practice"
           onClick={() => navigate("/practice")}
-          arrowRight
-          width="18px"
-        />
-        {isSmallScreen && <Divider borderColor="white" borderWidth="1px" my={2} />}
-        <MenuBtn
-          icon={Icons.LIST}
-          description="Haptics and device vibration"
-          label="Haptics"
-          onClick={() => navigate("/test/haptics")}
           arrowRight
           width="18px"
         />
