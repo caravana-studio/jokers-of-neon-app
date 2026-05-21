@@ -11,8 +11,11 @@ import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { Clock } from "../../components/Clock";
-import { ProgressBar } from "../../components/CompactRoundData/ProgressBar";
 import { DelayedLoading } from "../../components/DelayedLoading";
+import {
+  DailyMissionEntry,
+  WeeklyMissionEntry,
+} from "../../components/DailyMissions/MissionEntries";
 import { MobileBottomBar } from "../../components/MobileBottomBar";
 import { MobileDecoration } from "../../components/MobileDecoration";
 import {
@@ -28,7 +31,6 @@ import {
   getNextDailyMissionResetDate,
   getNextWeeklyMissionResetDate,
 } from "../../utils/missionsTimers";
-import { DailyMissionCheckbox } from "./DailyMissionCheckbox";
 
 const MISSION_PANEL_STYLES = {
   background: "rgba(0, 0, 0, 0.4)",
@@ -36,109 +38,6 @@ const MISSION_PANEL_STYLES = {
     "0 0 22px rgba(255,255,255,0.4), inset 0 0 15px rgba(255,255,255,0.1)",
   backdropFilter: "blur(2px)",
 };
-
-const MissionXp = ({
-  xp,
-  xpLabel,
-  completed,
-  minWidth,
-}: {
-  xp: number;
-  xpLabel: string;
-  completed: boolean;
-  minWidth?: string;
-}) => (
-  <Flex
-    minW={minWidth}
-    justifyContent="flex-end"
-    alignItems="baseline"
-    gap={0.5}
-    opacity={completed ? 1 : 0.5}
-  >
-    <Text
-      fontFamily="Orbitron"
-      fontSize={{ base: "28px", sm: "46px" }}
-      lineHeight={0.9}
-      fontWeight={600}
-      textShadow={completed ? "0 0 12px rgba(255,255,255,0.75)" : "none"}
-    >
-      {xp}
-    </Text>
-    <Text
-      fontFamily="Orbitron"
-      fontWeight={600}
-      fontSize={{ base: "12px", sm: "26px" }}
-      lineHeight={1}
-      textTransform="uppercase"
-      textShadow={completed ? "0 0 12px rgba(255,255,255,0.75)" : "none"}
-    >
-      {xpLabel}
-    </Text>
-  </Flex>
-);
-
-const WeeklyMissionRow = ({
-  mission,
-  xpLabel,
-}: {
-  mission: DailyMission;
-  xpLabel: string;
-}) => {
-  const progress = mission.progress ?? 0;
-  const target = mission.target ?? 0;
-  const percent = target > 0 ? (progress / target) * 100 : 0;
-  const progressLabel = `${progress}/${target}`;
-  const completed = mission.completed || (target > 0 && progress >= target);
-
-  return (
-    <Flex direction="column" gap={0.5} py={{ base: 1, sm: 2 }}>
-      <Text fontSize={{ base: "15px", sm: "20px" }} lineHeight={1}>
-        {mission.description}
-      </Text>
-      <Flex alignItems="center" gap={{ base: 3, sm: 5 }}>
-        <Box flex={1}>
-          <ProgressBar
-            progress={percent}
-            incompleteColor={BLUE}
-            completeColor={VIOLET}
-            height={{ base: "18px", sm: "22px" }}
-            label={progressLabel}
-            labelFontSize={{ base: "12px", sm: "15px" }}
-          />
-        </Box>
-        <MissionXp
-          xp={mission.xp}
-          xpLabel={xpLabel}
-          completed={completed}
-          minWidth="60px"
-        />
-      </Flex>
-    </Flex>
-  );
-};
-
-const DailyMissionRow = ({
-  mission,
-  xpLabel,
-}: {
-  mission: DailyMission;
-  xpLabel: string;
-}) => (
-  <Flex justifyContent="space-between" alignItems="center" gap={3}>
-    <Flex alignItems="center" gap={{ base: 3, sm: 4 }} minW={0}>
-      <DailyMissionCheckbox completed={mission.completed} />
-      <Text fontSize={{ base: "15px", sm: "20px" }} lineHeight={1.2}>
-        {mission.description}
-      </Text>
-    </Flex>
-    <MissionXp
-      xp={mission.xp}
-      xpLabel={xpLabel}
-      completed={mission.completed}
-      minWidth="70px"
-    />
-  </Flex>
-);
 
 export const MissionsPage = () => {
   const navigate = useNavigate();
@@ -277,7 +176,7 @@ export const MissionsPage = () => {
             >
               <Flex flexDir="column" gap={{ base: 4, sm: 5 }}>
                 {weeklyMissions.map((mission) => (
-                  <WeeklyMissionRow
+                  <WeeklyMissionEntry
                     key={`weekly-${mission.missionId}`}
                     mission={mission}
                     xpLabel={t("xp-label")}
@@ -313,7 +212,7 @@ export const MissionsPage = () => {
             >
               <Flex flexDir="column" gap={{ base: 5, sm: 6 }}>
                 {dailyMissions.map((mission) => (
-                  <DailyMissionRow
+                  <DailyMissionEntry
                     key={`daily-${mission.missionId}`}
                     mission={mission}
                     xpLabel={t("xp-label")}
