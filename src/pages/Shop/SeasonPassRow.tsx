@@ -9,7 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { keyframes } from "@emotion/react";
 import { useContext, useState } from "react";
-import { useConnect } from "@starknet-react/core";
+import { useAccount, useConnect } from "@starknet-react/core";
 import { useTranslation } from "react-i18next";
 import CachedImage from "../../components/CachedImage";
 import { SeasonPass } from "../../components/SeasonPass/SeasonPass";
@@ -81,7 +81,9 @@ export const SeasonPassRow = ({
 
   const { purchaseSeasonPass, refetchSeasonPassUnlocked } = useSeasonPass();
   const dojoCtx = useContext(DojoContext);
-  const starknetAddress = dojoCtx?.account.account?.address || null;
+  const { address: connectedAddress } = useAccount();
+  const dojoAddress = dojoCtx?.account.account?.address || null;
+  const starknetAddress = dojoAddress || connectedAddress || null;
   const { connectors, connect } = useConnect();
   const { buy: buyWithCrypto, status: cryptoStatus } = useCryptoPurchase();
   const { priceAtoms, priceUsdc } = useShopPrice(id);
@@ -204,10 +206,10 @@ export const SeasonPassRow = ({
     }
   };
 
-  const buttonLabel = hasFiatOption
-    ? `${t("buy")} · ${price}`
-    : hasCryptoOption && priceUsdc
-      ? `${t("buy")} · ${priceUsdc} USDC`
+  const buttonLabel = hasCryptoOption && priceUsdc
+    ? `${t("buy")} · ${priceUsdc} USDC`
+    : hasFiatOption
+      ? `${t("buy")} · ${price}`
       : t("buy");
 
   return (
