@@ -128,6 +128,14 @@ export interface CashEvent {
 export interface DailyMissionCompleted {
   player: string;
   dailyMissionId: string;
+  missionId?: string;
+  templateId?: string;
+  periodType?: "daily" | "weekly";
+  periodId?: number;
+  difficulty?: number;
+  target?: number;
+  progress?: number;
+  gameId?: number;
   base_xp: number;
 }
 

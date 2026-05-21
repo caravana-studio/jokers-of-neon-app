@@ -1,4 +1,7 @@
 {
+  "hand": {
+    "selected": "la mano seleccionada"
+  },
   "playsData": {
     "RoyalFlush": {
       "name": "Escalera real",
