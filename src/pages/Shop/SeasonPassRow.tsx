@@ -8,7 +8,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { keyframes } from "@emotion/react";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { useAccount, useConnect } from "@starknet-react/core";
 import { useTranslation } from "react-i18next";
 import CachedImage from "../../components/CachedImage";
@@ -107,34 +107,6 @@ export const SeasonPassRow = ({
     isCryptoPurchasing ||
     (!hasFiatOption && !hasCryptoOption);
 
-  useEffect(() => {
-    console.log("[Marketplace Shop][SeasonPassRow] Resolved item prices", {
-      itemType: "season_pass",
-      id,
-      revenueCatPriceUsd: price ?? null,
-      cryptoPriceUsdc: priceUsdc ?? null,
-      cryptoPriceAtoms: priceAtoms?.toString() ?? null,
-      hasFiatOption,
-      hasCryptoOption,
-      isNative,
-      unlocked,
-      dojoAddress,
-      connectedAddress: connectedAddress ?? null,
-      effectiveAddress: starknetAddress,
-    });
-  }, [
-    id,
-    price,
-    priceUsdc,
-    priceAtoms,
-    hasFiatOption,
-    hasCryptoOption,
-    unlocked,
-    dojoAddress,
-    connectedAddress,
-    starknetAddress,
-  ]);
-
   const handleFiatPurchase = async () => {
     if (isLoading || isCryptoPurchasing || unlocked) return;
     if (!price) return;
@@ -204,19 +176,6 @@ export const SeasonPassRow = ({
   };
 
   const handleButtonClick = () => {
-    console.log("[Marketplace Shop][SeasonPassRow] Purchase button clicked", {
-      itemType: "season_pass",
-      id,
-      dojoAddress,
-      connectedAddress: connectedAddress ?? null,
-      effectiveAddress: starknetAddress,
-      hasFiatOption,
-      hasCryptoOption,
-      isButtonDisabled,
-      isNative,
-      unlocked,
-    });
-
     if (isButtonDisabled) return;
 
     if (!starknetAddress) {

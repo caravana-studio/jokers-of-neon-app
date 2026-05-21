@@ -98,34 +98,6 @@ export const PackRow = ({
     isPurchasing || isCryptoPurchasing || (!hasFiatOption && !hasCryptoOption);
 
   useEffect(() => {
-    console.log("[Marketplace Shop][PackRow] Resolved item prices", {
-      itemType: "pack",
-      packId,
-      packageId,
-      revenueCatPriceUsd: price ?? null,
-      cryptoPriceUsdc: priceUsdc ?? null,
-      cryptoPriceAtoms: priceAtoms?.toString() ?? null,
-      hasFiatOption,
-      hasCryptoOption,
-      isNative,
-      dojoAddress,
-      connectedAddress: connectedAddress ?? null,
-      effectiveAddress: starknetAddress,
-    });
-  }, [
-    packId,
-    packageId,
-    price,
-    priceUsdc,
-    priceAtoms,
-    hasFiatOption,
-    hasCryptoOption,
-    dojoAddress,
-    connectedAddress,
-    starknetAddress,
-  ]);
-
-  useEffect(() => {
     if (!starknetAddress) {
       setOwnedCardIds([]);
       return;
@@ -354,19 +326,6 @@ export const PackRow = ({
   };
 
   const handlePurchaseClick = () => {
-    console.log("[Marketplace Shop][PackRow] Purchase button clicked", {
-      itemType: "pack",
-      packId,
-      packageId,
-      dojoAddress,
-      connectedAddress: connectedAddress ?? null,
-      effectiveAddress: starknetAddress,
-      hasFiatOption,
-      hasCryptoOption,
-      isBuyDisabled,
-      isNative,
-    });
-
     if (isBuyDisabled) return;
 
     if (!starknetAddress) {
