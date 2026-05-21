@@ -1,7 +1,13 @@
 import { Box, Button, Divider, Flex, Input, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { fetchStreakStatus, StreakStatusApiData } from "../api/profile";
 import { validateUsername } from "../api/usernames";
+import {
+  fetchUsernameByAddress,
+  fetchUsernameByUsername,
+  UsernameRecord,
+} from "../api/usernames";
 import { DelayedLoading } from "../components/DelayedLoading";
 import { MenuBtn } from "../components/Menu/Buttons/MenuBtn";
 import {
@@ -16,10 +22,28 @@ import { useCustomToast } from "../hooks/useCustomToast";
 import { useGameStore } from "../state/useGameStore";
 import { useUsernameStore } from "../state/useUsernameStore";
 import { useResponsiveValues } from "../theme/responsiveSettings";
-import { formatAddress } from "../utils/starknetAddress";
+import { formatAddress, normalizeStarknetAddress } from "../utils/starknetAddress";
 
 function getErrorMessage(error: unknown): string {
   return error instanceof Error ? error.message : "Unable to save username";
+}
+
+type StreakLookupResult = {
+  address: string;
+  username: string | null;
+  status: StreakStatusApiData;
+};
+
+function isStarknetAddress(value: string): boolean {
+  return /^0x[0-9a-fA-F]+$/.test(value.trim());
+}
+
+function getStreakStateLabel(status: StreakStatusApiData): string {
+  if (status.currentStreak <= 0) return "Not started";
+  if (status.isBroken) return "Broken";
+  if (status.isProtected) return "Protected";
+  if (status.daysMissed > 0) return "At risk";
+  return "Active";
 }
 
 export const TestPage = () => {
@@ -43,11 +67,21 @@ export const TestPage = () => {
   const [showUnlockablesList, setShowUnlockablesList] = useState(false);
   const [usernameInput, setUsernameInput] = useState("");
   const [isSavingUsername, setIsSavingUsername] = useState(false);
+  const [showStreakTools, setShowStreakTools] = useState(false);
+  const [streakLookupInput, setStreakLookupInput] = useState("");
+  const [streakLookupResult, setStreakLookupResult] =
+    useState<StreakLookupResult | null>(null);
+  const [streakLookupError, setStreakLookupError] = useState<string | null>(null);
+  const [isLoadingStreak, setIsLoadingStreak] = useState(false);
   const address = account?.address ?? "";
 
   useEffect(() => {
     setUsernameInput(username ?? "");
   }, [username]);
+
+  useEffect(() => {
+    setStreakLookupInput((current) => current || username || address);
+  }, [address, username]);
 
   const triggerShopTierUnlockedScreen = (unlockableId: string) => {
     const testGameId = currentGameId > 0 ? currentGameId : 999999;
@@ -85,6 +119,59 @@ export const TestPage = () => {
       showErrorToast(getErrorMessage(error));
     } finally {
       setIsSavingUsername(false);
+    }
+  };
+
+  const resolveStreakLookupTarget = async (
+    value: string
+  ): Promise<{ address: string; username: string | null }> => {
+    const input = value.trim();
+    if (!input) {
+      throw new Error("Enter a username or wallet address");
+    }
+
+    if (isStarknetAddress(input)) {
+      const normalizedAddress = normalizeStarknetAddress(input);
+      let record: UsernameRecord | null = null;
+      try {
+        record = await fetchUsernameByAddress(normalizedAddress);
+      } catch {
+        record = null;
+      }
+
+      return {
+        address: normalizedAddress,
+        username: record?.username ?? null,
+      };
+    }
+
+    const record = await fetchUsernameByUsername(input);
+    if (!record) {
+      throw new Error(`Username "${input}" was not found`);
+    }
+
+    return {
+      address: normalizeStarknetAddress(record.address),
+      username: record.username,
+    };
+  };
+
+  const handleLookupStreak = async () => {
+    setIsLoadingStreak(true);
+    setStreakLookupError(null);
+
+    try {
+      const target = await resolveStreakLookupTarget(streakLookupInput);
+      const status = await fetchStreakStatus(target.address);
+      setStreakLookupResult({
+        ...target,
+        status,
+      });
+    } catch (error) {
+      setStreakLookupResult(null);
+      setStreakLookupError(getErrorMessage(error));
+    } finally {
+      setIsLoadingStreak(false);
     }
   };
 
@@ -167,6 +254,140 @@ export const TestPage = () => {
                   {username ? "Update" : "Create"}
                 </Button>
               </Flex>
+            </Flex>
+          </Box>
+        )}
+        {isSmallScreen && <Divider borderColor="white" borderWidth="1px" my={2} />}
+        <MenuBtn
+          icon={Icons.LIST}
+          description="View a player's daily streak"
+          label={showStreakTools ? "Streak lookup (hide)" : "Streak lookup"}
+          onClick={() => setShowStreakTools((prev) => !prev)}
+          arrowRight
+          width="18px"
+        />
+        {showStreakTools && (
+          <Box pl={8} pt={1}>
+            <Flex flexDirection="column" gap={2}>
+              <Text fontSize="xs" color="whiteAlpha.700">
+                Search by username or Starknet address. This reads confirmed profile data.
+              </Text>
+              <Flex gap={2}>
+                <Input
+                  value={streakLookupInput}
+                  placeholder="Username or address"
+                  onChange={(event) => setStreakLookupInput(event.target.value)}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter") {
+                      void handleLookupStreak();
+                    }
+                  }}
+                />
+                <Button
+                  variant="secondarySolid"
+                  minW="92px"
+                  isLoading={isLoadingStreak}
+                  onClick={handleLookupStreak}
+                >
+                  View
+                </Button>
+              </Flex>
+              {streakLookupError && (
+                <Text fontSize="xs" color="red.300">
+                  {streakLookupError}
+                </Text>
+              )}
+              {streakLookupResult && (
+                <Box
+                  border="1px solid"
+                  borderColor="whiteAlpha.300"
+                  borderRadius="8px"
+                  p={3}
+                >
+                  <Flex flexDirection="column" gap={1.5}>
+                    <Flex justifyContent="space-between" gap={3}>
+                      <Text fontSize="sm" color="whiteAlpha.700">
+                        User
+                      </Text>
+                      <Text fontSize="sm" textAlign="right">
+                        {streakLookupResult.username ?? "No username"}
+                      </Text>
+                    </Flex>
+                    <Flex justifyContent="space-between" gap={3}>
+                      <Text fontSize="sm" color="whiteAlpha.700">
+                        Address
+                      </Text>
+                      <Text fontSize="sm" textAlign="right">
+                        {formatAddress(streakLookupResult.address, 6)}
+                      </Text>
+                    </Flex>
+                    <Flex justifyContent="space-between" gap={3}>
+                      <Text fontSize="sm" color="whiteAlpha.700">
+                        Current streak
+                      </Text>
+                      <Text fontSize="sm" textAlign="right">
+                        {streakLookupResult.status.currentStreak} days
+                      </Text>
+                    </Flex>
+                    <Flex justifyContent="space-between" gap={3}>
+                      <Text fontSize="sm" color="whiteAlpha.700">
+                        Effective streak
+                      </Text>
+                      <Text fontSize="sm" textAlign="right">
+                        {streakLookupResult.status.effectiveStreak} days
+                      </Text>
+                    </Flex>
+                    <Flex justifyContent="space-between" gap={3}>
+                      <Text fontSize="sm" color="whiteAlpha.700">
+                        Longest streak
+                      </Text>
+                      <Text fontSize="sm" textAlign="right">
+                        {streakLookupResult.status.longestStreak} days
+                      </Text>
+                    </Flex>
+                    <Flex justifyContent="space-between" gap={3}>
+                      <Text fontSize="sm" color="whiteAlpha.700">
+                        Protectors
+                      </Text>
+                      <Text fontSize="sm" textAlign="right">
+                        {streakLookupResult.status.protectorsAvailable}
+                      </Text>
+                    </Flex>
+                    <Flex justifyContent="space-between" gap={3}>
+                      <Text fontSize="sm" color="whiteAlpha.700">
+                        Missed days
+                      </Text>
+                      <Text fontSize="sm" textAlign="right">
+                        {streakLookupResult.status.daysMissed}
+                      </Text>
+                    </Flex>
+                    <Flex justifyContent="space-between" gap={3}>
+                      <Text fontSize="sm" color="whiteAlpha.700">
+                        Last completed day
+                      </Text>
+                      <Text fontSize="sm" textAlign="right">
+                        {streakLookupResult.status.lastCompletedDay || "None"}
+                      </Text>
+                    </Flex>
+                    <Flex justifyContent="space-between" gap={3}>
+                      <Text fontSize="sm" color="whiteAlpha.700">
+                        State
+                      </Text>
+                      <Text fontSize="sm" textAlign="right">
+                        {getStreakStateLabel(streakLookupResult.status)}
+                      </Text>
+                    </Flex>
+                    <Flex justifyContent="space-between" gap={3}>
+                      <Text fontSize="sm" color="whiteAlpha.700">
+                        Sync
+                      </Text>
+                      <Text fontSize="sm" textAlign="right">
+                        {streakLookupResult.status.syncStatus} · {streakLookupResult.status.source}
+                      </Text>
+                    </Flex>
+                  </Flex>
+                </Box>
+              )}
             </Flex>
           </Box>
         )}

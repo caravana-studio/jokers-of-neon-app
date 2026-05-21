@@ -120,6 +120,37 @@ export async function fetchUsernameByAddress(
   return json.data;
 }
 
+export async function fetchUsernameByUsername(
+  username: string
+): Promise<UsernameRecord | null> {
+  const apiKey = getApiKey();
+  const validUsername = validateUsername(username);
+  const requestUrl = `${getBaseUrl()}/v1/usernames/username/${encodeURIComponent(
+    validUsername
+  )}`;
+
+  const response = await fetch(requestUrl, {
+    method: "GET",
+    headers: {
+      "X-API-Key": apiKey,
+    },
+  });
+
+  if (response.status === 404) {
+    return null;
+  }
+
+  if (!response.ok) {
+    throw await parseError(response);
+  }
+
+  const json = (await response.json()) as UsernameApiResponse;
+  if (!json.success || !json.data) {
+    throw new UsernameApiError(500, "Invalid username response");
+  }
+  return json.data;
+}
+
 export async function checkUsernameAvailable(username: string): Promise<boolean> {
   const apiKey = getApiKey();
   const validUsername = validateUsername(username);

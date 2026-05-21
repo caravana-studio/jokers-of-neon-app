@@ -204,6 +204,65 @@ export const showDailyMissionToast = (
   });
 };
 
+export const showDailyStreakToast = ({
+  currentStreak,
+  stackIndex = 1,
+  delayMs = 450,
+}: {
+  currentStreak: number;
+  stackIndex?: number;
+  delayMs?: number;
+}): void => {
+  setTimeout(() => {
+    toast.custom(
+      (t) => (
+        <Box
+          display="flex"
+          alignItems="center"
+          bg="black"
+          borderRadius="12px"
+          p="10px"
+          pl={isMobile ? "8px" : "80px"}
+          px="20px"
+          boxShadow={`0px 0px 10px 1px ${VIOLET_LIGHT}`}
+          maxW="300px"
+          color="white"
+          gap="10px"
+          style={{ marginTop: `${stackIndex * marginTop}px` }}
+          onClick={() => {
+            toast.dismiss(t);
+          }}
+        >
+          <Image
+            src="/logos/trophy.png"
+            alt="Trophy Icon"
+            boxSize={isMobile ? "16px" : "20px"}
+            color="white"
+          />
+          <Box>
+            <Text
+              fontSize={isMobile ? "10px" : "12px"}
+              color={VIOLET_LIGHT}
+              fontWeight="bold"
+              fontFamily="Sonara"
+              textTransform="uppercase"
+            >
+              {i18n.t("streak.title", { ns: "achievements" })}
+            </Text>
+            <Text fontSize={isMobile ? "12px" : "14px"} fontWeight="semibold">
+              {i18n.t("streak.description", {
+                ns: "achievements",
+                count: currentStreak,
+              })}
+            </Text>
+          </Box>
+        </Box>
+      ),
+      getToastOptions()
+    );
+  }, delayMs);
+};
+
 export const showLevelCompleteToast = (
   levelCompleteEvents: LevelCompleteEvent[]
 ): void => {

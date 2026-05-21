@@ -28,6 +28,7 @@ import { RevenueCatProvider } from "./providers/RevenueCatProvider";
 import { SeasonPassProvider } from "./providers/SeasonPassProvider";
 import { useSkinPreferencesStore } from "./state/useSkinPreferencesStore";
 import { useTutorialStore } from "./state/useTutorialStore";
+import { useProfileStore } from "./state/useProfileStore";
 import { useUsernameStore } from "./state/useUsernameStore";
 import ZoomPrevention from "./utils/ZoomPrevention";
 import { registerPushListeners } from "./utils/notifications/registerPushListeners";
@@ -50,6 +51,7 @@ function App() {
   const username = useUsername();
   const usernameStatus = useUsernameStore((store) => store.status);
   const { accountType } = useWallet();
+  const fetchStreakStatus = useProfileStore((store) => store.fetchStreakStatus);
 
   const { claimLives } = useGameActions();
 
@@ -130,13 +132,17 @@ function App() {
       return;
     }
 
-    claimLives().catch(() => {});
+    claimLives()
+      .catch(() => {})
+      .finally(() => {
+        fetchStreakStatus(account.address, { refresh: true }).catch(() => {});
+      });
 
     fetchOrCreateProfile(account.address)
       .catch((error) => {
         console.warn("Failed to fetch or create profile", error);
       });
-  }, [account?.address, username, usernameStatus]);
+  }, [account?.address, fetchStreakStatus, username, usernameStatus]);
 
   return (
     <RevenueCatProvider>

@@ -61,6 +61,26 @@ type GetLevelConfigApiResponse = {
   };
 };
 
+type GetStreakStatusApiResponse = {
+  success?: boolean;
+  data?: {
+    player?: string;
+    current_streak?: string | number | null;
+    effective_streak?: string | number | null;
+    longest_streak?: string | number | null;
+    last_completed_day?: string | number | null;
+    protectors_available?: string | number | null;
+    protectors_needed?: string | number | null;
+    days_missed?: string | number | null;
+    is_protected?: boolean | number | null;
+    is_broken?: boolean | number | null;
+    sync_status?: "confirmed" | "pending" | "failed" | null;
+    pending_period_id?: string | number | null;
+    source?: "cache" | "chain" | null;
+    updated_at?: string | null;
+  };
+};
+
 type CreateProfileApiResponse = {
   success?: boolean;
   transactionHash?: string;
@@ -110,6 +130,23 @@ export type ProfileStatsApiData = {
 export type ProfileLevelConfigApiData = {
   level: number;
   xpRequired: number;
+};
+
+export type StreakStatusApiData = {
+  player: string;
+  currentStreak: number;
+  effectiveStreak: number;
+  longestStreak: number;
+  lastCompletedDay: number;
+  protectorsAvailable: number;
+  protectorsNeeded: number;
+  daysMissed: number;
+  isProtected: boolean;
+  isBroken: boolean;
+  syncStatus: "confirmed" | "pending" | "failed";
+  pendingPeriodId: number | null;
+  source: "cache" | "chain";
+  updatedAt: string | null;
 };
 
 function getBaseUrl(): string {
@@ -401,6 +438,68 @@ export async function fetchProfileLevelConfigByLevel(
   return {
     level: sanitizeNumber(data.level),
     xpRequired: sanitizeNumber(data.xp_required),
+  };
+}
+
+export async function fetchStreakStatus(
+  address: string,
+  options: { refresh?: boolean } = {}
+): Promise<StreakStatusApiData> {
+  if (!address) {
+    throw new Error("fetchStreakStatus: address is required");
+  }
+
+  const apiKey = getApiKey();
+  const baseUrl = getBaseUrl();
+  const requestUrl = new URL(`${baseUrl}/api/profile/streak/${encodeURIComponent(
+    address
+  )}`);
+  if (options.refresh) {
+    requestUrl.searchParams.set("refresh", "1");
+  }
+
+  const response = await fetch(requestUrl.toString(), {
+    method: "GET",
+    headers: {
+      "X-API-Key": apiKey,
+    },
+  });
+
+  if (!response.ok) {
+    const errorDetails = await response.text().catch(() => "");
+    throw new Error(
+      `fetchStreakStatus: ${response.status} ${response.statusText}${
+        errorDetails ? ` - ${errorDetails}` : ""
+      }`
+    );
+  }
+
+  const json: GetStreakStatusApiResponse = await response.json();
+
+  if (!json.success || !json.data) {
+    throw new Error("fetchStreakStatus: API did not return a valid payload");
+  }
+
+  const data = json.data;
+
+  return {
+    player: data.player ?? address,
+    currentStreak: sanitizeNumber(data.current_streak),
+    effectiveStreak: sanitizeNumber(data.effective_streak ?? data.current_streak),
+    longestStreak: sanitizeNumber(data.longest_streak),
+    lastCompletedDay: sanitizeNumber(data.last_completed_day),
+    protectorsAvailable: sanitizeNumber(data.protectors_available),
+    protectorsNeeded: sanitizeNumber(data.protectors_needed),
+    daysMissed: sanitizeNumber(data.days_missed),
+    isProtected: Boolean(data.is_protected),
+    isBroken: Boolean(data.is_broken),
+    syncStatus: data.sync_status ?? "confirmed",
+    pendingPeriodId:
+      data.pending_period_id === null || data.pending_period_id === undefined
+        ? null
+        : sanitizeNumber(data.pending_period_id),
+    source: data.source ?? "chain",
+    updatedAt: data.updated_at ?? null,
   };
 }
 

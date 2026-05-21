@@ -5,9 +5,45 @@ import {
   fetchProfileLevelConfigByAddress,
   fetchProfileLevelConfigByLevel,
   fetchProfileStats,
+  fetchStreakStatus as fetchStreakStatusApi,
   updateProfileAvatar,
 } from "../api/profile";
+import type { StreakStatusApiData } from "../api/profile";
 import { registerMilestone } from "../utils/appsflyerReferral";
+
+type FetchStreakStatusOptions = {
+  expectedPeriodId?: number;
+  preserveOptimistic?: boolean;
+  refresh?: boolean;
+};
+
+type OptimisticDailyStreakUpdate = {
+  previousStreak: number;
+  currentStreak: number;
+  protectorsUsed: number;
+  reset: boolean;
+  extended: boolean;
+};
+
+const toInt = (value: number) =>
+  Math.trunc(Number.isFinite(value) ? value : 0);
+
+const mapStreakStatus = (status: StreakStatusApiData): StreakStatus => ({
+  player: status.player,
+  currentStreak: toInt(status.currentStreak),
+  effectiveStreak: toInt(status.effectiveStreak),
+  longestStreak: toInt(status.longestStreak),
+  lastCompletedDay: toInt(status.lastCompletedDay),
+  protectorsAvailable: toInt(status.protectorsAvailable),
+  protectorsNeeded: toInt(status.protectorsNeeded),
+  daysMissed: toInt(status.daysMissed),
+  isProtected: status.isProtected,
+  isBroken: status.isBroken,
+  syncStatus: status.syncStatus,
+  pendingPeriodId: status.pendingPeriodId,
+  source: status.source,
+  updatedAt: status.updatedAt,
+});
 
 export type ProfileStore = {
   profileData: ProfileData | null;
@@ -31,6 +67,15 @@ export type ProfileStore = {
     avatarId: number
   ) => Promise<void>;
 
+  fetchStreakStatus: (
+    userAddress: string,
+    options?: FetchStreakStatusOptions
+  ) => Promise<void>;
+
+  applyOptimisticDailyStreak: (
+    periodId: number
+  ) => OptimisticDailyStreakUpdate | null;
+
 
   reset: () => void;
   setProfileUsername: (username: string) => void;
@@ -51,13 +96,12 @@ export const useProfileStore = create<ProfileStore>((set, get) => ({
       const badgesCount = profile.badgesIds.length;
       const sanitizeNumber = (value: number) =>
         Number.isFinite(value) ? value : 0;
-      const toInt = (value: number) => Math.trunc(sanitizeNumber(value));
       const sanitizedTotalXp = sanitizeNumber(profile.totalXp);
       const sanitizedCurrentXp = sanitizeNumber(profile.currentXp);
 
       const userLevel = toInt(profile.level);
 
-      const [statsResult, levelConfigResult] =
+      const [statsResult, levelConfigResult, streakStatusResult] =
         await Promise.all([
           fetchProfileStats(userAddress).catch((error) => {
             console.log("Error fetching profile stats", error);
@@ -65,6 +109,10 @@ export const useProfileStore = create<ProfileStore>((set, get) => ({
           }),
           fetchProfileLevelConfigByAddress(userAddress).catch((error) => {
             console.log("Error fetching profile level config", error);
+            return null;
+          }),
+          fetchStreakStatusApi(userAddress).catch((error) => {
+            console.log("Error fetching streak status", error);
             return null;
           })
         ]);
@@ -80,6 +128,9 @@ export const useProfileStore = create<ProfileStore>((set, get) => ({
 
       const pendingAvatarId = get().pendingAvatarId;
       const finalAvatarId = pendingAvatarId !== null ? pendingAvatarId : toInt(profile.avatarId);
+      const streakStatus = streakStatusResult
+        ? mapStreakStatus(streakStatusResult)
+        : null;
 
       const profileData: ProfileData = {
         currentBadges: badgesCount,
@@ -89,7 +140,7 @@ export const useProfileStore = create<ProfileStore>((set, get) => ({
           currentXp: sanitizedCurrentXp,
           totalXp: sanitizedTotalXp,
           level: toInt(profile.level),
-          streak: toInt(profile.dailyStreak),
+          streak: streakStatus?.currentStreak ?? toInt(profile.dailyStreak),
           avatarId: finalAvatarId,
         },
         playerStats: {
@@ -102,6 +153,7 @@ export const useProfileStore = create<ProfileStore>((set, get) => ({
           prevLevelXp: userLevel > 0 ? Math.max(0, prevLevelXpValue) : 0,
           nextLevelXp: nextLevelXpValue,
         },
+        streakStatus,
       };
 
       // Check for level milestones
@@ -149,6 +201,135 @@ export const useProfileStore = create<ProfileStore>((set, get) => ({
       console.log("Error fetching profile data", e);
       set({ profileData: null, loading: false });
     }
+  },
+
+  fetchStreakStatus: async (userAddress, options = {}) => {
+    try {
+      const streakStatus = mapStreakStatus(
+        await fetchStreakStatusApi(userAddress, { refresh: options.refresh })
+      );
+      const current = get().profileData;
+
+      if (!current) {
+        return;
+      }
+
+      const pendingPeriodId =
+        current.streakSync?.pending === true
+          ? current.streakSync.sourcePeriodId
+          : options.expectedPeriodId;
+      const shouldPreserveOptimistic =
+        options.preserveOptimistic &&
+        pendingPeriodId !== undefined &&
+        streakStatus.lastCompletedDay < pendingPeriodId &&
+        streakStatus.pendingPeriodId !== pendingPeriodId &&
+        current.streakSync?.optimistic === true;
+
+      if (shouldPreserveOptimistic) {
+        return;
+      }
+
+      set({
+        profileData: {
+          ...current,
+          profile: {
+            ...current.profile,
+            streak: streakStatus.currentStreak,
+          },
+          streakStatus,
+          streakSync:
+            streakStatus.syncStatus === "pending" && streakStatus.pendingPeriodId
+              ? {
+                  pending: true,
+                  optimistic: false,
+                  sourcePeriodId: streakStatus.pendingPeriodId,
+                }
+              : pendingPeriodId !== undefined &&
+                streakStatus.lastCompletedDay < pendingPeriodId
+              ? {
+                  pending: true,
+                  optimistic: false,
+                  sourcePeriodId: pendingPeriodId,
+                }
+              : null,
+        },
+      });
+    } catch (e) {
+      console.log("Error fetching streak status", e);
+    }
+  },
+
+  applyOptimisticDailyStreak: (periodId) => {
+    if (periodId <= 0) {
+      return null;
+    }
+
+    const current = get().profileData;
+    const currentStatus = current?.streakStatus;
+    if (!current || !currentStatus) {
+      return null;
+    }
+
+    if (periodId <= currentStatus.lastCompletedDay) {
+      return null;
+    }
+
+    const missedDays = Math.max(0, periodId - currentStatus.lastCompletedDay - 1);
+    const protectorsUsed = Math.min(
+      currentStatus.protectorsAvailable,
+      missedDays
+    );
+    const hasEnoughProtectors = missedDays <= currentStatus.protectorsAvailable;
+    const nextStreak =
+      currentStatus.currentStreak <= 0
+        ? 1
+        : missedDays === 0 || hasEnoughProtectors
+        ? currentStatus.currentStreak + 1
+        : 1;
+    const nextProtectors = Math.max(
+      0,
+      currentStatus.protectorsAvailable - protectorsUsed
+    );
+    const nextStatus: StreakStatus = {
+      ...currentStatus,
+      currentStreak: nextStreak,
+      effectiveStreak: nextStreak,
+      longestStreak: Math.max(currentStatus.longestStreak, nextStreak),
+      lastCompletedDay: periodId,
+      protectorsAvailable: nextProtectors,
+      protectorsNeeded: 0,
+      daysMissed: 0,
+      isProtected: false,
+      isBroken: false,
+      syncStatus: "pending",
+      pendingPeriodId: periodId,
+      source: currentStatus.source,
+      updatedAt: currentStatus.updatedAt,
+    };
+
+    set({
+      profileData: {
+        ...current,
+        profile: {
+          ...current.profile,
+          streak: nextStreak,
+        },
+        streakStatus: nextStatus,
+        streakSync: {
+          pending: true,
+          optimistic: true,
+          sourcePeriodId: periodId,
+        },
+      },
+    });
+
+    return {
+      previousStreak: currentStatus.currentStreak,
+      currentStreak: nextStreak,
+      protectorsUsed,
+      reset: currentStatus.currentStreak > 0 && nextStreak <= 1,
+      extended: nextStreak > currentStatus.currentStreak,
+    };
   },
 
   updateAvatar: async (_client, _snAccount, address, avatarId) => {

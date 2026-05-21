@@ -91,6 +91,11 @@
     "ordinal_few": "{{count}}ª",
     "ordinal_other": "{{count}}ª"
   },
+  "streak": {
+    "title": "Racha diaria extendida",
+    "description_one": "Racha de {{count}} día",
+    "description_other": "Racha de {{count}} días"
+  },
   "purchases": {
     "success": {
       "title": "Compra completada",
