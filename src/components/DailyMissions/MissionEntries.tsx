@@ -1,7 +1,7 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
-import { ProgressBar } from "../CompactRoundData/ProgressBar";
-import { BLUE, VIOLET } from "../../theme/colors";
+import { BLUE, VIOLET, VIOLET_LIGHT } from "../../theme/colors";
 import { DailyMission } from "../../types/DailyMissions";
+import { ProgressBar } from "../CompactRoundData/ProgressBar";
 import { DailyMissionCheckbox } from "./DailyMissionCheckbox";
 
 const MissionXp = ({
@@ -22,25 +22,30 @@ const MissionXp = ({
     justifyContent="flex-end"
     alignItems="baseline"
     gap={0.5}
-    opacity={completed ? 1 : 0.5}
     flexShrink={0}
   >
     <Text
       fontFamily="Orbitron"
-      fontSize={compacted ? { base: "22px", sm: "28px" } : { base: "28px", sm: "46px" }}
+      fontSize={
+        compacted ? { base: "22px", sm: "28px" } : { base: "28px", sm: "46px" }
+      }
       lineHeight={0.9}
       fontWeight={600}
-      textShadow={completed ? "0 0 12px rgba(255,255,255,0.75)" : "none"}
+      color={completed ? VIOLET_LIGHT : "white"}
+      textShadow={completed ? `0 0 12px ${VIOLET_LIGHT}` : "none"}
     >
       {xp}
     </Text>
     <Text
       fontFamily="Orbitron"
       fontWeight={600}
-      fontSize={compacted ? { base: "10px", sm: "14px" } : { base: "12px", sm: "26px" }}
+      fontSize={
+        compacted ? { base: "10px", sm: "14px" } : { base: "12px", sm: "26px" }
+      }
       lineHeight={1}
       textTransform="uppercase"
-      textShadow={completed ? "0 0 12px rgba(255,255,255,0.75)" : "none"}
+      color={completed ? VIOLET_LIGHT : "white"}
+      textShadow={completed ? `0 0 12px ${VIOLET_LIGHT}` : "none"}
     >
       {xpLabel}
     </Text>
@@ -51,22 +56,44 @@ interface MissionEntryProps {
   mission: DailyMission;
   xpLabel: string;
   compacted?: boolean;
+  completed?: boolean;
 }
 
 export const DailyMissionEntry = ({
   mission,
   xpLabel,
   compacted = false,
+  completed,
 }: MissionEntryProps) => (
-  <Flex justifyContent="space-between" alignItems="center" gap={compacted ? 2 : 3}>
-    <Flex alignItems="center" gap={compacted ? 2.5 : { base: 3, sm: 4 }} minW={0}>
+  <Flex
+    justifyContent="space-between"
+    alignItems="center"
+    gap={compacted ? 2 : 3}
+  >
+    <Flex
+      alignItems="center"
+      gap={compacted ? 2.5 : { base: 3, sm: 4 }}
+      minW={0}
+    >
       <DailyMissionCheckbox
         completed={mission.completed}
-        size={compacted ? { base: "20px", sm: "24px" } : { base: "24px", sm: "30px" }}
-        borderRadius={compacted ? { base: "8px", sm: "10px" } : { base: "10px", sm: "13px" }}
+        size={
+          compacted
+            ? { base: "20px", sm: "24px" }
+            : { base: "24px", sm: "30px" }
+        }
+        borderRadius={
+          compacted ? { base: "8px", sm: "10px" } : { base: "10px", sm: "13px" }
+        }
       />
       <Text
-        fontSize={compacted ? { base: "12px", sm: "14px" } : { base: "15px", sm: "20px" }}
+        fontSize={
+          compacted
+            ? { base: "12px", sm: "14px" }
+            : { base: "15px", sm: "20px" }
+        }
+        textShadow={completed ? `0 0 12px ${VIOLET_LIGHT}` : "none"}
+        color={completed ? VIOLET_LIGHT : "white"}
         lineHeight={compacted ? 1.15 : 1.2}
       >
         {mission.description}
@@ -102,7 +129,12 @@ export const WeeklyMissionEntry = ({
             size={{ base: "20px", sm: "24px" }}
             borderRadius={{ base: "8px", sm: "10px" }}
           />
-          <Text fontSize={{ base: "12px", sm: "14px" }} lineHeight={1.15}>
+          <Text
+            fontSize={{ base: "12px", sm: "14px" }}
+            lineHeight={1.15}
+            textShadow={completed ? `0 0 12px ${VIOLET_LIGHT}` : "none"}
+            color={completed ? VIOLET_LIGHT : "white"}
+          >
             {mission.description}
             {!completed ? ` (${progressLabel})` : ""}
           </Text>
@@ -120,7 +152,12 @@ export const WeeklyMissionEntry = ({
 
   return (
     <Flex direction="column" gap={0.5} py={{ base: 1, sm: 2 }}>
-      <Text fontSize={{ base: "15px", sm: "20px" }} lineHeight={1}>
+      <Text
+        fontSize={{ base: "15px", sm: "20px" }}
+        lineHeight={1}
+        textShadow={completed ? `0 0 12px ${VIOLET_LIGHT}` : "none"}
+        color={completed ? VIOLET_LIGHT : "white"}
+      >
         {mission.description}
       </Text>
       <Flex alignItems="center" gap={{ base: 3, sm: 5 }}>
