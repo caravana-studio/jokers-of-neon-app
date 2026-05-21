@@ -46,18 +46,19 @@ const tournamentBackgroundTypes = new Set<BackgroundType>([
   BackgroundType.Map,
 ]);
 
-const tournamentBackgroundImageByType: Partial<Record<BackgroundType, string>> = {
-  [BackgroundType.Game]: "/bg/game-bg_t.jpg",
-  [BackgroundType.Store]: "/bg/store-bg_t.jpg",
-  [BackgroundType.Rage]: "/bg/rage-bg_t.jpg",
-  [BackgroundType.Map]: "/bg/map-bg_t.jpg",
-  // There is no rageboss jpg, so fallback to rage tournament jpg.
-  [BackgroundType.RageBoss]: "/bg/rage-bg_t.jpg",
-};
+const tournamentBackgroundImageByType: Partial<Record<BackgroundType, string>> =
+  {
+    [BackgroundType.Game]: "/bg/game-bg_t.jpg",
+    [BackgroundType.Store]: "/bg/store-bg_t.jpg",
+    [BackgroundType.Rage]: "/bg/rage-bg_t.jpg",
+    [BackgroundType.Map]: "/bg/map-bg_t.jpg",
+    // There is no rageboss jpg, so fallback to rage tournament jpg.
+    [BackgroundType.RageBoss]: "/bg/rage-bg_t.jpg",
+  };
 
 const getBaseBackgroundImagePath = (
   type: BackgroundType,
-  useTournamentTheme: boolean
+  useTournamentTheme: boolean,
 ) => {
   if (type === BackgroundType.Home) {
     return "/bg/home-bg.jpg";
@@ -79,13 +80,17 @@ const getBaseBackgroundImagePath = (
 const resolveBackgroundImagePath = async (
   type: BackgroundType,
   useTournamentTheme: boolean,
-  seasonNumber: number
+  seasonNumber: number,
 ) => {
-  const fallbackType = type === BackgroundType.RageBoss ? BackgroundType.Rage : type;
-  const fallbackPath = getBaseBackgroundImagePath(fallbackType, useTournamentTheme);
+  const fallbackType =
+    type === BackgroundType.RageBoss ? BackgroundType.Rage : type;
+  const fallbackPath = getBaseBackgroundImagePath(
+    fallbackType,
+    useTournamentTheme,
+  );
   const resolvedFallbackPath = await resolveSeasonalAssetPath(
     fallbackPath,
-    seasonNumber
+    seasonNumber,
   );
 
   if (type !== BackgroundType.RageBoss) {
@@ -94,7 +99,7 @@ const resolveBackgroundImagePath = async (
 
   const seasonalRageBossPath = addSeasonSuffixToAssetPath(
     useTournamentTheme ? "/bg/rage-boss-bg_t.jpg" : "/bg/rage-boss-bg.jpg",
-    seasonNumber
+    seasonNumber,
   );
   const hasSeasonalRageBossPath = await doesAssetExist(seasonalRageBossPath);
 
@@ -170,12 +175,10 @@ const bgConfig: Record<
   missions: {
     bg: BackgroundType.Home,
     overlay: "rgba(0,0,0,0.5)",
-    withBoss: true,
   },
   "missions-game": {
     bg: BackgroundType.Home,
     overlay: "rgba(0,0,0,0.5)",
-    withBoss: true,
   },
   settings: {
     bg: BackgroundType.Home,
@@ -250,12 +253,12 @@ export const Background = ({
 
   const isInGamePage = isInGamePath(location.pathname);
   const useTournamentTheme = Boolean(
-    type && isTournament && isInGamePage && tournamentBackgroundTypes.has(type)
+    type && isTournament && isInGamePage && tournamentBackgroundTypes.has(type),
   );
 
   const [src, setSrc] = useState("/bg/home-bg.jpg");
   const [videoType, setVideoType] = useState<BackgroundType>(
-    BackgroundType.Home
+    BackgroundType.Home,
   );
 
   useEffect(() => {
@@ -264,7 +267,7 @@ export const Background = ({
 
     const fallbackPath = getBaseBackgroundImagePath(
       backgroundType,
-      useTournamentTheme
+      useTournamentTheme,
     );
     setSrc(fallbackPath);
 
@@ -274,7 +277,7 @@ export const Background = ({
       const resolvedPath = await resolveBackgroundImagePath(
         backgroundType,
         useTournamentTheme,
-        seasonNumber
+        seasonNumber,
       );
 
       if (!isMounted) return;

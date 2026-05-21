@@ -11,11 +11,11 @@ import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { Clock } from "../../components/Clock";
-import { DelayedLoading } from "../../components/DelayedLoading";
 import {
   DailyMissionEntry,
   WeeklyMissionEntry,
 } from "../../components/DailyMissions/MissionEntries";
+import { DelayedLoading } from "../../components/DelayedLoading";
 import { MobileBottomBar } from "../../components/MobileBottomBar";
 import { MobileDecoration } from "../../components/MobileDecoration";
 import {
@@ -24,7 +24,7 @@ import {
 } from "../../dojo/queries/getDailyMissions";
 import { useDojo } from "../../dojo/useDojo";
 import { useInformationPopUp } from "../../providers/InformationPopUpProvider";
-import { BLUE, VIOLET } from "../../theme/colors";
+import { BLUE } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { DailyMission } from "../../types/DailyMissions";
 import {
@@ -220,6 +220,7 @@ export const MissionsPage = ({ inGame = false }: MissionsPageProps) => {
                     key={`daily-${mission.missionId}`}
                     mission={mission}
                     xpLabel={t("xp-label")}
+                    completed={mission.completed}
                   />
                 ))}
               </Flex>
@@ -252,30 +253,11 @@ export const MissionsPage = ({ inGame = false }: MissionsPageProps) => {
             </Flex>
           </Flex>
 
-          {inGame ? (
+          {inGame && (
             <MobileBottomBar
               firstButton={{
                 label: t("bottom-bar.back-to-game"),
                 onClick: () => navigate("/redirect"),
-                variant: "solid",
-                fontSize: { base: "8px", sm: "10px", md: "15px" },
-                px: { base: 2, sm: 3, md: 7 },
-                h: { base: "32px", sm: "40px" },
-              }}
-            />
-          ) : (
-            <MobileBottomBar
-              firstButton={{
-                label: t("bottom-bar.season-progression"),
-                onClick: () => navigate("/season"),
-                variant: "secondarySolid",
-                fontSize: { base: "8px", sm: "10px", md: "15px" },
-                px: { base: 2, sm: 3, md: 7 },
-                h: { base: "32px", sm: "40px" },
-              }}
-              secondButton={{
-                label: t("bottom-bar.go-home"),
-                onClick: () => navigate("/"),
                 variant: "solid",
                 fontSize: { base: "8px", sm: "10px", md: "15px" },
                 px: { base: 2, sm: 3, md: 7 },

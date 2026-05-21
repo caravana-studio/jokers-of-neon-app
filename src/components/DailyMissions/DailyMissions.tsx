@@ -85,6 +85,7 @@ export const DailyMissions = ({
                 mission={mission}
                 xpLabel={tMissions("xp-label")}
                 compacted
+                completed={mission.completed}
               />
             ) : (
               <MissionRow key={index} mission={mission} fontSize={fontSize} />
