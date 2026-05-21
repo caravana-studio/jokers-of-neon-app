@@ -8,8 +8,8 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { keyframes } from "@emotion/react";
-import { useContext, useState } from "react";
-import { useConnect } from "@starknet-react/core";
+import { useContext, useEffect, useState } from "react";
+import { useAccount, useConnect } from "@starknet-react/core";
 import { useTranslation } from "react-i18next";
 import CachedImage from "../../components/CachedImage";
 import { SeasonPass } from "../../components/SeasonPass/SeasonPass";
@@ -81,7 +81,9 @@ export const SeasonPassRow = ({
 
   const { purchaseSeasonPass, refetchSeasonPassUnlocked } = useSeasonPass();
   const dojoCtx = useContext(DojoContext);
-  const starknetAddress = dojoCtx?.account.account?.address || null;
+  const { address: connectedAddress } = useAccount();
+  const dojoAddress = dojoCtx?.account.account?.address || null;
+  const starknetAddress = dojoAddress || connectedAddress || null;
   const { connectors, connect } = useConnect();
   const { buy: buyWithCrypto, status: cryptoStatus } = useCryptoPurchase();
   const { priceAtoms, priceUsdc } = useShopPrice(id);
@@ -104,6 +106,34 @@ export const SeasonPassRow = ({
     isLoading ||
     isCryptoPurchasing ||
     (!hasFiatOption && !hasCryptoOption);
+
+  useEffect(() => {
+    console.log("[Marketplace Shop][SeasonPassRow] Resolved item prices", {
+      itemType: "season_pass",
+      id,
+      revenueCatPriceUsd: price ?? null,
+      cryptoPriceUsdc: priceUsdc ?? null,
+      cryptoPriceAtoms: priceAtoms?.toString() ?? null,
+      hasFiatOption,
+      hasCryptoOption,
+      isNative,
+      unlocked,
+      dojoAddress,
+      connectedAddress: connectedAddress ?? null,
+      effectiveAddress: starknetAddress,
+    });
+  }, [
+    id,
+    price,
+    priceUsdc,
+    priceAtoms,
+    hasFiatOption,
+    hasCryptoOption,
+    unlocked,
+    dojoAddress,
+    connectedAddress,
+    starknetAddress,
+  ]);
 
   const handleFiatPurchase = async () => {
     if (isLoading || isCryptoPurchasing || unlocked) return;
@@ -174,6 +204,19 @@ export const SeasonPassRow = ({
   };
 
   const handleButtonClick = () => {
+    console.log("[Marketplace Shop][SeasonPassRow] Purchase button clicked", {
+      itemType: "season_pass",
+      id,
+      dojoAddress,
+      connectedAddress: connectedAddress ?? null,
+      effectiveAddress: starknetAddress,
+      hasFiatOption,
+      hasCryptoOption,
+      isButtonDisabled,
+      isNative,
+      unlocked,
+    });
+
     if (isButtonDisabled) return;
 
     if (!starknetAddress) {
@@ -204,10 +247,10 @@ export const SeasonPassRow = ({
     }
   };
 
-  const buttonLabel = hasFiatOption
-    ? `${t("buy")} · ${price}`
-    : hasCryptoOption && priceUsdc
-      ? `${t("buy")} · ${priceUsdc} USDC`
+  const buttonLabel = hasCryptoOption && priceUsdc
+    ? `${t("buy")} · ${priceUsdc} USDC`
+    : hasFiatOption
+      ? `${t("buy")} · ${price}`
       : t("buy");
 
   return (

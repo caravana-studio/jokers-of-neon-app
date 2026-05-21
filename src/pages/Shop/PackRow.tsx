@@ -7,7 +7,7 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import { useConnect } from "@starknet-react/core";
+import { useAccount, useConnect } from "@starknet-react/core";
 import { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -71,8 +71,10 @@ export const PackRow = ({
   const navigate = useNavigate();
   const toast = useToast();
   const dojoCtx = useContext(DojoContext);
-  const account = dojoCtx?.account.account ?? null;
-  const starknetAddress = account?.address || null;
+  const { address: connectedAddress } = useAccount();
+  const dojoAccount = dojoCtx?.account.account ?? null;
+  const dojoAddress = dojoAccount?.address || null;
+  const starknetAddress = dojoAddress || connectedAddress || null;
   const username = useUsername();
   const { connectors, connect } = useConnect();
   const { purchasePackageById, offerings } = useRevenueCat();
@@ -96,13 +98,41 @@ export const PackRow = ({
     isPurchasing || isCryptoPurchasing || (!hasFiatOption && !hasCryptoOption);
 
   useEffect(() => {
-    if (!account?.address) {
+    console.log("[Marketplace Shop][PackRow] Resolved item prices", {
+      itemType: "pack",
+      packId,
+      packageId,
+      revenueCatPriceUsd: price ?? null,
+      cryptoPriceUsdc: priceUsdc ?? null,
+      cryptoPriceAtoms: priceAtoms?.toString() ?? null,
+      hasFiatOption,
+      hasCryptoOption,
+      isNative,
+      dojoAddress,
+      connectedAddress: connectedAddress ?? null,
+      effectiveAddress: starknetAddress,
+    });
+  }, [
+    packId,
+    packageId,
+    price,
+    priceUsdc,
+    priceAtoms,
+    hasFiatOption,
+    hasCryptoOption,
+    dojoAddress,
+    connectedAddress,
+    starknetAddress,
+  ]);
+
+  useEffect(() => {
+    if (!starknetAddress) {
       setOwnedCardIds([]);
       return;
     }
 
     let cancelled = false;
-    getUserCards(account.address)
+    getUserCards(starknetAddress)
       .then((data) => {
         if (cancelled) return;
         setOwnedCardIds(data.ownedCardIds ?? []);
@@ -116,7 +146,7 @@ export const PackRow = ({
     return () => {
       cancelled = true;
     };
-  }, [account?.address]);
+  }, [starknetAddress]);
 
   const resolveMintedCardsFromInventoryDiff = async (
     beforeCards: MarketplaceUserCard[],
@@ -324,6 +354,19 @@ export const PackRow = ({
   };
 
   const handlePurchaseClick = () => {
+    console.log("[Marketplace Shop][PackRow] Purchase button clicked", {
+      itemType: "pack",
+      packId,
+      packageId,
+      dojoAddress,
+      connectedAddress: connectedAddress ?? null,
+      effectiveAddress: starknetAddress,
+      hasFiatOption,
+      hasCryptoOption,
+      isBuyDisabled,
+      isNative,
+    });
+
     if (isBuyDisabled) return;
 
     if (!starknetAddress) {
@@ -354,10 +397,10 @@ export const PackRow = ({
     }
   };
 
-  const buyLabel = hasFiatOption
-    ? `${t("buy")} · ${price}`
-    : hasCryptoOption && priceUsdc
-      ? `${t("buy")} · ${priceUsdc} USDC`
+  const buyLabel = hasCryptoOption && priceUsdc
+    ? `${t("buy")} · ${priceUsdc} USDC`
+    : hasFiatOption
+      ? `${t("buy")} · ${price}`
       : t("buy");
 
   return (
