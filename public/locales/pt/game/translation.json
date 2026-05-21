@@ -99,7 +99,6 @@
       "leaderboard-btn": "Classificação",
       "map-btn": "Mapa",
       "delete-acc-btn": "Excluir conta",
-      "daily-missions-btn": "Missões diárias",
       "back": "Voltar ao jogo",
       "pages": {
         "gameover": "Fim do jogo",
@@ -114,6 +113,7 @@
         "settings": "Configuração",
         "collection": "Coleção",
         "season": "Temporada",
+        "missions": "Missões",
         "shop": "Loja",
         "home": "Início",
         "docs": "Lista de cartas",
@@ -143,6 +143,7 @@
       "burn-title": "Selecione cartas para queimar",
       "filter-title": "Filtrar por",
       "suit": {
+        "selected": "o naipe selecionado",
         "club": "Paus",
         "spade": "Espadas",
         "heart": "Copas",

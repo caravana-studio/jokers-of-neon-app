@@ -4,6 +4,7 @@ import { shortenHex } from "@dojoengine/utils";
 import { MouseEventHandler } from "react";
 import { isMobile } from "react-device-detect";
 import { ExternalToast, toast } from "sonner";
+import { renderMissionDescription } from "../data/dailyMissions";
 import i18n from "../i18n.ts";
 import {
   ERROR_TOAST,
@@ -149,7 +150,9 @@ export const showDailyMissionToast = (
 ): void => {
   dailyMissionEvents.forEach((mission, index) => {
     const xp = mission.base_xp;
-    const id = mission.dailyMissionId;
+    const id = mission.templateId || mission.dailyMissionId;
+    const titleKey =
+      mission.periodType === "weekly" ? "weeklyTitle" : "title";
     setTimeout(() => {
       toast.custom(
         (t) => (
@@ -184,10 +187,13 @@ export const showDailyMissionToast = (
                 fontFamily="Sonara"
                 textTransform="uppercase"
               >
-                {i18n.t(`title`, { ns: "achievements" })} +{xp}XP
+                {i18n.t(titleKey, { ns: "achievements" })} +{xp}XP
               </Text>
               <Text fontSize={isMobile ? "12px" : "14px"} fontWeight="semibold">
-                {i18n.t(`data.${id}`, { ns: "achievements" })}
+                {renderMissionDescription({
+                  templateId: id,
+                  target: mission.target,
+                })}
               </Text>
             </Box>
           </Box>

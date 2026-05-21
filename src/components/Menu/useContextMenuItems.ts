@@ -41,6 +41,7 @@ export const gameUrls = [
   "/docs-game",
   "/deck",
   "/plays",
+  "/missions-game",
   "/settings-game",
 ];
 
@@ -291,6 +292,13 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
       pulse: shouldPulsePlays,
       disabled: isNavigationLocked,
     },
+    {
+      icon: Icons.CHECK,
+      url: "/missions-game",
+      active: url === "/missions-game",
+      key: "missions",
+      disabled: isNavigationLocked,
+    },
   ];
 
   const allInGameMenuItems: MenuItem[] = isSmallScreen
@@ -327,13 +335,6 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
       url: "/settings-game",
       active: url === "/settings-game",
       key: "settings",
-      disabled: isNavigationLocked,
-    },
-    {
-      icon: Icons.CHECK,
-      url: "#",
-      active: false,
-      key: "daily-missions",
       disabled: isNavigationLocked,
     },
   ];

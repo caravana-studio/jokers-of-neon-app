@@ -159,6 +159,30 @@
       }
     }
   },
+  "missions": {
+    "title": "Missions",
+    "weekly-title": "Weekly Missions",
+    "daily-title": "Daily Missions",
+    "weekly-short-title": "Weekly",
+    "daily-short-title": "Daily",
+    "xp-label": "XP",
+    "bottom-bar": {
+      "season-progression": "Season",
+      "go-home": "Go Home",
+      "back-to-game": "Back to Game"
+    },
+    "learn-more": {
+      "question": "What's XP and what is it for?",
+      "cta": "Learn More",
+      "popup-title": "How mission XP moves your season forward",
+      "points": {
+        "1": "Every mission you complete grants XP instantly. Daily missions reset every day and weekly missions give you bigger chunks of progress.",
+        "2": "That XP fills your Season Progression track, so missions are one of the main ways to move the bar forward.",
+        "3": "As your XP bar climbs, you unlock rewards like packs, tournament entries, and other season progression prizes.",
+        "4": "If you want to progress faster, keep an eye on both daily and weekly missions and clear them consistently."
+      }
+    }
+  },
   "map": {
     "level": "LEVEL"
   },

@@ -1,4 +1,4 @@
-import { Box, type BoxProps } from "@chakra-ui/react";
+import { Box, Flex, Text, type BoxProps } from "@chakra-ui/react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useBackgroundAnimation } from "../../providers/BackgroundAnimationProvider";
 import { useGameStore } from "../../state/useGameStore";
@@ -17,18 +17,39 @@ const RESET_DELAY_MS = 1200;
 interface IProgressBarProps {
   progress: number;
   color?: string;
+  incompleteColor?: string;
+  completeColor?: string;
   animated?: boolean;
   playSound?: () => void;
   height?: BoxProps["h"];
+  width?: BoxProps["w"];
+  mt?: BoxProps["mt"];
+  borderRadius?: BoxProps["borderRadius"];
+  borderWidth?: BoxProps["borderWidth"];
+  label?: string;
+  labelFontSize?: BoxProps["fontSize"];
+  labelColor?: string;
 }
 export const ProgressBar = ({
   progress,
-  color = BLUE_LIGHT,
+  color,
+  incompleteColor = BLUE_LIGHT,
+  completeColor = VIOLET_LIGHT,
   animated = false,
   playSound,
   height = "14px",
+  width = "100%",
+  mt = 1.5,
+  borderRadius = "full",
+  borderWidth = "2px",
+  label,
+  labelFontSize = "10px",
+  labelColor = "white",
 }: IProgressBarProps) => {
-  const [barColor, setBarColor] = useState(color);
+  const clampedProgress = Math.min(Math.max(progress, 0), 100);
+  const baseColor =
+    color ?? (clampedProgress >= 100 ? completeColor : incompleteColor);
+  const [barColor, setBarColor] = useState(baseColor);
   const [glowSize, setGlowSize] = useState(BASE_GLOW);
   const prevProgressRef = useRef(progress);
   const resetTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -36,9 +57,9 @@ export const ProgressBar = ({
   const { level } = useGameStore();
 
   const resetGlow = useCallback(() => {
-    setBarColor(color);
+    setBarColor(baseColor);
     setGlowSize(BASE_GLOW);
-  }, [color]);
+  }, [baseColor]);
 
   const { showLightPillarAnimation } = useBackgroundAnimation();
 
@@ -105,34 +126,52 @@ export const ProgressBar = ({
     };
   }, []);
 
-  const clampedProgress = Math.min(Math.max(progress, 0), 100);
-
   return (
-    <Box mt={1.5} position="relative" w="100%">
+    <Box mt={mt} position="relative" w={width}>
       <Box
+        w={width}
         h={height}
-        borderRadius="full"
-        border="2px solid white"
+        borderRadius={borderRadius}
+        border={`${borderWidth} solid white`}
         position="relative"
         zIndex={2}
       ></Box>
 
       <Box
         h="100%"
+        w={`${clampedProgress}%`}
         bg={barColor}
         boxShadow={
           clampedProgress
             ? `0px 0px ${glowSize.blur}px ${glowSize.spread}px ${barColor}`
             : "none"
         }
-        width={`${clampedProgress}%`}
-        borderRadius="full"
+        borderRadius={borderRadius}
         position="absolute"
         top={0}
         left={0}
         zIndex={1}
         transition="width 1s ease, background-color 0.4s ease, box-shadow 0.4s ease"
       />
+      {label && (
+        <Flex
+          position="absolute"
+          inset={0}
+          justifyContent="center"
+          alignItems="center"
+          zIndex={3}
+          pointerEvents="none"
+        >
+          <Text
+            fontSize={labelFontSize}
+            color={labelColor}
+            lineHeight={1}
+            textShadow="0 0 8px rgba(0,0,0,0.85)"
+          >
+            {label}
+          </Text>
+        </Flex>
+      )}
     </Box>
   );
 };

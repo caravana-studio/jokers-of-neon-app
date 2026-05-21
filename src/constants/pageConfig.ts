@@ -158,6 +158,22 @@ export const getPageConfig = (
       }),
     },
     {
+      path: "/missions",
+      getPageInfo: ({ tGame, match }) => ({
+        name: tGame("game-menu.pages.missions"),
+        icon: Icons.CHECK,
+        url: match.pathname,
+      }),
+    },
+    {
+      path: "/missions-game",
+      getPageInfo: ({ tGame, match }) => ({
+        name: tGame("game-menu.pages.missions"),
+        icon: Icons.CHECK,
+        url: match.pathname,
+      }),
+    },
+    {
       path: "/deck",
       getPageInfo: ({ tGame, match }) => ({
         name: tGame("game-menu.pages.deck"),
