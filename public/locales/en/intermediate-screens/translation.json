@@ -168,7 +168,8 @@
     "xp-label": "XP",
     "bottom-bar": {
       "season-progression": "Season",
-      "go-home": "Go Home"
+      "go-home": "Go Home",
+      "back-to-game": "Back to Game"
     },
     "learn-more": {
       "question": "What's XP and what is it for?",

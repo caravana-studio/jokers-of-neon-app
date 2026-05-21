@@ -342,6 +342,18 @@ export const AppRoutes = () => {
         }
       />
       <Route
+        path="/missions-game"
+        element={
+          <AnimatedPage>
+            <LoginGate>
+              <GameStoreLoader>
+                <MissionsPage inGame />
+              </GameStoreLoader>
+            </LoginGate>
+          </AnimatedPage>
+        }
+      />
+      <Route
         path="/free-pack"
         element={
           <AnimatedPage>

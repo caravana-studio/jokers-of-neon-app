@@ -168,7 +168,8 @@
     "xp-label": "XP",
     "bottom-bar": {
       "season-progression": "Temporada",
-      "go-home": "Ir al inicio"
+      "go-home": "Ir al inicio",
+      "back-to-game": "Volver al juego"
     },
     "learn-more": {
       "question": "¿Qué es el XP y para qué sirve?",

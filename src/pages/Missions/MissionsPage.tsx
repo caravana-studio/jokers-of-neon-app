@@ -39,7 +39,11 @@ const MISSION_PANEL_STYLES = {
   backdropFilter: "blur(2px)",
 };
 
-export const MissionsPage = () => {
+interface MissionsPageProps {
+  inGame?: boolean;
+}
+
+export const MissionsPage = ({ inGame = false }: MissionsPageProps) => {
   const navigate = useNavigate();
   const { isSmallScreen } = useResponsiveValues();
   const { setInformation } = useInformationPopUp();
@@ -248,24 +252,37 @@ export const MissionsPage = () => {
             </Flex>
           </Flex>
 
-          <MobileBottomBar
-            firstButton={{
-              label: t("bottom-bar.season-progression"),
-              onClick: () => navigate("/season"),
-              variant: "secondarySolid",
-              fontSize: { base: "8px", sm: "10px", md: "15px" },
-              px: { base: 2, sm: 3, md: 7 },
-              h: { base: "32px", sm: "40px" },
-            }}
-            secondButton={{
-              label: t("bottom-bar.go-home"),
-              onClick: () => navigate("/"),
-              variant: "solid",
-              fontSize: { base: "8px", sm: "10px", md: "15px" },
-              px: { base: 2, sm: 3, md: 7 },
-              h: { base: "32px", sm: "40px" },
-            }}
-          />
+          {inGame ? (
+            <MobileBottomBar
+              firstButton={{
+                label: t("bottom-bar.back-to-game"),
+                onClick: () => navigate("/redirect"),
+                variant: "solid",
+                fontSize: { base: "8px", sm: "10px", md: "15px" },
+                px: { base: 2, sm: 3, md: 7 },
+                h: { base: "32px", sm: "40px" },
+              }}
+            />
+          ) : (
+            <MobileBottomBar
+              firstButton={{
+                label: t("bottom-bar.season-progression"),
+                onClick: () => navigate("/season"),
+                variant: "secondarySolid",
+                fontSize: { base: "8px", sm: "10px", md: "15px" },
+                px: { base: 2, sm: 3, md: 7 },
+                h: { base: "32px", sm: "40px" },
+              }}
+              secondButton={{
+                label: t("bottom-bar.go-home"),
+                onClick: () => navigate("/"),
+                variant: "solid",
+                fontSize: { base: "8px", sm: "10px", md: "15px" },
+                px: { base: 2, sm: 3, md: 7 },
+                h: { base: "32px", sm: "40px" },
+              }}
+            />
+          )}
         </Flex>
       </Flex>
     </DelayedLoading>

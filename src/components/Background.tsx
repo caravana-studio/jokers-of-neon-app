@@ -172,6 +172,11 @@ const bgConfig: Record<
     overlay: "rgba(0,0,0,0.5)",
     withBoss: true,
   },
+  "missions-game": {
+    bg: BackgroundType.Home,
+    overlay: "rgba(0,0,0,0.5)",
+    withBoss: true,
+  },
   settings: {
     bg: BackgroundType.Home,
   },
