@@ -79,7 +79,7 @@
     "weekly-special-slots": "Buy {{quantity}} special card slots",
     "weekly-sell-power-ups": "Sell {{quantity}} power ups",
     "weekly-complete-runs": "Win {{quantity}} runs",
-    "weekly-win-rerolls": "Finish won runs with {{quantity}} unused rerolls"
+    "weekly-win-rerolls": "Finish won runs with {{quantity}} unused rerolls",
     "weekly-level-up-hand": "Level up any poker hand {{quantity}} times"
   },
   "levelComplete": {
