@@ -79,7 +79,7 @@
     "weekly-special-slots": "Compre {{quantity}} espaços para cartas especiais",
     "weekly-sell-power-ups": "Venda {{quantity}} power-ups",
     "weekly-complete-runs": "Vença {{quantity}} partidas",
-    "weekly-win-rerolls": "Termine com {{quantity}} rerolls em partidas vencidas",
+    "weekly-win-rerolls": "Termine runs vencidas com {{quantity}} reembaralhamentos não usados",
     "weekly-level-up-hand": "Suba {{quantity}} níveis de qualquer mão de poker"
   },
   "levelComplete": {
