@@ -46,7 +46,7 @@
     "daily-deck-jokers": "Add {{quantity}} Jokers to your deck",
     "daily-deck-neon-jokers": "Add {{quantity}} Neon Jokers to your deck",
     "daily-round-no-discards": "Win {{quantity}} rounds without discarding",
-    "daily-all-neon-hand": "Play {{quantity}} all-neon hands",
+    "daily-all-neon-hand": "Play {{quantity}} neon plays",
     "daily-play-hand-count": "Play {{hand}} {{quantity}} times in one run",
     "daily-score-single": "Score {{score}} points in one hand",
     "daily-deck-neon-suit": "Add {{quantity}} neon {{suit}} cards to your deck",
