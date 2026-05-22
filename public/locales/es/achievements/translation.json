@@ -78,7 +78,7 @@
     "weekly-rerolls": "Actualiza la tienda {{quantity}} veces",
     "weekly-special-slots": "Compra {{quantity}} espacios para cartas especiales",
     "weekly-sell-power-ups": "Vende {{quantity}} potenciadores",
-    "weekly-complete-runs": "Completa {{quantity}} partidas",
+    "weekly-complete-runs": "Gana {{quantity}} partidas",
     "weekly-win-rerolls": "Termina con {{quantity}} rerolls en partidas ganadas",
     "weekly-level-up-hand": "Sube {{quantity}} niveles a cualquier poker hand"
   },
