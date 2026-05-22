@@ -175,8 +175,7 @@ export const MiniAppWeeklyLeaderboardPage = () => {
     error,
     tournament,
     weeklyPeriod,
-  } =
-    useMiniAppWeeklyLeaderboard(now);
+  } = useMiniAppWeeklyLeaderboard(now);
   const topEntries = entries.slice(0, 3);
 
   useEffect(() => {
