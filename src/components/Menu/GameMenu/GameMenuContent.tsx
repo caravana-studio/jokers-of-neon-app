@@ -8,16 +8,16 @@ import {
   DrawerOverlay,
   Flex,
   Text,
-  Box,
 } from "@chakra-ui/react";
 import { useRef } from "react";
+import { useLocation } from "react-router-dom";
 import { useGameStore } from "../../../state/useGameStore";
 import CachedImage from "../../CachedImage";
 import { DocsMenuBtn } from "../Buttons/DocsMenuBtn";
 import { LogoutMenuBtn } from "../Buttons/Logout/LogoutMenuBtn";
 import { SettingsMenuBtn } from "../Buttons/SettingsMenuBtn";
 import { BackMenuBtn } from "../Buttons/BackMenuBtn";
-import { DailyMissions } from "../../DailyMissions/DailyMissions";
+import { isNavigationLockedPath } from "../useContextMenuItems";
 
 interface GameMenuContentProps {
   isOpen: boolean;
@@ -31,6 +31,8 @@ export const GameMenuContent: React.FC<GameMenuContentProps> = ({
   const iconWidth = "26px";
   const fontSize = "18px";
   const { id, isTournament } = useGameStore();
+  const location = useLocation();
+  const isNavigationLocked = isNavigationLockedPath(location.pathname);
 
   const touchStartX = useRef(0);
 
@@ -86,38 +88,35 @@ export const GameMenuContent: React.FC<GameMenuContentProps> = ({
         <DrawerBody
           display="flex"
           flexDir="column"
-          justifyContent="space-between"
+          justifyContent="center"
           alignItems="center"
           py={4}
           fontSize={fontSize}
           overflow="hidden"
         >
-          <>
-            <Flex
-              w="100%"
-              justifyContent="center"
-              alignItems="center"
-              flex={1}
-              overflow="hidden"
-            >
-              <Box w="100%" maxW="500px" overflow="hidden">
-                <DailyMissions showTitle={true} fontSize={fontSize} />
-              </Box>
-            </Flex>
-
-            <Flex
-              flexDir="column"
-              gap={4}
-              w="100%"
-              alignItems="flex-start"
-              flex={1}
-              justifyContent="center"
-            >
-              <BackMenuBtn width={iconWidth} label onClose={onClose} />
-              <DocsMenuBtn width={iconWidth} label onClose={onClose} />
-              <SettingsMenuBtn width={iconWidth} label onClose={onClose} />
-            </Flex>
-          </>
+          <Flex
+            flexDir="column"
+            gap={4}
+            w="100%"
+            alignItems="flex-start"
+            justifyContent="center"
+            opacity={isNavigationLocked ? 0.5 : 1}
+            pointerEvents={isNavigationLocked ? "none" : "auto"}
+          >
+            <BackMenuBtn width={iconWidth} label onClose={onClose} />
+            <DocsMenuBtn
+              width={iconWidth}
+              label
+              onClose={onClose}
+              disabled={isNavigationLocked}
+            />
+            <SettingsMenuBtn
+              width={iconWidth}
+              label
+              onClose={onClose}
+              disabled={isNavigationLocked}
+            />
+          </Flex>
         </DrawerBody>
 
         <DrawerFooter

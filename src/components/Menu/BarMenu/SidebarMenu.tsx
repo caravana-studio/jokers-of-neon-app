@@ -1,4 +1,4 @@
-import { Box, Divider, Flex, Heading, Skeleton, Tooltip, useDisclosure } from "@chakra-ui/react";
+import { Box, Divider, Flex, Heading, Skeleton, Tooltip } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -9,7 +9,6 @@ import CachedImage from "../../CachedImage";
 import { LogoutMenuListBtn } from "../Buttons/Logout/LogoutMenuListBtn";
 import { ContextMenuItem } from "../ContextMenuItem";
 import { isInGamePath, useContextMenuItems } from "../useContextMenuItems";
-import { DailyMissionsPopover } from "./DailyMissionsPopover";
 
 export const SidebarMenu = () => {
   const navigate = useNavigate();
@@ -19,19 +18,10 @@ export const SidebarMenu = () => {
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "my-games",
   });
-  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const iconWidth = "20px";
 
   const [animatedText, setAnimatedText] = useState(page?.name ?? "");
-
-  const handleDailyMissionsClick = () => {
-    if (isOpen) {
-      onClose();
-      return;
-    }
-    onOpen();
-  };
 
   const { mainMenuItems, inGameMenuItems, extraMenuItems } =
     useContextMenuItems({
@@ -85,37 +75,15 @@ export const SidebarMenu = () => {
         {inGame && (
           <>
             <Divider my={3} />
-            {extraMenuItems.map((item) => {
-              if (item.key === "daily-missions") {
-                return (
-                  <DailyMissionsPopover
-                    key={item.key}
-                    isOpen={isOpen}
-                    onOpen={onOpen}
-                    onClose={onClose}
-                    trigger={
-                      <Box w="100%">
-                        <ContextMenuItem
-                          {...item}
-                          nameKey={item.key}
-                          onClick={handleDailyMissionsClick}
-                        />
-                      </Box>
-                    }
-                  />
-                );
-              }
-
-              return (
-                <Box key={item.key} w="100%">
-                  <ContextMenuItem
-                    {...item}
-                    nameKey={item.key}
-                    onClick={item.onClick}
-                  />
-                </Box>
-              );
-            })}
+            {extraMenuItems.map((item) => (
+              <Box key={item.key} w="100%">
+                <ContextMenuItem
+                  {...item}
+                  nameKey={item.key}
+                  onClick={item.onClick}
+                />
+              </Box>
+            ))}
           </>
         )}
       </Flex>

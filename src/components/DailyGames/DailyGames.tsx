@@ -74,6 +74,8 @@ export const DailyGames = () => {
     });
   };
   const rechargeMs = RECHARGE_TIME * 60 * 60 * 1000;
+  const hasLives = availableLives > 0;
+  const shouldDisableNewGame = !hasLives && isClaimingLives;
 
   const slots = Array.from({ length: totalSlots }, (_, slotIndex) => {
     if (slotIndex < availableLives) {
@@ -113,10 +115,10 @@ export const DailyGames = () => {
             noLives={availableLives === 0}
           />
         ))}
-        {availableLives > 0 ? (
+        {hasLives ? (
           <Button
             onClick={handleCreateGame}
-            isDisabled={isClaimingLives}
+            isDisabled={shouldDisableNewGame}
             width={isSmallScreen ? "100px" : "200px"}
             ml={1}
             fontSize={isSmallScreen ? 10 : 15}

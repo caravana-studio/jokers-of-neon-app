@@ -8,10 +8,12 @@ export const LogoutMenuBtn = ({
   width,
   label,
   arrowRight,
+  disabled,
 }: {
   width: string;
   label?: boolean;
   arrowRight?: boolean;
+  disabled?: boolean;
 }) => {
   const { t } = useTranslation("game");
   const { handleLogout } = useLogout();
@@ -27,6 +29,7 @@ export const LogoutMenuBtn = ({
       onClick={handleLogout}
       label={label ? t("game.game-menu.logout-btn") : undefined}
       arrowRight={arrowRight}
+      disabled={disabled}
     />
   );
 };

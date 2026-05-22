@@ -1,4 +1,7 @@
 {
+    "hand": {
+        "selected": "the selected hand"
+    },
     "playsData": {
         "RoyalFlush": {
           "name": "Royal flush",

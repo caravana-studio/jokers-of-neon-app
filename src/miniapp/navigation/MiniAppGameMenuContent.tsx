@@ -3,17 +3,21 @@ import {
   DrawerBody,
   DrawerCloseButton,
   DrawerContent,
+  DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
   Flex,
   Text,
 } from "@chakra-ui/react";
 import { useRef } from "react";
+import { useLocation } from "react-router-dom";
 import { useGameStore } from "../../state/useGameStore";
 import CachedImage from "../../components/CachedImage";
 import { BackMenuBtn } from "../../components/Menu/Buttons/BackMenuBtn";
 import { DocsMenuBtn } from "../../components/Menu/Buttons/DocsMenuBtn";
+import { LogoutMenuBtn } from "../../components/Menu/Buttons/Logout/LogoutMenuBtn";
 import { SettingsMenuBtn } from "../../components/Menu/Buttons/SettingsMenuBtn";
+import { isNavigationLockedPath } from "../../components/Menu/useContextMenuItems";
 
 interface MiniAppGameMenuContentProps {
   isOpen: boolean;
@@ -27,6 +31,8 @@ export const MiniAppGameMenuContent = ({
   const iconWidth = "26px";
   const fontSize = "18px";
   const { id, isTournament } = useGameStore();
+  const location = useLocation();
+  const isNavigationLocked = isNavigationLockedPath(location.pathname);
   const touchStartX = useRef(0);
 
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -97,10 +103,27 @@ export const MiniAppGameMenuContent = ({
             flex={1}
           >
             <BackMenuBtn width={iconWidth} label onClose={onClose} />
-            <DocsMenuBtn width={iconWidth} label onClose={onClose} />
-            <SettingsMenuBtn width={iconWidth} label onClose={onClose} />
+            <DocsMenuBtn
+              width={iconWidth}
+              label
+              onClose={onClose}
+              disabled={isNavigationLocked}
+            />
+            <SettingsMenuBtn
+              width={iconWidth}
+              label
+              onClose={onClose}
+              disabled={isNavigationLocked}
+            />
           </Flex>
         </DrawerBody>
+        <DrawerFooter
+          justifyContent="flex-start"
+          fontSize={fontSize}
+          alignItems="center"
+        >
+          <LogoutMenuBtn width={iconWidth} label />
+        </DrawerFooter>
       </DrawerContent>
     </Drawer>
   );

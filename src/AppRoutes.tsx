@@ -31,6 +31,7 @@ import { ProfilePage } from "./pages/Profile/ProfilePage";
 import { PurchasingPackPage } from "./pages/PurchasingPackPage";
 import { Redirect } from "./pages/Redirect";
 import { RewardsPage } from "./pages/RewardsPage";
+import { MissionsPage } from "./pages/Missions/MissionsPage";
 import { SeasonProgressionPage } from "./pages/SeasonProgression/SeasonProgressionPage";
 import { SettingsPage } from "./pages/SettingsPage";
 import { ShopPage } from "./pages/Shop/ShopPage";
@@ -334,6 +335,28 @@ export const AppRoutes = () => {
           <AnimatedPage>
             <LoginGate>
               <SeasonProgressionPage />
+            </LoginGate>
+          </AnimatedPage>
+        }
+      />
+      <Route
+        path="/missions"
+        element={
+          <AnimatedPage>
+            <LoginGate>
+              <MissionsPage />
+            </LoginGate>
+          </AnimatedPage>
+        }
+      />
+      <Route
+        path="/missions-game"
+        element={
+          <AnimatedPage>
+            <LoginGate>
+              <GameStoreLoader>
+                <MissionsPage inGame />
+              </GameStoreLoader>
             </LoginGate>
           </AnimatedPage>
         }
