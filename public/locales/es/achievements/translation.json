@@ -56,7 +56,7 @@
     "daily-sell-power-ups": "Vende {{quantity}} potenciadores en una partida",
     "daily-burn-cards": "Quema {{quantity}} cartas en una partida",
     "daily-wild-joker-hands": "Juega {{quantity}} manos usando una carta Camaleón o Comodín",
-    "daily-level-up-hand": "Sube {{quantity}} niveles a cualquier poker hand",
+    "daily-level-up-hand": "Sube {{quantity}} niveles a cualquier jugada",
     "weekly-score": "Acumula {{score}} puntos",
     "weekly-lootboxes": "Compra {{quantity}} cajas de botín",
     "weekly-specials": "Compra {{quantity}} cartas especiales",
@@ -80,7 +80,7 @@
     "weekly-sell-power-ups": "Vende {{quantity}} potenciadores",
     "weekly-complete-runs": "Gana {{quantity}} partidas",
     "weekly-win-rerolls": "Termina con {{quantity}} rerolls en partidas ganadas",
-    "weekly-level-up-hand": "Sube {{quantity}} niveles a cualquier poker hand"
+    "weekly-level-up-hand": "Sube {{quantity}} niveles a cualquier jugada"
   },
   "levelComplete": {
     "title": "Nivel {{level}} completado +{{xp}}XP",

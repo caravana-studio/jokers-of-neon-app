@@ -56,7 +56,7 @@
     "daily-sell-power-ups": "Venda {{quantity}} power-ups em uma partida",
     "daily-burn-cards": "Queime {{quantity}} cartas em uma partida",
     "daily-wild-joker-hands": "Jogue {{quantity}} mãos usando uma carta wildcard ou um Curinga",
-    "daily-level-up-hand": "Suba {{quantity}} níveis de qualquer poker hand",
+    "daily-level-up-hand": "Suba {{quantity}} níveis de qualquer mão de poker",
     "weekly-score": "Acumule {{score}} pontos",
     "weekly-lootboxes": "Compre {{quantity}} caixas",
     "weekly-specials": "Compre {{quantity}} cartas especiais",
@@ -80,7 +80,7 @@
     "weekly-sell-power-ups": "Venda {{quantity}} power-ups",
     "weekly-complete-runs": "Vença {{quantity}} partidas",
     "weekly-win-rerolls": "Termine com {{quantity}} rerolls em partidas vencidas",
-    "weekly-level-up-hand": "Suba {{quantity}} níveis de qualquer poker hand"
+    "weekly-level-up-hand": "Suba {{quantity}} níveis de qualquer mão de poker"
   },
   "levelComplete": {
     "title": "Nível {{level}} concluído +{{xp}}XP",
