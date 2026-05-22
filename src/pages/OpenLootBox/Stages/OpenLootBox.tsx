@@ -1,5 +1,5 @@
 import { Flex } from "@chakra-ui/react";
-import { useEffect, useRef, useState } from "react";
+import { PointerEvent as ReactPointerEvent, useEffect, useRef, useState } from "react";
 import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
@@ -9,10 +9,10 @@ import { openPackSfx } from "../../../constants/sfx";
 import { GameStateEnum } from "../../../dojo/typescript/custom";
 import { useAudio } from "../../../hooks/useAudio";
 import { useCustomNavigate } from "../../../hooks/useCustomNavigate";
+import { triggerHaptic } from "../../../haptics";
 import { usePageTransitions } from "../../../providers/PageTransitionsProvider";
 import { useSettings } from "../../../providers/SettingsProvider";
 import { useStore } from "../../../providers/StoreProvider";
-import { useGameStore } from "../../../state/useGameStore";
 
 export const OpenLootBox = () => {
   const { state: locationState } = useLocation();
@@ -21,10 +21,14 @@ export const OpenLootBox = () => {
   const [openTextVisible, setOpenTextVisible] = useState(false);
   const [isBuying, setIsBuying] = useState(false);
   const lootBoxRef = useRef<LootBoxRef>(null);
+  const pointerDragRef = useRef({
+    active: false,
+    lastX: 0,
+    lastY: 0,
+  });
   const didStartPurchaseRef = useRef(false);
   const { sfxVolume } = useSettings();
   const { play: openPackSound } = useAudio(openPackSfx, sfxVolume);
-  const { state } = useGameStore();
   const { transitionTo } = usePageTransitions();
   const { buyPack } = useStore();
   const navigate = useCustomNavigate();
@@ -83,6 +87,36 @@ export const OpenLootBox = () => {
     return <p>LootBox not found.</p>;
   }
 
+  const clearPointerDrag = () => {
+    pointerDragRef.current.active = false;
+  };
+
+  const handlePointerDown = (event: ReactPointerEvent<HTMLDivElement>) => {
+    pointerDragRef.current = {
+      active: true,
+      lastX: event.clientX,
+      lastY: event.clientY,
+    };
+  };
+
+  const handlePointerMove = (event: ReactPointerEvent<HTMLDivElement>) => {
+    if (!pointerDragRef.current.active || openDisabled || isBuying) {
+      return;
+    }
+
+    const deltaX = event.clientX - pointerDragRef.current.lastX;
+    const deltaY = event.clientY - pointerDragRef.current.lastY;
+    const movedEnough = Math.hypot(deltaX, deltaY) >= 12;
+
+    if (!movedEnough) {
+      return;
+    }
+
+    pointerDragRef.current.lastX = event.clientX;
+    pointerDragRef.current.lastY = event.clientY;
+    triggerHaptic("open-pack-drag-step");
+  };
+
   return (
     <Flex
       flexDirection={"column"}
@@ -103,6 +137,11 @@ export const OpenLootBox = () => {
           <Flex
             height={"90%"}
             width={"100%"}
+            onPointerDown={handlePointerDown}
+            onPointerMove={handlePointerMove}
+            onPointerUp={clearPointerDrag}
+            onPointerCancel={clearPointerDrag}
+            onPointerLeave={clearPointerDrag}
             onClick={() => {
               if (openDisabled || isBuying) return;
               setOpenDisabled(true);
@@ -113,6 +152,9 @@ export const OpenLootBox = () => {
             <LootBox
               ref={lootBoxRef}
               boxId={pack.blister_pack_id}
+              onOpenAnimationStart={() => {
+                triggerHaptic("open-pack-opened");
+              }}
               onOpenAnimationEnd={openAnimationCallBack}
               freezeOnLastFrame
             />

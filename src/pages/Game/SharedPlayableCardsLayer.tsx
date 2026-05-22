@@ -22,6 +22,7 @@ import { TUTORIAL_STEPS } from "../../constants/gameTutorial";
 import { dealSfx, preselectedCardSfx } from "../../constants/sfx";
 import { CARD_HEIGHT, CARD_WIDTH } from "../../constants/visualProps";
 import { useAudio } from "../../hooks/useAudio";
+import { triggerHaptic } from "../../haptics";
 import { useCardAnimations } from "../../providers/CardAnimationsProvider";
 import { useGameContext } from "../../providers/GameProvider";
 import { useCardHighlight } from "../../providers/HighlightProvider/CardHighlightProvider";
@@ -328,6 +329,7 @@ export const SharedPlayableCardsLayer = ({
   useEffect(() => {
     if (playAnimation || discardAnimation) {
       dealCardSound();
+      triggerHaptic("deal-card-step");
     }
   }, [dealCardSound, discardAnimation, playAnimation]);
 
@@ -400,6 +402,7 @@ export const SharedPlayableCardsLayer = ({
 
         const timeoutId = window.setTimeout(() => {
           dealCardSound();
+          triggerHaptic("deal-card-step");
           dealSoundTimeoutIdsRef.current = dealSoundTimeoutIdsRef.current.filter(
             (id) => id !== timeoutId
           );

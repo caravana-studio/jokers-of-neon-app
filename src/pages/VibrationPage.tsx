@@ -406,46 +406,52 @@ export const VibrationPage = () => {
     }
 
     if (pattern === "score-low-ios") {
-      await runSelectionSequence(5, 40);
+      await runSelectionSequence(10, 40);
       return;
     }
 
     if (pattern === "score-low-android") {
-      await runPulseSequence([10, 10, 10, 10, 10, 10, 10, 10], 16);
+      await runPulseSequence(
+        [10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
+        16
+      );
       return;
     }
 
     if (pattern === "score-mid-ios") {
-      await runSelectionSequence(8, 40);
+      await runSelectionSequence(14, 40);
       return;
     }
 
     if (pattern === "score-mid-android") {
       await runPulseSequence(
-        [10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
+        [
+          10, 10, 10, 10, 10, 10, 10, 10, 10, 10,
+          10, 10, 10, 10, 10, 10, 10, 10, 10, 10,
+        ],
         16
       );
       return;
     }
 
     if (pattern === "score-high-ios") {
-      await Haptics.vibrate({ duration: 620 });
+      await Haptics.vibrate({ duration: 850 });
       return;
     }
 
     if (pattern === "score-high-android") {
-      await Haptics.vibrate({ duration: 700 });
+      await Haptics.vibrate({ duration: 950 });
       return;
     }
 
     if (pattern === "score-xhigh-ios") {
-      await Haptics.vibrate({ duration: 1000 });
+      await Haptics.vibrate({ duration: 1300 });
       await Haptics.impact({ style: ImpactStyle.Heavy });
       return;
     }
 
     if (pattern === "score-xhigh-android") {
-      await Haptics.vibrate({ duration: 1050 });
+      await Haptics.vibrate({ duration: 1450 });
       return;
     }
 
@@ -698,8 +704,8 @@ export const VibrationPage = () => {
     {
       title: "Sumar puntos",
       description: "Escalado de feedback por intensidad.",
-      ios: "Low 200ms suave / Mid similar pero mas largo / High 620ms / Extra high 1000ms+",
-      android: "Low-mid tipo slider / High largo / Extra high aun mas largo",
+      ios: "Low mas largo / Mid aun mas largo / High largo / Extra high muy largo",
+      android: "Low-mid tipo slider pero mas largos / High largo / Extra high aun mas largo",
       buttons: [
         {
           label: "Low",
@@ -853,6 +859,7 @@ export const VibrationPage = () => {
         flexDirection="column"
         gap={4}
         w="100%"
+        data-haptic-ignore-global="true"
         color="white"
         h="100%"
         minH={0}

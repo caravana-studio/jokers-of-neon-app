@@ -1,5 +1,5 @@
 import { Box, Checkbox, Flex, Text, Tooltip } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { BackgroundDecoration } from "../../../components/Background";
@@ -17,6 +17,7 @@ import { GameStateEnum } from "../../../dojo/typescript/custom";
 import { useCardsFlipAnimation } from "../../../hooks/useCardsFlipAnimation";
 import { useCustomNavigate } from "../../../hooks/useCustomNavigate";
 import { useCustomToast } from "../../../hooks/useCustomToast";
+import { triggerHaptic } from "../../../haptics";
 import { useStore } from "../../../providers/StoreProvider";
 import { useGameStore } from "../../../state/useGameStore";
 import { useLootBoxStore } from "../../../state/useLootBoxStore";
@@ -35,6 +36,7 @@ export const OpenLootBoxCardSelection = () => {
   const customNavigate = useCustomNavigate();
   const navigate = useNavigate();
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
+  const previousFlippedStatesRef = useRef<boolean[]>([]);
 
   const {
     fetchLootBoxResult,
@@ -86,6 +88,20 @@ export const OpenLootBoxCardSelection = () => {
 
   const { flippedStates, animationRunning, skipFlipping } =
     useCardsFlipAnimation(cards.length, 1000);
+
+  useEffect(() => {
+    flippedStates.forEach((isFlipped, index) => {
+      if (previousFlippedStatesRef.current[index] && !isFlipped) {
+        triggerHaptic("open-pack-pass-card");
+      }
+    });
+
+    previousFlippedStatesRef.current.splice(
+      0,
+      previousFlippedStatesRef.current.length,
+      ...flippedStates
+    );
+  }, [flippedStates]);
 
   const specialCardCount = cards.filter(
     (card) => card.type === CardTypes.SPECIAL
