@@ -4,7 +4,10 @@ import { Icons } from "../../constants/icons";
 import { GameStateEnum } from "../../dojo/typescript/custom";
 import { useGameStore } from "../../state/useGameStore";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
-import { gameUrls } from "../../components/Menu/useContextMenuItems";
+import {
+  gameUrls,
+  isNavigationLockedPath,
+} from "../../components/Menu/useContextMenuItems";
 
 interface MenuItem {
   icon: any;
@@ -50,6 +53,7 @@ export function useMiniAppMenuItems({
   const url = location.pathname;
   const { state } = useGameStore();
   const { isSmallScreen } = useResponsiveValues();
+  const isNavigationLocked = isNavigationLockedPath(url);
 
   const mainMenuItems: MenuItem[] = useMemo(
     () => [
@@ -102,7 +106,7 @@ export function useMiniAppMenuItems({
         icon: getIcon(state),
         url: "/redirect",
         onClick: handleGoToCurrentGameState,
-        disabled: state === GameStateEnum.Map,
+        disabled: isNavigationLocked || state === GameStateEnum.Map,
         active: gameUrls.slice(1).some((gameUrl) => {
           if (gameUrl.includes(":")) {
             const base = gameUrl.split(":")[0];
@@ -117,21 +121,24 @@ export function useMiniAppMenuItems({
         url: "/map",
         active: url === "/map",
         key: "map",
+        disabled: isNavigationLocked,
       },
       {
         icon: Icons.DECK,
         url: "/deck",
         active: url === "/deck",
         key: "deck",
+        disabled: isNavigationLocked,
       },
       {
         icon: Icons.CLUB,
         url: "/plays",
         active: url === "/plays",
         key: "plays",
+        disabled: isNavigationLocked,
       },
     ],
-    [navigate, state, url]
+    [isNavigationLocked, navigate, state, url]
   );
 
   return {
@@ -145,6 +152,7 @@ export function useMiniAppMenuItems({
             active: url === "/settings-game",
             key: "more",
             onClick: () => onMoreClick?.(),
+            disabled: false,
           },
         ]
       : inGameMenuItems,

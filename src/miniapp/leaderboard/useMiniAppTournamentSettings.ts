@@ -13,6 +13,8 @@ type ApiMiniAppTournamentPrize = {
 
 type ApiMiniAppTournamentSettings = {
   isActive?: boolean | null;
+  startDate?: string | null;
+  finishDate?: string | null;
   prizes?: ApiMiniAppTournamentPrize[] | null;
 };
 
@@ -23,8 +25,10 @@ export type MiniAppTournamentPrize = {
   };
 };
 
-type MiniAppTournamentSettings = {
+export type MiniAppTournamentSettings = {
   isActive: boolean;
+  startDate: Date | null;
+  finishDate: Date | null;
   prizes: Record<number, MiniAppTournamentPrize>;
 };
 
@@ -33,6 +37,8 @@ const MINI_APP_TOURNAMENT_SETTINGS_URL =
 
 const defaultMiniAppTournamentSettings: MiniAppTournamentSettings = {
   isActive: false,
+  startDate: null,
+  finishDate: null,
   prizes: {},
 };
 
@@ -40,6 +46,16 @@ const toNumber = (value?: number | string | null) => {
   const parsed = Number(value);
 
   return Number.isFinite(parsed) ? parsed : null;
+};
+
+const parseDate = (value?: string | null) => {
+  if (!value?.trim()) {
+    return null;
+  }
+
+  const parsedDate = new Date(value);
+
+  return Number.isNaN(parsedDate.getTime()) ? null : parsedDate;
 };
 
 const parsePrizes = (
@@ -101,6 +117,8 @@ const fetchMiniAppTournamentSettings =
 
       return {
         isActive: Boolean(data.isActive),
+        startDate: parseDate(data.startDate),
+        finishDate: parseDate(data.finishDate),
         prizes: parsePrizes(data.prizes),
       };
     } catch (error) {

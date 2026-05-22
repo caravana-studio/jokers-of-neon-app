@@ -1,5 +1,5 @@
 import { Box, Flex } from "@chakra-ui/react";
-import { SpinePlayer, SpinePlayerConfig } from "@esotericsoftware/spine-player";
+import { SpinePlayer } from "@esotericsoftware/spine-player";
 import {
   forwardRef,
   useEffect,
@@ -123,8 +123,8 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
 
     useEffect(() => {
       if (containerRef.current && !playerRef.current) {
-        const config: SpinePlayerConfig = {
-          jsonUrl: jsonUrl,
+        const config = {
+          skeleton: jsonUrl,
           atlasUrl: atlasUrl,
           alpha: true,
           backgroundColor: "#00000000",
@@ -180,8 +180,8 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
             playerRef.current.setAnimation(hoverAnimation, false);
           playerRef.current.addAnimation(loopAnimation, true);
         } else {
-          const animState = playerRef.current.animationState;
-          const anim = animState?.getCurrent(0)?.animation?.name;
+          const anim =
+            playerRef.current.animationState?.tracks?.[0]?.animation?.name;
 
           if (anim && anim != initialAnimation) {
             playerRef.current.setAnimation(initialAnimation, true);

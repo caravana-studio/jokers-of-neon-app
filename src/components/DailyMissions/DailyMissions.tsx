@@ -5,41 +5,31 @@ import { getDailyMissions } from "../../dojo/queries/getDailyMissions";
 import { useDojo } from "../../dojo/useDojo";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { DailyMission } from "../../types/DailyMissions";
+import { DailyMissionEntry } from "./MissionEntries";
 import { MissionRow } from "./MissionRow";
-
-const RESET_TIME = import.meta.env.VITE_RESET_TIME_UTC || "6";
-
-function getNextResetDate() {
-  const now = new Date();
-
-  const reset = new Date(
-    Date.UTC(
-      now.getUTCFullYear(),
-      now.getUTCMonth(),
-      now.getUTCDate(),
-      Number(RESET_TIME),
-      0,
-      0,
-      0
-    )
-  );
-
-  if (now >= reset) {
-    reset.setUTCDate(reset.getUTCDate() + 1);
-  }
-
-  return reset;
-}
 
 interface DailyMissionsProps {
   showTitle?: boolean;
   fontSize?: string;
+  compacted?: boolean;
+  missions?: DailyMission[];
+  loading?: boolean;
 }
 
-export const DailyMissions = ({ showTitle = true, fontSize }: DailyMissionsProps) => {
+export const DailyMissions = ({
+  showTitle = true,
+  fontSize,
+  compacted = false,
+  missions,
+  loading: loadingProp,
+}: DailyMissionsProps) => {
   const [dailyMissions, setDailyMissions] = useState<DailyMission[]>([]);
+  const [loading, setLoading] = useState(loadingProp ?? missions === undefined);
   const { t } = useTranslation("home", {
     keyPrefix: "home",
+  });
+  const { t: tMissions } = useTranslation("intermediate-screens", {
+    keyPrefix: "missions",
   });
   const { isSmallScreen } = useResponsiveValues();
 
@@ -49,16 +39,32 @@ export const DailyMissions = ({ showTitle = true, fontSize }: DailyMissionsProps
   } = useDojo();
 
   useEffect(() => {
-    account &&
-      getDailyMissions(client, account.address).then((missions) => {
-        setDailyMissions(missions);
+    if (missions !== undefined) {
+      setDailyMissions(missions);
+      setLoading(loadingProp ?? false);
+      return;
+    }
+
+    if (!account) {
+      setDailyMissions([]);
+      setLoading(false);
+      return;
+    }
+
+    setLoading(true);
+    getDailyMissions(client, account.address)
+      .then((nextMissions) => {
+        setDailyMissions(nextMissions);
+      })
+      .finally(() => {
+        setLoading(false);
       });
-  }, [account, client]);
+  }, [account, client, loadingProp, missions]);
 
   const sortedMissions = [...dailyMissions].sort((a, b) => a.xp - b.xp);
 
   return (
-    <Flex w="100%" flexDir="column" gap={2} overflow="hidden">
+    <Flex w="100%" flexDir="column" gap={compacted ? 1.5 : 2} overflow="hidden">
       {showTitle && (
         <Flex w="100%" justifyContent="space-between" alignItems="center" mb={1}>
           <Heading variant="italic" fontSize={fontSize || (isSmallScreen ? "sm" : "md")}>
@@ -66,14 +72,24 @@ export const DailyMissions = ({ showTitle = true, fontSize }: DailyMissionsProps
           </Heading>
         </Flex>
       )}
-      <Flex w="100%" flexDir="column" gap={1} overflow="hidden">
-        {dailyMissions.length === 0 ? (
+      <Flex w="100%" flexDir="column" gap={compacted ? 1.5 : 1} overflow="hidden">
+        {!loading && dailyMissions.length === 0 ? (
           <Text fontSize={fontSize || (isSmallScreen ? "12px" : "14px")} color="gray.400">
             {t("noMissionsAvailable")}
           </Text>
         ) : (
           sortedMissions.map((mission, index) => (
-            <MissionRow key={index} mission={mission} fontSize={fontSize} />
+            compacted ? (
+              <DailyMissionEntry
+                key={`daily-${mission.missionId}-${index}`}
+                mission={mission}
+                xpLabel={tMissions("xp-label")}
+                compacted
+                completed={mission.completed}
+              />
+            ) : (
+              <MissionRow key={index} mission={mission} fontSize={fontSize} />
+            )
           ))
         )}
       </Flex>

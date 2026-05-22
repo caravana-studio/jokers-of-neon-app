@@ -1,11 +1,15 @@
-import { useBalance } from "@starknet-react/core";
+import { useAccount, useBalance } from "@starknet-react/core";
 import { useContext } from "react";
 import { USDC_ADDRESS } from "../config/contracts";
 import { DojoContext } from "../../dojo/DojoContext";
 
 export function useUSDCBalance() {
   const dojoCtx = useContext(DojoContext);
-  const address = dojoCtx?.account.account?.address as `0x${string}` | undefined;
+  const { address: starknetAddress } = useAccount();
+  const dojoAddress = dojoCtx?.account.account?.address || undefined;
+  const address = (dojoAddress || starknetAddress) as
+    | `0x${string}`
+    | undefined;
 
   const { data, isLoading } = useBalance({
     token: USDC_ADDRESS as `0x${string}`,

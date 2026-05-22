@@ -113,6 +113,7 @@
         "settings": "Ajustes",
         "collection": "Colección",
         "season": "Temporada",
+        "missions": "Misiones",
         "shop": "Tienda",
         "home": "Inicio",
         "docs": "Lista de cartas",
@@ -144,6 +145,7 @@
       "burn-title": "Selecciona cartas para quemar",
       "filter-title": "Filtrar por",
       "suit": {
+        "selected": "el palo seleccionado",
         "club": "Tréboles",
         "spade": "Picas",
         "heart": "Corazones",

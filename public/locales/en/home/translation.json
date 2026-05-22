@@ -35,7 +35,10 @@
       "play-tournament": "Play tournament"
     },
     "level": "level",
+    "missions": "Missions",
     "dailyMissions": "Daily Missions",
+    "weeklyMissions": "Weekly Missions",
+    "seeMore": "See more",
     "noMissionsAvailable": "No missions available"
   },
   "packs": {
@@ -115,11 +118,11 @@
     "deck": "Deck",
     "plays": "Plays",
     "season": "Season",
+    "missions": "Missions",
     "tournament": "Tournament",
     "more": "More",
     "back": "Back to home",
     "docs": "Card list",
-    "daily-missions": "Daily missions",
     "round": "Round",
     "rage": "Rage round",
     "shop": "Shop"

@@ -75,13 +75,13 @@ export const UnlockProgressDebugWidget = () => {
       right={{ base: 2, md: 3 }}
       zIndex={PANEL_Z_INDEX}
     >
-      <Button
+{/*       <Button
         size="sm"
         variant="outline"
         onClick={() => setIsOpen((prev) => !prev)}
       >
         UNLOCK DEBUG
-      </Button>
+      </Button> */}
 
       <Collapse in={isOpen} animateOpacity>
         <Box

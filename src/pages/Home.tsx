@@ -10,6 +10,7 @@ import SpineAnimation from "../components/SpineAnimation";
 import { useGameContext } from "../providers/GameProvider";
 import { useGetMyGames } from "../queries/useGetMyGames";
 import { useResponsiveValues } from "../theme/responsiveSettings";
+import { hasInProgressGames } from "../utils/inProgressGames";
 
 export const Home = () => {
   const { t } = useTranslation(["home"]);
@@ -17,6 +18,7 @@ export const Home = () => {
   const navigate = useNavigate();
   const { prepareNewGame, executeCreateGame } = useGameContext();
   const { data: games } = useGetMyGames();
+  const hasActiveGames = hasInProgressGames(games);
 
   const handleCreateGame = () => {
     prepareNewGame();
@@ -31,7 +33,7 @@ export const Home = () => {
   };
 
   const handlePlayClick = () => {
-    if (games && games.length > 0) {
+    if (hasActiveGames) {
       navigate("/my-games");
     } else {
       handleCreateGame();
@@ -97,7 +99,7 @@ export const Home = () => {
                 w="300px"
                 variant="secondarySolid"
               >
-                {games && games.length > 0 ? t("my-games") : t("play")}
+                {hasActiveGames ? t("my-games") : t("play")}
               </Button>
             </Flex>
           )}
@@ -109,7 +111,7 @@ export const Home = () => {
               onClick: () => navigate("/leaderboard"),
             }}
             secondButton={{
-              label: games && games.length > 0 ? t("my-games") : t("play"),
+              label: hasActiveGames ? t("my-games") : t("play"),
               onClick: handlePlayClick,
             }}
           />

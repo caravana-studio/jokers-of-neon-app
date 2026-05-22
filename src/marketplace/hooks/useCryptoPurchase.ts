@@ -1,4 +1,5 @@
 import { useContext, useState } from "react";
+import { useAccount } from "@starknet-react/core";
 import { CallData, uint256, shortString } from "starknet";
 import {
   USDC_ADDRESS,
@@ -33,8 +34,12 @@ export interface CryptoPurchaseResult {
 
 export function useCryptoPurchase() {
   const dojoCtx = useContext(DojoContext);
-  const account = dojoCtx?.account.account ?? null;
-  const address = account?.address || null;
+  const { account: starknetAccount, address: starknetAddress } = useAccount();
+  const dojoAccount = dojoCtx?.account.account ?? null;
+  const dojoAddress = dojoAccount?.address || null;
+  const account =
+    dojoAccount && dojoAddress ? dojoAccount : starknetAccount ?? null;
+  const address = dojoAddress || starknetAddress || null;
   const [status, setStatus] = useState<CryptoStatus>("idle");
   const [error, setError] = useState<string | null>(null);
 
