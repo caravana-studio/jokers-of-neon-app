@@ -79,7 +79,7 @@
     "weekly-special-slots": "Compra {{quantity}} espacios para cartas especiales",
     "weekly-sell-power-ups": "Vende {{quantity}} potenciadores",
     "weekly-complete-runs": "Gana {{quantity}} partidas",
-    "weekly-win-rerolls": "Termina con {{quantity}} rerolls en partidas ganadas",
+    "weekly-win-rerolls": "Termina con {{quantity}} actualizaciones de tienda sin usar en partidas ganadas",
     "weekly-level-up-hand": "Sube {{quantity}} niveles a cualquier jugada"
   },
   "levelComplete": {
