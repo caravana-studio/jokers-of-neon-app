@@ -13,6 +13,7 @@ import {
   VIOLET_LIGHT,
 } from "../theme/colors.tsx";
 import type { DailyMissionCompleted, LevelCompleteEvent } from "../types/ScoreData";
+import { triggerHaptic } from "../haptics";
 import { getEnvString } from "./getEnvValue.ts";
 import { isNative, nativePaddingTop } from "./capacitorUtils.ts";
 import { logEvent } from "./analytics.ts";
@@ -154,6 +155,7 @@ export const showDailyMissionToast = (
     const titleKey =
       mission.periodType === "weekly" ? "weeklyTitle" : "title";
     setTimeout(() => {
+      triggerHaptic("gain-xp");
       toast.custom(
         (t) => (
           <Box
@@ -211,6 +213,7 @@ export const showLevelCompleteToast = (
     logEvent(`level_completed`, { level: event.level });
     const ordinalLabel = getOrdinalLabel(event.completion_count);
     setTimeout(() => {
+      triggerHaptic("gain-xp");
       toast.custom(
         (t) => (
           <Box

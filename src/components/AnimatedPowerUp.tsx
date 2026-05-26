@@ -1,6 +1,7 @@
 import { useTheme } from "@chakra-ui/react";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { animated, useSpring } from "react-spring";
+import { triggerHaptic } from "../haptics";
 import { useCardAnimations } from "../providers/CardAnimationsProvider";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import { IAnimatedCardProps } from "./AnimatedCard";
@@ -33,6 +34,7 @@ export const AnimatedPowerUp = ({ children, idx }: IAnimatedCardProps) => {
     },
     config: { tension: 200, friction: 10 },
   }));
+  const lastHapticAnimationIndexRef = useRef<number | undefined>(undefined);
 
   const getColor = () => {
     if (multi) {
@@ -65,6 +67,26 @@ export const AnimatedPowerUp = ({ children, idx }: IAnimatedCardProps) => {
       });
     }
   }, [points, multi, animatedPowerUpIdx, animationIndex]);
+
+  useEffect(() => {
+    if (animatedPowerUpIdx !== idx || animationIndex === undefined) {
+      return;
+    }
+
+    if (lastHapticAnimationIndexRef.current === animationIndex) {
+      return;
+    }
+
+    if (multi) {
+      triggerHaptic("multi");
+    } else if (points) {
+      triggerHaptic("points");
+    } else {
+      return;
+    }
+
+    lastHapticAnimationIndexRef.current = animationIndex;
+  }, [animatedPowerUpIdx, animationIndex, idx, multi, points]);
 
   return (
     <animated.div

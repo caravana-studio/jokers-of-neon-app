@@ -15,6 +15,7 @@ import { useGameActions } from "./dojo/useGameActions";
 import { useUsername } from "./dojo/utils/useUsername";
 import { useWallet } from "./dojo/WalletContext";
 import { useAppsFlyerReferral } from "./hooks/useAppsFlyerReferral";
+import { HapticsProvider } from "./haptics/HapticsProvider";
 import { setAnalyticsUserId, setAnalyticsUserProperty } from "./utils/analytics";
 import { initAppsFlyerReferralListener, initWebReferralDetection } from "./utils/appsflyerReferral";
 import { fetchAndStoreAgeSignals } from "./utils/ageSignals";
@@ -139,33 +140,35 @@ function App() {
   }, [account?.address, username, usernameStatus]);
 
   return (
-    <RevenueCatProvider>
-      <SeasonPassProvider>
-        <ZoomPrevention>
-          <CardAnimationsProvider>
-            <CardDataProvider>
-              <GameProvider>
-                <PageTransitionsProvider>
-                  <InformationPopUpProvider>
-                    <Background>
-                      <BackgroundAnimationProvider>
-                        <Layout>
-                          <AnimatePresence mode="wait">
-                            <AppRoutes />
-                          </AnimatePresence>
-                        </Layout>
-                      </BackgroundAnimationProvider>
-                    </Background>
-                  </InformationPopUpProvider>
-                </PageTransitionsProvider>
-              </GameProvider>
-            </CardDataProvider>
-          </CardAnimationsProvider>
-          <Analytics />
-          <SpeedInsights />
-        </ZoomPrevention>
-      </SeasonPassProvider>
-    </RevenueCatProvider>
+    <HapticsProvider>
+      <RevenueCatProvider>
+        <SeasonPassProvider>
+          <ZoomPrevention>
+            <CardAnimationsProvider>
+              <CardDataProvider>
+                <GameProvider>
+                  <PageTransitionsProvider>
+                    <InformationPopUpProvider>
+                      <Background>
+                        <BackgroundAnimationProvider>
+                          <Layout>
+                            <AnimatePresence mode="wait">
+                              <AppRoutes />
+                            </AnimatePresence>
+                          </Layout>
+                        </BackgroundAnimationProvider>
+                      </Background>
+                    </InformationPopUpProvider>
+                  </PageTransitionsProvider>
+                </GameProvider>
+              </CardDataProvider>
+            </CardAnimationsProvider>
+            <Analytics />
+            <SpeedInsights />
+          </ZoomPrevention>
+        </SeasonPassProvider>
+      </RevenueCatProvider>
+    </HapticsProvider>
   );
 }
 

@@ -1,5 +1,11 @@
 import { Flex } from "@chakra-ui/react";
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import {
+  endOpenPackDragHaptics,
+  startOpenPackDragHaptics,
+  triggerHaptic,
+  updateOpenPackDragHaptics,
+} from "../../haptics";
 
 type Props = {
   width?: number;
@@ -74,7 +80,9 @@ export default function PackTear({
     guideAnimationId: 0,
     velocity: 0,
     smoothVelocity: 0,
+    hapticDistance: 0,
   });
+  const HAPTIC_STEP_PX = 8;
 
   // Interpolate between trail points for smoother curves
   const getInterpolatedTrail = useCallback((trail: TrailPoint[], now: number) => {
@@ -449,6 +457,8 @@ export default function PackTear({
     st.particles = [];
     st.velocity = 0;
     st.smoothVelocity = 0;
+    st.hapticDistance = 0;
+    endOpenPackDragHaptics();
   };
 
   const xyFromEvent = (
@@ -482,7 +492,10 @@ export default function PackTear({
     st.lastX = x;
     st.lastY = y;
     st.cursorPos = { x, y };
+    st.hapticDistance = 0;
 
+    startOpenPackDragHaptics();
+    updateOpenPackDragHaptics();
     spawnParticles(x, y, 8, 0);
   };
 
@@ -508,6 +521,12 @@ export default function PackTear({
       const dy = y - st.lastY;
       const distance = Math.sqrt(dx * dx + dy * dy);
       st.velocity = Math.min(distance / 8, 4);
+      st.hapticDistance += distance;
+
+      while (st.hapticDistance >= HAPTIC_STEP_PX) {
+        updateOpenPackDragHaptics();
+        st.hapticDistance -= HAPTIC_STEP_PX;
+      }
 
       st.trail.push({
         x,
@@ -539,6 +558,7 @@ export default function PackTear({
 
   const end = () => {
     const st = stateRef.current;
+    endOpenPackDragHaptics();
     if (!opened && st.binsTouched.size / BIN_COUNT < COVERAGE_TARGET) {
       onFail?.();
       resetStroke();
@@ -552,6 +572,8 @@ export default function PackTear({
     if (opened) return;
 
     spawnParticles(x, y, 25, 4);
+    endOpenPackDragHaptics();
+    triggerHaptic("open-pack-opened");
 
     setOpened(true);
     onOpened?.();

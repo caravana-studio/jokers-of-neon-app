@@ -1,7 +1,8 @@
 import { Heading, useBreakpointValue, useTheme } from "@chakra-ui/react";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { animated, useSpring } from "react-spring";
 import { CARD_HEIGHT, CARD_WIDTH } from "../constants/visualProps";
+import { triggerHaptic } from "../haptics";
 import { useCardAnimations } from "../providers/CardAnimationsProvider";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import { CashSymbol } from "./CashSymbol";
@@ -103,6 +104,7 @@ export const AnimatedCard = ({
     },
     config: { tension: 300, friction: 20 },
   }));
+  const lastHapticAnimationIndexRef = useRef<number | undefined>(undefined);
 
   useEffect(() => {
     if (
@@ -158,6 +160,32 @@ export const AnimatedCard = ({
     highlightOnly,
     highlightColor,
   ]);
+
+  useEffect(() => {
+    if (!animatedCardIdxArray?.includes(idx)) {
+      return;
+    }
+
+    if (animationIndex === undefined) {
+      return;
+    }
+
+    if (lastHapticAnimationIndexRef.current === animationIndex) {
+      return;
+    }
+
+    if (cash) {
+      triggerHaptic("cash");
+    } else if (multi) {
+      triggerHaptic("multi");
+    } else if (points) {
+      triggerHaptic("points");
+    } else {
+      return;
+    }
+
+    lastHapticAnimationIndexRef.current = animationIndex;
+  }, [animatedCardIdxArray, animationIndex, cash, idx, multi, points]);
 
   useEffect(() => {
     if (played) {

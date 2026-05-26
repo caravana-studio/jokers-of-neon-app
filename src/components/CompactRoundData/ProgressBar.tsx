@@ -1,5 +1,6 @@
 import { Box, Flex, Text, type BoxProps } from "@chakra-ui/react";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { triggerHaptic } from "../../haptics";
 import { useBackgroundAnimation } from "../../providers/BackgroundAnimationProvider";
 import { useGameStore } from "../../state/useGameStore";
 import { BLUE_LIGHT, VIOLET_LIGHT } from "../../theme/colors";
@@ -80,15 +81,18 @@ export const ProgressBar = ({
           intensityLevel = Intensity.LOW;
         }
       } else if (level === 2) {
-        if (delta >= 50) {
-          glowLevel = "low";
-          intensityLevel = Intensity.LOW;
-        } else if (delta >= 100) {
+        if (delta >= 100) {
           glowLevel = "mid";
           intensityLevel = Intensity.MEDIUM;
+        } else if (delta >= 50) {
+          glowLevel = "low";
+          intensityLevel = Intensity.LOW;
         }
       } else {
-        if (delta >= 100) {
+        if (delta >= 150) {
+          glowLevel = "high";
+          intensityLevel = Intensity.MAX;
+        } else if (delta >= 100) {
           glowLevel = "high";
           intensityLevel = Intensity.HIGH;
         } else if (delta >= 50) {
@@ -105,6 +109,16 @@ export const ProgressBar = ({
       if (intensityLevel !== undefined) {
         showLightPillarAnimation({ intensityLevel });
         playSound?.();
+
+        if (intensityLevel === Intensity.LOW) {
+          triggerHaptic("score-low");
+        } else if (intensityLevel === Intensity.MEDIUM) {
+          triggerHaptic("score-mid");
+        } else if (intensityLevel === Intensity.HIGH) {
+          triggerHaptic("score-high");
+        } else if (intensityLevel === Intensity.MAX) {
+          triggerHaptic("score-extra-high");
+        }
       }
 
       resetTimeoutRef.current = setTimeout(() => {

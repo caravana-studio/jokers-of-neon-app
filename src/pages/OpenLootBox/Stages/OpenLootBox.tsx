@@ -9,10 +9,10 @@ import { openPackSfx } from "../../../constants/sfx";
 import { GameStateEnum } from "../../../dojo/typescript/custom";
 import { useAudio } from "../../../hooks/useAudio";
 import { useCustomNavigate } from "../../../hooks/useCustomNavigate";
+import { triggerHaptic } from "../../../haptics";
 import { usePageTransitions } from "../../../providers/PageTransitionsProvider";
 import { useSettings } from "../../../providers/SettingsProvider";
 import { useStore } from "../../../providers/StoreProvider";
-import { useGameStore } from "../../../state/useGameStore";
 
 export const OpenLootBox = () => {
   const { state: locationState } = useLocation();
@@ -24,7 +24,6 @@ export const OpenLootBox = () => {
   const didStartPurchaseRef = useRef(false);
   const { sfxVolume } = useSettings();
   const { play: openPackSound } = useAudio(openPackSfx, sfxVolume);
-  const { state } = useGameStore();
   const { transitionTo } = usePageTransitions();
   const { buyPack } = useStore();
   const navigate = useCustomNavigate();
@@ -113,6 +112,9 @@ export const OpenLootBox = () => {
             <LootBox
               ref={lootBoxRef}
               boxId={pack.blister_pack_id}
+              onOpenAnimationStart={() => {
+                triggerHaptic("open-pack-opened");
+              }}
               onOpenAnimationEnd={openAnimationCallBack}
               freezeOnLastFrame
             />

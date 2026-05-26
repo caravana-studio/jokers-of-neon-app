@@ -2,7 +2,7 @@ import { Box, Flex, Heading, Spinner } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { StaggeredList } from "../components/animations/StaggeredList";
 import { BackgroundDecoration } from "../components/Background";
 import { DelayedLoading } from "../components/DelayedLoading";
@@ -19,6 +19,7 @@ import {
 import { useDojo } from "../dojo/useDojo";
 import { Plays } from "../enums/plays";
 import { useMapNavigate } from "../hooks/useMapNavigate";
+import { triggerHaptic } from "../haptics";
 import { useGameStore } from "../state/useGameStore";
 import { BLUE_LIGHT, VIOLET_LIGHT } from "../theme/colors";
 import { useResponsiveValues } from "../theme/responsiveSettings";
@@ -66,6 +67,10 @@ const SummaryDetail = ({ win }: SummaryPageProps) => {
     shopTierUnlockedEvent,
   } = useGameStore();
   const [gameTracker, setGameTracker] = useState(DEFAULT_TRACKER_VIEW);
+
+  useEffect(() => {
+    triggerHaptic(win ? "win" : "lose");
+  }, [win]);
 
   useEffect(() => {
     let active = true;

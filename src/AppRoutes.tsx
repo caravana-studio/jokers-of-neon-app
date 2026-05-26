@@ -101,6 +101,14 @@ export const AppRoutes = () => {
         }
       />
       <Route
+        path="/test/haptics"
+        element={
+          <AnimatedPage>
+            <VibrationPage />
+          </AnimatedPage>
+        }
+      />
+      <Route
         path="/referral"
         element={
           <AnimatedPage>

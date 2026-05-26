@@ -7,6 +7,7 @@ import { useDojo } from "../dojo/useDojo.tsx";
 import { useShopActions } from "../dojo/useShopActions";
 import { useAudio } from "../hooks/useAudio.tsx";
 import { useCustomToast } from "../hooks/useCustomToast.tsx";
+import { triggerHaptic } from "../haptics";
 import { useDeckStore } from "../state/useDeckStore.ts";
 import { useGameStore } from "../state/useGameStore.ts";
 import { useShopStore } from "../state/useShopStore.ts";
@@ -154,6 +155,7 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
 
   const buyCard = (card: Card): Promise<boolean> => {
     buySound();
+    triggerHaptic("buy-item");
     setLocked(true);
     stateBuyCard(card);
     const cost = card?.discount_cost ? card.discount_cost : card?.price ?? 0;
@@ -182,6 +184,7 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
 
   const buyPowerUp = (powerUp: PowerUp): Promise<boolean> => {
     buySound();
+    triggerHaptic("buy-item");
     setLocked(true);
     stateBuyPowerUp(powerUp.idx);
     const cost = powerUp?.discount_cost
@@ -242,6 +245,7 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     isTemporal: boolean
   ): Promise<boolean> => {
     buySound();
+    triggerHaptic("buy-item");
     setLocked(true);
     stateBuyCard(card);
 
@@ -284,6 +288,7 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     }
 
     const cost = pack?.discount_cost ? pack.discount_cost : pack?.cost ?? 0;
+    triggerHaptic("buy-item");
     removeCash(cost);
     buyBlisterPack(Number(pack.idx));
     return dojoBuyPack(gameId, Number(pack.idx))
@@ -315,6 +320,7 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
   };
 
   const reroll = () => {
+    triggerHaptic("reroll");
     setRerolling(true);
     rerollSound();
     setLocked(true);
@@ -339,6 +345,7 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
 
   const levelUpPlay = (item: PokerHandItem): Promise<boolean> => {
     levelUpHandSound();
+    triggerHaptic("buy-item");
     setLocked(true);
     buyPokerHand(item.idx);
     const cost = item?.discount_cost ? item.discount_cost : item?.cost ?? 0;
@@ -366,6 +373,7 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
   };
 
   const buySpecialSlot = (): Promise<boolean> => {
+    triggerHaptic("buy-item");
     setLocked(true);
     buySlotSpecialCard();
     const cost = specialSlotItem?.discount_cost
