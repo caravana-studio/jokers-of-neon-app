@@ -64,8 +64,6 @@ if (
   controllerOptions.slot = CHAIN;
 }
 
-console.log('policies', policies)
-
 export const controller =
   !isNative
     ? new ControllerConnector(controllerOptions)
