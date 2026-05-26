@@ -11,11 +11,6 @@ const isStandaloneShopMode = import.meta.env.MODE === "standalone-shop";
 const shouldUseStandaloneMainnetRpc =
   isStandaloneShopMode && !!standaloneMainnetRpc;
 
-const CHAIN =
-  shouldUseStandaloneMainnetRpc
-    ? "mainnet"
-    : slotInstance || import.meta.env.VITE_CHAIN || "jokers-of-neon";
-
 const DOJO_NAMESPACE =
   import.meta.env.VITE_DOJO_NAMESPACE || "jokers_of_neon_core";
 
@@ -35,41 +30,39 @@ export const getSlotChainId = (slot: string) => {
   );
 };
 
+const resolvedChain =
+  shouldUseStandaloneMainnetRpc ? "mainnet" : slotInstance || "jokers-of-neon";
+const resolvedSlot =
+  resolvedChain === "mainnet" || resolvedChain === "sepolia"
+    ? undefined
+    : resolvedChain;
 const defaultChainId =
-  CHAIN === "mainnet" || CHAIN === "sepolia"
-    ? getChainId(CHAIN)
-    : getSlotChainId(CHAIN);
-
-const RPC_URL = shouldUseStandaloneMainnetRpc ? standaloneMainnetRpc : rpcUrl;
+  resolvedSlot !== undefined
+    ? getSlotChainId(resolvedSlot)
+    : getChainId(resolvedChain);
+const resolvedRpcUrl =
+  shouldUseStandaloneMainnetRpc ? standaloneMainnetRpc || rpcUrl : rpcUrl;
 
 const signupOptions: AuthOptions = isNativeAndroid
   ? ["google", "discord", "password"]
   : ["google", "discord", "webauthn", "password"];
 
 const controllerOptions = {
-  chains: [{ rpcUrl: RPC_URL }],
+  chains: [{ rpcUrl: resolvedRpcUrl }],
   defaultChainId,
   preset: import.meta.env.VITE_CONTROLLER_PRESET,
   namespace: DOJO_NAMESPACE,
   policies,
-  slot: undefined,
+  slot: resolvedSlot,
   signupOptions,
 };
-
-if (
-  !shouldUseStandaloneMainnetRpc &&
-  CHAIN !== "mainnet" &&
-  CHAIN !== "sepolia"
-) {
-  controllerOptions.slot = CHAIN;
-}
 
 export const controller =
   !isNative
     ? new ControllerConnector(controllerOptions)
     : new SessionConnector({
         policies,
-        rpc: RPC_URL,
+        rpc: resolvedRpcUrl,
         chainId: defaultChainId,
         redirectUrl: "jokers://open",
         disconnectRedirectUrl: "jokers://open",
