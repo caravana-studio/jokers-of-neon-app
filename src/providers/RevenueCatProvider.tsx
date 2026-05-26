@@ -28,9 +28,13 @@ import {
 import { useAccount } from "@starknet-react/core";
 import { DojoContext } from "../dojo/DojoContext";
 import { useUsername } from "../dojo/utils/useUsername";
-import { isNative as realNative } from "../utils/capacitorUtils";
+import { isNative as realNative, platform } from "../utils/capacitorUtils";
 import { getRevenueCatApiKey } from "../utils/getRevenueCatApiKey";
 import { registerMilestone } from "../utils/appsflyerReferral";
+import {
+  PurchaseChannel,
+  trackApprovedPurchase,
+} from "../utils/purchaseAnalytics";
 
 const FIRST_PURCHASE_KEY = "referral_first_purchase_tracked";
 const ANON_RC_USER = "jokers_anon_guest";
@@ -222,6 +226,101 @@ const extractFormattedPrice = (pkg: unknown): string | null => {
   }
 
   return null;
+};
+
+type PriceDetails = {
+  amount: number | null;
+  currency: string | null;
+};
+
+const extractPriceDetails = (pkg: unknown): PriceDetails => {
+  if (!isRecord(pkg)) {
+    return { amount: null, currency: null };
+  }
+
+  if ("product" in pkg && isRecord(pkg.product)) {
+    const amount = pkg.product.price;
+    const currency = pkg.product.currencyCode;
+
+    return {
+      amount: typeof amount === "number" ? amount : null,
+      currency: typeof currency === "string" ? currency : null,
+    };
+  }
+
+  if ("webBillingProduct" in pkg && isRecord(pkg.webBillingProduct)) {
+    const webProduct = pkg.webBillingProduct as UnknownRecord;
+    const priceCandidates = [
+      getNestedRecord(webProduct.price),
+      getNestedRecord(webProduct.currentPrice),
+    ];
+
+    for (const candidate of priceCandidates) {
+      if (!candidate) continue;
+
+      const amountMicros = candidate.amountMicros;
+      const currency = candidate.currency;
+
+      if (typeof amountMicros === "number" && typeof currency === "string") {
+        return {
+          amount: amountMicros / 1_000_000,
+          currency,
+        };
+      }
+    }
+  }
+
+  return { amount: null, currency: null };
+};
+
+const getPackageTitle = (pkg: unknown): string | null => {
+  if (!isRecord(pkg)) {
+    return null;
+  }
+
+  if ("product" in pkg && isRecord(pkg.product)) {
+    const title = pkg.product.title;
+    if (typeof title === "string" && title.length > 0) {
+      return title;
+    }
+  }
+
+  if ("webBillingProduct" in pkg && isRecord(pkg.webBillingProduct)) {
+    const title = pkg.webBillingProduct.title;
+    if (typeof title === "string" && title.length > 0) {
+      return title;
+    }
+  }
+
+  return null;
+};
+
+const getRevenueCatTransactionId = (
+  result: RevenueCatPurchaseResult
+): string | null => {
+  if ("transaction" in result && isRecord(result.transaction)) {
+    const transactionId = result.transaction.transactionIdentifier;
+    if (typeof transactionId === "string" && transactionId.length > 0) {
+      return transactionId;
+    }
+  }
+
+  if ("storeTransaction" in result && isRecord(result.storeTransaction)) {
+    const transactionId = result.storeTransaction.transactionIdentifier;
+    if (typeof transactionId === "string" && transactionId.length > 0) {
+      return transactionId;
+    }
+  }
+
+  return null;
+};
+
+const getRevenueCatPurchaseChannel = (): PurchaseChannel => {
+  if (!isNative) {
+    return "web";
+  }
+
+  return platform === "ios" ? "ios" : "android";
 };
 
 const normalizeOfferings = (
@@ -443,6 +542,23 @@ export const RevenueCatProvider = ({ children }: PropsWithChildren) => {
       }
 
       const result = await purchasePackage(resolvedPackage, options);
+      const transactionId = getRevenueCatTransactionId(result);
+      const priceDetails = extractPriceDetails(resolvedPackage);
+      const productTitle = getPackageTitle(resolvedPackage);
+
+      if (transactionId) {
+        trackApprovedPurchase({
+          transactionId,
+          purchaseChannel: getRevenueCatPurchaseChannel(),
+          purchaseKind: isSeasonPass ? "season_pass" : "pack",
+          purchaseSurface: "shop",
+          paymentProvider: "revenuecat",
+          productId: getPackageIdentifier(resolvedPackage) ?? packageId,
+          productName: productTitle,
+          value: priceDetails.amount,
+          currency: priceDetails.currency,
+        });
+      }
 
       // Track milestones for pack purchases (not season pass - that's handled in SeasonPassProvider)
       if (!isSeasonPass && address) {
