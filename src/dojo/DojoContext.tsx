@@ -171,16 +171,10 @@ const DojoContextProvider = ({
       isControllerConnected &&
       controllerAccount
     ) {
-      console.log(
-        "Controller is connected. Finalizing state in DojoContext..."
-      );
       useAccountStore.getState().setAccount(controllerAccount);
       if (controller) {
         controller.username()?.then((newUsername) => {
           if (newUsername && onSuccessCallback.current) {
-            console.log(
-              `Executing success callback with username: ${newUsername}`
-            );
             onSuccessCallback.current({
               username: newUsername,
               account: controllerAccount,
@@ -190,10 +184,8 @@ const DojoContextProvider = ({
         });
       }
     } else if (accountType === "burner" && burnerAccount) {
-      console.log("Burner is ready. Finalizing state in DojoContext...");
       useAccountStore.getState().setAccount(burnerAccount);
     } else if (accountType === "cavos" && finalAccount) {
-      console.log("Cavos is ready. Finalizing state in DojoContext...");
       useAccountStore.getState().setAccount(finalAccount);
     }
   }, [

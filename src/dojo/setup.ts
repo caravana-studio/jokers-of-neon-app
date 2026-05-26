@@ -61,7 +61,6 @@ const getEntities = async <S extends Schema>(
 };
 
 export async function setup({ ...config }: DojoConfig) {
-  console.log("DOJO_NAMESPACE", DOJO_NAMESPACE);
   // torii client
   const toriiClient = await new torii.ToriiClient({
     toriiUrl: config.toriiUrl,
@@ -77,6 +76,12 @@ export async function setup({ ...config }: DojoConfig) {
 
   // create dojo provider
   const dojoProvider = new DojoProvider(config.manifest, config.rpcUrl);
+  const executeWithDefaultSlotTip = dojoProvider.execute.bind(dojoProvider);
+  dojoProvider.execute = ((account, call, nameSpace, details = {}) =>
+    executeWithDefaultSlotTip(account, call, nameSpace, {
+      tip: 0n,
+      ...details,
+    })) as typeof dojoProvider.execute;
 
   type ClientComponentsKeys = keyof typeof clientComponents;
   const defaultNameSpace = `${DOJO_NAMESPACE}-`;
