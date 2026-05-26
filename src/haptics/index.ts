@@ -15,7 +15,6 @@ export type HapticAction =
   | "buy-item"
   | "lose"
   | "win"
-  | "open-pack-drag-step"
   | "open-pack-opened"
   | "open-pack-pass-card"
   | "gain-xp"
@@ -34,6 +33,8 @@ const sleep = (ms: number) =>
 
 const throttles = new Map<string, number>();
 let scorePriorityUntil = 0;
+let openPackDragActive = false;
+const OPEN_PACK_DRAG_PRIORITY_KEY = "open-pack-drag-step";
 
 let hapticsEnabled = Capacitor.isNativePlatform();
 
@@ -88,15 +89,6 @@ const runWinBurst = async () => {
 };
 
 const runInteraction = async () => {
-  if (isIOS()) {
-    await runSelectionPulse();
-    return;
-  }
-
-  await Haptics.vibrate({ duration: 10 });
-};
-
-const runOpenPackDragStep = async () => {
   if (isIOS()) {
     await runSelectionPulse();
     return;
@@ -163,7 +155,7 @@ const shouldThrottle = (key: string, minIntervalMs: number) => {
   return false;
 };
 
-const isScorePriorityAction = (action: HapticAction) =>
+const isScorePriorityAction = (action: string) =>
   action === "score-low" ||
   action === "score-mid" ||
   action === "score-high" ||
@@ -176,7 +168,7 @@ const getScorePriorityWindowMs = (action: HapticAction) => {
   return 1480;
 };
 
-const shouldSkipForScorePriority = (action: HapticAction) => {
+const shouldSkipForScorePriority = (action: string) => {
   if (isScorePriorityAction(action)) {
     return false;
   }
@@ -259,12 +251,6 @@ const runAction = async (action: HapticAction) => {
     return;
   }
 
-  if (action === "open-pack-drag-step") {
-    if (shouldThrottle("open-pack-drag-step", isIOS() ? 35 : 16)) return;
-    await runOpenPackDragStep();
-    return;
-  }
-
   if (action === "open-pack-opened") {
     if (isIOS()) {
       await runSuccessCelebration();
@@ -328,4 +314,45 @@ export const triggerHaptic = (action: HapticAction) => {
   void runAction(action).catch((error) => {
     console.warn("[haptics] Failed to trigger action", action, error);
   });
+};
+
+export const startOpenPackDragHaptics = () => {
+  if (!canUseHaptics() || shouldSkipForScorePriority(OPEN_PACK_DRAG_PRIORITY_KEY)) {
+    return;
+  }
+
+  openPackDragActive = true;
+};
+
+export const updateOpenPackDragHaptics = () => {
+  if (
+    !canUseHaptics() ||
+    !openPackDragActive ||
+    shouldSkipForScorePriority(OPEN_PACK_DRAG_PRIORITY_KEY)
+  ) {
+    return;
+  }
+
+  if (isIOS()) {
+    if (shouldThrottle("open-pack-drag-step-ios", 45)) return;
+
+    void Haptics.impact({ style: ImpactStyle.Light }).catch((error) => {
+      console.warn("[haptics] iOS open pack drag pulse failed", error);
+    });
+    return;
+  }
+
+  if (shouldThrottle("open-pack-drag-step-android", 20)) return;
+
+  void Haptics.vibrate({ duration: 10 }).catch((error) => {
+    console.warn("[haptics] Android open pack drag pulse failed", error);
+  });
+};
+
+export const endOpenPackDragHaptics = () => {
+  if (!openPackDragActive) {
+    return;
+  }
+
+  openPackDragActive = false;
 };
