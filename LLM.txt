@@ -543,6 +543,20 @@ SPECIAL CARDS
 - id=10212 | name=Efficient Hunter | effect=Reduces the required round score by 25%. | rarity=A | image=https://jokersofneon.com/cards/10212.png | skins=3:https://jokersofneon.com/cards/10212_sk3.png
 - id=10213 | name=Residual Charge | effect=Accumulates 10% of the value of each power-up played. Currently +{{points}} points. | rarity=S | image=https://jokersofneon.com/cards/10213.png | skins=3:https://jokersofneon.com/cards/10213_sk3.png
 - id=10214 | name=Undying Draw | effect=The first hand you discard each round is leveled up. | rarity=S | image=https://jokersofneon.com/cards/10214.png | skins=3:https://jokersofneon.com/cards/10214_sk3.png
+- id=10301 | name=Wild Deuces | effect=All 2s are considered wildcards. | rarity=C | image=https://jokersofneon.com/cards/10301.png
+- id=10302 | name=Midas Hand | effect=If at least 50% of the played cards are Diamonds, earn +250 cash. | rarity=C | image=https://jokersofneon.com/cards/10302.png
+- id=10303 | name=Discard Charge | effect=Gains +2 multi (stacking) for each discard. Resets after you play a hand. Currently +{{multi}} multi. | rarity=C | image=https://jokersofneon.com/cards/10303.png
+- id=10304 | name=Pocket Joker | effect=Start each round with a Joker in hand. It is not added to your deck. | rarity=C | image=https://jokersofneon.com/cards/10304.png
+- id=10305 | name=Club Keeper | effect=Adds +5 points for each Club card in your deck. | rarity=B | image=https://jokersofneon.com/cards/10305.png
+- id=10306 | name=Adrenaline | effect=Adds +50 points for each Rage card in the round. | rarity=B | image=https://jokersofneon.com/cards/10306.png
+- id=10307 | name=Loot Rush | effect=Shops offer +1 loot box, and all loot boxes cost 25% less. | rarity=B | image=https://jokersofneon.com/cards/10307.png
+- id=10308 | name=Practice Shoot | effect=Each play or discard has a 25% chance to not be consumed. | rarity=B | image=https://jokersofneon.com/cards/10308.png
+- id=10309 | name=Aftershock | effect=After each Rage, create a random temporary special card (you must have an empty special slot). | rarity=A | image=https://jokersofneon.com/cards/10309.png
+- id=10310 | name=Extreme Attachment | effect=Gains +25 points (stacking) each time you repeat the same hand. Resets when you play a different hand. Currently +{{points}} points. | rarity=A | image=https://jokersofneon.com/cards/10310.png
+- id=10311 | name=Double Down | effect=Doubles the base points of the played hand. | rarity=A | image=https://jokersofneon.com/cards/10311.png
+- id=10312 | name=Royal Blessing | effect=Each ROYAL FLUSH you play levels up a random hand by 1. | rarity=A | image=https://jokersofneon.com/cards/10312.png
+- id=10313 | name=Disposophobia | effect=THREE OF A KIND accumulates +15 cash, FOUR OF A KIND +15 points, and FIVE OF A KIND +1 multi, each with a 50% chance. Currently: THREE OF A KIND +{{cash}} cash, FOUR OF A KIND +{{points}} points, and FIVE OF A KIND +{{multi}} multi. | rarity=S | image=https://jokersofneon.com/cards/10313.png
+- id=10314 | name=Ouroboros | effect=Each round, copies the effect of a random equipped special card. | rarity=S | image=https://jokersofneon.com/cards/10314.png
 - id=19901 | name=Lucky Cashback | effect=50% chance to add +150 cash when playing or discarding. | rarity=C | image=https://jokersofneon.com/cards/19901.png
 - id=19902 | name=Resonant Multiplier | effect=For every card with a value under 5, adds multi equal to its value. | rarity=B | image=https://jokersofneon.com/cards/19902.png
 - id=19903 | name=Swamp Redemption | effect=Gains between +1 and +5 points (stacking) each time you discard. Currently +{{points}} points. | rarity=S | image=https://jokersofneon.com/cards/19903.png
@@ -572,6 +586,7 @@ RAGE CARDS
 - id=20023 | name=Punched Ticket | effect=You can't play the same hand twice in this round | rarity=S | image=https://jokersofneon.com/cards/20023.png
 - id=20025 | name=Buzzkiller | effect=Your most-played hand does not count this round. | image=https://jokersofneon.com/cards/20025.png
 - id=20026 | name=Blackout | effect=Two of your current special cards get silenced for this round | image=https://jokersofneon.com/cards/20026.png
+- id=20027 | name=Pharaoh's Mandate | effect=When you play a hand, its level resets to 1. | image=https://jokersofneon.com/cards/20027.png
 
 POWER-UPS
 - id=800 | name=+25 Points | effect_text=Scores +25 additional points | effect_points=25 | effect_multi=0 | tier=B | base_cost=100 | sell_value=50 | image=https://jokersofneon.com/cards/800.png
@@ -609,10 +624,10 @@ ACTIVE SPECIALS SHOP DISTRIBUTION (CLASSIC MOD)
   - A-Grade (15% probability, cost 3500): Quad Multiplier, Extra draws, Extra drops, Four of a Kind Booster, Five of a Kind Booster, The hand thief, Lucky 7, Figures Booster, Love is in the air, Spade Trio, Rainbow, Slot Saver, Special Multiplier, Initial advantage.
   - S-Grade (15% probability, cost 5000): Extra help, Joker Booster, Second chance, Deadline, Rising Ladder.
 - Season specials shop:
-  - C-Grade (45%, cost 1000): S1: Faded Poster, Tamer of Chances, Blackjack, Point Juggler. S2: Relativity, Cash Catalyst, Lifeflame, Accidental Value.
-  - B-Grade (25%, cost 1750): S1: Deck Collector, Circle of Fortune, Suit Roulette, High Roller. S2: Cash Loop, Impermanence, Duality, Neon Doctrine.
-  - A-Grade (15%, cost 3500): S1: Hanged Joker, Special Sacrifice, Efficient Play, Hestia Blessing. S2: Minimalism, Neon Synergy, Efficient Hunter, Providence.
-  - S-Grade (15%, cost 5000): S1: Rage Breaker, Burning Rewards. S2: Residual Charge, Undying Draw.
+  - C-Grade (45%, cost 1000): S1: Faded Poster, Tamer of Chances, Blackjack, Point Juggler. S2: Relativity, Cash Catalyst, Lifeflame, Accidental Value. S3: Wild Deuces, Midas Hand, Discard Charge, Pocket Joker.
+  - B-Grade (25%, cost 1750): S1: Deck Collector, Circle of Fortune, Suit Roulette, High Roller. S2: Cash Loop, Impermanence, Duality, Neon Doctrine. S3: Club Keeper, Adrenaline, Loot Rush, Practice Shoot.
+  - A-Grade (15%, cost 3500): S1: Hanged Joker, Special Sacrifice, Efficient Play, Hestia Blessing. S2: Minimalism, Neon Synergy, Efficient Hunter, Providence. S3: Aftershock, Extreme Attachment, Double Down, Royal Blessing.
+  - S-Grade (15%, cost 5000): S1: Rage Breaker, Burning Rewards. S2: Residual Charge, Undying Draw. S3: Disposophobia, Ouroboros.
 - GG Collection specials: Lucky Cashback (C), Resonant Multiplier (B), Swamp Redemption (S).
 
 ACTIVE RAGE CARD DISTRIBUTION (CLASSIC MOD)
@@ -735,4 +750,3 @@ MOD SYSTEM (ARCHITECTURE)
 - Active mod: "jokers_of_neon_classic".
 - ModConfig stores contract addresses for: deck, specials, rages, loot_boxes, game_config, shop_config, poker_hands.
 - Managers: mod_manager (CRUD for mods), rage_manager (registers/resolves rage cards), special_manager (registers/resolves special cards).
-
