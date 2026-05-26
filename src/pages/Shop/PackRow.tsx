@@ -33,6 +33,8 @@ import { BLUE } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { isNative } from "../../utils/capacitorUtils";
 import { getPackSize, getPackTier, isCollectorPackId } from "../../utils/packUtils";
+import { useUsernameStore } from "../../state/useUsernameStore";
+import { addressKey } from "../../utils/starknetAddress";
 import { PaymentMethodModal } from "./PaymentMethodModal";
 
 interface PackRowProps {
@@ -75,7 +77,10 @@ export const PackRow = ({
   const dojoAccount = dojoCtx?.account.account ?? null;
   const dojoAddress = dojoAccount?.address || null;
   const starknetAddress = dojoAddress || connectedAddress || null;
+  const accountType = dojoCtx?.accountType ?? null;
   const username = useUsername();
+  const usernameStatus = useUsernameStore((store) => store.status);
+  const storedUsernameAddress = useUsernameStore((store) => store.address);
   const { connectors, connect } = useConnect();
   const { purchasePackageById, offerings } = useRevenueCat();
   const { buy: buyWithCrypto, status: cryptoStatus } = useCryptoPurchase();
@@ -89,13 +94,30 @@ export const PackRow = ({
   );
   const hasFiatOption = Boolean(price);
   const hasCryptoOption = !isNative && priceAtoms !== undefined && priceAtoms > 0n;
+  const requiresRevenueCatIdentity = Boolean(starknetAddress && hasFiatOption);
+  const hasReadyUsername =
+    Boolean(starknetAddress) &&
+    Boolean(username) &&
+    usernameStatus === "ready" &&
+    addressKey(storedUsernameAddress) === addressKey(starknetAddress);
+  const isRevenueCatIdentityReady =
+    !requiresRevenueCatIdentity ||
+    (accountType !== "burner" && hasReadyUsername);
+  const isResolvingUsername =
+    requiresRevenueCatIdentity &&
+    accountType !== "burner" &&
+    !hasReadyUsername &&
+    (usernameStatus === "idle" || usernameStatus === "loading");
   const hasEnoughUsdc =
     balanceRaw !== undefined && priceAtoms !== undefined
       ? balanceRaw >= priceAtoms
       : true;
   const isInsufficientUsdc = hasCryptoOption && !hasEnoughUsdc;
   const isBuyDisabled =
-    isPurchasing || isCryptoPurchasing || (!hasFiatOption && !hasCryptoOption);
+    isPurchasing ||
+    isCryptoPurchasing ||
+    (!hasFiatOption && !hasCryptoOption) ||
+    (requiresRevenueCatIdentity && !isRevenueCatIdentityReady);
 
   useEffect(() => {
     if (!starknetAddress) {
@@ -336,6 +358,10 @@ export const PackRow = ({
       return;
     }
 
+    if (requiresRevenueCatIdentity && !isRevenueCatIdentityReady) {
+      return;
+    }
+
     if (isNative) {
       void handleFiatPurchase();
       return;
@@ -479,7 +505,7 @@ export const PackRow = ({
               }
               onClick={handlePurchaseClick}
             >
-              {isPurchasing || isCryptoPurchasing ? (
+              {isPurchasing || isCryptoPurchasing || isResolvingUsername ? (
                 <Spinner size="xs" />
               ) : (
                 buyLabel
