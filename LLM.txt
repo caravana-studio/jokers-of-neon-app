@@ -493,7 +493,7 @@ SPECIAL CARDS
 - id=10050 | name=Dice of Spades | effect=Rolls a number between -2 and 6 to add to the multi for each played Spades suited card. | rarity=B | image=https://jokersofneon.com/cards/10050.png
 - id=10051 | name=Special Multiplier | effect=Adds +3 multi for each active special card | rarity=A | image=https://jokersofneon.com/cards/10051.png
 - id=10053 | name=Fury Reset | effect=Allows rerolling Rage cards once per round. Costs 500 per Rage card in the round. | image=https://jokersofneon.com/cards/10053.png | [INACTIVE]
-- id=10054 | name=Skip Bonus | effect=Gain +25 points (stacking) for each loot box skipped (opened without selecting a card). Currently +{{points}} points. | image=https://jokersofneon.com/cards/10054.png | [INACTIVE]
+- id=10054 | name=Skip Bonus | effect=Gain +25 points (stacking) for each loot box skipped (opened without selecting a card). | image=https://jokersofneon.com/cards/10054.png | [INACTIVE]
 - id=10056 | name=Slot Saver | effect=Earn +100 points for each unlocked but empty card slot. | rarity=A | image=https://jokersofneon.com/cards/10056.png
 - id=10059 | name=Club Keeper | effect=Earn +10 points for each Club card in your deck. | image=https://jokersofneon.com/cards/10059.png | [INACTIVE]
 - id=10060 | name=Spade Trio | effect=If your hand contains at least 3 Spade cards, adds +100 points and +3 multi. | rarity=B | image=https://jokersofneon.com/cards/10060.png
@@ -507,7 +507,7 @@ SPECIAL CARDS
 - id=10069 | name=Arithmomania | effect=If the sum of the cards you played is even, adds +7 multi. If it's odd, adds +100 points. | rarity=B | image=https://jokersofneon.com/cards/10069.png
 - id=10070 | name=Black and Red | effect=Heart and Diamond suited cards add double points. Club and Spade suited cards add +1 multi. | rarity=A | image=https://jokersofneon.com/cards/10070.png
 - id=10071 | name=Worthless Jokers | effect=Jokers score 0 points and 0 multi. Every other card scores +1 multi. | image=https://jokersofneon.com/cards/10071.png | [INACTIVE]
-- id=10072 | name=Rising Ladder | effect=Gain +10 points (stacking) for every straight played. Currently at +{{points}} points. | rarity=S | image=https://jokersofneon.com/cards/10072.png
+- id=10072 | name=Rising Ladder | effect=Gain +10 points (stacking) for every straight played. | rarity=S | image=https://jokersofneon.com/cards/10072.png
 - id=10073 | name=Relativity | effect=Converts any straight into a 10-Ace straight (the higher possible straight). | image=https://jokersofneon.com/cards/10073.png | [INACTIVE - replaced by id=10201]
 - id=10074 | name=Wildcard Booster | effect=Each Wildcard grants +100 points. | rarity=B | image=https://jokersofneon.com/cards/10074.png
 - id=10079 | name=Rainbow | effect=Adds +200 points and +5 multi if your play includes all four suits. | rarity=A | image=https://jokersofneon.com/cards/10079.png
@@ -515,20 +515,20 @@ SPECIAL CARDS
 - id=10078 | name=Blacks | effect=Adds +10 multi if all played scoring cards are Spades or Clubs (must have at least one of each). | rarity=B | image=https://jokersofneon.com/cards/10078.png
 - id=10080 | name=Queens Fortune | effect=Each Queen that scores has a 50% chance to grant +150 cash. | rarity=B | creator=dub_zn | image=https://jokersofneon.com/cards/10080.png
 - id=10084 | name=High Card Booster | effect=Adds +60 points and +3 multi when you play a High Card hand. | rarity=C | image=https://jokersofneon.com/cards/10084.png
-- id=10101 | name=Faded Poster | effect=Starts at +100 points, loses 10 points per play until it reaches 10 points. Currently +{{points}} points. | rarity=C | image=https://jokersofneon.com/cards/10101.png | skins=2:https://jokersofneon.com/cards/10101_sk2.png
+- id=10101 | name=Faded Poster | effect=Starts at +100 points, loses 10 points per play until it reaches 10 points. | rarity=C | image=https://jokersofneon.com/cards/10101.png | skins=2:https://jokersofneon.com/cards/10101_sk2.png
 - id=10102 | name=Tamer of Chances | effect=Swap one discard for one play. | rarity=C | image=https://jokersofneon.com/cards/10102.png
 - id=10103 | name=Blackjack | effect=If card values sum under 21, adds +21 points; if exactly 21, adds +21 multi. | rarity=C | image=https://jokersofneon.com/cards/10103.png
 - id=10104 | name=Point Juggler | effect=Discarded cards give their value ×10 points. | rarity=C | image=https://jokersofneon.com/cards/10104.png | skins=2:https://jokersofneon.com/cards/10104_sk2.png
 - id=10105 | name=Deck Collector | effect=Earn +1 points for every card in your deck. | rarity=C | image=https://jokersofneon.com/cards/10105.png | skins=2:https://jokersofneon.com/cards/10105_sk2.png
 - id=10106 | name=Circle of Fortune | effect=Rolls a random number between 0 and 36; if even, result on points x5; if odd, result on cash x10; if 0, +300 points. | rarity=B | image=https://jokersofneon.com/cards/10106.png
-- id=10107 | name=Hestia Blessing | effect=Burned cards accumulate their points; if it's a Joker, +1 multi is accumulated. Currently +{{points}} points +{{multi}} multi. | rarity=A | image=https://jokersofneon.com/cards/10107.png | skins=101:https://jokersofneon.com/cards/10107_sk101.png
+- id=10107 | name=Hestia Blessing | effect=Burned cards accumulate their points; if it's a Joker, +1 multi is accumulated. | rarity=A | image=https://jokersofneon.com/cards/10107.png | skins=101:https://jokersofneon.com/cards/10107_sk101.png
 - id=10108 | name=Suit Roulette | effect=Choose a random suit each play; adds +5 multi for each card of that suit played. | rarity=B | image=https://jokersofneon.com/cards/10108.png
-- id=10109 | name=Hanged Joker | effect=For each joker in your play, 20% chance to accumulate +10 points. Currently +{{points}} points. | rarity=B | image=https://jokersofneon.com/cards/10109.png | skins=2:https://jokersofneon.com/cards/10109_sk2.png
-- id=10110 | name=Special Sacrifice | effect=Gain +1 multi (stacking) for every special card sold. Currently +{{multi}} multi. | rarity=A | image=https://jokersofneon.com/cards/10110.png | skins=2:https://jokersofneon.com/cards/10110_sk2.png
-- id=10111 | name=High Roller | effect=Each High Card played has a 50% chance to gain +1 multi (stacking). Currently +{{multi}} multi. | rarity=B | image=https://jokersofneon.com/cards/10111.png | skins=2:https://jokersofneon.com/cards/10111_sk2.png
+- id=10109 | name=Hanged Joker | effect=For each joker in your play, 20% chance to accumulate +10 points. | rarity=B | image=https://jokersofneon.com/cards/10109.png | skins=2:https://jokersofneon.com/cards/10109_sk2.png
+- id=10110 | name=Special Sacrifice | effect=Gain +1 multi (stacking) for every special card sold. | rarity=A | image=https://jokersofneon.com/cards/10110.png | skins=2:https://jokersofneon.com/cards/10110_sk2.png
+- id=10111 | name=High Roller | effect=Each High Card played has a 50% chance to gain +1 multi (stacking). | rarity=B | image=https://jokersofneon.com/cards/10111.png | skins=2:https://jokersofneon.com/cards/10111_sk2.png
 - id=10112 | name=Efficient Play | effect=Earn +10 multi and +50 points when playing 3 or fewer cards. | rarity=A | image=https://jokersofneon.com/cards/10112.png
-- id=10113 | name=Rage Breaker | effect=Gain +3 multi (stacking) for each Rage defeated. Currently +{{multi}} multi. | rarity=S | image=https://jokersofneon.com/cards/10113.png | skins=2:https://jokersofneon.com/cards/10113_sk2.png
-- id=10114 | name=Burning Rewards | effect=Gain +15 points (stacking) for each card burned from your deck. Currently +{{points}} points. | rarity=S | image=https://jokersofneon.com/cards/10114.png | skins=2:https://jokersofneon.com/cards/10114_sk2.png
+- id=10113 | name=Rage Breaker | effect=Gain +3 multi (stacking) for each Rage defeated. | rarity=S | image=https://jokersofneon.com/cards/10113.png | skins=2:https://jokersofneon.com/cards/10113_sk2.png
+- id=10114 | name=Burning Rewards | effect=Gain +15 points (stacking) for each card burned from your deck. | rarity=S | image=https://jokersofneon.com/cards/10114.png | skins=2:https://jokersofneon.com/cards/10114_sk2.png
 - id=10201 | name=Relativity | effect=Converts your played Straight into a high Straight (10, J, Q, K, A). | rarity=C | creator=dpotsdobeck | image=https://jokersofneon.com/cards/10201.png
 - id=10202 | name=Cash Catalyst | effect=Adds +1 multi for every 1000 cash you have. | rarity=C | image=https://jokersofneon.com/cards/10202.png | skins=3:https://jokersofneon.com/cards/10202_sk3.png
 - id=10203 | name=Lifeflame | effect=Adds +15 points for each remaining play and discard. | rarity=C | image=https://jokersofneon.com/cards/10203.png | skins=3:https://jokersofneon.com/cards/10203_sk3.png
@@ -537,15 +537,29 @@ SPECIAL CARDS
 - id=10206 | name=Accidental Value | effect=Each played card not belonging to the hand adds +25 points and +1 multi. | rarity=C | image=https://jokersofneon.com/cards/10206.png | skins=3:https://jokersofneon.com/cards/10206_sk3.png
 - id=10207 | name=Duality | effect=Adds +300 points if you play 2 or fewer cards. | rarity=B | image=https://jokersofneon.com/cards/10207.png
 - id=10208 | name=Neon Doctrine | effect=Played cards have a 30% chance to become neon cards. | rarity=B | image=https://jokersofneon.com/cards/10208.png | skins=3:https://jokersofneon.com/cards/10208_sk3.png
-- id=10209 | name=Minimalism | effect=Gains +5 points (stacking) each time you play 3 or fewer cards. Currently +{{points}} points. | rarity=A | image=https://jokersofneon.com/cards/10209.png
+- id=10209 | name=Minimalism | effect=Gains +5 points (stacking) each time you play 3 or fewer cards. | rarity=A | image=https://jokersofneon.com/cards/10209.png
 - id=10210 | name=Neon Synergy | effect=If 50% or more of the played cards are neon, all played cards become neon. | rarity=A | image=https://jokersofneon.com/cards/10210.png | skins=3:https://jokersofneon.com/cards/10210_sk3.png
 - id=10211 | name=Providence | effect=Shop items have a 15% chance to be free. | rarity=A | image=https://jokersofneon.com/cards/10211.png
 - id=10212 | name=Efficient Hunter | effect=Reduces the required round score by 25%. | rarity=A | image=https://jokersofneon.com/cards/10212.png | skins=3:https://jokersofneon.com/cards/10212_sk3.png
-- id=10213 | name=Residual Charge | effect=Accumulates 10% of the value of each power-up played. Currently +{{points}} points. | rarity=S | image=https://jokersofneon.com/cards/10213.png | skins=3:https://jokersofneon.com/cards/10213_sk3.png
+- id=10213 | name=Residual Charge | effect=Accumulates 10% of the value of each power-up played. | rarity=S | image=https://jokersofneon.com/cards/10213.png | skins=3:https://jokersofneon.com/cards/10213_sk3.png
 - id=10214 | name=Undying Draw | effect=The first hand you discard each round is leveled up. | rarity=S | image=https://jokersofneon.com/cards/10214.png | skins=3:https://jokersofneon.com/cards/10214_sk3.png
+- id=10301 | name=Wild Deuces | effect=All 2s are considered wildcards. | rarity=C | image=https://jokersofneon.com/cards/10301.png
+- id=10302 | name=Midas Hand | effect=If at least 50% of the played cards are Diamonds, earn +250 cash. | rarity=C | image=https://jokersofneon.com/cards/10302.png
+- id=10303 | name=Discard Charge | effect=Gains +2 multi (stacking) for each discard. Resets after you play a hand. | rarity=C | image=https://jokersofneon.com/cards/10303.png
+- id=10304 | name=Pocket Joker | effect=Start each round with a Joker in hand. It is not added to your deck. | rarity=C | image=https://jokersofneon.com/cards/10304.png
+- id=10305 | name=Club Keeper | effect=Adds +5 points for each Club card in your deck. | rarity=B | image=https://jokersofneon.com/cards/10305.png
+- id=10306 | name=Adrenaline | effect=Adds +50 points for each Rage card in the round. | rarity=B | image=https://jokersofneon.com/cards/10306.png
+- id=10307 | name=Loot Rush | effect=Shops offer +1 loot box, and all loot boxes cost 25% less. | rarity=B | image=https://jokersofneon.com/cards/10307.png
+- id=10308 | name=Practice Shoot | effect=Each play or discard has a 25% chance to not be consumed. | rarity=B | image=https://jokersofneon.com/cards/10308.png
+- id=10309 | name=Aftershock | effect=After each Rage, create a random temporary special card (you must have an empty special slot). | rarity=A | image=https://jokersofneon.com/cards/10309.png
+- id=10310 | name=Extreme Attachment | effect=Gains +25 points (stacking) each time you repeat the same hand. Resets when you play a different hand. | rarity=A | image=https://jokersofneon.com/cards/10310.png
+- id=10311 | name=Double Down | effect=Doubles the base points of the played hand. | rarity=A | image=https://jokersofneon.com/cards/10311.png
+- id=10312 | name=Royal Blessing | effect=Each ROYAL FLUSH you play levels up a random hand by 1. | rarity=A | image=https://jokersofneon.com/cards/10312.png
+- id=10313 | name=Disposophobia | effect=THREE OF A KIND accumulates +15 cash, FOUR OF A KIND +15 points, and FIVE OF A KIND +1 multi, each with a 50% chance. | rarity=S | image=https://jokersofneon.com/cards/10313.png
+- id=10314 | name=Ouroboros | effect=Each round, copies the effect of a random equipped special card. | rarity=S | image=https://jokersofneon.com/cards/10314.png
 - id=19901 | name=Lucky Cashback | effect=50% chance to add +150 cash when playing or discarding. | rarity=C | image=https://jokersofneon.com/cards/19901.png
 - id=19902 | name=Resonant Multiplier | effect=For every card with a value under 5, adds multi equal to its value. | rarity=B | image=https://jokersofneon.com/cards/19902.png
-- id=19903 | name=Swamp Redemption | effect=Gains between +1 and +5 points (stacking) each time you discard. Currently +{{points}} points. | rarity=S | image=https://jokersofneon.com/cards/19903.png
+- id=19903 | name=Swamp Redemption | effect=Gains between +1 and +5 points (stacking) each time you discard. | rarity=S | image=https://jokersofneon.com/cards/19903.png
 
 RAGE CARDS
 - id=20001 | name=Broken Hearts | effect=Heart suited cards will not score during this round | rarity=C | image=https://jokersofneon.com/cards/20001.png
@@ -572,6 +586,7 @@ RAGE CARDS
 - id=20023 | name=Punched Ticket | effect=You can't play the same hand twice in this round | rarity=S | image=https://jokersofneon.com/cards/20023.png
 - id=20025 | name=Buzzkiller | effect=Your most-played hand does not count this round. | image=https://jokersofneon.com/cards/20025.png
 - id=20026 | name=Blackout | effect=Two of your current special cards get silenced for this round | image=https://jokersofneon.com/cards/20026.png
+- id=20027 | name=Pharaoh's Mandate | effect=When you play a hand, its level resets to 1. | image=https://jokersofneon.com/cards/20027.png
 
 POWER-UPS
 - id=800 | name=+25 Points | effect_text=Scores +25 additional points | effect_points=25 | effect_multi=0 | tier=B | base_cost=100 | sell_value=50 | image=https://jokersofneon.com/cards/800.png
@@ -609,10 +624,10 @@ ACTIVE SPECIALS SHOP DISTRIBUTION (CLASSIC MOD)
   - A-Grade (15% probability, cost 3500): Quad Multiplier, Extra draws, Extra drops, Four of a Kind Booster, Five of a Kind Booster, The hand thief, Lucky 7, Figures Booster, Love is in the air, Spade Trio, Rainbow, Slot Saver, Special Multiplier, Initial advantage.
   - S-Grade (15% probability, cost 5000): Extra help, Joker Booster, Second chance, Deadline, Rising Ladder.
 - Season specials shop:
-  - C-Grade (45%, cost 1000): S1: Faded Poster, Tamer of Chances, Blackjack, Point Juggler. S2: Relativity, Cash Catalyst, Lifeflame, Accidental Value.
-  - B-Grade (25%, cost 1750): S1: Deck Collector, Circle of Fortune, Suit Roulette, High Roller. S2: Cash Loop, Impermanence, Duality, Neon Doctrine.
-  - A-Grade (15%, cost 3500): S1: Hanged Joker, Special Sacrifice, Efficient Play, Hestia Blessing. S2: Minimalism, Neon Synergy, Efficient Hunter, Providence.
-  - S-Grade (15%, cost 5000): S1: Rage Breaker, Burning Rewards. S2: Residual Charge, Undying Draw.
+  - C-Grade (45%, cost 1000): S1: Faded Poster, Tamer of Chances, Blackjack, Point Juggler. S2: Relativity, Cash Catalyst, Lifeflame, Accidental Value. S3: Wild Deuces, Midas Hand, Discard Charge, Pocket Joker.
+  - B-Grade (25%, cost 1750): S1: Deck Collector, Circle of Fortune, Suit Roulette, High Roller. S2: Cash Loop, Impermanence, Duality, Neon Doctrine. S3: Club Keeper, Adrenaline, Loot Rush, Practice Shoot.
+  - A-Grade (15%, cost 3500): S1: Hanged Joker, Special Sacrifice, Efficient Play, Hestia Blessing. S2: Minimalism, Neon Synergy, Efficient Hunter, Providence. S3: Aftershock, Extreme Attachment, Double Down, Royal Blessing.
+  - S-Grade (15%, cost 5000): S1: Rage Breaker, Burning Rewards. S2: Residual Charge, Undying Draw. S3: Disposophobia, Ouroboros.
 - GG Collection specials: Lucky Cashback (C), Resonant Multiplier (B), Swamp Redemption (S).
 
 ACTIVE RAGE CARD DISTRIBUTION (CLASSIC MOD)
@@ -735,4 +750,3 @@ MOD SYSTEM (ARCHITECTURE)
 - Active mod: "jokers_of_neon_classic".
 - ModConfig stores contract addresses for: deck, specials, rages, loot_boxes, game_config, shop_config, poker_hands.
 - Managers: mod_manager (CRUD for mods), rage_manager (registers/resolves rage cards), special_manager (registers/resolves special cards).
-
