@@ -9,6 +9,10 @@ import {
   MARKETPLACE_API_KEY,
 } from "../config/contracts";
 import { DojoContext } from "../../dojo/DojoContext";
+import {
+  convertAtomicAmountToNumber,
+  trackApprovedPurchase,
+} from "../../utils/purchaseAnalytics";
 
 export type CryptoStatus =
   | "idle"
@@ -100,6 +104,26 @@ export function useCryptoPurchase() {
       // Wait for transaction confirmation
       setStatus("confirming");
       await account.waitForTransaction(txHash);
+
+      const tokenAmount = convertAtomicAmountToNumber(priceAtoms, 6);
+      trackApprovedPurchase({
+        transactionId: txHash,
+        purchaseChannel: "crypto",
+        purchaseKind:
+          typeof productId === "string" && productId.startsWith("season_pass")
+            ? "season_pass"
+            : "pack",
+        purchaseSurface: "shop",
+        paymentProvider: SHOP_CONTRACT_ADDRESS
+          ? "starknet_shop_contract"
+          : "starknet_shop_transfer",
+        productId: apiProductId ?? productId.toString(),
+        productName: apiProductId ?? productId.toString(),
+        value: Number.isFinite(tokenAmount) ? tokenAmount : null,
+        currency: "USD",
+        tokenSymbol: "USDC",
+        tokenAmount: Number.isFinite(tokenAmount) ? tokenAmount : null,
+      });
 
       // Notify API to deliver purchased item
       setStatus("submitting");
