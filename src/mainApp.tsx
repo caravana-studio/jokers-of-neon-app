@@ -70,6 +70,11 @@ const BYPASS_MOBILE_BROWSER_RULE = parseBooleanEnv(
 const BYPASS_MAINTENANCE = parseBooleanEnv(import.meta.env.VITE_BYPASS_MAINTENANCE);
 const MAINTENANCE_BYPASS_QUERY_PARAM = "bypassMaintenance";
 
+const isRunningOnLocalhost = (): boolean => {
+  if (typeof window === "undefined") return false;
+  return window.location.hostname === "localhost";
+};
+
 const shouldBypassMaintenanceFromUrl = (): boolean => {
   if (typeof window === "undefined") return false;
   return new URLSearchParams(window.location.search).has(
@@ -166,6 +171,7 @@ async function init() {
       // If the maintenance flag is set, block the app
       if (
         data.maintenance &&
+        !isRunningOnLocalhost() &&
         !BYPASS_MAINTENANCE &&
         !shouldBypassMaintenanceFromUrl()
       ) {
@@ -288,7 +294,7 @@ async function init() {
     if (
       isMobileOnly &&
       !isNative &&
-      window.location.hostname !== "localhost" &&
+      !isRunningOnLocalhost() &&
       !BYPASS_MOBILE_BROWSER_RULE
     ) {
       return root.render(

@@ -28,6 +28,8 @@ import {
 import { useAccount } from "@starknet-react/core";
 import { DojoContext } from "../dojo/DojoContext";
 import { useUsername } from "../dojo/utils/useUsername";
+import { useUsernameStore } from "../state/useUsernameStore";
+import { addressKey } from "../utils/starknetAddress";
 import { isNative as realNative, platform } from "../utils/capacitorUtils";
 import { getRevenueCatApiKey } from "../utils/getRevenueCatApiKey";
 import { registerMilestone } from "../utils/appsflyerReferral";
@@ -37,7 +39,6 @@ import {
 } from "../utils/purchaseAnalytics";
 
 const FIRST_PURCHASE_KEY = "referral_first_purchase_tracked";
-const ANON_RC_USER = "jokers_anon_guest";
 
 const forceWebPayments = import.meta.env.VITE_FORCE_WEB_PAYMENTS
 const isNative = forceWebPayments ? false : realNative;
@@ -382,6 +383,14 @@ const normalizeOfferings = (
   };
 };
 
+const createAnonymousWebRevenueCatUserId = () => {
+  if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+    return `rc_web_anon_${crypto.randomUUID()}`;
+  }
+
+  return `rc_web_anon_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`;
+};
+
 export const RevenueCatProvider = ({ children }: PropsWithChildren) => {
   const dojoCtx = useContext(DojoContext);
   const { address: starknetAddress } = useAccount();
@@ -389,16 +398,26 @@ export const RevenueCatProvider = ({ children }: PropsWithChildren) => {
   const address = dojoAddress || starknetAddress || null;
   const accountType = dojoCtx?.accountType ?? null;
   const username = useUsername();
+  const usernameStatus = useUsernameStore((store) => store.status);
+  const storedUsernameAddress = useUsernameStore((store) => store.address);
+  const hasReadyUsername =
+    Boolean(address) &&
+    Boolean(username) &&
+    usernameStatus === "ready" &&
+    addressKey(storedUsernameAddress) === addressKey(address);
 
   const userId =
-    address && username ? `${username},${address}` : ANON_RC_USER;
+    accountType !== "burner" && hasReadyUsername && address && username
+      ? `${username},${address}`
+      : null;
   const [offerings, setOfferings] =
     useState<RevenueCatFormattedOfferings | null>(null);
   const [loading, setLoading] = useState(false);
   const [purchasesClient, setPurchasesClient] =
     useState<PurchasesClient | null>(isNative ? CapacitorPurchases : null);
   const purchasesRef = useRef<PurchasesClient | null>(purchasesClient);
-  const lastUserIdRef = useRef<string | null>(null);
+  const anonymousWebUserIdRef = useRef<string>(createAnonymousWebRevenueCatUserId());
+  const lastUserIdRef = useRef<string | null | undefined>(undefined);
 
   useEffect(() => {
     purchasesRef.current = purchasesClient;
@@ -429,7 +448,8 @@ export const RevenueCatProvider = ({ children }: PropsWithChildren) => {
   }, []);
 
   const configureRevenueCat = useCallback(async () => {
-    if (lastUserIdRef.current === userId) {
+    const previousUserId = lastUserIdRef.current;
+    if (previousUserId !== undefined && previousUserId === userId) {
       return;
     }
 
@@ -438,17 +458,41 @@ export const RevenueCatProvider = ({ children }: PropsWithChildren) => {
 
       if (isNative) {
         await CapacitorPurchases.setLogLevel({ level: LOG_LEVEL.DEBUG });
-        await CapacitorPurchases.configure({
-          apiKey,
-          appUserID: userId,
-        });
+
+        if (previousUserId === undefined) {
+          await CapacitorPurchases.configure({
+            apiKey,
+            appUserID: userId,
+          });
+        } else if (userId) {
+          await CapacitorPurchases.logIn({
+            appUserID: userId,
+          });
+        } else {
+          await CapacitorPurchases.logOut();
+        }
+
         purchasesRef.current = CapacitorPurchases;
         setPurchasesClient(CapacitorPurchases);
       } else {
-        const purchasesInstance = WebPurchases.configure({
-          apiKey,
-          appUserId: userId,
-        });
+        let purchasesInstance = purchasesRef.current as WebPurchasesInstance | null;
+
+        if (previousUserId === undefined || !purchasesInstance) {
+          purchasesInstance = WebPurchases.configure({
+            apiKey,
+            appUserId: userId ?? anonymousWebUserIdRef.current,
+          });
+        } else if (userId) {
+          if (previousUserId === null) {
+            await purchasesInstance.identifyUser(userId);
+          } else {
+            await purchasesInstance.changeUser(userId);
+          }
+        } else {
+          anonymousWebUserIdRef.current = createAnonymousWebRevenueCatUserId();
+          await purchasesInstance.changeUser(anonymousWebUserIdRef.current);
+        }
+
         purchasesRef.current = purchasesInstance;
         setPurchasesClient(purchasesInstance);
       }
@@ -481,6 +525,21 @@ export const RevenueCatProvider = ({ children }: PropsWithChildren) => {
         );
       }
 
+      console.info("[RevenueCat] purchasePackage user context", {
+        packageId: getPackageIdentifier(rcPackage),
+        username,
+        usernameStatus,
+        accountType,
+        address,
+        hasReadyUsername,
+        userId,
+        isNative,
+      });
+
+      if (!userId) {
+        throw new Error("purchasePackage: RevenueCat user not identified");
+      }
+
       if (isNative) {
         return (
           purchasesRef.current as typeof CapacitorPurchases
@@ -499,7 +558,7 @@ export const RevenueCatProvider = ({ children }: PropsWithChildren) => {
         });
       }
     },
-    []
+    [accountType, address, hasReadyUsername, userId, username, usernameStatus]
   );
 
   const purchasePackageById = useCallback(

@@ -19,9 +19,11 @@ import { useShopPrice } from "../../marketplace/hooks/useShopPrice";
 import { useUSDCBalance } from "../../marketplace/hooks/useUSDCBalance";
 import { useSeasonNumber } from "../../constants/season";
 import { useSeasonPass } from "../../providers/SeasonPassProvider";
+import { useUsernameStore } from "../../state/useUsernameStore";
 import { BLUE, VIOLET_LIGHT } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { isNative } from "../../utils/capacitorUtils";
+import { addressKey } from "../../utils/starknetAddress";
 import { PaymentMethodModal } from "./PaymentMethodModal";
 
 const coinPulse = keyframes`
@@ -84,6 +86,10 @@ export const SeasonPassRow = ({
   const { address: connectedAddress } = useAccount();
   const dojoAddress = dojoCtx?.account.account?.address || null;
   const starknetAddress = dojoAddress || connectedAddress || null;
+  const accountType = dojoCtx?.accountType ?? null;
+  const usernameStatus = useUsernameStore((store) => store.status);
+  const storedUsernameAddress = useUsernameStore((store) => store.address);
+  const storedUsername = useUsernameStore((store) => store.username);
   const { connectors, connect } = useConnect();
   const { buy: buyWithCrypto, status: cryptoStatus } = useCryptoPurchase();
   const { priceAtoms, priceUsdc } = useShopPrice(id);
@@ -96,6 +102,20 @@ export const SeasonPassRow = ({
   );
   const hasFiatOption = Boolean(price);
   const hasCryptoOption = !isNative && priceAtoms !== undefined && priceAtoms > 0n;
+  const requiresRevenueCatIdentity = Boolean(starknetAddress && hasFiatOption);
+  const hasReadyUsername =
+    Boolean(starknetAddress) &&
+    Boolean(storedUsername) &&
+    usernameStatus === "ready" &&
+    addressKey(storedUsernameAddress) === addressKey(starknetAddress);
+  const isRevenueCatIdentityReady =
+    !requiresRevenueCatIdentity ||
+    (accountType !== "burner" && hasReadyUsername);
+  const isResolvingUsername =
+    requiresRevenueCatIdentity &&
+    accountType !== "burner" &&
+    !hasReadyUsername &&
+    (usernameStatus === "idle" || usernameStatus === "loading");
   const hasEnoughUsdc =
     balanceRaw !== undefined && priceAtoms !== undefined
       ? balanceRaw >= priceAtoms
@@ -105,7 +125,8 @@ export const SeasonPassRow = ({
     unlocked ||
     isLoading ||
     isCryptoPurchasing ||
-    (!hasFiatOption && !hasCryptoOption);
+    (!hasFiatOption && !hasCryptoOption) ||
+    (requiresRevenueCatIdentity && !isRevenueCatIdentityReady);
 
   const handleFiatPurchase = async () => {
     if (isLoading || isCryptoPurchasing || unlocked) return;
@@ -183,6 +204,10 @@ export const SeasonPassRow = ({
       if (connector) {
         connect({ connector });
       }
+      return;
+    }
+
+    if (requiresRevenueCatIdentity && !isRevenueCatIdentityReady) {
       return;
     }
 
@@ -313,7 +338,7 @@ export const SeasonPassRow = ({
           isDisabled={isButtonDisabled}
           onClick={handleButtonClick}
         >
-          {isLoading || isCryptoPurchasing ? (
+          {isLoading || isCryptoPurchasing || isResolvingUsername ? (
             <Spinner size="xs" />
           ) : unlocked ? (
             t("unlocked")
