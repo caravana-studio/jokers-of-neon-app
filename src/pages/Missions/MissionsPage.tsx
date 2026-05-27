@@ -24,6 +24,7 @@ import {
 } from "../../dojo/queries/getDailyMissions";
 import { useDojo } from "../../dojo/useDojo";
 import { useInformationPopUp } from "../../providers/InformationPopUpProvider";
+import { useGameStore } from "../../state/useGameStore";
 import { BLUE } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { DailyMission } from "../../types/DailyMissions";
@@ -51,6 +52,7 @@ export const MissionsPage = ({ inGame = false }: MissionsPageProps) => {
     setup: { client },
     account: { account },
   } = useDojo();
+  const { id: gameId } = useGameStore();
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "missions",
   });
@@ -70,7 +72,11 @@ export const MissionsPage = ({ inGame = false }: MissionsPageProps) => {
     setLoading(true);
 
     Promise.all([
-      getDailyMissions(client, account.address),
+      getDailyMissions(
+        client,
+        account.address,
+        inGame && gameId > 0 ? { gameId } : {}
+      ),
       getWeeklyMissions(client, account.address),
     ])
       .then(([daily, weekly]) => {
@@ -90,7 +96,7 @@ export const MissionsPage = ({ inGame = false }: MissionsPageProps) => {
     return () => {
       cancelled = true;
     };
-  }, [account, client]);
+  }, [account, client, gameId, inGame]);
 
   const dailyResetAt = getNextDailyMissionResetDate(new Date());
   const weeklyResetAt = getNextWeeklyMissionResetDate(new Date());
@@ -221,6 +227,7 @@ export const MissionsPage = ({ inGame = false }: MissionsPageProps) => {
                     mission={mission}
                     xpLabel={t("xp-label")}
                     completed={mission.completed}
+                    showProgress={inGame}
                   />
                 ))}
               </Flex>

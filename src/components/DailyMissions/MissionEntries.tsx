@@ -57,6 +57,7 @@ interface MissionEntryProps {
   xpLabel: string;
   compacted?: boolean;
   completed?: boolean;
+  showProgress?: boolean;
 }
 
 export const DailyMissionEntry = ({
@@ -64,50 +65,125 @@ export const DailyMissionEntry = ({
   xpLabel,
   compacted = false,
   completed,
-}: MissionEntryProps) => (
-  <Flex
-    justifyContent="space-between"
-    alignItems="center"
-    gap={compacted ? 2 : 3}
-  >
+  showProgress = false,
+}: MissionEntryProps) => {
+  const isCompleted = completed ?? mission.completed;
+
+  if (showProgress) {
+    const progress = mission.progress ?? 0;
+    const target = mission.target ?? 0;
+    const percent = target > 0 ? (progress / target) * 100 : 0;
+    const progressLabel = `${progress}/${target}`;
+
+    if (compacted) {
+      return (
+        <Flex justifyContent="space-between" alignItems="center" gap={2}>
+          <Flex alignItems="center" gap={2.5} minW={0}>
+            <DailyMissionCheckbox
+              completed={isCompleted}
+              size={{ base: "20px", sm: "24px" }}
+              borderRadius={{ base: "8px", sm: "10px" }}
+            />
+            <Text
+              fontSize={{ base: "12px", sm: "14px" }}
+              lineHeight={1.15}
+              textShadow={isCompleted ? `0 0 12px ${VIOLET_LIGHT}` : "none"}
+              color={isCompleted ? VIOLET_LIGHT : "white"}
+            >
+              {mission.description}
+              {!isCompleted ? ` (${progressLabel})` : ""}
+            </Text>
+          </Flex>
+          <MissionXp
+            xp={mission.xp}
+            xpLabel={xpLabel}
+            completed={isCompleted}
+            compacted
+            minWidth="54px"
+          />
+        </Flex>
+      );
+    }
+
+    return (
+      <Flex direction="column" gap={0.5} py={{ base: 1, sm: 2 }}>
+        <Text
+          fontSize={{ base: "15px", sm: "20px" }}
+          lineHeight={1}
+          textShadow={isCompleted ? `0 0 12px ${VIOLET_LIGHT}` : "none"}
+          color={isCompleted ? VIOLET_LIGHT : "white"}
+        >
+          {mission.description}
+        </Text>
+        <Flex alignItems="center" gap={{ base: 3, sm: 5 }}>
+          <Box flex={1}>
+            <ProgressBar
+              progress={percent}
+              incompleteColor={BLUE}
+              completeColor={VIOLET}
+              height={{ base: "18px", sm: "22px" }}
+              label={progressLabel}
+              labelFontSize={{ base: "12px", sm: "15px" }}
+            />
+          </Box>
+          <MissionXp
+            xp={mission.xp}
+            xpLabel={xpLabel}
+            completed={isCompleted}
+            minWidth="60px"
+          />
+        </Flex>
+      </Flex>
+    );
+  }
+
+  return (
     <Flex
+      justifyContent="space-between"
       alignItems="center"
-      gap={compacted ? 2.5 : { base: 3, sm: 4 }}
-      minW={0}
+      gap={compacted ? 2 : 3}
     >
-      <DailyMissionCheckbox
-        completed={mission.completed}
-        size={
-          compacted
-            ? { base: "20px", sm: "24px" }
-            : { base: "24px", sm: "30px" }
-        }
-        borderRadius={
-          compacted ? { base: "8px", sm: "10px" } : { base: "10px", sm: "13px" }
-        }
-      />
-      <Text
-        fontSize={
-          compacted
-            ? { base: "12px", sm: "14px" }
-            : { base: "15px", sm: "20px" }
-        }
-        textShadow={completed ? `0 0 12px ${VIOLET_LIGHT}` : "none"}
-        color={completed ? VIOLET_LIGHT : "white"}
-        lineHeight={compacted ? 1.15 : 1.2}
+      <Flex
+        alignItems="center"
+        gap={compacted ? 2.5 : { base: 3, sm: 4 }}
+        minW={0}
       >
-        {mission.description}
-      </Text>
+        <DailyMissionCheckbox
+          completed={isCompleted}
+          size={
+            compacted
+              ? { base: "20px", sm: "24px" }
+              : { base: "24px", sm: "30px" }
+          }
+          borderRadius={
+            compacted
+              ? { base: "8px", sm: "10px" }
+              : { base: "10px", sm: "13px" }
+          }
+        />
+        <Text
+          fontSize={
+            compacted
+              ? { base: "12px", sm: "14px" }
+              : { base: "15px", sm: "20px" }
+          }
+          textShadow={isCompleted ? `0 0 12px ${VIOLET_LIGHT}` : "none"}
+          color={isCompleted ? VIOLET_LIGHT : "white"}
+          lineHeight={compacted ? 1.15 : 1.2}
+        >
+          {mission.description}
+        </Text>
+      </Flex>
+      <MissionXp
+        xp={mission.xp}
+        xpLabel={xpLabel}
+        completed={isCompleted}
+        compacted={compacted}
+        minWidth={compacted ? "54px" : "70px"}
+      />
     </Flex>
-    <MissionXp
-      xp={mission.xp}
-      xpLabel={xpLabel}
-      completed={mission.completed}
-      compacted={compacted}
-      minWidth={compacted ? "54px" : "70px"}
-    />
-  </Flex>
-);
+  );
+};
 
 export const WeeklyMissionEntry = ({
   mission,
