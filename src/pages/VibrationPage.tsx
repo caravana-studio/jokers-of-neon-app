@@ -18,6 +18,7 @@ import { useState, type ReactNode } from "react";
 import { DelayedLoading } from "../components/DelayedLoading";
 import { MobileDecoration } from "../components/MobileDecoration";
 import { useCustomToast } from "../hooks/useCustomToast";
+import { useSettings } from "../providers/SettingsProvider";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 
 type RawPattern =
@@ -178,6 +179,7 @@ const ScenarioCardView = ({
 export const VibrationPage = () => {
   const { isSmallScreen } = useResponsiveValues();
   const { showErrorToast } = useCustomToast();
+  const { vibrationEnabled } = useSettings();
   const [customDuration, setCustomDuration] = useState("300");
   const [lastRun, setLastRun] = useState("Nothing triggered yet");
   const [isRunning, setIsRunning] = useState(false);
@@ -477,6 +479,15 @@ export const VibrationPage = () => {
   };
 
   const runHaptic = async (label: string, action: () => Promise<void>) => {
+    if (!vibrationEnabled) {
+      setLastRun("Haptics disabled in settings");
+      showErrorToast(
+        "Enable vibration in Settings to run haptics.",
+        "Haptics disabled"
+      );
+      return;
+    }
+
     if (isRunning) return;
 
     setIsRunning(true);
@@ -887,6 +898,9 @@ export const VibrationPage = () => {
               </Badge>
               <Badge colorScheme={isPluginAvailable ? "green" : "red"} px={2} py={1}>
                 plugin: {isPluginAvailable ? "available" : "missing"}
+              </Badge>
+              <Badge colorScheme={vibrationEnabled ? "green" : "red"} px={2} py={1}>
+                app vibration: {vibrationEnabled ? "enabled" : "disabled"}
               </Badge>
               {!isNative && (
                 <Badge
