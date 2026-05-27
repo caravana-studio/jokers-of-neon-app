@@ -161,7 +161,7 @@ export const CavosWrapper: React.FC<CavosWrapperProps> = ({ children }) => {
         appId: CAVOS_APP_ID,
         network: "mainnet",
         paymasterApiKey: CAVOS_PAYMASTER_API_KEY,
-        enableLogging: false,
+        enableLogging: true,
         starknetRpcUrl: CAVOS_STARKNET_RPC_URL,
         slot: {
           rpcUrl: slotRpcUrl,
