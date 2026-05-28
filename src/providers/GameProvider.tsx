@@ -10,6 +10,7 @@ import { AccountInterface } from "starknet";
 import { createGame } from "../api/createGame.ts";
 import { fetchUsernameByAddress } from "../api/usernames.ts";
 import { useUsernameRequirement } from "../components/UsernameGate.tsx";
+import { getSeasonNumber } from "../constants/season.ts";
 import { createMiniAppGame } from "../miniapp/api/createMiniAppGame.ts";
 import {
   acumSfx,
@@ -29,6 +30,7 @@ import { useAudio } from "../hooks/useAudio.tsx";
 import { usePitchedAudio } from "../hooks/usePitchedAudio.tsx";
 import { useCustomToast } from "../hooks/useCustomToast.tsx";
 import { useCardAnimations } from "../providers/CardAnimationsProvider";
+import { getPlayerLives } from "../queries/getPlayerLives.ts";
 import { AppType, useAppContext } from "./AppContextProvider";
 import { useAnimationStore } from "../state/useAnimationStore.ts";
 import { useCurrentHandStore } from "../state/useCurrentHandStore.ts";
@@ -198,6 +200,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     sellPowerup,
     surrenderGame,
     transferGame,
+    claimLives,
   } = useGameActions();
 
   const { showErrorToast } = useCustomToast();
@@ -215,6 +218,70 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const { play: clearRoundSound } = useAudio(clearRound, sfxVolume);
   const { play: clearLevelSound } = useAudio(clearLevel, sfxVolume);
   const { play: popSound } = useAudio(popSfx, sfxVolume);
+
+  const ensureGuestLivesReadyForCreateGame = async (seasonId: number) => {
+    if (isMiniApp || accountType !== "burner") {
+      return true;
+    }
+
+    const playerAddress = account?.address;
+    if (!playerAddress) {
+      return false;
+    }
+
+    const livesResponse = await getPlayerLives(client, {
+      playerAddress,
+      seasonId,
+    });
+    const availableLives = livesResponse.data?.available_lives ?? 0;
+
+    if (availableLives > 0) {
+      return true;
+    }
+
+    const nextLiveTimestamp =
+      livesResponse.data?.next_live_timestamp?.getTime();
+    const canAttemptClaim =
+      !livesResponse.success ||
+      !livesResponse.data ||
+      livesResponse.data.max_lives === 0 ||
+      !nextLiveTimestamp ||
+      nextLiveTimestamp <= Date.now();
+
+    if (!canAttemptClaim) {
+      console.warn("[create_game] Guest has no lives available yet", {
+        playerAddress,
+        seasonId,
+        nextLiveTimestamp,
+      });
+      return false;
+    }
+
+    console.log("[create_game] Waiting for guest claim_lives before create_game", {
+      playerAddress,
+      seasonId,
+    });
+
+    const claimResult = await claimLives(seasonId);
+    if (claimResult.success) {
+      return true;
+    }
+
+    const refreshedLives = await getPlayerLives(client, {
+      playerAddress,
+      seasonId,
+    });
+
+    if ((refreshedLives.data?.available_lives ?? 0) > 0) {
+      return true;
+    }
+
+    console.warn("[create_game] Guest claim_lives did not make a live available", {
+      playerAddress,
+      seasonId,
+    });
+    return false;
+  };
 
   const playAnimationDuration = getPlayAnimationDuration(level, animationSpeed);
 
@@ -353,13 +420,25 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     }
 
     try {
+      const seasonId = getSeasonNumber();
+      const livesReady = await ensureGuestLivesReadyForCreateGame(seasonId);
+      if (!livesReady) {
+        showErrorToast("Error creating game");
+        setGameError(true);
+        setGameLoading(false);
+        navigate("/my-games");
+        return false;
+      }
+
       console.log("Creating game...");
       const response = isMiniApp
         ? await createMiniAppGame({
+            seasonId,
             isTournament,
           })
         : await createGame({
             userAddress: account.address,
+            seasonId,
             isTournament,
           });
       const newGameId = response?.data?.slot?.game_id;
