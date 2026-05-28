@@ -98,10 +98,7 @@ function App() {
       try {
         const { status } = await AppTrackingTransparency.getStatus();
         if (status === "notDetermined") {
-          const result = await AppTrackingTransparency.requestPermission();
-          console.log("Tracking permission:", result);
-        } else {
-          console.log("Tracking already handled:", status);
+          await AppTrackingTransparency.requestPermission();
         }
       } catch (err) {
         console.error("Error checking tracking permission:", err);

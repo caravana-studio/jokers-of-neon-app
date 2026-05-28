@@ -192,36 +192,6 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     }
   };
 
-  // Log Cavos state changes for debugging
-  useEffect(() => {
-    if (cavos) {
-      console.log("[CAVOS] State update:", {
-        isAuthenticated: cavos.isAuthenticated,
-        isLoading: cavos.isLoading,
-        address: cavos.address,
-        user: cavos.user,
-        walletStatus: cavos.walletStatus,
-        hasActiveSession: cavos.hasActiveSession,
-        hasExecuteOnSlot: !!cavos.executeOnSlot,
-        isSlotDeploying: cavos.walletStatus?.isSlotDeploying,
-        isSlotDeployed: cavos.walletStatus?.isSlotDeployed,
-        hasSlotProvider: !!cavos.getSlotProvider?.(),
-      });
-    }
-  }, [
-    cavos?.isAuthenticated,
-    cavos?.isLoading,
-    cavos?.address,
-    cavos?.walletStatus?.isReady,
-    cavos?.walletStatus?.isDeployed,
-    cavos?.walletStatus?.isDeploying,
-    cavos?.walletStatus?.isRegistering,
-    cavos?.walletStatus?.isSessionActive,
-    cavos?.walletStatus?.isSlotDeploying,
-    cavos?.walletStatus?.isSlotDeployed,
-    cavos?.hasActiveSession,
-  ]);
-
   // Refs to avoid stale closures in CavosAccountAdapter callbacks.
   // The adapter is created once via useMemo, but these refs always point to current values.
   const cavosRef = useRef(cavos);
@@ -246,14 +216,8 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
   // The adapter's execute() will wait for Slot deployment internally.
   const cavosAccountAdapter = useMemo(() => {
     if (!cavos?.isAuthenticated || !cavos?.address || !cavos?.executeOnSlot) {
-      console.log("[CAVOS] Adapter not ready:", {
-        isAuthenticated: cavos?.isAuthenticated,
-        address: cavos?.address,
-        hasExecuteOnSlot: !!cavos?.executeOnSlot,
-      });
       return null;
     }
-    console.log("[CAVOS] Creating CavosAccountAdapter for address:", cavos.address);
     return new CavosAccountAdapter(
       cavos.address,
       cavos.executeOnSlot,
@@ -265,22 +229,11 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
 
   // Handle Cavos authentication state changes
   useEffect(() => {
-    console.log("[CAVOS] Auth effect check:", {
-      connectionStatus,
-      isAuthenticated: cavos?.isAuthenticated,
-      hasAdapter: !!cavosAccountAdapter,
-      walletReady: cavos?.walletStatus?.isReady,
-      mainnetDeployed: cavos?.walletStatus?.isDeployed,
-      slotDeployed: cavos?.walletStatus?.isSlotDeployed,
-      readyForSlotTransactions: isCavosReadyForSlotTransactions,
-    });
-
     if (
       connectionStatus === "connecting_cavos" &&
       isCavosReadyForSlotTransactions &&
       cavosAccountAdapter
     ) {
-      console.log("[CAVOS] Setting finalAccount with Cavos adapter");
       setAccountType("cavos");
       localStorage.setItem(ACCOUNT_TYPE, "cavos");
       setFinalAccount(cavosAccountAdapter as unknown as AccountInterface);
@@ -301,7 +254,6 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
       cavosAccountAdapter &&
       (accountType === "cavos" || connectionStatus === "selecting")
     ) {
-      console.log("[CAVOS] Auto-connecting Cavos account (reload or magic link)");
       setAccountType("cavos");
       localStorage.setItem(ACCOUNT_TYPE, "cavos");
       setFinalAccount(cavosAccountAdapter as unknown as AccountInterface);

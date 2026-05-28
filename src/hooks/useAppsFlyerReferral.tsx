@@ -59,28 +59,21 @@ export function useAppsFlyerReferral(): UseAppsFlyerReferralResult {
     accType: "burner" | "controller" | "cavos" | null,
     user: string | null | undefined
   ) => {
-    console.log("[useAppsFlyerReferral] processReferral called", { userAddress, accType, user });
-
     const pending = getPendingReferralData();
-    console.log("[useAppsFlyerReferral] Pending referral data:", pending);
 
     if (!pending) {
-      console.log("[useAppsFlyerReferral] No pending referral data, skipping");
       return;
     }
 
     // Skip if already processed for this user
     if (isReferralAlreadyProcessed(userAddress)) {
-      console.log("[useAppsFlyerReferral] Already processed for this user, skipping");
       clearPendingReferralData();
       return;
     }
     setState("processing");
 
     try {
-      console.log("[useAppsFlyerReferral] Calling processReferralData...");
       const result = await processReferralData(pending, userAddress, accType, user);
-      console.log("[useAppsFlyerReferral] processReferralData result:", result);
 
       if (result.success) {
         setReferralData(pending);
@@ -89,18 +82,13 @@ export function useAppsFlyerReferral(): UseAppsFlyerReferralResult {
 
         // Only register milestone if claim was NOT ignored (i.e., not a burner/guest)
         if (!result.ignored) {
-          console.log("[useAppsFlyerReferral] Registering account_created milestone...");
           try {
             await registerMilestone(userAddress, "account_created", undefined, accType, user);
-            console.log("[useAppsFlyerReferral] account_created milestone registered successfully");
           } catch (milestoneError) {
             console.error("[useAppsFlyerReferral] Error registering account_created milestone:", milestoneError);
           }
-        } else {
-          console.log("[useAppsFlyerReferral] Claim was ignored (burner/guest), skipping milestone registration");
         }
       } else {
-        console.log("[useAppsFlyerReferral] processReferralData returned false");
         setReferralData(pending); // Keep for retry
         setState("error");
       }
@@ -134,26 +122,17 @@ export function useAppsFlyerReferral(): UseAppsFlyerReferralResult {
   // Main effect - runs when user logs in
   useEffect(() => {
     const userAddress = account?.address;
-    console.log("[useAppsFlyerReferral] Main effect triggered", {
-      userAddress,
-      accountType,
-      username,
-      processedAddress: processedAddressRef.current
-    });
 
     if (!userAddress) {
-      console.log("[useAppsFlyerReferral] No user address, skipping");
       return;
     }
 
     // Skip if we already processed for this address
     if (processedAddressRef.current === userAddress) {
-      console.log("[useAppsFlyerReferral] Already processed for this address, skipping");
       return;
     }
 
     processedAddressRef.current = userAddress;
-    console.log("[useAppsFlyerReferral] Processing for new address:", userAddress);
 
     // Set customer user ID in AppsFlyer SDK
     setAppsFlyerCustomerUserId(userAddress);
@@ -163,11 +142,6 @@ export function useAppsFlyerReferral(): UseAppsFlyerReferralResult {
       // Use refs to get the latest values (avoids stale closure)
       const latestAccountType = accountTypeRef.current;
       const latestUsername = usernameRef.current;
-      console.log("[useAppsFlyerReferral] Timeout triggered, calling processReferral with latest values", {
-        userAddress,
-        latestAccountType,
-        latestUsername
-      });
       await processReferral(userAddress, latestAccountType, latestUsername);
       await processConversion(userAddress);
     }, 500);

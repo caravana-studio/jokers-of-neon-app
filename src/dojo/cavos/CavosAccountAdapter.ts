@@ -56,7 +56,6 @@ export class CavosAccountAdapter {
   private async _waitForSlotDeploy(): Promise<void> {
     if (this._isSlotDeployed()) return;
 
-    console.log("[CavosAdapter] Waiting for Slot deployment...");
     const maxWait = 120_000;
     const interval = 2_000;
     let elapsed = 0;
@@ -65,7 +64,6 @@ export class CavosAccountAdapter {
       await new Promise((r) => setTimeout(r, interval));
       elapsed += interval;
       if (this._isSlotDeployed()) {
-        console.log("[CavosAdapter] Slot deployed, proceeding.");
         return;
       }
     }
@@ -100,7 +98,6 @@ export class CavosAccountAdapter {
 
     try {
       const status = await slotTransactionManager.getSessionStatus();
-      console.log("[CavosAdapter] Fast Slot session status:", status);
       if (!status.registered || status.expired || !status.active) {
         return null;
       }
@@ -108,6 +105,7 @@ export class CavosAccountAdapter {
       const account = slotTransactionManager.createDirectAccount(false);
       const result = await account.execute(calls, {
         resourceBounds: slotTransactionManager.getNoFeeResourceBounds(),
+        tip: 0n,
       });
 
       return result.transaction_hash;
@@ -129,31 +127,16 @@ export class CavosAccountAdapter {
     details?: any
   ): Promise<InvokeFunctionResponse> {
     const callsArray = Array.isArray(calls) ? calls : [calls];
-    console.log(
-      "[CavosAdapter] execute() called with",
-      callsArray.length,
-      "calls:",
-      callsArray.map((call) => ({
-        contractAddress: call.contractAddress,
-        entrypoint: call.entrypoint,
-        calldataLength: call.calldata?.length ?? 0,
-      })),
-      "details:",
-      details
-    );
 
     await this._waitForSlotDeploy();
 
     try {
       const fastTxHash = await this._tryExecuteOnSlotFastPath(callsArray);
       if (fastTxHash) {
-        console.log("[CavosAdapter] Fast Slot execute returned txHash:", fastTxHash);
         return { transaction_hash: fastTxHash };
       }
 
-      console.log("[CavosAdapter] Slot ready, calling executeOnSlot...");
       const txHash = await this._executeOnSlot(calls);
-      console.log("[CavosAdapter] executeOnSlot returned txHash:", txHash);
       return { transaction_hash: txHash };
     } catch (error) {
       logTransactionError("Cavos executeOnSlot failed", error, {
@@ -173,7 +156,6 @@ export class CavosAccountAdapter {
     txHash: string,
     options?: { retryInterval?: number }
   ): Promise<any> {
-    console.log("[CavosAdapter] waitForTransaction:", txHash);
     const retryInterval = options?.retryInterval ?? 1000;
     const maxAttempts = 120;
     let attempts = 0;
@@ -208,7 +190,10 @@ export class CavosAccountAdapter {
         }
       } catch (error) {
         lastProviderError = error;
-        if (attempts === 0 || (attempts + 1) % 10 === 0) {
+        if (
+          !isExpectedReceiptPendingError(error) &&
+          (attempts === 0 || (attempts + 1) % 10 === 0)
+        ) {
           logTransactionError(
             "Cavos waitForTransaction provider error while polling receipt",
             error,
@@ -266,4 +251,27 @@ const serializeForTimeout = (error: unknown) => {
   }
 
   return error;
+};
+
+const isExpectedReceiptPendingError = (error: unknown) => {
+  const errorWithExtras = error as Error & {
+    code?: unknown;
+    shortMessage?: unknown;
+    details?: unknown;
+  };
+  const message = [
+    errorWithExtras?.message,
+    errorWithExtras?.shortMessage,
+    errorWithExtras?.details,
+    String(errorWithExtras?.code ?? ""),
+  ]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
+
+  return (
+    message.includes("transaction not found") ||
+    message.includes("transaction hash not found") ||
+    message.includes("not found")
+  );
 };
