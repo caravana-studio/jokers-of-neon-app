@@ -100,7 +100,7 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
   });
   const { navigateToMap } = useMapNavigate();
   const { isSmallScreen } = useResponsiveValues();
-  const { currentScore } = useGameStore();
+  const { currentScore, setRoundRewards } = useGameStore();
   const [animationEnded, setAnimationEnded] = useState(false);
   const [skip, setSkip] = useState(false);
   const [isNavigating, setIsNavigating] = useState(false);
@@ -169,6 +169,7 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
 
     try {
       await navigateToMap();
+      setRoundRewards(undefined);
     } catch {
       setIsNavigating(false);
     }

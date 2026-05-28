@@ -1,5 +1,5 @@
 import { CavosProvider as CavosSDKProvider, useCavos } from "@cavos/react";
-import React, { ReactNode, useEffect, useRef } from "react";
+import React, { ReactNode } from "react";
 import { getContractByName } from "@dojoengine/core";
 import { getManifest, getManifestSource } from "../getManifest";
 import { rpcUrl as slotRpcUrl, slotInstance } from "../../config/cartridgeUrls";
@@ -136,28 +136,6 @@ const clearStaleCavosSessionPolicy = (allowedContracts: string[]) => {
 const CavosBridge: React.FC<{ children: ReactNode }> = ({ children }) => {
   const cavos = useCavos();
 
-  React.useEffect(() => {
-    console.log("[CAVOS-BRIDGE] Cavos SDK state:", {
-      isAuthenticated: cavos.isAuthenticated,
-      isLoading: cavos.isLoading,
-      address: cavos.address,
-      user: cavos.user,
-      walletStatus: cavos.walletStatus,
-      hasActiveSession: cavos.hasActiveSession,
-      pendingDeployTxHash: cavos.walletStatus?.pendingDeployTxHash,
-      isSlotDeploying: cavos.walletStatus?.isSlotDeploying,
-      isSlotDeployed: cavos.walletStatus?.isSlotDeployed,
-      pendingSlotDeployTxHash: cavos.walletStatus?.pendingSlotDeployTxHash,
-      hasSlotProvider: !!cavos.getSlotProvider?.(),
-    });
-  }, [
-    cavos.isAuthenticated,
-    cavos.isLoading,
-    cavos.address,
-    cavos.walletStatus,
-    cavos.hasActiveSession,
-  ]);
-
   return (
     <CavosBridgeContext.Provider value={cavos}>
       {children}
@@ -170,24 +148,6 @@ interface CavosWrapperProps {
 }
 
 export const CavosWrapper: React.FC<CavosWrapperProps> = ({ children }) => {
-  const instanceIdRef = useRef(Math.random().toString(36).slice(2, 8));
-
-  useEffect(() => {
-    console.log("[CAVOS-DEBUG] CavosWrapper mounted", {
-      instanceId: instanceIdRef.current,
-      hasAppId: !!CAVOS_APP_ID,
-      network: "mainnet",
-      starknetRpcUrl: CAVOS_STARKNET_RPC_URL,
-      slotRpcUrl,
-    });
-
-    return () => {
-      console.log("[CAVOS-DEBUG] CavosWrapper unmounted", {
-        instanceId: instanceIdRef.current,
-      });
-    };
-  }, []);
-
   if (!CAVOS_APP_ID) {
     return <>{children}</>;
   }

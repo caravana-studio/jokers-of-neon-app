@@ -62,7 +62,6 @@ const getEntities = async <S extends Schema>(
 };
 
 export async function setup({ ...config }: DojoConfig) {
-  console.log("DOJO_NAMESPACE", DOJO_NAMESPACE);
   // torii client
   const toriiClient = await new torii.ToriiClient({
     toriiUrl: config.toriiUrl,

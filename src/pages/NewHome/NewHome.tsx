@@ -452,7 +452,12 @@ export const NewHome = () => {
               </Text>
 
               {!useBurnerAcc && (
-                <Flex position="absolute" left="-12px" bottom="5px" zIndex={1001}>
+                <Flex
+                  position="absolute"
+                  left="-12px"
+                  bottom={{ lg: "70px", xl: "80px" }}
+                  zIndex={1001}
+                >
                   <ProfileTile />
                 </Flex>
               )}

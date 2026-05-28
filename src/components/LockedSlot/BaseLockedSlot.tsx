@@ -33,8 +33,10 @@ export const BaseLockedSlot = ({
 }: IBaseLockedSlotProps) => {
   const defaultBg = "/store/locked-slot.png";
   const [bgImage, setBgImage] = useState(defaultBg);
-  const finalPrice =
-    discountPrice && discountPrice > 0 ? discountPrice : price ?? 0;
+  const hasExplicitPrice =
+    price !== undefined && price !== null
+      ? true
+      : discountPrice !== undefined && discountPrice !== null;
 
   return (
     <Tooltip label={tooltipText}>
@@ -56,7 +58,7 @@ export const BaseLockedSlot = ({
             opacity={opacity}
           />
         </Box>
-        {showPrice && finalPrice > 0 && (
+        {showPrice && hasExplicitPrice && (
           <PriceBox
             price={Number(price ?? 0)}
             discountPrice={Number(discountPrice ?? 0)}
