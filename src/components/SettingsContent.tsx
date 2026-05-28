@@ -41,6 +41,8 @@ export const SettingsContent = ({
   hideTimezone = false,
 }: SettingsContentProps = {}) => {
   const {
+    vibrationEnabled,
+    setVibrationEnabled,
     sfxVolume,
     setSfxVolume,
     sfxOn,
@@ -73,6 +75,7 @@ export const SettingsContent = ({
   const languageLbl = t("language");
   const sfxLbl = t("sfx-volume");
   const musicLbl = t("music-volume");
+  const vibrationLbl = t("vibration");
   const animSpeedLbl = t("anim-speed");
   const lootboxTransitionLbl = t("loot-box-transition");
   const pushNotificationsLbl = t("push-notifications");
@@ -99,6 +102,8 @@ export const SettingsContent = ({
     !setup.useBurnerAcc &&
     Capacitor.isNativePlatform() &&
     Capacitor.isPluginAvailable("PushNotifications");
+  const isHapticsSupported =
+    Capacitor.isNativePlatform() && Capacitor.isPluginAvailable("Haptics");
   const platform = Capacitor.getPlatform();
   const isIOS = platform === "ios";
   const isAndroid = platform === "android";
@@ -269,6 +274,18 @@ export const SettingsContent = ({
           </SliderThumb>
         </Slider>
       </Flex>
+      {isHapticsSupported && (
+        <Flex gap={2} alignItems={"center"}>
+          <Text size="md" width={"50%"}>
+            {vibrationLbl}
+          </Text>
+          <Switch
+            ml="auto"
+            isChecked={vibrationEnabled}
+            onChange={(e) => setVibrationEnabled(e.target.checked)}
+          />
+        </Flex>
+      )}
       <Flex gap={2} alignItems={"center"}>
         <Text size="md" width={"50%"}>
           {animSpeedLbl}

@@ -595,6 +595,8 @@ export default function PackTear({
         zIndex: 2,
         userSelect: "none",
         touchAction: "none",
+        background: "transparent",
+        WebkitTapHighlightColor: "transparent",
       }}
     >
       {/* Guide line canvas */}
@@ -603,9 +605,11 @@ export default function PackTear({
         style={{
           position: "absolute",
           inset: 0,
+          background: "transparent",
           opacity: step === 1 && !isDrawing ? 1 : 0,
           transition: "opacity 0.3s ease",
           pointerEvents: "none",
+          WebkitTapHighlightColor: "transparent",
         }}
       />
 
@@ -620,6 +624,8 @@ export default function PackTear({
         style={{
           position: "absolute",
           inset: 0,
+          background: "transparent",
+          WebkitTapHighlightColor: "transparent",
         }}
       />
     </Flex>

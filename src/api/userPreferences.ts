@@ -2,6 +2,7 @@ import { getGameApiBaseUrl } from "../config/gameApiUrl";
 
 export type UserPreferences = {
   wallet?: string;
+  vibration_enabled: boolean;
   push_daily_missions_enabled: boolean;
   push_reminders_enabled: boolean;
   push_events_enabled: boolean;

@@ -194,6 +194,12 @@ const getMissionsForPeriod = async (
     const gameProgress = gameProgressByMissionId.get(slot.missionId);
     const visibleProgress =
       periodType === "daily" ? gameProgress : playerProgress;
+    const completed =
+      playerProgress?.completed || gameProgress?.completed || false;
+    const progress =
+      completed && periodType === "daily" && options.gameId
+        ? slot.target
+        : visibleProgress?.progress ?? 0;
 
     return {
       id: slot.templateId,
@@ -206,7 +212,7 @@ const getMissionsForPeriod = async (
       progress:
         periodType === "daily" && !options.gameId
           ? undefined
-          : visibleProgress?.progress ?? 0,
+          : progress,
       param1: slot.param1,
       param2: slot.param2,
       xp: slot.xp ?? 0,
@@ -216,7 +222,7 @@ const getMissionsForPeriod = async (
         param1: slot.param1,
         param2: slot.param2,
       }),
-      completed: playerProgress?.completed || gameProgress?.completed || false,
+      completed,
     };
   });
 };

@@ -1,5 +1,13 @@
 import { Capacitor } from "@capacitor/core";
-import { ReactNode, createContext, useContext, useEffect, useMemo, useState } from "react";
+import {
+  ReactNode,
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
+import { useOptionalSettings } from "../providers/SettingsProvider";
 import {
   getDefaultHapticsEnabled,
   HAPTIC_GLOBAL_IGNORE_ATTR,
@@ -79,7 +87,14 @@ const resolveInteractionTarget = (target: EventTarget | null) => {
 };
 
 export const HapticsProvider = ({ children }: { children: ReactNode }) => {
-  const [enabled, setEnabled] = useState(getDefaultHapticsEnabled);
+  const settings = useOptionalSettings();
+  const [localEnabled, setLocalEnabled] = useState(getDefaultHapticsEnabled);
+  const enabled = settings
+    ? Capacitor.isNativePlatform() &&
+      settings.preferencesLoaded &&
+      settings.vibrationEnabled
+    : localEnabled;
+  const setEnabled = settings?.setVibrationEnabled ?? setLocalEnabled;
 
   useEffect(() => {
     setHapticsEnabled(enabled);
@@ -109,7 +124,7 @@ export const HapticsProvider = ({ children }: { children: ReactNode }) => {
       enabled,
       setEnabled,
     }),
-    [enabled]
+    [enabled, setEnabled]
   );
 
   return <HapticsContext.Provider value={value}>{children}</HapticsContext.Provider>;

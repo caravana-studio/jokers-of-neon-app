@@ -195,6 +195,7 @@
     "language": "Idioma",
     "sfx-volume": "Volume dos Efeitos Sonoros",
     "music-volume": "Volume da Música",
+    "vibration": "Vibração",
     "anim-speed": "Velocidade da Animação",
     "speed": {
       "normal": "Normal",

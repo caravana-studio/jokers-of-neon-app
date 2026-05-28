@@ -161,6 +161,7 @@ const toApiMusicVolume = (value: number): number =>
   );
 
 const buildDefaultPreferences = (): UserPreferences => ({
+  vibration_enabled: true,
   push_daily_missions_enabled: false,
   push_reminders_enabled: true,
   push_events_enabled: true,
@@ -175,7 +176,10 @@ const buildDefaultPreferences = (): UserPreferences => ({
   animation_speed: Speed.NORMAL,
   loot_box_transition: LOOTBOX_TRANSITION_DEFAULT,
 });
+
 interface SettingsContextType {
+  vibrationEnabled: boolean;
+  setVibrationEnabled: (value: boolean) => void;
   sfxOn: boolean;
   setSfxOn: (sfxOn: boolean) => void;
   musicOn: boolean;
@@ -239,6 +243,9 @@ export const SettingsProvider = ({
 
   const [sfxVolume, setSfxVolumeState] = useState(
     defaultPreferences.sound_volume
+  );
+  const [vibrationEnabled, setVibrationEnabledState] = useState(
+    defaultPreferences.vibration_enabled
   );
   const [sfxOn, setSfxOnState] = useState(
     defaultPreferences.sound_volume > 0
@@ -340,6 +347,12 @@ export const SettingsProvider = ({
 
       setAnimationSpeedState(animation);
       setLootboxTransitionState(transition);
+      setVibrationEnabledState(
+        normalizeBoolean(
+          preferences.vibration_enabled,
+          defaultPreferences.vibration_enabled
+        )
+      );
 
       setPushDailyMissionsEnabledState(
         normalizeBoolean(
@@ -429,6 +442,12 @@ export const SettingsProvider = ({
         sanitized.language = normalizeLanguageValue(
           patch.language,
           defaultPreferences.language
+        );
+      }
+      if (patch.vibration_enabled !== undefined) {
+        sanitized.vibration_enabled = normalizeBoolean(
+          patch.vibration_enabled,
+          defaultPreferences.vibration_enabled
         );
       }
 
@@ -575,6 +594,14 @@ export const SettingsProvider = ({
           normalizeLootboxTransition(
             patch.loot_box_transition,
             defaultPreferences.loot_box_transition
+          )
+        );
+      }
+      if (patch.vibration_enabled !== undefined) {
+        setVibrationEnabledState(
+          normalizeBoolean(
+            patch.vibration_enabled,
+            defaultPreferences.vibration_enabled
           )
         );
       }
@@ -999,6 +1026,13 @@ export const SettingsProvider = ({
     [updateSettings]
   );
 
+  const setVibrationEnabled = useCallback(
+    (value: boolean) => {
+      updateSettings({ vibration_enabled: value });
+    },
+    [updateSettings]
+  );
+
   const setPushDailyMissionsEnabled = useCallback(
     (value: boolean) => {
       updateSettings({ push_daily_missions_enabled: value });
@@ -1065,6 +1099,8 @@ export const SettingsProvider = ({
   return (
     <SettingsContext.Provider
       value={{
+        vibrationEnabled,
+        setVibrationEnabled,
         sfxOn,
         setSfxOn,
         musicOn,

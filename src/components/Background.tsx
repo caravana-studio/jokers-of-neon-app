@@ -154,6 +154,9 @@ const bgConfig: Record<
   "open-loot-box": {
     bg: BackgroundType.Store,
   },
+  "loot-box-cards-selection": {
+    bg: BackgroundType.Store,
+  },
   plays: {
     bg: BackgroundType.Game,
   },
@@ -201,7 +204,16 @@ const bgConfig: Record<
   "external-pack": {
     bg: BackgroundType.Store,
   },
+  "free-pack": {
+    bg: BackgroundType.Store,
+  },
   "purchasing-pack": {
+    bg: BackgroundType.Store,
+  },
+  "claim-season-pack": {
+    bg: BackgroundType.Store,
+  },
+  "unclaimed-rewards": {
     bg: BackgroundType.Store,
   },
   win: {
