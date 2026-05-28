@@ -9,6 +9,7 @@ import {
   logFailedTransactionReceipt,
   logTransactionError,
 } from "../../utils/logTransactionError";
+import { withSlotNoFeeExecuteOptions } from "../slotNoFeeExecuteOptions";
 
 /**
  * Adapts the Cavos SDK's executeOnSlot function to look like a starknet Account.
@@ -85,7 +86,8 @@ export class CavosAccountAdapter {
   }
 
   private async _tryExecuteOnSlotFastPath(
-    calls: Call[]
+    calls: Call[],
+    details?: any
   ): Promise<string | null> {
     const sdk = this._getCavosSdk();
     const slotTransactionManager = sdk?.slotTransactionManager;
@@ -106,9 +108,13 @@ export class CavosAccountAdapter {
       }
 
       const account = slotTransactionManager.createDirectAccount(false);
-      const result = await account.execute(calls, {
-        resourceBounds: slotTransactionManager.getNoFeeResourceBounds(),
-      });
+      const result = await account.execute(
+        calls,
+        withSlotNoFeeExecuteOptions({
+          ...details,
+          resourceBounds: slotTransactionManager.getNoFeeResourceBounds(),
+        })
+      );
 
       return result.transaction_hash;
     } catch (error) {
@@ -145,7 +151,7 @@ export class CavosAccountAdapter {
     await this._waitForSlotDeploy();
 
     try {
-      const fastTxHash = await this._tryExecuteOnSlotFastPath(callsArray);
+      const fastTxHash = await this._tryExecuteOnSlotFastPath(callsArray, details);
       if (fastTxHash) {
         console.log("[CavosAdapter] Fast Slot execute returned txHash:", fastTxHash);
         return { transaction_hash: fastTxHash };
