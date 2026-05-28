@@ -3,6 +3,8 @@ import {
   Button,
   Divider,
   Flex,
+  Grid,
+  GridItem,
   Heading,
   Text,
   VStack,
@@ -142,125 +144,153 @@ export const MissionsPage = ({ inGame = false }: MissionsPageProps) => {
       >
         <Flex
           w="100%"
-          maxW="760px"
+          maxW={{ base: "760px", md: "1120px", lg: "1400px" }}
           mx="auto"
           flexDir="column"
-          justifyContent="space-between"
+          minH={{ base: "auto", md: "calc(100dvh - 74px)" }}
+          gap={{ base: 3, md: 0 }}
         >
-          <Flex flexDir="column" gap={3}>
-            <Heading
-              variant="italic"
-              fontSize={{ base: "20px", sm: "30px" }}
-              px={2}
-              zIndex={10}
+          <Heading
+            variant="italic"
+            fontSize={{ base: "20px", sm: "30px" }}
+            px={2}
+            zIndex={10}
+          >
+            {t("title")}
+          </Heading>
+          <Flex
+            flex={{ base: "0 0 auto", md: 1 }}
+            alignItems={{ base: "stretch", md: "center" }}
+            justifyContent={{ base: "flex-start", md: "center" }}
+            py={{ base: 0, md: 6 }}
+          >
+            <Grid
+              templateColumns={{ base: "1fr", md: "repeat(2, minmax(0, 1fr))" }}
+              gap={{ base: 3, md: 6 }}
+              alignItems="start"
+              w="100%"
             >
-              {t("title")}
-            </Heading>
-            <Flex
-              justifyContent="space-between"
-              alignItems="center"
-              gap={2}
-              px={2}
-            >
-              <Heading
-                variant="italic"
-                fontSize={{ base: "15px", sm: "22px" }}
-                zIndex={10}
-              >
-                {t("weekly-short-title")}
-              </Heading>
-              <Flex w={{ base: "80px", sm: "120px" }} justifyContent="flex-end">
-                <Clock
-                  date={weeklyResetAt}
-                  fontSize={isSmallScreen ? 12 : 16}
-                  iconSize={isSmallScreen ? "12px" : "18px"}
-                />
-              </Flex>
-            </Flex>
-
-            <Box
-              borderRadius={{ base: "24px", sm: "30px" }}
-              px={{ base: 4, sm: 6 }}
-              py={{ base: 3, sm: 5 }}
-              {...MISSION_PANEL_STYLES}
-            >
-              <Flex flexDir="column" gap={{ base: 4, sm: 5 }}>
-                {weeklyMissions.map((mission) => (
-                  <WeeklyMissionEntry
-                    key={`weekly-${mission.missionId}`}
-                    mission={mission}
-                    xpLabel={t("xp-label")}
-                  />
-                ))}
-              </Flex>
-            </Box>
-
-            <Flex
-              justifyContent="space-between"
-              alignItems="center"
-              mt={2}
-              gap={2}
-              px={2}
-            >
-              <Heading variant="italic" fontSize={{ base: "15px", sm: "22px" }}>
-                {t("daily-short-title")}
-              </Heading>
-              <Flex w={{ base: "80px", sm: "120px" }} justifyContent="flex-end">
-                <Clock
-                  date={dailyResetAt}
-                  fontSize={isSmallScreen ? 12 : 16}
-                  iconSize={isSmallScreen ? "12px" : "18px"}
-                />
-              </Flex>
-            </Flex>
-
-            <Box
-              borderRadius={{ base: "24px", sm: "30px" }}
-              px={{ base: 4, sm: 6 }}
-              py={{ base: 4, sm: 5 }}
-              {...MISSION_PANEL_STYLES}
-            >
-              <Flex flexDir="column" gap={{ base: 5, sm: 6 }}>
-                {dailyMissions.map((mission) => (
-                  <DailyMissionEntry
-                    key={`daily-${mission.missionId}`}
-                    mission={mission}
-                    xpLabel={t("xp-label")}
-                    completed={mission.completed}
-                    showProgress={inGame}
-                  />
-                ))}
-              </Flex>
-            </Box>
-
-            <Flex
-              justifyContent="space-between"
-              alignItems="center"
-              gap={3}
-              mt={1}
-              px={2}
-            >
-              <Flex>
-                <Text
-                  fontSize={{ base: "15px", sm: "18px" }}
-                  textShadow="0 0 8px rgba(255,255,255,0.18)"
+              <Flex flexDir="column" gap={3} minW={0}>
+                <Flex
+                  justifyContent="space-between"
+                  alignItems="center"
+                  gap={2}
+                  px={2}
                 >
-                  {t("learn-more.question")}
-                </Text>
-              </Flex>
-              <Flex>
-                <Button
-                  variant="outlinePrimaryGlow"
-                  size="sm"
-                  onClick={() => setInformation(infoContent)}
+                  <Heading
+                    variant="italic"
+                    fontSize={{ base: "15px", sm: "22px" }}
+                    zIndex={10}
+                  >
+                    {t("weekly-short-title")}
+                  </Heading>
+                  <Flex
+                    w={{ base: "80px", sm: "120px" }}
+                    justifyContent="flex-end"
+                  >
+                    <Clock
+                      date={weeklyResetAt}
+                      fontSize={isSmallScreen ? 12 : 16}
+                      iconSize={isSmallScreen ? "12px" : "18px"}
+                    />
+                  </Flex>
+                </Flex>
+
+                <Box
+                  borderRadius={{ base: "24px", sm: "30px" }}
+                  px={{ base: 4, sm: 6 }}
+                  py={{ base: 3, sm: 5 }}
+                  {...MISSION_PANEL_STYLES}
                 >
-                  {t("learn-more.cta")}
-                </Button>
+                  <Flex flexDir="column" gap={{ base: 4, sm: 5 }}>
+                    {weeklyMissions.map((mission) => (
+                      <WeeklyMissionEntry
+                        key={`weekly-${mission.missionId}`}
+                        mission={mission}
+                        xpLabel={t("xp-label")}
+                      />
+                    ))}
+                  </Flex>
+                </Box>
               </Flex>
-            </Flex>
+
+              <Flex flexDir="column" gap={3} minW={0}>
+                <Flex
+                  justifyContent="space-between"
+                  alignItems="center"
+                  mt={{ base: 2, md: 0 }}
+                  gap={2}
+                  px={2}
+                >
+                  <Heading
+                    variant="italic"
+                    fontSize={{ base: "15px", sm: "22px" }}
+                  >
+                    {t("daily-short-title")}
+                  </Heading>
+                  <Flex
+                    w={{ base: "80px", sm: "120px" }}
+                    justifyContent="flex-end"
+                  >
+                    <Clock
+                      date={dailyResetAt}
+                      fontSize={isSmallScreen ? 12 : 16}
+                      iconSize={isSmallScreen ? "12px" : "18px"}
+                    />
+                  </Flex>
+                </Flex>
+
+                <Box
+                  borderRadius={{ base: "24px", sm: "30px" }}
+                  px={{ base: 4, sm: 6 }}
+                  py={{ base: 4, sm: 5 }}
+                  {...MISSION_PANEL_STYLES}
+                >
+                  <Flex flexDir="column" gap={{ base: 5, sm: 6 }}>
+                    {dailyMissions.map((mission) => (
+                      <DailyMissionEntry
+                        key={`daily-${mission.missionId}`}
+                        mission={mission}
+                        xpLabel={t("xp-label")}
+                        completed={mission.completed}
+                        showProgress={inGame}
+                      />
+                    ))}
+                  </Flex>
+                </Box>
+              </Flex>
+
+              <GridItem colSpan={{ base: 1, md: 2 }}>
+                <Flex
+                  justifyContent="space-between"
+                  alignItems="center"
+                  gap={3}
+                  mt={1}
+                  px={2}
+                >
+                  <Flex>
+                    <Text
+                      fontSize={{ base: "15px", sm: "18px" }}
+                      textShadow="0 0 8px rgba(255,255,255,0.18)"
+                    >
+                      {t("learn-more.question")}
+                    </Text>
+                  </Flex>
+                  <Flex>
+                    <Button
+                      variant="outlinePrimaryGlow"
+                      size="sm"
+                      onClick={() => setInformation(infoContent)}
+                    >
+                      {t("learn-more.cta")}
+                    </Button>
+                  </Flex>
+                </Flex>
+              </GridItem>
+            </Grid>
           </Flex>
 
-          {inGame && (
+          {inGame && !isSmallScreen &&(
             <MobileBottomBar
               firstButton={{
                 label: t("bottom-bar.back-to-game"),
