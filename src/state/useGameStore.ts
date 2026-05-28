@@ -353,7 +353,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   setGameId: (gameId) => {
-    set({ id: gameId, shopTierUnlockedEvent: undefined });
+    set({ id: gameId, roundRewards: undefined, shopTierUnlockedEvent: undefined });
     localStorage.setItem(GAME_ID, gameId.toString());
   },
 
@@ -363,6 +363,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       id: 0,
       state: GameStateEnum.NotSet,
       isTournament: false,
+      roundRewards: undefined,
       shopTierUnlockedEvent: undefined,
     });
   },
