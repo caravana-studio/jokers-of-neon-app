@@ -1,7 +1,7 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
-import { DIAMONDS } from "../theme/colors";
+import { VIOLET, VIOLET_LIGHT } from "../theme/colors";
 
 const WEEKDAY_LABELS = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"] as const;
 
@@ -70,8 +70,8 @@ export const DailyStreakWeekProgress = ({
           right={`calc(${100 - ((lastCompletedIndex + 0.5) / 7) * 100}% )`}
           h="4px"
           borderRadius="full"
-          bg={DIAMONDS}
-          boxShadow="0 0 14px rgba(255, 147, 75, 0.26)"
+          bg={VIOLET_LIGHT}
+          boxShadow={`0 0 14px ${VIOLET_LIGHT}`}
         />
       )}
 
@@ -83,7 +83,6 @@ export const DailyStreakWeekProgress = ({
           const inactiveBorder = day.isToday
             ? `rgba(255, 147, 75, 0.9)`
             : "rgba(255, 255, 255, 0.14)";
-          const showTodayRing = day.isToday;
 
           return (
             <Flex
@@ -98,22 +97,12 @@ export const DailyStreakWeekProgress = ({
               <Text
                 fontSize="12px"
                 fontWeight={day.isToday ? 700 : 500}
-                color={day.isToday ? DIAMONDS : "rgba(255, 255, 255, 0.82)"}
+                color={day.isToday ? VIOLET_LIGHT : "rgba(255, 255, 255, 0.82)"}
               >
                 {day.label}
               </Text>
 
               <Box position="relative">
-                {showTodayRing && (
-                  <Box
-                    position="absolute"
-                    inset="-4px"
-                    borderRadius="full"
-                    border={`1.5px dashed ${DIAMONDS}`}
-                    boxShadow="0 0 12px rgba(255, 147, 75, 0.22)"
-                  />
-                )}
-
                 <Flex
                   w="28px"
                   h="28px"
@@ -122,7 +111,9 @@ export const DailyStreakWeekProgress = ({
                   justifyContent="center"
                   bg={
                     day.isCompleted
-                      ? DIAMONDS
+                      ? day.isToday
+                        ? VIOLET_LIGHT
+                        : VIOLET
                       : inactiveBg
                   }
                   border={
@@ -132,7 +123,11 @@ export const DailyStreakWeekProgress = ({
                   }
                   boxShadow={
                     day.isCompleted
-                      ? "0 0 18px rgba(32, 198, 237, 0.28)"
+                      ? day.isToday
+                        ? `0 0 18px ${VIOLET_LIGHT}`
+                        : `0 0 18px ${VIOLET}`
+                      : day.isToday
+                        ? `0 0 14px ${VIOLET_LIGHT}`
                       : "none"
                   }
                   opacity={day.isFuture ? 0.7 : 1}

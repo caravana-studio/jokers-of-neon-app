@@ -462,5 +462,10 @@
       "agreement": "By continuing you are agreeing to Jokers of Neon's",
       "link": "Terms and Conditions"
     }
+  },
+  "daily-streak": {
+    "title": "Daily Streak",
+    "description": "Complete a daily mission or a level every day to keep your streak.",
+    "next-objective": "Next objective"
   }
 }

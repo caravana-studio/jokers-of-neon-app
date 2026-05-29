@@ -41,6 +41,7 @@ import { TestPage } from "./pages/TestPage";
 import { VibrationPage } from "./pages/VibrationPage";
 import { ReferralPage } from "./pages/ReferralPage";
 import { SimulatePacksPage } from "./pages/SimulatePacks/SimulatePacksPage";
+import { StreakIncreasedPage } from "./pages/StreakIncreasedPage";
 import { CardHighlightProvider } from "./providers/HighlightProvider/CardHighlightProvider";
 import { PowerupHighlightProvider } from "./providers/HighlightProvider/PowerupHighlightProvider";
 import { PracticeGameProvider } from "./providers/PracticeGameProvider";
@@ -82,6 +83,14 @@ export const AppRoutes = () => {
           </AnimatedPage>
         }
       />{" "}
+      <Route
+        path="/streak-increased"
+        element={
+          <AnimatedPage>
+            <StreakIncreasedPage />
+          </AnimatedPage>
+        }
+      />
       <Route
         path="/test/simulate-packs"
         element={

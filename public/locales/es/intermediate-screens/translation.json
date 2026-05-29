@@ -461,5 +461,10 @@
       "agreement": "Al continuar, aceptas los",
       "link": "Términos y Condiciones"
     }
+  },
+  "daily-streak": {
+    "title": "Daily Streak",
+    "description": "Completa una misión diaria o un nivel cada día para mantener tu racha.",
+    "next-objective": "Próximo objetivo"
   }
 }

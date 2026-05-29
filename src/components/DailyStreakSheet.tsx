@@ -1,20 +1,19 @@
 import {
   Box,
-  Button,
-  Drawer,
-  DrawerBody,
-  DrawerContent,
-  DrawerOverlay,
   Flex,
-  Heading,
   Text,
 } from "@chakra-ui/react";
+import { useTranslation } from "react-i18next";
 import { DIAMONDS } from "../theme/colors";
+import { MobileBottomBar } from "./MobileBottomBar";
+import { MobileDecoration } from "./MobileDecoration";
+import { GalaxyBackground } from "./backgrounds/galaxy/GalaxyBackground";
 import { DailyStreakFireAnimation } from "./DailyStreakFireAnimation";
+import { DailyStreakMilestoneProgress } from "./DailyStreakMilestoneProgress";
 import { DailyStreakWeekProgress } from "./DailyStreakWeekProgress";
+import { Intensity } from "../types/intensity";
 
 export interface DailyStreakSheetProps {
-  isOpen: boolean;
   streak: number;
   onClose: () => void;
   onContinue?: () => void;
@@ -22,58 +21,56 @@ export interface DailyStreakSheetProps {
 }
 
 export const DailyStreakSheet = ({
-  isOpen,
   streak,
   onClose,
   onContinue,
   referenceDate,
 }: DailyStreakSheetProps) => {
+  const { t } = useTranslation("intermediate-screens");
   const normalizedStreak = Number.isFinite(streak)
     ? Math.max(0, Math.floor(streak))
     : 0;
 
   return (
-    <Drawer isOpen={isOpen} placement="bottom" onClose={onClose}>
-      <DrawerOverlay
-        bg="rgba(0, 0, 0, 0.7)"
-        sx={{
-          backdropFilter: "blur(10px)",
-          WebkitBackdropFilter: "blur(10px)",
-        }}
+    <Flex
+      position="fixed"
+      inset={0}
+      zIndex={1200}
+      flexDirection="column"
+      overflow="hidden"
+    >
+      <GalaxyBackground
+        opacity={0.75}
+        intensity={Intensity.LOW}
+        filter="saturate(1.1)"
       />
+      <MobileDecoration />
 
-      <DrawerContent
-        w="100vw"
-        maxW="100vw"
-        mb={0}
-        bg="#000000"
-        color="white"
-        borderTopRadius="32px"
-        borderTop={`1px solid rgba(255, 147, 75, 0.45)`}
-        boxShadow="0 -12px 40px rgba(255, 147, 75, 0.16)"
-        overflow="hidden"
+      <Flex
+        position="relative"
+        zIndex={2}
+        w="100%"
+        h="100%"
+        flexDirection="column"
+        justifyContent="space-between"
+        pt={{ base: 10, sm: 14 }}
+        pb={{ base: 2, sm: 4 }}
       >
-        <DrawerBody
+        <Flex
+          flex="1"
+          minH={0}
+          overflowY="auto"
           px={{ base: 5, sm: 6 }}
-          pt={3}
-          pb="calc(28px + env(safe-area-inset-bottom))"
-          bg="#000000"
+          pb={{ base: 4, sm: 6 }}
         >
           <Flex
             flexDirection="column"
             alignItems="center"
-            gap={6}
+            gap={5}
             w="100%"
             maxW="460px"
             mx="auto"
           >
-            <Box
-              w="56px"
-              h="5px"
-              borderRadius="full"
-              bg="rgba(255, 255, 255, 0.2)"
-            />
-
             <Flex
               w="100%"
               flexDirection="column"
@@ -82,9 +79,8 @@ export const DailyStreakSheet = ({
               borderRadius="28px"
               px={{ base: 5, sm: 6 }}
               py={{ base: 5, sm: 6 }}
-              bg="#050505"
-              border={`1px solid rgba(255, 147, 75, 0.22)`}
-              boxShadow="inset 0 1px 0 rgba(255,255,255,0.04), 0 20px 40px rgba(0, 0, 0, 0.45)"
+              bg="rgba(0, 0, 0, 0.3)"
+              boxShadow="0px 0px 8px rgba(255, 255, 255, 0.5), inset 0 0 5px rgba(255, 255, 255, 0.5)"
             >
               <Box
                 position="relative"
@@ -101,50 +97,38 @@ export const DailyStreakSheet = ({
                   fontSize={{ base: "15px", sm: "16px" }}
                   letterSpacing="0.24em"
                   textTransform="uppercase"
-                  color="rgba(255, 255, 255, 0.68)"
+                  color="white"
                 >
-                  Neon Streak
+                  {t("daily-streak.title")}
                 </Text>
                 <Text
                   fontFamily="Orbitron"
-                  fontSize={{ base: "40px", sm: "48px" }}
+                  fontSize={{ base: "72px", sm: "88px" }}
                   lineHeight={1}
-                  fontWeight={800}
+                  fontWeight={600}
                   color={DIAMONDS}
-                  textShadow="0 0 24px rgba(255, 147, 75, 0.2)"
+                  textShadow={`0 0 10px ${DIAMONDS}`}
                 >
                   {normalizedStreak}
                 </Text>
-                <Heading
-                  as="h2"
-                  fontSize={{ base: "31px", sm: "36px" }}
-                  lineHeight={1}
-                  fontWeight={800}
-                  letterSpacing="-0.03em"
-                  textTransform="none"
-                  color="white"
-                >
-                  Daily Streak
-                </Heading>
                 <Text
                   textAlign="center"
                   color="rgba(255, 255, 255, 0.72)"
                   fontSize={{ base: "14px", sm: "15px" }}
                   maxW="320px"
                 >
-                  Play a hand each day to keep your neon run charged.
+                  {t("daily-streak.description")}
                 </Text>
               </Flex>
             </Flex>
 
             <Box
               w="100%"
-              bg="#050505"
-              border={`1px solid rgba(255, 147, 75, 0.18)`}
               borderRadius="24px"
               px={{ base: 4, sm: 5 }}
               py={4}
-              boxShadow="inset 0 1px 0 rgba(255,255,255,0.04)"
+              bg="rgba(0, 0, 0, 0.3)"
+              boxShadow="0px 0px 8px rgba(255, 255, 255, 0.5), inset 0 0 5px rgba(255, 255, 255, 0.5)"
             >
               <DailyStreakWeekProgress
                 streak={normalizedStreak}
@@ -152,25 +136,18 @@ export const DailyStreakSheet = ({
               />
             </Box>
 
-            <Button
-              w="100%"
-              h="56px"
-              size="md"
-              bg={DIAMONDS}
-              boxShadow={`0 0 20px rgba(255, 147, 75, 0.24)`}
-              _hover={{
-                bg: "#FF9F5B",
-              }}
-              _active={{
-                bg: "#F18839",
-              }}
-              onClick={onContinue ?? onClose}
-            >
-              Continue
-            </Button>
+            <DailyStreakMilestoneProgress streak={normalizedStreak} />
           </Flex>
-        </DrawerBody>
-      </DrawerContent>
-    </Drawer>
+        </Flex>
+
+        <MobileBottomBar
+          firstButton={{
+            onClick: onContinue ?? onClose,
+            label: "Continue",
+            variant: "secondarySolid",
+          }}
+        />
+      </Flex>
+    </Flex>
   );
 };

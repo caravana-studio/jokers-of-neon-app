@@ -2,7 +2,6 @@ import { Box, Button, Divider, Flex, Input, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { validateUsername } from "../api/usernames";
-import { DailyStreakSheet } from "../components/DailyStreakSheet";
 import { DelayedLoading } from "../components/DelayedLoading";
 import { MenuBtn } from "../components/Menu/Buttons/MenuBtn";
 import {
@@ -24,7 +23,6 @@ function getErrorMessage(error: unknown): string {
 }
 
 export const TestPage = () => {
-  const mockedDailyStreak = 123;
   const { isSmallScreen } = useResponsiveValues();
   const navigate = useNavigate();
   const {
@@ -43,7 +41,6 @@ export const TestPage = () => {
   const { id: currentGameId, setShopTierUnlockedEvent } = useGameStore();
   const [showUsernameTools, setShowUsernameTools] = useState(false);
   const [showUnlockablesList, setShowUnlockablesList] = useState(false);
-  const [showDailyStreakSheet, setShowDailyStreakSheet] = useState(false);
   const [usernameInput, setUsernameInput] = useState("");
   const [isSavingUsername, setIsSavingUsername] = useState(false);
   const address = account?.address ?? "";
@@ -117,9 +114,9 @@ export const TestPage = () => {
         {isSmallScreen && <Divider borderColor="white" borderWidth="1px" my={2} />}
         <MenuBtn
           icon={Icons.GIFT}
-          description="Preview the Daily Streak bottom sheet"
-          label={`Daily Streak (${mockedDailyStreak})`}
-          onClick={() => setShowDailyStreakSheet(true)}
+          description="Preview the Daily Streak screen"
+          label="Daily Streak"
+          onClick={() => navigate("/streak-increased")}
           arrowRight
           width="18px"
         />
@@ -277,11 +274,6 @@ export const TestPage = () => {
         )}
         {isSmallScreen && <Divider borderColor="white" borderWidth="1px" my={2} />}
       </Flex>
-      <DailyStreakSheet
-        isOpen={showDailyStreakSheet}
-        streak={mockedDailyStreak}
-        onClose={() => setShowDailyStreakSheet(false)}
-      />
     </DelayedLoading>
   );
 };
