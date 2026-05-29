@@ -1,17 +1,13 @@
-import {
-  Box,
-  Flex,
-  Text,
-} from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { DIAMONDS } from "../theme/colors";
-import { MobileBottomBar } from "./MobileBottomBar";
-import { MobileDecoration } from "./MobileDecoration";
+import { Intensity } from "../types/intensity";
 import { GalaxyBackground } from "./backgrounds/galaxy/GalaxyBackground";
 import { DailyStreakFireAnimation } from "./DailyStreakFireAnimation";
 import { DailyStreakMilestoneProgress } from "./DailyStreakMilestoneProgress";
 import { DailyStreakWeekProgress } from "./DailyStreakWeekProgress";
-import { Intensity } from "../types/intensity";
+import { MobileBottomBar } from "./MobileBottomBar";
+import { MobileDecoration } from "./MobileDecoration";
 
 export interface DailyStreakSheetProps {
   streak: number;
@@ -53,7 +49,6 @@ export const DailyStreakSheet = ({
         h="100%"
         flexDirection="column"
         justifyContent="space-between"
-        pt={{ base: 10, sm: 14 }}
         pb={{ base: 2, sm: 4 }}
       >
         <Flex
@@ -71,6 +66,7 @@ export const DailyStreakSheet = ({
             maxW="460px"
             mx="auto"
           >
+            <Flex h={{ base: 10, sm: 14 }}></Flex>
             <Flex
               w="100%"
               flexDirection="column"

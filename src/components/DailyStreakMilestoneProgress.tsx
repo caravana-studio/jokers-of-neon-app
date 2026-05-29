@@ -89,61 +89,28 @@ const CalendarBadge = ({ value, state }: MilestoneBadgeData) => {
       ? GREY_LINE
       : BLUE_LIGHT;
   const textColor = isFuture ? "rgba(255, 255, 255, 0.5)" : accentColor;
-  const innerBackground = isAchieved
-    ? "rgba(220, 162, 234, 0.12)"
-    : isFuture
-      ? "rgba(255, 255, 255, 0.06)"
-      : "rgba(32, 198, 237, 0.12)";
+  const innerBackground = "#050505";
   const badgeShadow = isAchieved
     ? "0 0 18px rgba(220, 162, 234, 0.16)"
     : isFuture
       ? "none"
       : "0 0 20px rgba(32, 198, 237, 0.18)";
   const fontSize =
-    value >= 100 ? { base: "18px", sm: "22px" } : { base: "22px", sm: "26px" };
+    value >= 100 ? { base: "17px", sm: "19px" } : { base: "20px", sm: "22px" };
 
   return (
     <Box
       position="relative"
       flexShrink={0}
-      width={{ base: "58px", sm: "68px" }}
-      height={{ base: "62px", sm: "68px" }}
-      borderRadius="18px"
-      bg="#0A0A0A"
-      border={`1px solid ${accentColor}`}
+      width={{ base: "50px", sm: "58px" }}
+      height={{ base: "40px", sm: "50px" }}
+      borderRadius="16px"
       boxShadow={badgeShadow}
-      p="5px"
     >
-      <Flex
-        position="absolute"
-        top="6px"
-        left="50%"
-        transform="translateX(-50%)"
-        alignItems="center"
-        gap="12px"
-        zIndex={2}
-        pointerEvents="none"
-      >
-        <Box
-          w="8px"
-          h="8px"
-          borderRadius="full"
-          bg={accentColor}
-          boxShadow={`0 0 10px ${accentColor}`}
-        />
-        <Box
-          w="8px"
-          h="8px"
-          borderRadius="full"
-          bg={accentColor}
-          boxShadow={`0 0 10px ${accentColor}`}
-        />
-      </Flex>
-
       <Flex
         width="100%"
         height="100%"
-        borderRadius="13px"
+        borderRadius="16px"
         bg={innerBackground}
         border={`1px solid ${accentColor}`}
         overflow="hidden"
@@ -156,11 +123,11 @@ const CalendarBadge = ({ value, state }: MilestoneBadgeData) => {
           top={0}
           left={0}
           right={0}
-          h="10px"
+          h="7px"
           bg={accentColor}
         />
         <Text
-          mt="10px"
+          mt="5px"
           fontFamily="Orbitron"
           fontWeight={800}
           fontSize={fontSize}
@@ -174,17 +141,17 @@ const CalendarBadge = ({ value, state }: MilestoneBadgeData) => {
         {isAchieved && value > 0 && (
           <Box
             position="absolute"
-            top="1px"
-            right="2px"
-            w="16px"
-            h="16px"
+            top="0px"
+            right="1px"
+            w="15px"
+            h="15px"
             borderRadius="full"
             bg={VIOLET}
             color="white"
             display="flex"
             alignItems="center"
             justifyContent="center"
-            fontSize="11px"
+            fontSize="9px"
             lineHeight={1}
             boxShadow={`0 0 10px ${VIOLET}`}
             zIndex={10}
