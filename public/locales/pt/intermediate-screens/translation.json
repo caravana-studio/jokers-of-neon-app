@@ -467,6 +467,8 @@
     "description": "Complete uma missão diária ou um nível todos os dias para manter sua sequência.",
     "next-objective": "Próximo objetivo",
     "continue": "Continuar",
+    "celebration-title": "Parabéns",
+    "celebration-description": "Você completou seu objetivo",
     "days": {
       "monday": "2a",
       "tuesday": "3a",

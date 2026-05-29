@@ -1,15 +1,21 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { DIAMONDS } from "../theme/colors";
 import { Intensity } from "../types/intensity";
 import { GalaxyBackground } from "./backgrounds/galaxy/GalaxyBackground";
 import { DailyStreakFireAnimation } from "./DailyStreakFireAnimation";
-import { DailyStreakMilestoneProgress } from "./DailyStreakMilestoneProgress";
+import {
+  DailyStreakMilestoneProgress,
+  isDailyStreakAtMilestone,
+} from "./DailyStreakMilestoneProgress";
 import { DailyStreakWeekProgress } from "./DailyStreakWeekProgress";
 import { MobileBottomBar } from "./MobileBottomBar";
 import { MobileDecoration } from "./MobileDecoration";
 import { RollingNumber } from "./RollingNumber";
+
+const CELEBRATION_INTRO_DURATION_MS = 2600;
 
 export interface DailyStreakSheetProps {
   streak: number;
@@ -28,6 +34,26 @@ export const DailyStreakSheet = ({
   const normalizedStreak = Number.isFinite(streak)
     ? Math.max(0, Math.floor(streak))
     : 0;
+  const isMilestoneHit = isDailyStreakAtMilestone(normalizedStreak);
+  const [showCelebrationIntro, setShowCelebrationIntro] = useState(isMilestoneHit);
+
+  useEffect(() => {
+    if (!isMilestoneHit) {
+      setShowCelebrationIntro(false);
+      return;
+    }
+
+    setShowCelebrationIntro(true);
+
+    const timeoutId = window.setTimeout(() => {
+      setShowCelebrationIntro(false);
+    }, CELEBRATION_INTRO_DURATION_MS);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
+  }, [isMilestoneHit, normalizedStreak]);
+
   const getEntryTransition = (index: number) => ({
     delay: 0.12 + index * 0.28,
     duration: 0.46,
@@ -46,7 +72,7 @@ export const DailyStreakSheet = ({
     >
       <GalaxyBackground
         opacity={0.75}
-        intensity={Intensity.LOW}
+        intensity={isMilestoneHit ? Intensity.HIGH : Intensity.LOW}
         filter="saturate(1.1)"
       />
       <MobileDecoration />
@@ -64,6 +90,7 @@ export const DailyStreakSheet = ({
           flex="1"
           minH={0}
           overflowY="auto"
+          overflowX="hidden"
           px={{ base: 5, sm: 6 }}
           pb={{ base: 4, sm: 6 }}
         >
@@ -75,7 +102,7 @@ export const DailyStreakSheet = ({
             maxW="460px"
             mx="auto"
           >
-            <Flex h={{ base: 10, sm: 14 }}></Flex>
+            <Flex h={{ base: 5, sm: 14 }}></Flex>
             <motion.div
               initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
@@ -114,19 +141,31 @@ export const DailyStreakSheet = ({
                       {t("daily-streak.title")}
                     </Text>
                     <motion.div
-                      animate={{
-                        filter: [
-                          `drop-shadow(0 0 6px ${DIAMONDS})`,
-                          `drop-shadow(0 0 10px ${DIAMONDS})`,
-                          `drop-shadow(0 0 6px ${DIAMONDS})`,
-                        ],
-                      }}
-                      transition={{
-                        duration: 1.8,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                        delay: 0.45,
-                      }}
+                      animate={
+                        isMilestoneHit
+                          ? {
+                              scale: [1, 1.04, 1],
+                              filter: [
+                                `drop-shadow(0 0 6px ${DIAMONDS})`,
+                                `drop-shadow(0 0 14px ${DIAMONDS})`,
+                                `drop-shadow(0 0 6px ${DIAMONDS})`,
+                              ],
+                            }
+                          : {
+                              scale: 1,
+                              filter: `drop-shadow(0 0 6px ${DIAMONDS})`,
+                            }
+                      }
+                      transition={
+                        isMilestoneHit
+                          ? {
+                              duration: 1.8,
+                              repeat: Infinity,
+                              ease: "easeInOut",
+                              delay: 0.45,
+                            }
+                          : undefined
+                      }
                     >
                       <Box
                         fontFamily="Orbitron"
@@ -164,39 +203,94 @@ export const DailyStreakSheet = ({
               </Flex>
             </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 18 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={getEntryTransition(1)}
-              style={{ width: "100%" }}
-            >
-              <Box
+            {showCelebrationIntro ? (
+              <Flex
                 w="100%"
-                borderRadius="24px"
-                px={{ base: 4, sm: 5 }}
-                py={4}
-                bg="rgba(0, 0, 0, 0.3)"
-                boxShadow="0px 0px 8px rgba(255, 255, 255, 0.5), inset 0 0 5px rgba(255, 255, 255, 0.5)"
+                alignItems="center"
+                justifyContent="center"
+                overflow="hidden"
+                 flexGrow={1} minH={0}
               >
-                <DailyStreakWeekProgress
-                  streak={normalizedStreak}
-                  referenceDate={referenceDate}
-                  animationStartDelayMs={getAnimationStartDelayMs(1)}
-                />
-              </Box>
-            </motion.div>
+                <Flex
+                  w="100%"
+                  maxW="320px"
+                  flexDirection="column"
+                  alignItems="center"
+                  justifyContent="center"
+                  textAlign="center"
+                  gap={4}
+                  px={2}
+                >
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.15, duration: 0.42, ease: "easeOut" }}
+                  >
+                    <Text
+                      fontFamily="Sonara"
+                      fontSize={{ base: "22px", sm: "42px" }}
+                      lineHeight={0.96}
+                      textTransform="uppercase"
+                      color="white"
+                      textShadow="0 0 18px rgba(255,255,255,0.28)"
+                      whiteSpace="nowrap"
+                    >
+                      {t("daily-streak.celebration-title")}
+                    </Text>
+                  </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 18 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={getEntryTransition(2)}
-              style={{ width: "100%" }}
-            >
-              <DailyStreakMilestoneProgress
-                streak={normalizedStreak}
-                animationStartDelayMs={getAnimationStartDelayMs(2) + 280}
-              />
-            </motion.div>
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.55, duration: 0.42, ease: "easeOut" }}
+                  >
+                    <Text
+                      fontSize={{ base: "16px", sm: "22px" }}
+                      lineHeight={1.2}
+                      color="rgba(255,255,255,0.9)"
+                    >
+                      {t("daily-streak.celebration-description")}
+                    </Text>
+                  </motion.div>
+                </Flex>
+              </Flex>
+            ) : (
+              <Flex flexDir="column" w="100%" gap={3} flexGrow={1} minH={0}>
+                <motion.div
+                  initial={{ opacity: 0, y: 18 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={getEntryTransition(1)}
+                  style={{ width: "100%" }}
+                >
+                  <Box
+                    w="100%"
+                    borderRadius="24px"
+                    px={{ base: 4, sm: 5 }}
+                    py={4}
+                    bg="rgba(0, 0, 0, 0.3)"
+                    boxShadow="0px 0px 8px rgba(255, 255, 255, 0.5), inset 0 0 5px rgba(255, 255, 255, 0.5)"
+                  >
+                    <DailyStreakWeekProgress
+                      streak={normalizedStreak}
+                      referenceDate={referenceDate}
+                      animationStartDelayMs={getAnimationStartDelayMs(1)}
+                    />
+                  </Box>
+                </motion.div>
+
+                <motion.div
+                  initial={{ opacity: 0, y: 18 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={getEntryTransition(2)}
+                  style={{ width: "100%" }}
+                >
+                  <DailyStreakMilestoneProgress
+                    streak={normalizedStreak}
+                    animationStartDelayMs={getAnimationStartDelayMs(2) + 280}
+                  />
+                </motion.div>
+              </Flex>
+            )}
           </Flex>
         </Flex>
 

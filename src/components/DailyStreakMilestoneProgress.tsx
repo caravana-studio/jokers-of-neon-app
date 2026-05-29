@@ -36,6 +36,18 @@ const buildMilestonesThrough = (minimumValue: number) => {
   return milestones;
 };
 
+export const isDailyStreakAtMilestone = (streak: number) => {
+  const normalizedStreak = Number.isFinite(streak)
+    ? Math.max(0, Math.floor(streak))
+    : 0;
+
+  if (normalizedStreak <= 0) {
+    return false;
+  }
+
+  return buildMilestonesThrough(normalizedStreak).includes(normalizedStreak);
+};
+
 export const getDailyStreakMilestoneWindow = (
   streak: number,
 ): MilestoneWindow => {
