@@ -1,9 +1,18 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
+import { useTranslation } from "react-i18next";
 import { VIOLET, VIOLET_LIGHT } from "../theme/colors";
 
-const WEEKDAY_LABELS = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"] as const;
+const WEEKDAY_KEYS = [
+  "monday",
+  "tuesday",
+  "wednesday",
+  "thursday",
+  "friday",
+  "saturday",
+  "sunday",
+] as const;
 
 export interface DailyStreakWeekDay {
   label: string;
@@ -14,6 +23,7 @@ export interface DailyStreakWeekDay {
 
 export const getDailyStreakWeekDays = (
   streak: number,
+  labels: readonly string[],
   referenceDate: Date = new Date()
 ): DailyStreakWeekDay[] => {
   const normalizedStreak = Number.isFinite(streak)
@@ -24,7 +34,7 @@ export const getDailyStreakWeekDays = (
   const completedStartIndex =
     completedDays > 0 ? todayIndex - completedDays + 1 : Number.POSITIVE_INFINITY;
 
-  return WEEKDAY_LABELS.map((label, index) => ({
+  return labels.map((label, index) => ({
     label,
     isCompleted:
       index <= todayIndex &&
@@ -44,7 +54,11 @@ export const DailyStreakWeekProgress = ({
   streak,
   referenceDate,
 }: DailyStreakWeekProgressProps) => {
-  const days = getDailyStreakWeekDays(streak, referenceDate);
+  const { t } = useTranslation("intermediate-screens");
+  const weekdayLabels = WEEKDAY_KEYS.map((dayKey) =>
+    t(`daily-streak.days.${dayKey}`)
+  );
+  const days = getDailyStreakWeekDays(streak, weekdayLabels, referenceDate);
   const firstCompletedIndex = days.findIndex((day) => day.isCompleted);
   const lastCompletedIndex = days.findLastIndex((day) => day.isCompleted);
   const hasActiveTrack =

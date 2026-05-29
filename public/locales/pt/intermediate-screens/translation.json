@@ -463,8 +463,18 @@
     }
   },
   "daily-streak": {
-    "title": "Daily Streak",
+    "title": "Sequência diária",
     "description": "Complete uma missão diária ou um nível todos os dias para manter sua sequência.",
-    "next-objective": "Próximo objetivo"
+    "next-objective": "Próximo objetivo",
+    "continue": "Continuar",
+    "days": {
+      "monday": "2a",
+      "tuesday": "3a",
+      "wednesday": "4a",
+      "thursday": "5a",
+      "friday": "6a",
+      "saturday": "Sa",
+      "sunday": "Do"
+    }
   }
 }

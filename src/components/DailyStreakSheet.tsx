@@ -139,8 +139,7 @@ export const DailyStreakSheet = ({
         <MobileBottomBar
           firstButton={{
             onClick: onContinue ?? onClose,
-            label: "Continue",
-            variant: "secondarySolid",
+            label: t("daily-streak.continue"),
           }}
         />
       </Flex>

@@ -466,6 +466,16 @@
   "daily-streak": {
     "title": "Daily Streak",
     "description": "Complete a daily mission or a level every day to keep your streak.",
-    "next-objective": "Next objective"
+    "next-objective": "Next objective",
+    "continue": "Continue",
+    "days": {
+      "monday": "Mo",
+      "tuesday": "Tu",
+      "wednesday": "We",
+      "thursday": "Th",
+      "friday": "Fr",
+      "saturday": "Sa",
+      "sunday": "Su"
+    }
   }
 }

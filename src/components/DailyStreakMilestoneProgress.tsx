@@ -102,58 +102,66 @@ const CalendarBadge = ({ value, state }: MilestoneBadgeData) => {
       borderRadius="16px"
       boxShadow={badgeShadow}
     >
-      <Flex
-        width="100%"
-        height="100%"
+      <Box
+        position="absolute"
+        inset={0}
         borderRadius="8px"
         bg={innerBackground}
         border={`2px solid ${accentColor}`}
         overflow="hidden"
-        position="relative"
-        alignItems="center"
-        justifyContent="center"
       >
-        <Box
-          position="absolute"
-          top={0}
-          left={0}
-          right={0}
-          h="7px"
-          bg={accentColor}
-        />
-        <Text
-          mt="5px"
-          fontFamily="Orbitron"
-          fontWeight={800}
-          fontSize={fontSize}
-          lineHeight={1}
-          color={textColor}
-          textAlign="center"
-          whiteSpace="nowrap"
+        <Flex
+          width="100%"
+          height="100%"
+          position="relative"
+          overflow="hidden"
+          alignItems="center"
+          justifyContent="center"
         >
-          {value}
-        </Text>
-        {isAchieved && value > 0 && (
           <Box
             position="absolute"
-            top="0px"
-            right="1px"
-            w="15px"
-            h="15px"
-            borderRadius="full"
-            bg={VIOLET_LIGHT}
-            color="white"
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            fontSize="9px"
+            top={0}
+            left={0}
+            right={0}
+            h="7px"
+            bg={accentColor}
+          />
+          <Text
+            mt="5px"
+            fontFamily="Orbitron"
+            fontWeight={800}
+            fontSize={fontSize}
             lineHeight={1}
-            zIndex={10}
+            color={textColor}
+            textAlign="center"
+            whiteSpace="nowrap"
           >
-            <FontAwesomeIcon icon={faCheck} />
-          </Box>
-        )}
-      </Flex>
+            {value}
+          </Text>
+        </Flex>
+      </Box>
+
+      {isAchieved && value > 0 && (
+        <Box
+          position="absolute"
+          top="-2px"
+          right="-2px"
+          w="15px"
+          h="15px"
+          borderRadius="full"
+          bg={VIOLET_LIGHT}
+          color="white"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          fontSize="9px"
+          lineHeight={1}
+          zIndex={10}
+          boxShadow={`0 0 6px 2px ${VIOLET_LIGHT}`}
+        >
+          <FontAwesomeIcon icon={faCheck} />
+        </Box>
+      )}
     </Box>
   );
 };
