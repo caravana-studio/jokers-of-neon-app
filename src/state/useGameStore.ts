@@ -139,7 +139,7 @@ type GameStore = {
   nodeRound: number;
   shopId: number;
   inBossRound: boolean;
-  shopTierUnlockedEvent: ShopTierUnlockedEvent | undefined;
+  shopTierUnlockedEvents: ShopTierUnlockedEvent[];
 
   refetchGameStore: (
     client: any,
@@ -198,7 +198,9 @@ type GameStore = {
   setShopTierUnlockedEvent: (
     event: ShopTierUnlockedEvent | undefined
   ) => void;
+  setShopTierUnlockedEvents: (events: ShopTierUnlockedEvent[]) => void;
   clearShopTierUnlockedEvent: () => void;
+  clearShopTierUnlockedEvents: () => void;
 };
 
 const doRefetchGameStore = async (
@@ -339,7 +341,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   nodeRound: 0,
   shopId: 0,
   inBossRound: false,
-  shopTierUnlockedEvent: undefined,
+  shopTierUnlockedEvents: [],
 
   refetchGameStore: async (client, gameId, playerAddress) => {
     await doRefetchGameStore(client, gameId, playerAddress, set, get);
@@ -353,7 +355,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   setGameId: (gameId) => {
-    set({ id: gameId, roundRewards: undefined, shopTierUnlockedEvent: undefined });
+    set({ id: gameId, roundRewards: undefined, shopTierUnlockedEvents: [] });
     localStorage.setItem(GAME_ID, gameId.toString());
   },
 
@@ -364,7 +366,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       state: GameStateEnum.NotSet,
       isTournament: false,
       roundRewards: undefined,
-      shopTierUnlockedEvent: undefined,
+      shopTierUnlockedEvents: [],
     });
   },
 
@@ -659,11 +661,21 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   setShopTierUnlockedEvent: (event) => {
     console.log("[unlock-debug] useGameStore.setShopTierUnlockedEvent", event);
-    set({ shopTierUnlockedEvent: event });
+    set({ shopTierUnlockedEvents: event ? [event] : [] });
+  },
+
+  setShopTierUnlockedEvents: (events) => {
+    console.log("[unlock-debug] useGameStore.setShopTierUnlockedEvents", events);
+    set({ shopTierUnlockedEvents: events });
   },
 
   clearShopTierUnlockedEvent: () => {
     console.log("[unlock-debug] useGameStore.clearShopTierUnlockedEvent");
-    set({ shopTierUnlockedEvent: undefined });
+    set({ shopTierUnlockedEvents: [] });
+  },
+
+  clearShopTierUnlockedEvents: () => {
+    console.log("[unlock-debug] useGameStore.clearShopTierUnlockedEvents");
+    set({ shopTierUnlockedEvents: [] });
   },
 }));

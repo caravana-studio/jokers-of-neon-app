@@ -50,16 +50,10 @@ const getUnlockIdFromEventValue = (
   return getShopUnlockIdFromLegacyTier(legacyTierId) ?? "";
 };
 
-export const getShopTierUnlockedEvent = (
-  events: DojoEvent[]
+const parseShopTierUnlockedEvent = (
+  shopTierUnlockedEvent: DojoEvent,
+  matchingEventsCount: number
 ): ShopTierUnlockedEvent | undefined => {
-  const matchingEvents = events.filter((event) =>
-    event.keys.includes(SHOP_TIER_UNLOCKED_EVENT_KEY)
-  );
-  const shopTierUnlockedEvent = matchingEvents[0];
-
-  if (!shopTierUnlockedEvent) return undefined;
-
   const game_id =
     getNumberValueFromEvent(shopTierUnlockedEvent, 3) ??
     getNumberValueFromEvent(shopTierUnlockedEvent, 0) ??
@@ -69,7 +63,7 @@ export const getShopTierUnlockedEvent = (
   if (!unlock_id) {
     console.warn("[unlock-debug] found TierUnlockedEvent but unlock id is empty", {
       shopTierUnlockedEvent,
-      matchingEventsCount: matchingEvents.length,
+      matchingEventsCount,
     });
     return undefined;
   }
@@ -78,7 +72,7 @@ export const getShopTierUnlockedEvent = (
     game_id,
     unlock_id,
     rawEvent: shopTierUnlockedEvent,
-    matchingEventsCount: matchingEvents.length,
+    matchingEventsCount,
   });
 
   return {
@@ -86,3 +80,17 @@ export const getShopTierUnlockedEvent = (
     unlock_id,
   };
 };
+
+export const getShopTierUnlockedEvents = (
+  events: DojoEvent[]
+): ShopTierUnlockedEvent[] =>
+  events
+    .filter((event) => event.keys.includes(SHOP_TIER_UNLOCKED_EVENT_KEY))
+    .map((event, _, matchingEvents) =>
+      parseShopTierUnlockedEvent(event, matchingEvents.length)
+    )
+    .filter((event): event is ShopTierUnlockedEvent => Boolean(event));
+
+export const getShopTierUnlockedEvent = (
+  events: DojoEvent[]
+): ShopTierUnlockedEvent | undefined => getShopTierUnlockedEvents(events)[0];
