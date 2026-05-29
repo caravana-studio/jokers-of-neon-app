@@ -166,6 +166,13 @@ export const DailyStreakSheet = ({
                             }
                           : undefined
                       }
+                      style={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        transformOrigin: "center center",
+                        willChange: "transform, filter",
+                      }}
                     >
                       <Box
                         fontFamily="Orbitron"
@@ -173,6 +180,7 @@ export const DailyStreakSheet = ({
                         lineHeight={1}
                         fontWeight={600}
                         color={DIAMONDS}
+                        display="block"
                         sx={{
                           "& span": {
                             fontFamily: "inherit",
