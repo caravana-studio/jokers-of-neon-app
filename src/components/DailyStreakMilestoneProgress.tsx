@@ -7,6 +7,8 @@ import { ProgressBar } from "./CompactRoundData/ProgressBar";
 
 const BASE_MILESTONES = [7, 14, 30, 50] as const;
 const MILESTONE_STEP = 25;
+const MIN_PROGRESS_VALUE = 12;
+const MAX_PROGRESS_VALUE = 35;
 
 type MilestoneState = "achieved" | "active" | "future";
 
@@ -175,6 +177,11 @@ export const DailyStreakMilestoneProgress = ({
 }: DailyStreakMilestoneProgressProps) => {
   const { t } = useTranslation("intermediate-screens");
   const { badges, progressRatio } = getDailyStreakMilestoneWindow(streak);
+  const rawProgress = progressRatio * 50;
+  const clampedProgress =
+    rawProgress === 0
+      ? 0
+      : Math.min(MAX_PROGRESS_VALUE, Math.max(MIN_PROGRESS_VALUE, rawProgress));
 
   return (
     <Box
@@ -206,7 +213,7 @@ export const DailyStreakMilestoneProgress = ({
           zIndex={0}
         >
           <ProgressBar
-            progress={progressRatio * 50}
+            progress={clampedProgress}
             color={VIOLET}
             incompleteColor="#42515C"
             height="16px"
