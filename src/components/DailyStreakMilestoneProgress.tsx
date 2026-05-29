@@ -2,12 +2,7 @@ import { Box, Flex, Text } from "@chakra-ui/react";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useTranslation } from "react-i18next";
-import {
-  BLUE_LIGHT,
-  GREY_LINE,
-  VIOLET,
-  VIOLET_LIGHT
-} from "../theme/colors";
+import { BLUE, BLUE_LIGHT, VIOLET, VIOLET_LIGHT } from "../theme/colors";
 import { ProgressBar } from "./CompactRoundData/ProgressBar";
 
 const BASE_MILESTONES = [7, 14, 30, 50] as const;
@@ -83,18 +78,18 @@ export const getDailyStreakMilestoneWindow = (
 const CalendarBadge = ({ value, state }: MilestoneBadgeData) => {
   const isAchieved = state === "achieved";
   const isFuture = state === "future";
-  const accentColor = isAchieved
-    ? VIOLET_LIGHT
-    : isFuture
-      ? GREY_LINE
-      : BLUE_LIGHT;
-  const textColor = isFuture ? "rgba(255, 255, 255, 0.5)" : accentColor;
+  const accentColor = isAchieved ? VIOLET : isFuture ? "grey" : "white";
+  const textColor = isFuture
+    ? 'grey'
+    : isAchieved
+      ? VIOLET_LIGHT
+      : 'white';
   const innerBackground = "#050505";
   const badgeShadow = isAchieved
-    ? "0 0 18px rgba(220, 162, 234, 0.16)"
+    ? `0 0 10px 1px ${VIOLET}`
     : isFuture
       ? "none"
-      : "0 0 20px rgba(32, 198, 237, 0.18)";
+      : `0 0 8px 1px white`;
   const fontSize =
     value >= 100 ? { base: "17px", sm: "19px" } : { base: "20px", sm: "22px" };
 
@@ -110,9 +105,9 @@ const CalendarBadge = ({ value, state }: MilestoneBadgeData) => {
       <Flex
         width="100%"
         height="100%"
-        borderRadius="16px"
+        borderRadius="8px"
         bg={innerBackground}
-        border={`1px solid ${accentColor}`}
+        border={`2px solid ${accentColor}`}
         overflow="hidden"
         position="relative"
         alignItems="center"
@@ -146,14 +141,13 @@ const CalendarBadge = ({ value, state }: MilestoneBadgeData) => {
             w="15px"
             h="15px"
             borderRadius="full"
-            bg={VIOLET}
+            bg={VIOLET_LIGHT}
             color="white"
             display="flex"
             alignItems="center"
             justifyContent="center"
             fontSize="9px"
             lineHeight={1}
-            boxShadow={`0 0 10px ${VIOLET}`}
             zIndex={10}
           >
             <FontAwesomeIcon icon={faCheck} />
