@@ -1,4 +1,5 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
+import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { DIAMONDS } from "../theme/colors";
 import { Intensity } from "../types/intensity";
@@ -8,6 +9,7 @@ import { DailyStreakMilestoneProgress } from "./DailyStreakMilestoneProgress";
 import { DailyStreakWeekProgress } from "./DailyStreakWeekProgress";
 import { MobileBottomBar } from "./MobileBottomBar";
 import { MobileDecoration } from "./MobileDecoration";
+import { RollingNumber } from "./RollingNumber";
 
 export interface DailyStreakSheetProps {
   streak: number;
@@ -26,6 +28,13 @@ export const DailyStreakSheet = ({
   const normalizedStreak = Number.isFinite(streak)
     ? Math.max(0, Math.floor(streak))
     : 0;
+  const getEntryTransition = (index: number) => ({
+    delay: 0.12 + index * 0.28,
+    duration: 0.46,
+    ease: "easeOut" as const,
+  });
+  const getAnimationStartDelayMs = (index: number) =>
+    Math.round((getEntryTransition(index).delay + getEntryTransition(index).duration) * 1000);
 
   return (
     <Flex
@@ -67,81 +76,142 @@ export const DailyStreakSheet = ({
             mx="auto"
           >
             <Flex h={{ base: 10, sm: 14 }}></Flex>
-            <Flex
-              w="100%"
-              flexDirection="column"
-              alignItems="center"
-              gap={5}
-              borderRadius="28px"
-              px={{ base: 5, sm: 6 }}
-              py={{ base: 5, sm: 6 }}
-              bg="rgba(0, 0, 0, 0.3)"
-              boxShadow="0px 0px 8px rgba(255, 255, 255, 0.5), inset 0 0 5px rgba(255, 255, 255, 0.5)"
+            <motion.div
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={getEntryTransition(0)}
+              style={{ width: "100%" }}
+            >
+              <Flex flexDirection="column" alignItems="center" gap={2}>
+                <Flex
+                  w="100%"
+                  flexDirection="column"
+                  alignItems="center"
+                  gap={5}
+                  borderRadius="28px"
+                  px={{ base: 5, sm: 6 }}
+                  py={{ base: 5, sm: 6 }}
+                  bg="rgba(0, 0, 0, 0.3)"
+                  boxShadow="0px 0px 8px rgba(255, 255, 255, 0.5), inset 0 0 5px rgba(255, 255, 255, 0.5)"
+                >
+                  <Box
+                    position="relative"
+                    borderRadius="full"
+                    bg="rgba(255, 147, 75, 0.08)"
+                    p={2}
+                  >
+                    <DailyStreakFireAnimation size={112} />
+                  </Box>
+
+                  <Flex flexDirection="column" alignItems="center" gap={2}>
+                    <Text
+                      fontFamily="Orbitron"
+                      fontSize={{ base: "15px", sm: "16px" }}
+                      letterSpacing="0.24em"
+                      textTransform="uppercase"
+                      color="white"
+                    >
+                      {t("daily-streak.title")}
+                    </Text>
+                    <motion.div
+                      animate={{
+                        filter: [
+                          `drop-shadow(0 0 6px ${DIAMONDS})`,
+                          `drop-shadow(0 0 10px ${DIAMONDS})`,
+                          `drop-shadow(0 0 6px ${DIAMONDS})`,
+                        ],
+                      }}
+                      transition={{
+                        duration: 1.8,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                        delay: 0.45,
+                      }}
+                    >
+                      <Box
+                        fontFamily="Orbitron"
+                        fontSize={{ base: "72px", sm: "88px" }}
+                        lineHeight={1}
+                        fontWeight={600}
+                        color={DIAMONDS}
+                        sx={{
+                          "& span": {
+                            fontFamily: "inherit",
+                            fontSize: "inherit",
+                            lineHeight: "inherit",
+                            fontWeight: "inherit",
+                            color: "inherit",
+                          },
+                        }}
+                      >
+                        <RollingNumber
+                          n={normalizedStreak}
+                          className=""
+                          delay={420}
+                        />
+                      </Box>
+                    </motion.div>
+                    <Text
+                      textAlign="center"
+                      color="rgba(255, 255, 255, 0.72)"
+                      fontSize={{ base: "14px", sm: "15px" }}
+                      maxW="320px"
+                    >
+                      {t("daily-streak.description")}
+                    </Text>
+                  </Flex>
+                </Flex>
+              </Flex>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={getEntryTransition(1)}
+              style={{ width: "100%" }}
             >
               <Box
-                position="relative"
-                borderRadius="full"
-                bg="rgba(255, 147, 75, 0.08)"
-                p={2}
+                w="100%"
+                borderRadius="24px"
+                px={{ base: 4, sm: 5 }}
+                py={4}
+                bg="rgba(0, 0, 0, 0.3)"
+                boxShadow="0px 0px 8px rgba(255, 255, 255, 0.5), inset 0 0 5px rgba(255, 255, 255, 0.5)"
               >
-                <DailyStreakFireAnimation size={112} />
+                <DailyStreakWeekProgress
+                  streak={normalizedStreak}
+                  referenceDate={referenceDate}
+                  animationStartDelayMs={getAnimationStartDelayMs(1)}
+                />
               </Box>
+            </motion.div>
 
-              <Flex flexDirection="column" alignItems="center" gap={2}>
-                <Text
-                  fontFamily="Orbitron"
-                  fontSize={{ base: "15px", sm: "16px" }}
-                  letterSpacing="0.24em"
-                  textTransform="uppercase"
-                  color="white"
-                >
-                  {t("daily-streak.title")}
-                </Text>
-                <Text
-                  fontFamily="Orbitron"
-                  fontSize={{ base: "72px", sm: "88px" }}
-                  lineHeight={1}
-                  fontWeight={600}
-                  color={DIAMONDS}
-                  textShadow={`0 0 10px ${DIAMONDS}`}
-                >
-                  {normalizedStreak}
-                </Text>
-                <Text
-                  textAlign="center"
-                  color="rgba(255, 255, 255, 0.72)"
-                  fontSize={{ base: "14px", sm: "15px" }}
-                  maxW="320px"
-                >
-                  {t("daily-streak.description")}
-                </Text>
-              </Flex>
-            </Flex>
-
-            <Box
-              w="100%"
-              borderRadius="24px"
-              px={{ base: 4, sm: 5 }}
-              py={4}
-              bg="rgba(0, 0, 0, 0.3)"
-              boxShadow="0px 0px 8px rgba(255, 255, 255, 0.5), inset 0 0 5px rgba(255, 255, 255, 0.5)"
+            <motion.div
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={getEntryTransition(2)}
+              style={{ width: "100%" }}
             >
-              <DailyStreakWeekProgress
+              <DailyStreakMilestoneProgress
                 streak={normalizedStreak}
-                referenceDate={referenceDate}
+                animationStartDelayMs={getAnimationStartDelayMs(2) + 280}
               />
-            </Box>
-
-            <DailyStreakMilestoneProgress streak={normalizedStreak} />
+            </motion.div>
           </Flex>
         </Flex>
 
-        <MobileBottomBar
-          firstButton={{
-            onClick: onContinue ?? onClose,
-            label: t("daily-streak.continue"),
-          }}
-        />
+        <motion.div
+          initial={{ opacity: 0, y: 18 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={getEntryTransition(3)}
+        >
+          <MobileBottomBar
+            firstButton={{
+              onClick: onContinue ?? onClose,
+              label: t("daily-streak.continue"),
+            }}
+          />
+        </motion.div>
       </Flex>
     </Flex>
   );

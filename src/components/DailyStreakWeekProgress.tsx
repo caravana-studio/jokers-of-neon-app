@@ -1,6 +1,8 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
+import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { VIOLET, VIOLET_LIGHT } from "../theme/colors";
 
@@ -48,11 +50,13 @@ export const getDailyStreakWeekDays = (
 interface DailyStreakWeekProgressProps {
   streak: number;
   referenceDate?: Date;
+  animationStartDelayMs?: number;
 }
 
 export const DailyStreakWeekProgress = ({
   streak,
   referenceDate,
+  animationStartDelayMs = 0,
 }: DailyStreakWeekProgressProps) => {
   const { t } = useTranslation("intermediate-screens");
   const weekdayLabels = WEEKDAY_KEYS.map((dayKey) =>
@@ -61,8 +65,35 @@ export const DailyStreakWeekProgress = ({
   const days = getDailyStreakWeekDays(streak, weekdayLabels, referenceDate);
   const firstCompletedIndex = days.findIndex((day) => day.isCompleted);
   const lastCompletedIndex = days.findLastIndex((day) => day.isCompleted);
+  const totalCompletedDays = days.filter((day) => day.isCompleted).length;
+  const [animatedCompletedCount, setAnimatedCompletedCount] = useState(0);
+
+  useEffect(() => {
+    setAnimatedCompletedCount(0);
+
+    if (totalCompletedDays === 0) {
+      return;
+    }
+
+    const timeouts = Array.from({ length: totalCompletedDays }, (_, index) =>
+      window.setTimeout(() => {
+        setAnimatedCompletedCount(index + 1);
+      }, animationStartDelayMs + 260 + index * 170)
+    );
+
+    return () => {
+      timeouts.forEach((timeoutId) => window.clearTimeout(timeoutId));
+    };
+  }, [animationStartDelayMs, totalCompletedDays, streak]);
+
+  const animatedLastCompletedIndex =
+    animatedCompletedCount > 0 && firstCompletedIndex !== -1
+      ? firstCompletedIndex + animatedCompletedCount - 1
+      : -1;
   const hasActiveTrack =
-    firstCompletedIndex !== -1 && lastCompletedIndex > firstCompletedIndex;
+    firstCompletedIndex !== -1 && animatedCompletedCount > 1;
+  const activeTrackLeft = `${((firstCompletedIndex + 0.5) / 7) * 100}%`;
+  const activeTrackWidth = `${(Math.max(animatedCompletedCount - 1, 0) / 7) * 100}%`;
 
   return (
     <Box position="relative" w="100%" maxW="340px" mx="auto" px={1}>
@@ -77,25 +108,34 @@ export const DailyStreakWeekProgress = ({
       />
 
       {hasActiveTrack && (
-        <Box
-          position="absolute"
-          top="38px"
-          left={`calc(${((firstCompletedIndex + 0.5) / 7) * 100}% )`}
-          right={`calc(${100 - ((lastCompletedIndex + 0.5) / 7) * 100}% )`}
-          h="4px"
-          borderRadius="full"
-          bg={VIOLET_LIGHT}
-          boxShadow={`0 0 14px ${VIOLET_LIGHT}`}
+        <motion.div
+          initial={{ width: 0 }}
+          animate={{ width: activeTrackWidth }}
+          transition={{ duration: 0.18, ease: "easeOut" }}
+          style={{
+            position: "absolute",
+            top: "38px",
+            left: activeTrackLeft,
+            height: "4px",
+            borderRadius: "9999px",
+            background: VIOLET_LIGHT,
+            boxShadow: `0 0 14px ${VIOLET_LIGHT}`,
+          }}
         />
       )}
 
       <Flex justify="space-between" align="flex-start" gap={1}>
-        {days.map((day) => {
+        {days.map((day, index) => {
+          const isAnimatedCompleted =
+            day.isCompleted &&
+            firstCompletedIndex !== -1 &&
+            index >= firstCompletedIndex &&
+            index <= animatedLastCompletedIndex;
           const inactiveBg = day.isFuture
             ? "rgba(255, 255, 255, 0.03)"
             : "rgba(255, 255, 255, 0.06)";
           const inactiveBorder = day.isToday
-            ? `rgba(255, 147, 75, 0.9)`
+            ? VIOLET_LIGHT
             : "rgba(255, 255, 255, 0.14)";
 
           return (
@@ -124,19 +164,19 @@ export const DailyStreakWeekProgress = ({
                   alignItems="center"
                   justifyContent="center"
                   bg={
-                    day.isCompleted
+                    isAnimatedCompleted
                       ? day.isToday
                         ? VIOLET_LIGHT
                         : VIOLET
                       : inactiveBg
                   }
                   border={
-                    day.isCompleted
+                    isAnimatedCompleted
                       ? "1px solid rgba(255, 255, 255, 0.3)"
                       : `1px solid ${inactiveBorder}`
                   }
                   boxShadow={
-                    day.isCompleted
+                    isAnimatedCompleted
                       ? day.isToday
                         ? `0 0 18px ${VIOLET_LIGHT}`
                         : `0 0 18px ${VIOLET}`
@@ -146,10 +186,19 @@ export const DailyStreakWeekProgress = ({
                   }
                   opacity={day.isFuture ? 0.7 : 1}
                 >
-                  {day.isCompleted && (
-                    <Box color="white" fontSize="11px" lineHeight={1}>
+                  {isAnimatedCompleted && (
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.7 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.16, ease: "easeOut" }}
+                      style={{
+                        color: "white",
+                        fontSize: "11px",
+                        lineHeight: 1,
+                      }}
+                    >
                       <FontAwesomeIcon icon={faCheck} />
-                    </Box>
+                    </motion.div>
                   )}
                 </Flex>
               </Box>

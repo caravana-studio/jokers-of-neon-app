@@ -1,6 +1,8 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { motion } from "framer-motion";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { BLUE, BLUE_LIGHT, VIOLET, VIOLET_LIGHT } from "../theme/colors";
 import { ProgressBar } from "./CompactRoundData/ProgressBar";
@@ -170,10 +172,12 @@ const CalendarBadge = ({ value, state }: MilestoneBadgeData) => {
 
 interface DailyStreakMilestoneProgressProps {
   streak: number;
+  animationStartDelayMs?: number;
 }
 
 export const DailyStreakMilestoneProgress = ({
   streak,
+  animationStartDelayMs = 0,
 }: DailyStreakMilestoneProgressProps) => {
   const { t } = useTranslation("intermediate-screens");
   const { badges, progressRatio } = getDailyStreakMilestoneWindow(streak);
@@ -182,6 +186,28 @@ export const DailyStreakMilestoneProgress = ({
     rawProgress === 0
       ? 0
       : Math.min(MAX_PROGRESS_VALUE, Math.max(MIN_PROGRESS_VALUE, rawProgress));
+  const [revealedBadges, setRevealedBadges] = useState(0);
+  const [animatedProgress, setAnimatedProgress] = useState(0);
+  const badgeKey = useMemo(
+    () => badges.map((badge) => `${badge.value}-${badge.state}`).join("|"),
+    [badges],
+  );
+
+  useEffect(() => {
+    setRevealedBadges(0);
+    setAnimatedProgress(0);
+
+    const timeouts = [
+      window.setTimeout(() => setRevealedBadges(1), animationStartDelayMs + 220),
+      window.setTimeout(() => setAnimatedProgress(clampedProgress), animationStartDelayMs + 360),
+      window.setTimeout(() => setRevealedBadges(2), animationStartDelayMs + 520),
+      window.setTimeout(() => setRevealedBadges(3), animationStartDelayMs + 680),
+    ];
+
+    return () => {
+      timeouts.forEach((timeoutId) => window.clearTimeout(timeoutId));
+    };
+  }, [animationStartDelayMs, badgeKey, clampedProgress]);
 
   return (
     <Box
@@ -213,7 +239,7 @@ export const DailyStreakMilestoneProgress = ({
           zIndex={0}
         >
           <ProgressBar
-            progress={clampedProgress}
+            progress={animatedProgress}
             color={VIOLET}
             incompleteColor="#42515C"
             height="16px"
@@ -230,12 +256,23 @@ export const DailyStreakMilestoneProgress = ({
           position="relative"
           zIndex={1}
         >
-          {badges.map((badge) => (
-            <CalendarBadge
+          {badges.map((badge, index) => (
+            <motion.div
               key={`${badge.value}-${badge.state}`}
-              value={badge.value}
-              state={badge.state}
-            />
+              initial={{ opacity: 0, y: 8, scale: 0.92 }}
+              animate={{
+                opacity: 1,
+                y: 0,
+                scale: index < revealedBadges ? 1 : 0.96,
+              }}
+              transition={{ duration: 0.22, ease: "easeOut" }}
+              style={{ flexShrink: 0 }}
+            >
+              <CalendarBadge
+                value={badge.value}
+                state={index < revealedBadges ? badge.state : "future"}
+              />
+            </motion.div>
           ))}
         </Flex>
       </Box>
