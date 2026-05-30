@@ -9,10 +9,11 @@ import {
 import React from "react";
 import { num } from "starknet";
 import { rpcUrl, slotInstance } from "../config/cartridgeUrls";
+import { getConfiguredMainnetRpcUrl } from "../config/starknetRpc";
 import { controller, getSlotChainId } from "../dojo/controller/controller";
 import { AppType, useAppContext } from "./AppContextProvider";
 
-const standaloneMainnetRpc = import.meta.env.VITE_STARKNET_RPC_URL?.trim();
+const standaloneMainnetRpc = getConfiguredMainnetRpcUrl();
 const isStandaloneShopMode = import.meta.env.MODE === "standalone-shop";
 const shouldUseStandaloneMainnetRpc =
   isStandaloneShopMode && !!standaloneMainnetRpc;
