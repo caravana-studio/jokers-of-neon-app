@@ -116,7 +116,14 @@ export const TestPage = () => {
           icon={Icons.GIFT}
           description="Preview the Daily Streak screen"
           label="Daily Streak"
-          onClick={() => navigate("/streak-increased")}
+          onClick={() =>
+            navigate("/streak-increased", {
+              state: {
+                streak: 30,
+                from: "/test",
+              },
+            })
+          }
           arrowRight
           width="18px"
         />

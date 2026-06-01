@@ -100,6 +100,14 @@ export const ProfileContent = ({
               )
             }
             onEditUsername={() => setUsernameModalOpen(true)}
+            onOpenDailyStreak={() =>
+              navigate("/streak-increased", {
+                state: {
+                  streak: profile.streak,
+                  from: "/profile",
+                },
+              })
+            }
           />
 
           <UsernameModal
