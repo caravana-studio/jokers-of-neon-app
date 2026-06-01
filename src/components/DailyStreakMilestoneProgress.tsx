@@ -185,11 +185,13 @@ const CalendarBadge = ({ value, state }: MilestoneBadgeData) => {
 interface DailyStreakMilestoneProgressProps {
   streak: number;
   animationStartDelayMs?: number;
+  onStepActivated?: () => void;
 }
 
 export const DailyStreakMilestoneProgress = ({
   streak,
   animationStartDelayMs = 0,
+  onStepActivated,
 }: DailyStreakMilestoneProgressProps) => {
   const { t } = useTranslation("intermediate-screens");
   const { badges, progressRatio } = getDailyStreakMilestoneWindow(streak);
@@ -210,16 +212,25 @@ export const DailyStreakMilestoneProgress = ({
     setAnimatedProgress(0);
 
     const timeouts = [
-      window.setTimeout(() => setRevealedBadges(1), animationStartDelayMs + 220),
+      window.setTimeout(() => {
+        onStepActivated?.();
+        setRevealedBadges(1);
+      }, animationStartDelayMs + 220),
       window.setTimeout(() => setAnimatedProgress(clampedProgress), animationStartDelayMs + 360),
-      window.setTimeout(() => setRevealedBadges(2), animationStartDelayMs + 520),
-      window.setTimeout(() => setRevealedBadges(3), animationStartDelayMs + 680),
+      window.setTimeout(() => {
+        onStepActivated?.();
+        setRevealedBadges(2);
+      }, animationStartDelayMs + 520),
+      window.setTimeout(() => {
+        onStepActivated?.();
+        setRevealedBadges(3);
+      }, animationStartDelayMs + 680),
     ];
 
     return () => {
       timeouts.forEach((timeoutId) => window.clearTimeout(timeoutId));
     };
-  }, [animationStartDelayMs, badgeKey, clampedProgress]);
+  }, [animationStartDelayMs, badgeKey, clampedProgress, onStepActivated]);
 
   return (
     <Box

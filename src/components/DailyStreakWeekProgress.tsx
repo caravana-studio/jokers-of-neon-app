@@ -51,12 +51,14 @@ interface DailyStreakWeekProgressProps {
   streak: number;
   referenceDate?: Date;
   animationStartDelayMs?: number;
+  onStepActivated?: () => void;
 }
 
 export const DailyStreakWeekProgress = ({
   streak,
   referenceDate,
   animationStartDelayMs = 0,
+  onStepActivated,
 }: DailyStreakWeekProgressProps) => {
   const { t } = useTranslation("intermediate-screens");
   const weekdayLabels = WEEKDAY_KEYS.map((dayKey) =>
@@ -77,6 +79,7 @@ export const DailyStreakWeekProgress = ({
 
     const timeouts = Array.from({ length: totalCompletedDays }, (_, index) =>
       window.setTimeout(() => {
+        onStepActivated?.();
         setAnimatedCompletedCount(index + 1);
       }, animationStartDelayMs + 260 + index * 170)
     );
@@ -84,7 +87,7 @@ export const DailyStreakWeekProgress = ({
     return () => {
       timeouts.forEach((timeoutId) => window.clearTimeout(timeoutId));
     };
-  }, [animationStartDelayMs, totalCompletedDays, streak]);
+  }, [animationStartDelayMs, onStepActivated, totalCompletedDays, streak]);
 
   const animatedLastCompletedIndex =
     animatedCompletedCount > 0 && firstCompletedIndex !== -1

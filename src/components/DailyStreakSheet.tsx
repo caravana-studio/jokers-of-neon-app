@@ -1,9 +1,15 @@
+import { Haptics } from "@capacitor/haptics";
+import { Capacitor } from "@capacitor/core";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { DIAMONDS } from "../theme/colors";
 import { Intensity } from "../types/intensity";
+import AudioManager from "../audio/AudioManager";
+import { clearLevel, clearRound } from "../constants/sfx";
+import { triggerHaptic } from "../haptics";
+import { useBackgroundAnimation } from "../providers/BackgroundAnimationProvider";
 import { GalaxyBackground } from "./backgrounds/galaxy/GalaxyBackground";
 import { DailyStreakFireAnimation } from "./DailyStreakFireAnimation";
 import {
@@ -16,6 +22,14 @@ import { MobileDecoration } from "./MobileDecoration";
 import { RollingNumber } from "./RollingNumber";
 
 const CELEBRATION_INTRO_DURATION_MS = 2600;
+
+const triggerEntryVibration = (duration: number) => {
+  if (!Capacitor.isNativePlatform() || !Capacitor.isPluginAvailable("Haptics")) {
+    return;
+  }
+
+  void Haptics.vibrate({ duration }).catch(() => {});
+};
 
 export interface DailyStreakSheetProps {
   streak: number;
@@ -31,6 +45,7 @@ export const DailyStreakSheet = ({
   referenceDate,
 }: DailyStreakSheetProps) => {
   const { t } = useTranslation("intermediate-screens");
+  const { showLightPillarAnimation } = useBackgroundAnimation();
   const normalizedStreak = Number.isFinite(streak)
     ? Math.max(0, Math.floor(streak))
     : 0;
@@ -54,6 +69,15 @@ export const DailyStreakSheet = ({
     };
   }, [isMilestoneHit, normalizedStreak]);
 
+  useEffect(() => {
+    AudioManager.getInstance().play(isMilestoneHit ? clearLevel : clearRound);
+    triggerEntryVibration(isMilestoneHit ? 800 : 400);
+
+    if (isMilestoneHit) {
+      showLightPillarAnimation({ intensityLevel: Intensity.LOW });
+    }
+  }, [isMilestoneHit, normalizedStreak, showLightPillarAnimation]);
+
   const getEntryTransition = (index: number) => ({
     delay: 0.12 + index * 0.28,
     duration: 0.46,
@@ -72,7 +96,7 @@ export const DailyStreakSheet = ({
     >
       <GalaxyBackground
         opacity={0.75}
-        intensity={isMilestoneHit ? Intensity.HIGH : Intensity.LOW}
+        intensity={Intensity.LOW}
         filter="saturate(1.1)"
       />
       <MobileDecoration />
@@ -282,6 +306,7 @@ export const DailyStreakSheet = ({
                       streak={normalizedStreak}
                       referenceDate={referenceDate}
                       animationStartDelayMs={getAnimationStartDelayMs(1)}
+                      onStepActivated={() => triggerHaptic("interaction")}
                     />
                   </Box>
                 </motion.div>
@@ -295,6 +320,7 @@ export const DailyStreakSheet = ({
                   <DailyStreakMilestoneProgress
                     streak={normalizedStreak}
                     animationStartDelayMs={getAnimationStartDelayMs(2) + 280}
+                    onStepActivated={() => triggerHaptic("interaction")}
                   />
                 </motion.div>
               </Flex>
