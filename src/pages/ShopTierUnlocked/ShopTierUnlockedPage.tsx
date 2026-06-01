@@ -41,20 +41,22 @@ export const ShopTierUnlockedPage = () => {
     () => shopTierUnlockedEvents.filter(isValidShopTierUnlockedEvent),
     [shopTierUnlockedEvents]
   );
+  const resolvedGameId = Number(
+    gameId ??
+      resolvedUnlockEvents[0]?.game_id ??
+      0
+  );
 
   useEffect(() => {
     setCurrentUnlockIndex((previousIndex) =>
-      Math.min(previousIndex, Math.max(resolvedUnlockEvents.length - 1, 0))
+      Math.min(
+        Math.max(previousIndex, 0),
+        Math.max(resolvedUnlockEvents.length - 1, 0)
+      )
     );
   }, [resolvedUnlockEvents.length]);
 
   const currentUnlockEvent = resolvedUnlockEvents[currentUnlockIndex];
-  const resolvedGameId = Number(
-    gameId ??
-      currentUnlockEvent?.game_id ??
-      resolvedUnlockEvents[0]?.game_id ??
-      0
-  );
   const unlockedTierId = currentUnlockEvent?.unlock_id ?? "";
   const unlockConfig = currentUnlockEvent
     ? getShopTierUnlockConfig(currentUnlockEvent.unlock_id)
@@ -72,19 +74,19 @@ export const ShopTierUnlockedPage = () => {
   const hasLives = availableLives > 0;
 
   useEffect(() => {
-    if (!currentUnlockEvent && resolvedGameId > 0) {
-      console.warn("[unlock-debug] missing unlock queue, redirecting to gameover", {
+    if (resolvedUnlockEvents.length === 0) {
+      console.warn("[unlock-debug] missing unlock queue, redirecting home", {
         resolvedGameId,
         requestedGameId: gameId,
         shopTierUnlockedEvents,
       });
-      navigate(`/gameover/${resolvedGameId}`, { replace: true });
+      navigate("/my-games", { replace: true });
     }
   }, [
-    currentUnlockEvent,
     gameId,
     navigate,
     resolvedGameId,
+    resolvedUnlockEvents.length,
     shopTierUnlockedEvents,
   ]);
 
@@ -168,10 +170,12 @@ export const ShopTierUnlockedPage = () => {
   const handleShowNextUnlock = () => {
     if (isLastUnlock) return;
 
-    setSkipIntroAnimation(false);
-    setCurrentUnlockIndex((previousIndex) =>
-      Math.min(previousIndex + 1, resolvedUnlockEvents.length - 1)
+    const nextUnlockIndex = Math.min(
+      currentUnlockIndex + 1,
+      resolvedUnlockEvents.length - 1
     );
+    setSkipIntroAnimation(false);
+    setCurrentUnlockIndex(nextUnlockIndex);
   };
 
   const getTransition = (index: number) => ({
@@ -185,7 +189,6 @@ export const ShopTierUnlockedPage = () => {
     <DelayedLoading ms={0}>
       <BackgroundDecoration hidelogo contentHeight="100%">
         <GalaxyBackground
-          opacity={0.8}
           intensity={unlockConfig.intensity}
           filter="saturate(1.2)"
         />
@@ -198,7 +201,7 @@ export const ShopTierUnlockedPage = () => {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -28 }}
             transition={{ duration: 0.28, ease: "easeInOut" }}
-            style={{ width: "100%", height: "100%" }}
+            style={{ width: "100%", height: "100%", position: "relative", zIndex: 3 }}
           >
             <Flex
               zIndex={2}
