@@ -10,7 +10,6 @@ import AudioManager from "../audio/AudioManager";
 import { clearLevel, clearRound } from "../constants/sfx";
 import { triggerHaptic } from "../haptics";
 import { useBackgroundAnimation } from "../providers/BackgroundAnimationProvider";
-import { GalaxyBackground } from "./backgrounds/galaxy/GalaxyBackground";
 import { DailyStreakFireAnimation } from "./DailyStreakFireAnimation";
 import {
   DailyStreakMilestoneProgress,
@@ -45,7 +44,7 @@ export const DailyStreakSheet = ({
   referenceDate,
 }: DailyStreakSheetProps) => {
   const { t } = useTranslation("intermediate-screens");
-  const { showLightPillarAnimation } = useBackgroundAnimation();
+  const { showLightPillarAnimation, hideLightPillarAnimation } = useBackgroundAnimation();
   const normalizedStreak = Number.isFinite(streak)
     ? Math.max(0, Math.floor(streak))
     : 0;
@@ -73,10 +72,20 @@ export const DailyStreakSheet = ({
     AudioManager.getInstance().play(isMilestoneHit ? clearLevel : clearRound);
     triggerEntryVibration(isMilestoneHit ? 800 : 400);
 
-    if (isMilestoneHit) {
-      showLightPillarAnimation({ intensityLevel: Intensity.LOW });
-    }
-  }, [isMilestoneHit, normalizedStreak, showLightPillarAnimation]);
+    showLightPillarAnimation({
+      intensityLevel: isMilestoneHit ? Intensity.MEDIUM : Intensity.LOW,
+      persist: true,
+    });
+
+    return () => {
+      hideLightPillarAnimation();
+    };
+  }, [
+    hideLightPillarAnimation,
+    isMilestoneHit,
+    normalizedStreak,
+    showLightPillarAnimation,
+  ]);
 
   const getEntryTransition = (index: number) => ({
     delay: 0.12 + index * 0.28,
@@ -94,11 +103,6 @@ export const DailyStreakSheet = ({
       flexDirection="column"
       overflow="hidden"
     >
-      <GalaxyBackground
-        opacity={0.75}
-        intensity={Intensity.LOW}
-        filter="saturate(1.1)"
-      />
       <MobileDecoration />
 
       <Flex
