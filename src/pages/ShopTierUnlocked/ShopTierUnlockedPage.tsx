@@ -2,7 +2,7 @@ import { Flex, Heading, Image, Text } from "@chakra-ui/react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate, useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { BackgroundDecoration } from "../../components/Background";
 import { GalaxyBackground } from "../../components/backgrounds/galaxy/GalaxyBackground";
 import { DelayedLoading } from "../../components/DelayedLoading";
@@ -74,23 +74,6 @@ export const ShopTierUnlockedPage = () => {
   const hasLives = availableLives > 0;
 
   useEffect(() => {
-    if (resolvedUnlockEvents.length === 0) {
-      console.warn("[unlock-debug] missing unlock queue, redirecting home", {
-        resolvedGameId,
-        requestedGameId: gameId,
-        shopTierUnlockedEvents,
-      });
-      navigate("/my-games", { replace: true });
-    }
-  }, [
-    gameId,
-    navigate,
-    resolvedGameId,
-    resolvedUnlockEvents.length,
-    shopTierUnlockedEvents,
-  ]);
-
-  useEffect(() => {
     console.log("[unlock-debug] ShopTierUnlockedPage state", {
       resolvedGameId,
       unlockedTierId,
@@ -126,6 +109,16 @@ export const ShopTierUnlockedPage = () => {
       active = false;
     };
   }, [account?.address, client]);
+
+  if (resolvedUnlockEvents.length === 0) {
+    console.warn("[unlock-debug] missing unlock queue, redirecting home", {
+      resolvedGameId,
+      requestedGameId: gameId,
+      shopTierUnlockedEvents,
+    });
+
+    return <Navigate to="/my-games" replace />;
+  }
 
   if (!unlockConfig) return null;
 
