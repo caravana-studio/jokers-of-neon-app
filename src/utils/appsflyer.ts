@@ -100,20 +100,8 @@ class AppsFlyerBridgeWeb implements Partial<AppsFlyerBridgePlugin> {
     localStorage.setItem(WEB_STORAGE_KEYS.CUSTOMER_ID, options.customerUserId);
   }
 
-  async logEvent(options: { eventName: string; eventValues?: Record<string, unknown> }): Promise<void> {
-    const { eventName, eventValues = {} } = options;
-
-    // Add web-specific context
-    const enrichedValues = {
-      ...eventValues,
-      platform: "web",
-      device_id: getOrCreateWebDeviceId(),
-      customer_id: localStorage.getItem(WEB_STORAGE_KEYS.CUSTOMER_ID) || undefined,
-      timestamp: new Date().toISOString(),
-    };
-
-    // Log locally for debugging (events are tracked via backend API for web)
-    console.log(`[AppsFlyer Web] Event: ${eventName}`, enrichedValues);
+  async logEvent(_options: { eventName: string; eventValues?: Record<string, unknown> }): Promise<void> {
+    getOrCreateWebDeviceId();
   }
 
   async getAppsFlyerUID(): Promise<{ uid: string }> {
@@ -131,7 +119,6 @@ class AppsFlyerBridgeWeb implements Partial<AppsFlyerBridgePlugin> {
     // Generate OneLink URL with referral code
     const oneLinkBaseUrl = "https://jokersofneon.onelink.me/2BD9";
     const url = `${oneLinkBaseUrl}?ref=${encodeURIComponent(options.referralCode)}`;
-    console.log("[AppsFlyer Web] Generated invite URL:", url);
     return { url };
   }
 
@@ -155,8 +142,6 @@ class AppsFlyerBridgeWeb implements Partial<AppsFlyerBridgePlugin> {
       this.listeners.set(eventName, new Set());
     }
     this.listeners.get(eventName)!.add(listenerFunc);
-
-    console.log(`[AppsFlyer Web] Listener added for: ${eventName}`);
 
     return {
       remove: () => {
@@ -218,7 +203,6 @@ export async function logAppsFlyerEvent(
 ): Promise<void> {
   try {
     await AppsFlyerBridge.logEvent({ eventName, eventValues: eventValues ?? {} });
-    console.log(`[AppsFlyer] Event: ${eventName}`, eventValues);
   } catch (error) {
     console.error(`[AppsFlyer] Event failed (${eventName}):`, error);
   }
@@ -366,7 +350,6 @@ export async function generateNativeInviteUrl(referralCode: string): Promise<str
   try {
     const result = await AppsFlyerBridge.generateInviteUrl({ referralCode });
     if (result.url) {
-      console.log("[AppsFlyer] Invite URL generated:", result.url);
       return result.url;
     }
     return generateFallbackReferralLink(referralCode, "");
