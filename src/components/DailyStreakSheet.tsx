@@ -123,7 +123,7 @@ export const DailyStreakSheet = ({
             alignItems="center"
             gap={5}
             w="100%"
-            maxW="460px"
+            maxW={{base: "460px", sm: "600px"}}
             mx="auto"
           >
             <Flex h={{ base: 5, sm: 14 }}></Flex>
