@@ -94,7 +94,7 @@ const createConfig = (target: BuildTarget): UserConfig => {
   const isStandaloneShop = target === "standaloneShop";
   const isMiniapp = target === "miniapp";
   const isAll = target === "all";
-  const assetBase = isStandaloneShop || isMiniapp ? "/" : "./";
+  const assetBase = "/";
   const https = resolveHttpsServerConfig();
   const config: UserConfig = {
     base: assetBase,
