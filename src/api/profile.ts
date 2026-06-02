@@ -81,6 +81,20 @@ type GetStreakStatusApiResponse = {
   };
 };
 
+type ClaimStreakPresentationApiResponse = {
+  success?: boolean;
+  data?: {
+    show?: boolean | null;
+    streak?: string | number | null;
+    period_id?: string | number | null;
+    periodId?: string | number | null;
+  };
+  show?: boolean | null;
+  streak?: string | number | null;
+  period_id?: string | number | null;
+  periodId?: string | number | null;
+};
+
 type CreateProfileApiResponse = {
   success?: boolean;
   transactionHash?: string;
@@ -147,6 +161,12 @@ export type StreakStatusApiData = {
   pendingPeriodId: number | null;
   source: "cache" | "chain";
   updatedAt: string | null;
+};
+
+export type StreakPresentationClaimApiData = {
+  show: boolean;
+  streak: number | null;
+  periodId: number | null;
 };
 
 function getBaseUrl(): string {
@@ -501,6 +521,64 @@ export async function fetchStreakStatus(
         : sanitizeNumber(data.pending_period_id),
     source: data.source ?? "chain",
     updatedAt: data.updated_at ?? null,
+  };
+}
+
+export async function claimStreakPresentation(
+  address: string
+): Promise<StreakPresentationClaimApiData> {
+  if (!address) {
+    throw new Error("claimStreakPresentation: address is required");
+  }
+
+  const apiKey = getApiKey();
+  const baseUrl = getBaseUrl();
+  const requestUrl = `${baseUrl}/api/profile/streak/${encodeURIComponent(
+    address
+  )}/presentation/claim`;
+
+  const response = await fetch(requestUrl, {
+    method: "POST",
+    headers: {
+      "X-API-Key": apiKey,
+    },
+  });
+
+  if (!response.ok) {
+    const errorDetails = await response.text().catch(() => "");
+    throw new Error(
+      `claimStreakPresentation: ${response.status} ${response.statusText}${
+        errorDetails ? ` - ${errorDetails}` : ""
+      }`
+    );
+  }
+
+  const json: ClaimStreakPresentationApiResponse = await response.json();
+  const data = json.data ?? json;
+
+  if (typeof data.show !== "boolean") {
+    throw new Error(
+      "claimStreakPresentation: API did not return a valid payload"
+    );
+  }
+
+  if (!data.show) {
+    return {
+      show: false,
+      streak: null,
+      periodId: null,
+    };
+  }
+
+  const rawPeriodId = data.period_id ?? data.periodId;
+
+  return {
+    show: true,
+    streak: sanitizeNumber(data.streak),
+    periodId:
+      rawPeriodId === null || rawPeriodId === undefined
+        ? null
+        : sanitizeNumber(rawPeriodId),
   };
 }
 

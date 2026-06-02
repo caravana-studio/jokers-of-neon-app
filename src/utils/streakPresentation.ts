@@ -1,0 +1,54 @@
+import type { NavigateFunction } from "react-router-dom";
+
+export const SKIP_STREAK_PRESENTATION_CHECK = "skipStreakPresentationCheck";
+
+export type StreakPresentationContinuation =
+  | {
+      type: "route";
+      to: string;
+      replace?: boolean;
+      state?: Record<string, unknown> | null;
+    }
+  | {
+      type: "map-after-rewards";
+    };
+
+export type StreakIncreasedLocationState = {
+  streak?: number;
+  from?: string;
+  fromState?: Record<string, unknown> | null;
+  replaceOnClose?: boolean;
+  continuation?: StreakPresentationContinuation;
+};
+
+export function navigateToStreakIncreased(
+  navigate: NavigateFunction,
+  options: {
+    streak: number;
+    continuation?: StreakPresentationContinuation;
+    from?: string;
+    fromState?: Record<string, unknown> | null;
+    replace?: boolean;
+    replaceOnClose?: boolean;
+  }
+) {
+  const {
+    streak,
+    continuation,
+    from,
+    fromState,
+    replace = false,
+    replaceOnClose = false,
+  } = options;
+
+  navigate("/streak-increased", {
+    replace,
+    state: {
+      streak,
+      continuation,
+      from,
+      fromState,
+      replaceOnClose,
+    } satisfies StreakIncreasedLocationState,
+  });
+}

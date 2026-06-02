@@ -2,13 +2,17 @@ import { Box, Flex, Heading } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+import { claimStreakPresentation } from "../api/profile.ts";
 import { BOSS_LEVEL } from "../constants/general.ts";
+import { useDojo } from "../dojo/DojoContext.tsx";
 import { useMapNavigate } from "../hooks/useMapNavigate.tsx";
 import { RerollIndicators } from "../pages/DynamicStore/storeComponents/TopBar/RerollIndicators.tsx";
 import { useGameStore } from "../state/useGameStore.ts";
 import { BLUE_LIGHT, VIOLET_LIGHT } from "../theme/colors";
 import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
 import { RoundRewards } from "../types/RoundRewards.ts";
+import { navigateToStreakIncreased } from "../utils/streakPresentation.ts";
 import { StaggeredList } from "./animations/StaggeredList.tsx";
 import { CashSymbol } from "./CashSymbol.tsx";
 import { PinkBox } from "./PinkBox.tsx";
@@ -98,7 +102,11 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "rewards-details.labels",
   });
+  const navigate = useNavigate();
   const { navigateToMap } = useMapNavigate();
+  const {
+    account: { account },
+  } = useDojo();
   const { isSmallScreen } = useResponsiveValues();
   const { currentScore, setRoundRewards } = useGameStore();
   const [animationEnded, setAnimationEnded] = useState(false);
@@ -168,6 +176,23 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
     setIsNavigating(true);
 
     try {
+      try {
+        const presentation = await claimStreakPresentation(account.address);
+
+        if (presentation.show && presentation.streak !== null) {
+          navigateToStreakIncreased(navigate, {
+            streak: presentation.streak,
+            continuation: {
+              type: "map-after-rewards",
+            },
+            replace: true,
+          });
+          return;
+        }
+      } catch (error) {
+        console.warn("RewardsDetail: streak presentation claim failed", error);
+      }
+
       await navigateToMap();
       setRoundRewards(undefined);
     } catch {
