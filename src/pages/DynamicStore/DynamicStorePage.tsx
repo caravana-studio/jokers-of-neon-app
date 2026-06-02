@@ -14,13 +14,8 @@ import {
   TUTORIAL_FLOATER_PROPS,
   TUTORIAL_STYLE,
 } from "../../constants/gameTutorial";
-import { GameStateEnum } from "../../dojo/typescript/custom";
-import { useShopActions } from "../../dojo/useShopActions";
-import { useCustomNavigate } from "../../hooks/useCustomNavigate";
 import { useProgressiveShopTutorial } from "../../hooks/useProgressiveShopTutorial";
 import { useRedirectByGameState } from "../../hooks/useRedirectByGameState";
-import { useGameContext } from "../../providers/GameProvider";
-import { useStore } from "../../providers/StoreProvider";
 import { useGameStore } from "../../state/useGameStore";
 import { useShopStore } from "../../state/useShopStore";
 import { BLUE } from "../../theme/colors";
@@ -60,8 +55,6 @@ export const SHOP_ID_MAP = {
 };
 export const DynamicStorePage = () => {
   const { t } = useTranslation("store", { keyPrefix: "store.dynamic" });
-
-  const { setLoading } = useStore();
   const {
     specialSlotItem,
     loadedItems,
@@ -212,35 +205,18 @@ export const DynamicStorePage = () => {
     };
   }, [distribution, loadedItems, sectionAvailability, store?.id]);
   const navigate = useNavigate();
-  const customNavigate = useCustomNavigate();
-  const { onShopSkip } = useGameContext();
   const {
     specialSlots,
     maxSpecialCards,
     specialCards: playerSpecialCards,
-    id: gameId,
   } = useGameStore();
 
   const noAvailableSpecialSlots = playerSpecialCards.length >= specialSlots;
   const canBuyMoreSpecialSlots = specialSlots < maxSpecialCards;
 
-  const { skipShop } = useShopActions();
-
   const { nextLevelButtonProps } = useNextLevelButton();
 
   useRedirectByGameState();
-
-  const handleNextLevelClick = () => {
-    setLoading(true);
-    onShopSkip();
-    skipShop(gameId).then((response): void => {
-      if (response.success) {
-        customNavigate(GameStateEnum.Map);
-      } else {
-        setLoading(false);
-      }
-    });
-  };
 
   const manageItemsButton = (
     <Button
@@ -258,13 +234,14 @@ export const DynamicStorePage = () => {
   const nextButton = (
     <Button
       className="progressive-shop-next-button"
-      onClick={handleNextLevelClick}
+      onClick={nextLevelButtonProps.onClick}
       h={{ base: "28px", sm: "unset" }}
       w={{ base: "100%", sm: "280px" }}
       fontSize={{ base: "10px", sm: "md" }}
       variant="secondarySolid"
+      isDisabled={nextLevelButtonProps.disabled}
     >
-      {t("next")}
+      {nextLevelButtonProps.label}
     </Button>
   );
 

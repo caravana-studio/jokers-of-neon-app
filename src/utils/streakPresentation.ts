@@ -11,6 +11,9 @@ export type StreakPresentationContinuation =
     }
   | {
       type: "map-after-rewards";
+    }
+  | {
+      type: "map";
     };
 
 export type StreakIncreasedLocationState = {

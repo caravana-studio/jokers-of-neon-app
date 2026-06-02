@@ -34,6 +34,15 @@ export const StreakIncreasedPage = () => {
       return;
     }
 
+    if (state?.continuation?.type === "map") {
+      try {
+        await navigateToMap();
+      } catch {
+        customNavigate(GameStateEnum.Map);
+      }
+      return;
+    }
+
     if (state?.continuation?.type === "route") {
       navigate(state.continuation.to, {
         replace: state.continuation.replace,
@@ -58,6 +67,7 @@ export const StreakIncreasedPage = () => {
       <DailyStreakSheet
         streak={streak}
         onClose={handleClose}
+        showCelebrationIntroOnEntry={state?.from !== "/profile"}
       />
     </DelayedLoading>
   );

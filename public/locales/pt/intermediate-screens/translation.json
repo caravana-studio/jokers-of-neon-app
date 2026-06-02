@@ -464,11 +464,12 @@
   },
   "daily-streak": {
     "title": "Sequência diária",
-    "description": "Complete uma missão diária ou um nível todos os dias para manter sua sequência.",
+    "description": "Complete sua missão diária todos os dias para manter sua sequência.",
     "next-objective": "Próximo objetivo",
     "continue": "Continuar",
     "celebration-title": "Parabéns",
     "celebration-description": "Você completou seu objetivo",
+    "celebration-description-extended": "Você acabou de estender sua sequência",
     "days": {
       "monday": "2a",
       "tuesday": "3a",

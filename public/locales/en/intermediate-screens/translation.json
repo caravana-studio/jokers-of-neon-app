@@ -465,11 +465,12 @@
   },
   "daily-streak": {
     "title": "Daily Streak",
-    "description": "Complete a daily mission or a level every day to keep your streak.",
+    "description": "Complete your daily mission every day to keep your streak.",
     "next-objective": "Next objective",
     "continue": "Continue",
     "celebration-title": "Congratulations",
     "celebration-description": "You completed your objective",
+    "celebration-description-extended": "You just extended your streak",
     "days": {
       "monday": "Mo",
       "tuesday": "Tu",

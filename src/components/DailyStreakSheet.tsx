@@ -35,6 +35,7 @@ export interface DailyStreakSheetProps {
   onClose: () => void;
   onContinue?: () => void;
   referenceDate?: Date;
+  showCelebrationIntroOnEntry?: boolean;
 }
 
 export const DailyStreakSheet = ({
@@ -42,6 +43,7 @@ export const DailyStreakSheet = ({
   onClose,
   onContinue,
   referenceDate,
+  showCelebrationIntroOnEntry = true,
 }: DailyStreakSheetProps) => {
   const { t } = useTranslation("intermediate-screens");
   const { showLightPillarAnimation, hideLightPillarAnimation } = useBackgroundAnimation();
@@ -49,10 +51,12 @@ export const DailyStreakSheet = ({
     ? Math.max(0, Math.floor(streak))
     : 0;
   const isMilestoneHit = isDailyStreakAtMilestone(normalizedStreak);
-  const [showCelebrationIntro, setShowCelebrationIntro] = useState(isMilestoneHit);
+  const [showCelebrationIntro, setShowCelebrationIntro] = useState(
+    showCelebrationIntroOnEntry
+  );
 
   useEffect(() => {
-    if (!isMilestoneHit) {
+    if (!showCelebrationIntroOnEntry) {
       setShowCelebrationIntro(false);
       return;
     }
@@ -66,7 +70,7 @@ export const DailyStreakSheet = ({
     return () => {
       window.clearTimeout(timeoutId);
     };
-  }, [isMilestoneHit, normalizedStreak]);
+  }, [isMilestoneHit, normalizedStreak, showCelebrationIntroOnEntry]);
 
   useEffect(() => {
     AudioManager.getInstance().play(isMilestoneHit ? clearLevel : clearRound);
@@ -285,7 +289,11 @@ export const DailyStreakSheet = ({
                       lineHeight={1.2}
                       color="rgba(255,255,255,0.9)"
                     >
-                      {t("daily-streak.celebration-description")}
+                      {t(
+                        isMilestoneHit
+                          ? "daily-streak.celebration-description"
+                          : "daily-streak.celebration-description-extended"
+                      )}
                     </Text>
                   </motion.div>
                 </Flex>
