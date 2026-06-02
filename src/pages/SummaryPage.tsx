@@ -64,7 +64,7 @@ const SummaryDetail = ({ win }: SummaryPageProps) => {
     level,
     round,
     id: gameId,
-    shopTierUnlockedEvent,
+    shopTierUnlockedEvents,
   } = useGameStore();
   const [gameTracker, setGameTracker] = useState(DEFAULT_TRACKER_VIEW);
 
@@ -161,18 +161,19 @@ const SummaryDetail = ({ win }: SummaryPageProps) => {
             setIsNavigating(true);
             navigateToMap();
           } else {
-            const hasShopTierUnlockedEventForCurrentGame = Boolean(
-              shopTierUnlockedEvent?.unlock_id &&
-                getShopTierUnlockConfig(shopTierUnlockedEvent.unlock_id)
+            const resolvedShopTierUnlockedEvents = shopTierUnlockedEvents.filter(
+              (event) => Boolean(getShopTierUnlockConfig(event.unlock_id))
             );
+            const hasShopTierUnlockedEventForCurrentGame =
+              resolvedShopTierUnlockedEvents.length > 0;
 
             console.log("[unlock-debug] loose continue navigation decision", {
               gameId,
-              shopTierUnlockedEvent,
+              shopTierUnlockedEvents,
               hasShopTierUnlockedEventForCurrentGame,
-              resolvedUnlockConfig: shopTierUnlockedEvent?.unlock_id
-                ? getShopTierUnlockConfig(shopTierUnlockedEvent.unlock_id)
-                : undefined,
+              resolvedUnlockConfigs: resolvedShopTierUnlockedEvents.map((event) =>
+                getShopTierUnlockConfig(event.unlock_id)
+              ),
             });
 
             if (hasShopTierUnlockedEventForCurrentGame) {
