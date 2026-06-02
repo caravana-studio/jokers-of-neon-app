@@ -8,6 +8,7 @@ export interface PlayEvents {
   levelPassed?: LevelPassedEvent;
   levelUpPlayEvent?: LevelUpPlayEvent;
   shopTierUnlockedEvent?: ShopTierUnlockedEvent;
+  shopTierUnlockedEvents?: ShopTierUnlockedEvent[];
   detailEarned?: DetailEarned;
   neonPlayEvent?: NeonPlayEvent;
   cards: Card[];

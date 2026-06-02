@@ -51,10 +51,11 @@ export const TestPage = () => {
 
   const triggerShopTierUnlockedScreen = (unlockableId: string) => {
     const testGameId = currentGameId > 0 ? currentGameId : 999999;
-    setShopTierUnlockedEvent({
+    const unlockEvent = {
       game_id: testGameId,
       unlock_id: unlockableId,
-    });
+    };
+    setShopTierUnlockedEvent(unlockEvent);
     navigate(`/shop-tier-unlocked/${testGameId}`);
   };
 
