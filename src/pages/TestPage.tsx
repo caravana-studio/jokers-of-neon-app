@@ -190,6 +190,15 @@ export const TestPage = () => {
         />
         {isSmallScreen && <Divider borderColor="white" borderWidth="1px" my={2} />}
         <MenuBtn
+          icon={Icons.STORE}
+          description="Season pass offer fullscreen"
+          label="Season pass offer"
+          onClick={() => navigate("/test/season-pass-offer")}
+          arrowRight
+          width="18px"
+        />
+        {isSmallScreen && <Divider borderColor="white" borderWidth="1px" my={2} />}
+        <MenuBtn
           icon={Icons.ROUND}
           description="Practice play simulation"
           label="Practice"

@@ -20,6 +20,24 @@
       "season-pass": "PASSO DE TEMPORADA",
       "buy": "COMPRAR",
       "unlocked": "DESBLOQUEADO",
+      "offer": {
+        "title-prefix": "DESBLOQUEIE MAIS COM",
+        "skip": "PULAR",
+        "benefits": {
+          "1": {
+            "title": "Muito mais recompensas",
+            "description": "Ganhe 25 packs extras e 5 tickets extras de torneio durante a temporada."
+          },
+          "2": {
+            "title": "Mais jogos por dia",
+            "description": "Você pode jogar 6 partidas de Jokers por dia em vez de 3, e 1 partida recarrega a cada 4 horas em vez de 8."
+          },
+          "3": {
+            "title": "Recompensas negociáveis",
+            "description": "Todas as recompensas que você recebe são negociáveis com outros jogadores no marketplace externo."
+          }
+        }
+      },
       "facts": {
         "1-title": "Recompensas exclusivas",
         "1-description-1": "Progressando através da temporada {{season}} dá mais recompensas.",

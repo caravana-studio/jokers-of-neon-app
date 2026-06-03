@@ -20,6 +20,24 @@
       "buy": "COMPRAR",
       "unlocked": "DESBLOQUEADO",
       "more-jokers-with": "Más Jokers con",
+      "offer": {
+        "title-prefix": "DESBLOQUEA MÁS CON",
+        "skip": "SALTAR",
+        "benefits": {
+          "1": {
+            "title": "Muchas más recompensas",
+            "description": "Obtén 25 packs extra y 5 tickets extra de torneo durante la temporada."
+          },
+          "2": {
+            "title": "Más juegos por día",
+            "description": "Puedes jugar 6 partidas de Jokers por día en vez de 3, y 1 partida se recarga cada 4 horas en lugar de 8."
+          },
+          "3": {
+            "title": "Recompensas comerciables",
+            "description": "Todas las recompensas que obtienes son comerciables con otros jugadores en el marketplace externo."
+          }
+        }
+      },
       "facts": {
         "1-title": "Recompensas exclusivas",
         "1-description-1": "Progresar a través de la temporada {{season}} te da más recompensas.",

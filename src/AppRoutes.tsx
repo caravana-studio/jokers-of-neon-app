@@ -31,6 +31,7 @@ import { ProfilePage } from "./pages/Profile/ProfilePage";
 import { PurchasingPackPage } from "./pages/PurchasingPackPage";
 import { Redirect } from "./pages/Redirect";
 import { RewardsPage } from "./pages/RewardsPage";
+import { SeasonPassOfferPage } from "./pages/SeasonPassOffer/SeasonPassOfferPage";
 import { MissionsPage } from "./pages/Missions/MissionsPage";
 import { SeasonProgressionPage } from "./pages/SeasonProgression/SeasonProgressionPage";
 import { SettingsPage } from "./pages/SettingsPage";
@@ -105,6 +106,14 @@ export const AppRoutes = () => {
         element={
           <AnimatedPage>
             <VibrationPage />
+          </AnimatedPage>
+        }
+      />
+      <Route
+        path="/test/season-pass-offer"
+        element={
+          <AnimatedPage>
+            <SeasonPassOfferPage />
           </AnimatedPage>
         }
       />
