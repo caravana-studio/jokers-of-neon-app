@@ -157,6 +157,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const {
     hand,
     replaceCards,
+    replaceCardsAfterModifierChange,
     refetchCurrentHandStore,
     preSelectedCards,
     preSelectedPlay,
@@ -855,7 +856,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     discardPromise
       .then((response): void => {
         if (response.success) {
-          replaceCards(response.cards);
+          replaceCardsAfterModifierChange(response.cards, cardIdx);
           fetchDeck(client, gameId, getCardData);
         } else {
           rollback();
