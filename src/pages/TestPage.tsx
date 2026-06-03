@@ -114,6 +114,22 @@ export const TestPage = () => {
         />
         {isSmallScreen && <Divider borderColor="white" borderWidth="1px" my={2} />}
         <MenuBtn
+          icon={Icons.GIFT}
+          description="Preview the Daily Streak screen"
+          label="Daily Streak"
+          onClick={() =>
+            navigate("/streak-increased", {
+              state: {
+                streak: 30,
+                from: "/test",
+              },
+            })
+          }
+          arrowRight
+          width="18px"
+        />
+        {isSmallScreen && <Divider borderColor="white" borderWidth="1px" my={2} />}
+        <MenuBtn
           icon={Icons.LIST}
           description="View and set username"
           label={showUsernameTools ? "Username (hide)" : "Username"}

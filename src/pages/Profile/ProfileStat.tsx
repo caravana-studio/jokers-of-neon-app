@@ -13,11 +13,11 @@ export const ProfileStat: React.FC<ProfileStatProps> = ({
 }) => {
   return (
     <Flex
-      py={1}
+      py={2}
       px={4}
-      border={"1px"}
-      borderColor={"white"}
-      rounded={"xl"}
+      borderRadius="12px"
+      bg="rgba(0, 0, 0, 0.5)"
+      boxShadow="0px 0px 8px rgba(255, 255, 255, 0.45), inset 0 0 5px rgba(255, 255, 255, 0.4)"
       flexDirection={"column"}
       justifyContent={"center"}
       alignItems={"center"}
@@ -25,10 +25,10 @@ export const ProfileStat: React.FC<ProfileStatProps> = ({
       flex={1}
       width={"80px"}
     >
-      <Heading fontSize={"10px"} whiteSpace="nowrap">
+      <Heading fontSize={"9px"} whiteSpace="nowrap" fontFamily="Sonara">
         {title}
       </Heading>
-      <Heading fontSize={"10px"}>
+      <Heading fontSize={"15px"}>
         {value}{" "}
         <Text as="span" ml={1} fontSize={"6px"}>
           {suffix}

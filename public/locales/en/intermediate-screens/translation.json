@@ -463,5 +463,23 @@
       "agreement": "By continuing you are agreeing to Jokers of Neon's",
       "link": "Terms and Conditions"
     }
+  },
+  "daily-streak": {
+    "title": "Daily Streak",
+    "description": "Complete your daily mission every day to keep your streak.",
+    "next-objective": "Next objective",
+    "continue": "Continue",
+    "celebration-title": "Congratulations",
+    "celebration-description": "You completed your objective",
+    "celebration-description-extended": "You just extended your streak",
+    "days": {
+      "monday": "Mo",
+      "tuesday": "Tu",
+      "wednesday": "We",
+      "thursday": "Th",
+      "friday": "Fr",
+      "saturday": "Sa",
+      "sunday": "Su"
+    }
   }
 }

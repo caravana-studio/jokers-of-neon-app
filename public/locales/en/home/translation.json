@@ -35,6 +35,7 @@
       "play-tournament": "Play tournament"
     },
     "level": "level",
+    "level-short": "LVL",
     "missions": "Missions",
     "dailyMissions": "Daily Missions",
     "weeklyMissions": "Weekly Missions",

@@ -462,5 +462,23 @@
       "agreement": "Ao continuar, você concorda com os",
       "link": "Termos e Condições"
     }
+  },
+  "daily-streak": {
+    "title": "Sequência diária",
+    "description": "Complete sua missão diária todos os dias para manter sua sequência.",
+    "next-objective": "Próximo objetivo",
+    "continue": "Continuar",
+    "celebration-title": "Parabéns",
+    "celebration-description": "Você completou seu objetivo",
+    "celebration-description-extended": "Você acabou de estender sua sequência",
+    "days": {
+      "monday": "2a",
+      "tuesday": "3a",
+      "wednesday": "4a",
+      "thursday": "5a",
+      "friday": "6a",
+      "saturday": "Sa",
+      "sunday": "Do"
+    }
   }
 }

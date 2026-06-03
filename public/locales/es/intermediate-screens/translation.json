@@ -462,5 +462,23 @@
       "agreement": "Al continuar, aceptas los",
       "link": "Términos y Condiciones"
     }
+  },
+  "daily-streak": {
+    "title": "Racha diaria",
+    "description": "Completa tu misión diaria cada día para mantener tu racha.",
+    "next-objective": "Próximo objetivo",
+    "continue": "Continuar",
+    "celebration-title": "Felicitaciones",
+    "celebration-description": "Completaste tu objetivo",
+    "celebration-description-extended": "Acabas de estirar tu racha",
+    "days": {
+      "monday": "Lu",
+      "tuesday": "Ma",
+      "wednesday": "Mi",
+      "thursday": "Ju",
+      "friday": "Vi",
+      "saturday": "Sa",
+      "sunday": "Do"
+    }
   }
 }
