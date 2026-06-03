@@ -32,8 +32,8 @@ const triggerEntryVibration = (duration: number) => {
 
 export interface DailyStreakSheetProps {
   streak: number;
-  onClose: () => void;
-  onContinue?: () => void;
+  onClose: () => void | Promise<void>;
+  onContinue?: () => void | Promise<void>;
   referenceDate?: Date;
   showCelebrationIntroOnEntry?: boolean;
 }
@@ -54,6 +54,7 @@ export const DailyStreakSheet = ({
   const [showCelebrationIntro, setShowCelebrationIntro] = useState(
     showCelebrationIntroOnEntry
   );
+  const [isContinuing, setIsContinuing] = useState(false);
 
   useEffect(() => {
     if (!showCelebrationIntroOnEntry) {
@@ -98,6 +99,19 @@ export const DailyStreakSheet = ({
   });
   const getAnimationStartDelayMs = (index: number) =>
     Math.round((getEntryTransition(index).delay + getEntryTransition(index).duration) * 1000);
+  const handleContinueClick = async () => {
+    if (isContinuing) {
+      return;
+    }
+
+    setIsContinuing(true);
+
+    try {
+      await (onContinue ?? onClose)();
+    } catch {
+      setIsContinuing(false);
+    }
+  };
 
   return (
     <Flex
@@ -347,8 +361,10 @@ export const DailyStreakSheet = ({
         >
           <MobileBottomBar
             firstButton={{
-              onClick: onContinue ?? onClose,
+              onClick: handleContinueClick,
               label: t("daily-streak.continue"),
+              isLoading: isContinuing,
+              disabled: isContinuing,
             }}
           />
         </motion.div>
