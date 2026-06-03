@@ -1,7 +1,7 @@
 import { Box, Flex, Heading, Spinner, Text } from "@chakra-ui/react";
 import { useEffect, useMemo, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { BackgroundType } from "../../components/Background";
 import BackgroundVideo from "../../components/BackgroundVideo";
 import CachedImage from "../../components/CachedImage";
@@ -25,6 +25,7 @@ import { PaymentMethodModal } from "../Shop/PaymentMethodModal";
 
 export const SeasonPassOfferPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { isSmallScreen } = useResponsiveValues();
   const pageRef = useRef<HTMLDivElement | null>(null);
   const { t } = useTranslation("intermediate-screens", {
@@ -74,6 +75,9 @@ export const SeasonPassOfferPage = () => {
   );
 
   const buyLabel = preferredPriceLabel ? defaultButtonLabel : t("buy");
+  const returnTo =
+    (location.state as { returnTo?: string } | null)?.returnTo ??
+    (location.pathname.startsWith("/test/") ? "/test" : "/");
 
   useEffect(() => {
     const resetScrollPosition = () => {
@@ -284,7 +288,7 @@ export const SeasonPassOfferPage = () => {
           <MobileBottomBar
             firstButton={{
               label: t("offer.skip"),
-              onClick: () => navigate("/test"),
+              onClick: () => navigate(returnTo, { replace: true }),
               variant: "ghost",
               color: "whiteAlpha.700",
               _hover: {

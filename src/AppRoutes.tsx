@@ -118,6 +118,14 @@ export const AppRoutes = () => {
         }
       />
       <Route
+        path="/season-pass-offer"
+        element={
+          <AnimatedPage>
+            <SeasonPassOfferPage />
+          </AnimatedPage>
+        }
+      />
+      <Route
         path="/referral"
         element={
           <AnimatedPage>
