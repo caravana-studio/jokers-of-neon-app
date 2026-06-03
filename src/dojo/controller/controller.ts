@@ -3,10 +3,11 @@ import ControllerConnector from "@cartridge/connector/controller";
 import { AuthOptions } from "@cartridge/controller";
 import { constants, shortString } from "starknet";
 import { rpcUrl, slotInstance } from "../../config/cartridgeUrls";
+import { getConfiguredMainnetRpcUrl } from "../../config/starknetRpc";
 import { isNative, isNativeAndroid } from "../../utils/capacitorUtils";
 import { policies } from "./policies";
 
-const standaloneMainnetRpc = import.meta.env.VITE_STARKNET_RPC_URL?.trim();
+const standaloneMainnetRpc = getConfiguredMainnetRpcUrl();
 const isStandaloneShopMode = import.meta.env.MODE === "standalone-shop";
 const shouldUseStandaloneMainnetRpc =
   isStandaloneShopMode && !!standaloneMainnetRpc;

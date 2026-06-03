@@ -1,8 +1,13 @@
-import { CavosProvider as CavosSDKProvider, useCavos } from "@cavos/react";
+import {
+  CavosProvider as CavosSDKProvider,
+  useCavos,
+  type CavosConfig as CavosSDKConfig,
+} from "@cavos/react";
 import React, { ReactNode } from "react";
 import { getContractByName } from "@dojoengine/core";
 import { getManifest, getManifestSource } from "../getManifest";
 import { rpcUrl as slotRpcUrl, slotInstance } from "../../config/cartridgeUrls";
+import { getConfiguredMainnetRpcUrl } from "../../config/starknetRpc";
 import { getSlotChainId } from "../controller/controller";
 import { setupWorld } from "../typescript/contracts.gen";
 import { CavosBridgeContext } from "./CavosBridgeContext";
@@ -14,7 +19,7 @@ const CAVOS_PAYMASTER_API_KEY =
   import.meta.env.VITE_CAVOS_PAYMASTER_API_KEY || "";
 
 const CAVOS_STARKNET_RPC_URL =
-  import.meta.env.VITE_STARKNET_RPC_URL ||
+  getConfiguredMainnetRpcUrl() ||
   "https://api.cartridge.gg/x/starknet/mainnet";
 
 const DOJO_NAMESPACE =
@@ -147,6 +152,10 @@ interface CavosWrapperProps {
   children: ReactNode;
 }
 
+type CavosProviderConfig = CavosSDKConfig & {
+  deployOnly?: boolean;
+};
+
 export const CavosWrapper: React.FC<CavosWrapperProps> = ({ children }) => {
   if (!CAVOS_APP_ID) {
     return <>{children}</>;
@@ -154,31 +163,30 @@ export const CavosWrapper: React.FC<CavosWrapperProps> = ({ children }) => {
 
   const allowedContracts = getAllowedContracts();
   clearStaleCavosSessionPolicy(allowedContracts);
+  const config: CavosProviderConfig = {
+    appId: CAVOS_APP_ID,
+    network: "mainnet",
+    deployOnly: true,
+    paymasterApiKey: CAVOS_PAYMASTER_API_KEY,
+    enableLogging: true,
+    starknetRpcUrl: CAVOS_STARKNET_RPC_URL,
+    slot: {
+      rpcUrl: slotRpcUrl,
+      chainId: getSlotChainId(slotInstance),
+      relayerAddress: CAVOS_SLOT_RELAYER_ADDRESS,
+      relayerPrivateKey: CAVOS_SLOT_RELAYER_PRIVATE_KEY,
+    },
+    session: {
+      defaultPolicy: {
+        spendingLimits: [],
+        allowedContracts,
+        maxCallsPerTx: 10,
+      },
+    },
+  };
 
   return (
-    <CavosSDKProvider
-      config={{
-        appId: CAVOS_APP_ID,
-        network: "mainnet",
-        deployOnly: true,
-        paymasterApiKey: CAVOS_PAYMASTER_API_KEY,
-        enableLogging: true,
-        starknetRpcUrl: CAVOS_STARKNET_RPC_URL,
-        slot: {
-          rpcUrl: slotRpcUrl,
-          chainId: getSlotChainId(slotInstance),
-          relayerAddress: CAVOS_SLOT_RELAYER_ADDRESS,
-          relayerPrivateKey: CAVOS_SLOT_RELAYER_PRIVATE_KEY,
-        },
-        session: {
-          defaultPolicy: {
-            spendingLimits: [],
-            allowedContracts,
-            maxCallsPerTx: 10,
-          },
-        },
-      }}
-    >
+    <CavosSDKProvider config={config}>
       <CavosBridge>
         {children}
       </CavosBridge>

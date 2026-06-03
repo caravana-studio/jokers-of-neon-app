@@ -1,5 +1,6 @@
 import { rpcUrl } from "../../config/cartridgeUrls";
 import { getGameApiBaseUrl } from "../../config/gameApiUrl";
+import { getConfiguredMainnetRpcUrl } from "../../config/starknetRpc";
 
 export const MARKETPLACE_CONTRACT_ADDRESS =
   import.meta.env.VITE_MARKETPLACE_CONTRACT_ADDRESS || "";
@@ -10,7 +11,7 @@ export const SHOP_CONTRACT_ADDRESS =
 export const NFT_CONTRACT_ADDRESS =
   import.meta.env.VITE_NFT_CONTRACT_ADDRESS || "";
 
-const standaloneMainnetRpc = import.meta.env.VITE_STARKNET_RPC_URL?.trim();
+const standaloneMainnetRpc = getConfiguredMainnetRpcUrl();
 const isStandaloneShopMode = import.meta.env.MODE === "standalone-shop";
 
 export const STARKNET_RPC_URL =
