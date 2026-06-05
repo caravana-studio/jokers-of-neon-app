@@ -28,6 +28,8 @@ export const ProfileTile = () => {
   } = useDojo();
   const { profileData, fetchProfileData, loading } = useProfileStore();
   const usernameStatus = useUsernameStore((store) => store.status);
+  const streak = profileData?.profile.streak ?? 0;
+  const isZeroStreak = streak === 0;
 
   useEffect(() => {
     if (client && account && loggedInUser && usernameStatus === "ready" && !loading) {
@@ -88,16 +90,19 @@ export const ProfileTile = () => {
             </span>
           </Heading>
           <Flex alignItems="center" gap={0}>
-            <DailyStreakFireAnimation size={isSmallScreen ? 16 : 20} />
+            <DailyStreakFireAnimation
+              size={isSmallScreen ? 16 : 20}
+              grayscale={isZeroStreak}
+            />
             <Heading
               fontSize={isSmallScreen ? 10 : 13}
               textAlign="center"
               fontFamily="Orbitron"
-              color={DIAMONDS}
+              color={isZeroStreak ? "grey" : DIAMONDS}
               lineHeight={1}
               ml={-0.5}
             >
-              {profileData?.profile.streak ?? 0}
+              {streak}
             </Heading>
           </Flex>
         </Flex>
