@@ -414,7 +414,9 @@
     "connect": "Connect",
     "no-profile": "Please login to see your profile",
     "apply-changes": "Apply changes",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "copy-wallet-address": "Copy wallet address",
+    "wallet-address-copied": "Wallet address copied"
   },
   "my-collection": {
     "title": "Collection",

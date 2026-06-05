@@ -413,7 +413,9 @@
     "connect": "Conectar",
     "no-profile": "Faça login para ver seu perfil",
     "apply-changes": "Aplicar alterações",
-    "cancel": "Cancelar"
+    "cancel": "Cancelar",
+    "copy-wallet-address": "Copiar endereço da wallet",
+    "wallet-address-copied": "Endereço da wallet copiado"
   },
   "my-collection": {
     "title": "Coleção",
