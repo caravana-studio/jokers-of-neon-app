@@ -72,6 +72,7 @@ const MAINTENANCE_BYPASS_QUERY_PARAM = "bypassMaintenance";
 
 const isRunningOnLocalhost = (): boolean => {
   if (typeof window === "undefined") return false;
+  if (isNative) return false;
   return window.location.hostname === "localhost";
 };
 
@@ -196,6 +197,24 @@ async function init() {
     if (isStartingApp) return;
     isStartingApp = true;
 
+    const startupBlocker = await getStartupBlocker();
+
+    if (startupBlocker?.type === "maintenance") {
+      return root.render(
+        <I18nextProvider i18n={localI18n} defaultNS={undefined}>
+          <Maintenance />
+        </I18nextProvider>
+      );
+    }
+
+    if (startupBlocker?.type === "version-mismatch") {
+      return root.render(
+        <I18nextProvider i18n={localI18n} defaultNS={undefined}>
+          <VersionMismatch />
+        </I18nextProvider>
+      );
+    }
+
     const presentationPromise = new Promise<void>((resolve) => {
       const updateLoadingScreen = (canFadeOut: boolean) => {
         root.render(
@@ -249,7 +268,6 @@ async function init() {
       .catch(() => {
         // Audio init failure is non-fatal
       });
-    const startupBlockerPromise = getStartupBlocker();
 
     try {
       const setupPromise = setup(dojoConfig).then((result) => {
@@ -257,32 +275,15 @@ async function init() {
         return result;
       });
 
-      const [setupResult, , , , , startupBlocker] = await Promise.all([
+      const [setupResult] = await Promise.all([
         setupPromise,
         i18nPromise,
         imagesPromise,
         audioPromise,
         presentationPromise,
-        startupBlockerPromise,
       ]);
 
       setCanFadeOut(true);
-
-      if (startupBlocker?.type === "maintenance") {
-        return root.render(
-          <I18nextProvider i18n={localI18n} defaultNS={undefined}>
-            <Maintenance />
-          </I18nextProvider>
-        );
-      }
-
-      if (startupBlocker?.type === "version-mismatch") {
-        return root.render(
-          <I18nextProvider i18n={localI18n} defaultNS={undefined}>
-            <VersionMismatch />
-          </I18nextProvider>
-        );
-      }
 
       setTimeout(
         () => {
