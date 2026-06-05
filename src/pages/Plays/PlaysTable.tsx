@@ -11,19 +11,16 @@ import {
   Tooltip,
   Tr,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
 import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { PriceBox } from "../../components/PriceBox.tsx";
-import { getPlayerPokerHands } from "../../dojo/getPlayerPokerHands.tsx";
-import { useDojo } from "../../dojo/useDojo.tsx";
+import { usePlayerPlaysData } from "../../hooks/usePlayerPlaysData";
 import { useStore } from "../../providers/StoreProvider";
 import { useGameStore } from "../../state/useGameStore.ts";
 import { useShopStore } from "../../state/useShopStore.ts";
 import { BLUE, GREY_LINE } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 import theme from "../../theme/theme";
-import { LevelPokerHand } from "../../types/LevelPokerHand.ts";
 
 interface PlaysTableProps {
   inStore?: boolean;
@@ -32,9 +29,7 @@ interface PlaysTableProps {
 const { blue, white, purple, violet } = theme.colors;
 
 export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
-  const { id: gameId } = useGameStore();
-  const [isLoading, setIsLoading] = useState(true);
-  const [plays, setPlays] = useState<LevelPokerHand[]>([]);
+  const { plays, loading: isLoading } = usePlayerPlaysData();
   const { t: tPlays } = useTranslation("plays", { keyPrefix: "playsData" });
 
   const { cash } = useGameStore();
@@ -43,25 +38,6 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
   const { levelUpPlay } = useStore();
   const { pokerHandItems, locked } = useShopStore();
   const { isSmallScreen } = useResponsiveValues();
-
-  const {
-    setup: {
-      client,
-      account: { account },
-    },
-  } = useDojo();
-
-  useEffect(() => {
-    getPlayerPokerHands(client, gameId).then((plays: any) => {
-      plays && setPlays(plays);
-    });
-  }, [client, account, gameId, pokerHandItems]);
-
-  useEffect(() => {
-    if (plays.length > 0) {
-      setIsLoading(false);
-    }
-  }, [plays, pokerHandItems]);
 
   const filteredPlays = !isLoading
     ? plays.filter((play) =>

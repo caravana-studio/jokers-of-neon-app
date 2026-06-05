@@ -6,17 +6,15 @@ import {
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
-import { AnimatePresence } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Joyride, { CallBackProps, STATUS } from "react-joyride";
 import { useNavigate } from "react-router-dom";
-import { DeckPreviewTable } from "../../components/DeckPreview/DeckPreviewTable.tsx";
+import { GameQuickPreviewOverlay } from "../../components/GameQuickPreview/GameQuickPreviewOverlay.tsx";
 import { Loading } from "../../components/Loading.tsx";
 import { MobileBottomBar } from "../../components/MobileBottomBar.tsx";
 import { MobileCardHighlight } from "../../components/MobileCardHighlight.tsx";
 import { MobileDecoration } from "../../components/MobileDecoration.tsx";
-import { MotionBox } from "../../components/MotionBox.tsx";
 import {
   JOYRIDE_LOCALES,
   TUTORIAL_STEPS,
@@ -32,7 +30,7 @@ import { useProgressiveGameTutorial } from "../../hooks/useProgressiveGameTutori
 import { useGameContext } from "../../providers/GameProvider.tsx";
 import { useCardHighlight } from "../../providers/HighlightProvider/CardHighlightProvider.tsx";
 import { useCurrentHandStore } from "../../state/useCurrentHandStore.ts";
-import { useDeckPreviewHoldStore } from "../../state/useDeckPreviewHoldStore.ts";
+import { useGameQuickPreviewStore } from "../../state/useGameQuickPreviewStore.ts";
 import { useGameStore } from "../../state/useGameStore.ts";
 import { logEvent } from "../../utils/analytics.ts";
 import { isTutorial } from "../../utils/isTutorial.ts";
@@ -126,11 +124,8 @@ export const MobileGameContent = ({
   const [highlightedPlay, setHighlightedPlay] = useState(false);
   const [highlightedDiscard, setHighlightedDiscard] = useState(false);
   const [canClickPowerUp, setCanClickPowerUp] = useState(false);
-  const isDeckPreviewVisible = useDeckPreviewHoldStore(
-    (store) => store.isDeckPreviewVisible,
-  );
-  const setDeckPreviewVisible = useDeckPreviewHoldStore(
-    (store) => store.setDeckPreviewVisible,
+  const setPreviewType = useGameQuickPreviewStore(
+    (store) => store.setPreviewType,
   );
   const cardsStageRef = useRef<HTMLDivElement>(null);
   const handCardsAnchorRef = useRef<HTMLDivElement>(null);
@@ -145,8 +140,8 @@ export const MobileGameContent = ({
   }, []);
 
   useEffect(() => {
-    return () => setDeckPreviewVisible(false);
-  }, [setDeckPreviewVisible]);
+    return () => setPreviewType(null);
+  }, [setPreviewType]);
 
   const stepData = [
     { step: 13, delay: 2700 },
@@ -425,30 +420,7 @@ export const MobileGameContent = ({
           hideCloseButton
         />
       </Box>
-      <AnimatePresence>
-        {isDeckPreviewVisible && (
-          <MotionBox
-            position="fixed"
-            zIndex={1300}
-            top="50%"
-            left="50%"
-            transform="translate(-50%, -50%)"
-            pointerEvents="none"
-            width="95vw"
-            maxWidth="95vw"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2, ease: "easeInOut" }}
-          >
-            <Flex justifyContent="center">
-              <Box width="100%" sx={{ "& table": { width: "100%" } }}>
-                <DeckPreviewTable />
-              </Box>
-            </Flex>
-          </MotionBox>
-        )}
-      </AnimatePresence>
+      <GameQuickPreviewOverlay />
 
       <Box
         sx={{

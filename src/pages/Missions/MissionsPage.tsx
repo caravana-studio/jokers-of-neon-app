@@ -9,7 +9,7 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { Clock } from "../../components/Clock";
@@ -20,16 +20,10 @@ import {
 import { DelayedLoading } from "../../components/DelayedLoading";
 import { MobileBottomBar } from "../../components/MobileBottomBar";
 import { MobileDecoration } from "../../components/MobileDecoration";
-import {
-  getDailyMissions,
-  getWeeklyMissions,
-} from "../../dojo/queries/getDailyMissions";
-import { useDojo } from "../../dojo/useDojo";
+import { useMissionsData } from "../../hooks/useMissionsData";
 import { useInformationPopUp } from "../../providers/InformationPopUpProvider";
-import { useGameStore } from "../../state/useGameStore";
 import { BLUE } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
-import { DailyMission } from "../../types/DailyMissions";
 import {
   getNextDailyMissionResetDate,
   getNextWeeklyMissionResetDate,
@@ -50,55 +44,12 @@ export const MissionsPage = ({ inGame = false }: MissionsPageProps) => {
   const navigate = useNavigate();
   const { isSmallScreen } = useResponsiveValues();
   const { setInformation } = useInformationPopUp();
-  const {
-    setup: { client },
-    account: { account },
-  } = useDojo();
-  const { id: gameId } = useGameStore();
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "missions",
   });
-  const [dailyMissions, setDailyMissions] = useState<DailyMission[]>([]);
-  const [weeklyMissions, setWeeklyMissions] = useState<DailyMission[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    if (!account) {
-      setDailyMissions([]);
-      setWeeklyMissions([]);
-      setLoading(false);
-      return;
-    }
-
-    let cancelled = false;
-    setLoading(true);
-
-    Promise.all([
-      getDailyMissions(
-        client,
-        account.address,
-        inGame && gameId > 0 ? { gameId } : {}
-      ),
-      getWeeklyMissions(client, account.address),
-    ])
-      .then(([daily, weekly]) => {
-        if (cancelled) {
-          return;
-        }
-
-        setDailyMissions([...daily].sort((a, b) => a.xp - b.xp));
-        setWeeklyMissions([...weekly].sort((a, b) => a.xp - b.xp));
-      })
-      .finally(() => {
-        if (!cancelled) {
-          setLoading(false);
-        }
-      });
-
-    return () => {
-      cancelled = true;
-    };
-  }, [account, client, gameId, inGame]);
+  const { dailyMissions, weeklyMissions, loading } = useMissionsData({
+    inGame,
+  });
 
   const dailyResetAt = getNextDailyMissionResetDate(new Date());
   const weeklyResetAt = getNextWeeklyMissionResetDate(new Date());
@@ -130,7 +81,7 @@ export const MissionsPage = ({ inGame = false }: MissionsPageProps) => {
   );
 
   return (
-    <DelayedLoading ms={100} loading={loading}>
+    <DelayedLoading ms={0} loading={loading}>
       <MobileDecoration />
       <Flex
         w="100%"

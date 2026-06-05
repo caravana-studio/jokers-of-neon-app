@@ -162,40 +162,51 @@ async function init() {
     );
   };
 
+  const renderMaintenanceBlocker = () => {
+    root.render(
+      <I18nextProvider i18n={localI18n} defaultNS={undefined}>
+        <Maintenance />
+      </I18nextProvider>
+    );
+  };
+
+  const renderVersionMismatchBlocker = () => {
+    root.render(
+      <I18nextProvider i18n={localI18n} defaultNS={undefined}>
+        <VersionMismatch />
+      </I18nextProvider>
+    );
+  };
+
   const startApp = async () => {
     if (isStartingApp) return;
     isStartingApp = true;
 
-    fetchVersion().then((data) => {
-      const version = data.version;
-      // If the maintenance flag is set, block the app
-      if (
-        data.maintenance &&
-        !isRunningOnLocalhost() &&
-        !BYPASS_MAINTENANCE &&
-        !shouldBypassMaintenanceFromUrl()
-      ) {
-        return root.render(
-          <I18nextProvider i18n={localI18n} defaultNS={undefined}>
-            <Maintenance />
-          </I18nextProvider>
-        );
-      }
-      // If the major or minor version is different, block the app
-      if (
-        isNative &&
-        (Number(getMajor(version)) > Number(getMajor(APP_VERSION)) ||
-          (Number(getMajor(version)) === Number(getMajor(APP_VERSION)) &&
-            Number(getMinor(version)) > Number(getMinor(APP_VERSION))))
-      ) {
-        console.log("Version mismatch", version, APP_VERSION);
-        return root.render(
-          <I18nextProvider i18n={localI18n} defaultNS={undefined}>
-            <VersionMismatch />
-          </I18nextProvider>
-        );
-      }
-    });
+    const versionData = await fetchVersion();
+    const version = versionData.version;
+
+    // If the maintenance flag is set, block the app before any further startup work.
+    if (
+      versionData.maintenance &&
+      !isRunningOnLocalhost() &&
+      !BYPASS_MAINTENANCE &&
+      !shouldBypassMaintenanceFromUrl()
+    ) {
+      renderMaintenanceBlocker();
+      return;
+    }
+
+    // If the major or minor version is different, block the app before loading.
+    if (
+      isNative &&
+      (Number(getMajor(version)) > Number(getMajor(APP_VERSION)) ||
+        (Number(getMajor(version)) === Number(getMajor(APP_VERSION)) &&
+          Number(getMinor(version)) > Number(getMinor(APP_VERSION))))
+    ) {
+      console.log("Version mismatch", version, APP_VERSION);
+      renderVersionMismatchBlocker();
+      return;
+    }
 
     const presentationPromise = new Promise<void>((resolve) => {
       const updateLoadingScreen = (canFadeOut: boolean) => {
