@@ -20,6 +20,24 @@
       "more-jokers-with": "More Jokers with",
       "season-pass": "SEASON PASS",
       "season-pass-x": "SEASON {{season}} PASS",
+      "offer": {
+        "title-prefix": "UNLOCK MORE WITH",
+        "skip": "SKIP",
+        "benefits": {
+          "1": {
+            "title": "Many more rewards",
+            "description": "Get 25 extra packs and 5 extra tournament tickets during the season."
+          },
+          "2": {
+            "title": "More games per day",
+            "description": "Play 6 Jokers games per day instead of 3, with 1 game recharging every 4 hours instead of 8."
+          },
+          "3": {
+            "title": "Tradable rewards",
+            "description": "All the rewards you get are tradeable with other players in the external marketplace."
+          }
+        }
+      },
       "facts": {
         "1-title": "Exclusive rewards",
         "1-description-1": "Progressing through season {{season}} gives vou extra rewards.",
@@ -397,7 +415,9 @@
     "connect": "Connect",
     "no-profile": "Please login to see your profile",
     "apply-changes": "Apply changes",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "copy-wallet-address": "Copy wallet address",
+    "wallet-address-copied": "Wallet address copied"
   },
   "my-collection": {
     "title": "Collection",
