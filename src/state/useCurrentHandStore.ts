@@ -12,6 +12,7 @@ import { changeCardNeon } from "../utils/cardTransformation/changeCardNeon";
 import { changeCardSuit } from "../utils/cardTransformation/changeCardSuit";
 import { sortCards } from "../utils/sortCards";
 import { datadogRum } from "../monitoring/datadogRum";
+import { remapPreselectedStateAfterModifierChange } from "./currentHandSelectionRemap";
 
 type CurrentHandStore = {
   hand: Card[];
@@ -27,6 +28,10 @@ type CurrentHandStore = {
   setPreSelectedPlay: (plays: Plays) => void;
   refetchCurrentHandStore: (client: any, gameId: number) => Promise<void>;
   replaceCards: (cards: Card[]) => void;
+  replaceCardsAfterModifierChange: (
+    cards: Card[],
+    discardedModifierIdx: number
+  ) => void;
   toggleSortBy: () => void;
   unPreSelectCard: (cardIndex: number) => void;
   preSelectCard: (cardIndex: number) => void;
@@ -145,6 +150,47 @@ export const useCurrentHandStore = create<CurrentHandStore>((set, get) => ({
     if (removedReferences > 0) {
       datadogRum.addAction("game.preselection_sanitized_on_replace_cards", {
         removedReferences,
+      });
+    }
+
+    set({
+      hand: nextHand,
+      preSelectedCards: nextPreSelectedCards,
+      preSelectedModifiers: nextPreSelectedModifiers,
+    });
+  },
+
+  replaceCardsAfterModifierChange: (cards: Card[], discardedModifierIdx: number) => {
+    const { hand, sortBy, preSelectedCards, preSelectedModifiers } = get();
+    const nextHand = sortCards(filterInvalidCards(cards), sortBy);
+    const remappedPreselectedState = remapPreselectedStateAfterModifierChange({
+      previousHand: hand,
+      nextHand,
+      preSelectedCards,
+      preSelectedModifiers,
+      discardedCardIdx: discardedModifierIdx,
+    });
+
+    const {
+      nextPreSelectedCards,
+      nextPreSelectedModifiers,
+      removedReferences,
+    } = sanitizePreselectedState(
+      nextHand,
+      remappedPreselectedState?.nextPreSelectedCards ?? preSelectedCards,
+      remappedPreselectedState?.nextPreSelectedModifiers ?? preSelectedModifiers
+    );
+
+    if (!remappedPreselectedState) {
+      datadogRum.addAction("game.preselection_modifier_change_remap_failed", {
+        discardedModifierIdx,
+      });
+    }
+
+    if (removedReferences > 0) {
+      datadogRum.addAction("game.preselection_sanitized_on_modifier_change", {
+        removedReferences,
+        discardedModifierIdx,
       });
     }
 

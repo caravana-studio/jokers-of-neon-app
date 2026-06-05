@@ -94,8 +94,6 @@ const createConfig = (target: BuildTarget): UserConfig => {
   const isStandaloneShop = target === "standaloneShop";
   const isMiniapp = target === "miniapp";
   const isAll = target === "all";
-  // Use absolute asset URLs so SPA deep links like /test/season-pass-offer
-  // resolve the built bundles correctly in preview and app webviews.
   const assetBase = "/";
   const https = resolveHttpsServerConfig();
   const config: UserConfig = {

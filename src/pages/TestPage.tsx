@@ -51,10 +51,11 @@ export const TestPage = () => {
 
   const triggerShopTierUnlockedScreen = (unlockableId: string) => {
     const testGameId = currentGameId > 0 ? currentGameId : 999999;
-    setShopTierUnlockedEvent({
+    const unlockEvent = {
       game_id: testGameId,
       unlock_id: unlockableId,
-    });
+    };
+    setShopTierUnlockedEvent(unlockEvent);
     navigate(`/shop-tier-unlocked/${testGameId}`);
   };
 
@@ -108,6 +109,22 @@ export const TestPage = () => {
           description="Haptics test lab"
           label="Haptics"
           onClick={() => navigate("/test/haptics")}
+          arrowRight
+          width="18px"
+        />
+        {isSmallScreen && <Divider borderColor="white" borderWidth="1px" my={2} />}
+        <MenuBtn
+          icon={Icons.GIFT}
+          description="Preview the Daily Streak screen"
+          label="Daily Streak"
+          onClick={() =>
+            navigate("/streak-increased", {
+              state: {
+                streak: 30,
+                from: "/test",
+              },
+            })
+          }
           arrowRight
           width="18px"
         />

@@ -65,7 +65,7 @@ export function useListings(cardType: ListingCardType = "all") {
     return () => {
       cancelled = true;
     };
-  }, [serverKey, cardType]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [serverKey, cardType]);
 
   const loadMore = useCallback(async () => {
     const nextPage = page + 1;

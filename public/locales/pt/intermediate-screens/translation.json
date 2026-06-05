@@ -339,6 +339,7 @@
       "slot_7": "Agora voce pode comprar ate 7 slots de cartas especiais nos shops."
     },
     "next-run-hint": "Consiga-os na loja na sua próxima run.",
+    "next-btn": "PRÓXIMO",
     "continue-btn": "CONTINUAR",
     "go-home-btn": "IR PARA INÍCIO",
     "play-again-btn": "JOGAR NOVAMENTE",
@@ -480,6 +481,24 @@
     "terms": {
       "agreement": "Ao continuar, você concorda com os",
       "link": "Termos e Condições"
+    }
+  },
+  "daily-streak": {
+    "title": "Sequência diária",
+    "description": "Complete uma missão diária para começar sua sequência.",
+    "next-objective": "Próximo objetivo",
+    "continue": "Continuar",
+    "celebration-title": "Parabéns",
+    "celebration-description": "Você completou seu objetivo",
+    "celebration-description-extended": "Você acabou de estender sua sequência",
+    "days": {
+      "monday": "2a",
+      "tuesday": "3a",
+      "wednesday": "4a",
+      "thursday": "5a",
+      "friday": "6a",
+      "saturday": "Sa",
+      "sunday": "Do"
     }
   }
 }

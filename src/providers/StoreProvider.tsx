@@ -288,6 +288,7 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     }
 
     const cost = pack?.discount_cost ? pack.discount_cost : pack?.cost ?? 0;
+    buySound();
     triggerHaptic("buy-item");
     removeCash(cost);
     buyBlisterPack(Number(pack.idx));
@@ -373,6 +374,7 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
   };
 
   const buySpecialSlot = (): Promise<boolean> => {
+    buySound();
     triggerHaptic("buy-item");
     setLocked(true);
     buySlotSpecialCard();

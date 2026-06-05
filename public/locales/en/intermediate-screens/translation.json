@@ -340,6 +340,7 @@
       "slot_7": "You can now buy up to 7 special card slots in shops."
     },
     "next-run-hint": "Get them in the shop in your next run.",
+    "next-btn": "NEXT",
     "continue-btn": "CONTINUE",
     "go-home-btn": "GO HOME",
     "play-again-btn": "PLAY AGAIN",
@@ -481,6 +482,24 @@
     "terms": {
       "agreement": "By continuing you are agreeing to Jokers of Neon's",
       "link": "Terms and Conditions"
+    }
+  },
+  "daily-streak": {
+    "title": "Daily Streak",
+    "description": "Complete a daily mission to start your streak.",
+    "next-objective": "Next objective",
+    "continue": "Continue",
+    "celebration-title": "Congratulations",
+    "celebration-description": "You completed your objective",
+    "celebration-description-extended": "You just extended your streak",
+    "days": {
+      "monday": "Mo",
+      "tuesday": "Tu",
+      "wednesday": "We",
+      "thursday": "Th",
+      "friday": "Fr",
+      "saturday": "Sa",
+      "sunday": "Su"
     }
   }
 }

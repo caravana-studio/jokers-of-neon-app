@@ -149,7 +149,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     refetchSpecialCards,
     refetchPlays,
     setIsTournament,
-    setShopTierUnlockedEvent,
+    setShopTierUnlockedEvents,
     clearShopTierUnlockedEvent,
     setPendingTutorialRewardsRedirect,
   } = useGameStore();
@@ -157,6 +157,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const {
     hand,
     replaceCards,
+    replaceCardsAfterModifierChange,
     refetchCurrentHandStore,
     preSelectedCards,
     preSelectedPlay,
@@ -476,21 +477,28 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   };
 
   const handlePlaySideEffects = (response: PlayEvents) => {
+    const shopTierUnlockedEvents =
+      response.shopTierUnlockedEvents ??
+      (response.shopTierUnlockedEvent ? [response.shopTierUnlockedEvent] : []);
+
     console.log("[unlock-debug] handlePlaySideEffects", {
       gameId,
       gameState: response.gameOver ? "GameOver" : "InProgress",
       shopTierUnlockedEventFromResponse: response.shopTierUnlockedEvent,
+      shopTierUnlockedEventsFromResponse: shopTierUnlockedEvents,
     });
 
-    if (response.shopTierUnlockedEvent) {
-      console.log("[unlock-debug] storing shop tier unlocked event", {
-        game_id: gameId,
-        unlock_id: response.shopTierUnlockedEvent.unlock_id,
+    if (shopTierUnlockedEvents.length > 0) {
+      console.log("[unlock-debug] storing shop tier unlocked events", {
+        gameId,
+        unlockIds: shopTierUnlockedEvents.map((event) => event.unlock_id),
       });
-      setShopTierUnlockedEvent({
-        game_id: gameId,
-        unlock_id: response.shopTierUnlockedEvent.unlock_id,
-      });
+      setShopTierUnlockedEvents(
+        shopTierUnlockedEvents.map((event) => ({
+          game_id: gameId,
+          unlock_id: event.unlock_id,
+        }))
+      );
     }
 
     fetchDeck(client, gameId, getCardData);
@@ -848,7 +856,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     discardPromise
       .then((response): void => {
         if (response.success) {
-          replaceCards(response.cards);
+          replaceCardsAfterModifierChange(response.cards, cardIdx);
           fetchDeck(client, gameId, getCardData);
         } else {
           rollback();

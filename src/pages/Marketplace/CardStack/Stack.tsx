@@ -107,7 +107,6 @@ export default function Stack({
     onAllSeenCalledRef.current = false;
     const topCard = cardsData[cardsData.length - 1];
     if (topCard) onCardChange?.(topCard.cardId);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cardsData]);
 
   const sendToBack = (id: CardData["id"]) => {

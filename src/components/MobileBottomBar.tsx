@@ -89,7 +89,7 @@ export const MobileBottomBar = ({
       <Box w="30px" />
 
       {uniqueButton ? (
-        <Box w="40%">
+        <Box w="40%" maxW="500px">
           {React.isValidElement(uniqueButton) ? (
             uniqueButton
           ) : (

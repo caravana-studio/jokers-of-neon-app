@@ -339,6 +339,7 @@
       "slot_7": "Ahora puedes comprar hasta 7 espacios de cartas especiales en los shops."
     },
     "next-run-hint": "Consíguelos en la tienda en tu próxima run.",
+    "next-btn": "SIGUIENTE",
     "continue-btn": "CONTINUAR",
     "go-home-btn": "IR AL INICIO",
     "play-again-btn": "JUGAR OTRA",
@@ -480,6 +481,24 @@
     "terms": {
       "agreement": "Al continuar, aceptas los",
       "link": "Términos y Condiciones"
+    }
+  },
+  "daily-streak": {
+    "title": "Racha diaria",
+    "description": "Completa una misión diaria para comenzar tu racha.",
+    "next-objective": "Próximo objetivo",
+    "continue": "Continuar",
+    "celebration-title": "Felicitaciones",
+    "celebration-description": "Completaste tu objetivo",
+    "celebration-description-extended": "Acabas de estirar tu racha",
+    "days": {
+      "monday": "Lu",
+      "tuesday": "Ma",
+      "wednesday": "Mi",
+      "thursday": "Ju",
+      "friday": "Vi",
+      "saturday": "Sa",
+      "sunday": "Do"
     }
   }
 }

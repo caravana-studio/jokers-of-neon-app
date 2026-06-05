@@ -52,6 +52,7 @@ export interface LightPillarAnimationConfig {
   pillarRotation?: number;
   intensityLevel?: Intensity;
   intensity?: number;
+  persist?: boolean;
 }
 
 interface LightningAnimationState extends LightningAnimationConfig {
@@ -75,6 +76,7 @@ interface LightPillarAnimationState
 interface BackgroundAnimationContextValue {
   showLightningAnimation: (config?: LightningAnimationConfig) => void;
   showLightPillarAnimation: (config?: LightPillarAnimationConfig) => void;
+  hideLightPillarAnimation: () => void;
 }
 
 type TargetRect = {
@@ -88,6 +90,7 @@ const BackgroundAnimationContext = createContext<BackgroundAnimationContextValue
   {
     showLightningAnimation: () => {},
     showLightPillarAnimation: () => {},
+    hideLightPillarAnimation: () => {},
   }
 );
 
@@ -334,6 +337,10 @@ export const BackgroundAnimationProvider = ({
 
       setLightPillarAnimation(nextState);
 
+      if (config.persist) {
+        return;
+      }
+
       lightPillarTimeoutRef.current = window.setTimeout(() => {
         setLightPillarAnimation((current) =>
           current?.id === nextState.id ? null : current
@@ -343,6 +350,11 @@ export const BackgroundAnimationProvider = ({
     },
     [disableBackgroundAnimations]
   );
+
+  const hideLightPillarAnimation = useCallback(() => {
+    clearLightPillarTimeout();
+    setLightPillarAnimation(null);
+  }, []);
 
   useEffect(
     () => () => {
@@ -356,8 +368,9 @@ export const BackgroundAnimationProvider = ({
     () => ({
       showLightningAnimation,
       showLightPillarAnimation,
+      hideLightPillarAnimation,
     }),
-    [showLightningAnimation, showLightPillarAnimation]
+    [hideLightPillarAnimation, showLightningAnimation, showLightPillarAnimation]
   );
 
   return (

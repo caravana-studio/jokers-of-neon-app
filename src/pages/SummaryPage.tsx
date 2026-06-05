@@ -2,7 +2,8 @@ import { Box, Flex, Heading, Spinner } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { claimStreakPresentation } from "../api/profile";
 import { StaggeredList } from "../components/animations/StaggeredList";
 import { BackgroundDecoration } from "../components/Background";
 import { DelayedLoading } from "../components/DelayedLoading";
@@ -24,6 +25,10 @@ import { useGameStore } from "../state/useGameStore";
 import { BLUE_LIGHT, VIOLET_LIGHT } from "../theme/colors";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import { formatNumber } from "../utils/formatNumber";
+import {
+  navigateToStreakIncreased,
+  SKIP_STREAK_PRESENTATION_CHECK,
+} from "../utils/streakPresentation";
 
 const DELAY_START = 1.25;
 const STAGGER = 0.5;
@@ -55,22 +60,76 @@ const SummaryDetail = ({ win }: SummaryPageProps) => {
 
   const { navigateToMap } = useMapNavigate();
   const navigate = useNavigate();
+  const location = useLocation();
+  const {
+    account: { account },
+  } = useDojo();
   const { isSmallScreen } = useResponsiveValues();
   const [skip, setSkip] = useState(false);
   const [animationEnded, setAnimationEnded] = useState(false);
   const [isNavigating, setIsNavigating] = useState(false);
+  const [isCheckingStreak, setIsCheckingStreak] = useState(true);
   const {
     totalScore,
     level,
     round,
     id: gameId,
-    shopTierUnlockedEvent,
+    shopTierUnlockedEvents,
   } = useGameStore();
   const [gameTracker, setGameTracker] = useState(DEFAULT_TRACKER_VIEW);
 
   useEffect(() => {
     triggerHaptic(win ? "win" : "lose");
   }, [win]);
+
+  useEffect(() => {
+    if (
+      (location.state as Record<string, unknown> | null)?.[
+        SKIP_STREAK_PRESENTATION_CHECK
+      ] === true
+    ) {
+      setIsCheckingStreak(false);
+      return;
+    }
+
+    let active = true;
+
+    void (async () => {
+      try {
+        const presentation = await claimStreakPresentation(account.address);
+
+        if (
+          active &&
+          presentation.show &&
+          presentation.streak !== null
+        ) {
+          navigateToStreakIncreased(navigate, {
+            streak: presentation.streak,
+            continuation: {
+              type: "route",
+              to: location.pathname,
+              replace: true,
+              state: {
+                [SKIP_STREAK_PRESENTATION_CHECK]: true,
+              },
+            },
+            replace: true,
+          });
+          return;
+        }
+      } catch (error) {
+        console.warn("SummaryPage: streak presentation claim failed", error);
+      }
+
+      if (active) {
+        setIsCheckingStreak(false);
+      }
+    })();
+
+    return () => {
+      active = false;
+    };
+  }, [account.address, location.pathname, location.state, navigate]);
 
   useEffect(() => {
     let active = true;
@@ -124,7 +183,7 @@ const SummaryDetail = ({ win }: SummaryPageProps) => {
     t("defeated-rages"),
   ];
 
-  if (isNavigating) {
+  if (isNavigating || isCheckingStreak) {
     return (
       <Flex
         position="fixed"
@@ -161,18 +220,19 @@ const SummaryDetail = ({ win }: SummaryPageProps) => {
             setIsNavigating(true);
             navigateToMap();
           } else {
-            const hasShopTierUnlockedEventForCurrentGame = Boolean(
-              shopTierUnlockedEvent?.unlock_id &&
-                getShopTierUnlockConfig(shopTierUnlockedEvent.unlock_id)
+            const resolvedShopTierUnlockedEvents = shopTierUnlockedEvents.filter(
+              (event) => Boolean(getShopTierUnlockConfig(event.unlock_id))
             );
+            const hasShopTierUnlockedEventForCurrentGame =
+              resolvedShopTierUnlockedEvents.length > 0;
 
             console.log("[unlock-debug] loose continue navigation decision", {
               gameId,
-              shopTierUnlockedEvent,
+              shopTierUnlockedEvents,
               hasShopTierUnlockedEventForCurrentGame,
-              resolvedUnlockConfig: shopTierUnlockedEvent?.unlock_id
-                ? getShopTierUnlockConfig(shopTierUnlockedEvent.unlock_id)
-                : undefined,
+              resolvedUnlockConfigs: resolvedShopTierUnlockedEvents.map((event) =>
+                getShopTierUnlockConfig(event.unlock_id)
+              ),
             });
 
             if (hasShopTierUnlockedEventForCurrentGame) {

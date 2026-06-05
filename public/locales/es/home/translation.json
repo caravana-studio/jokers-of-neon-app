@@ -35,6 +35,7 @@
       "play-tournament": "Jugar torneo"
     },
     "level": "Nivel",
+    "level-short": "NV",
     "missions": "Misiones",
     "dailyMissions": "Misiones diarias",
     "weeklyMissions": "Misiones semanales",
