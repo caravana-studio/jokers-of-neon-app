@@ -29,7 +29,7 @@ export const DailyGames = () => {
   const [isClaimingLives, setIsClaimingLives] = useState(true);
 
   const {
-    setup: { client },
+    setup: { client, accountType },
     account: { account },
   } = useDojo();
 
@@ -75,6 +75,7 @@ export const DailyGames = () => {
       setIsClaimingLives(false);
 
       if (
+        accountType !== "burner" &&
         !seasonPassUnlocked &&
         (livesStateAfterClaim?.maxLives ?? 0) <= 3 &&
         livesStateAfterClaim?.availableLives === 0 &&
@@ -92,7 +93,14 @@ export const DailyGames = () => {
     return () => {
       cancelled = true;
     };
-  }, [account.address, claimLives, client, navigate, seasonPassUnlocked]);
+  }, [
+    account.address,
+    accountType,
+    claimLives,
+    client,
+    navigate,
+    seasonPassUnlocked,
+  ]);
 
   const RECHARGE_TIME = seasonPassUnlocked ? 4 : 8;
 

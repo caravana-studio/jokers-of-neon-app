@@ -23,6 +23,7 @@ import { ExternalPack } from "./ExternalPack/ExternalPack";
 
 export const ClaimMultipleRewardsPage = () => {
   const {
+    setup: { accountType },
     account: { account },
   } = useDojo();
 
@@ -75,7 +76,7 @@ export const ClaimMultipleRewardsPage = () => {
     };
 
     claim();
-  }, [account?.address]);
+  }, [account?.address, isPremium, level, navigate, refetchSeasonProgress]);
 
   const headingStages: LoadingProgress[] = [
     {
@@ -102,6 +103,7 @@ export const ClaimMultipleRewardsPage = () => {
 
   const handlePackFlowComplete = () => {
     if (
+      accountType !== "burner" &&
       !seasonPassLoading &&
       !seasonPassUnlocked &&
       canShowSeasonPassOfferToday()
