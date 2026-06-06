@@ -31,6 +31,10 @@ export const StepReward = ({
   } = useDojo();
   const { isSmallScreen } = useResponsiveValues();
   const pack = reward?.packs?.[0];
+  const hasDirectClaimReward =
+    (reward?.tournamentEntries ?? 0) > 0 ||
+    (reward?.streakProtectors ?? 0) > 0;
+  const hasDisplayableReward = !!reward && (pack || hasDirectClaimReward);
   const navigate = useNavigate();
   const [claiming, setClaiming] = useState(false);
   const [claimed, setClaimed] = useState(false);
@@ -49,7 +53,7 @@ export const StepReward = ({
       position="relative"
       opacity={reward?.status === RewardStatus.UNCLAIMED && !claimed ? 1 : 0.5}
     >
-      {(pack || reward?.tournamentEntries) && reward && (
+      {hasDisplayableReward && reward && (
         <>
           <Packs reward={reward} claiming={claiming} />
 
@@ -64,7 +68,7 @@ export const StepReward = ({
                 disabled={claiming || claimed}
                 isLoading={claiming}
                 onClick={async () => {
-                  if (reward.tournamentEntries > 0) {
+                  if (hasDirectClaimReward) {
                     try {
                       setClaiming(true);
                       await claimSeasonReward({

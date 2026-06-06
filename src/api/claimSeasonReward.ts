@@ -22,6 +22,11 @@ type ClaimSeasonRewardApiResponse = {
   success?: boolean;
   transactionHash?: string;
   mintedCards?: RawMintedCard[];
+  streakProtectors?: {
+    requested: number;
+    queued: number;
+    skipped: number;
+  };
 };
 
 export type SeasonRewardPack = {

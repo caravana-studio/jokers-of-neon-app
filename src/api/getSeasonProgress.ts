@@ -3,6 +3,7 @@ import { getGameApiBaseUrl } from "../config/gameApiUrl";
 import { RewardStatus } from "../enums/rewardStatus";
 import { IReward, IStep } from "../pages/SeasonProgression/types";
 const TOURNAMENT_ENTRY_PACK_ID = 99;
+const STREAK_PROTECTOR_REWARD_ID = 100;
 
 export type GetSeasonLineParams = {
   userAddress: string;
@@ -71,17 +72,25 @@ const parseReward = (
     (packId) => packId === TOURNAMENT_ENTRY_PACK_ID
   ).length;
 
+  const streakProtectors = parsedRewards.filter(
+    (packId) => packId === STREAK_PROTECTOR_REWARD_ID
+  ).length;
+
   const packs = parsedRewards.filter(
-    (packId) => packId !== TOURNAMENT_ENTRY_PACK_ID && packId > 0
+    (packId) =>
+      packId !== TOURNAMENT_ENTRY_PACK_ID &&
+      packId !== STREAK_PROTECTOR_REWARD_ID &&
+      packId > 0
   );
 
-  if (packs.length === 0 && tournamentEntries === 0) {
+  if (packs.length === 0 && tournamentEntries === 0 && streakProtectors === 0) {
     return undefined;
   }
 
   return {
     packs,
     tournamentEntries,
+    streakProtectors,
     status: getStatus(
       claimed,
       level,

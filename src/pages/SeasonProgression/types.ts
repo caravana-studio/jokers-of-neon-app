@@ -10,5 +10,6 @@ export interface IStep {
 export interface IReward {
   packs: number[];
   tournamentEntries: number;
+  streakProtectors: number;
   status: RewardStatus;
 }
