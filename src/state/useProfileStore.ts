@@ -89,6 +89,20 @@ export const useProfileStore = create<ProfileStore>((set, get) => ({
         streakStatusResult !== null
           ? toInt(streakStatusResult.effectiveStreak)
           : toInt(profile.dailyStreak);
+      const streakProtectors =
+        streakStatusResult !== null
+          ? toInt(streakStatusResult.protectorsAvailable)
+          : 0;
+
+      if (import.meta.env.DEV) {
+        console.info("[PROFILE-DEBUG] useProfileStore streak mapping", {
+          userAddress,
+          profileDailyStreak: profile.dailyStreak,
+          streakStatusResult,
+          effectiveDailyStreak,
+          streakProtectors,
+        });
+      }
 
       const profileData: ProfileData = {
         currentBadges: badgesCount,
@@ -99,6 +113,7 @@ export const useProfileStore = create<ProfileStore>((set, get) => ({
           totalXp: sanitizedTotalXp,
           level: toInt(profile.level),
           streak: effectiveDailyStreak,
+          streakProtectors,
           avatarId: finalAvatarId,
         },
         playerStats: {

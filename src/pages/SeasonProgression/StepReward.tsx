@@ -48,6 +48,9 @@ export const StepReward = ({
     (reward?.tournamentEntries ?? 0) > 0 ||
     streakProtectorsRequested > 0;
   const hasDisplayableReward = !!reward && (pack || hasDirectClaimReward);
+  const claimButtonLabel = isStreakProtectorClaimBlocked
+    ? t("streak-protector-full")
+    : t("claim");
   const navigate = useNavigate();
   const [claiming, setClaiming] = useState(false);
   const [claimed, setClaimed] = useState(false);
@@ -80,11 +83,6 @@ export const StepReward = ({
                 variant="secondarySolid"
                 isDisabled={claiming || claimed || isStreakProtectorClaimBlocked}
                 isLoading={claiming}
-                title={
-                  isStreakProtectorClaimBlocked
-                    ? t("streak-protector-full")
-                    : undefined
-                }
                 onClick={async () => {
                   if (isStreakProtectorClaimBlocked) {
                     return;
@@ -111,7 +109,7 @@ export const StepReward = ({
                   }
                 }}
               >
-                {t("claim")}
+                {claimButtonLabel}
               </Button>
             </Flex>
           )}

@@ -1,6 +1,6 @@
 import { Flex, Heading } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import { BLUE, DIAMONDS } from "../theme/colors";
+import { BLUE, BLUE_LIGHT, DIAMONDS } from "../theme/colors";
 import CachedImage from "./CachedImage";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import { useEffect } from "react";
@@ -15,10 +15,13 @@ export const ProfileTile = () => {
   const { t } = useTranslation("home", {
     keyPrefix: "home",
   });
+  const { t: tSeasonProgression } = useTranslation("intermediate-screens", {
+    keyPrefix: "season-progression",
+  });
   const navigate = useNavigate();
   const { isSmallScreen } = useResponsiveValues();
   const PROFILE_IMG_SIZE = isSmallScreen ? 70 : 150;
-  const ICON_SIZE = isSmallScreen ? "18px" : "30px";
+  const STREAK_PROTECTOR_ICON_SIZE = isSmallScreen ? 9 : 12;
 
   const loggedInUser = useUsername();
 
@@ -29,7 +32,9 @@ export const ProfileTile = () => {
   const { profileData, fetchProfileData, loading } = useProfileStore();
   const usernameStatus = useUsernameStore((store) => store.status);
   const streak = profileData?.profile.streak ?? 0;
+  const streakProtectors = profileData?.profile.streakProtectors ?? 0;
   const isZeroStreak = streak === 0;
+  const streakProtectorLabel = tSeasonProgression("streak-protector");
 
   useEffect(() => {
     if (client && account && loggedInUser && usernameStatus === "ready" && !loading) {
@@ -105,6 +110,39 @@ export const ProfileTile = () => {
               {streak}
             </Heading>
           </Flex>
+          {streakProtectors > 0 && (
+            <Flex
+              alignItems="center"
+              gap={0.5}
+              aria-label={`${streakProtectorLabel} x ${streakProtectors}`}
+            >
+              <Flex
+                w={`${STREAK_PROTECTOR_ICON_SIZE}px`}
+                h={`${STREAK_PROTECTOR_ICON_SIZE}px`}
+                alignItems="center"
+                justifyContent="center"
+                flexShrink={0}
+              >
+                <CachedImage
+                  src="/streak-protector.png"
+                  alt={streakProtectorLabel}
+                  h={`${STREAK_PROTECTOR_ICON_SIZE}px`}
+                  maxW={`${STREAK_PROTECTOR_ICON_SIZE}px`}
+                  objectFit="contain"
+                  pointerEvents="none"
+                />
+              </Flex>
+              <Heading
+                fontSize={isSmallScreen ? 9 : 12}
+                textAlign="center"
+                fontFamily="Orbitron"
+                color={BLUE_LIGHT}
+                lineHeight={1}
+              >
+                {streakProtectors}
+              </Heading>
+            </Flex>
+          )}
         </Flex>
         <Flex width="75px" justifyContent={"flex-end"}>
           <CachedImage

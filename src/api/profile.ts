@@ -479,6 +479,14 @@ export async function fetchStreakStatus(
     requestUrl.searchParams.set("refresh", "1");
   }
 
+  if (import.meta.env.DEV) {
+    console.info("[PROFILE-DEBUG] fetchStreakStatus request", {
+      address,
+      refresh: Boolean(options.refresh),
+      url: requestUrl.toString(),
+    });
+  }
+
   const response = await fetch(requestUrl.toString(), {
     method: "GET",
     headers: {
@@ -497,13 +505,21 @@ export async function fetchStreakStatus(
 
   const json: GetStreakStatusApiResponse = await response.json();
 
+  if (import.meta.env.DEV) {
+    console.info("[PROFILE-DEBUG] fetchStreakStatus raw response", {
+      address,
+      refresh: Boolean(options.refresh),
+      json,
+    });
+  }
+
   if (!json.success || !json.data) {
     throw new Error("fetchStreakStatus: API did not return a valid payload");
   }
 
   const data = json.data;
 
-  return {
+  const streakStatus = {
     player: data.player ?? address,
     currentStreak: sanitizeNumber(data.current_streak),
     effectiveStreak: sanitizeNumber(data.effective_streak ?? data.current_streak),
@@ -522,6 +538,12 @@ export async function fetchStreakStatus(
     source: data.source ?? "chain",
     updatedAt: data.updated_at ?? null,
   };
+
+  if (import.meta.env.DEV) {
+    console.info("[PROFILE-DEBUG] fetchStreakStatus mapped", streakStatus);
+  }
+
+  return streakStatus;
 }
 
 export async function claimStreakPresentation(
