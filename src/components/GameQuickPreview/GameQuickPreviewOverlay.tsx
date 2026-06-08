@@ -4,11 +4,14 @@ import { useEffect } from "react";
 import { useGameQuickPreviewStore } from "../../state/useGameQuickPreviewStore";
 import { useGameStore } from "../../state/useGameStore";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
+import { isNative } from "../../utils/capacitorUtils";
 import { DeckPreviewTable } from "../DeckPreview/DeckPreviewTable";
 import { MotionBox } from "../MotionBox";
 import { MissionsQuickPreview } from "./MissionsQuickPreview";
 import { PlaysQuickPreview } from "./PlaysQuickPreview";
 
+const DESKTOP_SIDEBAR_WIDTH = "48px";
+const MOBILE_BOTTOM_MENU_HEIGHT = isNative ? "80px" : "50px";
 export const GameQuickPreviewOverlay = () => {
   const activePreviewType = useGameQuickPreviewStore(
     (store) => store.activePreviewType,
@@ -19,6 +22,19 @@ export const GameQuickPreviewOverlay = () => {
   const gameId = useGameStore((store) => store.id);
   const { isSmallScreen } = useResponsiveValues();
   const hasGameContext = gameId > 0;
+  const overlayBounds = isSmallScreen
+    ? {
+        top: 0,
+        right: 0,
+        bottom: MOBILE_BOTTOM_MENU_HEIGHT,
+        left: 0,
+      }
+    : {
+        top: 0,
+        right: 0,
+        bottom: 0,
+        left: DESKTOP_SIDEBAR_WIDTH,
+      };
 
   useEffect(() => {
     if (!hasGameContext) {
@@ -51,7 +67,7 @@ export const GameQuickPreviewOverlay = () => {
           <MotionBox
             position="fixed"
             zIndex={940}
-            inset={0}
+            {...overlayBounds}
             pointerEvents="none"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -68,7 +84,7 @@ export const GameQuickPreviewOverlay = () => {
           <MotionBox
             position="fixed"
             zIndex={950}
-            inset={0}
+            {...overlayBounds}
             pointerEvents="none"
             display="flex"
             alignItems="center"
