@@ -10,7 +10,6 @@ import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Joyride, { CallBackProps, STATUS } from "react-joyride";
 import { useNavigate } from "react-router-dom";
-import { GameQuickPreviewOverlay } from "../../components/GameQuickPreview/GameQuickPreviewOverlay.tsx";
 import { Loading } from "../../components/Loading.tsx";
 import { MobileBottomBar } from "../../components/MobileBottomBar.tsx";
 import { MobileCardHighlight } from "../../components/MobileCardHighlight.tsx";
@@ -420,8 +419,6 @@ export const MobileGameContent = ({
           hideCloseButton
         />
       </Box>
-      <GameQuickPreviewOverlay />
-
       <Box
         sx={{
           height: "100%",

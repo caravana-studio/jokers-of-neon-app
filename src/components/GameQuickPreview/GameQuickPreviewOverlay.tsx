@@ -1,6 +1,8 @@
 import { Box, Flex } from "@chakra-ui/react";
 import { AnimatePresence } from "framer-motion";
+import { useEffect } from "react";
 import { useGameQuickPreviewStore } from "../../state/useGameQuickPreviewStore";
+import { useGameStore } from "../../state/useGameStore";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { DeckPreviewTable } from "../DeckPreview/DeckPreviewTable";
 import { MotionBox } from "../MotionBox";
@@ -11,10 +13,21 @@ export const GameQuickPreviewOverlay = () => {
   const activePreviewType = useGameQuickPreviewStore(
     (store) => store.activePreviewType,
   );
+  const clearPreviewType = useGameQuickPreviewStore(
+    (store) => store.clearPreviewType,
+  );
+  const gameId = useGameStore((store) => store.id);
   const { isSmallScreen } = useResponsiveValues();
+  const hasGameContext = gameId > 0;
+
+  useEffect(() => {
+    if (!hasGameContext) {
+      clearPreviewType();
+    }
+  }, [clearPreviewType, hasGameContext]);
 
   const content =
-    activePreviewType === "deck" ? (
+    !hasGameContext ? null : activePreviewType === "deck" ? (
       <DeckPreviewTable />
     ) : activePreviewType === "plays" ? (
       <PlaysQuickPreview />

@@ -11,7 +11,6 @@ import { useTranslation } from "react-i18next";
 import Joyride, { CallBackProps, STATUS } from "react-joyride";
 import { useNavigate } from "react-router-dom";
 import CachedImage from "../../components/CachedImage.tsx";
-import { GameQuickPreviewOverlay } from "../../components/GameQuickPreview/GameQuickPreviewOverlay.tsx";
 import { Loading } from "../../components/Loading.tsx";
 import { PositionedGameDeck } from "../../components/PositionedGameDeck.tsx";
 import {
@@ -372,8 +371,6 @@ export const GameContent = ({ tutorialsBlocked = false }: GameContentProps) => {
             />
           </>
         )}
-
-        <GameQuickPreviewOverlay />
 
         <Box
           sx={{ width: "100%", height: "100%" }}
