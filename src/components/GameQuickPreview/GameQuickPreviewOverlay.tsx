@@ -50,7 +50,7 @@ export const GameQuickPreviewOverlay = () => {
         <>
           <MotionBox
             position="fixed"
-            zIndex={1400}
+            zIndex={940}
             inset={0}
             pointerEvents="none"
             initial={{ opacity: 0 }}
@@ -67,7 +67,7 @@ export const GameQuickPreviewOverlay = () => {
           </MotionBox>
           <MotionBox
             position="fixed"
-            zIndex={1500}
+            zIndex={950}
             inset={0}
             pointerEvents="none"
             display="flex"
