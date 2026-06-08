@@ -33,12 +33,16 @@ function calculateProgress(steps: IStep[], playerProgress: number): number {
 interface SeasonProgressionContentProps {
   steps: IStep[];
   playerProgress: number;
+  streakProtectorsAvailable: number | null;
+  maxStreakProtectors: number;
   refetch: () => void;
 }
 
 export const SeasonProgressionContent = ({
   steps,
   playerProgress,
+  streakProtectorsAvailable,
+  maxStreakProtectors,
   refetch,
 }: SeasonProgressionContentProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -110,6 +114,8 @@ export const SeasonProgressionContent = ({
             <Step
               key={index}
               step={step}
+              streakProtectorsAvailable={streakProtectorsAvailable}
+              maxStreakProtectors={maxStreakProtectors}
               refetch={refetch}
               ref={(element) => {
                 stepRefs.current[index] = element;

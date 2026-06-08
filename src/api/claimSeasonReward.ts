@@ -20,12 +20,17 @@ type RawMintedCard = {
 
 type ClaimSeasonRewardApiResponse = {
   success?: boolean;
+  code?: "STREAK_PROTECTOR_SLOTS_FULL";
+  error?: string;
   transactionHash?: string;
   mintedCards?: RawMintedCard[];
   streakProtectors?: {
     requested: number;
     queued: number;
     skipped: number;
+    protectorsAvailable?: number;
+    maxProtectors?: number;
+    availableSlots?: number;
   };
 };
 

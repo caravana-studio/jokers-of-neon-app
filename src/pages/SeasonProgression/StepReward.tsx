@@ -14,6 +14,8 @@ interface StepRewardProps {
   reward?: IReward;
   type: "free" | "premium";
   level: number;
+  streakProtectorsAvailable: number | null;
+  maxStreakProtectors: number;
   refetch: () => void;
 }
 
@@ -21,6 +23,8 @@ export const StepReward = ({
   reward,
   type,
   level,
+  streakProtectorsAvailable,
+  maxStreakProtectors,
   refetch,
 }: StepRewardProps) => {
   const { t } = useTranslation("intermediate-screens", {
@@ -31,9 +35,18 @@ export const StepReward = ({
   } = useDojo();
   const { isSmallScreen } = useResponsiveValues();
   const pack = reward?.packs?.[0];
+  const streakProtectorsRequested = reward?.streakProtectors ?? 0;
+  const availableStreakProtectorSlots =
+    streakProtectorsAvailable === null
+      ? null
+      : Math.max(0, maxStreakProtectors - streakProtectorsAvailable);
+  const isStreakProtectorClaimBlocked =
+    streakProtectorsRequested > 0 &&
+    availableStreakProtectorSlots !== null &&
+    streakProtectorsRequested > availableStreakProtectorSlots;
   const hasDirectClaimReward =
     (reward?.tournamentEntries ?? 0) > 0 ||
-    (reward?.streakProtectors ?? 0) > 0;
+    streakProtectorsRequested > 0;
   const hasDisplayableReward = !!reward && (pack || hasDirectClaimReward);
   const navigate = useNavigate();
   const [claiming, setClaiming] = useState(false);
@@ -65,9 +78,18 @@ export const StepReward = ({
                 fontSize={isSmallScreen ? 10 : 12}
                 boxShadow={`0 0 5px 2px ${VIOLET}`}
                 variant="secondarySolid"
-                disabled={claiming || claimed}
+                isDisabled={claiming || claimed || isStreakProtectorClaimBlocked}
                 isLoading={claiming}
+                title={
+                  isStreakProtectorClaimBlocked
+                    ? t("streak-protector-full")
+                    : undefined
+                }
                 onClick={async () => {
+                  if (isStreakProtectorClaimBlocked) {
+                    return;
+                  }
+
                   if (hasDirectClaimReward) {
                     try {
                       setClaiming(true);
@@ -77,6 +99,9 @@ export const StepReward = ({
                         isPremium: type === "premium",
                       });
                       setClaimed(true);
+                      refetch();
+                    } catch (error) {
+                      console.warn("StepReward: season reward claim failed", error);
                       refetch();
                     } finally {
                       setClaiming(false);
