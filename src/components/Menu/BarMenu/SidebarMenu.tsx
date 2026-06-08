@@ -3,6 +3,10 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useCurrentPageInfo } from "../../../hooks/useCurrentPageInfo";
+import {
+  GameQuickPreviewType,
+  useGameQuickPreviewStore,
+} from "../../../state/useGameQuickPreviewStore";
 import { useGameStore } from "../../../state/useGameStore";
 import { AnimatedText } from "../../AnimatedText";
 import CachedImage from "../../CachedImage";
@@ -27,16 +31,29 @@ export const SidebarMenu = () => {
     useContextMenuItems({
       onMoreClick: undefined,
     });
+  const setPreviewType = useGameQuickPreviewStore(
+    (store) => store.setPreviewType,
+  );
 
   const inGame = isInGamePath(location.pathname);
   const showRoundLoadingSkeleton =
     location.pathname === "/demo" && (gameLoading || round <= 0);
+
+  const previewTypeByKey: Partial<Record<string, GameQuickPreviewType>> = {
+    deck: "deck",
+    plays: "plays",
+    missions: "missions",
+  };
 
   useEffect(() => {
     setTimeout(() => {
       setAnimatedText(page?.name ?? "");
     }, 500);
   }, [page?.name]);
+
+  useEffect(() => {
+    setPreviewType(null);
+  }, [location.pathname, setPreviewType]);
 
   return (
     <Box position="relative">
@@ -62,12 +79,19 @@ export const SidebarMenu = () => {
       >
         {(!inGame ? mainMenuItems : inGameMenuItems).map((item) => {
           const { key, ...menuItem } = item;
+          const previewType = previewTypeByKey[key];
           return (
             <ContextMenuItem
               key={key}
               {...menuItem}
               nameKey={key}
               pulse={item.pulse}
+              onPreviewChange={
+                previewType
+                  ? (isVisible) =>
+                      setPreviewType(isVisible ? previewType : null)
+                  : undefined
+              }
             />
           );
         })}

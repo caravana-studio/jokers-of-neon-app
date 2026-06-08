@@ -15,7 +15,7 @@ interface ContextMenuItemProps {
   nameKey?: string;
   notificationCount?: number;
   pulse?: boolean;
-  onHoldChange?: (isHolding: boolean) => void;
+  onPreviewChange?: (isVisible: boolean) => void;
 }
 
 const pulseKeyframes = keyframes`
@@ -37,7 +37,7 @@ export const ContextMenuItem = ({
   nameKey,
   notificationCount,
   pulse = false,
-  onHoldChange,
+  onPreviewChange,
 }: ContextMenuItemProps) => {
   const { isSmallScreen } = useResponsiveValues();
   const iconSize = isSmallScreen ? "20px" : "22px";
@@ -63,21 +63,22 @@ export const ContextMenuItem = ({
   };
 
   const handleTouchStart = () => {
-    if (!onHoldChange || disabled) return;
+    if (!onPreviewChange || disabled) return;
     holdActivatedRef.current = false;
     clearHoldTimeout();
     holdTimeoutRef.current = setTimeout(() => {
       holdActivatedRef.current = true;
-      onHoldChange(true);
+      onPreviewChange(true);
       holdTimeoutRef.current = null;
     }, HOLD_DELAY_MS);
   };
 
   const handleTouchEnd = () => {
-    if (!onHoldChange) return;
+    if (!onPreviewChange) return;
     clearHoldTimeout();
     if (holdActivatedRef.current) {
-      onHoldChange(false);
+      onPreviewChange(false);
+      holdActivatedRef.current = false;
     }
   };
   const content = (
@@ -111,6 +112,16 @@ export const ContextMenuItem = ({
       onTouchEnd={handleTouchEnd}
       onTouchMove={handleTouchEnd}
       onTouchCancel={handleTouchEnd}
+      onMouseEnter={() => {
+        if (!isSmallScreen && onPreviewChange && !disabled) {
+          onPreviewChange(true);
+        }
+      }}
+      onMouseLeave={() => {
+        if (!isSmallScreen && onPreviewChange) {
+          onPreviewChange(false);
+        }
+      }}
     >
       <Flex
         flex="1"

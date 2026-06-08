@@ -9,6 +9,7 @@ import {
   isNative,
   nativePaddingTop
 } from "../utils/capacitorUtils";
+import { GameQuickPreviewOverlay } from "./GameQuickPreview/GameQuickPreviewOverlay";
 import { UnlockProgressDebugWidget } from "./UnlockProgressDebugWidget";
 import { SidebarMenu } from "./Menu/BarMenu/SidebarMenu";
 import { BottomMenu } from "./Menu/BottomMenu";
@@ -52,6 +53,7 @@ export const Layout = ({ children }: { children: ReactNode }) => {
             >
               {children}
             </Flex>
+            <GameQuickPreviewOverlay />
             <UnlockProgressDebugWidget />
           </Flex>
           {!shouldHideNavigation && isSmallScreen && <BottomMenu />}
