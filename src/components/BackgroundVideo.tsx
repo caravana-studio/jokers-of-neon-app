@@ -1,93 +1,39 @@
 import { useEffect, useRef, useState } from "react";
 import { useSeasonNumber } from "../constants/season";
-import {
-  addSeasonSuffixToAssetPath,
-  doesAssetExist,
-  resolveSeasonalAssetPath,
-} from "../utils/assetAvailability";
 import { getVideoFromCache } from "../utils/cacheUtils";
-import { BackgroundType as BackgroundTypeEnum } from "./Background";
-
-type BackgroundType =
-  | BackgroundTypeEnum.Home
-  | BackgroundTypeEnum.Store
-  | BackgroundTypeEnum.Game
-  | BackgroundTypeEnum.Rage
-  | BackgroundTypeEnum.RageBoss
-  | BackgroundTypeEnum.Map
-  | BackgroundTypeEnum.Win
-  | BackgroundTypeEnum.Loose;
+import {
+  BackgroundVideoType,
+  getVideoSourceCandidates,
+} from "./backgroundVideoSources";
 
 interface BackgroundVideoProps {
-  type: BackgroundType;
+  type: BackgroundVideoType;
   useTournamentTheme: boolean;
 }
 
-const tournamentVideoSources: Partial<Record<BackgroundType, string>> = {
-  home: "/bg/home-bg_t.mp4",
-  store: "/bg/store-bg_t.mp4",
-  game: "/bg/game-bg_t.mp4",
-  rage: "/bg/rage-bg_t.mp4",
-  map: "/bg/map-bg_t.mp4",
-  rageboss: "/bg/rage-bg_t.mp4",
-};
-
-const defaultVideoSources: Record<BackgroundType, string> = {
-  home: "/bg/home-bg.mp4",
-  store: "/bg/store-bg.mp4",
-  game: "/bg/game-bg.mp4",
-  rage: "/bg/rage-bg.mp4",
-  // There is no default rage boss video. It falls back to rage unless a seasonal boss asset exists.
-  rageboss: "/bg/rage-bg.mp4",
-  map: "/bg/map-bg.mp4",
-  win: "/bg/summary-bg.mp4",
-  loose: "/bg/summary-bg.mp4",
-};
-
-const getBaseVideoSource = (
-  type: BackgroundType,
-  useTournamentTheme: boolean
-): string => {
-  if (useTournamentTheme) {
-    const tournamentVideo = tournamentVideoSources[type];
-    if (tournamentVideo) return tournamentVideo;
-  }
-
-  return defaultVideoSources[type];
-};
+interface LoadedVideoSource {
+  src: string;
+  sourceKey: string;
+}
 
 const resolveVideoSource = async (
-  type: BackgroundType,
-  useTournamentTheme: boolean,
-  seasonNumber: number
-): Promise<string> => {
-  const fallbackType =
-    type === BackgroundTypeEnum.RageBoss ? BackgroundTypeEnum.Rage : type;
-  const fallbackSource = getBaseVideoSource(fallbackType, useTournamentTheme);
-  const resolvedFallbackSource = await resolveSeasonalAssetPath(
-    fallbackSource,
-    seasonNumber
-  );
-
-  if (type !== BackgroundTypeEnum.RageBoss) {
-    return resolvedFallbackSource;
-  }
-
-  const rageBossSeasonalPath = addSeasonSuffixToAssetPath(
-    useTournamentTheme ? "/bg/rage-boss-bg_t.mp4" : "/bg/rage-boss-bg.mp4",
-    seasonNumber
-  );
-
-  const hasSeasonalRageBossVideo = await doesAssetExist(rageBossSeasonalPath);
-  return hasSeasonalRageBossVideo ? rageBossSeasonalPath : resolvedFallbackSource;
+  candidateSource: string
+): Promise<LoadedVideoSource> => {
+  const cachedVideo = await getVideoFromCache(candidateSource);
+  return {
+    src: cachedVideo || candidateSource,
+    sourceKey: candidateSource,
+  };
 };
 
 const BackgroundVideo = ({ type, useTournamentTheme }: BackgroundVideoProps) => {
   const seasonNumber = useSeasonNumber();
-  const [videoSrc1, setVideoSrc1] = useState<string | null>(null);
-  const [videoSrc2, setVideoSrc2] = useState<string | null>(null);
+  const [sourceCandidates, setSourceCandidates] = useState<string[]>([]);
+  const [activeCandidateIndex, setActiveCandidateIndex] = useState(0);
+  const [videoSrc1, setVideoSrc1] = useState<LoadedVideoSource | null>(null);
+  const [videoSrc2, setVideoSrc2] = useState<LoadedVideoSource | null>(null);
   const [isFading, setIsFading] = useState(false);
-  const [activeVideo, setActiveVideo] = useState<1 | 2>(1); // Track which video is active
+  const [activeVideo, setActiveVideo] = useState<1 | 2>(1);
 
   const videoRef1 = useRef<HTMLVideoElement | null>(null);
   const videoRef2 = useRef<HTMLVideoElement | null>(null);
@@ -98,6 +44,23 @@ const BackgroundVideo = ({ type, useTournamentTheme }: BackgroundVideoProps) => 
   const isLooseVideo = type === "loose";
 
   useEffect(() => {
+    setSourceCandidates(
+      getVideoSourceCandidates(type, useTournamentTheme, seasonNumber)
+    );
+    setActiveCandidateIndex(0);
+    hasLoadedVideoRef.current = false;
+    setVideoSrc1(null);
+    setVideoSrc2(null);
+    setActiveVideo(1);
+    setIsFading(false);
+  }, [seasonNumber, type, useTournamentTheme]);
+
+  useEffect(() => {
+    const candidateSource = sourceCandidates[activeCandidateIndex];
+    if (!candidateSource) {
+      return;
+    }
+
     if (transitionTimeoutRef.current) {
       window.clearTimeout(transitionTimeoutRef.current);
       transitionTimeoutRef.current = null;
@@ -111,19 +74,13 @@ const BackgroundVideo = ({ type, useTournamentTheme }: BackgroundVideoProps) => 
     let isMounted = true;
 
     const loadVideo = async () => {
-      const videoSource = await resolveVideoSource(
-        type,
-        useTournamentTheme,
-        seasonNumber
-      );
-      const cachedVideo = await getVideoFromCache(videoSource);
-      const newVideoSrc = cachedVideo || videoSource;
+      const newVideoSource = await resolveVideoSource(candidateSource);
 
       if (!isMounted) return;
       const hasLoadedVideo = hasLoadedVideoRef.current;
 
       if (!hasLoadedVideo) {
-        setVideoSrc1(newVideoSrc);
+        setVideoSrc1(newVideoSource);
         setVideoSrc2(null);
         setActiveVideo(1);
         setIsFading(false);
@@ -131,18 +88,18 @@ const BackgroundVideo = ({ type, useTournamentTheme }: BackgroundVideoProps) => 
         return;
       }
 
-      setIsFading(true); // Start fade transition
+      setIsFading(true);
 
       transitionTimeoutRef.current = window.setTimeout(() => {
         if (!isMounted) return;
 
         setActiveVideo((currentActiveVideo) => {
           if (currentActiveVideo === 1) {
-            setVideoSrc2(newVideoSrc);
+            setVideoSrc2(newVideoSource);
             return 2;
           }
 
-          setVideoSrc1(newVideoSrc);
+          setVideoSrc1(newVideoSource);
           return 1;
         });
         hasLoadedVideoRef.current = true;
@@ -151,7 +108,7 @@ const BackgroundVideo = ({ type, useTournamentTheme }: BackgroundVideoProps) => 
           if (!isMounted) return;
           setIsFading(false);
         }, 800);
-      }, 100); // Delay before starting transition
+      }, 100);
     };
 
     void loadVideo();
@@ -169,7 +126,21 @@ const BackgroundVideo = ({ type, useTournamentTheme }: BackgroundVideoProps) => 
         fadeTimeoutRef.current = null;
       }
     };
-  }, [seasonNumber, type, useTournamentTheme]);
+  }, [activeCandidateIndex, sourceCandidates]);
+
+  const handleVideoError = (failedSourceKey: string) => {
+    if (failedSourceKey !== sourceCandidates[activeCandidateIndex]) {
+      return;
+    }
+
+    setActiveCandidateIndex((currentIndex) => {
+      if (currentIndex >= sourceCandidates.length - 1) {
+        return currentIndex;
+      }
+
+      return currentIndex + 1;
+    });
+  };
 
   return (
     <div
@@ -187,11 +158,12 @@ const BackgroundVideo = ({ type, useTournamentTheme }: BackgroundVideoProps) => 
       {videoSrc1 && (
         <video
           ref={videoRef1}
-          src={videoSrc1}
+          src={videoSrc1.src}
           autoPlay
           loop
           muted
           playsInline
+          onError={() => handleVideoError(videoSrc1.sourceKey)}
           style={{
             pointerEvents: "none",
             position: "absolute",
@@ -202,18 +174,19 @@ const BackgroundVideo = ({ type, useTournamentTheme }: BackgroundVideoProps) => 
             objectFit: "cover",
             transition: "opacity 1s ease-in-out",
             filter: isLooseVideo ? "grayscale(1)" : "none",
-            opacity: activeVideo === 1 ? 1 : isFading ? 0 : 0, // Fade out if inactive
+            opacity: activeVideo === 1 ? 1 : isFading ? 0 : 0,
           }}
         />
       )}
       {videoSrc2 && (
         <video
           ref={videoRef2}
-          src={videoSrc2}
+          src={videoSrc2.src}
           autoPlay
           loop
           muted
           playsInline
+          onError={() => handleVideoError(videoSrc2.sourceKey)}
           style={{
             pointerEvents: "none",
             position: "absolute",
@@ -224,7 +197,7 @@ const BackgroundVideo = ({ type, useTournamentTheme }: BackgroundVideoProps) => 
             objectFit: "cover",
             transition: "opacity 1s ease-in-out",
             filter: isLooseVideo ? "grayscale(1)" : "none",
-            opacity: activeVideo === 2 ? 1 : isFading ? 0 : 0, // Fade out if inactive
+            opacity: activeVideo === 2 ? 1 : isFading ? 0 : 0,
           }}
         />
       )}
