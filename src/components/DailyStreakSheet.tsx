@@ -401,11 +401,15 @@ export const DailyStreakSheet = ({
           transition={getEntryTransition(3)}
         >
           <MobileBottomBar
-            firstButton={{
-              onClick: handleShareClick,
-              label: t("daily-streak.share.button"),
-              icon: <FontAwesomeIcon fontSize={12} icon={faXTwitter} />,
-            }}
+            firstButton={
+              !isZeroStreak
+                ? {
+                    onClick: handleShareClick,
+                    label: t("daily-streak.share.button"),
+                    icon: <FontAwesomeIcon fontSize={12} icon={faXTwitter} />,
+                  }
+                : undefined
+            }
             secondButton={{
               onClick: handleContinueClick,
               label: t("daily-streak.continue"),

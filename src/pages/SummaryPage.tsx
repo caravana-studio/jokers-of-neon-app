@@ -1,4 +1,6 @@
 import { Box, Flex, Heading, Spinner } from "@chakra-ui/react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faXTwitter } from "@fortawesome/free-brands-svg-icons";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -10,6 +12,7 @@ import { DelayedLoading } from "../components/DelayedLoading";
 import { MobileDecoration } from "../components/MobileDecoration";
 import { PinkBox } from "../components/PinkBox";
 import { RewardItem } from "../components/RewardsDetail";
+import { getGameApiBaseUrl } from "../config/gameApiUrl";
 import { BOSS_LEVEL } from "../constants/general";
 import { PLAYS_DATA } from "../constants/plays";
 import { getShopTierUnlockConfig } from "../constants/shopTierUnlock";
@@ -25,6 +28,7 @@ import { useGameStore } from "../state/useGameStore";
 import { BLUE_LIGHT, VIOLET_LIGHT } from "../theme/colors";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import { formatNumber } from "../utils/formatNumber";
+import { shareOnX } from "../utils/shareOnX";
 import {
   navigateToStreakIncreased,
   SKIP_STREAK_PRESENTATION_CHECK,
@@ -201,6 +205,48 @@ const SummaryDetail = ({ win }: SummaryPageProps) => {
     );
   }
 
+  const handleContinue = () => {
+    if (win) {
+      setIsNavigating(true);
+      navigateToMap();
+      return;
+    }
+
+    const resolvedShopTierUnlockedEvents = shopTierUnlockedEvents.filter(
+      (event) => Boolean(getShopTierUnlockConfig(event.unlock_id))
+    );
+    const hasShopTierUnlockedEventForCurrentGame =
+      resolvedShopTierUnlockedEvents.length > 0;
+
+    console.log("[unlock-debug] loose continue navigation decision", {
+      gameId,
+      shopTierUnlockedEvents,
+      hasShopTierUnlockedEventForCurrentGame,
+      resolvedUnlockConfigs: resolvedShopTierUnlockedEvents.map((event) =>
+        getShopTierUnlockConfig(event.unlock_id)
+      ),
+    });
+
+    if (hasShopTierUnlockedEventForCurrentGame) {
+      navigate(`/shop-tier-unlocked/${gameId}`);
+    } else {
+      navigate(`/gameover/${gameId}`);
+    }
+  };
+
+  const handleShareClick = async () => {
+    const shareVariant = Math.floor(Math.random() * 6) + 1;
+    const shareMessage = t(`share.variants.${shareVariant}`);
+    const shareUrl = gameId
+      ? `${getGameApiBaseUrl()}/share/game-win/${gameId}`
+      : undefined;
+
+    await shareOnX({
+      message: shareMessage,
+      url: shareUrl,
+    });
+  };
+
   return (
     <Flex
       flexDirection="column"
@@ -215,36 +261,29 @@ const SummaryDetail = ({ win }: SummaryPageProps) => {
       <PinkBox
         title={title}
         button={win ? t("endless-mode") : t("continue-btn")}
-        onClick={() => {
-          if (win) {
-            setIsNavigating(true);
-            navigateToMap();
-          } else {
-            const resolvedShopTierUnlockedEvents = shopTierUnlockedEvents.filter(
-              (event) => Boolean(getShopTierUnlockConfig(event.unlock_id))
-            );
-            const hasShopTierUnlockedEventForCurrentGame =
-              resolvedShopTierUnlockedEvents.length > 0;
-
-            console.log("[unlock-debug] loose continue navigation decision", {
-              gameId,
-              shopTierUnlockedEvents,
-              hasShopTierUnlockedEventForCurrentGame,
-              resolvedUnlockConfigs: resolvedShopTierUnlockedEvents.map((event) =>
-                getShopTierUnlockConfig(event.unlock_id)
-              ),
-            });
-
-            if (hasShopTierUnlockedEventForCurrentGame) {
-              navigate(`/shop-tier-unlocked/${gameId}`);
-            } else {
-              navigate(`/gameover/${gameId}`);
-            }
-          }
-        }}
+        onClick={handleContinue}
         actionHidden={!animationEnded}
         glowIntensity={win ? 1.5 : 0}
         color={win ? "violet" : "blue"}
+        firstButton={
+          win
+            ? {
+                onClick: handleShareClick,
+                label: t("share.button"),
+                icon: <FontAwesomeIcon fontSize={12} icon={faXTwitter} />,
+              }
+            : undefined
+        }
+        secondButton={
+          win
+            ? {
+                onClick: handleContinue,
+                label: t("endless-mode"),
+                isLoading: isNavigating,
+                disabled: isNavigating,
+              }
+            : undefined
+        }
       >
         <motion.div
           initial={{ opacity: 0, y: 20 }}

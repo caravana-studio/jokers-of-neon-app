@@ -304,7 +304,18 @@
       "total": "total",
       "final-score": "- Final score: {{score}} -",
       "continue-btn": "continue",
-      "endless-mode": "Endless mode"
+      "endless-mode": "Endless mode",
+      "share": {
+        "button": "SHARE ON",
+        "variants": {
+          "1": "Another win in @Jokers_of_neon 🔥",
+          "2": "I made it through in @Jokers_of_neon ⚡️",
+          "3": "One more victory in @Jokers_of_neon 🃏",
+          "4": "Cleared the run in @Jokers_of_neon.\nCan you beat my stats?",
+          "5": "Not my last win in @Jokers_of_neon 🔥",
+          "6": "Another run, another win in @Jokers_of_neon."
+        }
+      }
     }
   },
   "shop-tier-unlocked": {
@@ -489,7 +500,7 @@
     "next-objective": "Next objective",
     "continue": "Continue",
     "share": {
-      "button": "SHARE ON X",
+      "button": "SHARE ON",
       "variants": {
         "1": "{{streak}}-day streak secured 🔥\nStill going in @Jokers_of_neon.",
         "2": "{{streak}} days and still burning 🔥\nMy Daily Streak keeps going in @Jokers_of_neon.",

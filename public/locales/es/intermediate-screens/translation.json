@@ -303,7 +303,18 @@
       "total": "Total",
       "final-score": "- Puntuación final: {{score}} -",
       "continue-btn": "Continuar",
-      "endless-mode": "Modo infinito"
+      "endless-mode": "Modo infinito",
+      "share": {
+        "button": "COMPARTIR EN",
+        "variants": {
+          "1": "Otra victoria en @Jokers_of_neon 🔥",
+          "2": "Lo logré en @Jokers_of_neon ⚡️",
+          "3": "Una victoria más en @Jokers_of_neon 🃏",
+          "4": "Completé la run en @Jokers_of_neon.\n¿Puedes superar mis stats?",
+          "5": "No será mi última victoria en @Jokers_of_neon 🔥",
+          "6": "Otra run, otra victoria en @Jokers_of_neon."
+        }
+      }
     }
   },
   "shop-tier-unlocked": {
@@ -488,7 +499,7 @@
     "next-objective": "Próximo objetivo",
     "continue": "Continuar",
     "share": {
-      "button": "COMPARTIR EN X",
+      "button": "COMPARTIR EN",
       "variants": {
         "1": "Racha de {{streak}} días asegurada 🔥\nSigo firme en @Jokers_of_neon.",
         "2": "{{streak}} días y sigo ardiendo 🔥\nMi racha diaria sigue viva en @Jokers_of_neon.",
