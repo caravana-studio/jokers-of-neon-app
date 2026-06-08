@@ -1,91 +1,87 @@
 import { useEffect, useRef, useState } from "react";
 import { useSeasonNumber } from "../constants/season";
-import {
-  addSeasonSuffixToAssetPath,
-  doesAssetExist,
-  resolveSeasonalAssetPath,
-} from "../utils/assetAvailability";
 import { getVideoFromCache } from "../utils/cacheUtils";
-import { BackgroundType as BackgroundTypeEnum } from "./Background";
-
-type BackgroundType =
-  | BackgroundTypeEnum.Home
-  | BackgroundTypeEnum.Store
-  | BackgroundTypeEnum.Game
-  | BackgroundTypeEnum.Rage
-  | BackgroundTypeEnum.RageBoss
-  | BackgroundTypeEnum.Map
-  | BackgroundTypeEnum.Win
-  | BackgroundTypeEnum.Loose;
+import {
+  BackgroundVideoType,
+  getVideoSourceCandidates,
+} from "./backgroundVideoSources";
 
 interface BackgroundVideoProps {
-  type: BackgroundType;
+  type: BackgroundVideoType;
   useTournamentTheme: boolean;
 }
 
-const tournamentVideoSources: Partial<Record<BackgroundType, string>> = {
-  home: "/bg/home-bg_t.mp4",
-  store: "/bg/store-bg_t.mp4",
-  game: "/bg/game-bg_t.mp4",
-  rage: "/bg/rage-bg_t.mp4",
-  map: "/bg/map-bg_t.mp4",
-  rageboss: "/bg/rage-bg_t.mp4",
-};
+interface LoadedVideoSource {
+  src: string;
+}
 
-const defaultVideoSources: Record<BackgroundType, string> = {
-  home: "/bg/home-bg.mp4",
-  store: "/bg/store-bg.mp4",
-  game: "/bg/game-bg.mp4",
-  rage: "/bg/rage-bg.mp4",
-  // There is no default rage boss video. It falls back to rage unless a seasonal boss asset exists.
-  rageboss: "/bg/rage-bg.mp4",
-  map: "/bg/map-bg.mp4",
-  win: "/bg/summary-bg.mp4",
-  loose: "/bg/summary-bg.mp4",
-};
+const waitForVideoToBecomePlayable = (src: string): Promise<void> =>
+  new Promise((resolve, reject) => {
+    const video = document.createElement("video");
+    let settled = false;
 
-const getBaseVideoSource = (
-  type: BackgroundType,
-  useTournamentTheme: boolean
-): string => {
-  if (useTournamentTheme) {
-    const tournamentVideo = tournamentVideoSources[type];
-    if (tournamentVideo) return tournamentVideo;
-  }
+    const cleanup = () => {
+      video.removeEventListener("loadeddata", handleLoaded);
+      video.removeEventListener("canplay", handleLoaded);
+      video.removeEventListener("error", handleError);
+      video.removeAttribute("src");
+      video.load();
+    };
 
-  return defaultVideoSources[type];
-};
+    const settle = (callback: () => void) => {
+      if (settled) return;
+      settled = true;
+      cleanup();
+      callback();
+    };
+
+    const handleLoaded = () => {
+      settle(resolve);
+    };
+
+    const handleError = () => {
+      settle(() => reject(new Error(`Failed to load video: ${src}`)));
+    };
+
+    video.preload = "auto";
+    video.muted = true;
+    video.playsInline = true;
+    video.addEventListener("loadeddata", handleLoaded, { once: true });
+    video.addEventListener("canplay", handleLoaded, { once: true });
+    video.addEventListener("error", handleError, { once: true });
+    video.src = src;
+    video.load();
+  });
 
 const resolveVideoSource = async (
-  type: BackgroundType,
-  useTournamentTheme: boolean,
-  seasonNumber: number
-): Promise<string> => {
-  const fallbackType =
-    type === BackgroundTypeEnum.RageBoss ? BackgroundTypeEnum.Rage : type;
-  const fallbackSource = getBaseVideoSource(fallbackType, useTournamentTheme);
-  const resolvedFallbackSource = await resolveSeasonalAssetPath(
-    fallbackSource,
-    seasonNumber
-  );
+  candidateSources: string[],
+): Promise<LoadedVideoSource> => {
+  for (const candidateSource of candidateSources) {
+    const cachedVideo = await getVideoFromCache(candidateSource);
 
-  if (type !== BackgroundTypeEnum.RageBoss) {
-    return resolvedFallbackSource;
+    if (cachedVideo) {
+      return {
+        src: cachedVideo,
+      };
+    }
+
+    try {
+      await waitForVideoToBecomePlayable(candidateSource);
+      return {
+        src: candidateSource,
+      };
+    } catch {
+      // Try the next candidate until one is playable.
+    }
   }
 
-  const rageBossSeasonalPath = addSeasonSuffixToAssetPath(
-    useTournamentTheme ? "/bg/rage-boss-bg_t.mp4" : "/bg/rage-boss-bg.mp4",
-    seasonNumber
-  );
-
-  const hasSeasonalRageBossVideo = await doesAssetExist(rageBossSeasonalPath);
-  return hasSeasonalRageBossVideo ? rageBossSeasonalPath : resolvedFallbackSource;
+  throw new Error("Failed to resolve a playable background video source");
 };
 
 const BackgroundVideo = ({ type, useTournamentTheme }: BackgroundVideoProps) => {
   const seasonNumber = useSeasonNumber();
-  const [videoSrc1, setVideoSrc1] = useState<string | null>(null);
-  const [videoSrc2, setVideoSrc2] = useState<string | null>(null);
+  const [videoSrc1, setVideoSrc1] = useState<LoadedVideoSource | null>(null);
+  const [videoSrc2, setVideoSrc2] = useState<LoadedVideoSource | null>(null);
   const [isFading, setIsFading] = useState(false);
   const [activeVideo, setActiveVideo] = useState<1 | 2>(1); // Track which video is active
 
@@ -111,19 +107,22 @@ const BackgroundVideo = ({ type, useTournamentTheme }: BackgroundVideoProps) => 
     let isMounted = true;
 
     const loadVideo = async () => {
-      const videoSource = await resolveVideoSource(
-        type,
-        useTournamentTheme,
-        seasonNumber
-      );
-      const cachedVideo = await getVideoFromCache(videoSource);
-      const newVideoSrc = cachedVideo || videoSource;
+      let nextVideoSource: LoadedVideoSource;
+
+      try {
+        nextVideoSource = await resolveVideoSource(
+          getVideoSourceCandidates(type, useTournamentTheme, seasonNumber),
+        );
+      } catch (error) {
+        console.error("Failed to load background video", error);
+        return;
+      }
 
       if (!isMounted) return;
       const hasLoadedVideo = hasLoadedVideoRef.current;
 
       if (!hasLoadedVideo) {
-        setVideoSrc1(newVideoSrc);
+        setVideoSrc1(nextVideoSource);
         setVideoSrc2(null);
         setActiveVideo(1);
         setIsFading(false);
@@ -138,11 +137,11 @@ const BackgroundVideo = ({ type, useTournamentTheme }: BackgroundVideoProps) => 
 
         setActiveVideo((currentActiveVideo) => {
           if (currentActiveVideo === 1) {
-            setVideoSrc2(newVideoSrc);
+            setVideoSrc2(nextVideoSource);
             return 2;
           }
 
-          setVideoSrc1(newVideoSrc);
+          setVideoSrc1(nextVideoSource);
           return 1;
         });
         hasLoadedVideoRef.current = true;
@@ -187,7 +186,7 @@ const BackgroundVideo = ({ type, useTournamentTheme }: BackgroundVideoProps) => 
       {videoSrc1 && (
         <video
           ref={videoRef1}
-          src={videoSrc1}
+          src={videoSrc1.src}
           autoPlay
           loop
           muted
@@ -209,7 +208,7 @@ const BackgroundVideo = ({ type, useTournamentTheme }: BackgroundVideoProps) => 
       {videoSrc2 && (
         <video
           ref={videoRef2}
-          src={videoSrc2}
+          src={videoSrc2.src}
           autoPlay
           loop
           muted
