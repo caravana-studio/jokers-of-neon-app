@@ -15,9 +15,6 @@ interface GameOverContentProps {
   congratulationsMsj: string;
   actualPlayerPosition?: number;
   t: (key: string, options?: Record<string, any>) => string;
-  onShareClick: () => void;
-  onSecondButtonClick: () => void;
-  isLoading: boolean;
   leaderboardFilterLoggedInPlayers?: boolean;
   firstButton?: BarButtonProps;
   secondButton?: BarButtonProps;

@@ -1,15 +1,20 @@
 import { Haptics } from "@capacitor/haptics";
 import { Capacitor } from "@capacitor/core";
 import { Box, Flex, Text } from "@chakra-ui/react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faXTwitter } from "@fortawesome/free-brands-svg-icons";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useDojo } from "../dojo/DojoContext";
 import { DIAMONDS } from "../theme/colors";
 import { Intensity } from "../types/intensity";
 import AudioManager from "../audio/AudioManager";
 import { clearLevel, clearRound } from "../constants/sfx";
+import { getGameApiBaseUrl } from "../config/gameApiUrl";
 import { triggerHaptic } from "../haptics";
 import { useBackgroundAnimation } from "../providers/BackgroundAnimationProvider";
+import { shareOnX } from "../utils/shareOnX";
 import { DailyStreakFireAnimation } from "./DailyStreakFireAnimation";
 import {
   DailyStreakMilestoneProgress,
@@ -46,6 +51,9 @@ export const DailyStreakSheet = ({
   showCelebrationIntroOnEntry = true,
 }: DailyStreakSheetProps) => {
   const { t } = useTranslation("intermediate-screens");
+  const {
+    account: { account },
+  } = useDojo();
   const { showLightPillarAnimation, hideLightPillarAnimation } = useBackgroundAnimation();
   const normalizedStreak = Number.isFinite(streak)
     ? Math.max(0, Math.floor(streak))
@@ -107,6 +115,22 @@ export const DailyStreakSheet = ({
   });
   const getAnimationStartDelayMs = (index: number) =>
     Math.round((getEntryTransition(index).delay + getEntryTransition(index).duration) * 1000);
+
+  const handleShareClick = async () => {
+    const shareVariant = Math.floor(Math.random() * 5) + 1;
+    const shareMessage = t(`daily-streak.share.variants.${shareVariant}`, {
+      streak: normalizedStreak,
+    });
+    const shareUrl = account?.address
+      ? `${getGameApiBaseUrl()}/share/daily-streak/${account.address}`
+      : undefined;
+
+    await shareOnX({
+      message: shareMessage,
+      url: shareUrl,
+    });
+  };
+
   const handleContinueClick = async () => {
     if (isContinuing) {
       return;
@@ -378,6 +402,11 @@ export const DailyStreakSheet = ({
         >
           <MobileBottomBar
             firstButton={{
+              onClick: handleShareClick,
+              label: t("daily-streak.share.button"),
+              icon: <FontAwesomeIcon fontSize={12} icon={faXTwitter} />,
+            }}
+            secondButton={{
               onClick: handleContinueClick,
               label: t("daily-streak.continue"),
               isLoading: isContinuing,
