@@ -261,7 +261,6 @@
       "gameOver-top5-msj": "Great job! You're in the top 5! Keep it up!"
     },
     "btn": {
-      "gameOver-share-btn": "SHARE ON",
       "gameOver-mygames-btn": "MY GAMES",
       "go-home": "Go home",
       "play-again": "Play again"
@@ -305,7 +304,18 @@
       "total": "total",
       "final-score": "- Final score: {{score}} -",
       "continue-btn": "continue",
-      "endless-mode": "Endless mode"
+      "endless-mode": "Endless mode",
+      "share": {
+        "button": "SHARE ON",
+        "variants": {
+          "1": "Another win in @Jokers_of_neon 🔥",
+          "2": "I made it through in @Jokers_of_neon ⚡️",
+          "3": "One more victory in @Jokers_of_neon 🃏",
+          "4": "Cleared the run in @Jokers_of_neon.\nCan you beat my stats?",
+          "5": "Not my last win in @Jokers_of_neon 🔥",
+          "6": "Another run, another win in @Jokers_of_neon."
+        }
+      }
     }
   },
   "shop-tier-unlocked": {
@@ -489,6 +499,16 @@
     "description": "Complete a daily mission to start your streak.",
     "next-objective": "Next objective",
     "continue": "Continue",
+    "share": {
+      "button": "SHARE ON",
+      "variants": {
+        "1": "{{streak}}-day streak secured 🔥\nStill going in @Jokers_of_neon.",
+        "2": "{{streak}} days and still burning 🔥\nMy Daily Streak keeps going in @Jokers_of_neon.",
+        "3": "Keeping the fire alive 🔥\nJust hit a {{streak}}-day Daily Streak in @Jokers_of_neon.",
+        "4": "The grind continues 🔥\n{{streak}}-day Daily Streak in @Jokers_of_neon.",
+        "5": "I just hit a {{streak}}-day Daily Streak in @Jokers_of_neon 🔥\nCan you keep yours alive?"
+      }
+    },
     "celebration-title": "Congratulations",
     "celebration-description": "You completed your objective",
     "celebration-description-extended": "You just extended your streak",

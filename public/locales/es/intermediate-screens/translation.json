@@ -261,7 +261,6 @@
       "gameOver-top5-msj": "¡Buen trabajo! ¡Estás en el top 5! ¡Sigue así!"
     },
     "btn": {
-      "gameOver-share-btn": "COMPARTIR EN",
       "gameOver-mygames-btn": "IR A MIS JUEGOS",
       "go-home": "Ir al inicio",
       "play-again": "Jugar otra vez"
@@ -304,7 +303,18 @@
       "total": "Total",
       "final-score": "- Puntuación final: {{score}} -",
       "continue-btn": "Continuar",
-      "endless-mode": "Modo infinito"
+      "endless-mode": "Modo infinito",
+      "share": {
+        "button": "COMPARTIR EN",
+        "variants": {
+          "1": "Otra victoria en @Jokers_of_neon 🔥",
+          "2": "Lo logré en @Jokers_of_neon ⚡️",
+          "3": "Una victoria más en @Jokers_of_neon 🃏",
+          "4": "Completé la run en @Jokers_of_neon.\n¿Puedes superar mis stats?",
+          "5": "No será mi última victoria en @Jokers_of_neon 🔥",
+          "6": "Otra run, otra victoria en @Jokers_of_neon."
+        }
+      }
     }
   },
   "shop-tier-unlocked": {
@@ -488,6 +498,16 @@
     "description": "Completa una misión diaria para comenzar tu racha.",
     "next-objective": "Próximo objetivo",
     "continue": "Continuar",
+    "share": {
+      "button": "COMPARTIR EN",
+      "variants": {
+        "1": "Racha de {{streak}} días asegurada 🔥\nSigo firme en @Jokers_of_neon.",
+        "2": "{{streak}} días y sigo ardiendo 🔥\nMi racha diaria sigue viva en @Jokers_of_neon.",
+        "3": "Manteniendo el fuego encendido 🔥\nAcabo de llegar a una racha diaria de {{streak}} días en @Jokers_of_neon.",
+        "4": "El grind sigue 🔥\nRacha diaria de {{streak}} días en @Jokers_of_neon.",
+        "5": "Acabo de llegar a una racha diaria de {{streak}} días en @Jokers_of_neon 🔥\n¿Puedes mantener la tuya viva?"
+      }
+    },
     "celebration-title": "Felicitaciones",
     "celebration-description": "Completaste tu objetivo",
     "celebration-description-extended": "Acabas de estirar tu racha",

@@ -1,5 +1,6 @@
-import { Box, Button } from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
 import { PropsWithChildren } from "react";
+import { BarButton, BarButtonProps } from "./MobileBottomBar";
 import { BLUE, BLUE_LIGHT, VIOLET, VIOLET_LIGHT } from "../theme/colors";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 
@@ -12,6 +13,8 @@ interface PinkBoxProps extends PropsWithChildren {
   color?: "violet" | "blue";
   buttonIsLoading?: boolean;
   buttonIsDisabled?: boolean;
+  firstButton?: BarButtonProps;
+  secondButton?: BarButtonProps;
 }
 
 export const PinkBox = ({
@@ -24,8 +27,11 @@ export const PinkBox = ({
   color = "violet",
   buttonIsLoading = false,
   buttonIsDisabled = false,
+  firstButton,
+  secondButton,
 }: PinkBoxProps) => {
   const { isSmallScreen } = useResponsiveValues();
+  const hasButtonBar = Boolean(firstButton || secondButton);
 
   return (
     <Box
@@ -54,22 +60,44 @@ export const PinkBox = ({
         {title}
         {children}
       </Box>
-      {button && (
-        <Button
-          className="game-tutorial-step-4"
+      {hasButtonBar ? (
+        <Flex
           mt={isSmallScreen ? 10 : 14}
           w="100%"
-          size="md"
-          variant={color === "violet" ? "secondarySolid" : undefined}
-          onClick={onClick}
-          isLoading={buttonIsLoading}
-          isDisabled={buttonIsDisabled}
+          gap={isSmallScreen ? 3 : 4}
           opacity={actionHidden ? 0 : 1}
           transition={"opacity 0.3s ease-in-out"}
           pointerEvents={actionHidden ? "none" : "auto"}
         >
-          {button}
-        </Button>
+          {firstButton && (
+            <Box flex={1}>
+              <BarButton {...firstButton} />
+            </Box>
+          )}
+          {secondButton && (
+            <Box flex={1}>
+              <BarButton variant="secondarySolid" {...secondButton} />
+            </Box>
+          )}
+        </Flex>
+      ) : (
+        button && (
+          <Button
+            className="game-tutorial-step-4"
+            mt={isSmallScreen ? 10 : 14}
+            w="100%"
+            size="md"
+            variant={color === "violet" ? "secondarySolid" : undefined}
+            onClick={onClick}
+            isLoading={buttonIsLoading}
+            isDisabled={buttonIsDisabled}
+            opacity={actionHidden ? 0 : 1}
+            transition={"opacity 0.3s ease-in-out"}
+            pointerEvents={actionHidden ? "none" : "auto"}
+          >
+            {button}
+          </Button>
+        )
       )}
     </Box>
   );

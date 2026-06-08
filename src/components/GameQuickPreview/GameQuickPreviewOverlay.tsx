@@ -12,7 +12,6 @@ import { PlaysQuickPreview } from "./PlaysQuickPreview";
 
 const DESKTOP_SIDEBAR_WIDTH = "48px";
 const MOBILE_BOTTOM_MENU_HEIGHT = isNative ? "80px" : "50px";
-
 export const GameQuickPreviewOverlay = () => {
   const activePreviewType = useGameQuickPreviewStore(
     (store) => store.activePreviewType,
