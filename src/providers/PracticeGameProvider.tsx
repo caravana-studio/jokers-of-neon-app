@@ -17,6 +17,7 @@ import { usePracticeStore } from "../state/usePracticeStore";
 import { PokerHand } from "../types/LevelPokerHand";
 import { CardPlayEvent, PowerUpScore } from "../types/ScoreData";
 import { getPlayAnimationDuration } from "../utils/getPlayAnimationDuration";
+import { isCardSilent } from "../utils/isCardSilent";
 import {
   OptimisticAnimationController,
   animateOptimisticCardPlay,
@@ -31,7 +32,6 @@ import {
 import { buildOptimisticPowerUpEvents } from "../utils/playEvents/buildOptimisticPowerUpEvents";
 import { filterOptimisticEventsFromPlayEvents } from "../utils/playEvents/filterOptimisticEventsFromPlayEvents";
 import { filterSilentCardEventsFromPlayEvents } from "../utils/playEvents/filterSilentCardEventsFromPlayEvents";
-import { getSilentCardIndexesForOptimisticPlay } from "../utils/playEvents/getSilentCardIndexesForOptimisticPlay";
 import { getPlayEvents } from "../utils/playEvents/getPlayEvents";
 import {
   failedTransactionToast,
@@ -236,6 +236,17 @@ export const PracticeGameProvider = ({ children }: { children: ReactNode }) => {
       );
 
     const pokerHandLevels = toPokerHandLevels(scenario.plays);
+    const handByIdx = new Map(handStore.hand.map((card) => [card.idx, card]));
+    const nonAnimatedCardIndexes = new Set(
+      handStore.preSelectedCards.filter((cardIdx) => {
+        const card = handByIdx.get(cardIdx);
+        if (!card) {
+          return false;
+        }
+
+        return isCardSilent(card, gameStore.rageCards);
+      }),
+    );
     const activeConverterSpecialCards = getActiveConverterSpecialCards(
       gameStore.specialCards,
     );
@@ -257,23 +268,6 @@ export const PracticeGameProvider = ({ children }: { children: ReactNode }) => {
           specialCards: gameStore.specialCards,
           preSelectedModifiers: handStore.preSelectedModifiers,
         });
-    }
-
-    const nonAnimatedCardIndexes = getSilentCardIndexesForOptimisticPlay({
-      hand: handStore.hand,
-      preSelectedCards: handStore.preSelectedCards,
-      rageCards: gameStore.rageCards,
-      preSelectedModifiers: handStore.preSelectedModifiers,
-      changeEvents: optimisticCardPlayChangeEvents,
-    });
-
-    if (gameStore.debuffedPlayerHands.includes(handStore.preSelectedPlay)) {
-      handStore.preSelectedCards.forEach((cardIdx) => {
-        nonAnimatedCardIndexes.add(cardIdx);
-      });
-    }
-
-    if (shouldUseOptimisticPlay) {
       optimisticCardPlayEvents = buildOptimisticCardPlayEvents({
         hand: handStore.hand,
         preSelectedCards: handStore.preSelectedCards,
