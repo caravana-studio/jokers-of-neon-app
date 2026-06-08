@@ -8,13 +8,9 @@ import { buildOptimisticConverterCardPlayChangeEvents } from "../../playEvents/b
 import { buildOptimisticPowerUpEvents } from "../../playEvents/buildOptimisticPowerUpEvents";
 import { filterOptimisticEventsFromPlayEvents } from "../../playEvents/filterOptimisticEventsFromPlayEvents";
 import { filterSilentCardEventsFromPlayEvents } from "../../playEvents/filterSilentCardEventsFromPlayEvents";
-import { getSilentCardIndexesForOptimisticPlay } from "../../playEvents/getSilentCardIndexesForOptimisticPlay";
-import { C7, C9, D6, D7, D8, D9, H7, JOKER1, JOKER2, S7, S10 } from "../../mocks/cardMocks";
+import { C9, D6, D7, D8, D9, H7, JOKER1, JOKER2, S10 } from "../../mocks/cardMocks";
 import { WildcardModifier } from "../../mocks/modifierMocks";
-import {
-  AllCardsToHearts,
-  StraightToHighStraight,
-} from "../../mocks/specialCardMocks";
+import { StraightToHighStraight } from "../../mocks/specialCardMocks";
 
 const withIdx = (cards: Card[]): Card[] =>
   cards.map((card, index) => ({
@@ -236,95 +232,6 @@ test("buildOptimisticCardPlayEvents skips all selected cards when play is debuff
   });
 
   expect(events).toEqual([]);
-});
-
-test("buildOptimisticCardPlayEvents skips cards silenced after all-to-hearts conversion", () => {
-  const hand = [C7, D7];
-  const preSelectedCards = [C7.idx, D7.idx];
-  const rageCards: Card[] = [
-    {
-      id: "20001",
-      img: "20001.png",
-      idx: 20001,
-      card_id: 20001,
-    },
-  ];
-  const changeEvents = buildOptimisticConverterCardPlayChangeEvents({
-    hand,
-    preSelectedCards,
-    specialCards: [AllCardsToHearts],
-    preSelectedModifiers: {},
-  });
-  const silentCardIndexes = getSilentCardIndexesForOptimisticPlay({
-    hand,
-    preSelectedCards,
-    rageCards,
-    preSelectedModifiers: {},
-    changeEvents,
-  });
-
-  expect([...silentCardIndexes]).toEqual([C7.idx, D7.idx]);
-
-  const events = buildOptimisticCardPlayEvents({
-    hand,
-    preSelectedCards,
-    specialCards: [AllCardsToHearts],
-    preSelectedModifiers: {},
-    silentCardIndexes,
-    changeEvents,
-  });
-
-  expect(events).toEqual([]);
-});
-
-test("buildOptimisticCardPlayEvents scores cards unsilenced after all-to-hearts conversion", () => {
-  const hand = [S7, D7];
-  const preSelectedCards = [S7.idx, D7.idx];
-  const rageCards: Card[] = [
-    {
-      id: "20004",
-      img: "20004.png",
-      idx: 20004,
-      card_id: 20004,
-    },
-  ];
-  const changeEvents = buildOptimisticConverterCardPlayChangeEvents({
-    hand,
-    preSelectedCards,
-    specialCards: [AllCardsToHearts],
-    preSelectedModifiers: {},
-  });
-  const silentCardIndexes = getSilentCardIndexesForOptimisticPlay({
-    hand,
-    preSelectedCards,
-    rageCards,
-    preSelectedModifiers: {},
-    changeEvents,
-  });
-
-  expect([...silentCardIndexes]).toEqual([]);
-
-  const events = buildOptimisticCardPlayEvents({
-    hand,
-    preSelectedCards,
-    specialCards: [AllCardsToHearts],
-    preSelectedModifiers: {},
-    silentCardIndexes,
-    changeEvents,
-  });
-
-  expect(events).toEqual([
-    {
-      hand: [{ idx: S7.idx, quantity: 7 }],
-      specials: [],
-      eventType: EventTypeEnum.Point,
-    },
-    {
-      hand: [{ idx: D7.idx, quantity: 7 }],
-      specials: [],
-      eventType: EventTypeEnum.Point,
-    },
-  ]);
 });
 
 test("buildOptimisticCardPlayEvents does not score cards with wildcard modifier", () => {

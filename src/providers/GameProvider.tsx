@@ -41,6 +41,7 @@ import { Card } from "../types/Card";
 import { CardPlayEvent, PlayEvents, PowerUpScore } from "../types/ScoreData";
 import { logEvent } from "../utils/analytics.ts";
 import { getPlayAnimationDuration } from "../utils/getPlayAnimationDuration.ts";
+import { isCardSilent } from "../utils/isCardSilent.ts";
 import {
   OptimisticAnimationController,
   animateOptimisticCardPlay,
@@ -58,7 +59,6 @@ import {
 import { buildOptimisticPowerUpEvents } from "../utils/playEvents/buildOptimisticPowerUpEvents.ts";
 import { filterOptimisticEventsFromPlayEvents } from "../utils/playEvents/filterOptimisticEventsFromPlayEvents.ts";
 import { filterSilentCardEventsFromPlayEvents } from "../utils/playEvents/filterSilentCardEventsFromPlayEvents.ts";
-import { getSilentCardIndexesForOptimisticPlay } from "../utils/playEvents/getSilentCardIndexesForOptimisticPlay.ts";
 import {
   PROGRESSIVE_TUTORIAL_IDS,
 } from "../utils/progressiveTutorialStorage";
@@ -701,7 +701,22 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   };
 
   const onPlayClick = () => {
+    const handByIdx = new Map(hand.map((card) => [card.idx, card]));
     const isDebuffedPlay = debuffedPlayerHands.includes(preSelectedPlay);
+    const nonAnimatedCardIndexes = new Set(
+      preSelectedCards.filter((cardIdx) => {
+        const card = handByIdx.get(cardIdx);
+        if (!card) {
+          return false;
+        }
+
+        return isCardSilent(card, rageCards);
+      })
+    );
+    if (isDebuffedPlay) {
+      preSelectedCards.forEach((cardIdx) => nonAnimatedCardIndexes.add(cardIdx));
+    }
+
     const playPitchState = { index: 0 };
     const activeConverterSpecialCards = getActiveConverterSpecialCards(specialCards);
     const shouldUseOptimisticPlay =
@@ -720,21 +735,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
           specialCards,
           preSelectedModifiers,
         });
-    }
-
-    const nonAnimatedCardIndexes = getSilentCardIndexesForOptimisticPlay({
-      hand,
-      preSelectedCards,
-      rageCards,
-      preSelectedModifiers,
-      changeEvents: optimisticCardPlayChangeEvents,
-    });
-
-    if (isDebuffedPlay) {
-      preSelectedCards.forEach((cardIdx) => nonAnimatedCardIndexes.add(cardIdx));
-    }
-
-    if (shouldUseOptimisticPlay) {
       optimisticCardPlayEvents = buildOptimisticCardPlayEvents({
         hand,
         preSelectedCards,
