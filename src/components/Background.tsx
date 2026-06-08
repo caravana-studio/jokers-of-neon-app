@@ -306,18 +306,11 @@ export const Background = ({
   const modAwareSrc = !isClassic ? baseUrl + src : src;
 
   useEffect(() => {
-    let isMounted = true;
-
-    setBackgroundImageUrl(src);
-
     const loadBackgroundImage = async () => {
       const cachedImage = await getImageFromCache(src);
 
-      if (!isMounted) return;
-
       if (!isClassic) {
         const exists = await checkImageExists(modAwareSrc);
-        if (!isMounted) return;
         setBackgroundImageUrl(exists ? modAwareSrc : src);
       } else if (cachedImage) {
         setBackgroundImageUrl(URL.createObjectURL(cachedImage));
@@ -326,20 +319,18 @@ export const Background = ({
       }
     };
 
-    void loadBackgroundImage();
-
-    return () => {
-      isMounted = false;
-    };
+    loadBackgroundImage();
   }, [isClassic, modAwareSrc, src]);
 
   return (
     <Box
       sx={{
         backgroundColor: getBackgroundColor(type),
-        backgroundImage: `url(${
-          backgroundImageUrl !== "none" ? backgroundImageUrl : src
-        })`,
+        backgroundImage: isClassic
+          ? `url(${src})`
+          : backgroundImageUrl != "none"
+            ? `url(${backgroundImageUrl})`
+            : `url(${src})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         height: "100svh",
