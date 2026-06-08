@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   Divider,
   Flex,
@@ -12,14 +11,10 @@ import {
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { Clock } from "../../components/Clock";
-import {
-  DailyMissionEntry,
-  WeeklyMissionEntry,
-} from "../../components/DailyMissions/MissionEntries";
 import { DelayedLoading } from "../../components/DelayedLoading";
 import { MobileBottomBar } from "../../components/MobileBottomBar";
 import { MobileDecoration } from "../../components/MobileDecoration";
+import { MissionsPanels } from "../../components/Missions/MissionsPanels";
 import { useMissionsData } from "../../hooks/useMissionsData";
 import { useInformationPopUp } from "../../providers/InformationPopUpProvider";
 import { BLUE } from "../../theme/colors";
@@ -28,13 +23,6 @@ import {
   getNextDailyMissionResetDate,
   getNextWeeklyMissionResetDate,
 } from "../../utils/missionsTimers";
-
-const MISSION_PANEL_STYLES = {
-  background: "rgba(0, 0, 0, 0.4)",
-  boxShadow:
-    "0 0 22px rgba(255,255,255,0.4), inset 0 0 15px rgba(255,255,255,0.1)",
-  backdropFilter: "blur(2px)",
-};
 
 interface MissionsPageProps {
   inGame?: boolean;
@@ -121,95 +109,15 @@ export const MissionsPage = ({ inGame = false }: MissionsPageProps) => {
               alignItems="start"
               w="100%"
             >
-              <Flex flexDir="column" gap={3} minW={0}>
-                <Flex
-                  justifyContent="space-between"
-                  alignItems="center"
-                  gap={2}
-                  px={2}
-                >
-                  <Heading
-                    variant="italic"
-                    fontSize={{ base: "15px", sm: "22px" }}
-                    zIndex={10}
-                  >
-                    {t("weekly-short-title")}
-                  </Heading>
-                  <Flex
-                    w={{ base: "80px", sm: "120px" }}
-                    justifyContent="flex-end"
-                  >
-                    <Clock
-                      date={weeklyResetAt}
-                      fontSize={isSmallScreen ? 12 : 16}
-                      iconSize={isSmallScreen ? "12px" : "18px"}
-                    />
-                  </Flex>
-                </Flex>
-
-                <Box
-                  borderRadius={{ base: "24px", sm: "30px" }}
-                  px={{ base: 4, sm: 6 }}
-                  py={{ base: 3, sm: 5 }}
-                  {...MISSION_PANEL_STYLES}
-                >
-                  <Flex flexDir="column" gap={{ base: 4, sm: 5 }}>
-                    {weeklyMissions.map((mission) => (
-                      <WeeklyMissionEntry
-                        key={`weekly-${mission.missionId}`}
-                        mission={mission}
-                        xpLabel={t("xp-label")}
-                      />
-                    ))}
-                  </Flex>
-                </Box>
-              </Flex>
-
-              <Flex flexDir="column" gap={3} minW={0}>
-                <Flex
-                  justifyContent="space-between"
-                  alignItems="center"
-                  mt={{ base: 2, md: 0 }}
-                  gap={2}
-                  px={2}
-                >
-                  <Heading
-                    variant="italic"
-                    fontSize={{ base: "15px", sm: "22px" }}
-                  >
-                    {t("daily-short-title")}
-                  </Heading>
-                  <Flex
-                    w={{ base: "80px", sm: "120px" }}
-                    justifyContent="flex-end"
-                  >
-                    <Clock
-                      date={dailyResetAt}
-                      fontSize={isSmallScreen ? 12 : 16}
-                      iconSize={isSmallScreen ? "12px" : "18px"}
-                    />
-                  </Flex>
-                </Flex>
-
-                <Box
-                  borderRadius={{ base: "24px", sm: "30px" }}
-                  px={{ base: 4, sm: 6 }}
-                  py={{ base: 4, sm: 5 }}
-                  {...MISSION_PANEL_STYLES}
-                >
-                  <Flex flexDir="column" gap={{ base: 5, sm: 6 }}>
-                    {dailyMissions.map((mission) => (
-                      <DailyMissionEntry
-                        key={`daily-${mission.missionId}`}
-                        mission={mission}
-                        xpLabel={t("xp-label")}
-                        completed={mission.completed}
-                        showProgress={inGame}
-                      />
-                    ))}
-                  </Flex>
-                </Box>
-              </Flex>
+              <GridItem colSpan={{ base: 1, md: 2 }}>
+                <MissionsPanels
+                  dailyMissions={dailyMissions}
+                  weeklyMissions={weeklyMissions}
+                  dailyResetAt={dailyResetAt}
+                  weeklyResetAt={weeklyResetAt}
+                  showProgress={inGame}
+                />
+              </GridItem>
 
               <GridItem colSpan={{ base: 1, md: 2 }}>
                 <Flex

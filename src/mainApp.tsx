@@ -162,41 +162,23 @@ async function init() {
     );
   };
 
-  const renderMaintenanceBlocker = () => {
-    root.render(
-      <I18nextProvider i18n={localI18n} defaultNS={undefined}>
-        <Maintenance />
-      </I18nextProvider>
-    );
-  };
+  type StartupBlocker =
+    | { type: "maintenance" }
+    | { type: "version-mismatch" };
 
-  const renderVersionMismatchBlocker = () => {
-    root.render(
-      <I18nextProvider i18n={localI18n} defaultNS={undefined}>
-        <VersionMismatch />
-      </I18nextProvider>
-    );
-  };
+  const getStartupBlocker = async (): Promise<StartupBlocker | null> => {
+    const data = await fetchVersion();
+    const version = data.version;
 
-  const startApp = async () => {
-    if (isStartingApp) return;
-    isStartingApp = true;
-
-    const versionData = await fetchVersion();
-    const version = versionData.version;
-
-    // If the maintenance flag is set, block the app before any further startup work.
     if (
-      versionData.maintenance &&
+      data.maintenance &&
       !isRunningOnLocalhost() &&
       !BYPASS_MAINTENANCE &&
       !shouldBypassMaintenanceFromUrl()
     ) {
-      renderMaintenanceBlocker();
-      return;
+      return { type: "maintenance" };
     }
 
-    // If the major or minor version is different, block the app before loading.
     if (
       isNative &&
       (Number(getMajor(version)) > Number(getMajor(APP_VERSION)) ||
@@ -204,8 +186,32 @@ async function init() {
           Number(getMinor(version)) > Number(getMinor(APP_VERSION))))
     ) {
       console.log("Version mismatch", version, APP_VERSION);
-      renderVersionMismatchBlocker();
-      return;
+      return { type: "version-mismatch" };
+    }
+
+    return null;
+  };
+
+  const startApp = async () => {
+    if (isStartingApp) return;
+    isStartingApp = true;
+
+    const startupBlocker = await getStartupBlocker();
+
+    if (startupBlocker?.type === "maintenance") {
+      return root.render(
+        <I18nextProvider i18n={localI18n} defaultNS={undefined}>
+          <Maintenance />
+        </I18nextProvider>
+      );
+    }
+
+    if (startupBlocker?.type === "version-mismatch") {
+      return root.render(
+        <I18nextProvider i18n={localI18n} defaultNS={undefined}>
+          <VersionMismatch />
+        </I18nextProvider>
+      );
     }
 
     const presentationPromise = new Promise<void>((resolve) => {
