@@ -72,6 +72,7 @@ const MAINTENANCE_BYPASS_QUERY_PARAM = "bypassMaintenance";
 
 const isRunningOnLocalhost = (): boolean => {
   if (typeof window === "undefined") return false;
+  if (isNative) return false;
   return window.location.hostname === "localhost";
 };
 
@@ -86,6 +87,10 @@ initDatadogRum();
 registerAppUrlOpenListener();
 
 const CONNECTION_CHECK_TIMEOUT_MS = 6000;
+
+type StartupBlocker =
+  | { type: "maintenance" }
+  | { type: "version-mismatch" };
 
 const hasInternetConnection = async () => {
   if (typeof navigator !== "undefined" && !navigator.onLine) return false;
@@ -161,10 +166,6 @@ async function init() {
       </FadeInOut>
     );
   };
-
-  type StartupBlocker =
-    | { type: "maintenance" }
-    | { type: "version-mismatch" };
 
   const getStartupBlocker = async (): Promise<StartupBlocker | null> => {
     const data = await fetchVersion();
