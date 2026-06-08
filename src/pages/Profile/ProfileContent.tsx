@@ -1,4 +1,4 @@
-import { Divider, Flex } from "@chakra-ui/react";
+import { Divider, Flex, useToast } from "@chakra-ui/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -33,6 +33,10 @@ export const ProfileContent = ({
   const username = useUsername();
   const navigate = useNavigate();
   const { t } = useTranslation("game");
+  const { t: tProfile } = useTranslation("intermediate-screens", {
+    keyPrefix: "profile-menu",
+  });
+  const toast = useToast();
   const [usernameModalOpen, setUsernameModalOpen] = useState(false);
   const [usernameSaving, setUsernameSaving] = useState(false);
   const updateUsernameForAddress = useUsernameStore(
@@ -52,6 +56,19 @@ export const ProfileContent = ({
     } finally {
       setUsernameSaving(false);
     }
+  };
+
+  const handleCopyWalletAddress = async () => {
+    const walletAddress = setup.account.account.address;
+    if (!walletAddress) {
+      return;
+    }
+
+    await navigator.clipboard.writeText(walletAddress);
+    toast({
+      title: tProfile("wallet-address-copied"),
+      status: "success",
+    });
   };
 
   return (
@@ -100,6 +117,14 @@ export const ProfileContent = ({
               )
             }
             onEditUsername={() => setUsernameModalOpen(true)}
+            onOpenDailyStreak={() =>
+              navigate("/streak-increased", {
+                state: {
+                  streak: profile.streak,
+                  from: "/profile",
+                },
+              })
+            }
           />
 
           <UsernameModal
@@ -138,6 +163,17 @@ export const ProfileContent = ({
               description={t("game.game-menu.settings-btn")}
               label={t("game.game-menu.settings-btn")}
               onClick={() => navigate("/settings")}
+              arrowRight
+              width={btnWidth}
+            />
+            {isSmallScreen && (
+              <Divider borderColor="white" borderWidth="1px" my={2} />
+            )}
+            <MenuBtn
+              icon={Icons.DOCS}
+              description={tProfile("copy-wallet-address")}
+              label={tProfile("copy-wallet-address")}
+              onClick={() => void handleCopyWalletAddress()}
               arrowRight
               width={btnWidth}
             />

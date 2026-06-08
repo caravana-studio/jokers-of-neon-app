@@ -31,6 +31,7 @@ import { ProfilePage } from "./pages/Profile/ProfilePage";
 import { PurchasingPackPage } from "./pages/PurchasingPackPage";
 import { Redirect } from "./pages/Redirect";
 import { RewardsPage } from "./pages/RewardsPage";
+import { SeasonPassOfferPage } from "./pages/SeasonPassOffer/SeasonPassOfferPage";
 import { MissionsPage } from "./pages/Missions/MissionsPage";
 import { SeasonProgressionPage } from "./pages/SeasonProgression/SeasonProgressionPage";
 import { SettingsPage } from "./pages/SettingsPage";
@@ -41,6 +42,7 @@ import { TestPage } from "./pages/TestPage";
 import { VibrationPage } from "./pages/VibrationPage";
 import { ReferralPage } from "./pages/ReferralPage";
 import { SimulatePacksPage } from "./pages/SimulatePacks/SimulatePacksPage";
+import { StreakIncreasedPage } from "./pages/StreakIncreasedPage";
 import { CardHighlightProvider } from "./providers/HighlightProvider/CardHighlightProvider";
 import { PowerupHighlightProvider } from "./providers/HighlightProvider/PowerupHighlightProvider";
 import { PracticeGameProvider } from "./providers/PracticeGameProvider";
@@ -83,6 +85,14 @@ export const AppRoutes = () => {
         }
       />{" "}
       <Route
+        path="/streak-increased"
+        element={
+          <AnimatedPage>
+            <StreakIncreasedPage />
+          </AnimatedPage>
+        }
+      />
+      <Route
         path="/test/simulate-packs"
         element={
           <AnimatedPage>
@@ -105,6 +115,22 @@ export const AppRoutes = () => {
         element={
           <AnimatedPage>
             <VibrationPage />
+          </AnimatedPage>
+        }
+      />
+      <Route
+        path="/test/season-pass-offer"
+        element={
+          <AnimatedPage>
+            <SeasonPassOfferPage />
+          </AnimatedPage>
+        }
+      />
+      <Route
+        path="/season-pass-offer"
+        element={
+          <AnimatedPage>
+            <SeasonPassOfferPage />
           </AnimatedPage>
         }
       />

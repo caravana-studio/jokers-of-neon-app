@@ -20,6 +20,24 @@
       "season-pass": "PASSO DE TEMPORADA",
       "buy": "COMPRAR",
       "unlocked": "DESBLOQUEADO",
+      "offer": {
+        "title-prefix": "DESBLOQUEIE MAIS COM",
+        "skip": "PULAR",
+        "benefits": {
+          "1": {
+            "title": "Muito mais recompensas",
+            "description": "Ganhe 25 packs extras e 5 tickets extras de torneio durante a temporada."
+          },
+          "2": {
+            "title": "Mais jogos por dia",
+            "description": "Você pode jogar 6 partidas de Jokers por dia em vez de 3, e 1 partida recarrega a cada 4 horas em vez de 8."
+          },
+          "3": {
+            "title": "Recompensas negociáveis",
+            "description": "Todas as recompensas que você recebe são negociáveis com outros jogadores no marketplace externo."
+          }
+        }
+      },
       "facts": {
         "1-title": "Recompensas exclusivas",
         "1-description-1": "Progressando através da temporada {{season}} dá mais recompensas.",
@@ -396,7 +414,9 @@
     "connect": "Conectar",
     "no-profile": "Faça login para ver seu perfil",
     "apply-changes": "Aplicar alterações",
-    "cancel": "Cancelar"
+    "cancel": "Cancelar",
+    "copy-wallet-address": "Copiar endereço da wallet",
+    "wallet-address-copied": "Endereço da wallet copiado"
   },
   "my-collection": {
     "title": "Coleção",
@@ -461,6 +481,24 @@
     "terms": {
       "agreement": "Ao continuar, você concorda com os",
       "link": "Termos e Condições"
+    }
+  },
+  "daily-streak": {
+    "title": "Sequência diária",
+    "description": "Complete uma missão diária para começar sua sequência.",
+    "next-objective": "Próximo objetivo",
+    "continue": "Continuar",
+    "celebration-title": "Parabéns",
+    "celebration-description": "Você completou seu objetivo",
+    "celebration-description-extended": "Você acabou de estender sua sequência",
+    "days": {
+      "monday": "2a",
+      "tuesday": "3a",
+      "wednesday": "4a",
+      "thursday": "5a",
+      "friday": "6a",
+      "saturday": "Sa",
+      "sunday": "Do"
     }
   }
 }

@@ -1,9 +1,17 @@
-import { Box, Collapse, Flex, Heading, IconButton, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Collapse,
+  Flex,
+  Heading,
+  IconButton,
+  Text,
+} from "@chakra-ui/react";
 import { Pencil } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ProgressBar } from "../../components/CompactRoundData/ProgressBar";
 import { VIOLET } from "../../theme/colors";
+import { ProfileDailyStreakButton } from "./ProfileDailyStreakButton";
 import { ProfilePicture } from "./ProfilePicture";
 import { ProfilePicturePicker } from "./ProfilePicturePicker";
 import { ProfileStat } from "./ProfileStat";
@@ -30,10 +38,12 @@ export const ProfileStats: React.FC<
   ProfileStatsProps & {
     onUpdateAvatar?: (avatarId: number) => void;
     onEditUsername?: () => void;
+    onOpenDailyStreak?: () => void;
   }
 > = ({
   onUpdateAvatar,
   onEditUsername,
+  onOpenDailyStreak,
   profilePicture,
   username,
   level,
@@ -49,11 +59,11 @@ export const ProfileStats: React.FC<
 }) => {
   const [profilePickerVisible, setProfilePickerVisible] = useState(false);
   const [profilePictureId, setProfilePictureId] = useState<number | string>(
-    profilePicture
+    profilePicture,
   );
-  const [tempProfilePictureId, setTempProfilePictureId] = useState<number | string>(
-    profilePicture
-  );
+  const [tempProfilePictureId, setTempProfilePictureId] = useState<
+    number | string
+  >(profilePicture);
   const [hasChanges, setHasChanges] = useState(false);
 
   useEffect(() => {
@@ -102,7 +112,9 @@ export const ProfileStats: React.FC<
     >
       <Box padding={4}>
         <ProfilePicture
-          profilePictureId={profilePickerVisible ? tempProfilePictureId : profilePictureId}
+          profilePictureId={
+            profilePickerVisible ? tempProfilePictureId : profilePictureId
+          }
           onClick={() => setProfilePickerVisible(true)}
           editMode={profilePickerVisible}
           border={profilePickerVisible}
@@ -114,7 +126,7 @@ export const ProfileStats: React.FC<
           }}
         />
       </Box>
-      <Flex alignItems="center" gap={2}>
+      <Flex alignItems="center" gap={2} mb={2}>
         <Heading fontSize={"sm"}>{username}</Heading>
         {onEditUsername && (
           <IconButton
@@ -133,12 +145,16 @@ export const ProfileStats: React.FC<
       </Flex>
       {!hideLevel && (
         <Flex
-          border={"1px"}
-          borderColor={"white"}
-          borderRadius={"full"}
+          borderRadius="12px"
+          bg="rgba(0, 0, 0, 0.5)"
+          boxShadow="0px 0px 8px rgba(255, 255, 255, 0.45), inset 0 0 5px rgba(255, 255, 255, 0.4)"
           px={8}
-          mb={2}
           fontSize={"xs"}
+          fontFamily="Sonara"
+          py={1}
+          width={"100%"}
+          textAlign="center"
+          justifyContent="center"
         >
           {t("level")} {level}
         </Flex>
@@ -158,10 +174,18 @@ export const ProfileStats: React.FC<
           hasChanges={hasChanges}
         />
       </Collapse>
+      <Box w="100%">
+        <ProfileDailyStreakButton
+          streak={streak}
+          onClick={onOpenDailyStreak ?? (() => undefined)}
+        />
+      </Box>
       <Flex
         gap={4}
         alignItems={"center"}
         justifyContent={"center"}
+        flexWrap={{ base: "wrap", sm: "nowrap" }}
+        w="100%"
       >
         {/* <ProfileStat title={t("streaks")} value={streak} suffix={t("days")} /> */}
         <ProfileStat title={t("games")} value={games} />

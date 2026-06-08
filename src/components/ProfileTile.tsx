@@ -1,9 +1,7 @@
 import { Flex, Heading } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import { Icons } from "../constants/icons";
-import { BLUE } from "../theme/colors";
+import { BLUE, DIAMONDS } from "../theme/colors";
 import CachedImage from "./CachedImage";
-import { IconComponent } from "./IconComponent";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import { useEffect } from "react";
 import { useProfileStore } from "../state/useProfileStore";
@@ -11,6 +9,7 @@ import { useUsernameStore } from "../state/useUsernameStore";
 import { useDojo } from "../dojo/useDojo";
 import { useUsername } from "../dojo/utils/useUsername";
 import { useTranslation } from "react-i18next";
+import { DailyStreakFireAnimation } from "./DailyStreakFireAnimation";
 
 export const ProfileTile = () => {
   const { t } = useTranslation("home", {
@@ -29,6 +28,8 @@ export const ProfileTile = () => {
   } = useDojo();
   const { profileData, fetchProfileData, loading } = useProfileStore();
   const usernameStatus = useUsernameStore((store) => store.status);
+  const streak = profileData?.profile.streak ?? 0;
+  const isZeroStreak = streak === 0;
 
   useEffect(() => {
     if (client && account && loggedInUser && usernameStatus === "ready" && !loading) {
@@ -67,24 +68,43 @@ export const ProfileTile = () => {
       <Flex
         position="absolute"
         bottom={-1}
-        w={`${PROFILE_IMG_SIZE + 20}px`}
+        w={`${PROFILE_IMG_SIZE + 15}px`}
         alignItems="center"
         flexDir={"column"}
       >
         <Flex
           backgroundColor="black"
           py={0.5}
-          width={`${PROFILE_IMG_SIZE + 15}px`}
+          width={`${PROFILE_IMG_SIZE + 30}px`}
           borderRadius="full"
           border={`1px solid ${BLUE}`}
           justifyContent="center"
+          alignItems="center"
+          gap={isSmallScreen ? 1.5 : 4}
+          px={isSmallScreen ? 2.5 : 3}
         >
-          <Heading fontSize={isSmallScreen ? 9 : 12} textAlign="center">
-            {t("level")}{" "}
-            <span style={{ fontFamily: "Sonara" }}>
-              {profileData?.profile.level}
+          <Heading fontSize={isSmallScreen ? 8 : 11} textAlign="center">
+            {t("level-short")}{" "}
+            <span style={{ fontFamily: "Orbitron" }}>
+              {profileData?.profile.level ?? 0}
             </span>
           </Heading>
+          <Flex alignItems="center" gap={0}>
+            <DailyStreakFireAnimation
+              size={isSmallScreen ? 16 : 20}
+              grayscale={isZeroStreak}
+            />
+            <Heading
+              fontSize={isSmallScreen ? 10 : 13}
+              textAlign="center"
+              fontFamily="Orbitron"
+              color={isZeroStreak ? "grey" : DIAMONDS}
+              lineHeight={1}
+              ml={-0.5}
+            >
+              {streak}
+            </Heading>
+          </Flex>
         </Flex>
         <Flex width="75px" justifyContent={"flex-end"}>
           <CachedImage

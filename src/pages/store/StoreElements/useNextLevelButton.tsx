@@ -1,6 +1,9 @@
 import { Button } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+import { claimStreakPresentation } from "../../../api/profile";
 import { useShopActions } from "../../../dojo/useShopActions";
+import { useDojo } from "../../../dojo/useDojo";
 import { useMapNavigate } from "../../../hooks/useMapNavigate";
 import { useGameContext } from "../../../providers/GameProvider";
 import { useStore } from "../../../providers/StoreProvider";
@@ -8,10 +11,15 @@ import { useAnimationStore } from "../../../state/useAnimationStore";
 import { useCurrentHandStore } from "../../../state/useCurrentHandStore";
 import { useGameStore } from "../../../state/useGameStore";
 import { useShopStore } from "../../../state/useShopStore";
+import { navigateToStreakIncreased } from "../../../utils/streakPresentation";
 
 export const useNextLevelButton = () => {
   const { navigateToMap } = useMapNavigate();
+  const navigate = useNavigate();
   const { t } = useTranslation(["store"]);
+  const {
+    account: { account },
+  } = useDojo();
 
   const { onShopSkip } = useGameContext();
   const { id: gameId, setPowerUps } = useGameStore();
@@ -23,21 +31,44 @@ export const useNextLevelButton = () => {
   const { setLoading } = useStore();
   const { locked } = useShopStore();
 
-  const handleNextLevelClick = () => {
+  const handleNextLevelClick = async () => {
     setLoading(true);
     onShopSkip();
-    skipShop(gameId).then((response): void => {
-      if (response.success) {
-        replaceCards(response.cards);
-        setPowerUps(response.powerUps);
+    try {
+      const response = await skipShop(gameId);
 
-        response.destroyedSpecialCard &&
-          setDestroyedSpecialCardId(response.destroyedSpecialCard);
-        navigateToMap();
-      } else {
+      if (!response.success) {
         setLoading(false);
+        return;
       }
-    });
+
+      replaceCards(response.cards);
+      setPowerUps(response.powerUps);
+
+      response.destroyedSpecialCard &&
+        setDestroyedSpecialCardId(response.destroyedSpecialCard);
+
+      try {
+        const presentation = await claimStreakPresentation(account.address);
+
+        if (presentation.show && presentation.streak !== null) {
+          navigateToStreakIncreased(navigate, {
+            streak: presentation.streak,
+            continuation: {
+              type: "map",
+            },
+            replace: true,
+          });
+          return;
+        }
+      } catch (error) {
+        console.warn("useNextLevelButton: streak presentation claim failed", error);
+      }
+
+      await navigateToMap();
+    } catch {
+      setLoading(false);
+    }
   };
 
   return {
