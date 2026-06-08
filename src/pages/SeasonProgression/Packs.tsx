@@ -36,7 +36,7 @@ export const Packs = ({ reward, claiming }: PacksProps) => {
   const { isSmallScreen } = useResponsiveValues();
   const amountOfPacks = reward.packs.length;
   const tournamentEntrySize = STEP_HEIGHT * 0.5;
-  const streakProtectorSize = STEP_HEIGHT * 0.45;
+  const streakProtectorSize = STEP_HEIGHT * 0.4;
   const xOffset = isSmallScreen ? 5 : 10;
   const yOffset = isSmallScreen ? 3 : 7;
   const rewardGlow =
@@ -57,23 +57,12 @@ export const Packs = ({ reward, claiming }: PacksProps) => {
             {reward.streakProtectors > 1 && `x ${reward.streakProtectors}`}
           </Text>
         )}
-        <Flex
-          justifyContent="center"
-          alignItems="center"
-          w={`${streakProtectorSize}px`}
+        <CachedImage
+          src="/streak-protector.png"
+          alt={t("streak-protector")}
           h={`${streakProtectorSize}px`}
-          borderRadius="full"
-          border={`1px solid ${BLUE_LIGHT}`}
-          boxShadow={rewardGlow}
-          bg="rgba(32, 198, 237, 0.08)"
-        >
-          <CachedImage
-            src="/streak-protector.png"
-            alt={t("streak-protector")}
-            h={`${streakProtectorSize * 0.95}px`}
-            pointerEvents="none"
-          />
-        </Flex>
+          pointerEvents="none"
+        />
       </Flex>
     );
   }
@@ -122,10 +111,10 @@ export const Packs = ({ reward, claiming }: PacksProps) => {
         zIndex={3}
         position="absolute"
         transform={`rotate(${getRotation(index, amountOfPacks)}deg) translateX(${getTranslation(index, amountOfPacks)}px)`}
-        boxShadow={
+        filter={
           reward.status === RewardStatus.UNCLAIMED
-            ? `0 0 15px 2px ${BLUE_LIGHT}, inset 0 0 10px 0px ${BLUE_LIGHT}`
-            : "0 0 10px 0px rgba(255,255,255,0.5)"
+            ? `drop-shadow(0 0 10px ${BLUE_LIGHT}) drop-shadow(0 0 18px ${BLUE_LIGHT})`
+            : "drop-shadow(0 0 8px rgba(255,255,255,0.45))"
         }
         src={`/packs/${pack}.png`}
         h={`${STEP_HEIGHT * 0.78}px`}
