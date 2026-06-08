@@ -18,6 +18,7 @@ interface MobileBottomBarProps {
   secondButton?: BarButtonProps;
   firstButtonReactNode?: ReactNode;
   secondButtonReactNode?: ReactNode;
+  compactSpacing?: boolean;
   setRun?: (run: boolean) => void;
   navigateState?: {};
 }
@@ -55,6 +56,7 @@ export const MobileBottomBar = ({
   firstButtonReactNode,
   secondButton,
   secondButtonReactNode,
+  compactSpacing = false,
   setRun,
   navigateState,
 }: MobileBottomBarProps) => {
@@ -79,8 +81,8 @@ export const MobileBottomBar = ({
     <Flex
       width="98%"
       mx={4}
-      mb={isSmallScreen ? 8 : "70px"}
-      mt={3}
+      mb={isSmallScreen ? (compactSpacing ? 5 : 8) : "70px"}
+      mt={compactSpacing ? 2 : 3}
       justifyContent={isSmallScreen ? "space-between" : "center "}
       gap={isSmallScreen ? 0 : 8}
       alignItems={"center"}

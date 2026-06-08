@@ -34,6 +34,7 @@ import { useCardHighlight } from "../../providers/HighlightProvider/CardHighligh
 import { useCurrentHandStore } from "../../state/useCurrentHandStore.ts";
 import { useDeckPreviewHoldStore } from "../../state/useDeckPreviewHoldStore.ts";
 import { useGameStore } from "../../state/useGameStore.ts";
+import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 import { logEvent } from "../../utils/analytics.ts";
 import { isTutorial } from "../../utils/isTutorial.ts";
 import { PROGRESSIVE_TUTORIAL_IDS } from "../../utils/progressiveTutorialStorage";
@@ -68,6 +69,10 @@ export const MobileGameContent = ({
     useGameContext();
 
   const { highlightedItem: highlightedCard } = useCardHighlight();
+  const { isSmallScreen, viewportHeight } = useResponsiveValues();
+  const hideDecorationsOnCompactViewport =
+    isSmallScreen && viewportHeight > 0 && viewportHeight <= 736;
+  const compactViewportSpacing = hideDecorationsOnCompactViewport;
   const {
     preSelectCard,
     unPreSelectCard,
@@ -365,7 +370,7 @@ export const MobileGameContent = ({
           showCumulativeProgress
         />
       )}
-      <MobileDecoration />
+      <MobileDecoration hideBorders={hideDecorationsOnCompactViewport} />
       {!tutorialsBlocked && (
         <>
           <Joyride
@@ -463,7 +468,7 @@ export const MobileGameContent = ({
         >
           <Box
             ref={cardsStageRef}
-            paddingTop={4}
+            paddingTop={compactViewportSpacing ? 2 : 4}
             sx={{
               width: "100%",
               height: "100%",
@@ -478,12 +483,12 @@ export const MobileGameContent = ({
             <Flex
               flexDir="column"
               alignItems="center"
-              mt={3}
+              mt={compactViewportSpacing ? 1 : 3}
               sx={{ height: "245px", width: "100%" }}
             >
               <MobileTopSection />
               {(maxPowerUpSlots === undefined || maxPowerUpSlots > 0) && (
-                <Flex mt={2} w="100%" justifyContent="center">
+                <Flex mt={compactViewportSpacing ? 1 : 2} w="100%" justifyContent="center">
                   <PowerUps
                     onTutorialCardClick={() => {
                       if (run && canClickPowerUp) {
@@ -508,11 +513,12 @@ export const MobileGameContent = ({
             >
               <MobilePreselectedCardsSection
                 cardsAnchorRef={preselectedCardsAnchorRef}
+                compactSpacing={compactViewportSpacing}
               />
             </Box>
             <Box
-              mt={2}
-              pb={2}
+              mt={compactViewportSpacing ? 1 : 2}
+              pb={compactViewportSpacing ? 1 : 2}
               w="100%"
               display={"flex"}
               justifyContent={"center"}
@@ -522,6 +528,7 @@ export const MobileGameContent = ({
               </Flex>
             </Box>
             <MobileBottomBar
+              compactSpacing={compactViewportSpacing}
               firstButtonReactNode={
                 <DiscardButton
                   inTutorial={run}

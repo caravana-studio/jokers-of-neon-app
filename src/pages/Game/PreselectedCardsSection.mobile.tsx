@@ -8,10 +8,12 @@ import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 
 interface MobilePreselectedCardsSectionProps {
   cardsAnchorRef?: RefObject<HTMLDivElement>;
+  compactSpacing?: boolean;
 }
 
 export const MobilePreselectedCardsSection = ({
   cardsAnchorRef,
+  compactSpacing = false,
 }: MobilePreselectedCardsSectionProps) => {
   const { cardScale } = useResponsiveValues();
 
@@ -25,7 +27,7 @@ export const MobilePreselectedCardsSection = ({
     <Box
       className="tutorial-modifiers-step-center"
       gap={1}
-      py={2}
+      py={compactSpacing ? 1 : 2}
       sx={{
         display: "flex",
         flexDirection: "column",
@@ -34,7 +36,7 @@ export const MobilePreselectedCardsSection = ({
         width: "100%",
         zIndex: 1,
       }}
-      mb={1}
+      mb={compactSpacing ? 0 : 1}
       ref={setNodeRef}
     >
       <Box
