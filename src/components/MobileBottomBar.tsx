@@ -79,16 +79,17 @@ export const MobileBottomBar = ({
 
   return (
     <Flex
-      width="98%"
-      mx={4}
+      width="100%"
+      px={isSmallScreen ? 4 : 0}
+      mx="auto"
       mb={isSmallScreen ? (compactSpacing ? 5 : 8) : "70px"}
       mt={compactSpacing ? 2 : 3}
-      justifyContent={isSmallScreen ? "space-between" : "center "}
+      justifyContent={isSmallScreen ? "space-between" : "center"}
       gap={isSmallScreen ? 0 : 8}
       alignItems={"center"}
       zIndex={900}
     >
-      <Box w="30px" />
+      {isSmallScreen && <Box w="30px" />}
 
       {uniqueButton ? (
         <Box w="40%" maxW="500px">
@@ -116,9 +117,7 @@ export const MobileBottomBar = ({
           </Box>
         </>
       )}
-      {isSmallScreen && (
-        <Box w="30px" />
-      )}
+      {isSmallScreen && <Box w="30px" />}
     </Flex>
   );
 };
