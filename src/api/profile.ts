@@ -497,14 +497,6 @@ export async function fetchStreakStatus(
 
   const json: GetStreakStatusApiResponse = await response.json();
 
-  if (import.meta.env.DEV) {
-    console.info("[PROFILE-DEBUG] fetchStreakStatus raw response", {
-      address,
-      refresh: Boolean(options.refresh),
-      json,
-    });
-  }
-
   if (!json.success || !json.data) {
     throw new Error("fetchStreakStatus: API did not return a valid payload");
   }
