@@ -5,6 +5,12 @@ import { GameStateEnum } from "../../dojo/typescript/custom";
 import { useGameStore } from "../../state/useGameStore";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import {
+  getCurrentGameMenuIcon,
+  getCurrentGameMenuKey,
+  getMenuIconForGameState,
+  isMenuItemHighlightedForGameState,
+} from "../../components/Menu/gameStateMenuIcons";
+import {
   gameUrls,
   isNavigationLockedPath,
 } from "../../components/Menu/useContextMenuItems";
@@ -17,33 +23,12 @@ interface MenuItem {
   onClick?: () => void;
   disabled?: boolean;
   pulse?: boolean;
+  labelColor?: string;
 }
 
 interface UseMiniAppMenuItemsProps {
   onMoreClick?: () => void;
 }
-
-const getIcon = (state: GameStateEnum) => {
-  switch (state) {
-    case GameStateEnum.Rage:
-      return Icons.RAGE;
-    case GameStateEnum.Round:
-      return Icons.ROUND;
-    default:
-      return Icons.STORE;
-  }
-};
-
-const getKey = (state: GameStateEnum) => {
-  switch (state) {
-    case GameStateEnum.Rage:
-      return "rage";
-    case GameStateEnum.Round:
-      return "round";
-    default:
-      return "shop";
-  }
-};
 
 export function useMiniAppMenuItems({
   onMoreClick,
@@ -103,7 +88,7 @@ export function useMiniAppMenuItems({
   const inGameMenuItems: MenuItem[] = useMemo(
     () => [
       {
-        icon: getIcon(state),
+        icon: getCurrentGameMenuIcon(state),
         url: "/redirect",
         onClick: handleGoToCurrentGameState,
         disabled: isNavigationLocked || state === GameStateEnum.Map,
@@ -114,14 +99,23 @@ export function useMiniAppMenuItems({
           }
           return url === gameUrl;
         }),
-        key: getKey(state),
+        key: getCurrentGameMenuKey(state),
+        labelColor: isMenuItemHighlightedForGameState(
+          state,
+          getCurrentGameMenuKey(state),
+        )
+          ? "lightViolet"
+          : undefined,
       },
       {
-        icon: Icons.MAP,
+        icon: getMenuIconForGameState(state, "map", Icons.MAP),
         url: "/map",
         active: url === "/map",
         key: "map",
         disabled: isNavigationLocked,
+        labelColor: isMenuItemHighlightedForGameState(state, "map")
+          ? "lightViolet"
+          : undefined,
       },
       {
         icon: Icons.DECK,

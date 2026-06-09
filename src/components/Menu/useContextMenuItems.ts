@@ -10,6 +10,12 @@ import { useGameStore } from "../../state/useGameStore";
 import { useSeasonProgressStore } from "../../state/useSeasonProgressStore";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { isCollectorPackId } from "../../utils/packUtils";
+import {
+  getCurrentGameMenuIcon,
+  getCurrentGameMenuKey,
+  getMenuIconForGameState,
+  isMenuItemHighlightedForGameState,
+} from "./gameStateMenuIcons";
 
 const PLAYS_PULSE_SEEN_KEY = "jn-plays-pulse-seen";
 
@@ -55,28 +61,6 @@ export const isNavigationLockedPath = (pathname: string) =>
     Boolean(matchPath({ path, end: true }, pathname)),
   );
 
-export const getIcon = (state: GameStateEnum) => {
-  switch (state) {
-    case GameStateEnum.Rage:
-      return Icons.RAGE;
-    case GameStateEnum.Round:
-      return Icons.ROUND;
-    default:
-      return Icons.STORE;
-  }
-};
-
-export const getKey = (state: GameStateEnum) => {
-  switch (state) {
-    case GameStateEnum.Rage:
-      return "rage";
-    case GameStateEnum.Round:
-      return "round";
-    default:
-      return "shop";
-  }
-};
-
 interface UseBottomMenuItemsProps {
   onMoreClick?: () => void;
 }
@@ -90,6 +74,7 @@ interface MenuItem {
   disabled?: boolean;
   notificationCount?: number;
   pulse?: boolean;
+  labelColor?: string;
 }
 
 export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
@@ -256,7 +241,7 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
 
   const inGameMenuItems: MenuItem[] = [
     {
-      icon: getIcon(state),
+      icon: getCurrentGameMenuIcon(state),
       url: "/redirect",
       onClick: handleGoToCurrentGameState,
       disabled: isNavigationLocked || state === GameStateEnum.Map,
@@ -267,14 +252,23 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
         }
         return url === gameUrl;
       }),
-      key: getKey(state),
+      key: getCurrentGameMenuKey(state),
+      labelColor: isMenuItemHighlightedForGameState(
+        state,
+        getCurrentGameMenuKey(state),
+      )
+        ? "lightViolet"
+        : undefined,
     },
     {
-      icon: Icons.MAP,
+      icon: getMenuIconForGameState(state, "map", Icons.MAP),
       url: "/map",
       active: url === "/map",
       key: "map",
       disabled: isNavigationLocked,
+      labelColor: isMenuItemHighlightedForGameState(state, "map")
+        ? "lightViolet"
+        : undefined,
     },
 
     {
