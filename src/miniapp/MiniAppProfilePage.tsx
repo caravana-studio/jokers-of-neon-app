@@ -144,6 +144,7 @@ export const MiniAppProfilePage = () => {
             hideXpProgress
             hideTotalXp
             hideLevel
+            hideDailyStreak
             profilePicture={profileData.profile.avatarId}
             onUpdateAvatar={(avatarId) =>
               updateAvatar(
