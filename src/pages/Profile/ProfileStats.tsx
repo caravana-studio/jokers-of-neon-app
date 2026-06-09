@@ -32,6 +32,7 @@ export interface ProfileStatsProps {
   hideTotalXp?: boolean;
   hideXpProgress?: boolean;
   hideLevel?: boolean;
+  hideDailyStreak?: boolean;
 }
 
 export const ProfileStats: React.FC<
@@ -56,6 +57,7 @@ export const ProfileStats: React.FC<
   hideTotalXp = false,
   hideXpProgress = false,
   hideLevel = false,
+  hideDailyStreak = false,
 }) => {
   const [profilePickerVisible, setProfilePickerVisible] = useState(false);
   const [profilePictureId, setProfilePictureId] = useState<number | string>(
@@ -174,12 +176,14 @@ export const ProfileStats: React.FC<
           hasChanges={hasChanges}
         />
       </Collapse>
-      <Box w="100%">
-        <ProfileDailyStreakButton
-          streak={streak}
-          onClick={onOpenDailyStreak ?? (() => undefined)}
-        />
-      </Box>
+      {!hideDailyStreak && (
+        <Box w="100%">
+          <ProfileDailyStreakButton
+            streak={streak}
+            onClick={onOpenDailyStreak ?? (() => undefined)}
+          />
+        </Box>
+      )}
       <Flex
         gap={4}
         alignItems={"center"}
