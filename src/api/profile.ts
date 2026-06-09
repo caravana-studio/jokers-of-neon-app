@@ -479,14 +479,6 @@ export async function fetchStreakStatus(
     requestUrl.searchParams.set("refresh", "1");
   }
 
-  if (import.meta.env.DEV) {
-    console.info("[PROFILE-DEBUG] fetchStreakStatus request", {
-      address,
-      refresh: Boolean(options.refresh),
-      url: requestUrl.toString(),
-    });
-  }
-
   const response = await fetch(requestUrl.toString(), {
     method: "GET",
     headers: {
