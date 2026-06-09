@@ -27,6 +27,7 @@ import { MiniAppMyGamesPage } from "./MiniAppMyGamesPage";
 import { MiniAppGameOverPage } from "./MiniAppGameOverPage";
 import { MiniAppProfilePage } from "./MiniAppProfilePage";
 import { MiniAppSettingsPage } from "./MiniAppSettingsPage";
+import { MiniAppTermsPage } from "./MiniAppTermsPage";
 import { MiniAppWeeklyLeaderboardPage } from "./MiniAppWeeklyLeaderboardPage";
 import { MiniAppHome } from "./MiniAppHome";
 import { RequireMiniAppUsername } from "./session/useMiniAppUsernameRequirement";
@@ -115,6 +116,14 @@ export const AppRoutes = () => {
         element={
           <AnimatedPage>
             <MiniAppWeeklyLeaderboardPage />
+          </AnimatedPage>
+        }
+      />
+      <Route
+        path="/terms-and-conditions"
+        element={
+          <AnimatedPage>
+            <MiniAppTermsPage />
           </AnimatedPage>
         }
       />
