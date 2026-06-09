@@ -16,6 +16,7 @@ interface ContextMenuItemProps {
   notificationCount?: number;
   pulse?: boolean;
   onPreviewChange?: (isVisible: boolean) => void;
+  labelColor?: string;
 }
 
 const pulseKeyframes = keyframes`
@@ -38,6 +39,7 @@ export const ContextMenuItem = ({
   notificationCount,
   pulse = false,
   onPreviewChange,
+  labelColor,
 }: ContextMenuItemProps) => {
   const { isSmallScreen } = useResponsiveValues();
   const iconSize = isSmallScreen ? "20px" : "22px";
@@ -176,7 +178,11 @@ export const ContextMenuItem = ({
               </Flex>
             )}
           </Flex>
-          {isSmallScreen && nameKey && <Text fontSize={9}>{t(nameKey)}</Text>}
+          {isSmallScreen && nameKey && (
+            <Text fontSize={9} color={labelColor}>
+              {t(nameKey)}
+            </Text>
+          )}
         </Flex>
       </Flex>
     </Link>
