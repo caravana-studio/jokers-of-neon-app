@@ -296,6 +296,7 @@ export const animatePlayDiscard = (config: AnimatePlayConfig): number => {
       const isMulti = event.eventType === EventTypeEnum.Multi;
       const isCash = event.eventType === EventTypeEnum.Cash;
       const special_idx = event.specials[0]?.idx;
+      const quantity = event.specials[0]?.quantity ?? 0;
 
       if (event.hand.length > 0) {
         setTimeout(() => {
@@ -334,7 +335,11 @@ export const animatePlayDiscard = (config: AnimatePlayConfig): number => {
           });
         }, playAnimationDuration * index);
       } else {
-        const quantity = event.specials[0]?.quantity;
+        const highlightColor = isMulti
+          ? "neonPink"
+          : isCash
+            ? "DIAMONDS"
+            : "neonGreen";
 
         setTimeout(() => {
           if (isPoints) {
@@ -342,7 +347,8 @@ export const animatePlayDiscard = (config: AnimatePlayConfig): number => {
             setAnimatedCard({
               special_idx,
               idx: [],
-              points: quantity,
+              highlightOnly: true,
+              highlightColor,
               animationIndex: 300 + index,
             });
             addPoints(quantity);
@@ -351,7 +357,8 @@ export const animatePlayDiscard = (config: AnimatePlayConfig): number => {
             setAnimatedCard({
               special_idx,
               idx: [],
-              multi: quantity,
+              highlightOnly: true,
+              highlightColor,
               animationIndex: 300 + index,
             });
             addMulti(quantity);
@@ -361,7 +368,8 @@ export const animatePlayDiscard = (config: AnimatePlayConfig): number => {
             setAnimatedCard({
               special_idx,
               idx: [],
-              cash: quantity,
+              highlightOnly: true,
+              highlightColor,
               animationIndex: 300 + index,
             });
           }
