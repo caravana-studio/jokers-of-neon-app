@@ -12,7 +12,7 @@ import { useCardHighlight } from "../../providers/HighlightProvider/CardHighligh
 import { useGameStore } from "../../state/useGameStore";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { Card } from "../../types/Card";
-import { isNativeAndroid } from "../../utils/capacitorUtils";
+import { isAndroidDevice } from "../../utils/capacitorUtils";
 import CollectionGrid from "../MyCollection/Collection";
 import { Collection } from "../MyCollection/types";
 import { DocsBoxesRow } from "./DocsBoxesRow";
@@ -80,7 +80,7 @@ export const DocsPage: React.FC<DocsProps> = ({ lastIndexTab = 0 }) => {
 
   const specialCardsIds = docsModCardsConfig?.specialCardsIds ?? [];
   const rageCardsIds = docsModCardsConfig?.rageCardsIds ?? [];
-  const shouldShowLootBoxesTab = !isNativeAndroid;
+  const shouldShowLootBoxesTab = !isAndroidDevice;
   const initialTabIndex = shouldShowLootBoxesTab
     ? lastIndexTab
     : Math.min(lastIndexTab, 2);
