@@ -477,6 +477,62 @@
     "10314": {
       "name": "Ouroboros",
       "description": "Cada ronda copia el efecto de una carta especial que tengas equipada."
+    },
+    "10401": {
+      "name": "Mano sin Figuras",
+      "description": "Suma ^violet(+7 multi)^ si tu jugada no contiene Figuras."
+    },
+    "10402": {
+      "name": "Cadena de Clones",
+      "description": "Suma ^violet(+5 multi)^ si tu jugada contiene 2 cartas idénticas, ^violet(+10 multi)^ con 3, ^violet(+15 multi)^ con 4 y ^violet(+20 multi)^ con 5."
+    },
+    "10403": {
+      "name": "Circuito de Palos",
+      "description": "Suma ^blue(+40 puntos)^ por cada palo diferente en la jugada."
+    },
+    "10404": {
+      "name": "Renta de Slots Vacíos",
+      "description": "Gana ^yellow(+250 monedas)^ al final de cada ronda por cada slot de especiales vacío."
+    },
+    "10405": {
+      "name": "Jerarquía Invertida",
+      "description": "Cada carta especial C o B activa suma ^blue(+75 puntos)^. Cada carta especial A o S activa resta ^blue(50 puntos)^."
+    },
+    "10406": {
+      "name": "Redondeo Perfecto",
+      "description": "Redondea el ^violet(multi)^ hacia arriba al siguiente múltiplo de ^violet(10)^, y los ^blue(puntos)^ hacia arriba al siguiente múltiplo de ^blue(100)^."
+    },
+    "10407": {
+      "name": "Apertura Neon",
+      "description": "Todas las cartas de tu mano inicial se vuelven Neon."
+    },
+    "10408": {
+      "name": "Sobrecarga",
+      "description": "Los Power-ups otorgan efectos dobles."
+    },
+    "10409": {
+      "name": "Reactor de Rerolls",
+      "description": "Suma ^violet(+2 multi)^ por cada reroll sin usar. Actualmente ^violet(+{{multi}} multi)^."
+    },
+    "10410": {
+      "name": "Carga Crítica",
+      "description": "Gana ^blue(+5 puntos)^ (acumulativo) si el valor total de las cartas jugadas es menor a ^blue(30)^. Los Comodines no cuentan. Actualmente ^blue(+{{points}} puntos)^."
+    },
+    "10411": {
+      "name": "Liquidador de Especiales",
+      "description": "Suma puntos equivalentes al valor total de venta de todas tus cartas especiales, dividido entre ^blue(10)^."
+    },
+    "10412": {
+      "name": "Mejora Eco",
+      "description": "Mejora la jugada que haces si no te quedan jugadas."
+    },
+    "10413": {
+      "name": "Mercado Negro",
+      "description": "Los Power-ups son gratis."
+    },
+    "10414": {
+      "name": "Camaleón Supremo",
+      "description": "Se transforma en cualquier carta especial S."
     }
   },
   "power-ups": {
@@ -1049,6 +1105,10 @@
     "20027": {
       "name": "Mandato del Faraón",
       "description": "Al jugar una mano, su nivel se reinicia a 1."
+    },
+    "20028": {
+      "name": "Descarga Total",
+      "description": "Después de jugar una mano, descarta todas las cartas restantes de tu mano."
     }
   },
   "lootBoxes": {
