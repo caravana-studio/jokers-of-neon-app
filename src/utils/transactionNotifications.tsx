@@ -4,7 +4,6 @@ import { shortenHex } from "@dojoengine/utils";
 import { MouseEventHandler } from "react";
 import { isMobile } from "react-device-detect";
 import { ExternalToast, toast } from "sonner";
-import { renderMissionDescription } from "../data/dailyMissions";
 import i18n from "../i18n.ts";
 import {
   ERROR_TOAST,
@@ -17,6 +16,7 @@ import { triggerHaptic } from "../haptics";
 import { getEnvString } from "./getEnvValue.ts";
 import { isNative, nativePaddingTop } from "./capacitorUtils.ts";
 import { logEvent } from "./analytics.ts";
+import { getCompletedMissionDescription } from "./getCompletedMissionDescription";
 
 const TOAST_COMMON_OPTIONS: ExternalToast = {
   id: "transaction",
@@ -192,10 +192,7 @@ export const showDailyMissionToast = (
                 {i18n.t(titleKey, { ns: "achievements" })} +{xp}XP
               </Text>
               <Text fontSize={isMobile ? "12px" : "14px"} fontWeight="semibold">
-                {renderMissionDescription({
-                  templateId: id,
-                  target: mission.target,
-                })}
+                {getCompletedMissionDescription(mission)}
               </Text>
             </Box>
           </Box>
