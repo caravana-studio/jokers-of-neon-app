@@ -5,6 +5,11 @@ export const platform = Capacitor.getPlatform();
 export const isNative = platform === "ios" || platform === "android";
 export const isNativeAndroid = platform === "android";
 export const isNativeIOS = platform === "ios";
+export const isAndroidWeb =
+  platform === "web" &&
+  typeof navigator !== "undefined" &&
+  /Android/i.test(navigator.userAgent);
+export const isAndroidDevice = isNativeAndroid || isAndroidWeb;
 export const nativePaddingTop = isNativeIOS ? "50px" : isNativeAndroid ? "25px" : "0px";
 
 export const ANDROID_URL = "https://play.google.com/store/apps/details?id=com.jokersofneon.play";
