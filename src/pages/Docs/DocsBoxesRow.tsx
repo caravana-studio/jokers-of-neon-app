@@ -5,7 +5,6 @@ import { LootBox } from "../../components/LootBox";
 import { BOXES_RARITY } from "../../data/lootBoxes";
 import { useCardHighlight } from "../../providers/HighlightProvider/CardHighlightProvider";
 
-const LOAD_GUARD_TIMEOUT_MS = 4000;
 const VIEWPORT_ROOT_MARGIN = "200px 0px";
 
 const DocsBoxCard = ({
@@ -13,20 +12,20 @@ const DocsBoxCard = ({
   shouldMountSpine,
   isVisible,
   isLoaded,
+  hasFailed,
   onSelect,
   onVisibilityChange,
   onLoadSuccess,
-  onLoadTimeout,
   onLoadError,
 }: {
   boxId: number;
   shouldMountSpine: boolean;
   isVisible: boolean;
   isLoaded: boolean;
+  hasFailed: boolean;
   onSelect: (boxId: number) => void;
   onVisibilityChange: (isVisible: boolean) => void;
   onLoadSuccess: () => void;
-  onLoadTimeout: () => void;
   onLoadError: () => void;
 }) => {
   const cardRef = useRef<HTMLDivElement | null>(null);
@@ -52,20 +51,6 @@ const DocsBoxCard = ({
       observer.disconnect();
     };
   }, [onVisibilityChange]);
-
-  useEffect(() => {
-    if (!shouldMountSpine || isLoaded || !isVisible) {
-      return;
-    }
-
-    const timeoutId = window.setTimeout(() => {
-      onLoadTimeout();
-    }, LOAD_GUARD_TIMEOUT_MS);
-
-    return () => {
-      window.clearTimeout(timeoutId);
-    };
-  }, [isLoaded, isVisible, onLoadTimeout, shouldMountSpine]);
 
   return (
     <Flex
@@ -95,7 +80,7 @@ const DocsBoxCard = ({
           />
         </Box>
       )}
-      {isVisible && !isLoaded && (
+      {isVisible && !isLoaded && !hasFailed && (
         <Flex
           position="absolute"
           inset={0}
@@ -115,7 +100,7 @@ export const DocsBoxesRow = () => {
   const { highlightItem: highlightCard } = useCardHighlight();
   const [visibleIndexes, setVisibleIndexes] = useState<number[]>([]);
   const [loadedIndexes, setLoadedIndexes] = useState<number[]>([]);
-  const [blockedIndexes, setBlockedIndexes] = useState<number[]>([]);
+  const [failedIndexes, setFailedIndexes] = useState<number[]>([]);
   const [loadingIndex, setLoadingIndex] = useState<number | null>(null);
 
   const syncIndexState = (
@@ -140,7 +125,7 @@ export const DocsBoxesRow = () => {
 
     if (!isVisible) {
       syncIndexState(index, setLoadedIndexes, false);
-      syncIndexState(index, setBlockedIndexes, false);
+      syncIndexState(index, setFailedIndexes, false);
 
       setLoadingIndex((currentLoadingIndex) =>
         currentLoadingIndex === index ? null : currentLoadingIndex
@@ -150,14 +135,14 @@ export const DocsBoxesRow = () => {
 
   const handleLoadSuccess = (index: number) => {
     syncIndexState(index, setLoadedIndexes, true);
-    syncIndexState(index, setBlockedIndexes, false);
+    syncIndexState(index, setFailedIndexes, false);
     setLoadingIndex((currentLoadingIndex) =>
       currentLoadingIndex === index ? null : currentLoadingIndex
     );
   };
 
-  const handleLoadBlocked = (index: number) => {
-    syncIndexState(index, setBlockedIndexes, true);
+  const handleLoadError = (index: number) => {
+    syncIndexState(index, setFailedIndexes, true);
     setLoadingIndex((currentLoadingIndex) =>
       currentLoadingIndex === index ? null : currentLoadingIndex
     );
@@ -167,8 +152,9 @@ export const DocsBoxesRow = () => {
     if (loadingIndex !== null) {
       const isLoadingIndexVisible = visibleIndexes.includes(loadingIndex);
       const isLoadingIndexLoaded = loadedIndexes.includes(loadingIndex);
+      const isLoadingIndexFailed = failedIndexes.includes(loadingIndex);
 
-      if (!isLoadingIndexVisible || isLoadingIndexLoaded) {
+      if (!isLoadingIndexVisible || isLoadingIndexLoaded || isLoadingIndexFailed) {
         setLoadingIndex(null);
       }
       return;
@@ -176,13 +162,13 @@ export const DocsBoxesRow = () => {
 
     const nextIndexToLoad = visibleIndexes.find(
       (index) =>
-        !loadedIndexes.includes(index) && !blockedIndexes.includes(index)
+        !loadedIndexes.includes(index) && !failedIndexes.includes(index)
     );
 
     if (nextIndexToLoad !== undefined) {
       setLoadingIndex(nextIndexToLoad);
     }
-  }, [blockedIndexes, loadedIndexes, loadingIndex, visibleIndexes]);
+  }, [failedIndexes, loadedIndexes, loadingIndex, visibleIndexes]);
 
   return (
     <DelayedLoading>
@@ -207,6 +193,7 @@ export const DocsBoxesRow = () => {
             }
             isVisible={visibleIndexes.includes(index)}
             isLoaded={loadedIndexes.includes(index)}
+            hasFailed={failedIndexes.includes(index)}
             onSelect={(selectedBoxId) => {
               highlightCard({
                 card_id: selectedBoxId,
@@ -221,11 +208,8 @@ export const DocsBoxesRow = () => {
             onLoadSuccess={() => {
               handleLoadSuccess(index);
             }}
-            onLoadTimeout={() => {
-              handleLoadBlocked(index);
-            }}
             onLoadError={() => {
-              handleLoadBlocked(index);
+              handleLoadError(index);
             }}
           />
         ))}
