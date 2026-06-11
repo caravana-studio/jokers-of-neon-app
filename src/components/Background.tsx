@@ -10,7 +10,6 @@ import {
   resolveSeasonalAssetPath,
 } from "../utils/assetAvailability";
 import { getImageFromCache } from "../utils/cacheUtils";
-import { isNativeAndroid } from "../utils/capacitorUtils";
 import BackgroundVideo from "./BackgroundVideo";
 import CachedImage, { checkImageExists } from "./CachedImage";
 import { isInGamePath } from "./Menu/useContextMenuItems";
@@ -347,7 +346,7 @@ export const Background = ({
       }}
       onContextMenu={(e) => e.preventDefault()}
     >
-      {isClassic && !isNativeAndroid && (
+      {isClassic && (
         <BackgroundVideo
           type={videoType}
           useTournamentTheme={useTournamentTheme}

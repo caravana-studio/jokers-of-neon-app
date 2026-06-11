@@ -86,6 +86,8 @@ const BackgroundVideo = ({ type, useTournamentTheme }: BackgroundVideoProps) => 
   const seasonNumber = useSeasonNumber();
   const [videoSrc1, setVideoSrc1] = useState<string | null>(null);
   const [videoSrc2, setVideoSrc2] = useState<string | null>(null);
+  const [isVideo1Ready, setIsVideo1Ready] = useState(false);
+  const [isVideo2Ready, setIsVideo2Ready] = useState(false);
   const [isFading, setIsFading] = useState(false);
   const [activeVideo, setActiveVideo] = useState<1 | 2>(1); // Track which video is active
 
@@ -125,6 +127,8 @@ const BackgroundVideo = ({ type, useTournamentTheme }: BackgroundVideoProps) => 
       if (!hasLoadedVideo) {
         setVideoSrc1(newVideoSrc);
         setVideoSrc2(null);
+        setIsVideo1Ready(false);
+        setIsVideo2Ready(false);
         setActiveVideo(1);
         setIsFading(false);
         hasLoadedVideoRef.current = true;
@@ -139,10 +143,12 @@ const BackgroundVideo = ({ type, useTournamentTheme }: BackgroundVideoProps) => 
         setActiveVideo((currentActiveVideo) => {
           if (currentActiveVideo === 1) {
             setVideoSrc2(newVideoSrc);
+            setIsVideo2Ready(false);
             return 2;
           }
 
           setVideoSrc1(newVideoSrc);
+          setIsVideo1Ready(false);
           return 1;
         });
         hasLoadedVideoRef.current = true;
@@ -171,6 +177,17 @@ const BackgroundVideo = ({ type, useTournamentTheme }: BackgroundVideoProps) => 
     };
   }, [seasonNumber, type, useTournamentTheme]);
 
+  const markVideoReady = (slot: 1 | 2) => {
+    if (slot === 1) {
+      setIsVideo1Ready(true);
+      void videoRef1.current?.play().catch(() => undefined);
+      return;
+    }
+
+    setIsVideo2Ready(true);
+    void videoRef2.current?.play().catch(() => undefined);
+  };
+
   return (
     <div
       style={{
@@ -186,12 +203,19 @@ const BackgroundVideo = ({ type, useTournamentTheme }: BackgroundVideoProps) => 
     >
       {videoSrc1 && (
         <video
+          className="background-video"
           ref={videoRef1}
           src={videoSrc1}
           autoPlay
           loop
           muted
           playsInline
+          preload="auto"
+          disablePictureInPicture
+          controlsList="nodownload nofullscreen noremoteplayback"
+          aria-hidden="true"
+          tabIndex={-1}
+          onCanPlay={() => markVideoReady(1)}
           style={{
             pointerEvents: "none",
             position: "absolute",
@@ -202,18 +226,26 @@ const BackgroundVideo = ({ type, useTournamentTheme }: BackgroundVideoProps) => 
             objectFit: "cover",
             transition: "opacity 1s ease-in-out",
             filter: isLooseVideo ? "grayscale(1)" : "none",
-            opacity: activeVideo === 1 ? 1 : isFading ? 0 : 0, // Fade out if inactive
+            visibility: isVideo1Ready ? "visible" : "hidden",
+            opacity: activeVideo === 1 && isVideo1Ready ? 1 : isFading ? 0 : 0,
           }}
         />
       )}
       {videoSrc2 && (
         <video
+          className="background-video"
           ref={videoRef2}
           src={videoSrc2}
           autoPlay
           loop
           muted
           playsInline
+          preload="auto"
+          disablePictureInPicture
+          controlsList="nodownload nofullscreen noremoteplayback"
+          aria-hidden="true"
+          tabIndex={-1}
+          onCanPlay={() => markVideoReady(2)}
           style={{
             pointerEvents: "none",
             position: "absolute",
@@ -224,7 +256,8 @@ const BackgroundVideo = ({ type, useTournamentTheme }: BackgroundVideoProps) => 
             objectFit: "cover",
             transition: "opacity 1s ease-in-out",
             filter: isLooseVideo ? "grayscale(1)" : "none",
-            opacity: activeVideo === 2 ? 1 : isFading ? 0 : 0, // Fade out if inactive
+            visibility: isVideo2Ready ? "visible" : "hidden",
+            opacity: activeVideo === 2 && isVideo2Ready ? 1 : isFading ? 0 : 0,
           }}
         />
       )}

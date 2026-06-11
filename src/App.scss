@@ -35,6 +35,26 @@ body {
   -webkit-overflow-scrolling: touch;
 }
 
+video.background-video::-webkit-media-controls {
+  display: none !important;
+  -webkit-appearance: none;
+}
+
+video.background-video::-webkit-media-controls-panel {
+  display: none !important;
+  -webkit-appearance: none;
+}
+
+video.background-video::-webkit-media-controls-start-playback-button {
+  display: none !important;
+  -webkit-appearance: none;
+}
+
+video.background-video::-webkit-media-controls-overlay-play-button {
+  display: none !important;
+  -webkit-appearance: none;
+}
+
 .login-button {
   border-radius: 20px;
   background-color: #066b9b;
