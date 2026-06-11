@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it } from "vitest";
 import { renderMissionDescription } from "../data/dailyMissions";
 import i18n from "../i18n";
 import { useMissionsStore } from "../state/useMissionsStore";
-import type { DailyMission } from "../types/DailyMissions";
+import { DailyMissionDifficulty, type DailyMission } from "../types/DailyMissions";
 import { getCompletedMissionDescription } from "./getCompletedMissionDescription";
 
 const initialMissionStoreState = {
@@ -37,7 +37,7 @@ describe("getCompletedMissionDescription", () => {
       templateId: "daily-flush-suit",
       description: "Juega Color de Corazones",
       completed: false,
-      difficulty: "easy",
+      difficulty: DailyMissionDifficulty.EASY,
       periodType: "daily",
       target: 1,
       param1: 3,
