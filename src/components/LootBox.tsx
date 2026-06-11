@@ -21,6 +21,7 @@ interface LootBoxProps {
   price?: number;
   discountPrice?: number;
   freezeOnLastFrame?: boolean;
+  fallbackImageUrl?: string;
 }
 
 export const LootBox = forwardRef<LootBoxRef, LootBoxProps>(
@@ -40,6 +41,7 @@ export const LootBox = forwardRef<LootBoxRef, LootBoxProps>(
       discountPrice,
       onClick,
       freezeOnLastFrame,
+      fallbackImageUrl,
     },
     ref
   ) => {
@@ -71,6 +73,9 @@ export const LootBox = forwardRef<LootBoxRef, LootBoxProps>(
         discountPrice={discountPrice}
         onClick={onClick}
         freezeOnLastFrame={freezeOnLastFrame}
+        fallbackImageUrl={
+          fallbackImageUrl ?? `/spine-animations/loot_box_${boxId}.png`
+        }
       />
     );
   }

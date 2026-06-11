@@ -1,4 +1,4 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Flex, Image } from "@chakra-ui/react";
 import { SpinePlayer } from "@esotericsoftware/spine-player";
 import {
   forwardRef,
@@ -33,6 +33,7 @@ interface SpineAnimationProps {
   discountPrice?: number;
   home?: boolean;
   freezeOnLastFrame?: boolean;
+  fallbackImageUrl?: string;
 }
 
 export interface SpineAnimationRef {
@@ -62,6 +63,7 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
       discountPrice,
       home = false,
       freezeOnLastFrame,
+      fallbackImageUrl,
     },
     ref
   ) => {
@@ -73,6 +75,7 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
     const { t } = useTranslation(["store"]);
     const [isAnimationRunning, setIsAnimationRunning] = useState(false);
     const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+    const [hasRenderError, setHasRenderError] = useState(false);
 
     const fontSize = isMobile
       ? 15
@@ -122,6 +125,15 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
     }, []);
 
     useEffect(() => {
+      setHasRenderError(false);
+      setPlayerReady(false);
+    }, [jsonUrl, atlasUrl]);
+
+    useEffect(() => {
+      if (hasRenderError) {
+        return;
+      }
+
       if (containerRef.current && !playerRef.current) {
         const config = {
           skeleton: jsonUrl,
@@ -152,6 +164,10 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
               });
             }
           },
+          error: () => {
+            setPlayerReady(false);
+            setHasRenderError(true);
+          },
           viewport: {
             // debugRender: true,
             x: xOffset,
@@ -170,7 +186,7 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
           playerRef.current = null; // reset after disposal
         }
       };
-    }, [jsonUrl, atlasUrl, screenWidth]);
+    }, [atlasUrl, hasRenderError, jsonUrl, screenWidth]);
 
     // Handle hover state
     useEffect(() => {
@@ -225,19 +241,34 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
             />
           </Box>
         )}
-        <Flex
-          ref={containerRef}
-          onClick={onClick}
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-          width={"100%"}
-          height={"100%"}
-          justifyContent={"center"}
-          style={{
-            cursor: isPurchased ? "default" : "pointer",
-            opacity: isPurchased && !isAnimationRunning ? 0.3 : 1,
-          }}
-        ></Flex>
+        {hasRenderError && fallbackImageUrl ? (
+          <Image
+            src={fallbackImageUrl}
+            alt={t("labels.loot-boxes")}
+            onClick={onClick}
+            width={"100%"}
+            height={"100%"}
+            objectFit={"contain"}
+            style={{
+              cursor: isPurchased ? "default" : "pointer",
+              opacity: isPurchased && !isAnimationRunning ? 0.3 : 1,
+            }}
+          />
+        ) : (
+          <Flex
+            ref={containerRef}
+            onClick={onClick}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+            width={"100%"}
+            height={"100%"}
+            justifyContent={"center"}
+            style={{
+              cursor: isPurchased ? "default" : "pointer",
+              opacity: isPurchased && !isAnimationRunning ? 0.3 : 1,
+            }}
+          ></Flex>
+        )}
       </Box>
     );
   }
