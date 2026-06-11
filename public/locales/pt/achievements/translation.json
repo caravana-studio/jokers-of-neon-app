@@ -40,7 +40,7 @@
     "daily-add-trad": "Adicione {{quantity}} cartas tradicionais ao baralho",
     "daily-add-mod": "Adicione {{quantity}} cartas modificadoras ao baralho",
     "daily-add-neon": "Adicione {{quantity}} cartas neon ao baralho",
-    "daily-flush-suit": "Faça {{hand}} de {{suit}}",
+    "daily-flush-suit": "Jogue {{hand}} de {{suit}}",
     "daily-deck-size": "Adicione {{quantity}} cartas ao baralho",
     "daily-deck-neon": "Adicione {{quantity}} cartas neon ao baralho",
     "daily-deck-jokers": "Adicione {{quantity}} Curingas ao baralho",
