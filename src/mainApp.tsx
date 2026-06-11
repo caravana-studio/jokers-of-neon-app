@@ -72,6 +72,7 @@ const MAINTENANCE_BYPASS_QUERY_PARAM = "bypassMaintenance";
 
 const isRunningOnLocalhost = (): boolean => {
   if (typeof window === "undefined") return false;
+  if (isNative) return false;
   return window.location.hostname === "localhost";
 };
 
@@ -86,6 +87,10 @@ initDatadogRum();
 registerAppUrlOpenListener();
 
 const CONNECTION_CHECK_TIMEOUT_MS = 6000;
+
+type StartupBlocker =
+  | { type: "maintenance" }
+  | { type: "version-mismatch" };
 
 const hasInternetConnection = async () => {
   if (typeof navigator !== "undefined" && !navigator.onLine) return false;
@@ -162,40 +167,53 @@ async function init() {
     );
   };
 
+  const getStartupBlocker = async (): Promise<StartupBlocker | null> => {
+    const data = await fetchVersion();
+    const version = data.version;
+
+    if (
+      data.maintenance &&
+      !isRunningOnLocalhost() &&
+      !BYPASS_MAINTENANCE &&
+      !shouldBypassMaintenanceFromUrl()
+    ) {
+      return { type: "maintenance" };
+    }
+
+    if (
+      isNative &&
+      (Number(getMajor(version)) > Number(getMajor(APP_VERSION)) ||
+        (Number(getMajor(version)) === Number(getMajor(APP_VERSION)) &&
+          Number(getMinor(version)) > Number(getMinor(APP_VERSION))))
+    ) {
+      console.log("Version mismatch", version, APP_VERSION);
+      return { type: "version-mismatch" };
+    }
+
+    return null;
+  };
+
   const startApp = async () => {
     if (isStartingApp) return;
     isStartingApp = true;
 
-    fetchVersion().then((data) => {
-      const version = data.version;
-      // If the maintenance flag is set, block the app
-      if (
-        data.maintenance &&
-        !isRunningOnLocalhost() &&
-        !BYPASS_MAINTENANCE &&
-        !shouldBypassMaintenanceFromUrl()
-      ) {
-        return root.render(
-          <I18nextProvider i18n={localI18n} defaultNS={undefined}>
-            <Maintenance />
-          </I18nextProvider>
-        );
-      }
-      // If the major or minor version is different, block the app
-      if (
-        isNative &&
-        (Number(getMajor(version)) > Number(getMajor(APP_VERSION)) ||
-          (Number(getMajor(version)) === Number(getMajor(APP_VERSION)) &&
-            Number(getMinor(version)) > Number(getMinor(APP_VERSION))))
-      ) {
-        console.log("Version mismatch", version, APP_VERSION);
-        return root.render(
-          <I18nextProvider i18n={localI18n} defaultNS={undefined}>
-            <VersionMismatch />
-          </I18nextProvider>
-        );
-      }
-    });
+    const startupBlocker = await getStartupBlocker();
+
+    if (startupBlocker?.type === "maintenance") {
+      return root.render(
+        <I18nextProvider i18n={localI18n} defaultNS={undefined}>
+          <Maintenance />
+        </I18nextProvider>
+      );
+    }
+
+    if (startupBlocker?.type === "version-mismatch") {
+      return root.render(
+        <I18nextProvider i18n={localI18n} defaultNS={undefined}>
+          <VersionMismatch />
+        </I18nextProvider>
+      );
+    }
 
     const presentationPromise = new Promise<void>((resolve) => {
       const updateLoadingScreen = (canFadeOut: boolean) => {

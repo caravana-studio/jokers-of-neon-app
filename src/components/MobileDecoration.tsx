@@ -6,12 +6,14 @@ interface MobileDecorationProps {
   fadeToBlack?: boolean;
   top?: string | number;
   bottom?: string | number;
+  hideBorders?: boolean;
 }
 
 export const MobileDecoration = ({
   top = 1,
   bottom = 1,
   fadeToBlack = false,
+  hideBorders = false,
 }: MobileDecorationProps) => {
   const { isRageRound } = useGameStore();
   return (
@@ -44,22 +46,26 @@ export const MobileDecoration = ({
           pointerEvents="none"
         />
       )}
-      <CachedImage
-        src={`/borders/top${isRageRound ? "-rage" : ""}.png`}
-        width="100%"
-        maxHeight="70px"
-        position="fixed"
-        top={top}
-        zIndex={2}
-      />
-      <CachedImage
-        src={`/borders/bottom${isRageRound ? "-rage" : ""}.png`}
-        width="100%"
-        maxHeight="70px"
-        position="fixed"
-        bottom={bottom}
-        zIndex={6}
-      />
+      {!hideBorders && (
+        <>
+          <CachedImage
+            src={`/borders/top${isRageRound ? "-rage" : ""}.png`}
+            width="100%"
+            maxHeight="70px"
+            position="fixed"
+            top={top}
+            zIndex={2}
+          />
+          <CachedImage
+            src={`/borders/bottom${isRageRound ? "-rage" : ""}.png`}
+            width="100%"
+            maxHeight="70px"
+            position="fixed"
+            bottom={bottom}
+            zIndex={6}
+          />
+        </>
+      )}
     </>
   );
 };

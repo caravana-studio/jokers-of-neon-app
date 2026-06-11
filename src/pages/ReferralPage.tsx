@@ -7,15 +7,12 @@ import {
   useToast,
   VStack,
   HStack,
-  IconButton,
   Spinner,
 } from "@chakra-ui/react";
 import { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { Share } from "@capacitor/share";
-import { Capacitor } from "@capacitor/core";
 import { useTranslation } from "react-i18next";
-import { FiShare2, FiCopy, FiArrowLeft, FiGift, FiUsers } from "react-icons/fi";
+import { FiCopy, FiGift, FiUsers } from "react-icons/fi";
 import { DelayedLoading } from "../components/DelayedLoading";
 import { MobileDecoration } from "../components/MobileDecoration";
 import { useDojo } from "../dojo/DojoContext";
@@ -25,10 +22,6 @@ import {
   getReferralStats,
   generateReferralLink,
 } from "../api/referral";
-import {
-  generateNativeInviteUrl,
-  logReferralInvite,
-} from "../utils/appsflyer";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 
 interface ReferralMilestone {
@@ -178,7 +171,6 @@ export const ReferralPage = () => {
   const [initialLoading, setInitialLoading] = useState(true);
 
   const userAddress = account?.address;
-  const isNative = Capacitor.isNativePlatform();
 
   // Load data
   const loadData = useCallback(async () => {
@@ -240,47 +232,6 @@ export const ReferralPage = () => {
     } catch (error) {
       console.error("Failed to create code:", error);
       toast({ title: "Error creating code", status: "error" });
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleShare = async () => {
-    if (!referralCode) return;
-
-    setLoading(true);
-    try {
-      // Try to generate OneLink URL first (for native)
-      let linkToShare = generateReferralLink(referralCode);
-
-      if (isNative) {
-        const oneLinkUrl = await generateNativeInviteUrl(referralCode);
-        if (oneLinkUrl) {
-          linkToShare = oneLinkUrl;
-        }
-      }
-
-      if (isNative) {
-        await Share.share({
-          title: "Join Jokers of Neon!",
-          text: "Play Jokers of Neon with me and get rewards!",
-          url: linkToShare,
-          dialogTitle: "Share your referral link",
-        });
-        await logReferralInvite(referralCode, "native_share");
-      } else if (navigator.share) {
-        await navigator.share({
-          title: "Join Jokers of Neon!",
-          text: "Play Jokers of Neon with me!",
-          url: linkToShare,
-        });
-      } else {
-        await navigator.clipboard.writeText(linkToShare);
-        toast({ title: t("referral.link-copied"), status: "success" });
-      }
-    } catch (error) {
-      // User cancelled share
-      console.log("Share cancelled:", error);
     } finally {
       setLoading(false);
     }
@@ -382,15 +333,6 @@ export const ReferralPage = () => {
               <HStack spacing={3} w="100%">
                 <Button
                   flex={1}
-                  leftIcon={<FiShare2 size={18} />}
-                  colorScheme="purple"
-                  size="md"
-                  onClick={handleShare}
-                  isLoading={loading}
-                >
-                  {t("referral.share-btn")}
-                </Button>
-                <Button
                   leftIcon={<FiCopy size={18} />}
                   size="md"
                   variant="outline"

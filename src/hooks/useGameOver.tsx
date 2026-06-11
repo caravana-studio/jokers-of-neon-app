@@ -1,13 +1,10 @@
-import { AppLauncher } from "@capacitor/app-launcher";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
-import { useSeasonNumber } from "../constants/season";
 import { GAME_ID } from "../constants/localStorage";
 import { looseSfx } from "../constants/sfx";
 import { useSettings } from "../providers/SettingsProvider";
 import { useGetLeaderboard } from "../queries/useGetLeaderboard";
-import { isNative } from "../utils/capacitorUtils";
 import { normalizeGameId } from "../utils/normalizeGameId";
 import { useAudio } from "./useAudio";
 
@@ -30,8 +27,6 @@ export const useGameOver = () => {
   );
 
   const { t } = useTranslation(["intermediate-screens"]);
-  const [isLoading, setIsLoading] = useState(false);
-  const seasonNumber = useSeasonNumber();
 
   const position = actualPlayer?.position ?? 100;
 
@@ -77,59 +72,12 @@ export const useGameOver = () => {
     navigate("/my-games");
   };
 
-  const onShareClick = async () => {
-    if (
-      actualPlayer?.position === undefined ||
-      actualPlayer?.level === undefined
-    ) {
-      return;
-    }
-
-    const gameTypeLabel = actualPlayer.isTournament
-      ? "tournament game"
-      : "game";
-    const message =
-      `🃏 I just finished a ${gameTypeLabel} in @jokers_of_neon — check out my results:\n` +
-      `🏅 Rank: ${actualPlayer.position}\n` +
-      `🔥 Level: ${actualPlayer.level}\n\n` +
-      `Try to beat me on Jokers of Neon Season ${seasonNumber}`;
-
-    const site = "https://jokersofneon.com/";
-
-    const u = new URL("https://twitter.com/intent/tweet");
-    u.searchParams.set("text", message);
-    u.searchParams.set("url", site);
-
-    try {
-      const native = `twitter://post?message=${encodeURIComponent(`${message}\n${site}`)}`;
-      if (!isNative) {
-        return window.open(u.toString(), "_blank");
-      }
-
-      const nativeOpenResult = await AppLauncher.openUrl({ url: native });
-      if (nativeOpenResult.completed) {
-        return;
-      }
-    } catch {
-      // if it fails, continue to the next step
-    }
-
-    await AppLauncher.openUrl({ url: u.toString() });
-  };
-
-  const canShareOnX =
-    actualPlayer?.position !== undefined && actualPlayer?.level !== undefined;
-
   return {
     gameId,
     actualPlayer,
-    canShareOnX,
     congratulationsMsj,
     position,
-    isLoading,
     t,
     onSecondButtonClick,
-    onShareClick,
-    setIsLoading,
   };
 };

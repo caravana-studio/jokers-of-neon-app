@@ -36,8 +36,36 @@ export const Packs = ({ reward, claiming }: PacksProps) => {
   const { isSmallScreen } = useResponsiveValues();
   const amountOfPacks = reward.packs.length;
   const tournamentEntrySize = STEP_HEIGHT * 0.5;
+  const streakProtectorSize = STEP_HEIGHT * 0.4;
   const xOffset = isSmallScreen ? 5 : 10;
   const yOffset = isSmallScreen ? 3 : 7;
+  const rewardGlow =
+    reward.status === RewardStatus.UNCLAIMED
+      ? `0 0 15px 2px ${BLUE_LIGHT}`
+      : "0 0 10px 0px rgba(255,255,255,0.5)";
+
+  if (reward.streakProtectors > 0) {
+    return (
+      <Flex flexDir="column" gap={1} alignItems="center" mb={4}>
+        {claiming ? (
+          <Text size="s" textTransform={"uppercase"}>
+            {t("claiming-in-progress")}
+          </Text>
+        ) : (
+          <Text size="s" textTransform={"uppercase"} textAlign="center">
+            {t("streak-protector")}{" "}
+            {reward.streakProtectors > 1 && `x ${reward.streakProtectors}`}
+          </Text>
+        )}
+        <CachedImage
+          src="/streak-protector.png"
+          alt={t("streak-protector")}
+          h={`${streakProtectorSize}px`}
+          pointerEvents="none"
+        />
+      </Flex>
+    );
+  }
 
   return reward.tournamentEntries > 0 ? (
     <Flex flexDir="column" gap={2}>
@@ -72,24 +100,21 @@ export const Packs = ({ reward, claiming }: PacksProps) => {
           w={`${tournamentEntrySize * 1}px`}
           h={`${tournamentEntrySize * 1}px`}
           borderRadius={"full"}
-          boxShadow={
-            reward.status === RewardStatus.UNCLAIMED
-              ? `0 0 15px 2px ${BLUE_LIGHT}`
-              : "0 0 10px 0px rgba(255,255,255,0.5)"
-          }
+          boxShadow={rewardGlow}
         />
       </Flex>
     </Flex>
   ) : (
     reward.packs.map((pack, index) => (
       <CachedImage
+        key={`season-reward-pack-${pack}-${index}`}
         zIndex={3}
         position="absolute"
         transform={`rotate(${getRotation(index, amountOfPacks)}deg) translateX(${getTranslation(index, amountOfPacks)}px)`}
-        boxShadow={
+        filter={
           reward.status === RewardStatus.UNCLAIMED
-            ? `0 0 15px 2px ${BLUE_LIGHT}, inset 0 0 10px 0px ${BLUE_LIGHT}`
-            : "0 0 10px 0px rgba(255,255,255,0.5)"
+            ? `drop-shadow(0 0 10px ${BLUE_LIGHT}) drop-shadow(0 0 18px ${BLUE_LIGHT})`
+            : "drop-shadow(0 0 8px rgba(255,255,255,0.45))"
         }
         src={`/packs/${pack}.png`}
         h={`${STEP_HEIGHT * 0.78}px`}

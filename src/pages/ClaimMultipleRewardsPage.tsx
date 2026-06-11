@@ -12,12 +12,18 @@ import { DelayedLoading } from "../components/DelayedLoading";
 import { SimulatedLoadingBar } from "../components/LoadingProgressBar/SimulatedLoadingProgressBar";
 import { MobileDecoration } from "../components/MobileDecoration";
 import { useDojo } from "../dojo/useDojo";
+import { useSeasonPass } from "../providers/SeasonPassProvider";
 import { useSeasonProgressStore } from "../state/useSeasonProgressStore";
 import { LoadingProgress } from "../types/LoadingProgress";
+import {
+  canShowSeasonPassOfferToday,
+  markSeasonPassOfferShownToday,
+} from "../utils/seasonPassOffer";
 import { ExternalPack } from "./ExternalPack/ExternalPack";
 
 export const ClaimMultipleRewardsPage = () => {
   const {
+    setup: { accountType },
     account: { account },
   } = useDojo();
 
@@ -25,6 +31,7 @@ export const ClaimMultipleRewardsPage = () => {
     keyPrefix: "packs",
   });
   const navigate = useNavigate();
+  const { seasonPassUnlocked, loading: seasonPassLoading } = useSeasonPass();
 
   const params = useParams();
   const level = Number(params.level ?? 0);
@@ -69,7 +76,7 @@ export const ClaimMultipleRewardsPage = () => {
     };
 
     claim();
-  }, [account?.address]);
+  }, [account?.address, isPremium, level, navigate, refetchSeasonProgress]);
 
   const headingStages: LoadingProgress[] = [
     {
@@ -94,6 +101,23 @@ export const ClaimMultipleRewardsPage = () => {
     }, 1000);
   };
 
+  const handlePackFlowComplete = () => {
+    if (
+      accountType !== "burner" &&
+      !seasonPassLoading &&
+      !seasonPassUnlocked &&
+      canShowSeasonPassOfferToday()
+    ) {
+      markSeasonPassOfferShownToday();
+      navigate("/season-pass-offer", {
+        state: { returnTo: "/season" },
+      });
+      return;
+    }
+
+    navigate("/season");
+  };
+
   return packs?.length > 0 && !transitioning ? (
     <ExternalPack
       initialCards={packs[currentPackIndex].mintedCards}
@@ -102,7 +126,7 @@ export const ClaimMultipleRewardsPage = () => {
       onContinue={
         packs[currentPackIndex + 1]
           ? () => transitionTo(currentPackIndex + 1)
-          : () => navigate("/season")
+          : handlePackFlowComplete
       }
     />
   ) : (

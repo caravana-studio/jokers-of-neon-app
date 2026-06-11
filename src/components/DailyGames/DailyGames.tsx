@@ -1,5 +1,5 @@
 import { Button, Flex, Text } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useDojo } from "../../dojo/useDojo";
@@ -9,6 +9,10 @@ import { useSeasonPass } from "../../providers/SeasonPassProvider";
 import { getPlayerLives } from "../../queries/getPlayerLives";
 import { BLUE } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
+import {
+  canShowSeasonPassOfferToday,
+  markSeasonPassOfferShownToday,
+} from "../../utils/seasonPassOffer";
 import { Countdown } from "../Countdown";
 import { DailyGame } from "./DailyGame";
 
@@ -18,45 +22,104 @@ export const DailyGames = () => {
   });
   const { prepareNewGame, executeCreateGame } = useGameContext();
   const navigate = useNavigate();
-  const { seasonPassUnlocked } = useSeasonPass();
+  const { seasonPassUnlocked, loading: seasonPassLoading } = useSeasonPass();
   const [availableLives, setAvailableLives] = useState(0);
   const [totalSlots, setTotalSlots] = useState(seasonPassUnlocked ? 6 : 3);
   const [nextLiveIn, setNextLiveIn] = useState<Date | undefined>(undefined);
   const [isClaimingLives, setIsClaimingLives] = useState(true);
 
   const {
-    setup: { client },
+    setup: { client, accountType },
     account: { account },
   } = useDojo();
 
   const { claimLives } = useGameActions();
-
-  const fetchPlayerLives = () => {
-    getPlayerLives(client, { playerAddress: account.address }).then(
-      (response) => {
-        console.log("getPlayerLives response", response);
-        if (!response.success || !response.data) return;
-
-        setAvailableLives(response.data.available_lives);
-        setTotalSlots(response.data.max_lives);
-        response.data.next_live_timestamp &&
-          setNextLiveIn(response.data.next_live_timestamp);
-      },
-    );
-  };
+  const claimLivesRef = useRef(claimLives);
+  const hasSyncedLivesRef = useRef(false);
 
   useEffect(() => {
-    fetchPlayerLives();
+    claimLivesRef.current = claimLives;
+  }, [claimLives]);
 
-    setIsClaimingLives(true);
-    claimLives()
-      .then((response) => {
-        console.log("claimLives response", response);
-        fetchPlayerLives();
-      })
-      .catch(() => {})
-      .finally(() => setIsClaimingLives(false));
-  }, []);
+  useEffect(() => {
+    hasSyncedLivesRef.current = false;
+  }, [account.address, accountType, seasonPassLoading, seasonPassUnlocked]);
+
+  useEffect(() => {
+    if (!account.address || seasonPassLoading || hasSyncedLivesRef.current) {
+      return;
+    }
+
+    hasSyncedLivesRef.current = true;
+    let cancelled = false;
+
+    const fetchPlayerLives = async () => {
+      const response = await getPlayerLives(client, {
+        playerAddress: account.address,
+      });
+      if (!response.success || !response.data) return null;
+
+      if (!cancelled) {
+        setAvailableLives(response.data.available_lives);
+        setTotalSlots(response.data.max_lives);
+        setNextLiveIn(response.data.next_live_timestamp);
+      }
+
+      return {
+        availableLives: response.data.available_lives,
+        maxLives: response.data.max_lives,
+      };
+    };
+
+    const syncLivesAndMaybeOfferSeasonPass = async () => {
+      const initialLivesState = await fetchPlayerLives();
+
+      if (cancelled) return;
+
+      if (initialLivesState?.availableLives !== 0) {
+        setIsClaimingLives(false);
+        return;
+      }
+
+      setIsClaimingLives(true);
+      try {
+        await claimLivesRef.current();
+      } catch {}
+
+      const livesStateAfterClaim = await fetchPlayerLives();
+
+      if (cancelled) return;
+
+      setIsClaimingLives(false);
+
+      const shouldShowSeasonPassOffer =
+        accountType !== "burner" &&
+        !seasonPassLoading &&
+        !seasonPassUnlocked &&
+        livesStateAfterClaim?.availableLives === 0 &&
+        canShowSeasonPassOfferToday();
+
+      if (shouldShowSeasonPassOffer) {
+        markSeasonPassOfferShownToday();
+        navigate("/season-pass-offer", {
+          state: { returnTo: "/my-games" },
+        });
+      }
+    };
+
+    void syncLivesAndMaybeOfferSeasonPass();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [
+    account.address,
+    accountType,
+    client,
+    navigate,
+    seasonPassLoading,
+    seasonPassUnlocked,
+  ]);
 
   const RECHARGE_TIME = seasonPassUnlocked ? 4 : 8;
 

@@ -10,9 +10,6 @@ export const GameOverGuest = () => {
     congratulationsMsj,
     actualPlayer,
     t,
-    onShareClick,
-    onSecondButtonClick,
-    isLoading,
   } = useGameOver();
   const navigate = useNavigate();
 
@@ -22,9 +19,6 @@ export const GameOverGuest = () => {
       congratulationsMsj={congratulationsMsj}
       actualPlayerPosition={actualPlayer?.position}
       t={t}
-      onShareClick={onShareClick}
-      onSecondButtonClick={onSecondButtonClick}
-      isLoading={isLoading}
       guestCtaMessage={t("game-over.guest-login-prompt")}
       firstButton={{
         onClick: () => {

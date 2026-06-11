@@ -1,11 +1,14 @@
-import { Flex } from "@chakra-ui/react";
+import { Divider, Flex } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import { UsernameModal } from "../components/UsernameModal";
 import { Loading } from "../components/Loading";
 import { DelayedLoading } from "../components/DelayedLoading";
 import { MobileDecoration } from "../components/MobileDecoration";
+import { MenuBtn } from "../components/Menu/Buttons/MenuBtn";
 import { PositionedDiscordLink } from "../components/DiscordLink";
+import { Icons } from "../constants/icons";
 import { useDojo } from "../dojo/useDojo";
 import { useMiniAppIdentity } from "./session/useMiniAppSession";
 import { useProfileStore } from "../state/useProfileStore";
@@ -21,6 +24,10 @@ export const MiniAppProfilePage = () => {
   } = useDojo();
   const { isSmallScreen } = useResponsiveValues();
   const { t } = useTranslation("game");
+  const { t: tMiniAppProfile } = useTranslation("miniapp", {
+    keyPrefix: "profile-pages.menu",
+  });
+  const navigate = useNavigate();
   const { userAddress: profileAddress } = useMiniAppIdentity();
   const usernameStatus = useUsernameStore((store) => store.status);
   const storedUsernameAddress = useUsernameStore((store) => store.address);
@@ -34,6 +41,7 @@ export const MiniAppProfilePage = () => {
   const [usernameModalOpen, setUsernameModalOpen] = useState(false);
   const [usernameSaving, setUsernameSaving] = useState(false);
   const lastProfileRequestKeyRef = useRef<string | null>(null);
+  const btnWidth = "18px";
 
   const hasMatchingStoredUsername =
     addressKey(storedUsernameAddress) === addressKey(profileAddress);
@@ -76,7 +84,8 @@ export const MiniAppProfilePage = () => {
       profileAddress,
       account.account,
       resolvedUsername ?? undefined,
-      accountType
+      accountType,
+      { refreshStreakStatus: true }
     );
   }, [
     account,
@@ -136,6 +145,7 @@ export const MiniAppProfilePage = () => {
             username={profileData.profile.username}
             level={profileData.profile.level}
             streak={profileData.profile.streak}
+            streakProtectors={profileData.profile.streakProtectors ?? 0}
             games={profileData.playerStats.games}
             victories={profileData.playerStats.victories}
             currentXp={profileData.profile.currentXp}
@@ -144,6 +154,7 @@ export const MiniAppProfilePage = () => {
             hideXpProgress
             hideTotalXp
             hideLevel
+            hideDailyStreak
             profilePicture={profileData.profile.avatarId}
             onUpdateAvatar={(avatarId) =>
               updateAvatar(
@@ -165,6 +176,39 @@ export const MiniAppProfilePage = () => {
             onClose={() => setUsernameModalOpen(false)}
             onSave={handleUpdateUsername}
           />
+
+          <Flex flexDirection="column" gap={2} mt={6} w="100%" color="white">
+            <MenuBtn
+              icon={Icons.DOCS}
+              description={tMiniAppProfile("privacy-policy")}
+              label={tMiniAppProfile("privacy-policy")}
+              onClick={() => navigate("/profile/privacy-policy")}
+              arrowRight
+              width={btnWidth}
+            />
+            {isSmallScreen && (
+              <Divider borderColor="white" borderWidth="1px" my={2} />
+            )}
+            <MenuBtn
+              icon={Icons.MORE}
+              description={tMiniAppProfile("support")}
+              label={tMiniAppProfile("support")}
+              onClick={() => navigate("/profile/support")}
+              arrowRight
+              width={btnWidth}
+            />
+            {isSmallScreen && (
+              <Divider borderColor="white" borderWidth="1px" my={2} />
+            )}
+            <MenuBtn
+              icon={Icons.TUTORIAL}
+              description={tMiniAppProfile("how-to-play")}
+              label={tMiniAppProfile("how-to-play")}
+              onClick={() => navigate("/profile/how-to-play")}
+              arrowRight
+              width={btnWidth}
+            />
+          </Flex>
         </Flex>
       </Flex>
     </DelayedLoading>

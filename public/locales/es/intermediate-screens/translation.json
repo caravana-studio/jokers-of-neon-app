@@ -20,6 +20,24 @@
       "buy": "COMPRAR",
       "unlocked": "DESBLOQUEADO",
       "more-jokers-with": "Más Jokers con",
+      "offer": {
+        "title-prefix": "DESBLOQUEA MÁS CON",
+        "skip": "SALTAR",
+        "benefits": {
+          "1": {
+            "title": "Muchas más recompensas",
+            "description": "Obtén 25 packs extra y 5 tickets extra de torneo durante la temporada."
+          },
+          "2": {
+            "title": "Más juegos por día",
+            "description": "Puedes jugar 6 partidas de Jokers por día en vez de 3, y 1 partida se recarga cada 4 horas en lugar de 8."
+          },
+          "3": {
+            "title": "Recompensas comerciables",
+            "description": "Todas las recompensas que obtienes son comerciables con otros jugadores en el marketplace externo."
+          }
+        }
+      },
       "facts": {
         "1-title": "Recompensas exclusivas",
         "1-description-1": "Progresar a través de la temporada {{season}} te da más recompensas.",
@@ -146,6 +164,8 @@
     "my-xp": "Mi XP",
     "claim": "RECLAMAR",
     "tournament-entry": "Entrada de torneo",
+    "streak-protector": "Protector de racha",
+    "streak-protector-full": "Sin espacios",
     "claiming-in-progress": "Reclamando...",
     "intro": {
       "summary": "¿Cómo cargo XP?",
@@ -243,7 +263,6 @@
       "gameOver-top5-msj": "¡Buen trabajo! ¡Estás en el top 5! ¡Sigue así!"
     },
     "btn": {
-      "gameOver-share-btn": "COMPARTIR EN",
       "gameOver-mygames-btn": "IR A MIS JUEGOS",
       "go-home": "Ir al inicio",
       "play-again": "Jugar otra vez"
@@ -286,7 +305,18 @@
       "total": "Total",
       "final-score": "- Puntuación final: {{score}} -",
       "continue-btn": "Continuar",
-      "endless-mode": "Modo infinito"
+      "endless-mode": "Modo infinito",
+      "share": {
+        "button": "COMPARTIR EN",
+        "variants": {
+          "1": "Otra victoria en @Jokers_of_neon 🔥",
+          "2": "Lo logré en @Jokers_of_neon ⚡️",
+          "3": "Una victoria más en @Jokers_of_neon 🃏",
+          "4": "Completé la run en @Jokers_of_neon.\n¿Puedes superar mis stats?",
+          "5": "No será mi última victoria en @Jokers_of_neon 🔥",
+          "6": "Otra run, otra victoria en @Jokers_of_neon."
+        }
+      }
     }
   },
   "shop-tier-unlocked": {
@@ -396,7 +426,9 @@
     "connect": "Conectar",
     "no-profile": "Por favor, inicia sesión para ver tu perfil",
     "apply-changes": "Aplicar cambios",
-    "cancel": "Cancelar"
+    "cancel": "Cancelar",
+    "copy-wallet-address": "Copiar dirección de wallet",
+    "wallet-address-copied": "Dirección de wallet copiada"
   },
   "my-collection": {
     "title": "Colección",
@@ -465,9 +497,20 @@
   },
   "daily-streak": {
     "title": "Racha diaria",
-    "description": "Completa una misión diaria cada día para mantener tu racha.",
+    "protectors": "Protectores",
+    "description": "Completa una misión diaria para comenzar tu racha.",
     "next-objective": "Próximo objetivo",
     "continue": "Continuar",
+    "share": {
+      "button": "COMPARTIR EN",
+      "variants": {
+        "1": "Racha de {{streak}} días asegurada 🔥\nSigo firme en @Jokers_of_neon.",
+        "2": "{{streak}} días y sigo ardiendo 🔥\nMi racha diaria sigue viva en @Jokers_of_neon.",
+        "3": "Manteniendo el fuego encendido 🔥\nAcabo de llegar a una racha diaria de {{streak}} días en @Jokers_of_neon.",
+        "4": "El grind sigue 🔥\nRacha diaria de {{streak}} días en @Jokers_of_neon.",
+        "5": "Acabo de llegar a una racha diaria de {{streak}} días en @Jokers_of_neon 🔥\n¿Puedes mantener la tuya viva?"
+      }
+    },
     "celebration-title": "Felicitaciones",
     "celebration-description": "Completaste tu objetivo",
     "celebration-description-extended": "Acabas de estirar tu racha",

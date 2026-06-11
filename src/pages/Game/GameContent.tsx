@@ -28,6 +28,7 @@ import { useProgressiveGameTutorial } from "../../hooks/useProgressiveGameTutori
 import { useGameContext } from "../../providers/GameProvider.tsx";
 import { useCardAnimations } from "../../providers/CardAnimationsProvider.tsx";
 import { useCurrentHandStore } from "../../state/useCurrentHandStore.ts";
+import { useGameQuickPreviewStore } from "../../state/useGameQuickPreviewStore.ts";
 import { useGameStore } from "../../state/useGameStore.ts";
 import { isTutorial } from "../../utils/isTutorial.ts";
 import { PROGRESSIVE_TUTORIAL_IDS } from "../../utils/progressiveTutorialStorage";
@@ -110,6 +111,9 @@ export const GameContent = ({ tutorialsBlocked = false }: GameContentProps) => {
   const { t } = useTranslation(["game"]);
   const [highlighted, setHighlighted] = useState(false);
   const [canClickPowerUp, setCanClickPowerUp] = useState(false);
+  const setPreviewType = useGameQuickPreviewStore(
+    (store) => store.setPreviewType,
+  );
   const cardsStageRef = useRef<HTMLDivElement>(null);
   const handCardsAnchorRef = useRef<HTMLDivElement>(null);
   const preselectedCardsAnchorRef = useRef<HTMLDivElement>(null);
@@ -122,6 +126,10 @@ export const GameContent = ({ tutorialsBlocked = false }: GameContentProps) => {
   useEffect(() => {
     setRun(inTutorial);
   }, []);
+
+  useEffect(() => {
+    return () => setPreviewType(null);
+  }, [setPreviewType]);
 
   const stepData = [
     { step: 13, delay: 2700 },

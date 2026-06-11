@@ -5,6 +5,7 @@ import { throttle } from "lodash";
 export const useResponsiveValues = () => {
   const [cardScale, setCardScale] = useState<number>(1);
   const [isCardScaleCalculated, setIsCardScaleCalculated] = useState(false);
+  const [viewportHeight, setViewportHeight] = useState<number>(0);
 
   const baseScales: { [key: string]: number } = {
     "375:667": 2.5, //iphone SE
@@ -92,6 +93,7 @@ export const useResponsiveValues = () => {
 
       const calculatedCardScale = baseScale * viewportScale;
       setCardScale(calculatedCardScale);
+      setViewportHeight(window.innerHeight);
 
       setIsCardScaleCalculated(true);
     }, 200);
@@ -110,5 +112,10 @@ export const useResponsiveValues = () => {
     { ssr: false }
   );
 
-  return { cardScale, isSmallScreen, isCardScaleCalculated };
+  return {
+    cardScale,
+    isSmallScreen,
+    isCardScaleCalculated,
+    viewportHeight,
+  };
 };

@@ -12,6 +12,7 @@ import { useCardHighlight } from "../../providers/HighlightProvider/CardHighligh
 import { useGameStore } from "../../state/useGameStore";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { Card } from "../../types/Card";
+import { isNativeAndroid } from "../../utils/capacitorUtils";
 import CollectionGrid from "../MyCollection/Collection";
 import { Collection } from "../MyCollection/types";
 import { DocsBoxesRow } from "./DocsBoxesRow";
@@ -79,6 +80,83 @@ export const DocsPage: React.FC<DocsProps> = ({ lastIndexTab = 0 }) => {
 
   const specialCardsIds = docsModCardsConfig?.specialCardsIds ?? [];
   const rageCardsIds = docsModCardsConfig?.rageCardsIds ?? [];
+  const shouldShowLootBoxesTab = !isNativeAndroid;
+  const initialTabIndex = shouldShowLootBoxesTab
+    ? lastIndexTab
+    : Math.min(lastIndexTab, 2);
+  const tabs = [
+    <Tab key="special-cards" title={t("labels.special-cards")}>
+      <Flex
+        width={isSmallScreen ? "100%" : "90%"}
+        height={["90%"]}
+        margin={"0 auto"}
+        my={[4, 2]}
+        flexDirection="row"
+        alignItems={"center"}
+        justifyContent={"center"}
+        alignContent={"flex-start"}
+        wrap={"wrap"}
+        gap={2}
+        overflow={"auto"}
+        pt={isSmallScreen ? 0 : 2}
+      >
+        {!useBurnerAcc ? (
+          isLoading ? (
+            <Flex
+              w="100%"
+              h="200px"
+              justifyContent="center"
+              alignItems="center"
+            >
+              <Spinner color="white" />
+            </Flex>
+          ) : (
+            myCollection.map((collection) => (
+              <CollectionGrid
+                key={collection.id}
+                collection={collection}
+                hideHighlight
+              />
+            ))
+          )
+        ) : (
+          <></>
+        )}
+        <Flex
+          w="100%"
+          flexDirection={"column"}
+          px={6}
+          py={useBurnerAcc ? 0 : 4}
+        >
+          {!useBurnerAcc && (
+            <Flex>
+              <Heading variant="italic" size="xs">
+                {t("base-cards")}
+              </Heading>
+              <Text ml={2} fontSize="8px" color="gray.400">
+                ({specialCardsIds.length})
+              </Text>
+            </Flex>
+          )}
+        </Flex>
+        <DocCardsContent cardIds={specialCardsIds} />
+      </Flex>
+    </Tab>,
+    <Tab key="modifier-cards" title={t("labels.modifier-cards")}>
+      <DocsCardsRow cardIds={Object.keys(MODIFIERS_RARITY).map(Number)} />
+    </Tab>,
+    <Tab key="rage-cards" title={t("labels.rage-cards")}>
+      <DocsCardsRow cardIds={rageCardsIds} />
+    </Tab>,
+  ];
+
+  if (shouldShowLootBoxesTab) {
+    tabs.push(
+      <Tab key="loot-boxes" title={t("labels.loot-boxes")}>
+        <DocsBoxesRow />
+      </Tab>
+    );
+  }
 
   return (
     <DelayedLoading>
@@ -89,73 +167,8 @@ export const DocsPage: React.FC<DocsProps> = ({ lastIndexTab = 0 }) => {
           isPack={!highlightedCard.img}
         />
       )}
-      <TabPattern lastIndexTab={lastIndexTab}>
-        <Tab title={t("labels.special-cards")}>
-          <Flex
-            width={isSmallScreen ? "100%" : "90%"}
-            height={["90%"]}
-            margin={"0 auto"}
-            my={[4, 2]}
-            flexDirection="row"
-            alignItems={"center"}
-            justifyContent={"center"}
-            alignContent={"flex-start"}
-            wrap={"wrap"}
-            gap={2}
-            overflow={"auto"}
-            pt={isSmallScreen ? 0 : 2}
-          >
-            {!useBurnerAcc ? (
-              isLoading ? (
-                <Flex
-                  w="100%"
-                  h="200px"
-                  justifyContent="center"
-                  alignItems="center"
-                >
-                  <Spinner color="white" />
-                </Flex>
-              ) : (
-                myCollection.map((collection) => (
-                  <CollectionGrid
-                    key={collection.id}
-                    collection={collection}
-                    hideHighlight
-                  />
-                ))
-              )
-            ) : (
-              <></>
-            )}
-            <Flex
-              w="100%"
-              flexDirection={"column"}
-              px={6}
-              py={useBurnerAcc ? 0 : 4}
-            >
-              {!useBurnerAcc && (
-                <Flex>
-                  <Heading variant="italic" size="xs">
-                    {t("base-cards")}
-                  </Heading>
-                  <Text ml={2} fontSize="8px" color="gray.400">
-                    ({specialCardsIds.length})
-                  </Text>
-                </Flex>
-              )}
-            </Flex>
-            <DocCardsContent cardIds={specialCardsIds} />
-          </Flex>
-        </Tab>
-        <Tab title={t("labels.modifier-cards")}>
-          <DocsCardsRow cardIds={Object.keys(MODIFIERS_RARITY).map(Number)} />
-        </Tab>
-        <Tab title={t("labels.rage-cards")}>
-          <DocsCardsRow cardIds={rageCardsIds} />
-        </Tab>
-        <Tab title={t("labels.loot-boxes")}>
-          <DocsBoxesRow />
-        </Tab>
+      <TabPattern lastIndexTab={initialTabIndex}>
+        {tabs}
       </TabPattern>
     </DelayedLoading>
   );

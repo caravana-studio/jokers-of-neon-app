@@ -430,3 +430,5 @@ yarn-error.log*
 android/my-release-key.keystore
 android/app/my-release-key.keystore
 .cert/
+
+.codex-artifacts/

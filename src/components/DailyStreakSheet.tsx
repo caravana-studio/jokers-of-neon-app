@@ -1,24 +1,31 @@
 import { Haptics } from "@capacitor/haptics";
 import { Capacitor } from "@capacitor/core";
 import { Box, Flex, Text } from "@chakra-ui/react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faXTwitter } from "@fortawesome/free-brands-svg-icons";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useDojo } from "../dojo/DojoContext";
 import { DIAMONDS } from "../theme/colors";
 import { Intensity } from "../types/intensity";
 import AudioManager from "../audio/AudioManager";
 import { clearLevel, clearRound } from "../constants/sfx";
+import { getGameApiBaseUrl } from "../config/gameApiUrl";
 import { triggerHaptic } from "../haptics";
 import { useBackgroundAnimation } from "../providers/BackgroundAnimationProvider";
+import { shareOnX } from "../utils/shareOnX";
 import { DailyStreakFireAnimation } from "./DailyStreakFireAnimation";
 import {
   DailyStreakMilestoneProgress,
   isDailyStreakAtMilestone,
 } from "./DailyStreakMilestoneProgress";
+import { StreakProtectorSlots } from "./StreakProtectorSlots";
 import { DailyStreakWeekProgress } from "./DailyStreakWeekProgress";
 import { MobileBottomBar } from "./MobileBottomBar";
 import { MobileDecoration } from "./MobileDecoration";
 import { RollingNumber } from "./RollingNumber";
+import { useResponsiveValues } from "../theme/responsiveSettings";
 
 const CELEBRATION_INTRO_DURATION_MS = 2600;
 
@@ -32,6 +39,7 @@ const triggerEntryVibration = (duration: number) => {
 
 export interface DailyStreakSheetProps {
   streak: number;
+  streakProtectors?: number;
   onClose: () => void | Promise<void>;
   onContinue?: () => void | Promise<void>;
   referenceDate?: Date;
@@ -40,24 +48,31 @@ export interface DailyStreakSheetProps {
 
 export const DailyStreakSheet = ({
   streak,
+  streakProtectors = 0,
   onClose,
   onContinue,
   referenceDate,
   showCelebrationIntroOnEntry = true,
 }: DailyStreakSheetProps) => {
   const { t } = useTranslation("intermediate-screens");
+  const {
+    account: { account },
+  } = useDojo();
   const { showLightPillarAnimation, hideLightPillarAnimation } = useBackgroundAnimation();
   const normalizedStreak = Number.isFinite(streak)
     ? Math.max(0, Math.floor(streak))
     : 0;
+  const isZeroStreak = normalizedStreak === 0;
   const isMilestoneHit = isDailyStreakAtMilestone(normalizedStreak);
   const [showCelebrationIntro, setShowCelebrationIntro] = useState(
-    showCelebrationIntroOnEntry
+    showCelebrationIntroOnEntry && !isZeroStreak
   );
   const [isContinuing, setIsContinuing] = useState(false);
 
+  const { isSmallScreen } = useResponsiveValues();
+
   useEffect(() => {
-    if (!showCelebrationIntroOnEntry) {
+    if (!showCelebrationIntroOnEntry || isZeroStreak) {
       setShowCelebrationIntro(false);
       return;
     }
@@ -71,9 +86,15 @@ export const DailyStreakSheet = ({
     return () => {
       window.clearTimeout(timeoutId);
     };
-  }, [isMilestoneHit, normalizedStreak, showCelebrationIntroOnEntry]);
+  }, [isMilestoneHit, isZeroStreak, normalizedStreak, showCelebrationIntroOnEntry]);
 
   useEffect(() => {
+    if (isZeroStreak) {
+      return () => {
+        hideLightPillarAnimation();
+      };
+    }
+
     AudioManager.getInstance().play(isMilestoneHit ? clearLevel : clearRound);
     triggerEntryVibration(isMilestoneHit ? 800 : 400);
 
@@ -88,6 +109,7 @@ export const DailyStreakSheet = ({
   }, [
     hideLightPillarAnimation,
     isMilestoneHit,
+    isZeroStreak,
     normalizedStreak,
     showLightPillarAnimation,
   ]);
@@ -99,6 +121,22 @@ export const DailyStreakSheet = ({
   });
   const getAnimationStartDelayMs = (index: number) =>
     Math.round((getEntryTransition(index).delay + getEntryTransition(index).duration) * 1000);
+
+  const handleShareClick = async () => {
+    const shareVariant = Math.floor(Math.random() * 5) + 1;
+    const shareMessage = t(`daily-streak.share.variants.${shareVariant}`, {
+      streak: normalizedStreak,
+    });
+    const shareUrl = account?.address
+      ? `${getGameApiBaseUrl()}/share/daily-streak/${account.address}`
+      : undefined;
+
+    await shareOnX({
+      message: shareMessage,
+      url: shareUrl,
+    });
+  };
+
   const handleContinueClick = async () => {
     if (isContinuing) {
       return;
@@ -158,6 +196,7 @@ export const DailyStreakSheet = ({
               <Flex flexDirection="column" alignItems="center" gap={2}>
                 <Flex
                   w="100%"
+                  position="relative"
                   flexDirection="column"
                   alignItems="center"
                   gap={5}
@@ -167,13 +206,36 @@ export const DailyStreakSheet = ({
                   bg="rgba(0, 0, 0, 0.3)"
                   boxShadow="0px 0px 8px rgba(255, 255, 255, 0.5), inset 0 0 5px rgba(255, 255, 255, 0.5)"
                 >
+                  <Flex
+                    position="absolute"
+                    top={4}
+                    right={4}
+                    flexDirection="column"
+                    alignItems="center"
+                    gap={1.5}
+                  >
+                    <Text
+                      fontSize={{ base: "8px", sm: "12px" }}
+                      textTransform="uppercase"
+                      color="white"
+                      lineHeight={1}
+                    >
+                      {t("daily-streak.protectors")}
+                    </Text>
+                    <StreakProtectorSlots
+                      protectors={streakProtectors}
+                      slots={2}
+                      iconSize={isSmallScreen ? 8 : 12}
+                    />
+                  </Flex>
+
                   <Box
                     position="relative"
                     borderRadius="full"
                     bg="rgba(255, 147, 75, 0.08)"
                     p={2}
                   >
-                    <DailyStreakFireAnimation size={112} />
+                    <DailyStreakFireAnimation size={112} grayscale={isZeroStreak} />
                   </Box>
 
                   <Flex flexDirection="column" alignItems="center" gap={2}>
@@ -188,7 +250,12 @@ export const DailyStreakSheet = ({
                     </Text>
                     <motion.div
                       animate={
-                        isMilestoneHit
+                        isZeroStreak
+                          ? {
+                              scale: 1,
+                              filter: "none",
+                            }
+                          : isMilestoneHit
                           ? {
                               scale: [1, 1.04, 1],
                               filter: [
@@ -203,7 +270,7 @@ export const DailyStreakSheet = ({
                             }
                       }
                       transition={
-                        isMilestoneHit
+                        isMilestoneHit && !isZeroStreak
                           ? {
                               duration: 1.8,
                               repeat: Infinity,
@@ -225,7 +292,7 @@ export const DailyStreakSheet = ({
                         fontSize={{ base: "72px", sm: "88px" }}
                         lineHeight={1}
                         fontWeight={600}
-                        color={DIAMONDS}
+                        color={isZeroStreak ? "grey" : DIAMONDS}
                         display="block"
                         sx={{
                           "& span": {
@@ -314,41 +381,45 @@ export const DailyStreakSheet = ({
               </Flex>
             ) : (
               <Flex flexDir="column" w="100%" gap={3} flexGrow={1} minH={0}>
-                <motion.div
-                  initial={{ opacity: 0, y: 18 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={getEntryTransition(1)}
-                  style={{ width: "100%" }}
-                >
-                  <Box
-                    w="100%"
-                    borderRadius="24px"
-                    px={{ base: 4, sm: 5 }}
-                    py={4}
-                    bg="rgba(0, 0, 0, 0.3)"
-                    boxShadow="0px 0px 8px rgba(255, 255, 255, 0.5), inset 0 0 5px rgba(255, 255, 255, 0.5)"
-                  >
-                    <DailyStreakWeekProgress
-                      streak={normalizedStreak}
-                      referenceDate={referenceDate}
-                      animationStartDelayMs={getAnimationStartDelayMs(1)}
-                      onStepActivated={() => triggerHaptic("interaction")}
-                    />
-                  </Box>
-                </motion.div>
+                {!isZeroStreak && (
+                  <>
+                    <motion.div
+                      initial={{ opacity: 0, y: 18 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={getEntryTransition(1)}
+                      style={{ width: "100%" }}
+                    >
+                      <Box
+                        w="100%"
+                        borderRadius="24px"
+                        px={{ base: 4, sm: 5 }}
+                        py={4}
+                        bg="rgba(0, 0, 0, 0.3)"
+                        boxShadow="0px 0px 8px rgba(255, 255, 255, 0.5), inset 0 0 5px rgba(255, 255, 255, 0.5)"
+                      >
+                        <DailyStreakWeekProgress
+                          streak={normalizedStreak}
+                          referenceDate={referenceDate}
+                          animationStartDelayMs={getAnimationStartDelayMs(1)}
+                          onStepActivated={() => triggerHaptic("interaction")}
+                        />
+                      </Box>
+                    </motion.div>
 
-                <motion.div
-                  initial={{ opacity: 0, y: 18 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={getEntryTransition(2)}
-                  style={{ width: "100%" }}
-                >
-                  <DailyStreakMilestoneProgress
-                    streak={normalizedStreak}
-                    animationStartDelayMs={getAnimationStartDelayMs(2) + 280}
-                    onStepActivated={() => triggerHaptic("interaction")}
-                  />
-                </motion.div>
+                    <motion.div
+                      initial={{ opacity: 0, y: 18 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={getEntryTransition(2)}
+                      style={{ width: "100%" }}
+                    >
+                      <DailyStreakMilestoneProgress
+                        streak={normalizedStreak}
+                        animationStartDelayMs={getAnimationStartDelayMs(2) + 280}
+                        onStepActivated={() => triggerHaptic("interaction")}
+                      />
+                    </motion.div>
+                  </>
+                )}
               </Flex>
             )}
           </Flex>
@@ -360,7 +431,16 @@ export const DailyStreakSheet = ({
           transition={getEntryTransition(3)}
         >
           <MobileBottomBar
-            firstButton={{
+            firstButton={
+              !isZeroStreak
+                ? {
+                    onClick: handleShareClick,
+                    label: t("daily-streak.share.button"),
+                    icon: <FontAwesomeIcon fontSize={12} icon={faXTwitter} />,
+                  }
+                : undefined
+            }
+            secondButton={{
               onClick: handleContinueClick,
               label: t("daily-streak.continue"),
               isLoading: isContinuing,
