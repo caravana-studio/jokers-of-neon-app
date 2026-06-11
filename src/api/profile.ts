@@ -1,4 +1,9 @@
 import { getGameApiBaseUrl } from "../config/gameApiUrl";
+import {
+  parseMintedCards,
+  type RawMintedCard,
+  type SeasonRewardPack,
+} from "./claimSeasonReward";
 import { normalizeStarknetAddress } from "../utils/starknetAddress";
 
 type GetProfileApiResponse = {
@@ -88,11 +93,73 @@ type ClaimStreakPresentationApiResponse = {
     streak?: string | number | null;
     period_id?: string | number | null;
     periodId?: string | number | null;
+    reward?: RawStreakPresentationReward | null;
   };
   show?: boolean | null;
   streak?: string | number | null;
   period_id?: string | number | null;
   periodId?: string | number | null;
+  reward?: RawStreakPresentationReward | null;
+};
+
+type RawStreakRewardItem =
+  | {
+      type: "pack";
+      tier?: "basic" | "advanced" | "epic" | "legendary" | "collector";
+      packId?: string | number | null;
+      pack_id?: string | number | null;
+      quantity?: string | number | null;
+      track?: "normal" | "recurring" | "bonus";
+    }
+  | {
+      type: "xp";
+      amount?: string | number | null;
+      track?: "normal" | "recurring" | "bonus";
+    }
+  | {
+      type: "streak_protector";
+      quantity?: string | number | null;
+      optional?: boolean;
+      track?: "normal" | "recurring" | "bonus";
+    }
+  | {
+      type: "tournament_ticket";
+      quantity?: string | number | null;
+      track?: "normal" | "recurring" | "bonus";
+    };
+
+type RawStreakPresentationReward = {
+  claimIds?: string[];
+  claim_ids?: string[];
+  milestone?: string | number | null;
+  items?: RawStreakRewardItem[];
+};
+
+type ClaimStreakRewardsApiResponse = {
+  success?: boolean;
+  error?: string;
+  code?: string;
+  mintedCards?: RawMintedCard[];
+  xp?: {
+    requested?: number;
+    queued?: number;
+    transactionId?: string;
+  };
+  tickets?: {
+    requested?: number;
+    queued?: number;
+    slotTxHash?: string;
+  };
+  streakProtectors?: {
+    requested?: number;
+    queued?: number;
+    skipped?: number;
+    protectorsAvailable?: number;
+    maxProtectors?: number;
+    availableSlots?: number;
+  };
+  transactionIds?: string[];
+  alreadyClaimed?: boolean;
 };
 
 type CreateProfileApiResponse = {
@@ -167,6 +234,63 @@ export type StreakPresentationClaimApiData = {
   show: boolean;
   streak: number | null;
   periodId: number | null;
+  reward: StreakPresentationRewardApiData | null;
+};
+
+export type StreakRewardTrack = "normal" | "recurring" | "bonus";
+export type StreakRewardItemApiData =
+  | {
+      type: "pack";
+      tier: "basic" | "advanced" | "epic" | "legendary" | "collector";
+      packId: number;
+      quantity: number;
+      track: StreakRewardTrack;
+    }
+  | {
+      type: "xp";
+      amount: number;
+      track: StreakRewardTrack;
+    }
+  | {
+      type: "streak_protector";
+      quantity: number;
+      optional: boolean;
+      track: StreakRewardTrack;
+    }
+  | {
+      type: "tournament_ticket";
+      quantity: number;
+      track: StreakRewardTrack;
+    };
+
+export type StreakPresentationRewardApiData = {
+  claimIds: string[];
+  milestone: number;
+  items: StreakRewardItemApiData[];
+};
+
+export type ClaimStreakRewardsResult = {
+  packs: SeasonRewardPack[];
+  xp: {
+    requested: number;
+    queued: number;
+    transactionId?: string;
+  };
+  tickets: {
+    requested: number;
+    queued: number;
+    slotTxHash?: string;
+  };
+  streakProtectors: {
+    requested: number;
+    queued: number;
+    skipped: number;
+    protectorsAvailable?: number;
+    maxProtectors?: number;
+    availableSlots?: number;
+  };
+  transactionIds: string[];
+  alreadyClaimed: boolean;
 };
 
 function getBaseUrl(): string {
@@ -183,6 +307,77 @@ function getApiKey(): string {
     throw new Error("profileApi: Missing VITE_GAME_API_KEY environment variable");
   }
   return apiKey;
+}
+
+function normalizeRewardTrack(track: unknown): StreakRewardTrack {
+  return track === "recurring" || track === "bonus" ? track : "normal";
+}
+
+function parseStreakRewardItem(item: RawStreakRewardItem): StreakRewardItemApiData | null {
+  if (item.type === "pack") {
+    const packId = sanitizeNumber(item.packId ?? item.pack_id);
+    if (!packId) {
+      return null;
+    }
+
+    return {
+      type: "pack",
+      tier: item.tier ?? "basic",
+      packId,
+      quantity: Math.max(1, sanitizeNumber(item.quantity ?? 1)),
+      track: normalizeRewardTrack(item.track),
+    };
+  }
+
+  if (item.type === "xp") {
+    return {
+      type: "xp",
+      amount: Math.max(0, sanitizeNumber(item.amount)),
+      track: normalizeRewardTrack(item.track),
+    };
+  }
+
+  if (item.type === "streak_protector") {
+    return {
+      type: "streak_protector",
+      quantity: Math.max(1, sanitizeNumber(item.quantity ?? 1)),
+      optional: Boolean(item.optional ?? true),
+      track: normalizeRewardTrack(item.track),
+    };
+  }
+
+  if (item.type === "tournament_ticket") {
+    return {
+      type: "tournament_ticket",
+      quantity: Math.max(1, sanitizeNumber(item.quantity ?? 1)),
+      track: normalizeRewardTrack(item.track),
+    };
+  }
+
+  return null;
+}
+
+function parseStreakPresentationReward(
+  reward: RawStreakPresentationReward | null | undefined
+): StreakPresentationRewardApiData | null {
+  if (!reward) {
+    return null;
+  }
+
+  const claimIds = reward.claimIds ?? reward.claim_ids ?? [];
+  const items = Array.isArray(reward.items)
+    ? reward.items.map(parseStreakRewardItem).filter((item): item is StreakRewardItemApiData => Boolean(item))
+    : [];
+
+  if (!Array.isArray(claimIds) || claimIds.length === 0 || items.length === 0) {
+    return null;
+  }
+
+  return {
+    claimIds: claimIds.filter(Boolean),
+    milestone: sanitizeNumber(reward.milestone),
+    items,
+  };
 }
 
 export async function fetchProfile(address: string): Promise<ProfileApiData> {
@@ -569,10 +764,12 @@ export async function claimStreakPresentation(
       show: false,
       streak: null,
       periodId: null,
+      reward: null,
     };
   }
 
   const rawPeriodId = data.period_id ?? data.periodId;
+  const reward = parseStreakPresentationReward(data.reward);
 
   return {
     show: true,
@@ -581,6 +778,84 @@ export async function claimStreakPresentation(
       rawPeriodId === null || rawPeriodId === undefined
         ? null
         : sanitizeNumber(rawPeriodId),
+    reward,
+  };
+}
+
+export async function claimStreakRewards(
+  address: string,
+  claimIds: string[]
+): Promise<ClaimStreakRewardsResult> {
+  if (!address) {
+    throw new Error("claimStreakRewards: address is required");
+  }
+
+  if (!Array.isArray(claimIds) || claimIds.length === 0) {
+    throw new Error("claimStreakRewards: claimIds is required");
+  }
+
+  const apiKey = getApiKey();
+  const baseUrl = getBaseUrl();
+  const requestUrl = `${baseUrl}/api/profile/streak/${encodeURIComponent(
+    address
+  )}/rewards/claim`;
+
+  const response = await fetch(requestUrl, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-API-Key": apiKey,
+    },
+    body: JSON.stringify({ claimIds }),
+  });
+
+  if (!response.ok) {
+    const errorDetails = await response.text().catch(() => "");
+    throw new Error(
+      `claimStreakRewards: ${response.status} ${response.statusText}${
+        errorDetails ? ` - ${errorDetails}` : ""
+      }`
+    );
+  }
+
+  const json: ClaimStreakRewardsApiResponse = await response.json();
+  if (!json.success) {
+    throw new Error(json.error ?? "claimStreakRewards: API did not return success");
+  }
+
+  return {
+    packs: json.mintedCards?.length
+      ? parseMintedCards(json.mintedCards, "claimStreakRewards")
+      : [],
+    xp: {
+      requested: sanitizeNumber(json.xp?.requested ?? 0),
+      queued: sanitizeNumber(json.xp?.queued ?? 0),
+      transactionId: json.xp?.transactionId,
+    },
+    tickets: {
+      requested: sanitizeNumber(json.tickets?.requested ?? 0),
+      queued: sanitizeNumber(json.tickets?.queued ?? 0),
+      slotTxHash: json.tickets?.slotTxHash,
+    },
+    streakProtectors: {
+      requested: sanitizeNumber(json.streakProtectors?.requested ?? 0),
+      queued: sanitizeNumber(json.streakProtectors?.queued ?? 0),
+      skipped: sanitizeNumber(json.streakProtectors?.skipped ?? 0),
+      protectorsAvailable:
+        json.streakProtectors?.protectorsAvailable === undefined
+          ? undefined
+          : sanitizeNumber(json.streakProtectors.protectorsAvailable),
+      maxProtectors:
+        json.streakProtectors?.maxProtectors === undefined
+          ? undefined
+          : sanitizeNumber(json.streakProtectors.maxProtectors),
+      availableSlots:
+        json.streakProtectors?.availableSlots === undefined
+          ? undefined
+          : sanitizeNumber(json.streakProtectors.availableSlots),
+    },
+    transactionIds: json.transactionIds ?? [],
+    alreadyClaimed: Boolean(json.alreadyClaimed),
   };
 }
 

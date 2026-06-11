@@ -9,7 +9,7 @@ export type ClaimSeasonRewardParams = {
   seasonId?: number;
 };
 
-type RawMintedCard = {
+export type RawMintedCard = {
   recipient: string;
   pack_id: number;
   card_id: number;
@@ -55,7 +55,7 @@ function getApiKey(): string {
   return apiKey;
 }
 
-function parseMintedCards(
+export function parseMintedCards(
   mintedCards: RawMintedCard[] | undefined,
   context: string
 ): SeasonRewardPack[] {

@@ -501,6 +501,12 @@
     "description": "Complete uma missão diária para começar sua sequência.",
     "next-objective": "Próximo objetivo",
     "continue": "Continuar",
+    "open-reward": "Abrir reward",
+    "reward-ready": "Reward",
+    "reward-pack": "Pack x{{count}}",
+    "reward-xp": "{{amount}} XP",
+    "reward-ticket": "Ticket x{{count}}",
+    "reward-protector": "Protector x{{count}}",
     "share": {
       "button": "COMPARTILHAR NO",
       "variants": {

@@ -26,6 +26,10 @@ import { MobileBottomBar } from "./MobileBottomBar";
 import { MobileDecoration } from "./MobileDecoration";
 import { RollingNumber } from "./RollingNumber";
 import { useResponsiveValues } from "../theme/responsiveSettings";
+import type {
+  StreakPresentationRewardApiData,
+  StreakRewardItemApiData,
+} from "../api/profile";
 
 const CELEBRATION_INTRO_DURATION_MS = 4000;
 
@@ -42,8 +46,53 @@ export interface DailyStreakSheetProps {
   streakProtectors?: number;
   onClose: () => void | Promise<void>;
   onContinue?: () => void | Promise<void>;
+  reward?: StreakPresentationRewardApiData | null;
+  isRewardClaiming?: boolean;
   referenceDate?: Date;
   showCelebrationIntroOnEntry?: boolean;
+}
+
+function buildRewardSummary(
+  reward: StreakPresentationRewardApiData | null | undefined,
+  t: (key: string, options?: Record<string, unknown>) => string
+): string | null {
+  if (!reward?.items?.length) {
+    return null;
+  }
+
+  const totals = reward.items.reduce(
+    (acc, item: StreakRewardItemApiData) => {
+      if (item.type === "pack") {
+        acc.packs += item.quantity;
+      } else if (item.type === "xp") {
+        acc.xp += item.amount;
+      } else if (item.type === "tournament_ticket") {
+        acc.tickets += item.quantity;
+      } else if (item.type === "streak_protector") {
+        acc.protectors += item.quantity;
+      }
+
+      return acc;
+    },
+    { packs: 0, xp: 0, tickets: 0, protectors: 0 }
+  );
+
+  const parts = [
+    totals.packs > 0
+      ? t("daily-streak.reward-pack", { count: totals.packs })
+      : null,
+    totals.xp > 0
+      ? t("daily-streak.reward-xp", { amount: totals.xp })
+      : null,
+    totals.tickets > 0
+      ? t("daily-streak.reward-ticket", { count: totals.tickets })
+      : null,
+    totals.protectors > 0
+      ? t("daily-streak.reward-protector", { count: totals.protectors })
+      : null,
+  ].filter(Boolean);
+
+  return parts.length > 0 ? parts.join(" + ") : null;
 }
 
 export const DailyStreakSheet = ({
@@ -51,6 +100,8 @@ export const DailyStreakSheet = ({
   streakProtectors = 0,
   onClose,
   onContinue,
+  reward,
+  isRewardClaiming = false,
   referenceDate,
   showCelebrationIntroOnEntry = true,
 }: DailyStreakSheetProps) => {
@@ -71,6 +122,7 @@ export const DailyStreakSheet = ({
   const celebrationIntroTimeoutRef = useRef<number | null>(null);
 
   const { isSmallScreen } = useResponsiveValues();
+  const rewardSummary = buildRewardSummary(reward, t);
 
   useEffect(() => {
     if (!showCelebrationIntroOnEntry || isZeroStreak) {
@@ -337,6 +389,28 @@ export const DailyStreakSheet = ({
                     >
                       {t("daily-streak.description")}
                     </Text>
+                    {rewardSummary && (
+                      <Flex
+                        alignItems="center"
+                        justifyContent="center"
+                        borderRadius="999px"
+                        px={3}
+                        py={1.5}
+                        bg="rgba(0, 212, 255, 0.12)"
+                        border="1px solid rgba(0, 212, 255, 0.35)"
+                      >
+                        <Text
+                          fontFamily="Orbitron"
+                          fontSize={{ base: "11px", sm: "12px" }}
+                          lineHeight={1.2}
+                          color={DIAMONDS}
+                          textTransform="uppercase"
+                          textAlign="center"
+                        >
+                          {t("daily-streak.reward-ready")}: {rewardSummary}
+                        </Text>
+                      </Flex>
+                    )}
                   </Flex>
                 </Flex>
               </Flex>
@@ -461,9 +535,9 @@ export const DailyStreakSheet = ({
               }
               secondButton={{
                 onClick: handleContinueClick,
-                label: t("daily-streak.continue"),
-                isLoading: isContinuing,
-                disabled: isContinuing,
+                label: reward ? t("daily-streak.open-reward") : t("daily-streak.continue"),
+                isLoading: isContinuing || isRewardClaiming,
+                disabled: isContinuing || isRewardClaiming,
               }}
             />
           </motion.div>
