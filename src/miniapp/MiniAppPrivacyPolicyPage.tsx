@@ -1,9 +1,14 @@
 import { Box } from "@chakra-ui/react";
+import { useTranslation } from "react-i18next";
 import { MiniAppInfoPageLayout } from "./MiniAppInfoPageLayout";
 
 const PRIVACY_POLICY_URL = "https://jokersofneon.com/privacy-policy";
 
 export const MiniAppPrivacyPolicyPage = () => {
+  const { t } = useTranslation("miniapp", {
+    keyPrefix: "profile-pages.privacy-policy",
+  });
+
   return (
     <MiniAppInfoPageLayout>
       <Box
@@ -14,7 +19,7 @@ export const MiniAppPrivacyPolicyPage = () => {
       >
         <Box
           as="iframe"
-          title="Jokers of Neon privacy policy"
+          title={t("iframe-title")}
           src={PRIVACY_POLICY_URL}
           width="100%"
           height="100%"

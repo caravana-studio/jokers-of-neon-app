@@ -1,39 +1,19 @@
 import { AspectRatio, Box, Flex, Heading, Text } from "@chakra-ui/react";
+import { useTranslation } from "react-i18next";
 import { MiniAppInfoPageLayout } from "./MiniAppInfoPageLayout";
 
-const HOW_TO_PLAY_STEPS = [
-  {
-    number: "01",
-    title: "Start with a basic deck",
-    description:
-      "Every run begins with a standard poker deck and a fresh opportunity to build something powerful.",
-  },
-  {
-    number: "02",
-    title: "Play hands and beat rounds",
-    description:
-      "Score points by creating poker hands and reaching the target score before running out of plays.",
-  },
-  {
-    number: "03",
-    title: "Visit shops and improve your build",
-    description:
-      "Between rounds, buy Special Cards and items that strengthen your deck and open new strategic paths.",
-  },
-  {
-    number: "04",
-    title: "Build synergies and push deeper",
-    description:
-      "The heart of the game is combining effects and scaling your score run after run, while adapting your build to tougher boss rounds called rage rounds.",
-  },
-] as const;
+const HOW_TO_PLAY_STEPS = ["01", "02", "03", "04"] as const;
 
 const HOW_TO_PLAY_VIDEO_URL =
   "https://www.youtube.com/embed/yCac6cfDm3k?si=bZgjO0tsqdDRze42";
 
 export const MiniAppHowToPlayPage = () => {
+  const { t } = useTranslation("miniapp", {
+    keyPrefix: "profile-pages.how-to-play",
+  });
+
   return (
-    <MiniAppInfoPageLayout title="How to play">
+    <MiniAppInfoPageLayout title={t("title")}>
       <Flex direction="column" gap={4}>
         <AspectRatio
           ratio={16 / 9}
@@ -44,7 +24,7 @@ export const MiniAppHowToPlayPage = () => {
         >
           <Box
             as="iframe"
-            title="How to play Jokers of Neon"
+            title={t("video-title")}
             src={HOW_TO_PLAY_VIDEO_URL}
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             allowFullScreen
@@ -54,7 +34,7 @@ export const MiniAppHowToPlayPage = () => {
         <Flex direction="column" gap={3}>
           {HOW_TO_PLAY_STEPS.map((step) => (
             <Box
-              key={step.number}
+              key={step}
               bg="rgba(0, 0, 0, 0.45)"
               border="1px solid rgba(255, 255, 255, 0.12)"
               borderRadius="2xl"
@@ -67,13 +47,13 @@ export const MiniAppHowToPlayPage = () => {
                 color="purple.200"
                 mb={2}
               >
-                {step.number}
+                {step}
               </Text>
               <Heading size="sm" mb={2}>
-                {step.title}
+                {t(`steps.${step}.title`)}
               </Heading>
               <Text color="whiteAlpha.900" lineHeight="tall">
-                {step.description}
+                {t(`steps.${step}.description`)}
               </Text>
             </Box>
           ))}

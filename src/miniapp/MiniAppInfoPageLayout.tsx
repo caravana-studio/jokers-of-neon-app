@@ -1,5 +1,6 @@
 import { Box, Flex, Heading } from "@chakra-ui/react";
 import { PropsWithChildren } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { DelayedLoading } from "../components/DelayedLoading";
 import { PositionedDiscordLink } from "../components/DiscordLink";
@@ -17,6 +18,9 @@ export const MiniAppInfoPageLayout = ({
 }: MiniAppInfoPageLayoutProps) => {
   const navigate = useNavigate();
   const { isSmallScreen } = useResponsiveValues();
+  const { t } = useTranslation("miniapp", {
+    keyPrefix: "profile-pages.actions",
+  });
 
   return (
     <DelayedLoading ms={0}>
@@ -67,7 +71,7 @@ export const MiniAppInfoPageLayout = ({
         </Flex>
         <MobileBottomBar
           firstButton={{
-            label: "Back to profile",
+            label: t("back-to-profile"),
             onClick: () => navigate("/profile"),
           }}
         />

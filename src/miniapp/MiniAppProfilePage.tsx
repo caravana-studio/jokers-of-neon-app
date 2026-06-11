@@ -24,6 +24,9 @@ export const MiniAppProfilePage = () => {
   } = useDojo();
   const { isSmallScreen } = useResponsiveValues();
   const { t } = useTranslation("game");
+  const { t: tMiniAppProfile } = useTranslation("miniapp", {
+    keyPrefix: "profile-pages.menu",
+  });
   const navigate = useNavigate();
   const { userAddress: profileAddress } = useMiniAppIdentity();
   const usernameStatus = useUsernameStore((store) => store.status);
@@ -175,8 +178,8 @@ export const MiniAppProfilePage = () => {
           <Flex flexDirection="column" gap={2} mt={6} w="100%" color="white">
             <MenuBtn
               icon={Icons.DOCS}
-              description="Privacy policy"
-              label="Privacy policy"
+              description={tMiniAppProfile("privacy-policy")}
+              label={tMiniAppProfile("privacy-policy")}
               onClick={() => navigate("/profile/privacy-policy")}
               arrowRight
               width={btnWidth}
@@ -186,8 +189,8 @@ export const MiniAppProfilePage = () => {
             )}
             <MenuBtn
               icon={Icons.MORE}
-              description="Support"
-              label="Support"
+              description={tMiniAppProfile("support")}
+              label={tMiniAppProfile("support")}
               onClick={() => navigate("/profile/support")}
               arrowRight
               width={btnWidth}
@@ -197,8 +200,8 @@ export const MiniAppProfilePage = () => {
             )}
             <MenuBtn
               icon={Icons.TUTORIAL}
-              description="How to play"
-              label="How to play"
+              description={tMiniAppProfile("how-to-play")}
+              label={tMiniAppProfile("how-to-play")}
               onClick={() => navigate("/profile/how-to-play")}
               arrowRight
               width={btnWidth}

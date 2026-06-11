@@ -1,9 +1,14 @@
 import { Box, Link, Text } from "@chakra-ui/react";
+import { Trans, useTranslation } from "react-i18next";
 import { MiniAppInfoPageLayout } from "./MiniAppInfoPageLayout";
 
 export const MiniAppSupportPage = () => {
+  const { t } = useTranslation("miniapp", {
+    keyPrefix: "profile-pages.support",
+  });
+
   return (
-    <MiniAppInfoPageLayout title="Support">
+    <MiniAppInfoPageLayout title={t("title")}>
       <Box
         bg="rgba(0, 0, 0, 0.45)"
         border="1px solid rgba(255, 255, 255, 0.12)"
@@ -11,27 +16,29 @@ export const MiniAppSupportPage = () => {
         p={{ base: 5, md: 7 }}
       >
         <Text fontSize={{ base: "md", md: "lg" }} lineHeight="tall" mb={4}>
-          If you have questions, found a bug, or need help with anything in the
-          mini app, we are here to help.
+          {t("intro")}
         </Text>
         <Text fontSize={{ base: "md", md: "lg" }} lineHeight="tall">
-          If you need support, contact{" "}
-          <Link href="mailto:gm@jokersofneon.com" color="purple.200">
-            gm@jokersofneon.com
-          </Link>
-          {" "}and include as much detail as you can so we can assist you
-          faster.
+          <Trans
+            i18nKey="miniapp:profile-pages.support.email"
+            components={{
+              email: <Link href="mailto:gm@jokersofneon.com" color="purple.200" />,
+            }}
+          />
         </Text>
         <Text fontSize={{ base: "md", md: "lg" }} lineHeight="tall" mt={4}>
-          You can also reach us on{" "}
-          <Link
-            href="https://discord.gg/4y296W6jaq"
-            color="purple.200"
-            isExternal
-          >
-            Discord
-          </Link>
-          {" "}if you prefer to contact us there.
+          <Trans
+            i18nKey="miniapp:profile-pages.support.discord"
+            components={{
+              discord: (
+                <Link
+                  href="https://discord.gg/4y296W6jaq"
+                  color="purple.200"
+                  isExternal
+                />
+              ),
+            }}
+          />
         </Text>
       </Box>
     </MiniAppInfoPageLayout>

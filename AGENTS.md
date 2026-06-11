@@ -11,6 +11,7 @@
 
 ## Notes
 - `package.json` version is not used for mobile release versioning in this repo.
+- Any user-visible text added or changed in the app must use `i18n`. Do not hardcode visible strings in components.
 
 ## Release steps
 ```sh
