@@ -182,6 +182,7 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
         if (presentation.show && presentation.streak !== null) {
           navigateToStreakIncreased(navigate, {
             streak: presentation.streak,
+            reward: presentation.reward,
             continuation: {
               type: "map-after-rewards",
             },

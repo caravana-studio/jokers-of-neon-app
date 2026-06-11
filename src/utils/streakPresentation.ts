@@ -1,4 +1,5 @@
 import type { NavigateFunction } from "react-router-dom";
+import type { StreakPresentationRewardApiData } from "../api/profile";
 
 export const SKIP_STREAK_PRESENTATION_CHECK = "skipStreakPresentationCheck";
 
@@ -18,6 +19,7 @@ export type StreakPresentationContinuation =
 
 export type StreakIncreasedLocationState = {
   streak?: number;
+  reward?: StreakPresentationRewardApiData | null;
   from?: string;
   fromState?: Record<string, unknown> | null;
   replaceOnClose?: boolean;
@@ -28,6 +30,7 @@ export function navigateToStreakIncreased(
   navigate: NavigateFunction,
   options: {
     streak: number;
+    reward?: StreakPresentationRewardApiData | null;
     continuation?: StreakPresentationContinuation;
     from?: string;
     fromState?: Record<string, unknown> | null;
@@ -37,6 +40,7 @@ export function navigateToStreakIncreased(
 ) {
   const {
     streak,
+    reward,
     continuation,
     from,
     fromState,
@@ -48,6 +52,7 @@ export function navigateToStreakIncreased(
     replace,
     state: {
       streak,
+      reward,
       continuation,
       from,
       fromState,
