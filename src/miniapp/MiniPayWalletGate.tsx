@@ -6,6 +6,16 @@ import { PositionedVersion } from "../components/version/PositionedVersion";
 import { PreThemeLoadingPage } from "../pages/PreThemeLoadingPage";
 import { hasMiniAppWalletOrFallbackAddress } from "./session/useMiniAppSession";
 
+const PUBLIC_MINIAPP_PATHS = new Set(["/terms-and-conditions"]);
+
+const isPublicMiniAppPath = () => {
+  if (typeof window === "undefined") {
+    return false;
+  }
+
+  return PUBLIC_MINIAPP_PATHS.has(window.location.pathname);
+};
+
 export const MiniPayWalletGate = ({ children }: PropsWithChildren) => {
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "minipay-gate",
@@ -18,7 +28,7 @@ export const MiniPayWalletGate = ({ children }: PropsWithChildren) => {
     setHasWallet(hasMiniAppWalletOrFallbackAddress());
   }, []);
 
-  if (hasWallet) {
+  if (hasWallet || isPublicMiniAppPath()) {
     return <>{children}</>;
   }
 

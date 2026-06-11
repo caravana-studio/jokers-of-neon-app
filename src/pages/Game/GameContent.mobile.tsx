@@ -6,17 +6,14 @@ import {
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
-import { AnimatePresence } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Joyride, { CallBackProps, STATUS } from "react-joyride";
 import { useNavigate } from "react-router-dom";
-import { DeckPreviewTable } from "../../components/DeckPreview/DeckPreviewTable.tsx";
 import { Loading } from "../../components/Loading.tsx";
 import { MobileBottomBar } from "../../components/MobileBottomBar.tsx";
 import { MobileCardHighlight } from "../../components/MobileCardHighlight.tsx";
 import { MobileDecoration } from "../../components/MobileDecoration.tsx";
-import { MotionBox } from "../../components/MotionBox.tsx";
 import {
   JOYRIDE_LOCALES,
   TUTORIAL_STEPS,
@@ -32,8 +29,9 @@ import { useProgressiveGameTutorial } from "../../hooks/useProgressiveGameTutori
 import { useGameContext } from "../../providers/GameProvider.tsx";
 import { useCardHighlight } from "../../providers/HighlightProvider/CardHighlightProvider.tsx";
 import { useCurrentHandStore } from "../../state/useCurrentHandStore.ts";
-import { useDeckPreviewHoldStore } from "../../state/useDeckPreviewHoldStore.ts";
+import { useGameQuickPreviewStore } from "../../state/useGameQuickPreviewStore.ts";
 import { useGameStore } from "../../state/useGameStore.ts";
+import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 import { logEvent } from "../../utils/analytics.ts";
 import { isTutorial } from "../../utils/isTutorial.ts";
 import { PROGRESSIVE_TUTORIAL_IDS } from "../../utils/progressiveTutorialStorage";
@@ -68,6 +66,10 @@ export const MobileGameContent = ({
     useGameContext();
 
   const { highlightedItem: highlightedCard } = useCardHighlight();
+  const { isSmallScreen, viewportHeight } = useResponsiveValues();
+  const hideDecorationsOnCompactViewport =
+    isSmallScreen && viewportHeight > 0 && viewportHeight <= 736;
+  const compactViewportSpacing = hideDecorationsOnCompactViewport;
   const {
     preSelectCard,
     unPreSelectCard,
@@ -126,11 +128,8 @@ export const MobileGameContent = ({
   const [highlightedPlay, setHighlightedPlay] = useState(false);
   const [highlightedDiscard, setHighlightedDiscard] = useState(false);
   const [canClickPowerUp, setCanClickPowerUp] = useState(false);
-  const isDeckPreviewVisible = useDeckPreviewHoldStore(
-    (store) => store.isDeckPreviewVisible,
-  );
-  const setDeckPreviewVisible = useDeckPreviewHoldStore(
-    (store) => store.setDeckPreviewVisible,
+  const setPreviewType = useGameQuickPreviewStore(
+    (store) => store.setPreviewType,
   );
   const cardsStageRef = useRef<HTMLDivElement>(null);
   const handCardsAnchorRef = useRef<HTMLDivElement>(null);
@@ -145,8 +144,8 @@ export const MobileGameContent = ({
   }, []);
 
   useEffect(() => {
-    return () => setDeckPreviewVisible(false);
-  }, [setDeckPreviewVisible]);
+    return () => setPreviewType(null);
+  }, [setPreviewType]);
 
   const stepData = [
     { step: 13, delay: 2700 },
@@ -365,7 +364,7 @@ export const MobileGameContent = ({
           showCumulativeProgress
         />
       )}
-      <MobileDecoration />
+      <MobileDecoration hideBorders={hideDecorationsOnCompactViewport} />
       {!tutorialsBlocked && (
         <>
           <Joyride
@@ -425,31 +424,6 @@ export const MobileGameContent = ({
           hideCloseButton
         />
       </Box>
-      <AnimatePresence>
-        {isDeckPreviewVisible && (
-          <MotionBox
-            position="fixed"
-            zIndex={1300}
-            top="50%"
-            left="50%"
-            transform="translate(-50%, -50%)"
-            pointerEvents="none"
-            width="95vw"
-            maxWidth="95vw"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2, ease: "easeInOut" }}
-          >
-            <Flex justifyContent="center">
-              <Box width="100%" sx={{ "& table": { width: "100%" } }}>
-                <DeckPreviewTable />
-              </Box>
-            </Flex>
-          </MotionBox>
-        )}
-      </AnimatePresence>
-
       <Box
         sx={{
           height: "100%",
@@ -463,7 +437,7 @@ export const MobileGameContent = ({
         >
           <Box
             ref={cardsStageRef}
-            paddingTop={4}
+            paddingTop={compactViewportSpacing ? 2 : 4}
             sx={{
               width: "100%",
               height: "100%",
@@ -478,12 +452,12 @@ export const MobileGameContent = ({
             <Flex
               flexDir="column"
               alignItems="center"
-              mt={3}
+              mt={compactViewportSpacing ? 1 : 3}
               sx={{ height: "245px", width: "100%" }}
             >
               <MobileTopSection />
               {(maxPowerUpSlots === undefined || maxPowerUpSlots > 0) && (
-                <Flex mt={2} w="100%" justifyContent="center">
+                <Flex mt={compactViewportSpacing ? 1 : 2} w="100%" justifyContent="center">
                   <PowerUps
                     onTutorialCardClick={() => {
                       if (run && canClickPowerUp) {
@@ -508,11 +482,12 @@ export const MobileGameContent = ({
             >
               <MobilePreselectedCardsSection
                 cardsAnchorRef={preselectedCardsAnchorRef}
+                compactSpacing={compactViewportSpacing}
               />
             </Box>
             <Box
-              mt={2}
-              pb={2}
+              mt={compactViewportSpacing ? 1 : 2}
+              pb={compactViewportSpacing ? 1 : 2}
               w="100%"
               display={"flex"}
               justifyContent={"center"}
@@ -522,6 +497,7 @@ export const MobileGameContent = ({
               </Flex>
             </Box>
             <MobileBottomBar
+              compactSpacing={compactViewportSpacing}
               firstButtonReactNode={
                 <DiscardButton
                   inTutorial={run}

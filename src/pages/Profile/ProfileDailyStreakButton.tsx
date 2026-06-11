@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Text } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { useTranslation } from "react-i18next";
@@ -27,13 +27,18 @@ export const ProfileDailyStreakButton = ({
   const { isSmallScreen } = useResponsiveValues();
 
   return (
-    <Button
-      variant="unstyled"
+    <Box
+      as="button"
+      type="button"
       onClick={onClick}
-      h="auto"
       w="100%"
+      display="block"
       my={2}
-      minW={0}
+      p={0}
+      border="none"
+      bg="transparent"
+      cursor="pointer"
+      textAlign="initial"
     >
       <Flex
         w="100%"
@@ -94,6 +99,6 @@ export const ProfileDailyStreakButton = ({
           <FontAwesomeIcon icon={faArrowRight} />
         </Flex>
       </Flex>
-    </Button>
+    </Box>
   );
 };
