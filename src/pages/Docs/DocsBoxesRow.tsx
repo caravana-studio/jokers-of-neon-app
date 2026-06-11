@@ -1,71 +1,41 @@
-import { Flex, Image } from "@chakra-ui/react";
-import { useEffect, useRef, useState } from "react";
+import { Box, Flex, Spinner } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 import { DelayedLoading } from "../../components/DelayedLoading";
 import { LootBox } from "../../components/LootBox";
 import { BOXES_RARITY } from "../../data/lootBoxes";
-import { isNativeAndroid } from "../../utils/capacitorUtils";
 import { useCardHighlight } from "../../providers/HighlightProvider/CardHighlightProvider";
 
-const ANDROID_SPINE_STAGGER_MS = 120;
+const LOAD_GUARD_TIMEOUT_MS = 4000;
 
 const DocsBoxCard = ({
   boxId,
-  index,
+  shouldMountSpine,
+  isLoaded,
   onSelect,
+  onLoadResolved,
 }: {
   boxId: number;
-  index: number;
+  shouldMountSpine: boolean;
+  isLoaded: boolean;
   onSelect: (boxId: number) => void;
+  onLoadResolved: () => void;
 }) => {
-  const cardRef = useRef<HTMLDivElement | null>(null);
-  const [isNearViewport, setIsNearViewport] = useState(!isNativeAndroid);
-  const [shouldRenderSpine, setShouldRenderSpine] = useState(!isNativeAndroid);
-  const fallbackImageUrl = `/spine-animations/loot_box_${boxId}.png`;
-
   useEffect(() => {
-    if (!isNativeAndroid || !cardRef.current) {
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setIsNearViewport(entry.isIntersecting);
-      },
-      {
-        rootMargin: "200px 0px",
-        threshold: 0.05,
-      }
-    );
-
-    observer.observe(cardRef.current);
-
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
-
-  useEffect(() => {
-    if (!isNativeAndroid) {
-      return;
-    }
-
-    if (!isNearViewport) {
-      setShouldRenderSpine(false);
+    if (!shouldMountSpine || isLoaded) {
       return;
     }
 
     const timeoutId = window.setTimeout(() => {
-      setShouldRenderSpine(true);
-    }, index * ANDROID_SPINE_STAGGER_MS);
+      onLoadResolved();
+    }, LOAD_GUARD_TIMEOUT_MS);
 
     return () => {
       window.clearTimeout(timeoutId);
     };
-  }, [index, isNearViewport]);
+  }, [isLoaded, onLoadResolved, shouldMountSpine]);
 
   return (
     <Flex
-      ref={cardRef}
       justifyContent={"center"}
       alignItems={"center"}
       alignContent={"center"}
@@ -75,19 +45,32 @@ const DocsBoxCard = ({
         onSelect(boxId);
       }}
       cursor="pointer"
+      position="relative"
     >
-      {shouldRenderSpine ? (
-        <LootBox boxId={boxId} fallbackImageUrl={fallbackImageUrl} />
-      ) : (
-        <Image
-          src={fallbackImageUrl}
-          alt={`Loot box ${boxId}`}
-          width={"100%"}
-          height={"100%"}
-          objectFit={"contain"}
-          loading="lazy"
+      {shouldMountSpine && (
+        <Box
+          width="100%"
+          height="100%"
+          opacity={isLoaded ? 1 : 0}
+          transition="opacity 0.2s ease"
+        >
+          <LootBox
+            boxId={boxId}
+            onLoadSuccess={onLoadResolved}
+            onLoadError={onLoadResolved}
+          />
+        </Box>
+      )}
+      {!isLoaded && (
+        <Flex
+          position="absolute"
+          inset={0}
+          justifyContent="center"
+          alignItems="center"
           pointerEvents="none"
-        />
+        >
+          <Spinner color="white" thickness="3px" speed="0.7s" size="lg" />
+        </Flex>
       )}
     </Flex>
   );
@@ -96,6 +79,29 @@ const DocsBoxCard = ({
 export const DocsBoxesRow = () => {
   const boxes = Object.keys(BOXES_RARITY).map(Number);
   const { highlightItem: highlightCard } = useCardHighlight();
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [resolvedIndexes, setResolvedIndexes] = useState<number[]>([]);
+
+  useEffect(() => {
+    setActiveIndex(0);
+    setResolvedIndexes([]);
+  }, []);
+
+  const resolveIndex = (index: number) => {
+    setResolvedIndexes((currentResolvedIndexes) => {
+      if (currentResolvedIndexes.includes(index)) {
+        return currentResolvedIndexes;
+      }
+
+      return [...currentResolvedIndexes, index];
+    });
+
+    setActiveIndex((currentActiveIndex) =>
+      currentActiveIndex === index
+        ? Math.min(index + 1, boxes.length - 1)
+        : currentActiveIndex
+    );
+  };
 
   return (
     <DelayedLoading>
@@ -114,7 +120,8 @@ export const DocsBoxesRow = () => {
           <DocsBoxCard
             key={box}
             boxId={box}
-            index={index}
+            shouldMountSpine={index <= activeIndex}
+            isLoaded={resolvedIndexes.includes(index)}
             onSelect={(selectedBoxId) => {
               highlightCard({
                 card_id: selectedBoxId,
@@ -122,6 +129,9 @@ export const DocsBoxesRow = () => {
                 idx: 0,
                 img: "",
               });
+            }}
+            onLoadResolved={() => {
+              resolveIndex(index);
             }}
           />
         ))}

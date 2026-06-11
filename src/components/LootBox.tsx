@@ -11,6 +11,8 @@ interface LootBoxProps {
   onOpenAnimationStart?: () => void;
   onOpenAnimationEnd?: () => void;
   onClick?: () => void;
+  onLoadSuccess?: () => void;
+  onLoadError?: () => void;
   width?: number;
   height?: number;
   xOffset?: number;
@@ -40,6 +42,8 @@ export const LootBox = forwardRef<LootBoxRef, LootBoxProps>(
       price,
       discountPrice,
       onClick,
+      onLoadSuccess,
+      onLoadError,
       freezeOnLastFrame,
       fallbackImageUrl,
     },
@@ -58,6 +62,8 @@ export const LootBox = forwardRef<LootBoxRef, LootBoxProps>(
         ref={spineAnimationRef}
         jsonUrl={`/spine-animations/loot_box_${boxId}.json`}
         atlasUrl={`/spine-animations/loot_box_${boxId}.atlas`}
+        onLoadSuccess={onLoadSuccess}
+        onLoadError={onLoadError}
         initialAnimation={initialAnimation ?? animationsData.loopAnimation}
         loopAnimation={animationsData.loopAnimation}
         openBoxAnimation={animationsData.openBoxAnimation}

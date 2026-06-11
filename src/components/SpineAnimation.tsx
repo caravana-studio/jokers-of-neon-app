@@ -17,6 +17,8 @@ interface SpineAnimationProps {
   jsonUrl: string;
   atlasUrl: string;
   onClick?: () => void;
+  onLoadSuccess?: () => void;
+  onLoadError?: () => void;
   initialAnimation: string;
   hoverAnimation?: string;
   loopAnimation: string;
@@ -47,6 +49,8 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
       jsonUrl,
       atlasUrl,
       onClick,
+      onLoadSuccess,
+      onLoadError,
       initialAnimation,
       hoverAnimation,
       loopAnimation,
@@ -69,6 +73,8 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
   ) => {
     const containerRef = useRef<HTMLDivElement | null>(null);
     const playerRef = useRef<SpinePlayer | null>(null);
+    const onLoadSuccessRef = useRef(onLoadSuccess);
+    const onLoadErrorRef = useRef(onLoadError);
     const [isHovered, setIsHovered] = useState(false);
     const [playerReady, setPlayerReady] = useState(false);
     const openAnimationSpeed = 0.3;
@@ -116,6 +122,11 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
     }));
 
     useEffect(() => {
+      onLoadSuccessRef.current = onLoadSuccess;
+      onLoadErrorRef.current = onLoadError;
+    }, [onLoadError, onLoadSuccess]);
+
+    useEffect(() => {
       const handleResize = () => {
         setScreenWidth(window.innerWidth);
       };
@@ -150,6 +161,7 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
             if (player.skeleton != null) {
               player.startRendering();
               setPlayerReady(true);
+              onLoadSuccessRef.current?.();
 
               player.animationState?.addListener({
                 complete: function (entry) {
@@ -164,9 +176,12 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
               });
             }
           },
-          error: () => {
+          error: (player: SpinePlayer) => {
+            player.dispose();
+            playerRef.current = null;
             setPlayerReady(false);
             setHasRenderError(true);
+            onLoadErrorRef.current?.();
           },
           viewport: {
             // debugRender: true,
