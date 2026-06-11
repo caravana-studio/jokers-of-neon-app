@@ -3,15 +3,19 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { useTranslation } from "react-i18next";
 import { DailyStreakFireAnimation } from "../../components/DailyStreakFireAnimation";
+import { StreakProtectorSlots } from "../../components/StreakProtectorSlots";
 import { DIAMONDS } from "../../theme/colors";
+import { useResponsiveValues } from "../../theme/responsiveSettings";
 
 interface ProfileDailyStreakButtonProps {
   streak: number;
+  streakProtectors?: number;
   onClick: () => void;
 }
 
 export const ProfileDailyStreakButton = ({
   streak,
+  streakProtectors = 0,
   onClick,
 }: ProfileDailyStreakButtonProps) => {
   const { t } = useTranslation("intermediate-screens");
@@ -19,6 +23,8 @@ export const ProfileDailyStreakButton = ({
     ? Math.max(0, Math.floor(streak))
     : 0;
   const isZeroStreak = normalizedStreak === 0;
+
+  const { isSmallScreen } = useResponsiveValues();
 
   return (
     <Button
@@ -31,6 +37,7 @@ export const ProfileDailyStreakButton = ({
     >
       <Flex
         w="100%"
+        position="relative"
         alignItems="center"
         justifyContent="space-between"
         gap={2}
@@ -40,6 +47,13 @@ export const ProfileDailyStreakButton = ({
         bg="rgba(0, 0, 0, 0.5)"
         boxShadow="0px 0px 8px rgba(255, 255, 255, 0.45), inset 0 0 5px rgba(255, 255, 255, 0.4)"
       >
+        <Flex position="absolute" top={4} right={3}>
+          <StreakProtectorSlots
+            protectors={streakProtectors}
+            iconSize={isSmallScreen ? 7 : 9}
+          />
+        </Flex>
+
         <Flex alignItems="center" gap={1} minW={0}>
           <Box flexShrink={0}>
             <DailyStreakFireAnimation size={88} grayscale={isZeroStreak} />

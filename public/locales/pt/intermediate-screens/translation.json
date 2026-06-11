@@ -487,6 +487,7 @@
   },
   "daily-streak": {
     "title": "Sequência diária",
+    "protectors": "Protetores",
     "description": "Complete uma missão diária para começar sua sequência.",
     "next-objective": "Próximo objetivo",
     "continue": "Continuar",

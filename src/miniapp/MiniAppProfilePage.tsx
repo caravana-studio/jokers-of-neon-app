@@ -76,7 +76,8 @@ export const MiniAppProfilePage = () => {
       profileAddress,
       account.account,
       resolvedUsername ?? undefined,
-      accountType
+      accountType,
+      { refreshStreakStatus: true }
     );
   }, [
     account,
@@ -136,6 +137,7 @@ export const MiniAppProfilePage = () => {
             username={profileData.profile.username}
             level={profileData.profile.level}
             streak={profileData.profile.streak}
+            streakProtectors={profileData.profile.streakProtectors ?? 0}
             games={profileData.playerStats.games}
             victories={profileData.playerStats.victories}
             currentXp={profileData.profile.currentXp}

@@ -21,6 +21,7 @@ export interface ProfileStatsProps {
   username: string | null;
   level: number;
   streak: number;
+  streakProtectors?: number;
   games: number;
   victories: number;
   currentXp: number;
@@ -48,6 +49,7 @@ export const ProfileStats: React.FC<
   username,
   level,
   streak,
+  streakProtectors = 0,
   games,
   victories,
   currentXp,
@@ -177,6 +179,7 @@ export const ProfileStats: React.FC<
       <Box w="100%">
         <ProfileDailyStreakButton
           streak={streak}
+          streakProtectors={streakProtectors}
           onClick={onOpenDailyStreak ?? (() => undefined)}
         />
       </Box>
