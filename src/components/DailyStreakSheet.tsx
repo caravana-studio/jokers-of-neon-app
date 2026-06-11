@@ -1,20 +1,26 @@
 import { Haptics } from "@capacitor/haptics";
 import { Capacitor } from "@capacitor/core";
 import { Box, Flex, Text } from "@chakra-ui/react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faXTwitter } from "@fortawesome/free-brands-svg-icons";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useDojo } from "../dojo/DojoContext";
 import { DIAMONDS } from "../theme/colors";
 import { Intensity } from "../types/intensity";
 import AudioManager from "../audio/AudioManager";
 import { clearLevel, clearRound } from "../constants/sfx";
+import { getGameApiBaseUrl } from "../config/gameApiUrl";
 import { triggerHaptic } from "../haptics";
 import { useBackgroundAnimation } from "../providers/BackgroundAnimationProvider";
+import { shareOnX } from "../utils/shareOnX";
 import { DailyStreakFireAnimation } from "./DailyStreakFireAnimation";
 import {
   DailyStreakMilestoneProgress,
   isDailyStreakAtMilestone,
 } from "./DailyStreakMilestoneProgress";
+import { StreakProtectorSlots } from "./StreakProtectorSlots";
 import { DailyStreakWeekProgress } from "./DailyStreakWeekProgress";
 import { MobileBottomBar } from "./MobileBottomBar";
 import { MobileDecoration } from "./MobileDecoration";
@@ -23,6 +29,7 @@ import type {
   StreakPresentationRewardApiData,
   StreakRewardItemApiData,
 } from "../api/profile";
+import { useResponsiveValues } from "../theme/responsiveSettings";
 
 const CELEBRATION_INTRO_DURATION_MS = 2600;
 
@@ -36,6 +43,7 @@ const triggerEntryVibration = (duration: number) => {
 
 export interface DailyStreakSheetProps {
   streak: number;
+  streakProtectors?: number;
   onClose: () => void | Promise<void>;
   onContinue?: () => void | Promise<void>;
   reward?: StreakPresentationRewardApiData | null;
@@ -89,6 +97,7 @@ function buildRewardSummary(
 
 export const DailyStreakSheet = ({
   streak,
+  streakProtectors = 0,
   onClose,
   onContinue,
   reward,
@@ -97,6 +106,9 @@ export const DailyStreakSheet = ({
   showCelebrationIntroOnEntry = true,
 }: DailyStreakSheetProps) => {
   const { t } = useTranslation("intermediate-screens");
+  const {
+    account: { account },
+  } = useDojo();
   const { showLightPillarAnimation, hideLightPillarAnimation } = useBackgroundAnimation();
   const normalizedStreak = Number.isFinite(streak)
     ? Math.max(0, Math.floor(streak))
@@ -108,6 +120,8 @@ export const DailyStreakSheet = ({
   );
   const [isContinuing, setIsContinuing] = useState(false);
   const rewardSummary = buildRewardSummary(reward, t);
+
+  const { isSmallScreen } = useResponsiveValues();
 
   useEffect(() => {
     if (!showCelebrationIntroOnEntry || isZeroStreak) {
@@ -159,6 +173,22 @@ export const DailyStreakSheet = ({
   });
   const getAnimationStartDelayMs = (index: number) =>
     Math.round((getEntryTransition(index).delay + getEntryTransition(index).duration) * 1000);
+
+  const handleShareClick = async () => {
+    const shareVariant = Math.floor(Math.random() * 5) + 1;
+    const shareMessage = t(`daily-streak.share.variants.${shareVariant}`, {
+      streak: normalizedStreak,
+    });
+    const shareUrl = account?.address
+      ? `${getGameApiBaseUrl()}/share/daily-streak/${account.address}`
+      : undefined;
+
+    await shareOnX({
+      message: shareMessage,
+      url: shareUrl,
+    });
+  };
+
   const handleContinueClick = async () => {
     if (isContinuing) {
       return;
@@ -218,6 +248,7 @@ export const DailyStreakSheet = ({
               <Flex flexDirection="column" alignItems="center" gap={2}>
                 <Flex
                   w="100%"
+                  position="relative"
                   flexDirection="column"
                   alignItems="center"
                   gap={5}
@@ -227,6 +258,29 @@ export const DailyStreakSheet = ({
                   bg="rgba(0, 0, 0, 0.3)"
                   boxShadow="0px 0px 8px rgba(255, 255, 255, 0.5), inset 0 0 5px rgba(255, 255, 255, 0.5)"
                 >
+                  <Flex
+                    position="absolute"
+                    top={4}
+                    right={4}
+                    flexDirection="column"
+                    alignItems="center"
+                    gap={1.5}
+                  >
+                    <Text
+                      fontSize={{ base: "8px", sm: "12px" }}
+                      textTransform="uppercase"
+                      color="white"
+                      lineHeight={1}
+                    >
+                      {t("daily-streak.protectors")}
+                    </Text>
+                    <StreakProtectorSlots
+                      protectors={streakProtectors}
+                      slots={2}
+                      iconSize={isSmallScreen ? 8 : 12}
+                    />
+                  </Flex>
+
                   <Box
                     position="relative"
                     borderRadius="full"
@@ -451,7 +505,16 @@ export const DailyStreakSheet = ({
           transition={getEntryTransition(3)}
         >
           <MobileBottomBar
-            firstButton={{
+            firstButton={
+              !isZeroStreak
+                ? {
+                    onClick: handleShareClick,
+                    label: t("daily-streak.share.button"),
+                    icon: <FontAwesomeIcon fontSize={12} icon={faXTwitter} />,
+                  }
+                : undefined
+            }
+            secondButton={{
               onClick: handleContinueClick,
               label: reward ? t("daily-streak.open-reward") : t("daily-streak.continue"),
               isLoading: isContinuing || isRewardClaiming,

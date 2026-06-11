@@ -1,12 +1,12 @@
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useState } from "react";
-import { claimStreakRewards } from "../api/profile";
+import { claimStreakRewards, fetchStreakStatus } from "../api/profile";
 import { getUserCards } from "../api/getUserCards";
 import type { SeasonRewardPack } from "../api/claimSeasonReward";
 import { DelayedLoading } from "../components/DelayedLoading";
 import { DailyStreakSheet } from "../components/DailyStreakSheet";
+import { useDojo } from "../dojo/DojoContext";
 import { GameStateEnum } from "../dojo/typescript/custom";
-import { useDojo } from "../dojo/useDojo";
 import { useCustomNavigate } from "../hooks/useCustomNavigate";
 import { useMapNavigate } from "../hooks/useMapNavigate";
 import { useProfileStore } from "../state/useProfileStore";
@@ -19,11 +19,9 @@ const MOCKED_DAILY_STREAK = 30;
 export const StreakIncreasedPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { account } = useDojo();
   const customNavigate = useCustomNavigate();
   const { navigateToMap } = useMapNavigate();
-  const {
-    account: { account },
-  } = useDojo();
   const setRoundRewards = useGameStore((store) => store.setRoundRewards);
   const state = location.state as StreakIncreasedLocationState | null;
   const reward = state?.reward ?? null;
@@ -35,6 +33,38 @@ export const StreakIncreasedPage = () => {
   const [packs, setPacks] = useState<SeasonRewardPack[]>([]);
   const [currentPackIndex, setCurrentPackIndex] = useState(0);
   const [ownedCardIds, setOwnedCardIds] = useState<string[]>([]);
+  const [liveStreakProtectors, setLiveStreakProtectors] = useState<number | null>(
+    null
+  );
+  const streakProtectors = liveStreakProtectors ?? 0;
+
+  useEffect(() => {
+    const address = account?.account?.address;
+    if (!address) {
+      setLiveStreakProtectors(null);
+      return;
+    }
+
+    let active = true;
+
+    void (async () => {
+      try {
+        const streakStatus = await fetchStreakStatus(address, { refresh: true });
+        if (active) {
+          setLiveStreakProtectors(streakStatus.protectorsAvailable);
+        }
+      } catch (error) {
+        console.warn("StreakIncreasedPage: failed to fetch streak status", error);
+        if (active) {
+          setLiveStreakProtectors(null);
+        }
+      }
+    })();
+
+    return () => {
+      active = false;
+    };
+  }, [account?.account?.address]);
 
   const handleClose = async () => {
     if (state?.continuation?.type === "map-after-rewards") {
@@ -82,7 +112,7 @@ export const StreakIncreasedPage = () => {
       return;
     }
 
-    const address = account?.address;
+    const address = account?.account?.address;
     if (!address) {
       await handleClose();
       return;
@@ -95,6 +125,12 @@ export const StreakIncreasedPage = () => {
       setOwnedCardIds(userCardsData.ownedCardIds ?? []);
 
       const result = await claimStreakRewards(address, reward.claimIds);
+      const nextProtectorsAvailable =
+        result.streakProtectors.protectorsAvailable;
+
+      if (nextProtectorsAvailable !== undefined) {
+        setLiveStreakProtectors(nextProtectorsAvailable);
+      }
 
       if (import.meta.env.DEV) {
         console.info("[STREAK-REWARD] claimed", {
@@ -139,6 +175,7 @@ export const StreakIncreasedPage = () => {
     <DelayedLoading ms={0}>
       <DailyStreakSheet
         streak={streak}
+        streakProtectors={streakProtectors}
         onClose={handleClose}
         onContinue={reward ? handleRewardContinue : handleClose}
         reward={reward}

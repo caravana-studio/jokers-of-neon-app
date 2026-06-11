@@ -46,7 +46,7 @@ export const Packs = ({ reward, claiming }: PacksProps) => {
 
   if (reward.streakProtectors > 0) {
     return (
-      <Flex flexDir="column" gap={2} alignItems="center">
+      <Flex flexDir="column" gap={1} alignItems="center" mb={4}>
         {claiming ? (
           <Text size="s" textTransform={"uppercase"}>
             {t("claiming-in-progress")}

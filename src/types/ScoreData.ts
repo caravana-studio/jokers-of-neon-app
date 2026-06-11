@@ -136,6 +136,8 @@ export interface DailyMissionCompleted {
   difficulty?: number;
   target?: number;
   progress?: number;
+  param1?: number;
+  param2?: number;
   gameId?: number;
   base_xp: number;
 }

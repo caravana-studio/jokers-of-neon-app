@@ -40,7 +40,7 @@
     "daily-add-trad": "Agrega {{quantity}} cartas tradicionales a tu mazo",
     "daily-add-mod": "Agrega {{quantity}} cartas modificadoras a tu mazo",
     "daily-add-neon": "Agrega {{quantity}} cartas de Neón a tu mazo",
-    "daily-flush-suit": "Haz 1 {{hand}} de {{suit}}",
+    "daily-flush-suit": "Juega {{hand}} de {{suit}}",
     "daily-deck-size": "Agrega {{quantity}} cartas a tu mazo",
     "daily-deck-neon": "Agrega {{quantity}} cartas de Neón a tu mazo",
     "daily-deck-jokers": "Agrega {{quantity}} Comodines a tu mazo",

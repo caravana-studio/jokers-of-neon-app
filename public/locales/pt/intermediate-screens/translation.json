@@ -263,7 +263,6 @@
       "gameOver-top5-msj": "Ótimo trabalho! Você está entre os 5 melhores! Continue assim!"
     },
     "btn": {
-      "gameOver-share-btn": "COMPARTILHAR NO",
       "gameOver-mygames-btn": "MINHAS JOGOS",
       "go-home": "Ir para home",
       "play-again": "Jogar de novo"
@@ -306,7 +305,18 @@
       "total": "total",
       "final-score": "- Pontuação final: {{score}} -",
       "continue-btn": "continuar",
-      "endless-mode": "Modo infinito"
+      "endless-mode": "Modo infinito",
+      "share": {
+        "button": "COMPARTILHAR NO",
+        "variants": {
+          "1": "Mais uma vitória em @Jokers_of_neon 🔥",
+          "2": "Passei por mais essa em @Jokers_of_neon ⚡️",
+          "3": "Mais uma vitória em @Jokers_of_neon 🃏",
+          "4": "Completei a run em @Jokers_of_neon.\nVocê consegue bater meus stats?",
+          "5": "Não vai ser minha última vitória em @Jokers_of_neon 🔥",
+          "6": "Outra run, outra vitória em @Jokers_of_neon."
+        }
+      }
     }
   },
   "shop-tier-unlocked": {
@@ -487,6 +497,7 @@
   },
   "daily-streak": {
     "title": "Sequência diária",
+    "protectors": "Protetores",
     "description": "Complete uma missão diária para começar sua sequência.",
     "next-objective": "Próximo objetivo",
     "continue": "Continuar",
@@ -496,6 +507,16 @@
     "reward-xp": "{{amount}} XP",
     "reward-ticket": "Ticket x{{count}}",
     "reward-protector": "Protector x{{count}}",
+    "share": {
+      "button": "COMPARTILHAR NO",
+      "variants": {
+        "1": "Sequência de {{streak}} dias garantida 🔥\nSigo firme em @Jokers_of_neon.",
+        "2": "{{streak}} dias e ainda pegando fogo 🔥\nMinha sequência diária continua viva em @Jokers_of_neon.",
+        "3": "Mantendo o fogo aceso 🔥\nAcabei de bater uma sequência diária de {{streak}} dias em @Jokers_of_neon.",
+        "4": "A grind continua 🔥\nSequência diária de {{streak}} dias em @Jokers_of_neon.",
+        "5": "Acabei de bater uma sequência diária de {{streak}} dias em @Jokers_of_neon 🔥\nVocê consegue manter a sua viva?"
+      }
+    },
     "celebration-title": "Parabéns",
     "celebration-description": "Você completou seu objetivo",
     "celebration-description-extended": "Você acabou de estender sua sequência",

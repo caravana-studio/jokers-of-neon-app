@@ -25,7 +25,7 @@
       "description": "A carta modificada será considerada como uma carta de Neon"
     },
     "613": {
-      "name": "Mudar para Coringa",
+      "name": "Modificador Coringa",
       "description": "A carta modificada será considerada como uma carta de Coringa"
     }
   },
@@ -477,6 +477,62 @@
     "10314": {
       "name": "Ouroboros",
       "description": "A cada rodada, copia o efeito de uma carta especial equipada."
+    },
+    "10401": {
+      "name": "Mão sem Figuras",
+      "description": "Adiciona ^violet(+7 multi)^ se a sua mão jogada não tiver Figuras."
+    },
+    "10402": {
+      "name": "Cadeia de Clones",
+      "description": "Adiciona ^violet(+5 multi)^ se a sua mão jogada contiver 2 cartas idênticas, ^violet(+10 multi)^ para 3, ^violet(+15 multi)^ para 4 e ^violet(+20 multi)^ para 5."
+    },
+    "10403": {
+      "name": "Circuito de Naipes",
+      "description": "Adiciona ^blue(+40 pontos)^ para cada naipe diferente na mão jogada."
+    },
+    "10404": {
+      "name": "Aluguel de Slot Vazio",
+      "description": "Ganhe ^yellow(+250 moedas)^ no fim de cada rodada para cada slot especial vazio."
+    },
+    "10405": {
+      "name": "Hierarquia Invertida",
+      "description": "Cada carta especial C ou B ativa adiciona ^blue(+75 pontos)^. Cada carta especial A ou S ativa deduz ^blue(50 pontos)^."
+    },
+    "10406": {
+      "name": "Arredondamento Perfeito",
+      "description": "Arredonda o ^violet(multi)^ para cima até o próximo múltiplo de ^violet(10)^ e os ^blue(pontos)^ para cima até o próximo múltiplo de ^blue(100)^."
+    },
+    "10407": {
+      "name": "Abertura Neon",
+      "description": "Todas as cartas da sua mão inicial se tornam Neon."
+    },
+    "10408": {
+      "name": "Sobrecarga",
+      "description": "Os Power-ups concedem efeitos em dobro."
+    },
+    "10409": {
+      "name": "Reator de Reembaralhamento",
+      "description": "Adiciona ^violet(+2 multi)^ para cada reembaralhamento não usado. Atualmente ^violet(+{{multi}} multi)^."
+    },
+    "10410": {
+      "name": "Carga Crítica",
+      "description": "Ganha ^blue(+5 pontos)^ (acumulativos) se o valor total das cartas jogadas for menor que ^blue(30)^. Jokers não contam. Atualmente ^blue(+{{points}} pontos)^."
+    },
+    "10411": {
+      "name": "Liquidante de Especiais",
+      "description": "Adiciona pontos equivalentes ao valor total de venda de todas as suas cartas especiais, dividido por ^blue(10)^."
+    },
+    "10412": {
+      "name": "Aprimoramento Eco",
+      "description": "Aprimora a mão que você joga se não houver jogadas restantes."
+    },
+    "10413": {
+      "name": "Mercado Negro",
+      "description": "Power-ups são grátis."
+    },
+    "10414": {
+      "name": "Camaleão Supremo",
+      "description": "Transforma-se em qualquer carta especial S."
     }
   },
   "power-ups": {
@@ -1049,6 +1105,10 @@
     "20027": {
       "name": "Mandato do Faraó",
       "description": "Ao jogar uma mão, seu nível é redefinido para 1."
+    },
+    "20028": {
+      "name": "Descarga Total",
+      "description": "Depois de jogar uma mão, descarte todas as cartas restantes da sua mão."
     }
   },
   "lootBoxes": {

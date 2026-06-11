@@ -11,7 +11,9 @@ import { MiniAppBottomMenu } from "./navigation/MiniAppBottomMenu";
 export const MiniAppLayout = ({ children }: { children: ReactNode }) => {
   const { isSmallScreen } = useResponsiveValues();
   const location = useLocation();
-  const shouldHideNavigation = location.pathname === "/login";
+  const shouldHideNavigation =
+    location.pathname === "/login" ||
+    location.pathname === "/terms-and-conditions";
 
   return (
     <ReactFlowProvider>

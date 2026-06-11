@@ -369,9 +369,7 @@ export const AppRoutes = () => {
         path="/missions"
         element={
           <AnimatedPage>
-            <LoginGate>
-              <MissionsPage />
-            </LoginGate>
+            <MissionsPage />
           </AnimatedPage>
         }
       />
@@ -379,11 +377,9 @@ export const AppRoutes = () => {
         path="/missions-game"
         element={
           <AnimatedPage>
-            <LoginGate>
-              <GameStoreLoader>
-                <MissionsPage inGame />
-              </GameStoreLoader>
-            </LoginGate>
+            <GameStoreLoader>
+              <MissionsPage inGame />
+            </GameStoreLoader>
           </AnimatedPage>
         }
       />

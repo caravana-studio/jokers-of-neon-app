@@ -913,6 +913,62 @@
     "10314": {
       "name": "Ouroboros",
       "description": "Each round, copies the effect of a random equipped special card."
+    },
+    "10401": {
+      "name": "Faceless Hand",
+      "description": "Adds ^violet(+7 multi)^ if your played hand contains no Figures."
+    },
+    "10402": {
+      "name": "Clone Chain",
+      "description": "Adds ^violet(+5 multi)^ if your played hand contains 2 identical cards, ^violet(+10 multi)^ for 3, ^violet(+15 multi)^ for 4, and ^violet(+20 multi)^ for 5."
+    },
+    "10403": {
+      "name": "Suit Circuit",
+      "description": "Adds ^blue(+40 points)^ for each different suit in the played hand."
+    },
+    "10404": {
+      "name": "Empty Slot Rent",
+      "description": "Earn ^yellow(+250 cash)^ at the end of each round for each empty special slot."
+    },
+    "10405": {
+      "name": "Inverted Hierarchy",
+      "description": "Each active C or B special card adds ^blue(+75 points)^. Each active A or S special card deducts ^blue(50 points)^."
+    },
+    "10406": {
+      "name": "Perfect Rounding",
+      "description": "Rounds ^violet(multi)^ up to the next multiple of ^violet(10)^, and ^blue(points)^ up to the next multiple of ^blue(100)^."
+    },
+    "10407": {
+      "name": "Neon Opening",
+      "description": "All cards in your starting hand become Neon."
+    },
+    "10408": {
+      "name": "Power Surge",
+      "description": "Power-ups grant double effects."
+    },
+    "10409": {
+      "name": "Reroll Reactor",
+      "description": "Adds ^violet(+2 multi)^ for each unused reroll. Currently ^violet(+{{multi}} multi)^."
+    },
+    "10410": {
+      "name": "Critical Charge",
+      "description": "Gains ^blue(+5 points)^ (stacking) if the total value of the played cards is under ^blue(30)^. Jokers do not count. Currently ^blue(+{{points}} points)^."
+    },
+    "10411": {
+      "name": "Special Liquidator",
+      "description": "Adds points equal to the total sell value of all your special cards, divided by ^blue(10)^."
+    },
+    "10412": {
+      "name": "Echo Upgrade",
+      "description": "Levels up the hand you play if you have no remaining plays."
+    },
+    "10413": {
+      "name": "Black Market",
+      "description": "Power-ups are free."
+    },
+    "10414": {
+      "name": "Supreme Chameleon",
+      "description": "Transforms into any S special card."
     }
   },
   "power-ups": {
@@ -1049,6 +1105,10 @@
     "20027": {
       "name": "Pharaoh's Mandate",
       "description": "When you play a hand, its level resets to 1."
+    },
+    "20028": {
+      "name": "Full Discharge",
+      "description": "After you play a hand, discard every remaining card in your hand."
     }
   },
   "lootBoxes": {

@@ -1,7 +1,10 @@
 import { Flex } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { useDeckPreviewHoldStore } from "../../state/useDeckPreviewHoldStore";
+import {
+  GameQuickPreviewType,
+  useGameQuickPreviewStore,
+} from "../../state/useGameQuickPreviewStore";
 import { isNative } from "../../utils/capacitorUtils";
 import { ContextMenuItem } from "./ContextMenuItem";
 import { GameMenuContent } from "./GameMenu/GameMenuContent";
@@ -13,13 +16,19 @@ export const BottomMenu = () => {
   const { mainMenuItems, inGameMenuItems } = useContextMenuItems({
     onMoreClick: () => setIsMenuOpen(true),
   });
-  const setDeckPreviewVisible = useDeckPreviewHoldStore(
-    (store) => store.setDeckPreviewVisible,
+  const setPreviewType = useGameQuickPreviewStore(
+    (store) => store.setPreviewType,
   );
 
   useEffect(() => {
-    setDeckPreviewVisible(false);
-  }, [location.pathname, setDeckPreviewVisible]);
+    setPreviewType(null);
+  }, [location.pathname, setPreviewType]);
+
+  const previewTypeByKey: Partial<Record<string, GameQuickPreviewType>> = {
+    deck: "deck",
+    plays: "plays",
+    missions: "missions",
+  };
 
   return (
     <>
@@ -43,15 +52,17 @@ export const BottomMenu = () => {
           : mainMenuItems
         ).map((item) => {
           const { key, ...menuItem } = item;
+          const previewType = previewTypeByKey[key];
           return (
             <ContextMenuItem
               key={key}
               {...menuItem}
               nameKey={key}
               pulse={item.pulse}
-              onHoldChange={
-                key === "deck"
-                  ? (isHolding) => setDeckPreviewVisible(isHolding)
+              onPreviewChange={
+                previewType
+                  ? (isVisible) =>
+                      setPreviewType(isVisible ? previewType : null)
                   : undefined
               }
             />

@@ -14,6 +14,7 @@ import BarsIcon from "../assets/MenuIcons/bars.png";
 import CircleIcon from "../assets/MenuIcons/circle.png";
 import DocsIcon from "../assets/MenuIcons/docs.png";
 import MapIcon from "../assets/MenuIcons/map.png";
+import MapHighlightIcon from "../assets/MenuIcons/map-highlight.png";
 import PodiumIcon from "../assets/MenuIcons/podium.png";
 import LeaderboardIcon from "../assets/MenuIcons/leaderboard.png";
 import SettingsIcon from "../assets/MenuIcons/settings.png";
@@ -25,10 +26,13 @@ import GameoverIcon from "../assets/MenuIcons/gameover.png";
 import MapSimpleIcon from "../assets/MenuIcons/map-simple.png";
 import StoreIcon from "../assets/MenuIcons/shop.png";
 import ShopIcon from "../assets/MenuIcons/shop2.png";
+import ShopHighlightIcon from "../assets/MenuIcons/shop-highlight.png";
 import SeasonIcon from "../assets/MenuIcons/season.png";
 import TournamentIcon from "../assets/MenuIcons/tournament.png";
 import RoundIcon from "../assets/MenuIcons/round.png";
+import RoundHighlightIcon from "../assets/MenuIcons/round-highlight.png";
 import RageIcon from "../assets/MenuIcons/rage.png";
+import RageHighlightIcon from "../assets/MenuIcons/rage-highlight.png";
 import HomeIcon from "../assets/MenuIcons/home.png";
 import ProfileIcon from "../assets/MenuIcons/profile.png";
 import BackIcon from "../assets/MenuIcons/back.png";
@@ -56,6 +60,7 @@ export const Icons = {
   CIRCLE: CircleIcon,
   DOCS: DocsIcon,
   MAP: MapIcon,
+  MAP_HIGHLIGHT: MapHighlightIcon,
   MAP_SIMPLE: MapSimpleIcon,
   PODIUM: PodiumIcon,
   SETTINGS: SettingsIcon,
@@ -64,8 +69,11 @@ export const Icons = {
   DISCORD: DiscordIcon,
   TUTORIAL: TutorialIcon,
   STORE: StoreIcon,
+  SHOP_HIGHLIGHT: ShopHighlightIcon,
   ROUND: RoundIcon,
+  ROUND_HIGHLIGHT: RoundHighlightIcon,
   RAGE: RageIcon,
+  RAGE_HIGHLIGHT: RageHighlightIcon,
   GAMEOVER: GameoverIcon,
   HOME: HomeIcon,
   PROFILE: ProfileIcon,

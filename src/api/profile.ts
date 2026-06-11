@@ -734,10 +734,6 @@ export async function fetchStreakStatus(
     updatedAt: data.updated_at ?? null,
   };
 
-  if (import.meta.env.DEV) {
-    console.info("[PROFILE-DEBUG] fetchStreakStatus mapped", streakStatus);
-  }
-
   return streakStatus;
 }
 

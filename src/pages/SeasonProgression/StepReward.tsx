@@ -4,7 +4,9 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { claimSeasonReward } from "../../api/claimSeasonReward";
 import { useDojo } from "../../dojo/useDojo";
+import { useUsername } from "../../dojo/utils/useUsername";
 import { RewardStatus } from "../../enums/rewardStatus";
+import { useProfileStore } from "../../state/useProfileStore";
 import { VIOLET } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { Packs } from "./Packs";
@@ -31,8 +33,11 @@ export const StepReward = ({
     keyPrefix: "season-progression",
   });
   const {
-    account: { account },
+    setup: { account, client },
+    accountType,
   } = useDojo();
+  const loggedInUser = useUsername();
+  const fetchProfileData = useProfileStore((store) => store.fetchProfileData);
   const { isSmallScreen } = useResponsiveValues();
   const pack = reward?.packs?.[0];
   const streakProtectorsRequested = reward?.streakProtectors ?? 0;
@@ -92,10 +97,20 @@ export const StepReward = ({
                     try {
                       setClaiming(true);
                       await claimSeasonReward({
-                        address: account.address,
+                        address: account.account.address,
                         level,
                         isPremium: type === "premium",
                       });
+                      if (streakProtectorsRequested > 0) {
+                        await fetchProfileData(
+                          client,
+                          account.account.address,
+                          account.account,
+                          loggedInUser ?? undefined,
+                          accountType,
+                          { refreshStreakStatus: true }
+                        );
+                      }
                       setClaimed(true);
                       refetch();
                     } catch (error) {

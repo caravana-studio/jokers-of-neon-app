@@ -25,11 +25,15 @@ import { PowerupHighlightProvider } from "../providers/HighlightProvider/Powerup
 import { StoreProvider } from "../providers/StoreProvider";
 import { MiniAppMyGamesPage } from "./MiniAppMyGamesPage";
 import { MiniAppGameOverPage } from "./MiniAppGameOverPage";
+import { MiniAppPrivacyPolicyPage } from "./MiniAppPrivacyPolicyPage";
 import { MiniAppProfilePage } from "./MiniAppProfilePage";
 import { MiniAppSettingsPage } from "./MiniAppSettingsPage";
+import { MiniAppTermsPage } from "./MiniAppTermsPage";
 import { MiniAppWeeklyLeaderboardPage } from "./MiniAppWeeklyLeaderboardPage";
 import { MiniAppHome } from "./MiniAppHome";
+import { MiniAppHowToPlayPage } from "./MiniAppHowToPlayPage";
 import { RequireMiniAppUsername } from "./session/useMiniAppUsernameRequirement";
+import { MiniAppSupportPage } from "./MiniAppSupportPage";
 
 export const AppRoutes = () => {
   const location = useLocation();
@@ -61,6 +65,30 @@ export const AppRoutes = () => {
             <RequireMiniAppUsername requireCompletion>
               <MiniAppProfilePage />
             </RequireMiniAppUsername>
+          </AnimatedPage>
+        }
+      />
+      <Route
+        path="/profile/support"
+        element={
+          <AnimatedPage>
+            <MiniAppSupportPage />
+          </AnimatedPage>
+        }
+      />
+      <Route
+        path="/profile/privacy-policy"
+        element={
+          <AnimatedPage>
+            <MiniAppPrivacyPolicyPage />
+          </AnimatedPage>
+        }
+      />
+      <Route
+        path="/profile/how-to-play"
+        element={
+          <AnimatedPage>
+            <MiniAppHowToPlayPage />
           </AnimatedPage>
         }
       />
@@ -115,6 +143,14 @@ export const AppRoutes = () => {
         element={
           <AnimatedPage>
             <MiniAppWeeklyLeaderboardPage />
+          </AnimatedPage>
+        }
+      />
+      <Route
+        path="/terms-and-conditions"
+        element={
+          <AnimatedPage>
+            <MiniAppTermsPage />
           </AnimatedPage>
         }
       />

@@ -22,7 +22,10 @@ export type ProfileStore = {
     userAddress: string,
     snAccount?: Account | AccountInterface,
     username?: string,
-    accountType?: "burner" | "controller" | "cavos" | null
+    accountType?: "burner" | "controller" | "cavos" | null,
+    options?: {
+      refreshStreakStatus?: boolean;
+    }
   ) => Promise<void>;
 
   updateAvatar: (
@@ -44,7 +47,14 @@ export const useProfileStore = create<ProfileStore>((set, get) => ({
   previousLevel: null,
   previousGamesCount: null,
 
-  fetchProfileData: async (_client, userAddress, _snAccount, username, accountType) => {
+  fetchProfileData: async (
+    _client,
+    userAddress,
+    _snAccount,
+    username,
+    accountType,
+    options
+  ) => {
     set({ loading: true });
 
     try {
@@ -68,7 +78,9 @@ export const useProfileStore = create<ProfileStore>((set, get) => ({
             console.log("Error fetching profile level config", error);
             return null;
           }),
-          fetchStreakStatus(userAddress).catch((error) => {
+          fetchStreakStatus(userAddress, {
+            refresh: options?.refreshStreakStatus === true,
+          }).catch((error) => {
             console.log("Error fetching streak status", error);
             return null;
           })

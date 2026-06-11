@@ -132,7 +132,7 @@
         "hearts": "copas",
         "spades": "espadas",
         "neon": "neon",
-        "wildcard": "wildcard",
+        "wildcard": "coringa",
         "card": "outro tipo"
       }
     },
