@@ -7,23 +7,48 @@ const DEFAULT_ENV = "prod";
 
 const configuredEnv = import.meta.env.VITE_ENV?.trim().toLowerCase() || DEFAULT_ENV;
 const configuredSlotInstance = import.meta.env.VITE_SLOT_INSTANCE?.trim() || undefined;
-let slotSource: "version-api" | "env" | "default" =
-  configuredSlotInstance ? "env" : "default";
+const configuredRpcUrl = import.meta.env.VITE_SLOT_RPC_URL?.trim() || undefined;
+const configuredToriiUrl = import.meta.env.VITE_TORII_URL?.trim() || undefined;
+const configuredGraphqlUrl = import.meta.env.VITE_GRAPHQL_URL?.trim() || undefined;
+const hasEndpointOverrides = Boolean(
+  configuredRpcUrl || configuredToriiUrl || configuredGraphqlUrl
+);
+
+let slotSource: "version-api" | "env" | "endpoint-env" | "default" =
+  hasEndpointOverrides
+    ? "endpoint-env"
+    : configuredSlotInstance
+      ? "env"
+      : "default";
+
+const endpointSource = hasEndpointOverrides ? "env" : "slot";
 
 const getBaseUrl = (slot: string | undefined) =>
   slot ? `https://api.cartridge.gg/x/${slot}` : undefined;
 
 const getRpcUrl = (slot: string | undefined) => {
+  if (configuredRpcUrl) {
+    return configuredRpcUrl;
+  }
+
   const baseUrl = getBaseUrl(slot);
   return baseUrl ? `${baseUrl}/katana` : DEFAULT_RPC_URL;
 };
 
 const getToriiUrl = (slot: string | undefined) => {
+  if (configuredToriiUrl) {
+    return configuredToriiUrl;
+  }
+
   const baseUrl = getBaseUrl(slot);
   return baseUrl ? `${baseUrl}/torii` : DEFAULT_TORII_URL;
 };
 
 const getGraphqlUrl = (slot: string | undefined) => {
+  if (configuredGraphqlUrl) {
+    return configuredGraphqlUrl;
+  }
+
   const baseUrl = getBaseUrl(slot);
   return baseUrl ? `${baseUrl}/torii/graphql` : DEFAULT_GRAPHQL_URL;
 };
@@ -41,7 +66,7 @@ export const preloadSlotInstance = async () => {
       const versionData = await fetchVersion();
       const slotFromApi = versionData.slot?.[configuredEnv]?.trim();
 
-      if (slotFromApi) {
+      if (!hasEndpointOverrides && slotFromApi) {
         slotInstance = slotFromApi;
         slotSource = "version-api";
       }
@@ -56,6 +81,7 @@ export const preloadSlotInstance = async () => {
         slotInstance: slotInstance ?? null,
       });
       console.info("[CONFIG-LOG] Endpoint configuration resolved", {
+        source: endpointSource,
         rpcUrl,
         toriiUrl,
         graphqlUrl,
