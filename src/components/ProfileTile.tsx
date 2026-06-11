@@ -18,7 +18,6 @@ export const ProfileTile = () => {
   const navigate = useNavigate();
   const { isSmallScreen } = useResponsiveValues();
   const PROFILE_IMG_SIZE = isSmallScreen ? 70 : 150;
-  const ICON_SIZE = isSmallScreen ? "18px" : "30px";
 
   const loggedInUser = useUsername();
 

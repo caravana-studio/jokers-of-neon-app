@@ -4,6 +4,7 @@ import {
   fetchOrCreateProfile,
   fetchProfileLevelConfigByAddress,
   fetchProfileLevelConfigByLevel,
+  fetchStreakStatus,
   fetchProfileStats,
   updateProfileAvatar,
 } from "../api/profile";
@@ -21,7 +22,10 @@ export type ProfileStore = {
     userAddress: string,
     snAccount?: Account | AccountInterface,
     username?: string,
-    accountType?: "burner" | "controller" | "cavos" | null
+    accountType?: "burner" | "controller" | "cavos" | null,
+    options?: {
+      refreshStreakStatus?: boolean;
+    }
   ) => Promise<void>;
 
   updateAvatar: (
@@ -43,7 +47,14 @@ export const useProfileStore = create<ProfileStore>((set, get) => ({
   previousLevel: null,
   previousGamesCount: null,
 
-  fetchProfileData: async (_client, userAddress, _snAccount, username, accountType) => {
+  fetchProfileData: async (
+    _client,
+    userAddress,
+    _snAccount,
+    username,
+    accountType,
+    options
+  ) => {
     set({ loading: true });
 
     try {
@@ -57,7 +68,7 @@ export const useProfileStore = create<ProfileStore>((set, get) => ({
 
       const userLevel = toInt(profile.level);
 
-      const [statsResult, levelConfigResult] =
+      const [statsResult, levelConfigResult, streakStatusResult] =
         await Promise.all([
           fetchProfileStats(userAddress).catch((error) => {
             console.log("Error fetching profile stats", error);
@@ -65,6 +76,12 @@ export const useProfileStore = create<ProfileStore>((set, get) => ({
           }),
           fetchProfileLevelConfigByAddress(userAddress).catch((error) => {
             console.log("Error fetching profile level config", error);
+            return null;
+          }),
+          fetchStreakStatus(userAddress, {
+            refresh: options?.refreshStreakStatus === true,
+          }).catch((error) => {
+            console.log("Error fetching streak status", error);
             return null;
           })
         ]);
@@ -80,6 +97,24 @@ export const useProfileStore = create<ProfileStore>((set, get) => ({
 
       const pendingAvatarId = get().pendingAvatarId;
       const finalAvatarId = pendingAvatarId !== null ? pendingAvatarId : toInt(profile.avatarId);
+      const effectiveDailyStreak =
+        streakStatusResult !== null
+          ? toInt(streakStatusResult.effectiveStreak)
+          : toInt(profile.dailyStreak);
+      const streakProtectors =
+        streakStatusResult !== null
+          ? toInt(streakStatusResult.protectorsAvailable)
+          : 0;
+
+      if (import.meta.env.DEV) {
+        console.info("[PROFILE-DEBUG] useProfileStore streak mapping", {
+          userAddress,
+          profileDailyStreak: profile.dailyStreak,
+          streakStatusResult,
+          effectiveDailyStreak,
+          streakProtectors,
+        });
+      }
 
       const profileData: ProfileData = {
         currentBadges: badgesCount,
@@ -89,7 +124,8 @@ export const useProfileStore = create<ProfileStore>((set, get) => ({
           currentXp: sanitizedCurrentXp,
           totalXp: sanitizedTotalXp,
           level: toInt(profile.level),
-          streak: toInt(profile.dailyStreak),
+          streak: effectiveDailyStreak,
+          streakProtectors,
           avatarId: finalAvatarId,
         },
         playerStats: {

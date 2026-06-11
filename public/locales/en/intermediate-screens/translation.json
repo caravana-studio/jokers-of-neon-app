@@ -164,6 +164,8 @@
     "my-xp": "My XP",
     "claim": "CLAIM",
     "tournament-entry": "Tournament entry",
+    "streak-protector": "Streak protector",
+    "streak-protector-full": "No slots",
     "claiming-in-progress": "Claiming in progress...",
     "intro": {
       "summary": "How do I charge up XP?",
@@ -496,6 +498,7 @@
   },
   "daily-streak": {
     "title": "Daily Streak",
+    "protectors": "Protectors",
     "description": "Complete a daily mission to start your streak.",
     "next-objective": "Next objective",
     "continue": "Continue",

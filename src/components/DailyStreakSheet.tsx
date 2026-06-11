@@ -20,10 +20,12 @@ import {
   DailyStreakMilestoneProgress,
   isDailyStreakAtMilestone,
 } from "./DailyStreakMilestoneProgress";
+import { StreakProtectorSlots } from "./StreakProtectorSlots";
 import { DailyStreakWeekProgress } from "./DailyStreakWeekProgress";
 import { MobileBottomBar } from "./MobileBottomBar";
 import { MobileDecoration } from "./MobileDecoration";
 import { RollingNumber } from "./RollingNumber";
+import { useResponsiveValues } from "../theme/responsiveSettings";
 
 const CELEBRATION_INTRO_DURATION_MS = 2600;
 
@@ -37,6 +39,7 @@ const triggerEntryVibration = (duration: number) => {
 
 export interface DailyStreakSheetProps {
   streak: number;
+  streakProtectors?: number;
   onClose: () => void | Promise<void>;
   onContinue?: () => void | Promise<void>;
   referenceDate?: Date;
@@ -45,6 +48,7 @@ export interface DailyStreakSheetProps {
 
 export const DailyStreakSheet = ({
   streak,
+  streakProtectors = 0,
   onClose,
   onContinue,
   referenceDate,
@@ -64,6 +68,8 @@ export const DailyStreakSheet = ({
     showCelebrationIntroOnEntry && !isZeroStreak
   );
   const [isContinuing, setIsContinuing] = useState(false);
+
+  const { isSmallScreen } = useResponsiveValues();
 
   useEffect(() => {
     if (!showCelebrationIntroOnEntry || isZeroStreak) {
@@ -190,6 +196,7 @@ export const DailyStreakSheet = ({
               <Flex flexDirection="column" alignItems="center" gap={2}>
                 <Flex
                   w="100%"
+                  position="relative"
                   flexDirection="column"
                   alignItems="center"
                   gap={5}
@@ -199,6 +206,29 @@ export const DailyStreakSheet = ({
                   bg="rgba(0, 0, 0, 0.3)"
                   boxShadow="0px 0px 8px rgba(255, 255, 255, 0.5), inset 0 0 5px rgba(255, 255, 255, 0.5)"
                 >
+                  <Flex
+                    position="absolute"
+                    top={4}
+                    right={4}
+                    flexDirection="column"
+                    alignItems="center"
+                    gap={1.5}
+                  >
+                    <Text
+                      fontSize={{ base: "8px", sm: "12px" }}
+                      textTransform="uppercase"
+                      color="white"
+                      lineHeight={1}
+                    >
+                      {t("daily-streak.protectors")}
+                    </Text>
+                    <StreakProtectorSlots
+                      protectors={streakProtectors}
+                      slots={2}
+                      iconSize={isSmallScreen ? 8 : 12}
+                    />
+                  </Flex>
+
                   <Box
                     position="relative"
                     borderRadius="full"

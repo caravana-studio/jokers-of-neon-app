@@ -164,6 +164,8 @@
     "my-xp": "Mi XP",
     "claim": "RECLAMAR",
     "tournament-entry": "Entrada de torneo",
+    "streak-protector": "Protector de racha",
+    "streak-protector-full": "Sin espacios",
     "claiming-in-progress": "Reclamando...",
     "intro": {
       "summary": "¿Cómo cargo XP?",
@@ -495,6 +497,7 @@
   },
   "daily-streak": {
     "title": "Racha diaria",
+    "protectors": "Protectores",
     "description": "Completa una misión diaria para comenzar tu racha.",
     "next-objective": "Próximo objetivo",
     "continue": "Continuar",

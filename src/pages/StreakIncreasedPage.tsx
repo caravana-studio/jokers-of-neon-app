@@ -1,6 +1,9 @@
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { fetchStreakStatus } from "../api/profile";
 import { DelayedLoading } from "../components/DelayedLoading";
 import { DailyStreakSheet } from "../components/DailyStreakSheet";
+import { useDojo } from "../dojo/DojoContext";
 import { GameStateEnum } from "../dojo/typescript/custom";
 import { useCustomNavigate } from "../hooks/useCustomNavigate";
 import { useMapNavigate } from "../hooks/useMapNavigate";
@@ -13,6 +16,7 @@ const MOCKED_DAILY_STREAK = 30;
 export const StreakIncreasedPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { account } = useDojo();
   const customNavigate = useCustomNavigate();
   const { navigateToMap } = useMapNavigate();
   const setRoundRewards = useGameStore((store) => store.setRoundRewards);
@@ -21,6 +25,38 @@ export const StreakIncreasedPage = () => {
     (store) => store.profileData?.profile.streak ?? 0
   );
   const streak = state?.streak ?? profileStreak ?? MOCKED_DAILY_STREAK;
+  const [liveStreakProtectors, setLiveStreakProtectors] = useState<number | null>(
+    null
+  );
+  const streakProtectors = liveStreakProtectors ?? 0;
+
+  useEffect(() => {
+    const address = account?.account?.address;
+    if (!address) {
+      setLiveStreakProtectors(null);
+      return;
+    }
+
+    let active = true;
+
+    void (async () => {
+      try {
+        const streakStatus = await fetchStreakStatus(address, { refresh: true });
+        if (active) {
+          setLiveStreakProtectors(streakStatus.protectorsAvailable);
+        }
+      } catch (error) {
+        console.warn("StreakIncreasedPage: failed to fetch streak status", error);
+        if (active) {
+          setLiveStreakProtectors(null);
+        }
+      }
+    })();
+
+    return () => {
+      active = false;
+    };
+  }, [account?.account?.address]);
 
   const handleClose = async () => {
     if (state?.continuation?.type === "map-after-rewards") {
@@ -66,6 +102,7 @@ export const StreakIncreasedPage = () => {
     <DelayedLoading ms={0}>
       <DailyStreakSheet
         streak={streak}
+        streakProtectors={streakProtectors}
         onClose={handleClose}
         showCelebrationIntroOnEntry={state?.from !== "/profile"}
       />

@@ -503,7 +503,7 @@ export async function fetchStreakStatus(
 
   const data = json.data;
 
-  return {
+  const streakStatus = {
     player: data.player ?? address,
     currentStreak: sanitizeNumber(data.current_streak),
     effectiveStreak: sanitizeNumber(data.effective_streak ?? data.current_streak),
@@ -522,6 +522,8 @@ export async function fetchStreakStatus(
     source: data.source ?? "chain",
     updatedAt: data.updated_at ?? null,
   };
+
+  return streakStatus;
 }
 
 export async function claimStreakPresentation(
