@@ -13,10 +13,6 @@ const shouldUseStandaloneMainnetRpc =
 
 const DOJO_NAMESPACE =
   import.meta.env.VITE_DOJO_NAMESPACE || "jokers_of_neon_core";
-const configuredSlotChainId = import.meta.env.VITE_SLOT_CHAIN_ID?.trim();
-
-const encodeChainId = (chainId: string) =>
-  chainId.startsWith("0x") ? chainId : shortString.encodeShortString(chainId);
 
 const getChainId = (chain: string) => {
   if (chain === "mainnet") {
@@ -28,14 +24,9 @@ const getChainId = (chain: string) => {
   }
 };
 
-export const getSlotChainId = (slot?: string) => {
-  if (configuredSlotChainId) {
-    return encodeChainId(configuredSlotChainId);
-  }
-
-  const resolvedSlot = slot || "jokers-of-neon";
+export const getSlotChainId = (slot: string) => {
   return shortString.encodeShortString(
-    `WP_${resolvedSlot.toUpperCase().replaceAll("-", "_")}`
+    `WP_${slot.toUpperCase().replaceAll("-", "_")}`
   );
 };
 
