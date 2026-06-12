@@ -2,7 +2,11 @@ import { CavosProvider as CavosSDKProvider, useCavos } from "@cavos/react";
 import React, { ReactNode } from "react";
 import { getContractByName } from "@dojoengine/core";
 import { getManifest, getManifestSource } from "../getManifest";
-import { rpcUrl as slotRpcUrl, slotInstance } from "../../config/cartridgeUrls";
+import {
+  rpcUrl as slotRpcUrl,
+  slotInstance,
+  usesCustomKatanaEndpoint,
+} from "../../config/cartridgeUrls";
 import { getSlotChainId } from "../controller/controller";
 import { setupWorld } from "../typescript/contracts.gen";
 import { CavosBridgeContext } from "./CavosBridgeContext";
@@ -32,7 +36,7 @@ const CAVOS_SLOT_RELAYER_PRIVATE_KEY =
   import.meta.env.VITE_CAVOS_SLOT_RELAYER_PRIVATE_KEY ||
   "0x49a3b5e422219fbe4fabf9d853666818155287ff9e3715f241e75e80b4ff43c";
 
-export const CAVOS_ENABLED = !!CAVOS_APP_ID;
+export const CAVOS_ENABLED = !!CAVOS_APP_ID && !usesCustomKatanaEndpoint;
 
 const CAVOS_SESSION_STORAGE_KEYS = [
   "cavos_oauth_session",
@@ -148,7 +152,7 @@ interface CavosWrapperProps {
 }
 
 export const CavosWrapper: React.FC<CavosWrapperProps> = ({ children }) => {
-  if (!CAVOS_APP_ID) {
+  if (!CAVOS_ENABLED) {
     return <>{children}</>;
   }
 

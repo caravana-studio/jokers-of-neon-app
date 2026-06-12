@@ -92,6 +92,7 @@ export const DojoProvider = ({ children, value }: DojoProviderProps) => {
       initOptions={{
         masterAccount,
         accountClassHash:
+          value.config.accountClassHash ||
           import.meta.env.VITE_PUBLIC_ACCOUNT_CLASS_HASH ||
           "0x079d9ce84b97bcc2a631996c3100d57966fc2f5b061fb1ec4dfd0040976bcac6",
         rpcProvider,

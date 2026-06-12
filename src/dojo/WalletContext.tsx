@@ -35,7 +35,8 @@ import type { SetupResult } from "./setup";
 
 const CHAIN = import.meta.env.VITE_CHAIN;
 const EARLY_ACCESS_VERSION = !!import.meta.env.VITE_EARLY_ACCESS_VERSION;
-const CAVOS_ENABLED = !!import.meta.env.VITE_CAVOS_APP_ID;
+const CAVOS_ENABLED =
+  !!import.meta.env.VITE_CAVOS_APP_ID && !usesCustomKatanaEndpoint;
 const CAVOS_NATIVE_REDIRECT_URI =
   import.meta.env.VITE_CAVOS_NATIVE_REDIRECT_URI ||
   "jokers://open";
@@ -119,8 +120,7 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     useState<CavosOAuthProvider | null>(null);
 
   const appType = useAppContext();
-  const isControllerEnabled =
-    appType !== AppType.MINIAPP && !usesCustomKatanaEndpoint;
+  const isControllerEnabled = appType !== AppType.MINIAPP;
 
   const allowGuest =
     CHAIN !== "mainnet" &&
@@ -183,22 +183,6 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
   useEffect(() => {
     logEvent("open_wallet_page");
   }, []);
-
-  useEffect(() => {
-    if (isControllerEnabled) {
-      return;
-    }
-
-    if (localStorage.getItem(ACCOUNT_TYPE) !== "controller") {
-      return;
-    }
-
-    localStorage.removeItem(ACCOUNT_TYPE);
-    setAccountType(null);
-    setFinalAccount(null);
-    setIsControllerConnectAttemptActive(false);
-    setConnectionStatus("selecting");
-  }, [isControllerEnabled]);
 
   const connectWallet = async (): Promise<boolean> => {
     if (!isControllerEnabled) {

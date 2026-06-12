@@ -363,6 +363,7 @@ export const CavosWalletConnect = () => {
                 onGuestModeClick={handleGuestModeClick}
                 onMoreOptionsToggle={handleMoreOptionsToggle}
                 showAppleLogin={showAppleLogin}
+                showCavosLogin={isCavosEnabled}
                 showControllerLogin={isControllerEnabled}
                 showGuestMode={allowGuest}
                 isCavosAuthDisabled={isCavosAuthDisabled}

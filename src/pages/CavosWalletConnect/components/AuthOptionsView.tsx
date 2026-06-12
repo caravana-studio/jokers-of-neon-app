@@ -27,6 +27,7 @@ interface AuthOptionsViewProps {
   onGuestModeClick: () => void;
   onMoreOptionsToggle: () => void;
   showAppleLogin: boolean;
+  showCavosLogin: boolean;
   showControllerLogin: boolean;
   showGuestMode: boolean;
   isCavosAuthDisabled?: boolean;
@@ -47,6 +48,7 @@ export const AuthOptionsView = ({
   onGuestModeClick,
   onMoreOptionsToggle,
   showAppleLogin,
+  showCavosLogin,
   showControllerLogin,
   showGuestMode,
   isCavosAuthDisabled = false,
@@ -56,12 +58,19 @@ export const AuthOptionsView = ({
   isMoreOptionsDisabled = false,
   cavosOAuthProvider = null,
 }: AuthOptionsViewProps) => {
-  const isLifted = optionsPhase === "opening" || optionsPhase === "secondary";
-  const isBackLabel = optionsPhase === "secondary" || optionsPhase === "closing";
+  const isLifted =
+    showCavosLogin &&
+    (optionsPhase === "opening" || optionsPhase === "secondary");
+  const isBackLabel =
+    showCavosLogin &&
+    (optionsPhase === "secondary" || optionsPhase === "closing");
   const showPrimaryOptions =
-    optionsPhase === "primary" || optionsPhase === "opening";
+    showCavosLogin &&
+    (optionsPhase === "primary" || optionsPhase === "opening");
   const showSecondaryOptions =
-    optionsPhase === "secondary" || optionsPhase === "closing";
+    !showCavosLogin ||
+    optionsPhase === "secondary" ||
+    optionsPhase === "closing";
 
   return (
     <Flex
@@ -194,16 +203,18 @@ export const AuthOptionsView = ({
         )}
       </Flex>
 
-      <MoreOptionsToggle
-        isLifted={isLifted}
-        isBackLabel={isBackLabel}
-        moreOptionsLabel={labels.moreOptions}
-        goBackLabel={labels.goBack}
-        onToggle={onMoreOptionsToggle}
-        liftDistance={MORE_OPTIONS_LIFT}
-        moveDuration={STAGE1_DURATION_S}
-        disabled={isMoreOptionsDisabled}
-      />
+      {showCavosLogin && (
+        <MoreOptionsToggle
+          isLifted={isLifted}
+          isBackLabel={isBackLabel}
+          moreOptionsLabel={labels.moreOptions}
+          goBackLabel={labels.goBack}
+          onToggle={onMoreOptionsToggle}
+          liftDistance={MORE_OPTIONS_LIFT}
+          moveDuration={STAGE1_DURATION_S}
+          disabled={isMoreOptionsDisabled}
+        />
+      )}
     </Flex>
   );
 };
