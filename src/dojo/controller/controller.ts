@@ -66,6 +66,7 @@ const signupOptions: AuthOptions = isNativeAndroid
 const controllerOptions = {
   chains: [{ rpcUrl: resolvedRpcUrl }],
   defaultChainId,
+  propagateSessionErrors: usesCustomKatanaEndpoint,
   preset: import.meta.env.VITE_CONTROLLER_PRESET,
   namespace: DOJO_NAMESPACE,
   policies,
@@ -118,6 +119,7 @@ const controllerConnector =
 if (!isNative && usesCustomKatanaEndpoint) {
   const cartridgeConnector = controllerConnector as ControllerConnector;
   const connectController = cartridgeConnector.connect.bind(cartridgeConnector);
+  let sessionPoliciesSynced = false;
 
   cartridgeConnector.connect = async (args) => {
     console.info("[CONTROLLER-DEBUG] connect:start", {
@@ -128,7 +130,23 @@ if (!isNative && usesCustomKatanaEndpoint) {
     logControllerIframeState("before-connect");
 
     try {
-      return await connectController(args);
+      const account = await connectController(args);
+
+      if (!sessionPoliciesSynced) {
+        console.info("[CONTROLLER-DEBUG] updateSession:start", {
+          contractCount: Object.keys(policies.contracts ?? {}).length,
+        });
+        const response = await cartridgeConnector.controller.updateSession({
+          policies,
+        });
+        sessionPoliciesSynced = true;
+        console.info("[CONTROLLER-DEBUG] updateSession:end", {
+          responseCode: (response as any)?.code ?? null,
+          responseAddress: (response as any)?.address ?? null,
+        });
+      }
+
+      return account;
     } finally {
       console.info("[CONTROLLER-DEBUG] connect:end", {
         account: cartridgeConnector.controller.account?.address ?? null,
