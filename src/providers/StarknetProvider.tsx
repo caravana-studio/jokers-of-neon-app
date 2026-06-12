@@ -8,7 +8,11 @@ import {
 } from "@starknet-react/core";
 import React from "react";
 import { num } from "starknet";
-import { rpcUrl, slotInstance } from "../config/cartridgeUrls";
+import {
+  rpcUrl,
+  slotInstance,
+  usesCustomKatanaEndpoint,
+} from "../config/cartridgeUrls";
 import { controller, getSlotChainId } from "../dojo/controller/controller";
 import { AppType, useAppContext } from "./AppContextProvider";
 
@@ -56,8 +60,11 @@ const slot: Chain = SLOT_INSTANCE && {
 export function StarknetProvider({ children }: { children: React.ReactNode }) {
   const appType = useAppContext();
   const provider = jsonRpcProvider({ rpc });
-  const connectors =
-    appType === AppType.MINIAPP ? [] : [controller as unknown as Connector];
+  const isControllerEnabled =
+    appType !== AppType.MINIAPP && !usesCustomKatanaEndpoint;
+  const connectors = isControllerEnabled
+    ? [controller as unknown as Connector]
+    : [];
 
   return (
     <StarknetConfig
@@ -65,7 +72,7 @@ export function StarknetProvider({ children }: { children: React.ReactNode }) {
       provider={provider}
       connectors={connectors}
       explorer={voyager}
-      autoConnect
+      autoConnect={isControllerEnabled}
     >
       {children}
     </StarknetConfig>

@@ -60,6 +60,7 @@ export const CavosWalletConnect = () => {
     isLoadingLastGameId,
     isLoadingWallet,
     isCavosEnabled,
+    isControllerEnabled,
     cavosOAuthProvider,
     cavosError,
   } = useWallet();
@@ -132,6 +133,10 @@ export const CavosWalletConnect = () => {
   };
 
   const handleContinueWithControllerClick = () => {
+    if (!isControllerEnabled) {
+      return;
+    }
+
     switchToController();
   };
 
@@ -226,7 +231,8 @@ export const CavosWalletConnect = () => {
     Boolean(cavosOAuthProvider);
   const isCavosAuthDisabled =
     isAuthActionInProgress || !isCavosEnabled;
-  const isControllerActionDisabled = isAuthActionInProgress;
+  const isControllerActionDisabled =
+    isAuthActionInProgress || !isControllerEnabled;
   const isGuestActionDisabled =
     isAuthActionInProgress || isLoadingLastGameId;
   const showAppleLogin = !isNativeAndroid;
@@ -357,6 +363,7 @@ export const CavosWalletConnect = () => {
                 onGuestModeClick={handleGuestModeClick}
                 onMoreOptionsToggle={handleMoreOptionsToggle}
                 showAppleLogin={showAppleLogin}
+                showControllerLogin={isControllerEnabled}
                 showGuestMode={allowGuest}
                 isCavosAuthDisabled={isCavosAuthDisabled}
                 isControllerActionDisabled={isControllerActionDisabled}

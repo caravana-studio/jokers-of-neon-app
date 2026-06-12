@@ -14,7 +14,7 @@ import {
 import { Account, type AccountInterface, RpcProvider } from "starknet";
 import { checkEarlyAccess } from "../api/earlyAccess";
 import { ACCOUNT_TYPE, GAME_ID, LOGGED_USER } from "../constants/localStorage";
-import { rpcUrl } from "../config/cartridgeUrls";
+import { rpcUrl, usesCustomKatanaEndpoint } from "../config/cartridgeUrls";
 import { AppType, useAppContext } from "../providers/AppContextProvider";
 import { useGetLastGameId } from "../queries/useGetLastGameId";
 import { logEvent } from "../utils/analytics";
@@ -70,6 +70,7 @@ interface WalletContextType {
   controllerAccount: AccountInterface | null | undefined;
   isControllerConnected: boolean | undefined;
   isControllerConnecting: boolean | undefined;
+  isControllerEnabled: boolean;
   isLoadingLastGameId: boolean;
   allowGuest: boolean;
   shouldBlockWithWalletScreen: boolean;
@@ -118,6 +119,8 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     useState<CavosOAuthProvider | null>(null);
 
   const appType = useAppContext();
+  const isControllerEnabled =
+    appType !== AppType.MINIAPP && !usesCustomKatanaEndpoint;
 
   const allowGuest =
     CHAIN !== "mainnet" &&
@@ -155,9 +158,13 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     Account | AccountInterface | null
   >(null);
 
-  const lsAccountType = (appType === AppType.MINIAPP
+  const storedAccountType =
+    appType === AppType.MINIAPP
+      ? null
+      : (localStorage.getItem(ACCOUNT_TYPE) ?? null);
+  const lsAccountType = (!isControllerEnabled && storedAccountType === "controller"
     ? null
-    : (localStorage.getItem(ACCOUNT_TYPE) ?? null)) as
+    : storedAccountType) as
     | "burner"
     | "controller"
     | "cavos"
@@ -177,7 +184,28 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     logEvent("open_wallet_page");
   }, []);
 
+  useEffect(() => {
+    if (isControllerEnabled) {
+      return;
+    }
+
+    if (localStorage.getItem(ACCOUNT_TYPE) !== "controller") {
+      return;
+    }
+
+    localStorage.removeItem(ACCOUNT_TYPE);
+    setAccountType(null);
+    setFinalAccount(null);
+    setIsControllerConnectAttemptActive(false);
+    setConnectionStatus("selecting");
+  }, [isControllerEnabled]);
+
   const connectWallet = async (): Promise<boolean> => {
+    if (!isControllerEnabled) {
+      console.warn("Controller connector disabled for this environment");
+      return false;
+    }
+
     try {
       if (connectors[0]) {
         await connect({ connector: connectors[0] });
@@ -303,6 +331,7 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
 
   useEffect(() => {
     if (
+      isControllerEnabled &&
       (connectionStatus === "connecting_controller" ||
         isControllerConnectAttemptActive ||
         accountType === "controller") &&
@@ -332,6 +361,7 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     }
   }, [
     connectionStatus,
+    isControllerEnabled,
     isControllerConnectAttemptActive,
     accountType,
     finalAccount,
@@ -352,11 +382,15 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
         } else {
           setFinalAccount(burnerAccount);
         }
-      } else if (accountType === "controller") {
+      } else if (accountType === "controller" && isControllerEnabled) {
         connectWallet();
         if (controllerAccount) {
           setFinalAccount(controllerAccount);
         }
+      } else if (accountType === "controller") {
+        localStorage.removeItem(ACCOUNT_TYPE);
+        setAccountType(null);
+        setConnectionStatus("selecting");
       }
       // cavos auto-reconnect handled by the effect above
     }
@@ -365,6 +399,7 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     finalAccount,
     burnerAccount,
     controllerAccount,
+    isControllerEnabled,
     gameLoopEnabled,
     gameLoopBurnerAccount,
   ]);
@@ -440,6 +475,13 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
   const switchToController = (
     onSuccess?: (payload: SwitchSuccessPayload) => void
   ): void => {
+    if (!isControllerEnabled) {
+      console.warn("Controller connector disabled for this environment");
+      setConnectionStatus("selecting");
+      setIsControllerConnectAttemptActive(false);
+      return;
+    }
+
     logEvent("switch_to_controller");
     if (accountType === "controller" && finalAccount) {
       if (controller) {
@@ -774,6 +816,7 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
         controllerAccount,
         isControllerConnected,
         isControllerConnecting,
+        isControllerEnabled,
         isLoadingLastGameId,
         allowGuest,
         shouldBlockWithWalletScreen,
