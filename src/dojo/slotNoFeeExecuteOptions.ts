@@ -19,6 +19,12 @@ const summarizeCall = (call: any) => ({
   entrypoint: call?.entrypoint ?? null,
 });
 
+const summarizeExecuteResult = (result: any) => ({
+  code: result?.code ?? null,
+  transactionHash: result?.transaction_hash ?? null,
+  error: result?.error ?? null,
+});
+
 /**
  * Slot/Katana gameplay transactions are no-fee, so forcing tip=0 avoids
  * Starknet.js scanning recent blocks to estimate a recommended V3 tip.
@@ -69,22 +75,42 @@ function patchAccountExecute(account: ControllerAccountLike) {
   const execute = account.execute.bind(account);
   account.execute = (calls, transactionDetails, ...rest) => {
     const normalizedCalls = Array.isArray(calls) ? calls : [calls];
+    const hasTransactionDetails =
+      !!transactionDetails && typeof transactionDetails === "object";
     const noFeeTransactionDetails =
-      transactionDetails && typeof transactionDetails === "object"
+      hasTransactionDetails
         ? withSlotNoFeeExecuteOptions(transactionDetails)
-        : { tip: 0 };
+        : transactionDetails;
 
     console.info("[CONTROLLER-DEBUG] account.execute", {
       account: account.address,
       callCount: normalizedCalls.length,
       calls: normalizedCalls.map(summarizeCall),
       incomingTip: transactionDetails?.tip ?? null,
-      outgoingTip: noFeeTransactionDetails.tip,
+      outgoingTip: noFeeTransactionDetails?.tip ?? null,
+      transactionDetailsType:
+        transactionDetails === undefined ? "undefined" : typeof transactionDetails,
       restArgsCount: rest.length,
       hasKeychainExecute: typeof account.keychain?.execute === "function",
     });
 
-    return execute(calls, noFeeTransactionDetails, ...rest);
+    const executePromise =
+      transactionDetails === undefined && rest.length === 0
+        ? execute(calls)
+        : execute(calls, noFeeTransactionDetails, ...rest);
+
+    return executePromise
+      .then((result: any) => {
+        console.info(
+          "[CONTROLLER-DEBUG] account.execute:result",
+          summarizeExecuteResult(result)
+        );
+        return result;
+      })
+      .catch((error: unknown) => {
+        console.error("[CONTROLLER-DEBUG] account.execute:error", error);
+        throw error;
+      });
   };
 
   Object.defineProperty(account, NO_FEE_ACCOUNT_EXECUTE_PATCH_FLAG, {
@@ -125,23 +151,40 @@ export function patchControllerNoFeeExecute<T extends AccountInterface | null | 
   const execute = keychain.execute.bind(keychain);
   keychain.execute = (calls, abis, transactionDetails, ...rest) => {
     const normalizedCalls = Array.isArray(calls) ? calls : [calls];
+    const hasTransactionDetails =
+      !!transactionDetails && typeof transactionDetails === "object";
     const noFeeTransactionDetails =
-      transactionDetails && typeof transactionDetails === "object"
+      hasTransactionDetails
         ? {
             ...transactionDetails,
             tip: transactionDetails.tip ?? 0,
           }
-        : { tip: 0 };
+        : transactionDetails;
 
     console.info("[CONTROLLER-DEBUG] keychain.execute", {
       callCount: normalizedCalls.length,
       calls: normalizedCalls.map(summarizeCall),
       incomingTip: transactionDetails?.tip ?? null,
-      outgoingTip: noFeeTransactionDetails.tip,
+      outgoingTip: noFeeTransactionDetails?.tip ?? null,
+      transactionDetailsType:
+        transactionDetails === undefined ? "undefined" : typeof transactionDetails,
+      manual: rest[0] ?? null,
+      hasFeeSource: rest.length > 1 && rest[1] != null,
       restArgsCount: rest.length,
     });
 
-    return execute(calls, abis, noFeeTransactionDetails, ...rest);
+    return execute(calls, abis, noFeeTransactionDetails, ...rest)
+      .then((result: any) => {
+        console.info(
+          "[CONTROLLER-DEBUG] keychain.execute:result",
+          summarizeExecuteResult(result)
+        );
+        return result;
+      })
+      .catch((error: unknown) => {
+        console.error("[CONTROLLER-DEBUG] keychain.execute:error", error);
+        throw error;
+      });
   };
 
   Object.defineProperty(keychain, NO_FEE_CONTROLLER_PATCH_FLAG, {

@@ -92,6 +92,17 @@ const logControllerIframeState = (stage: string) => {
 };
 
 if (usesCustomKatanaEndpoint) {
+  const playPolicyContracts = Object.entries(policies.contracts ?? {}).flatMap(
+    ([contractAddress, contract]) => {
+      const methods = (contract.methods ?? []) as Array<{
+        entrypoint?: string;
+      }>;
+      return methods.some((method) => method.entrypoint === "play")
+        ? [contractAddress]
+        : [];
+    }
+  );
+
   console.info("[CONTROLLER-DEBUG] options", {
     env: import.meta.env.VITE_ENV ?? null,
     slotInstance: slotInstance ?? null,
@@ -101,6 +112,8 @@ if (usesCustomKatanaEndpoint) {
     preset: controllerOptions.preset ?? null,
     namespace: DOJO_NAMESPACE,
     usesCustomKatanaEndpoint,
+    policyContractCount: Object.keys(policies.contracts ?? {}).length,
+    playPolicyContracts,
   });
 }
 
