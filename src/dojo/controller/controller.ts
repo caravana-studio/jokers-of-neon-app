@@ -2,7 +2,7 @@ import { SessionConnector } from "@cartridge/connector";
 import ControllerConnector from "@cartridge/connector/controller";
 import { AuthOptions } from "@cartridge/controller";
 import { constants, shortString } from "starknet";
-import { rpcUrl, slotInstance } from "../../config/cartridgeUrls";
+import { rpcUrl, slotChainId, slotInstance } from "../../config/cartridgeUrls";
 import { isNative, isNativeAndroid } from "../../utils/capacitorUtils";
 import { policies } from "./policies";
 
@@ -24,9 +24,17 @@ const getChainId = (chain: string) => {
   }
 };
 
-export const getSlotChainId = (slot: string) => {
+const encodeChainId = (chainId: string) =>
+  chainId.startsWith("0x") ? chainId : shortString.encodeShortString(chainId);
+
+export const getSlotChainId = (slot?: string) => {
+  if (slotChainId) {
+    return encodeChainId(slotChainId);
+  }
+
+  const resolvedSlot = slot || "jokers-of-neon";
   return shortString.encodeShortString(
-    `WP_${slot.toUpperCase().replaceAll("-", "_")}`
+    `WP_${resolvedSlot.toUpperCase().replaceAll("-", "_")}`
   );
 };
 
