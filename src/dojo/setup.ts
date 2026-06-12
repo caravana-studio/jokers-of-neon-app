@@ -10,6 +10,7 @@ import { setupWorld } from "./typescript/contracts.gen";
 import { defineContractComponents } from "./typescript/defineContractComponents";
 import { withSlotNoFeeExecuteOptions } from "./slotNoFeeExecuteOptions";
 import { world } from "./world";
+import { usesCustomKatanaEndpoint } from "../config/cartridgeUrls";
 
 import type { Message, ToriiClient } from "@dojoengine/torii-client";
 
@@ -17,6 +18,7 @@ export type SetupResult = Awaited<ReturnType<typeof setup>>;
 const DOJO_NAMESPACE =
   import.meta.env.VITE_DOJO_NAMESPACE || "jokers_of_neon_core";
 const SHOULD_BOOTSTRAP_FRONTEND_BURNER =
+  !usesCustomKatanaEndpoint &&
   (import.meta.env.VITE_BLOCKCHAIN?.trim() || "starknet") === "starknet";
 
 let sync: any;

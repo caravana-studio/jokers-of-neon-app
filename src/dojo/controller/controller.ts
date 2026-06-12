@@ -2,7 +2,12 @@ import { SessionConnector } from "@cartridge/connector";
 import ControllerConnector from "@cartridge/connector/controller";
 import { AuthOptions } from "@cartridge/controller";
 import { constants, shortString } from "starknet";
-import { rpcUrl, slotChainId, slotInstance } from "../../config/cartridgeUrls";
+import {
+  rpcUrl,
+  slotChainId,
+  slotInstance,
+  usesCustomKatanaEndpoint,
+} from "../../config/cartridgeUrls";
 import { isNative, isNativeAndroid } from "../../utils/capacitorUtils";
 import { policies } from "./policies";
 
@@ -41,13 +46,17 @@ export const getSlotChainId = (slot?: string) => {
 const resolvedChain =
   shouldUseStandaloneMainnetRpc ? "mainnet" : slotInstance || "jokers-of-neon";
 const resolvedSlot =
-  resolvedChain === "mainnet" || resolvedChain === "sepolia"
+  usesCustomKatanaEndpoint ||
+  resolvedChain === "mainnet" ||
+  resolvedChain === "sepolia"
     ? undefined
     : resolvedChain;
 const defaultChainId =
-  resolvedSlot !== undefined
-    ? getSlotChainId(resolvedSlot)
-    : getChainId(resolvedChain);
+  usesCustomKatanaEndpoint
+    ? getSlotChainId(slotInstance)
+    : resolvedSlot !== undefined
+      ? getSlotChainId(resolvedSlot)
+      : getChainId(resolvedChain);
 const resolvedRpcUrl =
   shouldUseStandaloneMainnetRpc ? standaloneMainnetRpc || rpcUrl : rpcUrl;
 
