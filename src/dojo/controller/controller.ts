@@ -73,7 +73,37 @@ const controllerOptions = {
   signupOptions,
 };
 
-export const controller =
+const logControllerIframeState = (stage: string) => {
+  if (!usesCustomKatanaEndpoint || typeof document === "undefined") {
+    return;
+  }
+
+  const iframe = document.getElementById(
+    "controller-keychain"
+  ) as HTMLIFrameElement | null;
+
+  console.info("[CONTROLLER-DEBUG] iframe", {
+    stage,
+    src: iframe?.src ?? null,
+    hasSlotParam: iframe?.src ? iframe.src.includes("ps=") : false,
+    hasRpcUrlParam: iframe?.src ? iframe.src.includes("rpc_url=") : false,
+  });
+};
+
+if (usesCustomKatanaEndpoint) {
+  console.info("[CONTROLLER-DEBUG] options", {
+    env: import.meta.env.VITE_ENV ?? null,
+    slotInstance: slotInstance ?? null,
+    resolvedSlot: resolvedSlot ?? null,
+    defaultChainId,
+    rpcUrl: resolvedRpcUrl,
+    preset: controllerOptions.preset ?? null,
+    namespace: DOJO_NAMESPACE,
+    usesCustomKatanaEndpoint,
+  });
+}
+
+const controllerConnector =
   !isNative
     ? new ControllerConnector(controllerOptions)
     : new SessionConnector({
@@ -84,3 +114,31 @@ export const controller =
         disconnectRedirectUrl: "jokers://open",
         signupOptions,
       });
+
+if (!isNative && usesCustomKatanaEndpoint) {
+  const cartridgeConnector = controllerConnector as ControllerConnector;
+  const connectController = cartridgeConnector.connect.bind(cartridgeConnector);
+
+  cartridgeConnector.connect = async (args) => {
+    console.info("[CONTROLLER-DEBUG] connect:start", {
+      args,
+      selectedChain: (cartridgeConnector.controller as any)?.selectedChain,
+      rpcUrl: cartridgeConnector.controller.rpcUrl(),
+    });
+    logControllerIframeState("before-connect");
+
+    try {
+      return await connectController(args);
+    } finally {
+      console.info("[CONTROLLER-DEBUG] connect:end", {
+        account: cartridgeConnector.controller.account?.address ?? null,
+      });
+      logControllerIframeState("after-connect");
+      setTimeout(() => logControllerIframeState("after-connect+1000ms"), 1000);
+    }
+  };
+
+  setTimeout(() => logControllerIframeState("init+1000ms"), 1000);
+}
+
+export const controller = controllerConnector;
