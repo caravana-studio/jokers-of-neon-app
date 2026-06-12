@@ -31,6 +31,7 @@ import { controller } from "./controller/controller";
 import { CavosAccountAdapter } from "./cavos/CavosAccountAdapter";
 import { useCavosSafe } from "./cavos/CavosBridgeContext";
 import { useGameLoopBurnerSession } from "../hooks/useGameLoopBurnerSession";
+import { patchControllerNoFeeExecute } from "./slotNoFeeExecuteOptions";
 import type { SetupResult } from "./setup";
 
 const CHAIN = import.meta.env.VITE_CHAIN;
@@ -104,6 +105,13 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     isConnected: isControllerConnected,
     isConnecting: isControllerConnecting,
   } = useAccount();
+  const effectiveControllerAccount = useMemo(
+    () =>
+      usesCustomKatanaEndpoint
+        ? patchControllerNoFeeExecute(controllerAccount)
+        : controllerAccount,
+    [controllerAccount]
+  );
 
   // Cavos SDK hook (safe — returns null when CavosProvider is not in tree)
   const cavos = useCavosSafe();
@@ -320,12 +328,12 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
         isControllerConnectAttemptActive ||
         accountType === "controller") &&
       isControllerConnected === true &&
-      controllerAccount
+      effectiveControllerAccount
     ) {
       setIsControllerConnectAttemptActive(false);
       setAccountType("controller");
       localStorage.setItem(ACCOUNT_TYPE, "controller");
-      setFinalAccount(controllerAccount);
+      setFinalAccount(effectiveControllerAccount);
     } else if (
       connectionStatus === "connecting_burner" &&
       gameLoopEnabled &&
@@ -350,7 +358,7 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     accountType,
     finalAccount,
     isControllerConnected,
-    controllerAccount,
+    effectiveControllerAccount,
     gameLoopEnabled,
     gameLoopBurnerAccount,
     burnerAccount,
@@ -368,8 +376,8 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
         }
       } else if (accountType === "controller" && isControllerEnabled) {
         connectWallet();
-        if (controllerAccount) {
-          setFinalAccount(controllerAccount);
+        if (effectiveControllerAccount) {
+          setFinalAccount(effectiveControllerAccount);
         }
       } else if (accountType === "controller") {
         localStorage.removeItem(ACCOUNT_TYPE);
@@ -382,7 +390,7 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     accountType,
     finalAccount,
     burnerAccount,
-    controllerAccount,
+    effectiveControllerAccount,
     isControllerEnabled,
     gameLoopEnabled,
     gameLoopBurnerAccount,
@@ -797,7 +805,7 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
         resetCavosAuthState,
         isLoadingWallet,
         burnerAccount: gameLoopBurnerAccount ?? burnerAccount,
-        controllerAccount,
+        controllerAccount: effectiveControllerAccount,
         isControllerConnected,
         isControllerConnecting,
         isControllerEnabled,
