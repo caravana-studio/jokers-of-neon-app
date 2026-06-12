@@ -105,12 +105,17 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     isConnected: isControllerConnected,
     isConnecting: isControllerConnecting,
   } = useAccount();
+  const controllerProviderAccount = (controller as any)?.controller
+    ?.account as AccountInterface | null | undefined;
   const effectiveControllerAccount = useMemo(
     () =>
       usesCustomKatanaEndpoint
-        ? patchControllerNoFeeExecute(controllerAccount)
+        ? patchControllerNoFeeExecute(
+            controllerAccount,
+            controllerProviderAccount
+          )
         : controllerAccount,
-    [controllerAccount]
+    [controllerAccount, controllerProviderAccount]
   );
 
   // Cavos SDK hook (safe — returns null when CavosProvider is not in tree)

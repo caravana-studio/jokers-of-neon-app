@@ -170,15 +170,17 @@ const DojoContextProvider = ({
     if (
       accountType === "controller" &&
       isControllerConnected &&
-      controllerAccount
+      (finalAccount || controllerAccount)
     ) {
-      useAccountStore.getState().setAccount(controllerAccount);
+      const account = (finalAccount || controllerAccount) as AccountInterface;
+
+      useAccountStore.getState().setAccount(account);
       if (controller) {
         controller.username()?.then((newUsername) => {
           if (newUsername && onSuccessCallback.current) {
             onSuccessCallback.current({
               username: newUsername,
-              account: controllerAccount,
+              account,
             });
             onSuccessCallback.current = null;
           }
