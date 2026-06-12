@@ -46,7 +46,6 @@ export const getSlotChainId = (slot?: string) => {
 const resolvedChain =
   shouldUseStandaloneMainnetRpc ? "mainnet" : slotInstance || "jokers-of-neon";
 const resolvedSlot =
-  usesCustomKatanaEndpoint ||
   resolvedChain === "mainnet" ||
   resolvedChain === "sepolia"
     ? undefined
