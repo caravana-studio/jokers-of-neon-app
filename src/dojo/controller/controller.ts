@@ -71,7 +71,7 @@ const controllerOptions = {
   shouldOverridePresetPolicies: usesCustomKatanaEndpoint,
   namespace: DOJO_NAMESPACE,
   policies,
-  slot: resolvedSlot,
+  slot: usesCustomKatanaEndpoint ? undefined : resolvedSlot,
   signupOptions,
 };
 
@@ -245,6 +245,7 @@ if (usesCustomKatanaEndpoint) {
     env: import.meta.env.VITE_ENV ?? null,
     slotInstance: slotInstance ?? null,
     resolvedSlot: resolvedSlot ?? null,
+    controllerSlot: controllerOptions.slot ?? null,
     defaultChainId,
     rpcUrl: resolvedRpcUrl,
     preset: controllerOptions.preset ?? null,

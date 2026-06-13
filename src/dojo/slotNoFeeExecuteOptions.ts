@@ -164,6 +164,7 @@ export function patchControllerNoFeeExecute<T extends AccountInterface | null | 
   const execute = keychain.execute.bind(keychain);
   keychain.execute = (calls, abis, transactionDetails, ...rest) => {
     const normalizedCalls = Array.isArray(calls) ? calls : [calls];
+    const isManualExecution = rest[0] === true;
     const hasTransactionDetails =
       !!transactionDetails && typeof transactionDetails === "object";
     const noFeeTransactionDetails =
@@ -172,7 +173,9 @@ export function patchControllerNoFeeExecute<T extends AccountInterface | null | 
             ...transactionDetails,
             tip: transactionDetails.tip ?? 0,
           }
-        : transactionDetails;
+        : isManualExecution
+          ? { tip: 0 }
+          : transactionDetails;
 
     logDebug("keychain.execute", {
       callCount: normalizedCalls.length,
@@ -181,7 +184,7 @@ export function patchControllerNoFeeExecute<T extends AccountInterface | null | 
       outgoingTip: noFeeTransactionDetails?.tip ?? null,
       transactionDetailsType:
         transactionDetails === undefined ? "undefined" : typeof transactionDetails,
-      manual: rest[0] ?? null,
+      manual: isManualExecution,
       hasFeeSource: rest.length > 1 && rest[1] != null,
       restArgsCount: rest.length,
     });
