@@ -151,7 +151,13 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     []
   );
 
-  const { account: burnerAccount, isDeploying } = useBurnerManager({
+  const {
+    account: burnerAccount,
+    isDeploying,
+    create: createBurnerAccount,
+    list: listBurnerAccounts,
+    select: selectBurnerAccount,
+  } = useBurnerManager({
     burnerManager: value.burnerManager,
   });
   const gameLoopBurnerSession = useGameLoopBurnerSession();
@@ -528,6 +534,21 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
         console.error("Failed to start guest flow with API burner", error);
         return false;
       }
+    }
+
+    try {
+      if (!burnerAccount) {
+        const existingBurner = listBurnerAccounts()[0];
+        if (existingBurner?.address) {
+          selectBurnerAccount(existingBurner.address);
+        } else {
+          await createBurnerAccount();
+        }
+      }
+    } catch (error) {
+      console.error("Failed to start guest flow with frontend burner", error);
+      setConnectionStatus("selecting");
+      return false;
     }
 
     setConnectionStatus("connecting_burner");
