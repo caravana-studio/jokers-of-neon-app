@@ -189,6 +189,26 @@ const ensureControllerAccountDeployed = async (
       return;
     }
 
+    const deployResult = deployResponse as
+      | {
+          code?: string;
+          transaction_hash?: string;
+          transactionHash?: string;
+          message?: string;
+        }
+      | undefined;
+    const deployTxHash =
+      deployResult?.transaction_hash ?? deployResult?.transactionHash;
+
+    if (deployResult?.code !== "SUCCESS" || !deployTxHash) {
+      logControllerDebug("account.deploy:not-started", {
+        account: accountAddress,
+        reason: "deploy did not submit a transaction",
+        response: deployResponse,
+      });
+      return;
+    }
+
     for (let attempt = 1; attempt <= 10; attempt++) {
       await new Promise((resolve) => setTimeout(resolve, 1000));
       const after = await getAccountDeploymentStatus(accountAddress);
