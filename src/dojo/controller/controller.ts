@@ -279,7 +279,9 @@ if (!isNative && usesCustomKatanaEndpoint) {
         });
       }
 
-      const accountAddress = (account as any)?.address;
+      const accountAddress =
+        (account as any)?.address ??
+        cartridgeConnector.controller.account?.address;
       if (accountAddress) {
         await ensureControllerAccountDeployed(
           cartridgeConnector,
