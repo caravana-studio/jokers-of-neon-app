@@ -66,7 +66,7 @@ const signupOptions: AuthOptions = isNativeAndroid
 const controllerOptions = {
   chains: [{ rpcUrl: resolvedRpcUrl }],
   defaultChainId,
-  propagateSessionErrors: usesCustomKatanaEndpoint,
+  propagateSessionErrors: false,
   preset: import.meta.env.VITE_CONTROLLER_PRESET,
   shouldOverridePresetPolicies: usesCustomKatanaEndpoint,
   namespace: DOJO_NAMESPACE,
@@ -248,6 +248,7 @@ if (usesCustomKatanaEndpoint) {
     defaultChainId,
     rpcUrl: resolvedRpcUrl,
     preset: controllerOptions.preset ?? null,
+    propagateSessionErrors: controllerOptions.propagateSessionErrors,
     namespace: DOJO_NAMESPACE,
     usesCustomKatanaEndpoint,
     policyContractCount: Object.keys(policies.contracts ?? {}).length,
