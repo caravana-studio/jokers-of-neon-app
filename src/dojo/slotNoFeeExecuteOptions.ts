@@ -25,6 +25,19 @@ const summarizeExecuteResult = (result: any) => ({
   error: result?.error ?? null,
 });
 
+const safeStringify = (payload: unknown) => {
+  try {
+    return JSON.stringify(payload);
+  } catch {
+    return "[unserializable]";
+  }
+};
+
+const logDebug = (label: string, payload: unknown) => {
+  console.info(`[CONTROLLER-DEBUG] ${label}`, payload);
+  console.info(`[CONTROLLER-DEBUG_JSON] ${label} ${safeStringify(payload)}`);
+};
+
 /**
  * Slot/Katana gameplay transactions are no-fee, so forcing tip=0 avoids
  * Starknet.js scanning recent blocks to estimate a recommended V3 tip.
@@ -82,7 +95,7 @@ function patchAccountExecute(account: ControllerAccountLike) {
         ? withSlotNoFeeExecuteOptions(transactionDetails)
         : transactionDetails;
 
-    console.info("[CONTROLLER-DEBUG] account.execute", {
+    logDebug("account.execute", {
       account: account.address,
       callCount: normalizedCalls.length,
       calls: normalizedCalls.map(summarizeCall),
@@ -101,14 +114,14 @@ function patchAccountExecute(account: ControllerAccountLike) {
 
     return executePromise
       .then((result: any) => {
-        console.info(
-          "[CONTROLLER-DEBUG] account.execute:result",
-          summarizeExecuteResult(result)
-        );
+        logDebug("account.execute:result", summarizeExecuteResult(result));
         return result;
       })
       .catch((error: unknown) => {
         console.error("[CONTROLLER-DEBUG] account.execute:error", error);
+        console.info(
+          `[CONTROLLER-DEBUG_JSON] account.execute:error ${safeStringify(error)}`
+        );
         throw error;
       });
   };
@@ -130,7 +143,7 @@ export function patchControllerNoFeeExecute<T extends AccountInterface | null | 
     | ControllerKeychainLike
     | undefined;
 
-  console.info("[CONTROLLER-DEBUG] patchControllerNoFeeExecute", {
+  logDebug("patchControllerNoFeeExecute", {
     requestedAccount: inspectAccount(account),
     fallbackAccount: inspectAccount(fallbackAccount),
     patchTarget: inspectAccount(patchTarget),
@@ -161,7 +174,7 @@ export function patchControllerNoFeeExecute<T extends AccountInterface | null | 
           }
         : transactionDetails;
 
-    console.info("[CONTROLLER-DEBUG] keychain.execute", {
+    logDebug("keychain.execute", {
       callCount: normalizedCalls.length,
       calls: normalizedCalls.map(summarizeCall),
       incomingTip: transactionDetails?.tip ?? null,
@@ -175,14 +188,14 @@ export function patchControllerNoFeeExecute<T extends AccountInterface | null | 
 
     return execute(calls, abis, noFeeTransactionDetails, ...rest)
       .then((result: any) => {
-        console.info(
-          "[CONTROLLER-DEBUG] keychain.execute:result",
-          summarizeExecuteResult(result)
-        );
+        logDebug("keychain.execute:result", summarizeExecuteResult(result));
         return result;
       })
       .catch((error: unknown) => {
         console.error("[CONTROLLER-DEBUG] keychain.execute:error", error);
+        console.info(
+          `[CONTROLLER-DEBUG_JSON] keychain.execute:error ${safeStringify(error)}`
+        );
         throw error;
       });
   };

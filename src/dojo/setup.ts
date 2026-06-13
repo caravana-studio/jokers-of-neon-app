@@ -9,6 +9,7 @@ import { createSystemCalls } from "./createSystemCalls";
 import { setupWorld } from "./typescript/contracts.gen";
 import { defineContractComponents } from "./typescript/defineContractComponents";
 import { withSlotNoFeeExecuteOptions } from "./slotNoFeeExecuteOptions";
+import { usesCustomKatanaEndpoint } from "../config/cartridgeUrls";
 import { world } from "./world";
 
 import type { Message, ToriiClient } from "@dojoengine/torii-client";
@@ -16,8 +17,9 @@ import type { Message, ToriiClient } from "@dojoengine/torii-client";
 export type SetupResult = Awaited<ReturnType<typeof setup>>;
 const DOJO_NAMESPACE =
   import.meta.env.VITE_DOJO_NAMESPACE || "jokers_of_neon_core";
-const SHOULD_BOOTSTRAP_FRONTEND_BURNER =
-  (import.meta.env.VITE_BLOCKCHAIN?.trim() || "starknet") === "starknet";
+const shouldBootstrapFrontendBurner = () =>
+  (import.meta.env.VITE_BLOCKCHAIN?.trim() || "starknet") === "starknet" &&
+  !usesCustomKatanaEndpoint;
 
 let sync: any;
 
@@ -180,7 +182,7 @@ export async function setup({ ...config }: DojoConfig) {
 
   try {
     await burnerManager.init();
-    if (SHOULD_BOOTSTRAP_FRONTEND_BURNER && burnerManager.list().length === 0) {
+    if (shouldBootstrapFrontendBurner() && burnerManager.list().length === 0) {
       await burnerManager.create();
     }
   } catch (e) {

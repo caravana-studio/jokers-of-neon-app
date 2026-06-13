@@ -68,6 +68,7 @@ const controllerOptions = {
   defaultChainId,
   propagateSessionErrors: usesCustomKatanaEndpoint,
   preset: import.meta.env.VITE_CONTROLLER_PRESET,
+  shouldOverridePresetPolicies: usesCustomKatanaEndpoint,
   namespace: DOJO_NAMESPACE,
   policies,
   slot: resolvedSlot,
@@ -91,6 +92,14 @@ const logControllerIframeState = (stage: string) => {
   });
 };
 
+const safeControllerStringify = (payload: unknown) => {
+  try {
+    return JSON.stringify(payload);
+  } catch {
+    return "[unserializable]";
+  }
+};
+
 if (usesCustomKatanaEndpoint) {
   const playPolicyContracts = Object.entries(policies.contracts ?? {}).flatMap(
     ([contractAddress, contract]) => {
@@ -103,7 +112,7 @@ if (usesCustomKatanaEndpoint) {
     }
   );
 
-  console.info("[CONTROLLER-DEBUG] options", {
+  const controllerDebugOptions = {
     env: import.meta.env.VITE_ENV ?? null,
     slotInstance: slotInstance ?? null,
     resolvedSlot: resolvedSlot ?? null,
@@ -114,7 +123,12 @@ if (usesCustomKatanaEndpoint) {
     usesCustomKatanaEndpoint,
     policyContractCount: Object.keys(policies.contracts ?? {}).length,
     playPolicyContracts,
-  });
+  };
+
+  console.info("[CONTROLLER-DEBUG] options", controllerDebugOptions);
+  console.info(
+    `[CONTROLLER-DEBUG_JSON] options ${safeControllerStringify(controllerDebugOptions)}`
+  );
 }
 
 const controllerConnector =
