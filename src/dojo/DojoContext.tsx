@@ -169,8 +169,7 @@ const DojoContextProvider = ({
   useEffect(() => {
     if (
       accountType === "controller" &&
-      isControllerConnected &&
-      (finalAccount || controllerAccount)
+      (finalAccount || (isControllerConnected && controllerAccount))
     ) {
       const account = (finalAccount || controllerAccount) as AccountInterface;
 

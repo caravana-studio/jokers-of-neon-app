@@ -250,6 +250,8 @@ export const CavosWalletConnect = () => {
     isAuthActionInProgress || !isCavosEnabled;
   const isControllerActionDisabled =
     isAuthActionInProgress || !isControllerEnabled;
+  const isControllerActionLoading =
+    isLoadingWallet && accountType === "controller" && !finalAccount;
   const isGuestActionDisabled =
     isAuthActionInProgress || isLoadingLastGameId;
   const showAppleLogin = !isNativeAndroid;
@@ -385,7 +387,7 @@ export const CavosWalletConnect = () => {
                 showGuestMode={allowGuest}
                 isCavosAuthDisabled={isCavosAuthDisabled}
                 isControllerActionDisabled={isControllerActionDisabled}
-                isControllerActionLoading={false}
+                isControllerActionLoading={isControllerActionLoading}
                 isGuestActionDisabled={isGuestActionDisabled}
                 isGuestActionLoading={isGuestLoginSubmitting}
                 isMoreOptionsDisabled={isAuthActionInProgress}

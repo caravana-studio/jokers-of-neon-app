@@ -5,6 +5,7 @@ import {
   createContext,
   type MutableRefObject,
   type ReactNode,
+  useCallback,
   useContext,
   useEffect,
   useMemo,
@@ -93,7 +94,7 @@ type WalletProviderProps = {
 };
 
 export const WalletProvider = ({ children, value }: WalletProviderProps) => {
-  const { connect, connectors } = useConnect();
+  const { connectAsync, connectors } = useConnect();
   const {
     lastGameId,
     isLoading: isLoadingLastGameId,
@@ -161,6 +162,8 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     useState<ConnectionStatus>("selecting");
   const [isControllerConnectAttemptActive, setIsControllerConnectAttemptActive] =
     useState(false);
+  const [isControllerRestoreAttemptActive, setIsControllerRestoreAttemptActive] =
+    useState(false);
   const [finalAccount, setFinalAccount] = useState<
     Account | AccountInterface | null
   >(null);
@@ -186,12 +189,13 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
   const fallbackGuestIdRef = useRef<number>(
     Math.floor(Math.random() * (100000 - 50000 + 1)) + 50000
   );
+  const controllerRestoreAttemptedRef = useRef(false);
 
   useEffect(() => {
     logEvent("open_wallet_page");
   }, []);
 
-  const connectWallet = async (): Promise<boolean> => {
+  const connectWallet = useCallback(async (): Promise<boolean> => {
     if (!isControllerEnabled) {
       console.warn("Controller connector disabled for this environment");
       return false;
@@ -199,7 +203,7 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
 
     try {
       if (connectors[0]) {
-        await connect({ connector: connectors[0] });
+        await connectAsync({ connector: connectors[0] });
         return true;
       }
 
@@ -209,7 +213,40 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
       console.error("Failed to connect wallet:", error);
       return false;
     }
-  };
+  }, [connectAsync, connectors, isControllerEnabled]);
+
+  const restoreControllerSession = useCallback(async (): Promise<boolean> => {
+    if (!isControllerEnabled || !controller) {
+      return false;
+    }
+
+    setConnectionStatus("connecting_controller");
+    setIsControllerRestoreAttemptActive(true);
+
+    try {
+      const controllerProvider = (controller as any).controller;
+      const restoredAccount =
+        typeof controllerProvider?.probe === "function"
+          ? await controllerProvider.probe()
+          : null;
+
+      if (!restoredAccount?.address) {
+        return false;
+      }
+
+      setIsControllerConnectAttemptActive(false);
+      setAccountType("controller");
+      localStorage.setItem(ACCOUNT_TYPE, "controller");
+      localStorage.setItem("lastUsedConnector", "controller");
+      setFinalAccount(restoredAccount as AccountInterface);
+      return true;
+    } catch (error) {
+      console.warn("[CONTROLLER] Failed to restore existing session", error);
+      return false;
+    } finally {
+      setIsControllerRestoreAttemptActive(false);
+    }
+  }, [isControllerEnabled]);
 
   // Refs to avoid stale closures in CavosAccountAdapter callbacks.
   // The adapter is created once via useMemo, but these refs always point to current values.
@@ -374,9 +411,21 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
           setFinalAccount(burnerAccount);
         }
       } else if (accountType === "controller" && isControllerEnabled) {
-        connectWallet();
         if (effectiveControllerAccount) {
           setFinalAccount(effectiveControllerAccount);
+          return;
+        }
+
+        if (
+          !controllerRestoreAttemptedRef.current &&
+          !isControllerRestoreAttemptActive
+        ) {
+          controllerRestoreAttemptedRef.current = true;
+          void restoreControllerSession().then((restored) => {
+            if (!restored) {
+              setConnectionStatus("selecting");
+            }
+          });
         }
       } else if (accountType === "controller") {
         localStorage.removeItem(ACCOUNT_TYPE);
@@ -393,6 +442,8 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     isControllerEnabled,
     gameLoopEnabled,
     gameLoopBurnerAccount,
+    isControllerRestoreAttemptActive,
+    restoreControllerSession,
   ]);
 
   useEffect(() => {
@@ -791,6 +842,14 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     !finalAccount &&
     (accountType === "cavos" || connectionStatus === "selecting") &&
     isCavosSetupInProgress;
+  const isControllerAutoConnecting =
+    isControllerEnabled &&
+    accountType === "controller" &&
+    !finalAccount &&
+    (connectionStatus === "connecting_controller" ||
+      isControllerConnectAttemptActive ||
+      isControllerRestoreAttemptActive ||
+      isControllerConnecting === true);
 
   const shouldBlockWithWalletScreen =
     appType !== AppType.SHOP &&
@@ -804,7 +863,8 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     (connectionStatus === "connecting_cavos" &&
       !!cavos &&
       isCavosSetupInProgress) ||
-    isCavosAutoConnecting;
+    isCavosAutoConnecting ||
+    isControllerAutoConnecting;
 
   return (
     <WalletContext.Provider
