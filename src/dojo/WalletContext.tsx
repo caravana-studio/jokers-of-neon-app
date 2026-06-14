@@ -31,7 +31,6 @@ import { controller } from "./controller/controller";
 import { CavosAccountAdapter } from "./cavos/CavosAccountAdapter";
 import { useCavosSafe } from "./cavos/CavosBridgeContext";
 import { useGameLoopBurnerSession } from "../hooks/useGameLoopBurnerSession";
-import { patchControllerNoFeeExecute } from "./slotNoFeeExecuteOptions";
 import type { SetupResult } from "./setup";
 
 const CHAIN = import.meta.env.VITE_CHAIN;
@@ -105,18 +104,7 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     isConnected: isControllerConnected,
     isConnecting: isControllerConnecting,
   } = useAccount();
-  const controllerProviderAccount = (controller as any)?.controller
-    ?.account as AccountInterface | null | undefined;
-  const effectiveControllerAccount = useMemo(
-    () =>
-      usesCustomKatanaEndpoint
-        ? patchControllerNoFeeExecute(
-            controllerAccount,
-            controllerProviderAccount
-          )
-        : controllerAccount,
-    [controllerAccount, controllerProviderAccount]
-  );
+  const effectiveControllerAccount = controllerAccount;
 
   // Cavos SDK hook (safe — returns null when CavosProvider is not in tree)
   const cavos = useCavosSafe();
