@@ -41,6 +41,8 @@ const CAVOS_ENABLED =
 const CAVOS_NATIVE_REDIRECT_URI =
   import.meta.env.VITE_CAVOS_NATIVE_REDIRECT_URI ||
   "jokers://open";
+const CONTROLLER_STANDALONE_RESTORE_ATTEMPTED =
+  "controller_standalone_restore_attempted";
 
 type ConnectionStatus =
   | "selecting"
@@ -231,6 +233,26 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
           : null;
 
       if (!restoredAccount?.address) {
+        const canOpenStandaloneRestore =
+          usesCustomKatanaEndpoint &&
+          typeof window !== "undefined" &&
+          typeof sessionStorage !== "undefined" &&
+          sessionStorage.getItem(CONTROLLER_STANDALONE_RESTORE_ATTEMPTED) !==
+            "true" &&
+          typeof controllerProvider?.open === "function";
+
+        if (canOpenStandaloneRestore) {
+          sessionStorage.setItem(
+            CONTROLLER_STANDALONE_RESTORE_ATTEMPTED,
+            "true"
+          );
+          console.info(
+            "[CONTROLLER] Existing session not available in iframe, opening standalone restore"
+          );
+          controllerProvider.open({ redirectUrl: window.location.href });
+          return true;
+        }
+
         return false;
       }
 
@@ -238,6 +260,7 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
       setAccountType("controller");
       localStorage.setItem(ACCOUNT_TYPE, "controller");
       localStorage.setItem("lastUsedConnector", "controller");
+      sessionStorage.removeItem(CONTROLLER_STANDALONE_RESTORE_ATTEMPTED);
       setFinalAccount(restoredAccount as AccountInterface);
       return true;
     } catch (error) {
