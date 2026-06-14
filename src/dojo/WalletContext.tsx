@@ -41,8 +41,10 @@ const CAVOS_ENABLED =
 const CAVOS_NATIVE_REDIRECT_URI =
   import.meta.env.VITE_CAVOS_NATIVE_REDIRECT_URI ||
   "jokers://open";
-const CONTROLLER_STANDALONE_RESTORE_ATTEMPTED =
-  "controller_standalone_restore_attempted";
+const CONTROLLER_STANDALONE_LOGIN_PENDING =
+  "controller_standalone_login_pending";
+const CONTROLLER_RESTORE_RETRY_ATTEMPTS = 8;
+const CONTROLLER_RESTORE_RETRY_DELAY_MS = 500;
 
 type ConnectionStatus =
   | "selecting"
@@ -204,6 +206,20 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     }
 
     try {
+      const controllerProvider = (controller as any)?.controller;
+      if (
+        usesCustomKatanaEndpoint &&
+        typeof window !== "undefined" &&
+        typeof sessionStorage !== "undefined" &&
+        typeof controllerProvider?.open === "function"
+      ) {
+        localStorage.setItem(ACCOUNT_TYPE, "controller");
+        localStorage.setItem("lastUsedConnector", "controller");
+        sessionStorage.setItem(CONTROLLER_STANDALONE_LOGIN_PENDING, "true");
+        controllerProvider.open({ redirectUrl: window.location.href });
+        return true;
+      }
+
       if (connectors[0]) {
         await connectAsync({ connector: connectors[0] });
         return true;
@@ -217,6 +233,35 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     }
   }, [connectAsync, connectors, isControllerEnabled]);
 
+  const probeControllerSession = useCallback(async () => {
+    const controllerProvider = (controller as any)?.controller;
+    if (typeof controllerProvider?.probe !== "function") {
+      return null;
+    }
+
+    const isStandaloneLoginPending =
+      typeof sessionStorage !== "undefined" &&
+      sessionStorage.getItem(CONTROLLER_STANDALONE_LOGIN_PENDING) === "true";
+    const attempts = isStandaloneLoginPending
+      ? CONTROLLER_RESTORE_RETRY_ATTEMPTS
+      : 1;
+
+    for (let attempt = 0; attempt < attempts; attempt += 1) {
+      const restoredAccount = await controllerProvider.probe();
+      if (restoredAccount?.address) {
+        return restoredAccount as AccountInterface;
+      }
+
+      if (attempt < attempts - 1) {
+        await new Promise((resolve) =>
+          window.setTimeout(resolve, CONTROLLER_RESTORE_RETRY_DELAY_MS)
+        );
+      }
+    }
+
+    return null;
+  }, []);
+
   const restoreControllerSession = useCallback(async (): Promise<boolean> => {
     if (!isControllerEnabled || !controller) {
       return false;
@@ -226,31 +271,11 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     setIsControllerRestoreAttemptActive(true);
 
     try {
-      const controllerProvider = (controller as any).controller;
-      const restoredAccount =
-        typeof controllerProvider?.probe === "function"
-          ? await controllerProvider.probe()
-          : null;
+      const restoredAccount = await probeControllerSession();
 
       if (!restoredAccount?.address) {
-        const canOpenStandaloneRestore =
-          usesCustomKatanaEndpoint &&
-          typeof window !== "undefined" &&
-          typeof sessionStorage !== "undefined" &&
-          sessionStorage.getItem(CONTROLLER_STANDALONE_RESTORE_ATTEMPTED) !==
-            "true" &&
-          typeof controllerProvider?.open === "function";
-
-        if (canOpenStandaloneRestore) {
-          sessionStorage.setItem(
-            CONTROLLER_STANDALONE_RESTORE_ATTEMPTED,
-            "true"
-          );
-          console.info(
-            "[CONTROLLER] Existing session not available in iframe, opening standalone restore"
-          );
-          controllerProvider.open({ redirectUrl: window.location.href });
-          return true;
+        if (typeof sessionStorage !== "undefined") {
+          sessionStorage.removeItem(CONTROLLER_STANDALONE_LOGIN_PENDING);
         }
 
         return false;
@@ -260,7 +285,7 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
       setAccountType("controller");
       localStorage.setItem(ACCOUNT_TYPE, "controller");
       localStorage.setItem("lastUsedConnector", "controller");
-      sessionStorage.removeItem(CONTROLLER_STANDALONE_RESTORE_ATTEMPTED);
+      sessionStorage.removeItem(CONTROLLER_STANDALONE_LOGIN_PENDING);
       setFinalAccount(restoredAccount as AccountInterface);
       return true;
     } catch (error) {
@@ -269,7 +294,7 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     } finally {
       setIsControllerRestoreAttemptActive(false);
     }
-  }, [isControllerEnabled]);
+  }, [isControllerEnabled, probeControllerSession]);
 
   // Refs to avoid stale closures in CavosAccountAdapter callbacks.
   // The adapter is created once via useMemo, but these refs always point to current values.
