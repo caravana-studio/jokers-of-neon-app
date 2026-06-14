@@ -45,6 +45,7 @@ export const CavosWalletConnect = () => {
   const [verificationCode, setVerificationCode] = useState("");
   const [isSendingEmailOtp, setIsSendingEmailOtp] = useState(false);
   const [isVerifyingEmailOtp, setIsVerifyingEmailOtp] = useState(false);
+  const [isGuestLoginSubmitting, setIsGuestLoginSubmitting] = useState(false);
   const [resendCooldownSeconds, setResendCooldownSeconds] = useState(0);
   const stageTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const {
@@ -141,9 +142,24 @@ export const CavosWalletConnect = () => {
   };
 
   const handleGuestModeClick = async () => {
-    const started = await continueAsGuest();
-    if (started && location.pathname === "/login") {
-      navigate("/", { replace: true });
+    if (isGuestLoginSubmitting) {
+      return;
+    }
+
+    setIsGuestLoginSubmitting(true);
+    try {
+      const started = await continueAsGuest();
+      if (started && location.pathname === "/login") {
+        navigate("/", { replace: true });
+        return;
+      }
+
+      if (!started) {
+        setIsGuestLoginSubmitting(false);
+      }
+    } catch (error) {
+      console.error("Guest login failed", error);
+      setIsGuestLoginSubmitting(false);
     }
   };
 
@@ -228,6 +244,7 @@ export const CavosWalletConnect = () => {
     isLoadingWallet ||
     isSendingEmailOtp ||
     isVerifyingEmailOtp ||
+    isGuestLoginSubmitting ||
     Boolean(cavosOAuthProvider);
   const isCavosAuthDisabled =
     isAuthActionInProgress || !isCavosEnabled;
@@ -353,6 +370,8 @@ export const CavosWalletConnect = () => {
                   continueWithController: t("continue-with-controller"),
                   justTryQuestion: t("just-try-question"),
                   guestMode: t("guest-mode"),
+                  guestModeLoading: t("guest-mode-loading"),
+                  guestModeFeedback: t("guest-mode-feedback"),
                   moreOptions: t("more-options"),
                   goBack: t("go-back"),
                 }}
@@ -370,6 +389,7 @@ export const CavosWalletConnect = () => {
                 isControllerActionDisabled={isControllerActionDisabled}
                 isControllerActionLoading={false}
                 isGuestActionDisabled={isGuestActionDisabled}
+                isGuestActionLoading={isGuestLoginSubmitting}
                 isMoreOptionsDisabled={isAuthActionInProgress}
                 cavosOAuthProvider={cavosOAuthProvider}
               />

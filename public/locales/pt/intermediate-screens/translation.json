@@ -486,6 +486,8 @@
     "go-back": "Voltar",
     "just-try-question": "Quer apenas experimentar o jogo?",
     "guest-mode": "Modo convidado",
+    "guest-mode-loading": "Preparando convidado",
+    "guest-mode-feedback": "Configurando sua conta de convidado...",
     "season-label": "TEMPORADA",
     "errors": {
       "invalid-code": "Código inválido. Verifique e tente novamente."

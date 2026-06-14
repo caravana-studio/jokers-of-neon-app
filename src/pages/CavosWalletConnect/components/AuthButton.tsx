@@ -44,7 +44,7 @@ export const AuthButton = ({
     textTransform="none"
     letterSpacing={0}
     cursor={disabled || isLoading ? "not-allowed" : "pointer"}
-    opacity={disabled || isLoading ? 0.55 : 1}
+    opacity={disabled && !isLoading ? 0.55 : 1}
   >
     {iconSrc ? (
       <Image

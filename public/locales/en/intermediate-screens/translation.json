@@ -487,6 +487,8 @@
     "go-back": "Go back",
     "just-try-question": "Just want to try the game?",
     "guest-mode": "Guest mode",
+    "guest-mode-loading": "Preparing guest mode",
+    "guest-mode-feedback": "Setting up your guest account...",
     "season-label": "SEASON",
     "errors": {
       "invalid-code": "Invalid code. Please check it and try again."

@@ -13,6 +13,8 @@ interface AuthOptionsLabels {
   continueWithController: string;
   justTryQuestion: string;
   guestMode: string;
+  guestModeLoading: string;
+  guestModeFeedback: string;
   moreOptions: string;
   goBack: string;
 }
@@ -34,6 +36,7 @@ interface AuthOptionsViewProps {
   isControllerActionDisabled?: boolean;
   isControllerActionLoading?: boolean;
   isGuestActionDisabled?: boolean;
+  isGuestActionLoading?: boolean;
   isMoreOptionsDisabled?: boolean;
   cavosOAuthProvider?: "google" | "apple" | null;
 }
@@ -55,6 +58,7 @@ export const AuthOptionsView = ({
   isControllerActionDisabled = false,
   isControllerActionLoading = false,
   isGuestActionDisabled = false,
+  isGuestActionLoading = false,
   isMoreOptionsDisabled = false,
   cavosOAuthProvider = null,
 }: AuthOptionsViewProps) => {
@@ -190,12 +194,25 @@ export const AuthOptionsView = ({
                     {labels.justTryQuestion}
                   </Text>
                   <AuthButton
-                    label={labels.guestMode}
+                    label={isGuestActionLoading ? labels.guestModeLoading : labels.guestMode}
                     bg="#A245BC"
                     color="white"
                     onClick={onGuestModeClick}
                     disabled={isGuestActionDisabled}
+                    isLoading={isGuestActionLoading}
                   />
+                  <Text
+                    color="#D5D6DC"
+                    fontFamily="Oxanium"
+                    fontSize={{ base: "12px", sm: "13px", md: "14px" }}
+                    lineHeight={1.2}
+                    minH={{ base: "15px", sm: "16px" }}
+                    textAlign="center"
+                    opacity={isGuestActionLoading ? 0.9 : 0}
+                    aria-live="polite"
+                  >
+                    {labels.guestModeFeedback}
+                  </Text>
                 </Flex>
               )}
             </Flex>

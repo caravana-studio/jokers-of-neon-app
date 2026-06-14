@@ -506,6 +506,7 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
 
   const startGuestFlow = async (): Promise<boolean> => {
     logEvent("play_as_guest");
+    setConnectionStatus("connecting_burner");
 
     if (isGameLoopBurnerEnabled()) {
       try {
@@ -516,10 +517,10 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
 
         localStorage.removeItem(GAME_ID);
         localStorage.setItem(LOGGED_USER, username);
-        setConnectionStatus("connecting_burner");
         return true;
       } catch (error) {
         console.error("Failed to start guest flow with API burner", error);
+        setConnectionStatus("selecting");
         return false;
       }
     }
@@ -539,7 +540,6 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
       return false;
     }
 
-    setConnectionStatus("connecting_burner");
     const guestId = lastGameIdError ? fallbackGuestIdRef.current : lastGameId + 1;
     const username = `guest${String(guestId).slice(-8)}`;
 
