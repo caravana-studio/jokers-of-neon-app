@@ -370,8 +370,6 @@ export const CavosWalletConnect = () => {
                   continueWithController: t("continue-with-controller"),
                   justTryQuestion: t("just-try-question"),
                   guestMode: t("guest-mode"),
-                  guestModeLoading: t("guest-mode-loading"),
-                  guestModeFeedback: t("guest-mode-feedback"),
                   moreOptions: t("more-options"),
                   goBack: t("go-back"),
                 }}

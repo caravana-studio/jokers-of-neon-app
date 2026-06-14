@@ -13,8 +13,6 @@ interface AuthOptionsLabels {
   continueWithController: string;
   justTryQuestion: string;
   guestMode: string;
-  guestModeLoading: string;
-  guestModeFeedback: string;
   moreOptions: string;
   goBack: string;
 }
@@ -194,25 +192,14 @@ export const AuthOptionsView = ({
                     {labels.justTryQuestion}
                   </Text>
                   <AuthButton
-                    label={isGuestActionLoading ? labels.guestModeLoading : labels.guestMode}
+                    label={labels.guestMode}
                     bg="#A245BC"
                     color="white"
                     onClick={onGuestModeClick}
                     disabled={isGuestActionDisabled}
                     isLoading={isGuestActionLoading}
+                    hideContentWhenLoading
                   />
-                  <Text
-                    color="#D5D6DC"
-                    fontFamily="Oxanium"
-                    fontSize={{ base: "12px", sm: "13px", md: "14px" }}
-                    lineHeight={1.2}
-                    minH={{ base: "15px", sm: "16px" }}
-                    textAlign="center"
-                    opacity={isGuestActionLoading ? 0.9 : 0}
-                    aria-live="polite"
-                  >
-                    {labels.guestModeFeedback}
-                  </Text>
                 </Flex>
               )}
             </Flex>
