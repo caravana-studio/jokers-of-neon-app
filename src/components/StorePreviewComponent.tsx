@@ -22,6 +22,8 @@ export interface IStorePreviewComponent {
   title: string;
   description: string;
   cardType?: string;
+  rarityLabel?: string;
+  rarityCode?: string;
   extraDescription?: string;
   details?: string;
   price: number;
@@ -46,6 +48,8 @@ export const StorePreviewComponent = ({
   title,
   description,
   cardType,
+  rarityLabel,
+  rarityCode,
   extraDescription,
   details,
   price,
@@ -156,6 +160,33 @@ export const StorePreviewComponent = ({
                   </Text>
                   <Text color={neonGreen} fontSize={{ base: "md", sm: "xl" }}>
                     {cardType}
+                  </Text>
+                </Box>
+              )}
+              {rarityLabel && (
+                <Box my={"10px"}>
+                  <Text
+                    color="white"
+                    fontSize={{ base: "md", sm: "lg" }}
+                    mb={2}
+                    sx={{
+                      position: "relative",
+                      _before: {
+                        content: '""',
+                        position: "absolute",
+                        bottom: 0,
+                        width: "95%",
+                        height: "2px",
+                        backgroundColor: "white",
+                        boxShadow:
+                          "0px 0px 12px rgba(255, 255, 255, 0.8), 0px 6px 20px rgba(255, 255, 255, 0.5)",
+                      },
+                    }}
+                  >
+                    {t("store.preview-card.title.rarity")}
+                  </Text>
+                  <Text color={neonGreen} fontSize={{ base: "md", sm: "xl" }}>
+                    {rarityCode ? `${rarityLabel} (${rarityCode})` : rarityLabel}
                   </Text>
                 </Box>
               )}

@@ -5,6 +5,7 @@ import { useLocation } from "react-router-dom";
 import { CardImage3D } from "../../components/CardImage3D.tsx";
 import { StorePreviewCardComponentMobile } from "../../components/StorePreviewCardComponent.mobile.tsx";
 import { StorePreviewComponent } from "../../components/StorePreviewComponent.tsx";
+import { RARITY, RarityLabels } from "../../constants/rarity.ts";
 import { GameStateEnum } from "../../dojo/typescript/custom.ts";
 import { Duration } from "../../enums/duration.ts";
 import { useCustomNavigate } from "../../hooks/useCustomNavigate.tsx";
@@ -23,9 +24,10 @@ const PreviewCard = () => {
   const { card } = state || {};
 
   const [buyDisabled, setBuyDisabled] = useState(false);
-  const { t } = useTranslation("store", {
+  const { t: tStore } = useTranslation("store", {
     keyPrefix: "store.preview-card",
   });
+  const { t: tDocs } = useTranslation("docs");
 
   const { isSmallScreen } = useResponsiveValues();
   const { buyCard, buySpecialCardItem } = useStore();
@@ -38,7 +40,11 @@ const PreviewCard = () => {
     return <p>Card not found.</p>;
   }
 
-  const { name, description } = getCardData(card.card_id ?? 0);
+  const { name, description, rarity } = getCardData(card.card_id ?? 0);
+  const rarityLabel = rarity
+    ? tDocs(`rarity.${RarityLabels[rarity as RARITY]}`)
+    : undefined;
+  const rarityCode = rarity ? String(rarity) : undefined;
 
   const permanentPrice = getEffectivePrice(card.price, card.discount_cost);
   const temporalPrice = getEffectivePrice(
@@ -71,7 +77,7 @@ const PreviewCard = () => {
       minWidth={"100px"}
       height={["30px", "32px"]}
     >
-      {t("labels.buy").toUpperCase()}
+      {tStore("labels.buy").toUpperCase()}
     </Button>
   ) : (
     <Button
@@ -83,12 +89,12 @@ const PreviewCard = () => {
         notEnoughCash || noSpaceForSpecialCards || locked || buyDisabled
       }
     >
-      {t("labels.buy")}
+      {tStore("labels.buy")}
     </Button>
   );
   const label = noSpaceForSpecialCards
-    ? t("tooltip.no-space")
-    : t("tooltip.no-coins");
+    ? tStore("tooltip.no-space")
+    : tStore("tooltip.no-coins");
 
   const tooltipButton =
     notEnoughCash || noSpaceForSpecialCards ? (
@@ -113,12 +119,13 @@ const PreviewCard = () => {
   );
 
   const cardType = card.isSpecial
-    ? t("labels.special")
+    ? tStore("labels.special")
     : card.isModifier
-      ? t("labels.modifier")
-      : t("labels.traditional");
+      ? tStore("labels.modifier")
+      : tStore("labels.traditional");
 
-  const temporary = card.temporary && " (" + t("labels.temporary") + ")";
+  const temporary =
+    card.temporary && " (" + tStore("labels.temporary") + ")";
 
   const onDurationChange = () =>
     setDuration(
@@ -130,6 +137,8 @@ const PreviewCard = () => {
     image,
     title: name,
     cardType: card.temporary ? cardType + temporary : cardType,
+    rarityLabel,
+    rarityCode,
     description: description,
     extraDescription: card.isTemporary && getTemporalCardText(card.remaining),
     price: card.price,
@@ -148,13 +157,15 @@ const PreviewCard = () => {
       title={name}
       description={description}
       cardType={cardType}
+      rarityLabel={rarityLabel}
+      rarityCode={rarityCode}
       buyButton={{
         onClick: onBuyClick,
-        label: t("labels.buy").toUpperCase(),
+        label: tStore("labels.buy").toUpperCase(),
         disabled: notEnoughCash || noSpaceForSpecialCards,
         disabledText: noSpaceForSpecialCards
-          ? t("tooltip.no-space")
-          : t("tooltip.no-coins"),
+          ? tStore("tooltip.no-space")
+          : tStore("tooltip.no-coins"),
       }}
       duration={duration}
       onDurationChange={onDurationChange}

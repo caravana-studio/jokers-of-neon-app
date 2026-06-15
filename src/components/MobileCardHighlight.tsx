@@ -1,7 +1,6 @@
 import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { RARITY, RarityLabels } from "../constants/rarity";
 import { CardTypes } from "../enums/cardTypes";
 import { Duration } from "../enums/duration";
 import { useCardData } from "../providers/CardDataProvider";
@@ -142,6 +141,8 @@ export const MobileCardHighlight = ({
     }
   };
 
+  const contentMaxWidth = isSmallScreen ? undefined : "520px";
+
   return (
     <Flex
       position={"absolute"}
@@ -173,26 +174,77 @@ export const MobileCardHighlight = ({
           }}
         />
       )}
-      <Flex flexDirection="column" textAlign="center">
-        <Heading
-          fontWeight={500}
-          size="l"
-          letterSpacing={1.3}
-          textTransform="unset"
-        >
-          {name}
-        </Heading>
-        {hasOriginalEffectTitle && (
-          <Text
-            fontSize={isSmallScreen ? "12px" : "13px"}
-            color="whiteAlpha.900"
-            fontWeight={600}
-            textTransform="unset"
+      <Flex
+        width={"65%"}
+        maxW={contentMaxWidth}
+        direction="column"
+        alignItems="center"
+        gap={1}
+      >
+        {type === CardTypes.SPECIAL ? (
+          <Flex
+            width="100%"
+            alignItems="center"
+            justifyContent="space-between"
+            gap={3}
           >
-            ({originalEffectTitle})
-          </Text>
+            <Flex flexDirection="column" textAlign="left" flex={1} minWidth={0}>
+              <Heading
+                fontWeight={500}
+                size="l"
+                lineHeight="1.2"
+                letterSpacing={1.3}
+                textTransform="unset"
+              >
+                {name}
+              </Heading>
+              {hasOriginalEffectTitle && (
+                <Text
+                  fontSize={isSmallScreen ? "12px" : "13px"}
+                  color="whiteAlpha.900"
+                  fontWeight={600}
+                  textTransform="unset"
+                >
+                  ({originalEffectTitle})
+                </Text>
+              )}
+            </Flex>
+            {rarity && (
+              <Flex width="28px" justifyContent="center" flexShrink={0}>
+                <Heading
+                  color="blueLight"
+                  fontSize={isSmallScreen ? "28px" : "32px"}
+                  textAlign="right"
+                >
+                  {rarity}
+                </Heading>
+              </Flex>
+            )}
+          </Flex>
+        ) : (
+          <Flex flexDirection="column" textAlign="center" alignItems="center">
+            <Heading
+              fontWeight={500}
+              size="l"
+              lineHeight="1.2"
+              letterSpacing={1.3}
+              textTransform="unset"
+            >
+              {name}
+            </Heading>
+            {hasOriginalEffectTitle && (
+              <Text
+                fontSize={isSmallScreen ? "12px" : "13px"}
+                color="whiteAlpha.900"
+                fontWeight={600}
+                textTransform="unset"
+              >
+                ({originalEffectTitle})
+              </Text>
+            )}
+          </Flex>
         )}
-        <Text size="l" textTransform="lowercase" fontWeight={600}>
+        <Text size="l" textTransform="lowercase" fontWeight={600} textAlign="center">
           - {t(`game.card-types.${type}`)} -
         </Text>
       </Flex>
@@ -223,6 +275,7 @@ export const MobileCardHighlight = ({
         alignItems="center"
         gap={1}
         width={"65%"}
+        maxW={contentMaxWidth}
       >
         {card.silenced && (
           <Text
@@ -245,11 +298,6 @@ export const MobileCardHighlight = ({
       </Flex>
       {showExtraInfo && (
         <>
-          {rarity && (
-            <Text textAlign="center" size="l" fontSize={"14px"} width={"65%"}>
-              {t(`rarity.${RarityLabels[rarity as RARITY]}`, { ns: "docs" })}
-            </Text>
-          )}
           {isPack && <LootBoxRateInfo name={name} details={details} />}
           {hasPriceValue(price) && !hidePrice &&
             (hasPriceValue(temporaryPrice) ? (
