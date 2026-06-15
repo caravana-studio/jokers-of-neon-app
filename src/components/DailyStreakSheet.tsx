@@ -4,7 +4,7 @@ import { Box, Flex, Text } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXTwitter } from "@fortawesome/free-brands-svg-icons";
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDojo } from "../dojo/DojoContext";
 import { DIAMONDS } from "../theme/colors";
@@ -27,7 +27,7 @@ import { MobileDecoration } from "./MobileDecoration";
 import { RollingNumber } from "./RollingNumber";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 
-const CELEBRATION_INTRO_DURATION_MS = 2600;
+const CELEBRATION_INTRO_DURATION_MS = 4000;
 
 const triggerEntryVibration = (duration: number) => {
   if (!Capacitor.isNativePlatform() || !Capacitor.isPluginAvailable("Haptics")) {
@@ -68,6 +68,7 @@ export const DailyStreakSheet = ({
     showCelebrationIntroOnEntry && !isZeroStreak
   );
   const [isContinuing, setIsContinuing] = useState(false);
+  const celebrationIntroTimeoutRef = useRef<number | null>(null);
 
   const { isSmallScreen } = useResponsiveValues();
 
@@ -79,12 +80,15 @@ export const DailyStreakSheet = ({
 
     setShowCelebrationIntro(true);
 
-    const timeoutId = window.setTimeout(() => {
+    celebrationIntroTimeoutRef.current = window.setTimeout(() => {
       setShowCelebrationIntro(false);
     }, CELEBRATION_INTRO_DURATION_MS);
 
     return () => {
-      window.clearTimeout(timeoutId);
+      if (celebrationIntroTimeoutRef.current !== null) {
+        window.clearTimeout(celebrationIntroTimeoutRef.current);
+        celebrationIntroTimeoutRef.current = null;
+      }
     };
   }, [isMilestoneHit, isZeroStreak, normalizedStreak, showCelebrationIntroOnEntry]);
 
@@ -151,6 +155,19 @@ export const DailyStreakSheet = ({
     }
   };
 
+  const handleCelebrationIntroSkip = () => {
+    if (!showCelebrationIntro) {
+      return;
+    }
+
+    if (celebrationIntroTimeoutRef.current !== null) {
+      window.clearTimeout(celebrationIntroTimeoutRef.current);
+      celebrationIntroTimeoutRef.current = null;
+    }
+
+    setShowCelebrationIntro(false);
+  };
+
   return (
     <Flex
       position="fixed"
@@ -158,6 +175,7 @@ export const DailyStreakSheet = ({
       zIndex={1200}
       flexDirection="column"
       overflow="hidden"
+      onClick={showCelebrationIntro ? handleCelebrationIntroSkip : undefined}
     >
       <MobileDecoration />
 
@@ -425,29 +443,31 @@ export const DailyStreakSheet = ({
           </Flex>
         </Flex>
 
-        <motion.div
-          initial={{ opacity: 0, y: 18 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={getEntryTransition(3)}
-        >
-          <MobileBottomBar
-            firstButton={
-              !isZeroStreak
-                ? {
-                    onClick: handleShareClick,
-                    label: t("daily-streak.share.button"),
-                    icon: <FontAwesomeIcon fontSize={12} icon={faXTwitter} />,
-                  }
-                : undefined
-            }
-            secondButton={{
-              onClick: handleContinueClick,
-              label: t("daily-streak.continue"),
-              isLoading: isContinuing,
-              disabled: isContinuing,
-            }}
-          />
-        </motion.div>
+        {!showCelebrationIntro && (
+          <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={getEntryTransition(3)}
+          >
+            <MobileBottomBar
+              firstButton={
+                !isZeroStreak
+                  ? {
+                      onClick: handleShareClick,
+                      label: t("daily-streak.share.button"),
+                      icon: <FontAwesomeIcon fontSize={12} icon={faXTwitter} />,
+                    }
+                  : undefined
+              }
+              secondButton={{
+                onClick: handleContinueClick,
+                label: t("daily-streak.continue"),
+                isLoading: isContinuing,
+                disabled: isContinuing,
+              }}
+            />
+          </motion.div>
+        )}
       </Flex>
     </Flex>
   );
