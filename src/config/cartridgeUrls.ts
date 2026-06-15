@@ -16,7 +16,7 @@ const KNOWN_SLOT_ENDPOINTS: Record<string, SlotEndpointConfig> = {
     toriiUrl: "https://torii.testnet.jokersofneon.com",
     graphqlUrl: "https://torii.testnet.jokersofneon.com/graphql",
     relayUrl: "/dns4/torii.testnet.jokersofneon.com/tcp/443/x-parity-wss/%2Fwss",
-    chainId: "WP_AWS_TESTNET",
+    chainId: "KATANA",
   },
 };
 
