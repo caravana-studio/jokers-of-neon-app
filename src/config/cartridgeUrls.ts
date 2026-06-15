@@ -1,13 +1,31 @@
-import { fetchVersion } from "../queries/fetchVersion";
+import { fetchVersion, type SlotEndpointConfig } from "../queries/fetchVersion";
 
 const DEFAULT_RPC_URL = "http://localhost:5050";
 const DEFAULT_TORII_URL = "http://localhost:8080";
 const DEFAULT_GRAPHQL_URL = "http://localhost:8080/graphql";
 const DEFAULT_ENV = "prod";
 
-const configuredEnv = import.meta.env.VITE_ENV?.trim().toLowerCase() || DEFAULT_ENV;
+const configuredEnv: string =
+  import.meta.env.VITE_ENV?.trim().toLowerCase() || DEFAULT_ENV;
 const configuredSlotInstance = import.meta.env.VITE_SLOT_INSTANCE?.trim() || undefined;
-let slotSource: "version-api" | "version-endpoint" | "env" | "default" =
+const KNOWN_SLOT_ENDPOINTS: Record<string, SlotEndpointConfig> = {
+  "aws-testnet": {
+    kind: "katana",
+    slotInstance: "aws-testnet",
+    rpcUrl: "https://katana.testnet.jokersofneon.com",
+    toriiUrl: "https://torii.testnet.jokersofneon.com",
+    graphqlUrl: "https://torii.testnet.jokersofneon.com/graphql",
+    relayUrl: "/dns4/torii.testnet.jokersofneon.com/tcp/443/x-parity-wss/%2Fwss",
+    chainId: "WP_AWS_TESTNET",
+  },
+};
+
+let slotSource:
+  | "version-api"
+  | "version-endpoint"
+  | "known-endpoint"
+  | "env"
+  | "default" =
   configuredSlotInstance ? "env" : "default";
 
 const getBaseUrl = (slot: string | undefined) =>
@@ -42,7 +60,9 @@ export const preloadSlotInstance = async () => {
   if (!preloadSlotInstancePromise) {
     preloadSlotInstancePromise = (async () => {
       const versionData = await fetchVersion();
-      const endpointConfig = versionData.slotEndpoints?.[configuredEnv];
+      const versionEndpointConfig = versionData.slotEndpoints?.[configuredEnv];
+      const endpointConfig =
+        versionEndpointConfig ?? KNOWN_SLOT_ENDPOINTS[configuredEnv];
       const slotFromApi = versionData.slot?.[configuredEnv]?.trim();
 
       if (endpointConfig) {
@@ -54,7 +74,9 @@ export const preloadSlotInstance = async () => {
         slotChainId = endpointConfig.chainId?.trim() || undefined;
         slotEndpointKind = endpointConfig.kind?.trim().toLowerCase();
         usesCustomKatanaEndpoint = slotEndpointKind === "katana";
-        slotSource = "version-endpoint";
+        slotSource = versionEndpointConfig
+          ? "version-endpoint"
+          : "known-endpoint";
       } else if (slotFromApi) {
         slotInstance = slotFromApi;
         slotSource = "version-api";
