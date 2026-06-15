@@ -8,21 +8,26 @@ export const ShopStoreLoader = ({ children }: PropsWithChildren) => {
   const {
     setup: { client },
   } = useDojo();
-  const { id: gameId} = useGameStore();
-  const { loading, setLoading, refetchShopStore, loadedItems } = useShopStore();
+  const { id: gameId } = useGameStore();
+  const { loading, setLoading, refetchShopStore, loadedGameId, reset } =
+    useShopStore();
 
   useEffect(() => {
-    if (client && gameId) {
-      console.log('loadedItems', loadedItems)
-      if (!loadedItems) {
-        refetchShopStore(client, gameId).then(() => {
-          setLoading(false);
-        });
-      } else {
-        setLoading(false);
-      }
+    if (!client || !gameId) {
+      return;
     }
-  }, [client, gameId]);
+
+    if (loadedGameId !== gameId) {
+      reset();
+      setLoading(true);
+      void refetchShopStore(client, gameId).finally(() => {
+        setLoading(false);
+      });
+      return;
+    }
+
+    setLoading(false);
+  }, [client, gameId, loadedGameId, refetchShopStore, reset, setLoading]);
 
   return (
     <>

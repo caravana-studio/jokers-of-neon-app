@@ -36,6 +36,7 @@ import { useAnimationStore } from "../state/useAnimationStore.ts";
 import { useCurrentHandStore } from "../state/useCurrentHandStore.ts";
 import { useDeckStore } from "../state/useDeckStore.ts";
 import { useGameStore } from "../state/useGameStore.ts";
+import { useShopStore } from "../state/useShopStore.ts";
 import { useUnlockProgressStore } from "../state/useUnlockProgressStore.ts";
 import { Card } from "../types/Card";
 import { CardPlayEvent, PlayEvents, PowerUpScore } from "../types/ScoreData";
@@ -181,6 +182,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     triggerPlayRollbackPulse,
     triggerDiscardRollbackPulse,
   } = useAnimationStore();
+  const { reset: resetShop } = useShopStore();
 
   const { getCardData } = useCardData();
 
@@ -365,6 +367,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const prepareNewGame = () => {
     localStorage.removeItem("GAME_ID");
     resetLevel();
+    resetShop();
   };
   const initiateTransferFlow = () => {
     console.log("GameProvider: Initiating transfer flow...");
