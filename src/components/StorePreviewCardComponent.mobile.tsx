@@ -18,6 +18,8 @@ interface StorePreviewCardComponentMobileProps {
   title: string;
   description: string;
   cardType: string;
+  rarityLabel?: string;
+  rarityCode?: string;
   buyButton: BarButtonProps;
   duration?: Duration;
   onDurationChange?: (duration: Duration) => void;
@@ -28,6 +30,7 @@ export const StorePreviewCardComponentMobile = ({
   title,
   description,
   cardType,
+  rarityCode,
   card,
   buyButton,
   duration,
@@ -62,15 +65,51 @@ export const StorePreviewCardComponentMobile = ({
             zIndex: 1,
           }}
         >
-          <Box>
-            <Heading
-              fontWeight={500}
-              size="l"
-              letterSpacing={1.3}
-              textTransform="unset"
-            >
-              {title}
-            </Heading>
+          <Box width={"90%"}>
+            {card.isSpecial && rarityCode ? (
+              <Flex
+                width="100%"
+                alignItems="center"
+                justifyContent="space-between"
+                gap={3}
+              >
+                <Flex
+                  flexDirection="column"
+                  textAlign="left"
+                  flex={1}
+                  minWidth={0}
+                >
+                  <Heading
+                    fontWeight={500}
+                    size="l"
+                    lineHeight="1.2"
+                    letterSpacing={1.3}
+                    textTransform="unset"
+                  >
+                    {title}
+                  </Heading>
+                </Flex>
+                <Flex width="28px" justifyContent="center" flexShrink={0}>
+                  <Heading
+                    color="blueLight"
+                    fontSize="28px"
+                    textAlign="right"
+                  >
+                    {rarityCode}
+                  </Heading>
+                </Flex>
+              </Flex>
+            ) : (
+              <Heading
+                fontWeight={500}
+                size="l"
+                lineHeight="1.2"
+                letterSpacing={1.3}
+                textTransform="unset"
+              >
+                {title}
+              </Heading>
+            )}
             {cardType && (
               <Text size="l" textTransform="lowercase" fontWeight={600}>
                 - {cardType} -

@@ -3,22 +3,20 @@ import {
   Flex,
   SystemStyleObject,
   Text,
-  Tooltip,
   useTheme,
 } from "@chakra-ui/react";
 import { Card } from "../../../types/Card";
 
 import { useTranslation } from "react-i18next";
+import { CardTooltip } from "../../../components/CardTooltip";
 import CachedImage from "../../../components/CachedImage";
 import { LockedSlot } from "../../../components/LockedSlot/LockedSlot";
 import { TemporalBadge } from "../../../components/TemporalBadge";
 import { UnlockedSlot } from "../../../components/UnlockedSlot";
 import { CARD_HEIGHT, CARD_WIDTH } from "../../../constants/visualProps";
-import { useCardData } from "../../../providers/CardDataProvider";
 import { useGameStore } from "../../../state/useGameStore";
 import { useSkinPreferencesStore } from "../../../state/useSkinPreferencesStore";
 import { useResponsiveValues } from "../../../theme/responsiveSettings";
-import { getTooltip } from "../../../utils/getTooltip";
 import { FullScreenCardContainer } from "../../FullScreenCardContainer";
 
 interface SpecialCardsProps {
@@ -40,7 +38,6 @@ export const SpecialCards: React.FC<SpecialCardsProps> = ({
     keyPrefix: "special-cards",
   });
 
-  const { getCardData } = useCardData();
   const { specialSlots, specialCards, maxSpecialCards } = useGameStore();
   const getSkinFor = useSkinPreferencesStore((store) => store.getSkinFor);
 
@@ -82,9 +79,6 @@ export const SpecialCards: React.FC<SpecialCardsProps> = ({
               .map((card) => card.card_id)
               .includes(card.card_id!);
 
-            const { name, description } = getCardData(card.card_id ?? 0, {
-              showCumulativeProgress: true,
-            });
             const preferredSkinId =
               card.card_id !== undefined ? getSkinFor(card.card_id) : 0;
             const skinSuffix = preferredSkinId > 0 ? `_sk${preferredSkinId}` : "";
@@ -114,7 +108,7 @@ export const SpecialCards: React.FC<SpecialCardsProps> = ({
                         : "none",
                   }}
                 >
-                  <Tooltip label={getTooltip(name, description)}>
+                  <CardTooltip card={card} showCumulativeProgress>
                     <Box
                       position="relative"
                       w={`${CARD_WIDTH * scale}px`}
@@ -133,7 +127,7 @@ export const SpecialCards: React.FC<SpecialCardsProps> = ({
                         <TemporalBadge remaining={card.remaining ?? 1} />
                       )}
                     </Box>
-                  </Tooltip>
+                  </CardTooltip>
                 </Box>
               )
             );
