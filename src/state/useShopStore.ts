@@ -19,6 +19,7 @@ const sortByPowerUpId = (a: PowerUp, b: PowerUp) =>
 
 type ShopStore = {
   loadedItems: boolean;
+  loadedGameId: number;
   specialCards: Card[];
   modifierCards: Card[];
   commonCards: Card[];
@@ -61,8 +62,9 @@ function updateList<T extends { idx: number; purchased?: boolean }>(
   return list.map((item) => (item.idx === idx ? updateFn(item) : item));
 }
 
-export const useShopStore = create<ShopStore>((set, get) => ({
+const initialShopState = {
   loadedItems: false,
+  loadedGameId: 0,
   specialCards: [],
   modifierCards: [],
   commonCards: [],
@@ -74,6 +76,10 @@ export const useShopStore = create<ShopStore>((set, get) => ({
   loading: true,
   rerolling: false,
   locked: false,
+};
+
+export const useShopStore = create<ShopStore>((set, get) => ({
+  ...initialShopState,
 
   refetchShopStore: async (client, gameId) => {
     const shopItems = await getShopItems(client, gameId);
@@ -91,11 +97,12 @@ export const useShopStore = create<ShopStore>((set, get) => ({
         powerUps: shopItems.powerUpItems.sort(sortByPowerUpId),
         loading: false,
         loadedItems: true,
+        loadedGameId: gameId,
       });
     }
   },
 
-  reset: () => set({ loadedItems: false }),
+  reset: () => set(initialShopState),
 
   setRerolling: (rerolling: boolean) => set({ rerolling }),
 
