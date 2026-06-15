@@ -1,7 +1,8 @@
 import { SessionConnector } from "@cartridge/connector";
 import ControllerConnector from "@cartridge/connector/controller";
 import { AuthOptions, FeeSource } from "@cartridge/controller";
-import { constants, shortString } from "starknet";
+import { constants, RpcProvider, shortString } from "starknet";
+import type { AccountInterface } from "starknet";
 import {
   rpcUrl,
   slotChainId,
@@ -58,6 +59,7 @@ const defaultChainId =
       : getChainId(resolvedChain);
 const resolvedRpcUrl =
   shouldUseStandaloneMainnetRpc ? standaloneMainnetRpc || rpcUrl : rpcUrl;
+const controllerRpcProvider = new RpcProvider({ nodeUrl: resolvedRpcUrl });
 
 const signupOptions: AuthOptions = isNativeAndroid
   ? ["google", "discord", "password"]
@@ -87,20 +89,86 @@ const controllerConnector =
         signupOptions,
       });
 
+const isContractNotFound = (error: unknown) => {
+  const rpcError = error as {
+    code?: number;
+    message?: string;
+    baseError?: { code?: number; message?: string };
+  };
+  const message = `${rpcError?.message ?? ""} ${rpcError?.baseError?.message ?? ""}`.toLowerCase();
+  return (
+    rpcError?.code === 20 ||
+    rpcError?.baseError?.code === 20 ||
+    message.includes("contract not found") ||
+    message.includes("is not deployed")
+  );
+};
+
+export const ensureControllerAccountDeployed = async (
+  account?: AccountInterface | null
+) => {
+  if (!usesCustomKatanaEndpoint || !account?.address || isNative) {
+    return;
+  }
+
+  try {
+    await controllerRpcProvider.getClassAt(account.address, "latest");
+    return;
+  } catch (error) {
+    if (!isContractNotFound(error)) {
+      throw error;
+    }
+  }
+
+  const keychain = (controllerConnector as any)?.controller?.keychain;
+  if (typeof keychain?.deploy !== "function") {
+    throw new Error(
+      "Controller account is not deployed on this Katana and deploy() is not available"
+    );
+  }
+
+  console.info("[CONTROLLER] deploying account on custom Katana", {
+    address: account.address,
+    rpcUrl: resolvedRpcUrl,
+  });
+
+  const deployResponse = await keychain.deploy();
+  if (deployResponse?.code !== "SUCCESS" || !deployResponse.transaction_hash) {
+    throw new Error(
+      deployResponse?.message || "Controller account deploy failed"
+    );
+  }
+
+  await controllerRpcProvider.waitForTransaction(
+    deployResponse.transaction_hash,
+    { retryInterval: 1000 }
+  );
+
+  console.info("[CONTROLLER] account deployed on custom Katana", {
+    address: account.address,
+    transactionHash: deployResponse.transaction_hash,
+  });
+};
+
 if (!isNative && usesCustomKatanaEndpoint) {
   const cartridgeConnector = controllerConnector as ControllerConnector;
   const connectController = cartridgeConnector.connect.bind(cartridgeConnector);
-  let sessionPoliciesSynced = false;
+  let sessionPoliciesSyncedFor: string | null = null;
 
   cartridgeConnector.connect = async (args) => {
-    const account = await connectController(args);
+    const connectResult = await connectController(args);
+    const account = cartridgeConnector.controller.account as
+      | AccountInterface
+      | undefined;
 
-    if (!sessionPoliciesSynced) {
+    await ensureControllerAccountDeployed(account);
+
+    if (account?.address && sessionPoliciesSyncedFor !== account.address) {
       await cartridgeConnector.controller.updateSession({ policies });
-      sessionPoliciesSynced = true;
+      sessionPoliciesSyncedFor = account.address;
     }
 
-    return account;
+    return connectResult;
   };
 }
 

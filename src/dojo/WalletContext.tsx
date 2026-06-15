@@ -28,7 +28,10 @@ import {
   isGameLoopBurnerEnabled,
 } from "../utils/gameLoopBurner";
 import { useAccountStore } from "./accountStore";
-import { controller } from "./controller/controller";
+import {
+  controller,
+  ensureControllerAccountDeployed,
+} from "./controller/controller";
 import { CavosAccountAdapter } from "./cavos/CavosAccountAdapter";
 import { useCavosSafe } from "./cavos/CavosBridgeContext";
 import { useGameLoopBurnerSession } from "../hooks/useGameLoopBurnerSession";
@@ -234,6 +237,9 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
         return false;
       }
 
+      await ensureControllerAccountDeployed(
+        restoredAccount as AccountInterface
+      );
       setIsControllerConnectAttemptActive(false);
       setAccountType("controller");
       localStorage.setItem(ACCOUNT_TYPE, "controller");
