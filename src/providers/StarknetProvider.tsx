@@ -48,7 +48,7 @@ const slot: Chain = SLOT_INSTANCE && {
   },
   paymasterRpcUrls: {
     avnu: {
-       http: ["http://localhost:5050"],
+      http: [effectiveRpcUrl],
     },
   },
 }
