@@ -36,6 +36,7 @@ import { logEvent } from "../../utils/analytics";
 import { APP_URL, isNative } from "../../utils/capacitorUtils";
 import { hasInProgressGames } from "../../utils/inProgressGames";
 import {
+  isStreakHidden,
   navigateToStreakIncreased,
   SKIP_STREAK_PRESENTATION_CHECK,
 } from "../../utils/streakPresentation";
@@ -122,6 +123,10 @@ export const NewHome = () => {
   }, []);
 
   useEffect(() => {
+    if (isStreakHidden) {
+      return;
+    }
+
     if (
       (location.state as Record<string, unknown> | null)?.[
         SKIP_STREAK_PRESENTATION_CHECK
@@ -147,7 +152,7 @@ export const NewHome = () => {
           presentation.show &&
           presentation.streak !== null
         ) {
-          navigateToStreakIncreased(navigate, {
+          const navigated = navigateToStreakIncreased(navigate, {
             streak: presentation.streak,
             continuation: {
               type: "route",
@@ -159,6 +164,10 @@ export const NewHome = () => {
             },
             replace: true,
           });
+
+          if (navigated) {
+            return;
+          }
         }
       } catch (error) {
         console.warn("NewHome: streak presentation claim failed", error);

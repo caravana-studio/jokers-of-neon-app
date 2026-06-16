@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { fetchStreakStatus } from "../api/profile";
 import { DelayedLoading } from "../components/DelayedLoading";
 import { DailyStreakSheet } from "../components/DailyStreakSheet";
+import { HIDE_STREAK } from "../config/featureFlags";
 import { useDojo } from "../dojo/DojoContext";
 import { GameStateEnum } from "../dojo/typescript/custom";
 import { useCustomNavigate } from "../hooks/useCustomNavigate";
@@ -29,6 +30,10 @@ export const StreakIncreasedPage = () => {
     null
   );
   const streakProtectors = liveStreakProtectors ?? 0;
+
+  if (HIDE_STREAK) {
+    return <Navigate to={state?.from ?? "/"} replace />;
+  }
 
   useEffect(() => {
     const address = account?.account?.address;
