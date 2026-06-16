@@ -29,11 +29,19 @@ interface TournamentSettings {
 const defaultTournamentSettings: TournamentSettings = {
   isActive: false,
   isFinished: false,
-  startCountingAtGameId: 5,
+  startCountingAtGameId: 0,
   prizes: {},
 };
 
 const CURRENT_DATE = new Date();
+
+const parseStartCountingAtGameId = (data: Record<string, unknown>) => {
+  const value =
+    data["start-counting-at-game-id"] ?? data["startCountingAtGameId"];
+  const parsed = Number(value);
+
+  return Number.isFinite(parsed) ? Math.max(0, Math.floor(parsed)) : 0;
+};
 
 const getPrizes = (prizes: ApiPrize[]) => {
   const tournamentPrizes: Record<number, Prize> = {};
@@ -78,7 +86,7 @@ export const useTournamentSettings = () => {
             data["finishDate"] && new Date(data["finishDate"]) < CURRENT_DATE,
           startDate: data["startDate"] && new Date(data["startDate"]),
           endDate: data["finishDate"] && new Date(data["finishDate"]),
-          startCountingAtGameId: 5,
+          startCountingAtGameId: parseStartCountingAtGameId(data),
           prizes: getPrizes(data["prizes"]),
         });
       } catch (err) {
