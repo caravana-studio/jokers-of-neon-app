@@ -11,7 +11,10 @@ import { useAnimationStore } from "../../../state/useAnimationStore";
 import { useCurrentHandStore } from "../../../state/useCurrentHandStore";
 import { useGameStore } from "../../../state/useGameStore";
 import { useShopStore } from "../../../state/useShopStore";
-import { navigateToStreakIncreased } from "../../../utils/streakPresentation";
+import {
+  isStreakHidden,
+  navigateToStreakIncreased,
+} from "../../../utils/streakPresentation";
 
 export const useNextLevelButton = () => {
   const { navigateToMap } = useMapNavigate();
@@ -48,21 +51,26 @@ export const useNextLevelButton = () => {
       response.destroyedSpecialCard &&
         setDestroyedSpecialCardId(response.destroyedSpecialCard);
 
-      try {
-        const presentation = await claimStreakPresentation(account.address);
+      if (!isStreakHidden) {
+        try {
+          const presentation = await claimStreakPresentation(account.address);
 
-        if (presentation.show && presentation.streak !== null) {
-          navigateToStreakIncreased(navigate, {
-            streak: presentation.streak,
-            continuation: {
-              type: "map",
-            },
-            replace: true,
-          });
-          return;
+          if (presentation.show && presentation.streak !== null) {
+            const navigated = navigateToStreakIncreased(navigate, {
+              streak: presentation.streak,
+              continuation: {
+                type: "map",
+              },
+              replace: true,
+            });
+
+            if (navigated) {
+              return;
+            }
+          }
+        } catch (error) {
+          console.warn("useNextLevelButton: streak presentation claim failed", error);
         }
-      } catch (error) {
-        console.warn("useNextLevelButton: streak presentation claim failed", error);
       }
 
       await navigateToMap();

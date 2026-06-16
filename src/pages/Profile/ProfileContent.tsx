@@ -16,6 +16,7 @@ import { DeleteAccBtn } from "../../components/Menu/Buttons/DeleteAccBtn";
 import { LogoutMenuBtn } from "../../components/Menu/Buttons/Logout/LogoutMenuBtn";
 import { MenuBtn } from "../../components/Menu/Buttons/MenuBtn";
 import { MobileDecoration } from "../../components/MobileDecoration";
+import { HIDE_STREAK } from "../../config/featureFlags";
 import { ProfileStats } from "./ProfileStats";
 
 export const ProfileContent = ({
@@ -108,6 +109,7 @@ export const ProfileContent = ({
             currentXp={profile.currentXp}
             totalXp={profile.totalXp}
             xpLine={xpLine}
+            hideDailyStreak={HIDE_STREAK}
             profilePicture={profile.avatarId}
             onUpdateAvatar={(avatarId) =>
               onUpdateAvatar(
@@ -118,13 +120,16 @@ export const ProfileContent = ({
               )
             }
             onEditUsername={() => setUsernameModalOpen(true)}
-            onOpenDailyStreak={() =>
-              navigate("/streak-increased", {
-                state: {
-                  streak: profile.streak,
-                  from: "/profile",
-                },
-              })
+            onOpenDailyStreak={
+              HIDE_STREAK
+                ? undefined
+                : () =>
+                    navigate("/streak-increased", {
+                      state: {
+                        streak: profile.streak,
+                        from: "/profile",
+                      },
+                    })
             }
           />
 
