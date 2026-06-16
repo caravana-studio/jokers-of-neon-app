@@ -1,6 +1,8 @@
 import type { NavigateFunction } from "react-router-dom";
+import { HIDE_STREAK } from "../config/featureFlags";
 
 export const SKIP_STREAK_PRESENTATION_CHECK = "skipStreakPresentationCheck";
+export const isStreakHidden = HIDE_STREAK;
 
 export type StreakPresentationContinuation =
   | {
@@ -34,7 +36,11 @@ export function navigateToStreakIncreased(
     replace?: boolean;
     replaceOnClose?: boolean;
   }
-) {
+): boolean {
+  if (isStreakHidden) {
+    return false;
+  }
+
   const {
     streak,
     continuation,
@@ -54,4 +60,6 @@ export function navigateToStreakIncreased(
       replaceOnClose,
     } satisfies StreakIncreasedLocationState,
   });
+
+  return true;
 }

@@ -12,7 +12,10 @@ import { useGameStore } from "../state/useGameStore.ts";
 import { BLUE_LIGHT, VIOLET_LIGHT } from "../theme/colors";
 import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
 import { RoundRewards } from "../types/RoundRewards.ts";
-import { navigateToStreakIncreased } from "../utils/streakPresentation.ts";
+import {
+  isStreakHidden,
+  navigateToStreakIncreased,
+} from "../utils/streakPresentation.ts";
 import { StaggeredList } from "./animations/StaggeredList.tsx";
 import { CashSymbol } from "./CashSymbol.tsx";
 import { PinkBox } from "./PinkBox.tsx";
@@ -176,21 +179,26 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
     setIsNavigating(true);
 
     try {
-      try {
-        const presentation = await claimStreakPresentation(account.address);
+      if (!isStreakHidden) {
+        try {
+          const presentation = await claimStreakPresentation(account.address);
 
-        if (presentation.show && presentation.streak !== null) {
-          navigateToStreakIncreased(navigate, {
-            streak: presentation.streak,
-            continuation: {
-              type: "map-after-rewards",
-            },
-            replace: true,
-          });
-          return;
+          if (presentation.show && presentation.streak !== null) {
+            const navigated = navigateToStreakIncreased(navigate, {
+              streak: presentation.streak,
+              continuation: {
+                type: "map-after-rewards",
+              },
+              replace: true,
+            });
+
+            if (navigated) {
+              return;
+            }
+          }
+        } catch (error) {
+          console.warn("RewardsDetail: streak presentation claim failed", error);
         }
-      } catch (error) {
-        console.warn("RewardsDetail: streak presentation claim failed", error);
       }
 
       await navigateToMap();

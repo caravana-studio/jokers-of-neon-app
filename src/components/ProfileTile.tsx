@@ -10,6 +10,7 @@ import { useDojo } from "../dojo/useDojo";
 import { useUsername } from "../dojo/utils/useUsername";
 import { useTranslation } from "react-i18next";
 import { DailyStreakFireAnimation } from "./DailyStreakFireAnimation";
+import { HIDE_STREAK } from "../config/featureFlags";
 
 export const ProfileTile = () => {
   const { t } = useTranslation("home", {
@@ -79,7 +80,7 @@ export const ProfileTile = () => {
           border={`1px solid ${BLUE}`}
           justifyContent="center"
           alignItems="center"
-          gap={isSmallScreen ? 1.5 : 4}
+          gap={HIDE_STREAK ? 0 : isSmallScreen ? 1.5 : 4}
           px={isSmallScreen ? 2.5 : 3}
         >
           <Heading fontSize={isSmallScreen ? 8 : 11} textAlign="center">
@@ -88,22 +89,24 @@ export const ProfileTile = () => {
               {profileData?.profile.level ?? 0}
             </span>
           </Heading>
-          <Flex alignItems="center" gap={0}>
-            <DailyStreakFireAnimation
-              size={isSmallScreen ? 16 : 20}
-              grayscale={isZeroStreak}
-            />
-            <Heading
-              fontSize={isSmallScreen ? 10 : 13}
-              textAlign="center"
-              fontFamily="Orbitron"
-              color={isZeroStreak ? "grey" : DIAMONDS}
-              lineHeight={1}
-              ml={-0.5}
-            >
-              {streak}
-            </Heading>
-          </Flex>
+          {!HIDE_STREAK && (
+            <Flex alignItems="center" gap={0}>
+              <DailyStreakFireAnimation
+                size={isSmallScreen ? 16 : 20}
+                grayscale={isZeroStreak}
+              />
+              <Heading
+                fontSize={isSmallScreen ? 10 : 13}
+                textAlign="center"
+                fontFamily="Orbitron"
+                color={isZeroStreak ? "grey" : DIAMONDS}
+                lineHeight={1}
+                ml={-0.5}
+              >
+                {streak}
+              </Heading>
+            </Flex>
+          )}
         </Flex>
         <Flex width="75px" justifyContent={"flex-end"}>
           <CachedImage

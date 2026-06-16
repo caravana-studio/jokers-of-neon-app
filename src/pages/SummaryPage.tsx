@@ -30,6 +30,7 @@ import { useResponsiveValues } from "../theme/responsiveSettings";
 import { formatNumber } from "../utils/formatNumber";
 import { shareOnX } from "../utils/shareOnX";
 import {
+  isStreakHidden,
   navigateToStreakIncreased,
   SKIP_STREAK_PRESENTATION_CHECK,
 } from "../utils/streakPresentation";
@@ -87,6 +88,11 @@ const SummaryDetail = ({ win }: SummaryPageProps) => {
   }, [win]);
 
   useEffect(() => {
+    if (isStreakHidden) {
+      setIsCheckingStreak(false);
+      return;
+    }
+
     if (
       (location.state as Record<string, unknown> | null)?.[
         SKIP_STREAK_PRESENTATION_CHECK
@@ -107,7 +113,7 @@ const SummaryDetail = ({ win }: SummaryPageProps) => {
           presentation.show &&
           presentation.streak !== null
         ) {
-          navigateToStreakIncreased(navigate, {
+          const navigated = navigateToStreakIncreased(navigate, {
             streak: presentation.streak,
             continuation: {
               type: "route",
@@ -119,7 +125,10 @@ const SummaryDetail = ({ win }: SummaryPageProps) => {
             },
             replace: true,
           });
-          return;
+
+          if (navigated) {
+            return;
+          }
         }
       } catch (error) {
         console.warn("SummaryPage: streak presentation claim failed", error);
