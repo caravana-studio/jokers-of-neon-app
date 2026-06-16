@@ -1,7 +1,6 @@
-import { Box, Button, Checkbox, Flex, Text } from "@chakra-ui/react";
+import { Box, Checkbox, Flex, Text } from "@chakra-ui/react";
 import { ComponentProps, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
 import { Loading } from "../../components/Loading";
 import { useGameContext } from "../../providers/GameProvider";
 import { useGetMyGames } from "../../queries/useGetMyGames";
@@ -23,13 +22,12 @@ export const GamesListBox = ({
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "my-games",
   });
-  const navigate = useNavigate();
   const { data: games, isLoading, refetch } = useGetMyGames();
   const { isSmallScreen } = useResponsiveValues();
   const [showFinishedGames, setShowFinishedGames] = useState(false);
   const [surrenderedIds, setSurrenderedIds] = useState<number[]>([]);
 
-  const { prepareNewGame, executeCreateGame, resetLevel } = useGameContext();
+  const { resetLevel } = useGameContext();
   const { removeGameId } = useGameStore();
 
   const hasInitialized = useRef(false);
@@ -50,20 +48,6 @@ export const GamesListBox = ({
       return !surrenderedIds.includes(game.id);
     });
   }, [games, isTournament, showFinishedGames, surrenderedIds]);
-
-  const handleCreateGame = () => {
-    prepareNewGame();
-    const createGamePromise = executeCreateGame();
-    navigate("/entering-tournament");
-
-    void createGamePromise.then((started) => {
-      if (started) {
-        return;
-      }
-
-      navigate("/my-games", { replace: true });
-    });
-  };
 
   const handleSurrendered = (gameId: number) => {
     const storedGameId = localStorage.getItem("GAME_ID");
@@ -117,17 +101,8 @@ export const GamesListBox = ({
         )}
         {filteredGames.length === 0 && !isLoading ? (
           <Flex flexGrow={1} w="100%" justifyContent="center" alignItems="center">
-            <Flex
-              flexDirection="column"
-              alignItems="center"
-              justifyContent="center"
-              gap={4}
-              textAlign="center"
-            >
+            <Flex flexDirection="column" alignItems="center" justifyContent="center">
               <Text size="lg">{t("no-games")}</Text>
-              <Button onClick={handleCreateGame} variant="secondarySolid">
-                {t("start-game")}
-              </Button>
             </Flex>
           </Flex>
         ) : (
