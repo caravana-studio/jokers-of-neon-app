@@ -10,6 +10,7 @@ import {
   usesCustomKatanaEndpoint,
 } from "../../config/cartridgeUrls";
 import { isNative, isNativeAndroid } from "../../utils/capacitorUtils";
+import { withSlotNoFeeExecuteOptions } from "../slotNoFeeExecuteOptions";
 import { policies } from "./policies";
 
 const standaloneMainnetRpc = import.meta.env.VITE_STARKNET_RPC_URL?.trim();
@@ -105,6 +106,32 @@ const isContractNotFound = (error: unknown) => {
   );
 };
 
+const patchControllerKeychainNoFeeExecute = (keychain?: {
+  execute?: (...args: any[]) => Promise<unknown>;
+}) => {
+  if (!usesCustomKatanaEndpoint || !keychain?.execute) {
+    return;
+  }
+
+  const patchState = keychain as typeof keychain & {
+    __jokersNoFeeExecutePatched?: boolean;
+  };
+
+  if (patchState.__jokersNoFeeExecutePatched) {
+    return;
+  }
+
+  const execute = keychain.execute.bind(keychain);
+  keychain.execute = (calls, abis, transactionsDetail, ...rest) =>
+    execute(
+      calls,
+      abis,
+      withSlotNoFeeExecuteOptions(transactionsDetail ?? {}),
+      ...rest
+    );
+  patchState.__jokersNoFeeExecutePatched = true;
+};
+
 const ensureControllerAccountDeployed = async (
   account?: AccountInterface | null
 ) => {
@@ -154,6 +181,7 @@ const ensureControllerAccountDeployed = async (
 if (!isNative && usesCustomKatanaEndpoint) {
   const cartridgeConnector = controllerConnector as ControllerConnector;
   const controllerProvider = cartridgeConnector.controller;
+  patchControllerKeychainNoFeeExecute((controllerProvider as any).keychain);
   const connectProvider = controllerProvider.connect.bind(controllerProvider);
   const connectController = cartridgeConnector.connect.bind(cartridgeConnector);
   let sessionPoliciesSyncedFor: string | null = null;
@@ -168,6 +196,7 @@ if (!isNative && usesCustomKatanaEndpoint) {
 
   cartridgeConnector.connect = async (args) => {
     const connectResult = await connectController(args);
+    patchControllerKeychainNoFeeExecute((controllerProvider as any).keychain);
     const account = cartridgeConnector.controller.account as
       | AccountInterface
       | undefined;
