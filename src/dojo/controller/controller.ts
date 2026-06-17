@@ -1,6 +1,6 @@
 import { SessionConnector } from "@cartridge/connector";
 import ControllerConnector from "@cartridge/connector/controller";
-import { AuthOptions, FeeSource } from "@cartridge/controller";
+import { AuthOptions } from "@cartridge/controller";
 import { constants, shortString } from "starknet";
 import {
   rpcUrl,
@@ -66,10 +66,8 @@ const controllerOptions = {
   chains: [{ rpcUrl: resolvedRpcUrl }],
   defaultChainId,
   preset: import.meta.env.VITE_CONTROLLER_PRESET,
-  shouldOverridePresetPolicies: usesCustomKatanaEndpoint,
   namespace: DOJO_NAMESPACE,
   policies,
-  feeSource: usesCustomKatanaEndpoint ? FeeSource.PAYMASTER : undefined,
   slot: usesCustomKatanaEndpoint ? undefined : resolvedSlot,
   signupOptions,
 };
