@@ -33,6 +33,7 @@ const VRF_POLICY = {
 };
 
 const manifest = getManifest();
+const LEGACY_POLICY_OMIT_SYSTEMS = new Set(["gg_sync_system"]);
 
 interface Method {
   name: string;
@@ -90,6 +91,10 @@ const generatePolicies = (): Policies => {
   const policiesContracts: Record<string, ContractPolicy> = {};
 
   Object.entries(world).forEach(([systemName, systemObj]) => {
+    if (LEGACY_POLICY_OMIT_SYSTEMS.has(systemName)) {
+      return;
+    }
+
     const contractAddress = getContractByName(
       manifest,
       DOJO_NAMESPACE,

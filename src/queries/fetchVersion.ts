@@ -8,7 +8,18 @@ export interface VersionResponse {
   version: string;
   maintenance?: boolean;
   slot?: Record<string, string>;
+  slotEndpoints?: Record<string, SlotEndpointConfig>;
   api?: Record<string, string>;
+}
+
+export interface SlotEndpointConfig {
+  kind?: string;
+  slotInstance?: string;
+  rpcUrl?: string;
+  toriiUrl?: string;
+  graphqlUrl?: string;
+  relayUrl?: string;
+  chainId?: string;
 }
 
 const FALLBACK_VERSION_RESPONSE: VersionResponse = {
@@ -24,6 +35,30 @@ const isStringMap = (value: unknown): value is Record<string, string> => {
   return Object.values(value).every((slot) => typeof slot === "string");
 };
 
+const isSlotEndpointConfig = (value: unknown): value is SlotEndpointConfig => {
+  if (!value || typeof value !== "object") {
+    return false;
+  }
+
+  return Object.values(value).every(
+    (entry) => entry === undefined || typeof entry === "string"
+  );
+};
+
+const parseSlotEndpoints = (
+  value: unknown
+): Record<string, SlotEndpointConfig> | undefined => {
+  if (!value || typeof value !== "object") {
+    return undefined;
+  }
+
+  const entries = Object.entries(value).filter(([, endpoint]) =>
+    isSlotEndpointConfig(endpoint)
+  );
+
+  return entries.length > 0 ? Object.fromEntries(entries) : undefined;
+};
+
 const normalizeVersionResponse = (data: unknown): VersionResponse => {
   if (!data || typeof data !== "object") {
     return FALLBACK_VERSION_RESPONSE;
@@ -33,6 +68,7 @@ const normalizeVersionResponse = (data: unknown): VersionResponse => {
     version?: unknown;
     maintenance?: unknown;
     slot?: unknown;
+    slotEndpoints?: unknown;
     api?: unknown;
   };
 
@@ -48,6 +84,7 @@ const normalizeVersionResponse = (data: unknown): VersionResponse => {
         ? candidate.maintenance
         : undefined,
     slot: isStringMap(candidate.slot) ? candidate.slot : undefined,
+    slotEndpoints: parseSlotEndpoints(candidate.slotEndpoints),
     api: isStringMap(candidate.api) ? candidate.api : undefined,
   };
 };

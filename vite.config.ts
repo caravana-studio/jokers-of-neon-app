@@ -16,7 +16,12 @@ const rootDir = fileURLToPath(new URL(".", import.meta.url));
 const indexHtml = path.resolve(rootDir, "index.html");
 const standaloneShopHtml = path.resolve(rootDir, "standalone-shop.html");
 const miniappHtml = path.resolve(rootDir, "miniapp.html");
-const localCertDir = path.resolve(rootDir, ".cert");
+const localConfigDir =
+  process.env.XDG_CONFIG_HOME ||
+  (process.env.HOME
+    ? path.resolve(process.env.HOME, ".config")
+    : rootDir);
+const localCertDir = path.resolve(localConfigDir, "jokers-of-neon", ".cert");
 const isReactCompilerEnabled = process.env.VITE_REACT_COMPILER !== "false";
 
 const reactCompilerPlugin = react({
@@ -42,6 +47,27 @@ const ensureLocalHttpsCert = () => {
   }
 
   fs.mkdirSync(localCertDir, { recursive: true });
+
+  try {
+    execSync("command -v mkcert", { stdio: "ignore" });
+    execSync(
+      [
+        "mkcert",
+        `-key-file "${keyFilePath}"`,
+        `-cert-file "${certFilePath}"`,
+        "localhost",
+        "127.0.0.1",
+        "::1",
+      ].join(" "),
+      { stdio: "ignore" },
+    );
+
+    return { keyFilePath, certFilePath };
+  } catch {}
+
+  console.warn(
+    "mkcert not found. Falling back to a self-signed certificate; WebAuthn/passkeys may fail until you install and trust mkcert."
+  );
 
   try {
     execSync(
