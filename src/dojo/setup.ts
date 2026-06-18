@@ -16,9 +16,7 @@ import type { Message, ToriiClient } from "@dojoengine/torii-client";
 export type SetupResult = Awaited<ReturnType<typeof setup>>;
 const DOJO_NAMESPACE =
   import.meta.env.VITE_DOJO_NAMESPACE || "jokers_of_neon_core";
-const IS_AWS_PROFILE = (import.meta.env.VITE_ENV?.trim() || "").includes("aws");
 const SHOULD_BOOTSTRAP_FRONTEND_BURNER =
-  !IS_AWS_PROFILE &&
   (import.meta.env.VITE_BLOCKCHAIN?.trim() || "starknet") === "starknet";
 
 let sync: any;
