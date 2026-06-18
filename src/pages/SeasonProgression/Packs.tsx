@@ -43,6 +43,10 @@ export const Packs = ({ reward, claiming }: PacksProps) => {
     reward.status === RewardStatus.UNCLAIMED
       ? `0 0 15px 2px ${BLUE_LIGHT}`
       : "0 0 10px 0px rgba(255,255,255,0.5)";
+  const rewardImageGlow =
+    reward.status === RewardStatus.UNCLAIMED
+      ? `drop-shadow(0 0 10px ${BLUE_LIGHT}) drop-shadow(0 0 18px ${BLUE_LIGHT})`
+      : "drop-shadow(0 0 8px rgba(255,255,255,0.45))";
 
   if (reward.streakProtectors > 0) {
     return (
@@ -61,6 +65,7 @@ export const Packs = ({ reward, claiming }: PacksProps) => {
           src="/streak-protector.png"
           alt={t("streak-protector")}
           h={`${streakProtectorSize}px`}
+          filter={rewardImageGlow}
           pointerEvents="none"
         />
       </Flex>
@@ -111,11 +116,7 @@ export const Packs = ({ reward, claiming }: PacksProps) => {
         zIndex={3}
         position="absolute"
         transform={`rotate(${getRotation(index, amountOfPacks)}deg) translateX(${getTranslation(index, amountOfPacks)}px)`}
-        filter={
-          reward.status === RewardStatus.UNCLAIMED
-            ? `drop-shadow(0 0 10px ${BLUE_LIGHT}) drop-shadow(0 0 18px ${BLUE_LIGHT})`
-            : "drop-shadow(0 0 8px rgba(255,255,255,0.45))"
-        }
+        filter={rewardImageGlow}
         src={`/packs/${pack}.png`}
         h={`${STEP_HEIGHT * 0.78}px`}
       />
