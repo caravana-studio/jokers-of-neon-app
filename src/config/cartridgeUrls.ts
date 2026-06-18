@@ -7,7 +7,7 @@ const DEFAULT_ENV = "prod";
 
 const configuredEnv = import.meta.env.VITE_ENV?.trim().toLowerCase() || DEFAULT_ENV;
 const configuredSlotInstance = import.meta.env.VITE_SLOT_INSTANCE?.trim() || undefined;
-let slotSource: "version-api" | "env" | "default" =
+let slotSource: "version-api" | "version-endpoint" | "env" | "default" =
   configuredSlotInstance ? "env" : "default";
 
 const getBaseUrl = (slot: string | undefined) =>
@@ -32,6 +32,9 @@ export let slotInstance = configuredSlotInstance;
 export let rpcUrl = getRpcUrl(slotInstance);
 export let toriiUrl = getToriiUrl(slotInstance);
 export let graphqlUrl = getGraphqlUrl(slotInstance);
+export let slotChainId: string | undefined = undefined;
+export let slotEndpointKind: string | undefined = undefined;
+export let usesCustomKatanaEndpoint = false;
 
 let preloadSlotInstancePromise: Promise<void> | null = null;
 
@@ -39,26 +42,50 @@ export const preloadSlotInstance = async () => {
   if (!preloadSlotInstancePromise) {
     preloadSlotInstancePromise = (async () => {
       const versionData = await fetchVersion();
+      const endpointConfig = versionData.slotEndpoints?.[configuredEnv];
       const slotFromApi = versionData.slot?.[configuredEnv]?.trim();
 
-      if (slotFromApi) {
+      if (endpointConfig) {
+        slotInstance = endpointConfig.slotInstance?.trim() || configuredEnv;
+        rpcUrl = endpointConfig.rpcUrl?.trim() || getRpcUrl(slotInstance);
+        toriiUrl = endpointConfig.toriiUrl?.trim() || getToriiUrl(slotInstance);
+        graphqlUrl =
+          endpointConfig.graphqlUrl?.trim() || getGraphqlUrl(slotInstance);
+        slotChainId = endpointConfig.chainId?.trim() || undefined;
+        slotEndpointKind = endpointConfig.kind?.trim().toLowerCase();
+        usesCustomKatanaEndpoint = slotEndpointKind === "katana";
+        slotSource = "version-endpoint";
+      } else if (slotFromApi) {
         slotInstance = slotFromApi;
         slotSource = "version-api";
-      }
 
-      rpcUrl = getRpcUrl(slotInstance);
-      toriiUrl = getToriiUrl(slotInstance);
-      graphqlUrl = getGraphqlUrl(slotInstance);
+        rpcUrl = getRpcUrl(slotInstance);
+        toriiUrl = getToriiUrl(slotInstance);
+        graphqlUrl = getGraphqlUrl(slotInstance);
+        slotChainId = undefined;
+        slotEndpointKind = undefined;
+        usesCustomKatanaEndpoint = false;
+      } else {
+        rpcUrl = getRpcUrl(slotInstance);
+        toriiUrl = getToriiUrl(slotInstance);
+        graphqlUrl = getGraphqlUrl(slotInstance);
+        slotChainId = undefined;
+        slotEndpointKind = undefined;
+        usesCustomKatanaEndpoint = false;
+      }
 
       console.info("[CONFIG-LOG] Slot configuration resolved", {
         env: configuredEnv,
         source: slotSource,
         slotInstance: slotInstance ?? null,
+        kind: slotEndpointKind ?? null,
+        usesCustomKatanaEndpoint,
       });
       console.info("[CONFIG-LOG] Endpoint configuration resolved", {
         rpcUrl,
         toriiUrl,
         graphqlUrl,
+        chainId: slotChainId ?? null,
       });
     })();
   }

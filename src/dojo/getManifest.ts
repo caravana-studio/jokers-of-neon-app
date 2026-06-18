@@ -34,7 +34,7 @@ const getLocalManifest = (
     return { manifest: manifestSlot, file: "manifest_slot.json" };
   }
 
-  if (env !== "mainnet" && env !== "prod") {
+  if (!env.startsWith("aws-") && env !== "mainnet" && env !== "prod") {
     console.warn(
       `[manifest] Unknown VITE_ENV="${env}". Falling back to local "${DEFAULT_MANIFEST_ENV}" manifest.`
     );
