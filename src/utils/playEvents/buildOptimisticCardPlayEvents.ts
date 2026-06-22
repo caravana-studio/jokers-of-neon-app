@@ -2,15 +2,22 @@ import { EventTypeEnum } from "../../dojo/typescript/custom";
 import { CARDS_SUIT_DATA } from "../../data/traditionalCards";
 import { Cards } from "../../enums/cards";
 import { ModifiersId } from "../../enums/modifiersId";
+import { Suits } from "../../enums/suits";
 import { Card } from "../../types/Card";
 import { CardPlayEvent } from "../../types/ScoreData";
+import { changeCardNeon } from "../cardTransformation/changeCardNeon";
+import { changeCardSuit } from "../cardTransformation/changeCardSuit";
+import { transformCardByModifierId } from "../cardTransformation/modifierTransformation";
 import { checkHand } from "../checkHand";
+import { isCardSilent } from "../isCardSilent";
+import { eventTypeToSuit } from "./eventTypeToSuit";
 
 interface BuildOptimisticCardPlayEventsParams {
   hand: Card[];
   preSelectedCards: number[];
   specialCards: Card[];
   preSelectedModifiers: { [key: number]: number[] };
+  rageCards?: Card[];
   silentCardIndexes?: Set<number>;
   changeEvents?: CardPlayEvent[];
 }
@@ -64,6 +71,79 @@ const getCardBasePoints = (cardValue?: Cards): number => {
   }
 
   return 0;
+};
+
+const applyCardId = (card: Card, nextCardId: number): Card => {
+  const normalizedCardData =
+    CARDS_SUIT_DATA[nextCardId] ?? CARDS_SUIT_DATA[nextCardId % 200];
+
+  return {
+    ...card,
+    card_id: nextCardId,
+    img: `${nextCardId}.png`,
+    suit: normalizedCardData?.suit ?? card.suit,
+    value: normalizedCardData?.card ?? card.value,
+    card: normalizedCardData?.card ?? card.card,
+    isNeon: nextCardId >= 200 && nextCardId < 300,
+  };
+};
+
+const applySelectedModifiers = ({
+  card,
+  cardsByIdx,
+  modifierIndexes,
+}: {
+  card: Card;
+  cardsByIdx: Map<number, Card>;
+  modifierIndexes: number[];
+}): Card => {
+  return modifierIndexes.reduce((currentCard, modifierIdx) => {
+    const modifierCard = cardsByIdx.get(modifierIdx);
+    if (!modifierCard?.card_id || currentCard.card_id === undefined) {
+      return currentCard;
+    }
+
+    if (currentCard.suit === Suits.JOKER) {
+      return currentCard;
+    }
+
+    const transformedCardId = transformCardByModifierId(
+      modifierCard.card_id,
+      currentCard.card_id
+    );
+
+    if (transformedCardId === -1) {
+      return currentCard;
+    }
+
+    return applyCardId(currentCard, transformedCardId);
+  }, card);
+};
+
+const applyChangeEvent = (card: Card, event: CardPlayEvent): Card => {
+  if (!event.hand.some((handEvent) => handEvent.idx === card.idx)) {
+    return card;
+  }
+
+  if (card.card_id === undefined) {
+    return card;
+  }
+
+  if (event.eventType === EventTypeEnum.Neon) {
+    return applyCardId(card, changeCardNeon(card.card_id));
+  }
+
+  if (event.eventType === EventTypeEnum.Rank) {
+    const rankChange = event.hand.find((handEvent) => handEvent.idx === card.idx);
+    return rankChange ? applyCardId(card, rankChange.quantity) : card;
+  }
+
+  const suit = eventTypeToSuit(event.eventType);
+  if (suit === undefined || card.suit === Suits.WILDCARD) {
+    return card;
+  }
+
+  return applyCardId(card, changeCardSuit(card.card_id, suit));
 };
 
 const cardIsNeon = (
@@ -122,6 +202,7 @@ export const buildOptimisticCardPlayEvents = ({
   preSelectedCards,
   specialCards,
   preSelectedModifiers,
+  rageCards = [],
   silentCardIndexes,
   changeEvents = [],
 }: BuildOptimisticCardPlayEventsParams): CardPlayEvent[] => {
@@ -176,7 +257,17 @@ export const buildOptimisticCardPlayEvents = ({
     const isSilent = silentCardIndexes?.has(cardIdx) ?? false;
     const hasSilentFlag =
       (card as Card & { isSilent?: boolean }).isSilent === true;
-    if (isSilent || hasSilentFlag) {
+    const transformedCard = changeEvents.reduce(
+      (currentCard, event) => applyChangeEvent(currentCard, event),
+      applySelectedModifiers({
+        card,
+        cardsByIdx,
+        modifierIndexes: preSelectedModifiers[cardIdx] ?? [],
+      })
+    );
+    const isSilencedAfterConversion = isCardSilent(transformedCard, rageCards);
+
+    if (isSilent || hasSilentFlag || isSilencedAfterConversion) {
       return;
     }
 
