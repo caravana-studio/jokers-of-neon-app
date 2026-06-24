@@ -212,9 +212,10 @@ export function MyListingCard({ listing, onCancel, onRelist, isCancelling, isRel
             mt={1}
             w="100%"
             isLoading={isCancelling}
-            isDisabled={isRelisting}
+            isDisabled={isCancelling || isRelisting}
             onClick={(e) => {
               e.preventDefault();
+              e.stopPropagation();
               onCancel(listing);
             }}
           >
@@ -228,9 +229,10 @@ export function MyListingCard({ listing, onCancel, onRelist, isCancelling, isRel
               colorScheme="cyan"
               w="100%"
               isLoading={isRelisting}
-              isDisabled={isCancelling}
+              isDisabled={isCancelling || isRelisting}
               onClick={(e) => {
                 e.preventDefault();
+                e.stopPropagation();
                 onRelist(listing);
               }}
             >
@@ -241,9 +243,10 @@ export function MyListingCard({ listing, onCancel, onRelist, isCancelling, isRel
               variant="defaultOutline"
               w="100%"
               isLoading={isCancelling}
-              isDisabled={isRelisting}
+              isDisabled={isCancelling || isRelisting}
               onClick={(e) => {
                 e.preventDefault();
+                e.stopPropagation();
                 onCancel(listing);
               }}
             >

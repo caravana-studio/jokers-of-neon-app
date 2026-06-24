@@ -104,6 +104,7 @@
     "noListings": "No tienes listados",
     "noStatusListings": "No hay listados {{status}}",
     "errorApi": "No se pudo conectar a la API. Verifica VITE_GAME_API_URL.",
+    "marketplaceNotConfigured": "El contrato del marketplace no está configurado.",
     "statusActive": "ACTIVO",
     "statusFilled": "COMPLETADO",
     "statusCancelled": "CANCELADO",

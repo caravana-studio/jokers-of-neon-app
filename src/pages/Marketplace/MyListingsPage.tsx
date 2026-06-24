@@ -21,6 +21,7 @@ import { parseStarknetError } from "../../marketplace/utils/parseStarknetError";
 import { MyListingCard } from "../../marketplace/components/MyListingCard";
 import type { Listing, ListingStatus, UserCard } from "../../marketplace/types/marketplace";
 import { getEffectiveStatus } from "../../marketplace/types/marketplace";
+import { useCustomToast } from "../../hooks/useCustomToast";
 
 type FilterTab = "all" | ListingStatus;
 
@@ -37,22 +38,23 @@ export function MyListingsPage() {
 
   const { account, address, status: walletStatus } = useAccount();
   const navigate = useNavigate();
+  const { showErrorToast } = useCustomToast();
   const [listings, setListings] = useState<Listing[]>([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [loadError, setLoadError] = useState<string | null>(null);
   const [cancellingId, setCancellingId] = useState<string | null>(null);
   const [relistingId, setRelistingId] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<FilterTab>("all");
+  const [activeTab, setActiveTab] = useState<FilterTab>("active");
 
   const fetchListings = useCallback(async () => {
     if (!address) return;
     setLoading(true);
-    setError(null);
+    setLoadError(null);
     try {
       const result = await getSellerListings(address);
       setListings(result.data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to fetch");
+      setLoadError(err instanceof Error ? err.message : "Failed to fetch");
     } finally {
       setLoading(false);
     }
@@ -64,6 +66,11 @@ export function MyListingsPage() {
 
   const handleCancel = async (listing: Listing) => {
     if (!account) return;
+    if (!MARKETPLACE_CONTRACT_ADDRESS) {
+      showErrorToast(t("myListings.marketplaceNotConfigured"));
+      return;
+    }
+
     setCancellingId(listing.id);
     try {
       // Cancel on-chain
@@ -78,28 +85,25 @@ export function MyListingsPage() {
 
       // Cancel in backend
       await cancelListing(listing.id);
-      setListings((prev) => prev.filter((l) => l.id !== listing.id));
+      setListings((prev) =>
+        prev.map((l) => (l.id === listing.id ? { ...l, status: "cancelled" } : l))
+      );
     } catch (err) {
-      setError(parseStarknetError(err));
+      showErrorToast(parseStarknetError(err));
     } finally {
       setCancellingId(null);
     }
   };
 
   const handleRelist = async (listing: Listing) => {
-    if (!account) return;
+    if (getEffectiveStatus(listing) !== "expired") return;
+
     setRelistingId(listing.id);
     try {
-      const tx = await account.execute([
-        {
-          contractAddress: MARKETPLACE_CONTRACT_ADDRESS,
-          entrypoint: "cancel_order",
-          calldata: CallData.compile({ nonce: listing.nonce }),
-        },
-      ]);
-      await account.waitForTransaction(tx.transaction_hash);
       await cancelListing(listing.id);
-      setListings((prev) => prev.filter((l) => l.id !== listing.id));
+      setListings((prev) =>
+        prev.map((l) => (l.id === listing.id ? { ...l, status: "cancelled" } : l))
+      );
 
       const preselectedCard: UserCard = {
         tokenId: listing.token_id,
@@ -117,7 +121,7 @@ export function MyListingsPage() {
       };
       navigate("/sell", { state: { preselectedCard } });
     } catch (err) {
-      setError(parseStarknetError(err));
+      showErrorToast(parseStarknetError(err));
     } finally {
       setRelistingId(null);
     }
@@ -186,11 +190,11 @@ export function MyListingsPage() {
         <Flex justify="center" py={20}>
           <Spinner color="neonGreen" size="xl" />
         </Flex>
-      ) : error ? (
+      ) : loadError ? (
         <Text color="red.400" textAlign="center" py={10} fontFamily="Oxanium">
-          {error.includes("Failed to fetch")
+          {loadError.includes("Failed to fetch")
             ? t("myListings.errorApi")
-            : error}
+            : loadError}
         </Text>
       ) : displayed.length === 0 ? (
         <Text color="whiteAlpha.600" textAlign="center" py={10} fontFamily="Oxanium">

@@ -45,6 +45,21 @@ import { PAYMENT_TOKENS } from "../../marketplace/config/contracts";
 import { TokenIcon } from "../../marketplace/components/TokenIcon";
 import type { UserCard } from "../../marketplace/types/marketplace";
 
+export const SPECIAL_CATEGORIES: { key: string; label: string; color: string }[] = [
+  { key: "Season 1", label: "Season 1", color: "#066b9b" },
+  { key: "Season 2", label: "Season 2", color: "#20c6ed" },
+  { key: "Season 3", label: "Season 3", color: "#edc020ff" },
+  { key: "GG",       label: "GG",       color: "#f0c040" },
+];
+
+export function getSpecialCategory(cardId: number): string {
+  if (cardId >= 10101 && cardId <= 10199) return "Season 1";
+  if (cardId >= 10201 && cardId <= 10299) return "Season 2";
+  if (cardId >= 10301 && cardId <= 10399) return "Season 3";
+  if (cardId >= 19901 && cardId <= 19999) return "GG";
+  return "Other";
+}
+
 // ─── Section label with white glow underline (matches store preview) ──────────
 function SectionLabel({ children }: { children: string }) {
   return (
@@ -626,20 +641,6 @@ export function CreateListingPage() {
   const allSpecials = displayCards.filter((c) => c.isSpecial);
   const availableRarities = [...new Set(allSpecials.map((c) => c.rarity))].sort((a, b) => a - b);
 
-  // Derive category from card ID ranges
-  const SPECIAL_CATEGORIES: { key: string; label: string; color: string }[] = [
-    { key: "Season 1", label: "Season 1", color: "#066b9b" },
-    { key: "Season 2", label: "Season 2", color: "#20c6ed" },
-    { key: "GG",       label: "GG",       color: "#f0c040" },
-  ];
-
-  function getSpecialCategory(cardId: number): string {
-    if (cardId >= 10101 && cardId <= 10199) return "Season 1";
-    if (cardId >= 10201 && cardId <= 10299) return "Season 2";
-    if (cardId >= 19901 && cardId <= 19999) return "GG";
-    return "Other";
-  }
-
   const availableCategories = SPECIAL_CATEGORIES.filter((cat) =>
     allSpecials.some((c) => getSpecialCategory(c.cardId) === cat.key)
   );
@@ -765,7 +766,7 @@ export function CreateListingPage() {
                         <Badge
                           key={key}
                           bg={filterCategory === key ? color : "whiteAlpha.100"}
-                          color={filterCategory === key ? (key === "GG" ? "black" : "white") : "whiteAlpha.600"}
+                          color={filterCategory === key ? (key === "GG" || key === "Season 3" ? "black" : "white") : "whiteAlpha.600"}
                           fontSize={11} px={3} py={1} borderRadius="full"
                           cursor="pointer"
                           onClick={() => setFilterCategory(filterCategory === key ? null : key)}
