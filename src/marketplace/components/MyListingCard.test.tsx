@@ -1,7 +1,7 @@
 /* @vitest-environment jsdom */
 
 import { ChakraProvider } from "@chakra-ui/react";
-import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { act, cleanup, render } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { afterEach, expect, test, vi } from "vitest";
 import { MyListingCard } from "./MyListingCard";
@@ -93,7 +93,7 @@ test("cancel action does not bubble through the listing link", () => {
   const onRelist = vi.fn();
   const onParentClick = vi.fn();
 
-  render(
+  const view = render(
     <ChakraProvider>
       <div onClick={onParentClick}>
         <MemoryRouter>
@@ -109,7 +109,9 @@ test("cancel action does not bubble through the listing link", () => {
     </ChakraProvider>
   );
 
-  fireEvent.click(screen.getByText("myListings.cancel"));
+  act(() => {
+    view.getByText("myListings.cancel").click();
+  });
 
   expect(onCancel).toHaveBeenCalledWith(activeListing);
   expect(onParentClick).not.toHaveBeenCalled();

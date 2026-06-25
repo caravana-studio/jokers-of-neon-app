@@ -1,7 +1,7 @@
 /* @vitest-environment jsdom */
 
 import { ChakraProvider } from "@chakra-ui/react";
-import { cleanup, render, screen } from "@testing-library/react";
+import { cleanup, render } from "@testing-library/react";
 import { afterEach, expect, test, vi } from "vitest";
 import { BrowseListingsPage } from "./BrowseListingsPage";
 import type { Listing } from "../../marketplace/types/marketplace";
@@ -92,12 +92,12 @@ test("hides expired listings returned by the marketplace API", () => {
       : listingsState([])
   );
 
-  render(
+  const view = render(
     <ChakraProvider>
       <BrowseListingsPage />
     </ChakraProvider>
   );
 
-  expect(screen.queryByText("Active Card")).toBeTruthy();
-  expect(screen.queryByText("Expired Card")).toBeNull();
+  expect(view.queryByText("Active Card")).toBeTruthy();
+  expect(view.queryByText("Expired Card")).toBeNull();
 });

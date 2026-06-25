@@ -1,7 +1,7 @@
 /* @vitest-environment jsdom */
 
 import { ChakraProvider } from "@chakra-ui/react";
-import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { act, cleanup, render } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { afterEach, beforeEach, expect, test, vi } from "vitest";
 import { MyListingsPage } from "./MyListingsPage";
@@ -144,6 +144,24 @@ function renderPage() {
   );
 }
 
+async function waitForExpect(assertion: () => void) {
+  let lastError: unknown;
+
+  for (let attempt = 0; attempt < 30; attempt += 1) {
+    try {
+      assertion();
+      return;
+    } catch (err) {
+      lastError = err;
+      await act(async () => {
+        await new Promise((resolve) => setTimeout(resolve, 0));
+      });
+    }
+  }
+
+  throw lastError;
+}
+
 beforeEach(() => {
   mocks.account.execute.mockResolvedValue({ transaction_hash: "0xtx" });
   mocks.account.waitForTransaction.mockResolvedValue({});
@@ -164,21 +182,23 @@ test("defaults to active listings", async () => {
     ],
   });
 
-  renderPage();
+  const view = renderPage();
 
-  await screen.findByText("Active Card");
+  await view.findByText("Active Card");
 
-  expect(screen.queryByText("Expired Card")).toBeNull();
+  expect(view.queryByText("Expired Card")).toBeNull();
 });
 
 test("cancels an active listing and moves it to cancelled", async () => {
   mocks.getSellerListings.mockResolvedValue({ data: [listing()] });
 
-  renderPage();
+  const view = renderPage();
 
-  fireEvent.click(await screen.findByText("myListings.cancel"));
+  await act(async () => {
+    (await view.findByText("myListings.cancel")).click();
+  });
 
-  await waitFor(() => expect(mocks.cancelListing).toHaveBeenCalledWith("listing-1"));
+  await waitForExpect(() => expect(mocks.cancelListing).toHaveBeenCalledWith("listing-1"));
 
   expect(mocks.account.execute).toHaveBeenCalledWith([
     {
@@ -189,9 +209,11 @@ test("cancels an active listing and moves it to cancelled", async () => {
   ]);
   expect(mocks.account.waitForTransaction).toHaveBeenCalledWith("0xtx");
 
-  fireEvent.click(screen.getByText(/myListings\.tabCancelled/));
+  await act(async () => {
+    view.getByText(/myListings\.tabCancelled/).click();
+  });
 
-  expect(await screen.findByText("myListings.statusLineCancelled")).toBeTruthy();
+  expect(await view.findByText("myListings.statusLineCancelled")).toBeTruthy();
 });
 
 test("re-lists an expired listing without an on-chain cancel", async () => {
@@ -199,12 +221,16 @@ test("re-lists an expired listing without an on-chain cancel", async () => {
     data: [listing({ expiration: now - 60 })],
   });
 
-  renderPage();
+  const view = renderPage();
 
-  fireEvent.click(await screen.findByText(/myListings\.tabExpired/));
-  fireEvent.click(await screen.findByText("myListings.relist"));
+  await act(async () => {
+    (await view.findByText(/myListings\.tabExpired/)).click();
+  });
+  await act(async () => {
+    (await view.findByText("myListings.relist")).click();
+  });
 
-  await waitFor(() => expect(mocks.cancelListing).toHaveBeenCalledWith("listing-1"));
+  await waitForExpect(() => expect(mocks.cancelListing).toHaveBeenCalledWith("listing-1"));
 
   expect(mocks.account.execute).not.toHaveBeenCalled();
   expect(mocks.navigate).toHaveBeenCalledWith("/sell", {
@@ -233,33 +259,39 @@ test("does not navigate when closing an expired listing fails before re-list", a
     data: [listing({ expiration: now - 60 })],
   });
 
-  renderPage();
+  const view = renderPage();
 
-  fireEvent.click(await screen.findByText(/myListings\.tabExpired/));
-  fireEvent.click(await screen.findByText("myListings.relist"));
+  await act(async () => {
+    (await view.findByText(/myListings\.tabExpired/)).click();
+  });
+  await act(async () => {
+    (await view.findByText("myListings.relist")).click();
+  });
 
-  await waitFor(() =>
+  await waitForExpect(() =>
     expect(mocks.showErrorToast).toHaveBeenCalledWith(
       "Network error. Check your connection and try again."
     )
   );
 
   expect(mocks.navigate).not.toHaveBeenCalled();
-  expect(screen.getByText("Active Card")).toBeTruthy();
+  expect(view.getByText("Active Card")).toBeTruthy();
 });
 
 test("keeps listings visible and shows a toast when cancelling is rejected", async () => {
   mocks.account.execute.mockRejectedValue(new Error("user rejected"));
   mocks.getSellerListings.mockResolvedValue({ data: [listing()] });
 
-  renderPage();
+  const view = renderPage();
 
-  fireEvent.click(await screen.findByText("myListings.cancel"));
+  await act(async () => {
+    (await view.findByText("myListings.cancel")).click();
+  });
 
-  await waitFor(() =>
+  await waitForExpect(() =>
     expect(mocks.showErrorToast).toHaveBeenCalledWith("Transaction cancelled.")
   );
 
-  expect(screen.getByText("Active Card")).toBeTruthy();
+  expect(view.getByText("Active Card")).toBeTruthy();
   expect(mocks.cancelListing).not.toHaveBeenCalled();
 });
