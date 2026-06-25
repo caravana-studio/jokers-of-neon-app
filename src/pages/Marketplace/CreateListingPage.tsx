@@ -32,24 +32,24 @@ import { getSellerListings } from "../../marketplace/api/marketplace";
 import { CardImage } from "../../marketplace/components/CardImage";
 import { SkinBadge, SKIN_NAME_COLOR } from "../../marketplace/components/SkinBadge";
 
-const SKIN_SEASON_LABEL: Record<number, string> = {
-  2: "Season 1",
-  3: "Season 2",
-  4: "Season 3",
+const SKIN_SEASON_LABEL_KEY: Record<number, string> = {
+  2: "sell.specialCategorySeason1",
+  3: "sell.specialCategorySeason2",
+  4: "sell.specialCategorySeason3",
 };
 import { groupCards, CardGridItem, CardSection } from "../../marketplace/components/UserCardGrid";
-import { RARITY_LABELS, RARITY_COLORS } from "../../marketplace/types/marketplace";
+import { getEffectiveStatus, RARITY_LABELS, RARITY_COLORS } from "../../marketplace/types/marketplace";
 import { cardImageUrl, parseTokenAmount, formatTokenAmount } from "../../marketplace/utils/formatPrice";
 import { useCardName } from "../../marketplace/hooks/useCardName";
 import { PAYMENT_TOKENS } from "../../marketplace/config/contracts";
 import { TokenIcon } from "../../marketplace/components/TokenIcon";
 import type { UserCard } from "../../marketplace/types/marketplace";
 
-export const SPECIAL_CATEGORIES: { key: string; label: string; color: string }[] = [
-  { key: "Season 1", label: "Season 1", color: "#066b9b" },
-  { key: "Season 2", label: "Season 2", color: "#20c6ed" },
-  { key: "Season 3", label: "Season 3", color: "#edc020ff" },
-  { key: "GG",       label: "GG",       color: "#f0c040" },
+export const SPECIAL_CATEGORIES: { key: string; labelKey: string; color: string }[] = [
+  { key: "Season 1", labelKey: "sell.specialCategorySeason1", color: "#066b9b" },
+  { key: "Season 2", labelKey: "sell.specialCategorySeason2", color: "#20c6ed" },
+  { key: "Season 3", labelKey: "sell.specialCategorySeason3", color: "#edc020ff" },
+  { key: "GG",       labelKey: "sell.specialCategoryGG",      color: "#f0c040" },
 ];
 
 export function getSpecialCategory(cardId: number): string {
@@ -172,6 +172,8 @@ function CardListingPreview({
   const selectedToken = PAYMENT_TOKENS.find((t) => t.address === paymentToken)!;
   const isProcessing = ["approving", "signing", "submitting"].includes(status);
   const skinColor = SKIN_NAME_COLOR[card.skinId];
+  const skinSeasonLabelKey = SKIN_SEASON_LABEL_KEY[card.skinId];
+  const skinSeasonLabel = skinSeasonLabelKey ? t(skinSeasonLabelKey) : null;
   const titleColor = skinColor ?? "white";
   const titleGlow = skinColor
     ? `0 0 12px ${skinColor}, 0 0 24px ${skinColor}60`
@@ -276,7 +278,7 @@ function CardListingPreview({
               style={{ textShadow: titleGlow }}
             >
               {cardName}
-              {SKIN_SEASON_LABEL[card.skinId] && ` - ${SKIN_SEASON_LABEL[card.skinId]}`}
+              {skinSeasonLabel && ` - ${skinSeasonLabel}`}
             </Heading>
 
             {/* Type */}
@@ -447,7 +449,7 @@ function CardListingPreview({
                 style={{ textShadow: titleGlow }}
               >
                 {cardName}
-                {SKIN_SEASON_LABEL[card.skinId] && ` - ${SKIN_SEASON_LABEL[card.skinId]}`}
+                {skinSeasonLabel && ` - ${skinSeasonLabel}`}
               </Text>
 
               {/* Price */}
@@ -546,7 +548,7 @@ function CardListingPreview({
                 style={{ textShadow: titleGlow }}
               >
                 {cardName}
-                {SKIN_SEASON_LABEL[card.skinId] && ` - ${SKIN_SEASON_LABEL[card.skinId]}`}
+                {skinSeasonLabel && ` - ${skinSeasonLabel}`}
               </Text>
 
               <VStack spacing={0} align="center">
@@ -592,13 +594,13 @@ export function CreateListingPage() {
   const [showAll, setShowAll] = useState(false);
   const navigate = useNavigate();
 
-  // Fetch seller's active/expired listings to show LISTED badges
+  // Fetch seller's active listings to show LISTED badges
   useEffect(() => {
     if (!address) return;
     getSellerListings(address).then(({ data }) => {
       const ids = new Set(
         data
-          .filter((l) => l.status === "active" || l.status === "expired")
+          .filter((l) => getEffectiveStatus(l) === "active")
           .map((l) => l.token_id)
       );
       setListedTokenIds(ids);
@@ -762,7 +764,7 @@ export function CreateListingPage() {
                       >
                         {t("browse.filter.all")}
                       </Badge>
-                      {availableCategories.map(({ key, label, color }) => (
+                      {availableCategories.map(({ key, labelKey, color }) => (
                         <Badge
                           key={key}
                           bg={filterCategory === key ? color : "whiteAlpha.100"}
@@ -771,7 +773,7 @@ export function CreateListingPage() {
                           cursor="pointer"
                           onClick={() => setFilterCategory(filterCategory === key ? null : key)}
                         >
-                          {label}
+                          {t(labelKey)}
                         </Badge>
                       ))}
                     </HStack>

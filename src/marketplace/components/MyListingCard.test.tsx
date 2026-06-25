@@ -83,6 +83,11 @@ const activeListing: Listing = {
   updated_at: "2026-01-01T00:00:00.000Z",
 };
 
+const expiredListing: Listing = {
+  ...activeListing,
+  expiration: Math.floor(Date.now() / 1000) - 60,
+};
+
 afterEach(() => {
   cleanup();
   vi.clearAllMocks();
@@ -115,4 +120,23 @@ test("cancel action does not bubble through the listing link", () => {
 
   expect(onCancel).toHaveBeenCalledWith(activeListing);
   expect(onParentClick).not.toHaveBeenCalled();
+});
+
+test("expired listings only show the re-list action", () => {
+  const view = render(
+    <ChakraProvider>
+      <MemoryRouter>
+        <MyListingCard
+          listing={expiredListing}
+          onCancel={vi.fn()}
+          onRelist={vi.fn()}
+          isCancelling={false}
+          isRelisting={false}
+        />
+      </MemoryRouter>
+    </ChakraProvider>
+  );
+
+  expect(view.queryByText("myListings.relist")).toBeTruthy();
+  expect(view.queryByText("myListings.cancel")).toBeNull();
 });

@@ -25,6 +25,10 @@ import { useCustomToast } from "../../hooks/useCustomToast";
 
 type FilterTab = "all" | ListingStatus;
 
+function isListingNotFoundError(err: unknown): boolean {
+  return err instanceof Error && /\bAPI 404\b/.test(err.message);
+}
+
 export function MyListingsPage() {
   const { t } = useTranslation("marketplace");
 
@@ -100,7 +104,13 @@ export function MyListingsPage() {
 
     setRelistingId(listing.id);
     try {
-      await cancelListing(listing.id);
+      try {
+        await cancelListing(listing.id);
+      } catch (err) {
+        if (!isListingNotFoundError(err)) {
+          throw err;
+        }
+      }
       setListings((prev) =>
         prev.map((l) => (l.id === listing.id ? { ...l, status: "cancelled" } : l))
       );

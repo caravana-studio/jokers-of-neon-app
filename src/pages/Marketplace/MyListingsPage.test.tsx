@@ -283,6 +283,46 @@ test("does not navigate when closing an expired listing fails before re-list", a
   expect(view.getByText("Active Card")).toBeTruthy();
 });
 
+test("continues re-list when the expired listing was already removed", async () => {
+  mocks.cancelListing.mockRejectedValue(new Error("API 404: Listing not found"));
+  mocks.getSellerListings.mockResolvedValue({
+    data: [listing({ expiration: now - 60 })],
+  });
+
+  const view = renderPage();
+
+  const expiredTab = await view.findByText(/myListings\.tabExpired/);
+  await act(async () => {
+    expiredTab.click();
+  });
+  const relistButton = await view.findByText("myListings.relist");
+  await act(async () => {
+    relistButton.click();
+  });
+
+  await waitForExpect(() => expect(mocks.cancelListing).toHaveBeenCalledWith("listing-1"));
+
+  expect(mocks.showErrorToast).not.toHaveBeenCalled();
+  expect(mocks.navigate).toHaveBeenCalledWith("/sell", {
+    state: {
+      preselectedCard: {
+        tokenId: "101",
+        cardId: 10101,
+        cardName: "Active Card",
+        rarity: 1,
+        season: 1,
+        skinId: 0,
+        quality: 0,
+        marketable: true,
+        isSpecial: true,
+        count: 1,
+        owner: "0xseller",
+        skinRarity: 0,
+      },
+    },
+  });
+});
+
 test("keeps listings visible and shows a toast when cancelling is rejected", async () => {
   mocks.account.execute.mockRejectedValue(new Error("user rejected"));
   mocks.getSellerListings.mockResolvedValue({ data: [listing()] });
