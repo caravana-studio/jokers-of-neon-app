@@ -45,6 +45,17 @@ import { PAYMENT_TOKENS } from "../../marketplace/config/contracts";
 import { TokenIcon } from "../../marketplace/components/TokenIcon";
 import type { UserCard } from "../../marketplace/types/marketplace";
 
+type RelistListingDraft = {
+  price: string;
+  paymentToken: string;
+  expiryDays?: number;
+};
+
+type CreateListingLocationState = {
+  preselectedCard?: UserCard;
+  initialListing?: RelistListingDraft;
+} | null;
+
 export const SPECIAL_CATEGORIES: { key: string; labelKey: string; color: string }[] = [
   { key: "Season 1", labelKey: "sell.specialCategorySeason1", color: "#066b9b" },
   { key: "Season 2", labelKey: "sell.specialCategorySeason2", color: "#20c6ed" },
@@ -144,14 +155,49 @@ function normalizePriceInput(value: string): string {
   return `${whole}.${fractionalParts.join("")}`;
 }
 
+function findPaymentTokenAddress(address?: string): (typeof PAYMENT_TOKENS)[number] {
+  return (
+    PAYMENT_TOKENS.find(
+      (token) => token.address.toLowerCase() === address?.toLowerCase()
+    ) ?? PAYMENT_TOKENS[0]
+  );
+}
+
+export function getInitialListingFormValues(initialListing?: RelistListingDraft): {
+  price: string;
+  paymentToken: string;
+  expiryDays: number;
+} {
+  const token = findPaymentTokenAddress(initialListing?.paymentToken);
+  let price = "";
+
+  if (initialListing?.price) {
+    try {
+      price = normalizePriceInput(
+        formatTokenAmount(initialListing.price, token.decimals, token.decimals)
+      );
+    } catch {
+      price = "";
+    }
+  }
+
+  return {
+    price,
+    paymentToken: token.address,
+    expiryDays: initialListing?.expiryDays ?? 7,
+  };
+}
+
 
 // ─── Selected card detail + listing form (store-preview style) ────────────────
 function CardListingPreview({
   card,
+  initialListing,
   onBack,
   onSuccess,
 }: {
   card: UserCard;
+  initialListing?: RelistListingDraft;
   onBack: () => void;
   onSuccess: () => void;
 }) {
@@ -162,9 +208,10 @@ function CardListingPreview({
     signing:    t("sell.signing"),
     submitting: t("sell.submitting"),
   };
-  const [price, setPrice] = useState("");
-  const [paymentToken, setPaymentToken] = useState<string>(PAYMENT_TOKENS[0].address);
-  const [expiryDays, setExpiryDays] = useState(7);
+  const initialFormValues = getInitialListingFormValues(initialListing);
+  const [price, setPrice] = useState(initialFormValues.price);
+  const [paymentToken, setPaymentToken] = useState<string>(initialFormValues.paymentToken);
+  const [expiryDays, setExpiryDays] = useState(initialFormValues.expiryDays);
   const { create, status, error, reset } = useCreateListing();
   const { isOpen: isConfirmOpen, onOpen: openConfirm, onClose: closeConfirm } = useDisclosure();
   const { isOpen: isSuccessOpen, onOpen: openSuccess, onClose: closeSuccess } = useDisclosure();
@@ -586,7 +633,9 @@ export function CreateListingPage() {
   const { status: walletStatus, address } = useAccount();
   const { cards, loading, error } = useUserCards();
   const location = useLocation();
-  const preselectedCard = (location.state as { preselectedCard?: UserCard } | null)?.preselectedCard ?? null;
+  const locationState = location.state as CreateListingLocationState;
+  const preselectedCard = locationState?.preselectedCard ?? null;
+  const initialListing = locationState?.initialListing;
   const [selectedCard, setSelectedCard] = useState<UserCard | null>(preselectedCard);
   const [listedTokenIds, setListedTokenIds] = useState<Set<string>>(new Set());
   const [filterCategory, setFilterCategory] = useState<string | null>(null);
@@ -628,9 +677,13 @@ export function CreateListingPage() {
   }
 
   if (selectedCard) {
+    const selectedInitialListing =
+      preselectedCard?.tokenId === selectedCard.tokenId ? initialListing : undefined;
+
     return (
       <CardListingPreview
         card={selectedCard}
+        initialListing={selectedInitialListing}
         onBack={() => setSelectedCard(null)}
         onSuccess={() => navigate("/my-listings")}
       />

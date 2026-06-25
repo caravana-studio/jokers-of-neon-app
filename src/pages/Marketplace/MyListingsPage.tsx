@@ -129,7 +129,16 @@ export function MyListingsPage() {
         owner: listing.seller_address,
         skinRarity: 0,
       };
-      navigate("/sell", { state: { preselectedCard } });
+      navigate("/sell", {
+        state: {
+          preselectedCard,
+          initialListing: {
+            price: listing.price,
+            paymentToken: listing.payment_token,
+            expiryDays: 7,
+          },
+        },
+      });
     } catch (err) {
       showErrorToast(parseStarknetError(err));
     } finally {

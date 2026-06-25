@@ -252,6 +252,11 @@ test("re-lists an expired listing without an on-chain cancel", async () => {
         owner: "0xseller",
         skinRarity: 0,
       },
+      initialListing: {
+        price: "1000000000000000000",
+        paymentToken: "0xstrk",
+        expiryDays: 7,
+      },
     },
   });
 });
@@ -318,6 +323,11 @@ test("continues re-list when the expired listing was already removed", async () 
         count: 1,
         owner: "0xseller",
         skinRarity: 0,
+      },
+      initialListing: {
+        price: "1000000000000000000",
+        paymentToken: "0xstrk",
+        expiryDays: 7,
       },
     },
   });
