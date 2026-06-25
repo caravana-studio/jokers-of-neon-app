@@ -194,8 +194,9 @@ test("cancels an active listing and moves it to cancelled", async () => {
 
   const view = renderPage();
 
+  const cancelButton = await view.findByText("myListings.cancel");
   await act(async () => {
-    (await view.findByText("myListings.cancel")).click();
+    cancelButton.click();
   });
 
   await waitForExpect(() => expect(mocks.cancelListing).toHaveBeenCalledWith("listing-1"));
@@ -223,11 +224,13 @@ test("re-lists an expired listing without an on-chain cancel", async () => {
 
   const view = renderPage();
 
+  const expiredTab = await view.findByText(/myListings\.tabExpired/);
   await act(async () => {
-    (await view.findByText(/myListings\.tabExpired/)).click();
+    expiredTab.click();
   });
+  const relistButton = await view.findByText("myListings.relist");
   await act(async () => {
-    (await view.findByText("myListings.relist")).click();
+    relistButton.click();
   });
 
   await waitForExpect(() => expect(mocks.cancelListing).toHaveBeenCalledWith("listing-1"));
@@ -261,11 +264,13 @@ test("does not navigate when closing an expired listing fails before re-list", a
 
   const view = renderPage();
 
+  const expiredTab = await view.findByText(/myListings\.tabExpired/);
   await act(async () => {
-    (await view.findByText(/myListings\.tabExpired/)).click();
+    expiredTab.click();
   });
+  const relistButton = await view.findByText("myListings.relist");
   await act(async () => {
-    (await view.findByText("myListings.relist")).click();
+    relistButton.click();
   });
 
   await waitForExpect(() =>
@@ -284,8 +289,9 @@ test("keeps listings visible and shows a toast when cancelling is rejected", asy
 
   const view = renderPage();
 
+  const cancelButton = await view.findByText("myListings.cancel");
   await act(async () => {
-    (await view.findByText("myListings.cancel")).click();
+    cancelButton.click();
   });
 
   await waitForExpect(() =>
