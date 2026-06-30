@@ -6,7 +6,16 @@ import {
   useMemo,
   useState,
 } from "react";
-import { Edge, Node, useReactFlow } from "reactflow";
+import {
+  CoordinateExtent,
+  Edge,
+  getNodesBounds,
+  getViewportForBounds,
+  Node,
+  useReactFlow,
+  useStoreApi,
+  Viewport,
+} from "reactflow";
 import { BOSS_LEVEL } from "../constants/general";
 import { getMap } from "../dojo/queries/getMap";
 import { GameStateEnum } from "../dojo/typescript/custom";
@@ -33,6 +42,7 @@ interface MapContextType {
   fitViewToCurrentNode: () => void;
   fitViewToFullMap: () => void;
   fitViewToNode: (nodeId: string) => void;
+  runInitialViewportAnimation: () => Promise<void>;
   currentNode: Node | undefined;
   layoutReady: boolean;
   reachableNodes: string[];
@@ -61,6 +71,7 @@ export const MapProvider = ({ children }: MapProviderProps) => {
   } = useDojo();
 
   const reactFlowInstance = useReactFlow();
+  const reactFlowStore = useStoreApi();
 
   const { state, level, id } = useGameStore();
   const isBossLevel = level === BOSS_LEVEL;
@@ -120,6 +131,105 @@ export const MapProvider = ({ children }: MapProviderProps) => {
   }, [baseEdges, currentNode, nodes, stateInMap, reachableNodeIds, activeNodeId]);
 
   const reachableNodes = reachableNodeIds;
+
+  const clampViewportToExtent = (
+    viewport: Viewport,
+    translateExtent: CoordinateExtent,
+    width: number,
+    height: number
+  ): Viewport => {
+    const [[minX, minY], [maxX, maxY]] = translateExtent;
+
+    const minViewportX = width - maxX * viewport.zoom;
+    const maxViewportX = -minX * viewport.zoom;
+    const minViewportY = height - maxY * viewport.zoom;
+    const maxViewportY = -minY * viewport.zoom;
+
+    const clampAxis = (value: number, minValue: number, maxValue: number) => {
+      if (minValue > maxValue) {
+        return (minValue + maxValue) / 2;
+      }
+
+      return Math.min(Math.max(value, minValue), maxValue);
+    };
+
+    return {
+      ...viewport,
+      x: clampAxis(viewport.x, minViewportX, maxViewportX),
+      y: clampAxis(viewport.y, minViewportY, maxViewportY),
+    };
+  };
+
+  const getViewportForNodeIds = (
+    nodeIds: string[],
+    padding: number,
+    maxZoomOverride?: number
+  ) => {
+    const targetNodes = nodeIds
+      .map((nodeId) => nodes.find((node) => node.id === nodeId))
+      .filter((node): node is Node => Boolean(node));
+
+    if (targetNodes.length === 0) return;
+
+    const {
+      width,
+      height,
+      minZoom,
+      maxZoom,
+      nodeOrigin,
+      translateExtent,
+    } = reactFlowStore.getState();
+
+    if (!width || !height) return;
+
+    const bounds = getNodesBounds(targetNodes, nodeOrigin);
+    const desiredViewport = getViewportForBounds(
+      bounds,
+      width,
+      height,
+      minZoom,
+      maxZoomOverride ?? maxZoom,
+      padding
+    );
+
+    return clampViewportToExtent(
+      desiredViewport,
+      translateExtent,
+      width,
+      height
+    );
+  };
+
+  const setViewportForNodeIds = (
+    nodeIds: string[],
+    padding: number,
+    duration?: number,
+    maxZoomOverride?: number
+  ) => {
+    if (!reactFlowInstance.viewportInitialized) return;
+
+    const viewport = getViewportForNodeIds(nodeIds, padding, maxZoomOverride);
+    if (!viewport) return;
+
+    reactFlowInstance.setViewport(viewport, duration ? { duration } : undefined);
+  };
+
+  const normalizeViewportToExtent = () => {
+    if (!reactFlowInstance.viewportInitialized) return;
+
+    const { width, height, translateExtent } = reactFlowStore.getState();
+    if (!width || !height) return;
+
+    const currentViewport = reactFlowInstance.getViewport();
+    const clampedViewport = clampViewportToExtent(
+      currentViewport,
+      translateExtent,
+      width,
+      height
+    );
+
+    reactFlowInstance.setViewport(clampedViewport);
+  };
 
   useEffect(() => {
     getMap(client, id).then((dataNodes) => {
@@ -186,30 +296,41 @@ export const MapProvider = ({ children }: MapProviderProps) => {
   };
 
   const fitViewToCurrentNode = () => {
-    reactFlowInstance.fitView({
-      nodes: [
-        currentNode,
-        ...reachableNodes.map((id) => ({
-          id,
-        })),
-      ],
-      padding: 0.2,
-      duration: 750,
-      maxZoom: isSmallScreen ? 0.84 : 1.44,
-    });
+    if (!currentNode) return;
+
+    setViewportForNodeIds(
+      [currentNode.id, ...reachableNodes],
+      0.2,
+      750,
+      isSmallScreen ? 0.84 : 1.44
+    );
   };
 
   const fitViewToFullMap = () => {
-    reactFlowInstance.fitView({ padding: 0.2 });
+    setViewportForNodeIds(
+      nodes.map((node) => node.id),
+      0.2
+    );
   };
 
   const fitViewToNode = (nodeId: string) => {
-    reactFlowInstance.fitView({
-      nodes: [{ id: nodeId }],
-      padding: 0.3,
-      duration: 3500,
-      maxZoom: 3,
+    setViewportForNodeIds([nodeId], 0.3, 3500, 3);
+  };
+
+  const runInitialViewportAnimation = async () => {
+    fitViewToFullMap();
+
+    await new Promise((resolve) => {
+      window.setTimeout(resolve, 600);
     });
+
+    fitViewToCurrentNode();
+
+    await new Promise((resolve) => {
+      window.setTimeout(resolve, 800);
+    });
+
+    normalizeViewportToExtent();
   };
 
   return (
@@ -220,6 +341,7 @@ export const MapProvider = ({ children }: MapProviderProps) => {
         fitViewToCurrentNode,
         fitViewToFullMap,
         fitViewToNode,
+        runInitialViewportAnimation,
         currentNode,
         layoutReady,
         reachableNodes,
