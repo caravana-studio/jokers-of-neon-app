@@ -47,7 +47,7 @@ export const useShopActions = () => {
 
   const { setPowerUps } = useGameStore();
 
-  const { reset } = useShopStore();
+  const { invalidate } = useShopStore();
 
   const { sfxVolume } = useSettings();
   const { play: achievementSound } = useAudio(achievementSfx, sfxVolume);
@@ -81,7 +81,7 @@ export const useShopActions = () => {
         const event = tx.value.events.find(
           (event) => event.keys[1] === DESTROYED_SPECIAL_CARD_EVENT_KEY
         );
-        reset();
+        invalidate();
         return {
           success: true,
           cards: getCardsFromEvents(tx.value.events),

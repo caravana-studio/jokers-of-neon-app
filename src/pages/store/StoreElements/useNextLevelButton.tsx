@@ -32,16 +32,18 @@ export const useNextLevelButton = () => {
   const { setDestroyedSpecialCardId } = useAnimationStore();
 
   const { setLoading } = useStore();
-  const { locked } = useShopStore();
+  const { locked, setIsLeavingShop } = useShopStore();
 
   const handleNextLevelClick = async () => {
     setLoading(true);
+    setIsLeavingShop(true);
     onShopSkip();
     try {
       const response = await skipShop(gameId);
 
       if (!response.success) {
         setLoading(false);
+        setIsLeavingShop(false);
         return;
       }
 
@@ -65,6 +67,7 @@ export const useNextLevelButton = () => {
             });
 
             if (navigated) {
+              setIsLeavingShop(false);
               return;
             }
           }
@@ -74,8 +77,10 @@ export const useNextLevelButton = () => {
       }
 
       await navigateToMap();
+      setIsLeavingShop(false);
     } catch {
       setLoading(false);
+      setIsLeavingShop(false);
     }
   };
 
