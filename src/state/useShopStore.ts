@@ -29,11 +29,14 @@ type ShopStore = {
   burnItem: BurnItem | null;
   powerUps: PowerUp[];
   loading: boolean;
+  isLeavingShop: boolean;
   rerolling: boolean;
   locked: boolean;
 
   refetchShopStore: (client: any, gameId: number) => Promise<void>;
   setLoading: (loading: boolean) => void;
+  setIsLeavingShop: (isLeavingShop: boolean) => void;
+  invalidate: () => void;
   setRerolling: (rerolling: boolean) => void;
   setLocked: (locked: boolean) => void;
   reset: () => void;
@@ -74,6 +77,7 @@ const initialShopState = {
   burnItem: null,
   powerUps: [],
   loading: true,
+  isLeavingShop: false,
   rerolling: false,
   locked: false,
 };
@@ -103,6 +107,12 @@ export const useShopStore = create<ShopStore>((set, get) => ({
   },
 
   reset: () => set(initialShopState),
+
+  invalidate: () =>
+    set((state) => ({
+      ...initialShopState,
+      isLeavingShop: state.isLeavingShop,
+    })),
 
   setRerolling: (rerolling: boolean) => set({ rerolling }),
 
@@ -247,4 +257,6 @@ export const useShopStore = create<ShopStore>((set, get) => ({
   setLocked: (locked: boolean) => set({ locked }),
 
   setLoading: (loading: boolean) => set({ loading }),
+
+  setIsLeavingShop: (isLeavingShop: boolean) => set({ isLeavingShop }),
 }));

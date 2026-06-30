@@ -20,11 +20,11 @@ export const useCustomNavigate = () => {
   } = useDojo();
 
   const customNavigate = (state: GameStateEnum) => {
+    const targetPath = stateToPageMap[state];
     setState(state);
     if (state !== GameStateEnum.Rage) {
       resetRage();
     }
-    const targetPath = stateToPageMap[state];
     if (targetPath === "/store") {
       refetchSpecialCards(client, gameId);
     }
