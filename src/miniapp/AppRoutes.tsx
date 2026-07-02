@@ -24,6 +24,7 @@ import { CardHighlightProvider } from "../providers/HighlightProvider/CardHighli
 import { PowerupHighlightProvider } from "../providers/HighlightProvider/PowerupHighlightProvider";
 import { StoreProvider } from "../providers/StoreProvider";
 import { MiniAppMyGamesPage } from "./MiniAppMyGamesPage";
+import { MiniAppAboutUsPage } from "./MiniAppAboutUsPage";
 import { MiniAppGameOverPage } from "./MiniAppGameOverPage";
 import { MiniAppPrivacyPolicyPage } from "./MiniAppPrivacyPolicyPage";
 import { MiniAppProfilePage } from "./MiniAppProfilePage";
@@ -73,6 +74,14 @@ export const AppRoutes = () => {
         element={
           <AnimatedPage>
             <MiniAppSupportPage />
+          </AnimatedPage>
+        }
+      />
+      <Route
+        path="/profile/about-us"
+        element={
+          <AnimatedPage>
+            <MiniAppAboutUsPage />
           </AnimatedPage>
         }
       />
