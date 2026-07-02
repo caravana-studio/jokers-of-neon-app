@@ -2,7 +2,12 @@ import { SessionConnector } from "@cartridge/connector";
 import ControllerConnector from "@cartridge/connector/controller";
 import { AuthOptions } from "@cartridge/controller";
 import { constants, shortString } from "starknet";
-import { rpcUrl, slotInstance } from "../../config/cartridgeUrls";
+import {
+  rpcUrl,
+  slotChainId,
+  slotInstance,
+  usesCustomKatanaEndpoint,
+} from "../../config/cartridgeUrls";
 import { isNative, isNativeAndroid } from "../../utils/capacitorUtils";
 import { policies } from "./policies";
 
@@ -24,9 +29,17 @@ const getChainId = (chain: string) => {
   }
 };
 
-export const getSlotChainId = (slot: string) => {
+const encodeChainId = (chainId: string) =>
+  chainId.startsWith("0x") ? chainId : shortString.encodeShortString(chainId);
+
+export const getSlotChainId = (slot?: string) => {
+  if (slotChainId) {
+    return encodeChainId(slotChainId);
+  }
+
+  const resolvedSlot = slot || "jokers-of-neon";
   return shortString.encodeShortString(
-    `WP_${slot.toUpperCase().replaceAll("-", "_")}`
+    `WP_${resolvedSlot.toUpperCase().replaceAll("-", "_")}`
   );
 };
 
@@ -37,9 +50,11 @@ const resolvedSlot =
     ? undefined
     : resolvedChain;
 const defaultChainId =
-  resolvedSlot !== undefined
-    ? getSlotChainId(resolvedSlot)
-    : getChainId(resolvedChain);
+  usesCustomKatanaEndpoint
+    ? getSlotChainId(slotInstance)
+    : resolvedSlot !== undefined
+      ? getSlotChainId(resolvedSlot)
+      : getChainId(resolvedChain);
 const resolvedRpcUrl =
   shouldUseStandaloneMainnetRpc ? standaloneMainnetRpc || rpcUrl : rpcUrl;
 
@@ -53,11 +68,11 @@ const controllerOptions = {
   preset: import.meta.env.VITE_CONTROLLER_PRESET,
   namespace: DOJO_NAMESPACE,
   policies,
-  slot: resolvedSlot,
+  slot: usesCustomKatanaEndpoint ? undefined : resolvedSlot,
   signupOptions,
 };
 
-export const controller =
+const controllerConnector =
   !isNative
     ? new ControllerConnector(controllerOptions)
     : new SessionConnector({
@@ -68,3 +83,5 @@ export const controller =
         disconnectRedirectUrl: "jokers://open",
         signupOptions,
       });
+
+export const controller = controllerConnector;

@@ -432,3 +432,5 @@ android/app/my-release-key.keystore
 .cert/
 
 .codex-artifacts/
+.vercel
+.env*
