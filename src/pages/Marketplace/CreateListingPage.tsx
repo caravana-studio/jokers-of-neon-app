@@ -32,18 +32,44 @@ import { getSellerListings } from "../../marketplace/api/marketplace";
 import { CardImage } from "../../marketplace/components/CardImage";
 import { SkinBadge, SKIN_NAME_COLOR } from "../../marketplace/components/SkinBadge";
 
-const SKIN_SEASON_LABEL: Record<number, string> = {
-  2: "Season 1",
-  3: "Season 2",
-  4: "Season 3",
+const SKIN_SEASON_LABEL_KEY: Record<number, string> = {
+  2: "sell.specialCategorySeason1",
+  3: "sell.specialCategorySeason2",
+  4: "sell.specialCategorySeason3",
 };
 import { groupCards, CardGridItem, CardSection } from "../../marketplace/components/UserCardGrid";
-import { RARITY_LABELS, RARITY_COLORS } from "../../marketplace/types/marketplace";
+import { getEffectiveStatus, RARITY_LABELS, RARITY_COLORS } from "../../marketplace/types/marketplace";
 import { cardImageUrl, parseTokenAmount, formatTokenAmount } from "../../marketplace/utils/formatPrice";
 import { useCardName } from "../../marketplace/hooks/useCardName";
 import { PAYMENT_TOKENS } from "../../marketplace/config/contracts";
 import { TokenIcon } from "../../marketplace/components/TokenIcon";
 import type { UserCard } from "../../marketplace/types/marketplace";
+
+type RelistListingDraft = {
+  price: string;
+  paymentToken: string;
+  expiryDays?: number;
+};
+
+type CreateListingLocationState = {
+  preselectedCard?: UserCard;
+  initialListing?: RelistListingDraft;
+} | null;
+
+export const SPECIAL_CATEGORIES: { key: string; labelKey: string; color: string }[] = [
+  { key: "Season 1", labelKey: "sell.specialCategorySeason1", color: "#066b9b" },
+  { key: "Season 2", labelKey: "sell.specialCategorySeason2", color: "#20c6ed" },
+  { key: "Season 3", labelKey: "sell.specialCategorySeason3", color: "#edc020ff" },
+  { key: "GG",       labelKey: "sell.specialCategoryGG",      color: "#f0c040" },
+];
+
+export function getSpecialCategory(cardId: number): string {
+  if (cardId >= 10101 && cardId <= 10199) return "Season 1";
+  if (cardId >= 10201 && cardId <= 10299) return "Season 2";
+  if (cardId >= 10301 && cardId <= 10399) return "Season 3";
+  if (cardId >= 19901 && cardId <= 19999) return "GG";
+  return "Other";
+}
 
 // ─── Section label with white glow underline (matches store preview) ──────────
 function SectionLabel({ children }: { children: string }) {
@@ -129,14 +155,49 @@ function normalizePriceInput(value: string): string {
   return `${whole}.${fractionalParts.join("")}`;
 }
 
+function findPaymentTokenAddress(address?: string): (typeof PAYMENT_TOKENS)[number] {
+  return (
+    PAYMENT_TOKENS.find(
+      (token) => token.address.toLowerCase() === address?.toLowerCase()
+    ) ?? PAYMENT_TOKENS[0]
+  );
+}
+
+export function getInitialListingFormValues(initialListing?: RelistListingDraft): {
+  price: string;
+  paymentToken: string;
+  expiryDays: number;
+} {
+  const token = findPaymentTokenAddress(initialListing?.paymentToken);
+  let price = "";
+
+  if (initialListing?.price) {
+    try {
+      price = normalizePriceInput(
+        formatTokenAmount(initialListing.price, token.decimals, token.decimals)
+      );
+    } catch {
+      price = "";
+    }
+  }
+
+  return {
+    price,
+    paymentToken: token.address,
+    expiryDays: initialListing?.expiryDays ?? 7,
+  };
+}
+
 
 // ─── Selected card detail + listing form (store-preview style) ────────────────
 function CardListingPreview({
   card,
+  initialListing,
   onBack,
   onSuccess,
 }: {
   card: UserCard;
+  initialListing?: RelistListingDraft;
   onBack: () => void;
   onSuccess: () => void;
 }) {
@@ -147,9 +208,10 @@ function CardListingPreview({
     signing:    t("sell.signing"),
     submitting: t("sell.submitting"),
   };
-  const [price, setPrice] = useState("");
-  const [paymentToken, setPaymentToken] = useState<string>(PAYMENT_TOKENS[0].address);
-  const [expiryDays, setExpiryDays] = useState(7);
+  const initialFormValues = getInitialListingFormValues(initialListing);
+  const [price, setPrice] = useState(initialFormValues.price);
+  const [paymentToken, setPaymentToken] = useState<string>(initialFormValues.paymentToken);
+  const [expiryDays, setExpiryDays] = useState(initialFormValues.expiryDays);
   const { create, status, error, reset } = useCreateListing();
   const { isOpen: isConfirmOpen, onOpen: openConfirm, onClose: closeConfirm } = useDisclosure();
   const { isOpen: isSuccessOpen, onOpen: openSuccess, onClose: closeSuccess } = useDisclosure();
@@ -157,6 +219,8 @@ function CardListingPreview({
   const selectedToken = PAYMENT_TOKENS.find((t) => t.address === paymentToken)!;
   const isProcessing = ["approving", "signing", "submitting"].includes(status);
   const skinColor = SKIN_NAME_COLOR[card.skinId];
+  const skinSeasonLabelKey = SKIN_SEASON_LABEL_KEY[card.skinId];
+  const skinSeasonLabel = skinSeasonLabelKey ? t(skinSeasonLabelKey) : null;
   const titleColor = skinColor ?? "white";
   const titleGlow = skinColor
     ? `0 0 12px ${skinColor}, 0 0 24px ${skinColor}60`
@@ -261,7 +325,7 @@ function CardListingPreview({
               style={{ textShadow: titleGlow }}
             >
               {cardName}
-              {SKIN_SEASON_LABEL[card.skinId] && ` - ${SKIN_SEASON_LABEL[card.skinId]}`}
+              {skinSeasonLabel && ` - ${skinSeasonLabel}`}
             </Heading>
 
             {/* Type */}
@@ -432,7 +496,7 @@ function CardListingPreview({
                 style={{ textShadow: titleGlow }}
               >
                 {cardName}
-                {SKIN_SEASON_LABEL[card.skinId] && ` - ${SKIN_SEASON_LABEL[card.skinId]}`}
+                {skinSeasonLabel && ` - ${skinSeasonLabel}`}
               </Text>
 
               {/* Price */}
@@ -531,7 +595,7 @@ function CardListingPreview({
                 style={{ textShadow: titleGlow }}
               >
                 {cardName}
-                {SKIN_SEASON_LABEL[card.skinId] && ` - ${SKIN_SEASON_LABEL[card.skinId]}`}
+                {skinSeasonLabel && ` - ${skinSeasonLabel}`}
               </Text>
 
               <VStack spacing={0} align="center">
@@ -569,7 +633,9 @@ export function CreateListingPage() {
   const { status: walletStatus, address } = useAccount();
   const { cards, loading, error } = useUserCards();
   const location = useLocation();
-  const preselectedCard = (location.state as { preselectedCard?: UserCard } | null)?.preselectedCard ?? null;
+  const locationState = location.state as CreateListingLocationState;
+  const preselectedCard = locationState?.preselectedCard ?? null;
+  const initialListing = locationState?.initialListing;
   const [selectedCard, setSelectedCard] = useState<UserCard | null>(preselectedCard);
   const [listedTokenIds, setListedTokenIds] = useState<Set<string>>(new Set());
   const [filterCategory, setFilterCategory] = useState<string | null>(null);
@@ -577,13 +643,13 @@ export function CreateListingPage() {
   const [showAll, setShowAll] = useState(false);
   const navigate = useNavigate();
 
-  // Fetch seller's active/expired listings to show LISTED badges
+  // Fetch seller's active listings to show LISTED badges
   useEffect(() => {
     if (!address) return;
     getSellerListings(address).then(({ data }) => {
       const ids = new Set(
         data
-          .filter((l) => l.status === "active" || l.status === "expired")
+          .filter((l) => getEffectiveStatus(l) === "active")
           .map((l) => l.token_id)
       );
       setListedTokenIds(ids);
@@ -611,9 +677,13 @@ export function CreateListingPage() {
   }
 
   if (selectedCard) {
+    const selectedInitialListing =
+      preselectedCard?.tokenId === selectedCard.tokenId ? initialListing : undefined;
+
     return (
       <CardListingPreview
         card={selectedCard}
+        initialListing={selectedInitialListing}
         onBack={() => setSelectedCard(null)}
         onSuccess={() => navigate("/my-listings")}
       />
@@ -625,20 +695,6 @@ export function CreateListingPage() {
 
   const allSpecials = displayCards.filter((c) => c.isSpecial);
   const availableRarities = [...new Set(allSpecials.map((c) => c.rarity))].sort((a, b) => a - b);
-
-  // Derive category from card ID ranges
-  const SPECIAL_CATEGORIES: { key: string; label: string; color: string }[] = [
-    { key: "Season 1", label: "Season 1", color: "#066b9b" },
-    { key: "Season 2", label: "Season 2", color: "#20c6ed" },
-    { key: "GG",       label: "GG",       color: "#f0c040" },
-  ];
-
-  function getSpecialCategory(cardId: number): string {
-    if (cardId >= 10101 && cardId <= 10199) return "Season 1";
-    if (cardId >= 10201 && cardId <= 10299) return "Season 2";
-    if (cardId >= 19901 && cardId <= 19999) return "GG";
-    return "Other";
-  }
 
   const availableCategories = SPECIAL_CATEGORIES.filter((cat) =>
     allSpecials.some((c) => getSpecialCategory(c.cardId) === cat.key)
@@ -761,16 +817,16 @@ export function CreateListingPage() {
                       >
                         {t("browse.filter.all")}
                       </Badge>
-                      {availableCategories.map(({ key, label, color }) => (
+                      {availableCategories.map(({ key, labelKey, color }) => (
                         <Badge
                           key={key}
                           bg={filterCategory === key ? color : "whiteAlpha.100"}
-                          color={filterCategory === key ? (key === "GG" ? "black" : "white") : "whiteAlpha.600"}
+                          color={filterCategory === key ? (key === "GG" || key === "Season 3" ? "black" : "white") : "whiteAlpha.600"}
                           fontSize={11} px={3} py={1} borderRadius="full"
                           cursor="pointer"
                           onClick={() => setFilterCategory(filterCategory === key ? null : key)}
                         >
-                          {label}
+                          {t(labelKey)}
                         </Badge>
                       ))}
                     </HStack>
