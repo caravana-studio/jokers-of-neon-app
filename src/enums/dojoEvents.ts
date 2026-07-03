@@ -27,6 +27,7 @@ export enum DojoEvents {
   CARD_ACTIVATE = "CardActivateEvent",
   SHOP_TIER_UNLOCKED = "TierUnlockedEvent",
   POST_ACTION = "PostActionEvent",
+  FORCED_HAND_DISCARD = "ForcedHandDiscardEvent",
 
   ACHIEVEMENT_COMPLETE = "AchievementCompletedEvent",
   DAILY_MISSION_COMPLETE = "MissionCompletedV2Event",

@@ -269,3 +269,101 @@ test("level-up animation finishes before rewards navigation", () => {
   expect(setRoundRewards).toHaveBeenCalledTimes(1);
   expect(navigate).toHaveBeenCalledWith("/rewards");
 });
+
+test("discard hand cards animation runs after post action and before finalize", () => {
+  vi.useFakeTimers();
+
+  const setAnimatedCard = vi.fn();
+  const setHighlightedHandCardIndexes = vi.fn();
+  const setDiscardingHandCardIndexes = vi.fn();
+  const clearPreSelection = vi.fn();
+  const negativeMultiSound = vi.fn();
+
+  const playEvents: PlayEvents = {
+    play: { points: 0, multi: 1 },
+    gameOver: false,
+    cards: [],
+    score: 10,
+    postActionEvent: {
+      game_id: 77,
+      action_type: 1,
+      effect_card_id: 10023,
+    },
+    forcedHandDiscardEvent: {
+      game_id: 77,
+      discarded_hand_indexes: [4, 1],
+    },
+  };
+
+  const totalDuration = animatePlayDiscard({
+    playEvents,
+    playAnimationDuration: 100,
+    setPlayIsNeon: () => undefined,
+    setAnimatedCard,
+    setAnimatedPowerUp: () => undefined,
+    pointsSound: () => undefined,
+    acumSound: () => undefined,
+    negativeMultiSound,
+    setPoints: () => undefined,
+    setMulti: () => undefined,
+    addPoints: () => undefined,
+    addMulti: () => undefined,
+    changeCardsSuit: () => undefined,
+    changeCardsNeon: () => undefined,
+    setAnimation: () => undefined,
+    setPreSelectionLocked: () => undefined,
+    clearPreSelection,
+    refetchPowerUps: () => undefined,
+    preSelectedPowerUps: [],
+    navigate: () => undefined,
+    setRoundRewards: () => undefined,
+    replaceCards: () => undefined,
+    remainingPlays: 1,
+    setAnimateSecondChanceCard: () => undefined,
+    setCardTransformationLock: () => undefined,
+    specialCards: [{ id: "special", img: "10023.png", idx: 8, card_id: 10023 }],
+    setAnimateSpecialCardDefault: () => undefined,
+    addCash: () => undefined,
+    setCurrentScore: () => undefined,
+    resetRage: () => undefined,
+    unPreSelectAllPowerUps: () => undefined,
+    address: "0x0",
+    clearRoundSound: () => undefined,
+    clearLevelSound: () => undefined,
+    setHighlightedHandCardIndexes,
+    setDiscardingHandCardIndexes,
+  });
+
+  expect(totalDuration).toBe(2470);
+  expect(setHighlightedHandCardIndexes).toHaveBeenCalledWith([]);
+  expect(setDiscardingHandCardIndexes).toHaveBeenCalledWith([]);
+
+  vi.advanceTimersByTime(1000);
+  expect(setAnimatedCard).toHaveBeenCalledWith({
+    special_idx: 8,
+    highlightOnly: true,
+    highlightColor: "blue",
+    animationIndex: 900,
+  });
+  expect(clearPreSelection).not.toHaveBeenCalled();
+
+  vi.advanceTimersByTime(300);
+  expect(setAnimatedCard).toHaveBeenCalledWith({
+    idx: [4, 1],
+    highlightOnly: true,
+    highlightColor: "HEARTS",
+    animationIndex: 901,
+  });
+  expect(negativeMultiSound).toHaveBeenCalledTimes(1);
+  expect(setHighlightedHandCardIndexes).toHaveBeenCalledWith([4, 1]);
+  expect(setDiscardingHandCardIndexes).not.toHaveBeenCalledWith([4, 1]);
+
+  vi.advanceTimersByTime(520);
+  expect(setHighlightedHandCardIndexes).toHaveBeenCalledWith([]);
+  expect(setDiscardingHandCardIndexes).toHaveBeenCalledWith([4, 1]);
+  expect(clearPreSelection).not.toHaveBeenCalled();
+
+  vi.advanceTimersByTime(650);
+  expect(clearPreSelection).toHaveBeenCalledTimes(1);
+  expect(setDiscardingHandCardIndexes).toHaveBeenLastCalledWith([]);
+});

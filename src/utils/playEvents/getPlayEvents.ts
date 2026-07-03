@@ -15,6 +15,7 @@ import { converterEventFilter } from "../converterEventFilter";
 import { getCardActivateEvent } from "./getCardActivateEvent";
 import { getCardPlayEvents } from "./getCardPlayEvents";
 import { getDetailEarnedEvent } from "./getDetailEarnedEvent";
+import { getForcedHandDiscardEvent } from "./getForcedHandDiscardEvent";
 import { getHandEvent } from "./getHandEvent";
 import { getLevelPassedEvent } from "./getLevelPassedEvent";
 import { getNeonPlayEvent } from "./getNeonPlayEvent";
@@ -62,6 +63,7 @@ export const getPlayEvents = (events: DojoEvent[]): PlayEvents => {
     ].sort(sortCardPlayEvents),
     cardActivateEvent: getCardActivateEvent(events),
     postActionEvent: getPostActionEvent(events),
+    forcedHandDiscardEvent: getForcedHandDiscardEvent(events),
   };
 
   if (playEvents.gameOver) {
