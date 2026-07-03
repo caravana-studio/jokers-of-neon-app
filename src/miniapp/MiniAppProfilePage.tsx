@@ -201,6 +201,17 @@ export const MiniAppProfilePage = () => {
               <Divider borderColor="white" borderWidth="1px" my={2} />
             )}
             <MenuBtn
+              icon={Icons.PROFILE}
+              description={tMiniAppProfile("about-us")}
+              label={tMiniAppProfile("about-us")}
+              onClick={() => navigate("/profile/about-us")}
+              arrowRight
+              width={btnWidth}
+            />
+            {isSmallScreen && (
+              <Divider borderColor="white" borderWidth="1px" my={2} />
+            )}
+            <MenuBtn
               icon={Icons.TUTORIAL}
               description={tMiniAppProfile("how-to-play")}
               label={tMiniAppProfile("how-to-play")}

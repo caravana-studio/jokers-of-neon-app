@@ -21,7 +21,34 @@
     "menu": {
       "privacy-policy": "Privacy policy",
       "support": "Support",
+      "about-us": "About us",
       "how-to-play": "How to play"
+    },
+    "about-us": {
+      "title": "About us",
+      "logo-alt": "Caravana Studio logo",
+      "intro": "Caravana Studio is the team behind Jokers of Neon. We build on-chain games that mix strong game feel, competitive systems, and transparent player-first design.",
+      "cards": {
+        "studio": {
+          "eyebrow": "Studio",
+          "title": "Built by Caravana Studio",
+          "description": "We focus on games that feel native to the internet: strategic, replayable, and connected to open digital systems."
+        },
+        "mission": {
+          "eyebrow": "Mission",
+          "title": "Player-driven experiences",
+          "description": "Our goal is to push interactive entertainment forward with transparent systems, meaningful progression, and communities that want to compete."
+        },
+        "game": {
+          "eyebrow": "Now live",
+          "title": "Jokers of Neon",
+          "description": "A poker-inspired roguelike deck-builder where every run is about building synergies, adapting your strategy, and chasing deeper score runs."
+        }
+      },
+      "website": "Learn more about the studio at <website>caravana.studio</website>.",
+      "docs": "If you want to dive deeper into the game, visit the <docs>Jokers of Neon docs</docs>.",
+      "learn-more": "Learn more about us at <website>https://caravana.studio</website>.",
+      "contact": "Contact us at <email>gm@caravana.studio</email>."
     },
     "support": {
       "title": "Support",

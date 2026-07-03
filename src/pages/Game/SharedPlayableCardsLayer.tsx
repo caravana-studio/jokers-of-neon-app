@@ -1,6 +1,7 @@
 import { useDndContext } from "@dnd-kit/core";
 import { motion } from "framer-motion";
 import {
+  Box,
   Button,
   Flex,
   Text,
@@ -149,7 +150,12 @@ export const SharedPlayableCardsLayer = ({
 }: SharedPlayableCardsLayerProps) => {
   const { stepIndex, changeModifierCard } = useGameContext();
   const { t } = useTranslation(["game"]);
-  const { discardAnimation, playAnimation } = useAnimationStore();
+  const {
+    discardAnimation,
+    playAnimation,
+    highlightedHandCardIndexes,
+    discardingHandCardIndexes,
+  } = useAnimationStore();
   const { sfxVolume, animationSpeed } = useSettings();
   const { play: preselectCardSound } = useAudio(preselectedCardSfx, sfxVolume);
   const { play: dealCardSound } = useAudio(dealSfx, sfxVolume);
@@ -194,6 +200,14 @@ export const SharedPlayableCardsLayer = ({
   const preselectedCardsSet = useMemo(
     () => new Set(preSelectedCards),
     [preSelectedCards]
+  );
+  const discardingHandCardIndexesSet = useMemo(
+    () => new Set(discardingHandCardIndexes),
+    [discardingHandCardIndexes]
+  );
+  const highlightedHandCardIndexesSet = useMemo(
+    () => new Set(highlightedHandCardIndexes),
+    [highlightedHandCardIndexes]
   );
 
   const handCards = useMemo(
@@ -749,6 +763,10 @@ export const SharedPlayableCardsLayer = ({
         };
         const canReceiveModifier = !isModifierCard && isPreselected;
         const tutorialOffsetY = isActiveTutorialStep ? -20 : 0;
+        const shouldHighlightDiscardFromHand =
+          !isPreselected && highlightedHandCardIndexesSet.has(card.idx);
+        const shouldAnimateDiscardFromHand =
+          !isPreselected && discardingHandCardIndexesSet.has(card.idx);
 
         const cardContent = (
           <Flex
@@ -810,51 +828,61 @@ export const SharedPlayableCardsLayer = ({
               played={isPreselected ? playAnimation : false}
               scale={cardScale}
             >
-              <TiltCard
-                card={renderedCard}
-                scale={cardScale}
-                cursor={
-                  isModifierCard
-                    ? activeNode
-                      ? "grabbing"
-                      : "grab"
-                    : activeNode
-                      ? "grabbing"
-                      : "pointer"
+              <Box
+                borderRadius={{ base: "5px", sm: "10px" }}
+                boxShadow={
+                  shouldHighlightDiscardFromHand
+                    ? "0 0 14px 4px #f80023, 0 0 28px 8px rgba(248, 0, 35, 0.55)"
+                    : "none"
                 }
-                onClick={() => {
-                  if (isModifierCard) {
-                    highlightCard(card);
-                    return;
+                transition="box-shadow 180ms ease"
+              >
+                <TiltCard
+                  card={renderedCard}
+                  scale={cardScale}
+                  cursor={
+                    isModifierCard
+                      ? activeNode
+                        ? "grabbing"
+                        : "grab"
+                      : activeNode
+                        ? "grabbing"
+                        : "pointer"
                   }
+                  onClick={() => {
+                    if (isModifierCard) {
+                      highlightCard(card);
+                      return;
+                    }
 
-                  if (isPreselected) {
-                    togglePreselected(card.idx);
-                    return;
+                    if (isPreselected) {
+                      togglePreselected(card.idx);
+                      return;
+                    }
+
+                    if (isClickDisabled) return;
+
+                    onTutorialHandCardClick?.();
+                    const preselected = togglePreselected(card.idx);
+                    if (preselected) {
+                      preselectCardSound();
+                    }
+                  }}
+                  className={
+                    isModifierCard
+                      ? "tutorial-modifiers-step-2"
+                      : handCardClassName
                   }
-
-                  if (isClickDisabled) return;
-
-                  onTutorialHandCardClick?.();
-                  const preselected = togglePreselected(card.idx);
-                  if (preselected) {
-                    preselectCardSound();
-                  }
-                }}
-                className={
-                  isModifierCard
-                    ? "tutorial-modifiers-step-2"
-                    : handCardClassName
-                }
-                onHold={() => {
-                  if (isModifierCard) {
+                  onHold={() => {
+                    if (isModifierCard) {
+                      isSmallScreen && highlightCard(card);
+                      return;
+                    }
+                    if (!isPreselected && isClickDisabled) return;
                     isSmallScreen && highlightCard(card);
-                    return;
-                  }
-                  if (!isPreselected && isClickDisabled) return;
-                  isSmallScreen && highlightCard(card);
-                }}
-              />
+                  }}
+                />
+              </Box>
             </AnimatedCard>
           </Flex>
         );
@@ -884,7 +912,7 @@ export const SharedPlayableCardsLayer = ({
             animate={{
               x: targetPosition.left,
               y: targetPosition.top + tutorialOffsetY,
-              opacity: 1,
+              opacity: shouldAnimateDiscardFromHand ? 0 : 1,
               scale: 1,
               rotate: 0,
             }}
@@ -908,6 +936,8 @@ export const SharedPlayableCardsLayer = ({
               willChange: "transform, opacity",
               zIndex: isActiveTutorialStep
                 ? 999
+                : shouldAnimateDiscardFromHand || shouldHighlightDiscardFromHand
+                  ? 60
                 : isPreselected
                   ? 30
                   : 20 + (targetPosition.handOrder ?? 0),

@@ -179,6 +179,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setPlayAnimation,
     setDiscardAnimation,
     setLevelUpHand,
+    setHighlightedHandCardIndexes,
+    setDiscardingHandCardIndexes,
     triggerPlayRollbackPulse,
     triggerDiscardRollbackPulse,
   } = useAnimationStore();
@@ -636,6 +638,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       popSound,
       deferRewardsNavigation,
       actionContext,
+      setHighlightedHandCardIndexes,
+      setDiscardingHandCardIndexes,
       onPostActionAnimationStart: (resolvedActionType, pulseDurationMs) => {
         handlePostActionAnimationStart(
           response,

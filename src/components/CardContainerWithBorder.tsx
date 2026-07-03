@@ -1,4 +1,4 @@
-import { Flex } from "@chakra-ui/react";
+import { Flex, type FlexProps } from "@chakra-ui/react";
 import { ReactNode } from "react";
 import { useGameContext } from "../providers/GameProvider.tsx";
 import { GREY_LINE } from "../theme/colors.tsx";
@@ -14,6 +14,7 @@ export const CardContainerWithBorder = ({
   children,
   mr,
   className,
+  zIndex = 0,
 }: {
   width?: string;
   minWidth?: string;
@@ -24,6 +25,7 @@ export const CardContainerWithBorder = ({
   children: ReactNode;
   mr?: number;
   className?: string;
+  zIndex?: FlexProps["zIndex"];
 }) => {
   const mergedClassName = ["special-cards-step-3", className]
     .filter(Boolean)
@@ -46,7 +48,7 @@ export const CardContainerWithBorder = ({
       maxWidth={maxWidth}
       width={width}
       height={height}
-      zIndex={0}
+      zIndex={zIndex}
       mr={[3, 0]}
     >
       {children}

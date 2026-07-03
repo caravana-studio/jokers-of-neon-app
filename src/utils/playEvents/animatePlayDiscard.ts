@@ -1,4 +1,5 @@
 import { postLevelXP } from "../../api/postLevelXP";
+import { unstable_batchedUpdates } from "react-dom";
 import { CHANGE_LEVEL_ANIMATION_DURATION_MS } from "../../constants/animationDurations";
 import { BOSS_LEVEL } from "../../constants/general";
 import { EventTypeEnum } from "../../dojo/typescript/custom";
@@ -14,6 +15,8 @@ const PITCH_VARIANTS = 18;
 export const GAME_OVER_REDIRECT_DELAY_MS = 3000;
 const POST_ACTION_SPECIAL_DURATION_EXTRA_MS = 200;
 const POST_ACTION_BULLET_EXTRA_MS = 140;
+const DISCARD_HAND_CARDS_HIGHLIGHT_DURATION_MS = 520;
+const DISCARD_HAND_CARDS_FADE_DURATION_MS = 650;
 
 interface AnimatePlayConfig {
   playEvents: PlayEvents;
@@ -58,6 +61,8 @@ interface AnimatePlayConfig {
   popSound?: () => void;
   deferRewardsNavigation?: boolean;
   actionContext?: PostActionKind;
+  setHighlightedHandCardIndexes?: (indexes: number[]) => void;
+  setDiscardingHandCardIndexes?: (indexes: number[]) => void;
   onPostActionAnimationStart?: (
     actionType: PostActionKind,
     pulseDurationMs: number
@@ -228,7 +233,20 @@ export const animatePlayDiscard = (config: AnimatePlayConfig): number => {
         (card) => card.card_id === playEvents.postActionEvent?.effect_card_id
       )
     : undefined;
+  const discardHandCardIndexes = Array.from(
+    new Set(playEvents.forcedHandDiscardEvent?.discarded_hand_indexes ?? [])
+  );
+  const discardHandCardsDuration =
+    discardHandCardIndexes.length > 0
+      ? DISCARD_HAND_CARDS_HIGHLIGHT_DURATION_MS +
+        DISCARD_HAND_CARDS_FADE_DURATION_MS
+      : 0;
   const shouldKeepCardsOutOfHand = isRoundTransition || isGameOver;
+
+  const clearDiscardHandCardsVisualState = () => {
+    config.setHighlightedHandCardIndexes?.([]);
+    config.setDiscardingHandCardIndexes?.([]);
+  };
 
   const ALL_CARDS_DURATION = Object.values(durations).reduce(
     (a, b) => a + b,
@@ -451,10 +469,12 @@ export const animatePlayDiscard = (config: AnimatePlayConfig): number => {
         }
       }
     } else if (playEvents.gameOver) {
+      clearDiscardHandCardsVisualState();
       setTimeout(() => {
         navigate(`/loose`);
       }, GAME_OVER_REDIRECT_DELAY_MS);
     } else if (playEvents.levelPassed && playEvents.detailEarned) {
+      clearDiscardHandCardsVisualState();
       resetRage();
       setTimeout(() => {
         setRoundRewards({
@@ -483,7 +503,10 @@ export const animatePlayDiscard = (config: AnimatePlayConfig): number => {
         );
       setPreSelectionLocked(true);
     } else {
-      playEvents.cards && replaceCards(playEvents.cards);
+      unstable_batchedUpdates(() => {
+        clearDiscardHandCardsVisualState();
+        playEvents.cards && replaceCards(playEvents.cards);
+      });
       setRoundRewards(undefined);
     }
   };
@@ -512,8 +535,30 @@ export const animatePlayDiscard = (config: AnimatePlayConfig): number => {
     }
   };
 
+  const handleDiscardHandCardsEvent = () => {
+    if (discardHandCardIndexes.length === 0) {
+      return;
+    }
+
+    negativeMultiSound();
+    config.setHighlightedHandCardIndexes?.(discardHandCardIndexes);
+    setAnimatedCard({
+      idx: discardHandCardIndexes,
+      highlightOnly: true,
+      highlightColor: "HEARTS",
+      animationIndex: 901,
+    });
+
+    setTimeout(() => {
+      config.setHighlightedHandCardIndexes?.([]);
+      config.setDiscardingHandCardIndexes?.(discardHandCardIndexes);
+      setAnimatedCard(undefined);
+    }, DISCARD_HAND_CARDS_HIGHLIGHT_DURATION_MS);
+  };
+
   // Main execution flow
   setPreSelectionLocked(true);
+  clearDiscardHandCardsVisualState();
 
   // Chained timeouts with clear, sequential execution
   handleCardPlayChangeEvents().then(() => {
@@ -589,8 +634,26 @@ export const animatePlayDiscard = (config: AnimatePlayConfig): number => {
     if (postActionDuration > 0) {
       setTimeout(() => {
         setAnimatedCard(undefined);
+        handleDiscardHandCardsEvent();
+
+        if (discardHandCardsDuration > 0) {
+          setTimeout(() => {
+            finalizeAnimation();
+          }, discardHandCardsDuration);
+          return;
+        }
+
         finalizeAnimation();
       }, postActionDuration);
+      return;
+    }
+
+    handleDiscardHandCardsEvent();
+
+    if (discardHandCardsDuration > 0) {
+      setTimeout(() => {
+        finalizeAnimation();
+      }, discardHandCardsDuration);
       return;
     }
 
@@ -601,6 +664,7 @@ export const animatePlayDiscard = (config: AnimatePlayConfig): number => {
     ALL_CARDS_DURATION +
     playDuration +
     postActionDuration +
+    discardHandCardsDuration +
     levelUpGameEndDelay
   );
 };

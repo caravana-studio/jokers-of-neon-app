@@ -208,7 +208,7 @@ export const AnimatedCard = ({
         config: { duration: 200 },
       });
     }
-  }, [discarded]);
+  }, [cardApi, discarded, isSmallScreen]);
 
   if (!isCardScaleCalculated) return null;
 

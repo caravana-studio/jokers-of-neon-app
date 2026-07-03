@@ -4,7 +4,7 @@ import "./Map.css";
 import EmojiNode from "./nodes/EmojiNode";
 
 import { Flex } from "@chakra-ui/react";
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Joyride from "react-joyride";
 import { MobileBottomBar } from "../../components/MobileBottomBar";
@@ -49,7 +49,7 @@ export const Map = () => {
     nodes,
     edges,
     fitViewToCurrentNode,
-    fitViewToFullMap,
+    runInitialViewportAnimation,
     layoutReady,
     selectedNodeData,
     reachableNodes,
@@ -67,10 +67,11 @@ export const Map = () => {
   const { isSmallScreen } = useResponsiveValues();
   const { state, id: gameId, setShopId, refetchGameStore } = useGameStore();
   const navigate = useCustomNavigate();
-  const { backToGameButtonProps, backToGameButton } = useBackToGameButton();
+  const { backToGameButton } = useBackToGameButton();
   const { handleNodeNavigation } = useNodeNavigation();
   const { refetch: refetchStore } = useStore();
   const hasInitialFitView = useRef(false);
+  const [isInitialViewportSettling, setIsInitialViewportSettling] = useState(true);
   const {
     run: runMapTutorial,
     steps: mapTutorialSteps,
@@ -113,20 +114,24 @@ export const Map = () => {
   useEffect(() => {
     if (layoutReady && nodes.length > 0 && !hasInitialFitView.current) {
       hasInitialFitView.current = true;
+      let isCancelled = false;
 
       // Double rAF ensures React has committed and browser has painted nodes
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
-          fitViewToFullMap();
-
-          // Zoom to current node on both desktop and mobile
-          setTimeout(() => {
-            fitViewToCurrentNode();
-          }, 600);
+          void runInitialViewportAnimation().finally(() => {
+            if (!isCancelled) {
+              setIsInitialViewportSettling(false);
+            }
+          });
         });
       });
+
+      return () => {
+        isCancelled = true;
+      };
     }
-  }, [layoutReady]);
+  }, [layoutReady, nodes.length, runInitialViewportAnimation]);
 
   const isReachable = reachableNodes.includes(
     selectedNodeData?.id?.toString() ?? ""
@@ -217,6 +222,16 @@ export const Map = () => {
           />
         )}
       </ReactFlow>
+
+      {isInitialViewportSettling && (
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            zIndex: 20,
+          }}
+        />
+      )}
 
       <Flex
         position="absolute"

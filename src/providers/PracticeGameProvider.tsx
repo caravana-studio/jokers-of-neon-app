@@ -99,7 +99,12 @@ export const PracticeGameProvider = ({ children }: { children: ReactNode }) => {
   } = useDojo();
 
   const { sfxVolume, animationSpeed } = useSettings();
-  const { setPlayAnimation, setLevelUpHand } = useAnimationStore();
+  const {
+    setPlayAnimation,
+    setLevelUpHand,
+    setHighlightedHandCardIndexes,
+    setDiscardingHandCardIndexes,
+  } = useAnimationStore();
 
   const {
     setAnimatedCard,
@@ -397,6 +402,8 @@ export const PracticeGameProvider = ({ children }: { children: ReactNode }) => {
         address: account.address,
         clearRoundSound,
         clearLevelSound,
+        setHighlightedHandCardIndexes,
+        setDiscardingHandCardIndexes,
       });
     } catch (error) {
       console.error("Error simulating play", error);

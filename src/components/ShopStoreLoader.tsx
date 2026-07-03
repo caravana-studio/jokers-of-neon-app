@@ -9,11 +9,22 @@ export const ShopStoreLoader = ({ children }: PropsWithChildren) => {
     setup: { client },
   } = useDojo();
   const { id: gameId } = useGameStore();
-  const { loading, setLoading, refetchShopStore, loadedGameId, reset } =
+  const {
+    loading,
+    isLeavingShop,
+    setLoading,
+    refetchShopStore,
+    loadedGameId,
+    reset,
+  } =
     useShopStore();
 
   useEffect(() => {
     if (!client || !gameId) {
+      return;
+    }
+
+    if (isLeavingShop) {
       return;
     }
 
@@ -27,11 +38,11 @@ export const ShopStoreLoader = ({ children }: PropsWithChildren) => {
     }
 
     setLoading(false);
-  }, [client, gameId, loadedGameId, refetchShopStore, reset, setLoading]);
+  }, [client, gameId, loadedGameId, refetchShopStore, reset, setLoading, isLeavingShop]);
 
   return (
     <>
-      {loading ? (
+      {loading || isLeavingShop ? (
         <Flex w="100%" h="100%" justifyContent="center" alignItems="center">
           <Spinner size="xl" color="white" />
         </Flex>

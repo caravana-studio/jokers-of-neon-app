@@ -16,7 +16,7 @@ import { useListings } from "../../marketplace/hooks/useListings";
 import { ListingCard } from "../../marketplace/components/ListingCard";
 import { MARKETPLACE_CARD_GRID_TEMPLATE_COLUMNS } from "../../marketplace/components/cardGridLayout";
 import { FilterLabel, FilterBarContainer, filterSelectStyles, filterInputStyles } from "../../marketplace/components/FilterBar";
-import { RARITY_LABELS } from "../../marketplace/types/marketplace";
+import { getEffectiveStatus, RARITY_LABELS } from "../../marketplace/types/marketplace";
 
 export function BrowseListingsPage() {
   const { t } = useTranslation("marketplace");
@@ -26,16 +26,22 @@ export function BrowseListingsPage() {
 
   // Client-side name search across the loaded batch
   const [nameSearch, setNameSearch] = useState("");
+  const activeSpecialListings = specialListingsState.listings.filter(
+    (listing) => getEffectiveStatus(listing) === "active"
+  );
+  const activeTraditionalListings = traditionalListingsState.listings.filter(
+    (listing) => getEffectiveStatus(listing) === "active"
+  );
   const specialDisplayed = nameSearch
-    ? specialListingsState.listings.filter((l) =>
+    ? activeSpecialListings.filter((l) =>
         l.card_name?.toLowerCase().includes(nameSearch.toLowerCase())
       )
-    : specialListingsState.listings;
+    : activeSpecialListings;
   const traditionalDisplayed = nameSearch
-    ? traditionalListingsState.listings.filter((l) =>
+    ? activeTraditionalListings.filter((l) =>
         l.card_name?.toLowerCase().includes(nameSearch.toLowerCase())
       )
-    : traditionalListingsState.listings;
+    : activeTraditionalListings;
 
   const shownCount = specialDisplayed.length + traditionalDisplayed.length;
   const loadedCount =

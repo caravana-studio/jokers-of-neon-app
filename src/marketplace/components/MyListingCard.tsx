@@ -212,9 +212,10 @@ export function MyListingCard({ listing, onCancel, onRelist, isCancelling, isRel
             mt={1}
             w="100%"
             isLoading={isCancelling}
-            isDisabled={isRelisting}
+            isDisabled={isCancelling || isRelisting}
             onClick={(e) => {
               e.preventDefault();
+              e.stopPropagation();
               onCancel(listing);
             }}
           >
@@ -222,34 +223,21 @@ export function MyListingCard({ listing, onCancel, onRelist, isCancelling, isRel
           </Button>
         )}
         {effectiveStatus === "expired" && (
-          <VStack spacing={1} w="100%" mt={1}>
-            <Button
-              size="sm"
-              colorScheme="cyan"
-              w="100%"
-              isLoading={isRelisting}
-              isDisabled={isCancelling}
-              onClick={(e) => {
-                e.preventDefault();
-                onRelist(listing);
-              }}
-            >
-              {t("myListings.relist")}
-            </Button>
-            <Button
-              size="sm"
-              variant="defaultOutline"
-              w="100%"
-              isLoading={isCancelling}
-              isDisabled={isRelisting}
-              onClick={(e) => {
-                e.preventDefault();
-                onCancel(listing);
-              }}
-            >
-              {t("myListings.cancel")}
-            </Button>
-          </VStack>
+          <Button
+            size="sm"
+            colorScheme="cyan"
+            w="100%"
+            mt={1}
+            isLoading={isRelisting}
+            isDisabled={isCancelling || isRelisting}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              onRelist(listing);
+            }}
+          >
+            {t("myListings.relist")}
+          </Button>
         )}
       </VStack>
     </Box>
