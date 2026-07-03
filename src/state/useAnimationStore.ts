@@ -6,6 +6,10 @@ type AnimationStore = {
   setPlayAnimation: (playing: boolean) => void;
   discardAnimation: boolean;
   setDiscardAnimation: (playing: boolean) => void;
+  highlightedHandCardIndexes: number[];
+  setHighlightedHandCardIndexes: (indexes: number[]) => void;
+  discardingHandCardIndexes: number[];
+  setDiscardingHandCardIndexes: (indexes: number[]) => void;
   playRollbackPulseToken: number;
   discardRollbackPulseToken: number;
   playRollbackPulseDurationMs: number;
@@ -26,6 +30,14 @@ export const useAnimationStore = create<AnimationStore>((set, get) => ({
   discardAnimation: false,
   setDiscardAnimation: (playing: boolean) => {
     set({ discardAnimation: playing });
+  },
+  highlightedHandCardIndexes: [],
+  setHighlightedHandCardIndexes: (indexes: number[]) => {
+    set({ highlightedHandCardIndexes: indexes });
+  },
+  discardingHandCardIndexes: [],
+  setDiscardingHandCardIndexes: (indexes: number[]) => {
+    set({ discardingHandCardIndexes: indexes });
   },
   playRollbackPulseToken: 0,
   discardRollbackPulseToken: 0,

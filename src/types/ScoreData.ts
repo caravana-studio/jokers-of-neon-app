@@ -20,6 +20,7 @@ export interface PlayEvents {
   acumulativeEvents?: CardPlayEvent[];
   cardPlayEvents?: CardPlayEvent[];
   postActionEvent?: PostActionEvent;
+  forcedHandDiscardEvent?: ForcedHandDiscardEvent;
 }
 
 export interface CardPlayEvent {
@@ -104,6 +105,11 @@ export interface PostActionEvent {
   game_id: number;
   action_type: number;
   effect_card_id: number;
+}
+
+export interface ForcedHandDiscardEvent {
+  game_id: number;
+  discarded_hand_indexes: number[];
 }
 
 export interface DetailEarned {
