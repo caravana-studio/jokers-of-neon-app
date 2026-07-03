@@ -24,6 +24,7 @@ export const SpecialCards = () => {
       width={containerWidth}
       height={`${CARD_HEIGHT * cardScale + heightOffset}px`}
       className="progressive-special-cards-tutorial-target"
+      zIndex={20}
     >
       <Box
         position="relative"
