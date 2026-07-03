@@ -7,8 +7,7 @@ import { getSlotChainId } from "../controller/controller";
 import { setupWorld } from "../typescript/contracts.gen";
 import { CavosBridgeContext } from "./CavosBridgeContext";
 
-const CAVOS_APP_ID =
-  import.meta.env.VITE_CAVOS_APP_ID || "";
+const CAVOS_APP_ID = import.meta.env.VITE_CAVOS_APP_ID || "";
 
 const CAVOS_PAYMASTER_API_KEY =
   import.meta.env.VITE_CAVOS_PAYMASTER_API_KEY || "";
@@ -103,14 +102,14 @@ const clearStaleCavosSessionPolicy = (allowedContracts: string[]) => {
     const storedAllowedContracts = new Set(
       (session?.sessionPolicy?.allowedContracts ?? [])
         .map((address: string) => normalizeAddress(address))
-        .filter(Boolean)
+        .filter(Boolean),
     );
     const currentAllowedContracts = allowedContracts
       .map((address) => normalizeAddress(address))
       .filter(Boolean);
 
     const isMissingCurrentContract = currentAllowedContracts.some(
-      (address) => !storedAllowedContracts.has(address)
+      (address) => !storedAllowedContracts.has(address),
     );
 
     if (!isMissingCurrentContract) {
@@ -124,7 +123,10 @@ const clearStaleCavosSessionPolicy = (allowedContracts: string[]) => {
     });
     clearStoredCavosSession();
   } catch (error) {
-    console.warn("[CAVOS] Failed to inspect stored session policy; clearing it", error);
+    console.warn(
+      "[CAVOS] Failed to inspect stored session policy; clearing it",
+      error,
+    );
     clearStoredCavosSession();
   }
 };
@@ -165,8 +167,8 @@ export const CavosWrapper: React.FC<CavosWrapperProps> = ({ children }) => {
         enableLogging: true,
         starknetRpcUrl: CAVOS_STARKNET_RPC_URL,
         slot: {
-          rpcUrl: slotRpcUrl,
-          chainId: getSlotChainId(slotInstance),
+          rpcUrl: "https://katana.testnet.jokersofneon.com",
+          chainId: "0x4b4154414e41",
           relayerAddress: CAVOS_SLOT_RELAYER_ADDRESS,
           relayerPrivateKey: CAVOS_SLOT_RELAYER_PRIVATE_KEY,
         },
@@ -179,9 +181,7 @@ export const CavosWrapper: React.FC<CavosWrapperProps> = ({ children }) => {
         },
       }}
     >
-      <CavosBridge>
-        {children}
-      </CavosBridge>
+      <CavosBridge>{children}</CavosBridge>
     </CavosSDKProvider>
   );
 };
