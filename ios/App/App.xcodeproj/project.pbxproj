@@ -392,17 +392,17 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = App/App.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-					CURRENT_PROJECT_VERSION = 149;
-					DEVELOPMENT_TEAM = YD6K99SL94;
-					INFOPLIST_FILE = App/Info.plist;
-					INFOPLIST_KEY_CFBundleDisplayName = "Jokers of Neon";
-					INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.card-games";
-					IPHONEOS_DEPLOYMENT_TARGET = 14.0;
-					LD_RUNPATH_SEARCH_PATHS = (
-						"$(inherited)",
-						"@executable_path/Frameworks",
-					);
-					MARKETING_VERSION = 5.4.5;
+				CURRENT_PROJECT_VERSION = 149;
+				DEVELOPMENT_TEAM = YD6K99SL94;
+				INFOPLIST_FILE = App/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Jokers of Neon";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.card-games";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 5.4.5;
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" \"-DDEBUG\"";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jokersofneon.play;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -426,17 +426,17 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = App/App.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-					CURRENT_PROJECT_VERSION = 149;
-					DEVELOPMENT_TEAM = YD6K99SL94;
-					INFOPLIST_FILE = App/Info.plist;
-					INFOPLIST_KEY_CFBundleDisplayName = "Jokers of Neon";
-					INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.card-games";
-					IPHONEOS_DEPLOYMENT_TARGET = 14.0;
-					LD_RUNPATH_SEARCH_PATHS = (
-						"$(inherited)",
-						"@executable_path/Frameworks",
-					);
-					MARKETING_VERSION = 5.4.5;
+				CURRENT_PROJECT_VERSION = 149;
+				DEVELOPMENT_TEAM = YD6K99SL94;
+				INFOPLIST_FILE = App/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Jokers of Neon";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.card-games";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 5.4.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jokersofneon.play;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
