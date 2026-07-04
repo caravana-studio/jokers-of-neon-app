@@ -4,6 +4,11 @@ const config: CapacitorConfig = {
   appId: "com.jokersofneon.play",
   appName: "Jokers of Neon",
   webDir: "dist",
+  plugins: {
+    CapacitorHttp: {
+      enabled: true,
+    },
+  },
 /*   server: {
     url: "http://localhost:5173",
     cleartext: true,

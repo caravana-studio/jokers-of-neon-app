@@ -184,8 +184,11 @@ export async function setup({ ...config }: DojoConfig) {
       await burnerManager.create();
     }
   } catch (e) {
-    console.log("error initializing burnerManager");
-    console.error(e);
+    console.error("[dojo/setup] Failed to initialize burner manager", {
+      rpcUrl: config.rpcUrl,
+      error: e,
+    });
+    throw e;
   }
 
   // await syncEntitiesForGameID();
