@@ -74,6 +74,8 @@ const controllerOptions = {
   signupOptions,
 };
 
+console.log('defaultChainId', defaultChainId);
+
 export const controller = !isNative
   ? new ControllerConnector(controllerOptions)
   : new SessionConnector({
