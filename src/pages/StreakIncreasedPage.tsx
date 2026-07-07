@@ -135,7 +135,6 @@ export const StreakIncreasedPage = () => {
         console.info("[STREAK-REWARD] claimed", {
           packs: result.packs.length,
           xp: result.xp,
-          tickets: result.tickets,
           streakProtectors: result.streakProtectors,
         });
       }

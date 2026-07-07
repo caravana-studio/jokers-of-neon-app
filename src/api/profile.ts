@@ -121,11 +121,6 @@ type RawStreakRewardItem =
       quantity?: string | number | null;
       optional?: boolean;
       track?: "normal" | "recurring" | "bonus";
-    }
-  | {
-      type: "tournament_ticket";
-      quantity?: string | number | null;
-      track?: "normal" | "recurring" | "bonus";
     };
 
 type RawStreakPresentationReward = {
@@ -144,11 +139,6 @@ type ClaimStreakRewardsApiResponse = {
     requested?: number;
     queued?: number;
     transactionId?: string;
-  };
-  tickets?: {
-    requested?: number;
-    queued?: number;
-    slotTxHash?: string;
   };
   streakProtectors?: {
     requested?: number;
@@ -256,11 +246,6 @@ export type StreakRewardItemApiData =
       quantity: number;
       optional: boolean;
       track: StreakRewardTrack;
-    }
-  | {
-      type: "tournament_ticket";
-      quantity: number;
-      track: StreakRewardTrack;
     };
 
 export type StreakPresentationRewardApiData = {
@@ -275,11 +260,6 @@ export type ClaimStreakRewardsResult = {
     requested: number;
     queued: number;
     transactionId?: string;
-  };
-  tickets: {
-    requested: number;
-    queued: number;
-    slotTxHash?: string;
   };
   streakProtectors: {
     requested: number;
@@ -342,14 +322,6 @@ function parseStreakRewardItem(item: RawStreakRewardItem): StreakRewardItemApiDa
       type: "streak_protector",
       quantity: Math.max(1, sanitizeNumber(item.quantity ?? 1)),
       optional: Boolean(item.optional ?? true),
-      track: normalizeRewardTrack(item.track),
-    };
-  }
-
-  if (item.type === "tournament_ticket") {
-    return {
-      type: "tournament_ticket",
-      quantity: Math.max(1, sanitizeNumber(item.quantity ?? 1)),
       track: normalizeRewardTrack(item.track),
     };
   }
@@ -831,11 +803,6 @@ export async function claimStreakRewards(
       requested: sanitizeNumber(json.xp?.requested ?? 0),
       queued: sanitizeNumber(json.xp?.queued ?? 0),
       transactionId: json.xp?.transactionId,
-    },
-    tickets: {
-      requested: sanitizeNumber(json.tickets?.requested ?? 0),
-      queued: sanitizeNumber(json.tickets?.queued ?? 0),
-      slotTxHash: json.tickets?.slotTxHash,
     },
     streakProtectors: {
       requested: sanitizeNumber(json.streakProtectors?.requested ?? 0),

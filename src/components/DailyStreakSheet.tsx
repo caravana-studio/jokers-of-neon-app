@@ -66,15 +66,13 @@ function buildRewardSummary(
         acc.packs += item.quantity;
       } else if (item.type === "xp") {
         acc.xp += item.amount;
-      } else if (item.type === "tournament_ticket") {
-        acc.tickets += item.quantity;
       } else if (item.type === "streak_protector") {
         acc.protectors += item.quantity;
       }
 
       return acc;
     },
-    { packs: 0, xp: 0, tickets: 0, protectors: 0 }
+    { packs: 0, xp: 0, protectors: 0 }
   );
 
   const parts = [
@@ -83,9 +81,6 @@ function buildRewardSummary(
       : null,
     totals.xp > 0
       ? t("daily-streak.reward-xp", { amount: totals.xp })
-      : null,
-    totals.tickets > 0
-      ? t("daily-streak.reward-ticket", { count: totals.tickets })
       : null,
     totals.protectors > 0
       ? t("daily-streak.reward-protector", { count: totals.protectors })

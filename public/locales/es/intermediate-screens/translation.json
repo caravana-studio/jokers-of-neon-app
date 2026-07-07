@@ -505,7 +505,6 @@
     "reward-ready": "Reward",
     "reward-pack": "Pack x{{count}}",
     "reward-xp": "{{amount}} XP",
-    "reward-ticket": "Ticket x{{count}}",
     "reward-protector": "Protector x{{count}}",
     "share": {
       "button": "COMPARTIR EN",
