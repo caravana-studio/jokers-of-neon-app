@@ -714,6 +714,21 @@ LEVELS AND ROUNDS STRUCTURE
 - The round counter is cumulative across the entire run (it never resets between levels). This counter determines the target score for each round.
 - A level is completed when the player beats the final node (Rage boss) of the level map. Upon level completion, the player advances to the next level and a new map is generated.
 
+ROGUELIKE SHOP-TIER PROGRESSION
+- The roguelike progression layer unlocks shop inventory/features over repeated runs through the shop tier system.
+- The frontend reads player progression from `shop_views.get_player_tier(player)`, normalized as player tier plus optional total runs, max level, and max round.
+- The frontend reads the ordered unlock ladder from `shop_views.get_unlock_list()`. Entries normalize to order, unlockId, optional required runs, max level, max round, and shop type.
+- Modifiers are treated as baseline-unlocked for shop visibility.
+- Store node/tooltips filter visible item families from current player tier. Known shop item families are traditional/neon cards, modifiers, specials, power-ups, level-ups, loot boxes, and burn.
+- `TierUnlockedEvent` is parsed from play responses as `ShopTierUnlockedEvent { game_id, unlock_id }`.
+- The play-event parser supports multiple `TierUnlockedEvent` entries in a single response (`shopTierUnlockedEvents[]`). There is no frontend cap of two unlocks: if several tiers unlock at once, they are stored as a queue.
+- The legacy single `shopTierUnlockedEvent` field remains for compatibility and points to the first parsed unlock.
+- On game over, Summary checks the queued unlocks. If at least one valid unlock config exists, it routes to `/shop-tier-unlocked/:gameId`; otherwise it routes to the normal game-over screen.
+- The unlock screen filters invalid unlock ids, shows one unlocked item at a time, and uses a NEXT button until the queue is exhausted. It clears the queue only when the player leaves the unlock flow or starts another run.
+- Known unlock ids configured in the frontend: specials_c, powerups_cb, slot_2, play_4, specials_b, slot_3, modifiers_ba, powerups_as, slot_4, discard_4, levelups, specials_a, slot_5, traditionals, play_5, lootboxes, neon, slot_6, burn, discard_5, specials_s, slot_7.
+- Unlock effects include availability of special-card rarities, power-up rarities, modifier rarities, traditional cards, neon cards, loot boxes, level-ups, burn, higher special-card slot caps, and higher starting plays/discards.
+- Legacy numeric tier ids are still mapped to unlock ids where possible, but new flows should prefer string unlock ids from the event/list.
+
 ROUND TARGET SCORE CURVE
 - The round number used for score calculation is a global counter that increments across all levels in a run.
 - Formula (from calculate_round_score in game_config):
