@@ -127,6 +127,9 @@ const bgConfig: Record<
   login: {
     bg: BackgroundType.Home,
   },
+  migrate: {
+    bg: BackgroundType.Home,
+  },
   gameover: {
     bg: BackgroundType.Home,
   },

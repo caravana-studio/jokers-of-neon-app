@@ -8,6 +8,16 @@ export interface VersionResponse {
   version: string;
   maintenance?: boolean;
   slot?: Record<string, string>;
+  slotEndpoints?: Record<
+    string,
+    {
+      slotInstance?: string;
+      rpcUrl?: string;
+      toriiUrl?: string;
+      graphqlUrl?: string;
+      chainId?: string;
+    }
+  >;
   api?: Record<string, string>;
 }
 
@@ -33,6 +43,7 @@ const normalizeVersionResponse = (data: unknown): VersionResponse => {
     version?: unknown;
     maintenance?: unknown;
     slot?: unknown;
+    slotEndpoints?: unknown;
     api?: unknown;
   };
 
@@ -48,6 +59,10 @@ const normalizeVersionResponse = (data: unknown): VersionResponse => {
         ? candidate.maintenance
         : undefined,
     slot: isStringMap(candidate.slot) ? candidate.slot : undefined,
+    slotEndpoints:
+      candidate.slotEndpoints && typeof candidate.slotEndpoints === "object"
+        ? (candidate.slotEndpoints as VersionResponse["slotEndpoints"])
+        : undefined,
     api: isStringMap(candidate.api) ? candidate.api : undefined,
   };
 };

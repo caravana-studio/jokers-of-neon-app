@@ -2,7 +2,7 @@ import { SessionConnector } from "@cartridge/connector";
 import ControllerConnector from "@cartridge/connector/controller";
 import { AuthOptions } from "@cartridge/controller";
 import { constants, shortString } from "starknet";
-import { rpcUrl, slotInstance } from "../../config/cartridgeUrls";
+import { rpcUrl, slotChainId, slotInstance } from "../../config/cartridgeUrls";
 import { isNative, isNativeAndroid } from "../../utils/capacitorUtils";
 import { policies } from "./policies";
 
@@ -38,7 +38,7 @@ const resolvedSlot =
     : resolvedChain;
 const defaultChainId =
   resolvedSlot !== undefined
-    ? getSlotChainId(resolvedSlot)
+    ? slotChainId || getSlotChainId(resolvedSlot)
     : getChainId(resolvedChain);
 const resolvedRpcUrl =
   shouldUseStandaloneMainnetRpc ? standaloneMainnetRpc || rpcUrl : rpcUrl;

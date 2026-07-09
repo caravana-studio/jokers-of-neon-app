@@ -1,0 +1,29 @@
+{
+  "intro": {
+    "title": "Migre sua conta de Cartridge controller",
+    "start": "Começar"
+  },
+  "connect": {
+    "title": "Migre sua conta",
+    "disclaimer": "O Cartridge Controller deixará de ser suportado nas próximas versões de Jokers of Neon. Esta migração moverá todo o seu progresso e suas cartas NFT do seu Cartridge Controller para a sua conta nova ou existente de Jokers of Neon. É irreversível, então confirme com cuidado as duas contas antes de continuar.",
+    "migrate": "Migrar"
+  },
+  "controller": {
+    "title": "Conecte seu Cartridge controller",
+    "connect": "Conectar controller",
+    "connected": "Controller conectado"
+  },
+  "jokers": {
+    "title": "Conecte ou crie sua conta de Jokers of Neon",
+    "connected": "Conta Jokers conectada",
+    "unavailable": "O login da conta Jokers não está disponível agora."
+  },
+  "connected-address": "Endereço conectado",
+  "disconnect": "Desconectar",
+  "confirmation": {
+    "title": "Confirmar migração",
+    "description": "Você está prestes a migrar permanentemente todo o seu progresso e suas cartas NFT do seu Cartridge Controller para a sua conta de Jokers of Neon. Esta ação é irreversível.",
+    "cancel": "Cancelar",
+    "continue": "Continuar"
+  }
+}

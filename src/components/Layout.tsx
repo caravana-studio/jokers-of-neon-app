@@ -17,7 +17,9 @@ import { BottomMenu } from "./Menu/BottomMenu";
 export const Layout = ({ children }: { children: ReactNode }) => {
   const { isSmallScreen } = useResponsiveValues();
   const location = useLocation();
-  const shouldHideNavigation = location.pathname === "/login";
+  const shouldHideNavigation =
+    location.pathname === "/login" || location.pathname === "/migrate";
+  const isFullscreenRoute = location.pathname === "/migrate";
 
   return (
     <ReactFlowProvider>
@@ -27,7 +29,7 @@ export const Layout = ({ children }: { children: ReactNode }) => {
             width={"100%"}
             height={"100%"}
             position="relative"
-            pt={nativePaddingTop}
+            pt={isFullscreenRoute ? "0px" : nativePaddingTop}
             pb={
               shouldHideNavigation
                 ? "0px"
