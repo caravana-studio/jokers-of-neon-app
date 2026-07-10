@@ -29,7 +29,7 @@ const getChainId = (chain: string) => {
   }
 };
 
-const encodeChainId = (chainId: string) =>
+export const encodeChainId = (chainId: string) =>
   chainId.startsWith("0x") ? chainId : shortString.encodeShortString(chainId);
 
 export const getSlotChainId = (slot: string) => {
@@ -73,8 +73,6 @@ const controllerOptions = {
   slot: resolvedSlot,
   signupOptions,
 };
-
-console.log('defaultChainId', defaultChainId);
 
 export const controller = !isNative
   ? new ControllerConnector(controllerOptions)

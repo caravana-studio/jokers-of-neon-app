@@ -2,8 +2,8 @@ import { CavosProvider as CavosSDKProvider, useCavos } from "@cavos/react";
 import React, { ReactNode } from "react";
 import { getContractByName } from "@dojoengine/core";
 import { getManifest, getManifestSource } from "../getManifest";
-import { rpcUrl as slotRpcUrl, slotInstance } from "../../config/cartridgeUrls";
-import { getSlotChainId } from "../controller/controller";
+import { rpcUrl as slotRpcUrl, slotChainId } from "../../config/cartridgeUrls";
+import { encodeChainId } from "../controller/controller";
 import { setupWorld } from "../typescript/contracts.gen";
 import { CavosBridgeContext } from "./CavosBridgeContext";
 
@@ -15,6 +15,7 @@ const CAVOS_PAYMASTER_API_KEY =
 const CAVOS_STARKNET_RPC_URL =
   import.meta.env.VITE_STARKNET_RPC_URL ||
   "https://api.cartridge.gg/x/starknet/mainnet";
+const CAVOS_NETWORK = import.meta.env.VITE_CAVOS_NETWORK || "sepolia";
 
 const DOJO_NAMESPACE =
   import.meta.env.VITE_DOJO_NAMESPACE || "jokers_of_neon_core";
@@ -30,6 +31,7 @@ const CAVOS_SLOT_RELAYER_ADDRESS =
 const CAVOS_SLOT_RELAYER_PRIVATE_KEY =
   import.meta.env.VITE_CAVOS_SLOT_RELAYER_PRIVATE_KEY ||
   "0x49a3b5e422219fbe4fabf9d853666818155287ff9e3715f241e75e80b4ff43c";
+const CAVOS_SLOT_CHAIN_ID = encodeChainId(slotChainId || "KATANA");
 
 export const CAVOS_ENABLED = !!CAVOS_APP_ID;
 
@@ -161,14 +163,14 @@ export const CavosWrapper: React.FC<CavosWrapperProps> = ({ children }) => {
     <CavosSDKProvider
       config={{
         appId: CAVOS_APP_ID,
-        network: "sepolia",
+        network: CAVOS_NETWORK,
         deployOnly: true,
         paymasterApiKey: CAVOS_PAYMASTER_API_KEY,
         enableLogging: true,
         starknetRpcUrl: CAVOS_STARKNET_RPC_URL,
         slot: {
-          rpcUrl: "https://katana.testnet.jokersofneon.com",
-          chainId: "0x4b4154414e41",
+          rpcUrl: slotRpcUrl,
+          chainId: CAVOS_SLOT_CHAIN_ID,
           relayerAddress: CAVOS_SLOT_RELAYER_ADDRESS,
           relayerPrivateKey: CAVOS_SLOT_RELAYER_PRIVATE_KEY,
         },

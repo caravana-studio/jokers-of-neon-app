@@ -4,16 +4,22 @@ const DEFAULT_RPC_URL = "http://localhost:5050";
 const DEFAULT_TORII_URL = "http://localhost:8080";
 const DEFAULT_GRAPHQL_URL = "http://localhost:8080/graphql";
 const DEFAULT_ENV = "prod";
-const AWS_TESTNET_RPC_URL = "https://katana.testnet.jokersofneon.com";
-const AWS_TESTNET_TORII_URL = "https://torii.testnet.jokersofneon.com";
-const AWS_TESTNET_GRAPHQL_URL =
-  "https://torii.testnet.jokersofneon.com/graphql";
-const AWS_TESTNET_CHAIN_ID = "KATANA";
+const DEFAULT_AWS_KATANA_RPC_URL = "https://katana.testnet.jokersofneon.com";
+const DEFAULT_AWS_TORII_URL = "https://torii.testnet.jokersofneon.com";
+const DEFAULT_AWS_KATANA_CHAIN_ID = "KATANA";
 
 const configuredEnv =
   import.meta.env.VITE_ENV?.trim().toLowerCase() || DEFAULT_ENV;
 const configuredSlotInstance =
   import.meta.env.VITE_SLOT_INSTANCE?.trim() || undefined;
+const configuredAwsKatanaRpcUrl =
+  import.meta.env.VITE_AWS_KATANA_RPC_URL?.trim() ||
+  DEFAULT_AWS_KATANA_RPC_URL;
+const configuredAwsToriiUrl =
+  import.meta.env.VITE_AWS_TORII_URL?.trim() || DEFAULT_AWS_TORII_URL;
+const configuredAwsKatanaChainId =
+  import.meta.env.VITE_AWS_KATANA_CHAIN_ID?.trim() ||
+  DEFAULT_AWS_KATANA_CHAIN_ID;
 const isAwsProfile = configuredEnv.includes("aws");
 let slotSource: "version-api" | "env" | "default" = isAwsProfile
   ? "env"
@@ -21,14 +27,16 @@ let slotSource: "version-api" | "env" | "default" = isAwsProfile
     ? "env"
     : "default";
 export const usesCustomKatanaEndpoint = isAwsProfile;
-export const slotChainId = isAwsProfile ? AWS_TESTNET_CHAIN_ID : undefined;
+export const slotChainId = isAwsProfile
+  ? configuredAwsKatanaChainId
+  : undefined;
 
 const getBaseUrl = (slot: string | undefined) =>
   slot ? `https://api.cartridge.gg/x/${slot}` : undefined;
 
 const getRpcUrl = (slot: string | undefined) => {
   if (isAwsProfile) {
-    return AWS_TESTNET_RPC_URL;
+    return configuredAwsKatanaRpcUrl;
   }
 
   const baseUrl = getBaseUrl(slot);
@@ -37,7 +45,7 @@ const getRpcUrl = (slot: string | undefined) => {
 
 const getToriiUrl = (slot: string | undefined) => {
   if (isAwsProfile) {
-    return AWS_TESTNET_TORII_URL;
+    return configuredAwsToriiUrl;
   }
 
   const baseUrl = getBaseUrl(slot);
@@ -46,7 +54,7 @@ const getToriiUrl = (slot: string | undefined) => {
 
 const getGraphqlUrl = (slot: string | undefined) => {
   if (isAwsProfile) {
-    return AWS_TESTNET_GRAPHQL_URL;
+    return `${configuredAwsToriiUrl}/graphql`;
   }
 
   const baseUrl = getBaseUrl(slot);
