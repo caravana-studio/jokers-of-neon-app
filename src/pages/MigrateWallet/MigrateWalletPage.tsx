@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import type { ReactNode } from "react";
 import { useContext, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import { ConfirmationModal } from "../../components/ConfirmationModal";
 import LanguageSwitcher from "../../components/LanguageSwitcher";
 import { MobileDecoration } from "../../components/MobileDecoration";
@@ -11,6 +12,7 @@ import { Icons } from "../../constants/icons";
 import { useCavosSafe } from "../../dojo/cavos/CavosBridgeContext";
 import { CAVOS_ENABLED } from "../../dojo/cavos/CavosConfig";
 import { WalletContext } from "../../dojo/WalletContext";
+import { AppType, useAppContext } from "../../providers/AppContextProvider";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { isNativeAndroid, nativePaddingTop } from "../../utils/capacitorUtils";
 import { AuthButton } from "../CavosWalletConnect/components/AuthButton";
@@ -240,6 +242,8 @@ export const MigrateWalletPage = () => {
   const { t: tWallet } = useTranslation("intermediate-screens", {
     keyPrefix: "wallet-provider",
   });
+  const navigate = useNavigate();
+  const appType = useAppContext();
   const [step, setStep] = useState<"intro" | "connect">("intro");
   const [authView, setAuthView] = useState<"auth" | "email" | "code">("auth");
   const [email, setEmail] = useState("");
@@ -405,6 +409,7 @@ export const MigrateWalletPage = () => {
       : cavosError;
   const canMigrate = Boolean(controllerAddress && jokersAddress);
   const showAppleLogin = !isNativeAndroid;
+  const shouldShowLoginCancel = appType === AppType.FULL_GAME;
 
   return (
     <Box
@@ -776,7 +781,18 @@ export const MigrateWalletPage = () => {
                 </ConnectionPanel>
               </Flex>
 
-              <Flex justifyContent="center">
+              <Flex justifyContent="center" gap={3} wrap="wrap">
+                {shouldShowLoginCancel && (
+                  <Button
+                    variant="outline"
+                    onClick={() => navigate("/login")}
+                    minW={{ base: "190px", md: "240px" }}
+                    h={{ base: "44px", md: "50px" }}
+                    fontSize={{ base: "16px", md: "18px" }}
+                  >
+                    {t("connect.cancel")}
+                  </Button>
+                )}
                 <Button
                   variant="secondarySolid"
                   onClick={() => setIsConfirmationOpen(true)}

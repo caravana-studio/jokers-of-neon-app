@@ -486,6 +486,12 @@
     "go-back": "Volver",
     "just-try-question": "Solo quieres probar el juego?",
     "guest-mode": "Modo invitado",
+    "controller-migration-modal": {
+      "title": "Controller está deprecado",
+      "description": "¿Quieres migrar tu cuenta?",
+      "confirm": "Migrar",
+      "cancel": "Cancelar"
+    },
     "season-label": "TEMPORADA",
     "errors": {
       "invalid-code": "Código inválido. Revísalo e inténtalo de nuevo."

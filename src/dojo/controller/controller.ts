@@ -4,12 +4,16 @@ import { AuthOptions } from "@cartridge/controller";
 import { constants, shortString } from "starknet";
 import { rpcUrl, slotChainId, slotInstance } from "../../config/cartridgeUrls";
 import { isNative, isNativeAndroid } from "../../utils/capacitorUtils";
+import {
+  isMigrateContext,
+  migrateMainnetRpcUrl,
+} from "../../utils/migrateMainnet";
 import { policies } from "./policies";
 
 const standaloneMainnetRpc = import.meta.env.VITE_STARKNET_RPC_URL?.trim();
 const isStandaloneShopMode = import.meta.env.MODE === "standalone-shop";
-const shouldUseStandaloneMainnetRpc =
-  isStandaloneShopMode && !!standaloneMainnetRpc;
+const shouldUseForcedMainnetRpc =
+  isMigrateContext || (isStandaloneShopMode && !!standaloneMainnetRpc);
 
 const DOJO_NAMESPACE =
   import.meta.env.VITE_DOJO_NAMESPACE || "jokers_of_neon_core";
@@ -31,7 +35,7 @@ export const getSlotChainId = (slot: string) => {
 };
 
 const resolvedChain =
-  shouldUseStandaloneMainnetRpc ? "mainnet" : slotInstance || "jokers-of-neon";
+  shouldUseForcedMainnetRpc ? "mainnet" : slotInstance || "jokers-of-neon";
 const resolvedSlot =
   resolvedChain === "mainnet" || resolvedChain === "sepolia"
     ? undefined
@@ -41,7 +45,11 @@ const defaultChainId =
     ? slotChainId || getSlotChainId(resolvedSlot)
     : getChainId(resolvedChain);
 const resolvedRpcUrl =
-  shouldUseStandaloneMainnetRpc ? standaloneMainnetRpc || rpcUrl : rpcUrl;
+  shouldUseForcedMainnetRpc
+    ? isMigrateContext
+      ? migrateMainnetRpcUrl
+      : standaloneMainnetRpc || rpcUrl
+    : rpcUrl;
 
 const signupOptions: AuthOptions = isNativeAndroid
   ? ["google", "discord", "password"]

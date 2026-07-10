@@ -127,6 +127,9 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
 
   const { disconnect } = useDisconnect();
   const gameLoopEnabled = isGameLoopBurnerEnabled();
+  const initializedBurnerManager = value.burnerManager?.isInitialized
+    ? value.burnerManager
+    : undefined;
   const rpcProvider = useMemo(
     () =>
       new RpcProvider({
@@ -136,7 +139,7 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
   );
 
   const { account: burnerAccount, isDeploying } = useBurnerManager({
-    burnerManager: value.burnerManager,
+    burnerManager: initializedBurnerManager as any,
   });
   const gameLoopBurnerSession = useGameLoopBurnerSession();
   const gameLoopBurnerAccount = useMemo(
@@ -489,6 +492,11 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
         console.error("Failed to start guest flow with API burner", error);
         return false;
       }
+    }
+
+    if (!initializedBurnerManager) {
+      console.warn("Guest burner is unavailable because BurnerManager did not initialize");
+      return false;
     }
 
     setConnectionStatus("connecting_burner");

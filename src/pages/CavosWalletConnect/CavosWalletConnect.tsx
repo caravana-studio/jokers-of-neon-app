@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
+import { ConfirmationModal } from "../../components/ConfirmationModal";
 import { useWallet } from "../../dojo/WalletContext";
 import LanguageSwitcher from "../../components/LanguageSwitcher";
 import { MobileDecoration } from "../../components/MobileDecoration";
@@ -46,9 +47,10 @@ export const CavosWalletConnect = () => {
   const [isSendingEmailOtp, setIsSendingEmailOtp] = useState(false);
   const [isVerifyingEmailOtp, setIsVerifyingEmailOtp] = useState(false);
   const [resendCooldownSeconds, setResendCooldownSeconds] = useState(0);
+  const [isControllerMigrationModalOpen, setIsControllerMigrationModalOpen] =
+    useState(false);
   const stageTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const {
-    switchToController,
     continueAsGuest,
     continueWithCavosOAuth,
     sendCavosEmailOtp,
@@ -132,7 +134,12 @@ export const CavosWalletConnect = () => {
   };
 
   const handleContinueWithControllerClick = () => {
-    switchToController();
+    setIsControllerMigrationModalOpen(true);
+  };
+
+  const handleConfirmControllerMigration = () => {
+    setIsControllerMigrationModalOpen(false);
+    window.location.assign("/migrate");
   };
 
   const handleGuestModeClick = async () => {
@@ -459,6 +466,17 @@ export const CavosWalletConnect = () => {
             {t("terms.link")}
           </Link>
         </Text>
+
+        {isControllerMigrationModalOpen && (
+          <ConfirmationModal
+            close={() => setIsControllerMigrationModalOpen(false)}
+            title={t("controller-migration-modal.title")}
+            description={t("controller-migration-modal.description")}
+            confirmText={t("controller-migration-modal.confirm")}
+            cancelText={t("controller-migration-modal.cancel")}
+            onConfirm={handleConfirmControllerMigration}
+          />
+        )}
       </Flex>
     </PreThemeLoadingPage>
   );

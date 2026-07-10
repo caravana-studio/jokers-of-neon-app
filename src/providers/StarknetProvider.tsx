@@ -10,14 +10,20 @@ import React from "react";
 import { num, shortString } from "starknet";
 import { rpcUrl, slotChainId, slotInstance } from "../config/cartridgeUrls";
 import { controller, getSlotChainId } from "../dojo/controller/controller";
+import {
+  isMigrateContext,
+  migrateMainnetRpcUrl,
+} from "../utils/migrateMainnet";
 import { AppType, useAppContext } from "./AppContextProvider";
 
 const standaloneMainnetRpc = import.meta.env.VITE_STARKNET_RPC_URL?.trim();
 const isStandaloneShopMode = import.meta.env.MODE === "standalone-shop";
-const shouldUseStandaloneMainnetRpc =
-  isStandaloneShopMode && !!standaloneMainnetRpc;
-const effectiveRpcUrl = shouldUseStandaloneMainnetRpc
-  ? standaloneMainnetRpc
+const shouldUseForcedMainnetRpc =
+  isMigrateContext || (isStandaloneShopMode && !!standaloneMainnetRpc);
+const effectiveRpcUrl = shouldUseForcedMainnetRpc
+  ? isMigrateContext
+    ? migrateMainnetRpcUrl
+    : standaloneMainnetRpc
   : rpcUrl;
 
 function rpc() {
@@ -26,7 +32,7 @@ function rpc() {
   };
 }
 
-const SLOT_INSTANCE = shouldUseStandaloneMainnetRpc ? undefined : slotInstance;
+const SLOT_INSTANCE = shouldUseForcedMainnetRpc ? undefined : slotInstance;
 const getStarknetChainId = (slot: string) =>
   num.toBigInt(
     slotChainId

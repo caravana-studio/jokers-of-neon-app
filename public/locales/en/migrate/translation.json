@@ -6,6 +6,7 @@
   "connect": {
     "title": "Migrate your account",
     "disclaimer": "Cartridge Controller will no longer be supported in future versions of Jokers of Neon. This migration will move all your progress and NFT cards from your Cartridge Controller to your new or existing Jokers of Neon account. It is irreversible, so make sure both accounts are correct before continuing.",
+    "cancel": "Cancel",
     "migrate": "Migrate"
   },
   "controller": {

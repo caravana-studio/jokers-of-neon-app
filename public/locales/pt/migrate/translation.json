@@ -6,6 +6,7 @@
   "connect": {
     "title": "Migre sua conta",
     "disclaimer": "O Cartridge Controller deixará de ser suportado nas próximas versões de Jokers of Neon. Esta migração moverá todo o seu progresso e suas cartas NFT do seu Cartridge Controller para a sua conta nova ou existente de Jokers of Neon. É irreversível, então confirme com cuidado as duas contas antes de continuar.",
+    "cancel": "Cancelar",
     "migrate": "Migrar"
   },
   "controller": {
