@@ -12,7 +12,7 @@ CORE GAMEPLAY LOOP
 - If you fail with no hands left, the run ends.
 - After progression nodes, visit shops to improve deck power, economy, and consistency.
 
-POKER HAND TYPES
+POKER HAND TYPES 
 - Royal Flush: the highest-ranking straight flush.
 - Straight Flush: five consecutive cards of the same suit.
 - Five of a Kind: five cards of the same rank.
@@ -95,12 +95,14 @@ META GAME
   - Includes packs and tournament entries.
   - Progress is XP-driven with milestone rewards.
 - XP sources:
-  - Daily missions (easy/medium/hard).
+  - Daily missions.
+  - Weekly missions.
   - Level clears.
-  - Daily mission XP: easy=10, medium=20, hard=30.
-- Daily missions:
-  - Include score, deck-building, rage, poker-hand, and economy goals.
-  - Reset daily (around 06:00 UTC).
+  - Mission XP is read from the active on-chain mission slot; do not assume fixed XP by difficulty.
+- Daily and weekly missions:
+  - Include score, deck-building, rage, poker-hand, economy, shop, power-up, burn, free-pack, and run-completion goals.
+  - Daily missions reset around 06:00 UTC by default.
+  - Weekly missions reset with the game leaderboard week.
 - Season Pass benefits:
   - Unlocks premium reward lane.
   - Increases max lives from 3 to 6.
@@ -117,7 +119,7 @@ META GAME
 SEASON PASS, LIVES, AND DAILY CADENCE
 - Without Season Pass: max 3 lives, recharge every 8 hours.
 - With Season Pass: max 6 lives, recharge every 4 hours.
-- Daily missions are a primary repeatable XP source; level clears add additional XP.
+- Daily and weekly missions are primary repeatable XP sources; level clears add additional XP.
 
 LEADERBOARDS
 - Game leaderboard scopes: Daily, Weekly, Season.
@@ -735,10 +737,19 @@ DISCOUNT SYSTEM
   - A-Grade (30% off): 10%
   - S-Grade (50% off): 5%
 
-DAILY MISSIONS (POOLS)
-- Easy missions (XP: 10 each): score-1, burn-1, buy-special-1, neon-1, power-up-1, sell-1, round-last-hand-1, round-only-hand-1, loot-box-1, rage-round-1, round-without-discards-1.
-- Medium missions (XP: 20 each): cash-1, deck-1, high-card-1, score-2, rage-round-2, level-up-1, neon-play-1, five-jokers-in-deck-1, five-of-a-kind-1, play-least-three-joker, royal-flush-without-jokers-1, straight-flush-1.
-- Hard missions (XP: 30 each): slot-1, score-3, rage-round-3, level-up-2, play-least-three-neon-joker, one-neon-jokers-in-deck-1, neon-flush-1.
+MISSIONS (DAILY AND WEEKLY)
+- Daily and weekly missions are served by `daily_missions_system`.
+- Period ids: daily=1, weekly=2. Difficulty ids: easy=1, medium=2, hard=3.
+- Current daily missions are read with `get_today_missions`; current weekly missions are read with `get_this_week_missions`.
+- Mission slots normalize from 9 fields: period_type, period_id, difficulty, mission_id, template_id, target, param_1, param_2, xp.
+- Player progress is read with `get_player_mission_progress(player, period_type, period_id)` for both periods.
+- Daily in-game progress can also read `get_game_daily_mission_progress(game_id)` so the Missions page can show live per-run progress.
+- Daily missions reset at `VITE_RESET_TIME_UTC` (default 06:00 UTC). Weekly missions reset at the next weekly leaderboard reset, using the Monday-to-Sunday UTC game week.
+- The Home missions banner has Daily/Weekly tabs and a reset countdown. The Missions page shows weekly and daily panels; in-game mode shows daily progress bars.
+- Completion toasts support weekly and daily titles from the mission `period_type`; legacy `DailyMissionXPEvent` is still parsed as daily.
+- Mission descriptions are rendered from `missionTemplates` translations. `target` renders as quantity, score, or level. `param_1` can select a poker hand or suit, and `param_2` is used for the hand in `daily-flush-suit`.
+- Daily templates: daily-play-hand, daily-reach-level, daily-add-trad, daily-add-mod, daily-add-neon, daily-flush-suit, daily-deck-size, daily-deck-neon, daily-deck-jokers, daily-deck-neon-jokers, daily-round-no-discards, daily-all-neon-hand, daily-play-hand-count, daily-score-single, daily-deck-neon-suit, daily-deck-wild, daily-add-suit, daily-use-power-ups, daily-sell-power-ups, daily-burn-cards, daily-wild-joker-hands, daily-level-up-hand.
+- Weekly templates: weekly-score, weekly-lootboxes, weekly-specials, weekly-free-packs, weekly-daily-done, weekly-play-hand, weekly-defeat-rages, weekly-burn-cards, weekly-sell-specials, weekly-win-rounds, weekly-win-levels, weekly-round-no-discards, weekly-burn-neon, weekly-burn-modifier, weekly-buy-trad, weekly-buy-neon-joker, weekly-neon-hands, weekly-use-power-ups, weekly-rerolls, weekly-special-slots, weekly-sell-power-ups, weekly-complete-runs, weekly-win-rerolls, weekly-level-up-hand.
 
 ACHIEVEMENTS (32 TOTAL)
 - Categories: Burn, Buy/Sell Specials, Cash, Deck Building, Joker Collection, Hand Types (Five of a Kind, High Card, Straight Flush, Neon Flush, Royal Flush), Level Progression, Loot Boxes, Neon Cards, Power-ups, Rage Rounds, Round Challenges, Games Played, Scoring, Slot.
