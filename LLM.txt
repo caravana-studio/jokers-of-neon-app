@@ -12,7 +12,7 @@ CORE GAMEPLAY LOOP
 - If you fail with no hands left, the run ends.
 - After progression nodes, visit shops to improve deck power, economy, and consistency.
 
-POKER HAND TYPES
+POKER HAND TYPES 
 - Royal Flush: the highest-ranking straight flush.
 - Straight Flush: five consecutive cards of the same suit.
 - Five of a Kind: five cards of the same rank.
