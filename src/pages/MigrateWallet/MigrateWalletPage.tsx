@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { ConfirmationModal } from "../../components/ConfirmationModal";
 import LanguageSwitcher from "../../components/LanguageSwitcher";
+import { MobileBottomBar } from "../../components/MobileBottomBar";
 import { MobileDecoration } from "../../components/MobileDecoration";
 import { Icons } from "../../constants/icons";
 import { useCavosSafe } from "../../dojo/cavos/CavosBridgeContext";
@@ -14,7 +15,11 @@ import { CAVOS_ENABLED } from "../../dojo/cavos/CavosConfig";
 import { WalletContext } from "../../dojo/WalletContext";
 import { AppType, useAppContext } from "../../providers/AppContextProvider";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
-import { isNativeAndroid, nativePaddingTop } from "../../utils/capacitorUtils";
+import {
+  isNative,
+  isNativeAndroid,
+  nativePaddingTop,
+} from "../../utils/capacitorUtils";
 import { AuthButton } from "../CavosWalletConnect/components/AuthButton";
 import { EmailCodeView } from "../CavosWalletConnect/components/EmailCodeView";
 import { EmailLoginView } from "../CavosWalletConnect/components/EmailLoginView";
@@ -498,7 +503,7 @@ export const MigrateWalletPage = () => {
             overflowX="hidden"
             justifyContent={{ base: "flex-start", lg: "center" }}
             px={{ base: 8, md: 10 }}
-            py={{ base: 8, md: 16 }}
+            py={{ base: isNative ? 16 : 8, md: 16 }}
             sx={{ WebkitOverflowScrolling: "touch" }}
           >
             <Flex
@@ -523,7 +528,7 @@ export const MigrateWalletPage = () => {
               <Text
                 fontSize="0"
                 aria-hidden="true"
-                h={{ base: "0px", md: "48px" }}
+                h={{ base: isNative ? "40px" : "0px", md: "48px" }}
                 w="100%"
               >
                 spacer
@@ -781,32 +786,54 @@ export const MigrateWalletPage = () => {
                 </ConnectionPanel>
               </Flex>
 
-              <Flex justifyContent="center" gap={3} wrap="wrap">
-                {shouldShowLoginCancel && (
+              {isSmallScreen ? (
+                <MobileBottomBar
+                  firstButton={
+                    shouldShowLoginCancel
+                      ? {
+                          label: t("connect.cancel"),
+                          onClick: () => navigate("/login"),
+                          variant: "solid",
+                        }
+                      : undefined
+                  }
+                  secondButton={{
+                    label: t("connect.migrate"),
+                    onClick: () => setIsConfirmationOpen(true),
+                    disabled: !canMigrate,
+                    boxShadow: canMigrate
+                      ? "0 0 18px rgba(162,69,188,0.75)"
+                      : "none",
+                  }}
+                />
+              ) : (
+                <Flex justifyContent="center" gap={3} wrap="wrap">
+                  {shouldShowLoginCancel && (
+                    <Button
+                      variant="solid"
+                      onClick={() => navigate("/login")}
+                      minW={{ base: "190px", md: "240px" }}
+                      h={{ base: "44px", md: "50px" }}
+                      fontSize={{ base: "16px", md: "18px" }}
+                    >
+                      {t("connect.cancel")}
+                    </Button>
+                  )}
                   <Button
-                    variant="outline"
-                    onClick={() => navigate("/login")}
+                    variant="secondarySolid"
+                    onClick={() => setIsConfirmationOpen(true)}
+                    isDisabled={!canMigrate}
                     minW={{ base: "190px", md: "240px" }}
                     h={{ base: "44px", md: "50px" }}
                     fontSize={{ base: "16px", md: "18px" }}
+                    boxShadow={
+                      canMigrate ? "0 0 18px rgba(162,69,188,0.75)" : "none"
+                    }
                   >
-                    {t("connect.cancel")}
+                    {t("connect.migrate")}
                   </Button>
-                )}
-                <Button
-                  variant="secondarySolid"
-                  onClick={() => setIsConfirmationOpen(true)}
-                  isDisabled={!canMigrate}
-                  minW={{ base: "190px", md: "240px" }}
-                  h={{ base: "44px", md: "50px" }}
-                  fontSize={{ base: "16px", md: "18px" }}
-                  boxShadow={
-                    canMigrate ? "0 0 18px rgba(162,69,188,0.75)" : "none"
-                  }
-                >
-                  {t("connect.migrate")}
-                </Button>
-              </Flex>
+                </Flex>
+              )}
               <Box
                 aria-hidden="true"
                 h={{ base: "56px", md: "0px" }}
