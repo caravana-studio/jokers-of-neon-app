@@ -2,7 +2,12 @@ import { SessionConnector } from "@cartridge/connector";
 import ControllerConnector from "@cartridge/connector/controller";
 import { AuthOptions } from "@cartridge/controller";
 import { constants, shortString } from "starknet";
-import { rpcUrl, slotChainId, slotInstance } from "../../config/cartridgeUrls";
+import {
+  rpcUrl,
+  slotChainId,
+  slotInstance,
+  usesCustomKatanaEndpoint,
+} from "../../config/cartridgeUrls";
 import { isNative, isNativeAndroid } from "../../utils/capacitorUtils";
 import {
   isMigrateContext,
@@ -28,22 +33,35 @@ const getChainId = (chain: string) => {
   }
 };
 
+export const encodeChainId = (chainId: string) =>
+  chainId.startsWith("0x") ? chainId : shortString.encodeShortString(chainId);
+
 export const getSlotChainId = (slot: string) => {
+  if (slotChainId) {
+    return encodeChainId(slotChainId);
+  }
+
   return shortString.encodeShortString(
-    `WP_${slot.toUpperCase().replaceAll("-", "_")}`
+    `WP_${slot.toUpperCase().replaceAll("-", "_")}`,
   );
 };
 
 const resolvedChain =
   shouldUseForcedMainnetRpc ? "mainnet" : slotInstance || "jokers-of-neon";
 const resolvedSlot =
-  resolvedChain === "mainnet" || resolvedChain === "sepolia"
+  usesCustomKatanaEndpoint ||
+  resolvedChain === "mainnet" ||
+  resolvedChain === "sepolia"
     ? undefined
     : resolvedChain;
 const defaultChainId =
-  resolvedSlot !== undefined
-    ? slotChainId || getSlotChainId(resolvedSlot)
-    : getChainId(resolvedChain);
+  shouldUseForcedMainnetRpc
+    ? getChainId("mainnet")
+    : slotChainId
+      ? encodeChainId(slotChainId)
+      : resolvedSlot !== undefined
+        ? getSlotChainId(resolvedSlot)
+        : getChainId(resolvedChain);
 const resolvedRpcUrl =
   shouldUseForcedMainnetRpc
     ? isMigrateContext
@@ -65,14 +83,13 @@ const controllerOptions = {
   signupOptions,
 };
 
-export const controller =
-  !isNative
-    ? new ControllerConnector(controllerOptions)
-    : new SessionConnector({
-        policies,
-        rpc: resolvedRpcUrl,
-        chainId: defaultChainId,
-        redirectUrl: "jokers://open",
-        disconnectRedirectUrl: "jokers://open",
-        signupOptions,
-      });
+export const controller = !isNative
+  ? new ControllerConnector(controllerOptions)
+  : new SessionConnector({
+      policies,
+      rpc: resolvedRpcUrl,
+      chainId: defaultChainId,
+      redirectUrl: "jokers://open",
+      disconnectRedirectUrl: "jokers://open",
+      signupOptions,
+    });
