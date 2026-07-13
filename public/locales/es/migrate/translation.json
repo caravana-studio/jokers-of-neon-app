@@ -26,5 +26,9 @@
     "description": "Estás por migrar de forma permanente todo tu progreso y tus cartas NFT desde tu Cartridge Controller a tu cuenta de Jokers of Neon. Esta acción es irreversible.",
     "cancel": "Cancelar",
     "continue": "Continuar"
+  },
+  "migration": {
+    "success": "Tus cartas NFT se migraron correctamente.",
+    "error": "No pudimos migrar tus cartas NFT. Inténtalo de nuevo."
   }
 }

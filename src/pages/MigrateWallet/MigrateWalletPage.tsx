@@ -24,6 +24,7 @@ import { AuthButton } from "../CavosWalletConnect/components/AuthButton";
 import { EmailCodeView } from "../CavosWalletConnect/components/EmailCodeView";
 import { EmailLoginView } from "../CavosWalletConnect/components/EmailLoginView";
 import { AUTH_VIEW_FADE_DURATION_S } from "../CavosWalletConnect/constants";
+import { migrateNfts } from "./nftMigration";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const RESEND_CODE_COOLDOWN_SECONDS = 90;
@@ -260,6 +261,10 @@ export const MigrateWalletPage = () => {
   const [controllerAddress, setControllerAddress] = useState("");
   const [jokersAddress, setJokersAddress] = useState("");
   const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
+  const [isMigrating, setIsMigrating] = useState(false);
+  const [migrationStatus, setMigrationStatus] = useState<
+    "success" | "error" | null
+  >(null);
   const controllerSuccessHandledRef = useRef(false);
 
   const { isSmallScreen } = useResponsiveValues();
@@ -415,6 +420,34 @@ export const MigrateWalletPage = () => {
   const canMigrate = Boolean(controllerAddress && jokersAddress);
   const showAppleLogin = !isNativeAndroid;
   const shouldShowLoginCancel = appType === AppType.FULL_GAME;
+
+  const handleMigrate = async () => {
+    if (!controllerAccount || !controllerAddress || !jokersAddress) {
+      return;
+    }
+
+    setIsMigrating(true);
+    setMigrationStatus(null);
+    try {
+      const transaction = await migrateNfts(
+        controllerAccount,
+        controllerAddress,
+        jokersAddress,
+      );
+
+      if (transaction) {
+        await controllerAccount.waitForTransaction(transaction.transaction_hash);
+      }
+
+      setMigrationStatus("success");
+      setIsConfirmationOpen(false);
+    } catch (error) {
+      console.error("Failed to migrate NFTs", error);
+      setMigrationStatus("error");
+    } finally {
+      setIsMigrating(false);
+    }
+  };
 
   return (
     <Box
@@ -839,6 +872,15 @@ export const MigrateWalletPage = () => {
                 h={{ base: "56px", md: "0px" }}
                 flexShrink={0}
               />
+              {migrationStatus && (
+                <Text
+                  color={migrationStatus === "success" ? "#a6f5b4" : "#ff9b9b"}
+                  fontSize="14px"
+                  textAlign="center"
+                >
+                  {t(`migration.${migrationStatus}`)}
+                </Text>
+              )}
             </Flex>
           </Flex>
         </Flex>
@@ -851,7 +893,10 @@ export const MigrateWalletPage = () => {
           confirmText={t("confirmation.continue")}
           cancelText={t("confirmation.cancel")}
           onCancel={() => setIsConfirmationOpen(false)}
-          onConfirm={() => {}}
+          onConfirm={handleMigrate}
+          isConfirmLoading={isMigrating}
+          isConfirmDisabled={isMigrating}
+          closeOnOverlayClick={!isMigrating}
           contentMaxW="560px"
           titleFontSize={["20px", "26px"]}
           titleLineHeight={["1.15", "1.2"]}
