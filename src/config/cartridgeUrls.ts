@@ -21,20 +21,34 @@ const configuredAwsKatanaChainId =
   import.meta.env.VITE_AWS_KATANA_CHAIN_ID?.trim() ||
   DEFAULT_AWS_KATANA_CHAIN_ID;
 const isAwsProfile = configuredEnv.includes("aws");
-let slotSource: "version-api" | "env" | "default" = isAwsProfile
+let slotSource: "version-api" | "version-endpoint" | "env" | "default" = isAwsProfile
   ? "env"
   : configuredSlotInstance
     ? "env"
     : "default";
 export const usesCustomKatanaEndpoint = isAwsProfile;
-export const slotChainId = isAwsProfile
+export let slotChainId = isAwsProfile
   ? configuredAwsKatanaChainId
   : undefined;
+
+type SlotEndpoint = {
+  slotInstance?: string;
+  rpcUrl?: string;
+  toriiUrl?: string;
+  graphqlUrl?: string;
+  chainId?: string;
+};
+
+let slotEndpoint: SlotEndpoint | undefined;
 
 const getBaseUrl = (slot: string | undefined) =>
   slot ? `https://api.cartridge.gg/x/${slot}` : undefined;
 
 const getRpcUrl = (slot: string | undefined) => {
+  if (slotEndpoint?.rpcUrl) {
+    return slotEndpoint.rpcUrl;
+  }
+
   if (isAwsProfile) {
     return configuredAwsKatanaRpcUrl;
   }
@@ -44,6 +58,10 @@ const getRpcUrl = (slot: string | undefined) => {
 };
 
 const getToriiUrl = (slot: string | undefined) => {
+  if (slotEndpoint?.toriiUrl) {
+    return slotEndpoint.toriiUrl;
+  }
+
   if (isAwsProfile) {
     return configuredAwsToriiUrl;
   }
@@ -53,6 +71,10 @@ const getToriiUrl = (slot: string | undefined) => {
 };
 
 const getGraphqlUrl = (slot: string | undefined) => {
+  if (slotEndpoint?.graphqlUrl) {
+    return slotEndpoint.graphqlUrl;
+  }
+
   if (isAwsProfile) {
     return `${configuredAwsToriiUrl}/graphql`;
   }
@@ -72,9 +94,16 @@ export const preloadSlotInstance = async () => {
   if (!preloadSlotInstancePromise) {
     preloadSlotInstancePromise = (async () => {
       const versionData = await fetchVersion();
+      const endpointFromApi = versionData.slotEndpoints?.[configuredEnv];
       const slotFromApi = versionData.slot?.[configuredEnv]?.trim();
 
-      if (!isAwsProfile && slotFromApi) {
+      if (endpointFromApi) {
+        slotEndpoint = endpointFromApi;
+        slotInstance =
+          endpointFromApi.slotInstance?.trim() || slotFromApi || slotInstance;
+        slotChainId = endpointFromApi.chainId?.trim() || slotChainId;
+        slotSource = "version-endpoint";
+      } else if (!isAwsProfile && slotFromApi) {
         slotInstance = slotFromApi;
         slotSource = "version-api";
       }
