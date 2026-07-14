@@ -40,8 +40,11 @@ export const migrateNfts = async (
     entrypoint: "get_user_cards",
     calldata: [controllerAddress],
   });
-  const tokenIds = getTokenIds(response);
-  console.info("[MIGRATE] NFT count", tokenIds.length);
+  const allTokenIds = getTokenIds(response);
+  console.info("[MIGRATE] NFT count", allTokenIds.length);
+
+  // TODO: Remove this test limit to migrate every NFT.
+  const tokenIds = allTokenIds.slice(0, 20);
 
   if (tokenIds.length === 0) {
     return null;
