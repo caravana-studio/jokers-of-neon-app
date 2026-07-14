@@ -429,15 +429,11 @@ export const MigrateWalletPage = () => {
     setIsMigrating(true);
     setMigrationStatus(null);
     try {
-      const transaction = await migrateNfts(
+      await migrateNfts(
         controllerAccount,
         controllerAddress,
         jokersAddress,
       );
-
-      if (transaction) {
-        await controllerAccount.waitForTransaction(transaction.transaction_hash);
-      }
 
       setMigrationStatus("success");
       setIsConfirmationOpen(false);

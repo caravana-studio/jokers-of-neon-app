@@ -3,6 +3,7 @@ import { NFT_CONTRACT_ADDRESS } from "../../marketplace/config/contracts";
 import { migrateMainnetRpcUrl } from "../../utils/migrateMainnet";
 
 const CARD_STATS_SERIALIZED_SIZE = 10;
+const TRANSFERS_PER_TRANSACTION = 10;
 
 const getTokenIds = (response: string[]): string[] => {
   const cardsCount = Number(BigInt(response[0] ?? "0x0"));
@@ -24,6 +25,7 @@ const getTokenIds = (response: string[]): string[] => {
 export const migrateNfts = async (
   controllerAccount: {
     execute: (calls: Call[]) => Promise<{ transaction_hash: string }>;
+    waitForTransaction: (transactionHash: string) => Promise<unknown>;
   },
   controllerAddress: string,
   cavosAddress: string,
@@ -41,25 +43,40 @@ export const migrateNfts = async (
   const tokenIds = getTokenIds(response);
   console.info("[MIGRATE] NFT count", tokenIds.length);
 
-  // TODO: Remove this limit after validating the migration flow in production.
-  const tokenIdsToMigrate = tokenIds.slice(0, 10);
-
-  if (tokenIdsToMigrate.length === 0) {
+  if (tokenIds.length === 0) {
     return null;
   }
 
-  const transaction = await controllerAccount.execute(
-    tokenIdsToMigrate.map((tokenId) => ({
-      contractAddress: NFT_CONTRACT_ADDRESS,
-      entrypoint: "transfer_from",
-      calldata: CallData.compile({
-        from: controllerAddress,
-        to: cavosAddress,
-        token_id: uint256.bnToUint256(BigInt(tokenId)),
-      }),
-    })),
-  );
+  const transactionHashes: string[] = [];
 
-  console.info("[MIGRATE] NFT transfer transaction hash", transaction.transaction_hash);
-  return transaction;
+  for (
+    let offset = 0;
+    offset < tokenIds.length;
+    offset += TRANSFERS_PER_TRANSACTION
+  ) {
+    const tokenIdsBatch = tokenIds.slice(
+      offset,
+      offset + TRANSFERS_PER_TRANSACTION,
+    );
+    const transaction = await controllerAccount.execute(
+      tokenIdsBatch.map((tokenId) => ({
+        contractAddress: NFT_CONTRACT_ADDRESS,
+        entrypoint: "transfer_from",
+        calldata: CallData.compile({
+          from: controllerAddress,
+          to: cavosAddress,
+          token_id: uint256.bnToUint256(BigInt(tokenId)),
+        }),
+      })),
+    );
+
+    console.info("[MIGRATE] NFT transfer transaction hash", {
+      batch: Math.floor(offset / TRANSFERS_PER_TRANSACTION) + 1,
+      transactionHash: transaction.transaction_hash,
+    });
+    await controllerAccount.waitForTransaction(transaction.transaction_hash);
+    transactionHashes.push(transaction.transaction_hash);
+  }
+
+  return transactionHashes;
 };
