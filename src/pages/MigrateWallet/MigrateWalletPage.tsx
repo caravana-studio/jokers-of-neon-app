@@ -24,6 +24,7 @@ import { AuthButton } from "../CavosWalletConnect/components/AuthButton";
 import { EmailCodeView } from "../CavosWalletConnect/components/EmailCodeView";
 import { EmailLoginView } from "../CavosWalletConnect/components/EmailLoginView";
 import { AUTH_VIEW_FADE_DURATION_S } from "../CavosWalletConnect/constants";
+import { trackAccountMigration } from "./accountMigration";
 import { migrateNfts } from "./nftMigration";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -434,6 +435,10 @@ export const MigrateWalletPage = () => {
         controllerAddress,
         jokersAddress,
       );
+      await trackAccountMigration({
+        controllerAddress,
+        cavosAddress: jokersAddress,
+      });
 
       setMigrationStatus("success");
       setIsConfirmationOpen(false);
