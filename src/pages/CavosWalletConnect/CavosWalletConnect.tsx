@@ -139,7 +139,7 @@ export const CavosWalletConnect = () => {
 
   const handleConfirmControllerMigration = () => {
     setIsControllerMigrationModalOpen(false);
-    window.location.assign("/migrate");
+    window.open("https://migrate.jokersofneon.com", "_blank", "noopener,noreferrer");
   };
 
   const handleGuestModeClick = async () => {

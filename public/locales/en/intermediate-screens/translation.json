@@ -489,7 +489,7 @@
     "guest-mode": "Guest mode",
     "controller-migration-modal": {
       "title": "Controller is deprecated",
-      "description": "Do you want to migrate your account?",
+      "description": "To migrate your account, visit migrate.jokersofneon.com.",
       "confirm": "Migrate",
       "cancel": "Cancel"
     },

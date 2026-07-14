@@ -28,7 +28,11 @@
     "continue": "Continue"
   },
   "migration": {
-    "success": "Your NFT cards have been migrated successfully.",
-    "error": "We couldn't migrate your NFT cards. Please try again."
+    "in-progress-title": "Migration in progress",
+    "in-progress-description": "This migration can take several minutes. Please do not close this tab.",
+    "success-title": "Migration completed",
+    "success": "You can now log in to Jokers of Neon with your new account.",
+    "error-title": "Migration failed",
+    "error": "We couldn't complete the migration. Please try again."
   }
 }

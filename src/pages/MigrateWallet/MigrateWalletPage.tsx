@@ -5,6 +5,7 @@ import type { ReactNode } from "react";
 import { useContext, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { ProgressBar } from "../../components/CompactRoundData/ProgressBar";
 import { ConfirmationModal } from "../../components/ConfirmationModal";
 import LanguageSwitcher from "../../components/LanguageSwitcher";
 import { MobileBottomBar } from "../../components/MobileBottomBar";
@@ -266,6 +267,8 @@ export const MigrateWalletPage = () => {
   const [migrationStatus, setMigrationStatus] = useState<
     "success" | "error" | null
   >(null);
+  const [migrationCompletedBatches, setMigrationCompletedBatches] = useState(0);
+  const [migrationTotalBatches, setMigrationTotalBatches] = useState(0);
   const controllerSuccessHandledRef = useRef(false);
 
   const { isSmallScreen } = useResponsiveValues();
@@ -421,19 +424,41 @@ export const MigrateWalletPage = () => {
   const canMigrate = Boolean(controllerAddress && jokersAddress);
   const showAppleLogin = !isNativeAndroid;
   const shouldShowLoginCancel = appType === AppType.FULL_GAME;
+  const isMigrateActionDisabled =
+    !canMigrate || isMigrating || migrationStatus === "success";
+  const migrationProgress =
+    migrationTotalBatches > 0
+      ? (migrationCompletedBatches / migrationTotalBatches) * 100
+      : 0;
+
+  useEffect(() => {
+    setMigrationStatus(null);
+  }, [controllerAddress, jokersAddress]);
 
   const handleMigrate = async () => {
-    if (!controllerAccount || !controllerAddress || !jokersAddress) {
+    if (
+      !controllerAccount ||
+      !controllerAddress ||
+      !jokersAddress ||
+      isMigrating
+    ) {
       return;
     }
 
+    setIsConfirmationOpen(false);
     setIsMigrating(true);
     setMigrationStatus(null);
+    setMigrationCompletedBatches(0);
+    setMigrationTotalBatches(0);
     try {
       await migrateNfts(
         controllerAccount,
         controllerAddress,
         jokersAddress,
+        ({ completedBatches, totalBatches }) => {
+          setMigrationCompletedBatches(completedBatches);
+          setMigrationTotalBatches(totalBatches);
+        },
       );
       await trackAccountMigration({
         controllerAddress,
@@ -567,321 +592,335 @@ export const MigrateWalletPage = () => {
               >
                 spacer
               </Text>
-              <Flex
-                flexDir="column"
-                alignItems="center"
-                gap={3}
-                textAlign="center"
-              >
-                <Heading
-                  as="h1"
-                  fontFamily="Orbitron"
-                  fontSize={{ base: "26px", md: "42px" }}
-                  lineHeight={1.1}
-                  letterSpacing={0}
-                >
-                  {t("connect.title")}
-                </Heading>
-                <Text
-                  maxW="980px"
-                  color="whiteAlpha.700"
-                  fontSize={{ base: "12px", md: "15px" }}
-                  lineHeight={{ base: 1.1, md: 1.45 }}
-                >
-                  {t("connect.disclaimer")}
-                </Text>
-              </Flex>
-
-              <Flex
-                direction={{ base: "column", lg: "row" }}
-                gap={{ base: 4, md: 5 }}
-                alignItems="stretch"
-                w="100%"
-              >
-                <ConnectionPanel title={t("controller.title")}>
+              {isMigrating ? (
+                <MigrationProgressState
+                  title={t("migration.in-progress-title")}
+                  description={t("migration.in-progress-description")}
+                  progress={migrationProgress}
+                  completedBatches={migrationCompletedBatches}
+                  totalBatches={migrationTotalBatches}
+                />
+              ) : null}
+              {!isMigrating && (
+                <>
                   <Flex
                     flexDir="column"
                     alignItems="center"
-                    gap={4}
-                    w="100%"
-                    maxW={{ base: "356px", sm: "420px", md: "520px" }}
+                    gap={3}
+                    textAlign="center"
                   >
-                    <AuthButton
-                      iconComponent={Icons.CONTROLLER}
-                      iconAlt="Controller"
-                      label={
-                        controllerAddress
-                          ? t("controller.connected")
-                          : t("controller.connect")
-                      }
-                      bg="#eeb402"
-                      color="#0B0B0D"
-                      onClick={handleConnectController}
-                      disabled={
-                        Boolean(controllerAddress) || isAuthActionInProgress
-                      }
-                      isLoading={isControllerConnecting}
-                    />
-                    {controllerAddress && (
-                      <>
-                        <ConnectedAddress
-                          label={t("connected-address")}
-                          address={controllerAddress}
-                        />
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => {
-                            void disconnectController();
-                            setControllerAddress("");
-                          }}
-                        >
-                          {t("disconnect")}
-                        </Button>
-                      </>
-                    )}
+                    <Heading
+                      as="h1"
+                      fontFamily="Orbitron"
+                      fontSize={{ base: "26px", md: "42px" }}
+                      lineHeight={1.1}
+                      letterSpacing={0}
+                    >
+                      {t("connect.title")}
+                    </Heading>
+                    <Text
+                      maxW="980px"
+                      color="whiteAlpha.700"
+                      fontSize={{ base: "12px", md: "15px" }}
+                      lineHeight={{ base: 1.1, md: 1.45 }}
+                    >
+                      {t("connect.disclaimer")}
+                    </Text>
                   </Flex>
-                </ConnectionPanel>
 
-                <ConnectionPanel title={t("jokers.title")}>
-                  {jokersAddress ? (
-                    <Flex flexDir="column" alignItems="center" gap={4} w="100%">
-                      <AuthButton
-                        label={t("jokers.connected")}
-                        bg="#A245BC"
-                        color="white"
-                        disabled
-                      />
-                      <ConnectedAddress
-                        label={t("connected-address")}
-                        address={jokersAddress}
-                      />
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => {
-                          void disconnectCavos();
-                          setJokersAddress("");
-                          setAuthView("auth");
-                          setEmail("");
-                          setSubmittedEmail("");
-                          setVerificationCode("");
-                          setIsSendingEmailOtp(false);
-                          setIsVerifyingEmailOtp(false);
-                          setResendCooldownSeconds(0);
-                        }}
+                  <Flex
+                    direction={{ base: "column", lg: "row" }}
+                    gap={{ base: 4, md: 5 }}
+                    alignItems="stretch"
+                    w="100%"
+                  >
+                    <ConnectionPanel title={t("controller.title")}>
+                      <Flex
+                        flexDir="column"
+                        alignItems="center"
+                        gap={4}
+                        w="100%"
+                        maxW={{ base: "356px", sm: "420px", md: "520px" }}
                       >
-                        {t("disconnect")}
-                      </Button>
-                    </Flex>
-                  ) : (
-                    <Flex flexDir="column" alignItems="center" w="100%">
-                      <AnimatePresence mode="wait" initial={false}>
-                        <motion.div
-                          key={authView}
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          exit={{ opacity: 0 }}
-                          transition={{
-                            duration: AUTH_VIEW_FADE_DURATION_S,
-                            ease: "easeInOut",
-                          }}
-                          style={{
-                            width: "100%",
-                            display: "flex",
-                            justifyContent: "center",
-                          }}
-                        >
-                          {authView === "auth" ? (
-                            <Flex
-                              flexDir="column"
-                              alignItems="center"
-                              gap={{ base: 3.5, md: 5 }}
-                              w="100%"
-                              maxW={{ base: "356px", sm: "420px", md: "520px" }}
+                        <AuthButton
+                          iconComponent={Icons.CONTROLLER}
+                          iconAlt="Controller"
+                          label={
+                            controllerAddress
+                              ? t("controller.connected")
+                              : t("controller.connect")
+                          }
+                          bg="#eeb402"
+                          color="#0B0B0D"
+                          onClick={handleConnectController}
+                          disabled={
+                            Boolean(controllerAddress) || isAuthActionInProgress
+                          }
+                          isLoading={isControllerConnecting}
+                        />
+                        {controllerAddress && (
+                          <>
+                            <ConnectedAddress
+                              label={t("connected-address")}
+                              address={controllerAddress}
+                            />
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => {
+                                void disconnectController();
+                                setControllerAddress("");
+                              }}
                             >
-                              {showAppleLogin && (
-                                <AuthButton
-                                  iconSrc={Icons.APPLE}
-                                  iconAlt="Apple"
-                                  label={tWallet("continue-with-apple")}
-                                  bg="#ECECEC"
-                                  color="#0B0B0D"
-                                  onClick={() =>
-                                    handleContinueWithOAuthClick("apple")
+                              {t("disconnect")}
+                            </Button>
+                          </>
+                        )}
+                      </Flex>
+                    </ConnectionPanel>
+
+                    <ConnectionPanel title={t("jokers.title")}>
+                      {jokersAddress ? (
+                        <Flex flexDir="column" alignItems="center" gap={4} w="100%">
+                          <AuthButton
+                            label={t("jokers.connected")}
+                            bg="#A245BC"
+                            color="white"
+                            disabled
+                          />
+                          <ConnectedAddress
+                            label={t("connected-address")}
+                            address={jokersAddress}
+                          />
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => {
+                              void disconnectCavos();
+                              setJokersAddress("");
+                              setAuthView("auth");
+                              setEmail("");
+                              setSubmittedEmail("");
+                              setVerificationCode("");
+                              setIsSendingEmailOtp(false);
+                              setIsVerifyingEmailOtp(false);
+                              setResendCooldownSeconds(0);
+                            }}
+                          >
+                            {t("disconnect")}
+                          </Button>
+                        </Flex>
+                      ) : (
+                        <Flex flexDir="column" alignItems="center" w="100%">
+                          <AnimatePresence mode="wait" initial={false}>
+                            <motion.div
+                              key={authView}
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
+                              exit={{ opacity: 0 }}
+                              transition={{
+                                duration: AUTH_VIEW_FADE_DURATION_S,
+                                ease: "easeInOut",
+                              }}
+                              style={{
+                                width: "100%",
+                                display: "flex",
+                                justifyContent: "center",
+                              }}
+                            >
+                              {authView === "auth" ? (
+                                <Flex
+                                  flexDir="column"
+                                  alignItems="center"
+                                  gap={{ base: 3.5, md: 5 }}
+                                  w="100%"
+                                  maxW={{ base: "356px", sm: "420px", md: "520px" }}
+                                >
+                                  {showAppleLogin && (
+                                    <AuthButton
+                                      iconSrc={Icons.APPLE}
+                                      iconAlt="Apple"
+                                      label={tWallet("continue-with-apple")}
+                                      bg="#ECECEC"
+                                      color="#0B0B0D"
+                                      onClick={() =>
+                                        handleContinueWithOAuthClick("apple")
+                                      }
+                                      disabled={isCavosAuthDisabled}
+                                      isLoading={cavosOAuthProvider === "apple"}
+                                    />
+                                  )}
+                                  <AuthButton
+                                    iconSrc={Icons.GOOGLE}
+                                    iconAlt="Google"
+                                    label={tWallet("continue-with-google")}
+                                    bg="#ECECEC"
+                                    color="#0B0B0D"
+                                    onClick={() =>
+                                      handleContinueWithOAuthClick("google")
+                                    }
+                                    disabled={isCavosAuthDisabled}
+                                    isLoading={cavosOAuthProvider === "google"}
+                                  />
+                                  <AuthButton
+                                    label={tWallet("continue-with-email")}
+                                    bg="#A245BC"
+                                    color="white"
+                                    onClick={handleContinueWithEmailClick}
+                                    disabled={isCavosAuthDisabled}
+                                  />
+                                </Flex>
+                              ) : authView === "email" ? (
+                                <EmailLoginView
+                                  email={email}
+                                  labels={{
+                                    continueWithEmail: tWallet(
+                                      "continue-with-email",
+                                    ),
+                                    emailPlaceholder: tWallet("email-placeholder"),
+                                    continue: tWallet("continue"),
+                                    tryAnotherLoginOption: tWallet(
+                                      "try-another-login-option",
+                                    ),
+                                  }}
+                                  onEmailChange={setEmail}
+                                  onContinue={handleEmailContinue}
+                                  isContinueDisabled={
+                                    !isEmailValid || !isCavosEnabled
                                   }
-                                  disabled={isCavosAuthDisabled}
-                                  isLoading={cavosOAuthProvider === "apple"}
+                                  isSubmitting={isSendingEmailOtp}
+                                  onTryAnotherLoginOption={
+                                    handleTryAnotherLoginOption
+                                  }
+                                />
+                              ) : (
+                                <EmailCodeView
+                                  code={verificationCode}
+                                  labels={{
+                                    title: tWallet("verify-email-title"),
+                                    subtitle: tWallet("verify-email-subtitle", {
+                                      email: submittedEmail,
+                                    }),
+                                    codePlaceholder: tWallet(
+                                      "verification-code-placeholder",
+                                    ),
+                                    continue: tWallet("continue"),
+                                    useAnotherEmail: tWallet("use-another-email"),
+                                    resendCode:
+                                      resendCooldownSeconds > 0
+                                        ? `${tWallet("resend-code")} (${resendCooldownSeconds}s)`
+                                        : tWallet("resend-code"),
+                                  }}
+                                  onCodeChange={(value) =>
+                                    setVerificationCode(value.replace(/\D/g, ""))
+                                  }
+                                  onContinue={handleVerificationContinue}
+                                  onUseAnotherEmail={handleUseAnotherEmail}
+                                  onResendCode={handleResendCode}
+                                  isContinueDisabled={
+                                    verificationCode.length !== 6 ||
+                                    !submittedEmail ||
+                                    isSendingEmailOtp ||
+                                    isLoadingWallet
+                                  }
+                                  isSubmitting={
+                                    isVerifyingEmailOtp || isLoadingWallet
+                                  }
+                                  isResendDisabled={
+                                    resendCooldownSeconds > 0 ||
+                                    isSendingEmailOtp ||
+                                    isVerifyingEmailOtp ||
+                                    isLoadingWallet
+                                  }
+                                  isUseAnotherEmailDisabled={
+                                    isSendingEmailOtp ||
+                                    isVerifyingEmailOtp ||
+                                    isLoadingWallet
+                                  }
                                 />
                               )}
-                              <AuthButton
-                                iconSrc={Icons.GOOGLE}
-                                iconAlt="Google"
-                                label={tWallet("continue-with-google")}
-                                bg="#ECECEC"
-                                color="#0B0B0D"
-                                onClick={() =>
-                                  handleContinueWithOAuthClick("google")
-                                }
-                                disabled={isCavosAuthDisabled}
-                                isLoading={cavosOAuthProvider === "google"}
-                              />
-                              <AuthButton
-                                label={tWallet("continue-with-email")}
-                                bg="#A245BC"
-                                color="white"
-                                onClick={handleContinueWithEmailClick}
-                                disabled={isCavosAuthDisabled}
-                              />
-                            </Flex>
-                          ) : authView === "email" ? (
-                            <EmailLoginView
-                              email={email}
-                              labels={{
-                                continueWithEmail: tWallet(
-                                  "continue-with-email",
-                                ),
-                                emailPlaceholder: tWallet("email-placeholder"),
-                                continue: tWallet("continue"),
-                                tryAnotherLoginOption: tWallet(
-                                  "try-another-login-option",
-                                ),
-                              }}
-                              onEmailChange={setEmail}
-                              onContinue={handleEmailContinue}
-                              isContinueDisabled={
-                                !isEmailValid || !isCavosEnabled
-                              }
-                              isSubmitting={isSendingEmailOtp}
-                              onTryAnotherLoginOption={
-                                handleTryAnotherLoginOption
-                              }
-                            />
-                          ) : (
-                            <EmailCodeView
-                              code={verificationCode}
-                              labels={{
-                                title: tWallet("verify-email-title"),
-                                subtitle: tWallet("verify-email-subtitle", {
-                                  email: submittedEmail,
-                                }),
-                                codePlaceholder: tWallet(
-                                  "verification-code-placeholder",
-                                ),
-                                continue: tWallet("continue"),
-                                useAnotherEmail: tWallet("use-another-email"),
-                                resendCode:
-                                  resendCooldownSeconds > 0
-                                    ? `${tWallet("resend-code")} (${resendCooldownSeconds}s)`
-                                    : tWallet("resend-code"),
-                              }}
-                              onCodeChange={(value) =>
-                                setVerificationCode(value.replace(/\D/g, ""))
-                              }
-                              onContinue={handleVerificationContinue}
-                              onUseAnotherEmail={handleUseAnotherEmail}
-                              onResendCode={handleResendCode}
-                              isContinueDisabled={
-                                verificationCode.length !== 6 ||
-                                !submittedEmail ||
-                                isSendingEmailOtp ||
-                                isLoadingWallet
-                              }
-                              isSubmitting={
-                                isVerifyingEmailOtp || isLoadingWallet
-                              }
-                              isResendDisabled={
-                                resendCooldownSeconds > 0 ||
-                                isSendingEmailOtp ||
-                                isVerifyingEmailOtp ||
-                                isLoadingWallet
-                              }
-                              isUseAnotherEmailDisabled={
-                                isSendingEmailOtp ||
-                                isVerifyingEmailOtp ||
-                                isLoadingWallet
-                              }
-                            />
+                            </motion.div>
+                          </AnimatePresence>
+                          {!isCavosEnabled && (
+                            <Text color="#ffb3b3" fontSize="12px" textAlign="center">
+                              {t("jokers.unavailable")}
+                            </Text>
                           )}
-                        </motion.div>
-                      </AnimatePresence>
-                      {!isCavosEnabled && (
-                        <Text color="#ffb3b3" fontSize="12px" textAlign="center">
-                          {t("jokers.unavailable")}
-                        </Text>
+                          {localizedCavosError && (
+                            <Text color="#ff9b9b" fontSize="12px" textAlign="center">
+                              {localizedCavosError}
+                            </Text>
+                          )}
+                        </Flex>
                       )}
-                      {localizedCavosError && (
-                        <Text color="#ff9b9b" fontSize="12px" textAlign="center">
-                          {localizedCavosError}
-                        </Text>
+                    </ConnectionPanel>
+                  </Flex>
+
+                  {migrationStatus ? (
+                    <MigrationResultState
+                      status={migrationStatus}
+                      title={t(`migration.${migrationStatus}-title`)}
+                      description={t(`migration.${migrationStatus}`)}
+                    />
+                  ) : null}
+
+                  {isSmallScreen ? (
+                    <MobileBottomBar
+                      firstButton={
+                        shouldShowLoginCancel
+                          ? {
+                              label: t("connect.cancel"),
+                              onClick: () => navigate("/login"),
+                              variant: "solid",
+                            }
+                          : undefined
+                      }
+                      secondButton={{
+                        label: t("connect.migrate"),
+                        onClick: () => setIsConfirmationOpen(true),
+                        disabled: isMigrateActionDisabled,
+                        boxShadow: !isMigrateActionDisabled
+                          ? "0 0 18px rgba(162,69,188,0.75)"
+                          : "none",
+                      }}
+                    />
+                  ) : (
+                    <Flex justifyContent="center" gap={3} wrap="wrap">
+                      {shouldShowLoginCancel && (
+                        <Button
+                          variant="solid"
+                          onClick={() => navigate("/login")}
+                          minW={{ base: "190px", md: "240px" }}
+                          h={{ base: "44px", md: "50px" }}
+                          fontSize={{ base: "16px", md: "18px" }}
+                        >
+                          {t("connect.cancel")}
+                        </Button>
                       )}
+                      <Button
+                        variant="secondarySolid"
+                        onClick={() => setIsConfirmationOpen(true)}
+                        isDisabled={isMigrateActionDisabled}
+                        minW={{ base: "190px", md: "240px" }}
+                        h={{ base: "44px", md: "50px" }}
+                        fontSize={{ base: "16px", md: "18px" }}
+                        boxShadow={
+                          !isMigrateActionDisabled
+                            ? "0 0 18px rgba(162,69,188,0.75)"
+                            : "none"
+                        }
+                      >
+                        {t("connect.migrate")}
+                      </Button>
                     </Flex>
                   )}
-                </ConnectionPanel>
-              </Flex>
-
-              {isSmallScreen ? (
-                <MobileBottomBar
-                  firstButton={
-                    shouldShowLoginCancel
-                      ? {
-                          label: t("connect.cancel"),
-                          onClick: () => navigate("/login"),
-                          variant: "solid",
-                        }
-                      : undefined
-                  }
-                  secondButton={{
-                    label: t("connect.migrate"),
-                    onClick: () => setIsConfirmationOpen(true),
-                    disabled: !canMigrate,
-                    boxShadow: canMigrate
-                      ? "0 0 18px rgba(162,69,188,0.75)"
-                      : "none",
-                  }}
-                />
-              ) : (
-                <Flex justifyContent="center" gap={3} wrap="wrap">
-                  {shouldShowLoginCancel && (
-                    <Button
-                      variant="solid"
-                      onClick={() => navigate("/login")}
-                      minW={{ base: "190px", md: "240px" }}
-                      h={{ base: "44px", md: "50px" }}
-                      fontSize={{ base: "16px", md: "18px" }}
-                    >
-                      {t("connect.cancel")}
-                    </Button>
-                  )}
-                  <Button
-                    variant="secondarySolid"
-                    onClick={() => setIsConfirmationOpen(true)}
-                    isDisabled={!canMigrate}
-                    minW={{ base: "190px", md: "240px" }}
-                    h={{ base: "44px", md: "50px" }}
-                    fontSize={{ base: "16px", md: "18px" }}
-                    boxShadow={
-                      canMigrate ? "0 0 18px rgba(162,69,188,0.75)" : "none"
-                    }
-                  >
-                    {t("connect.migrate")}
-                  </Button>
-                </Flex>
+                </>
               )}
               <Box
                 aria-hidden="true"
                 h={{ base: "56px", md: "0px" }}
                 flexShrink={0}
               />
-              {migrationStatus && (
-                <Text
-                  color={migrationStatus === "success" ? "#a6f5b4" : "#ff9b9b"}
-                  fontSize="14px"
-                  textAlign="center"
-                >
-                  {t(`migration.${migrationStatus}`)}
-                </Text>
-              )}
             </Flex>
           </Flex>
         </Flex>
@@ -894,10 +933,9 @@ export const MigrateWalletPage = () => {
           confirmText={t("confirmation.continue")}
           cancelText={t("confirmation.cancel")}
           onCancel={() => setIsConfirmationOpen(false)}
-          onConfirm={handleMigrate}
-          isConfirmLoading={isMigrating}
-          isConfirmDisabled={isMigrating}
-          closeOnOverlayClick={!isMigrating}
+          onConfirm={() => {
+            void handleMigrate();
+          }}
           contentMaxW="560px"
           titleFontSize={["20px", "26px"]}
           titleLineHeight={["1.15", "1.2"]}
@@ -943,6 +981,128 @@ const ConnectionPanel = ({
       {title}
     </Heading>
     {children}
+  </Flex>
+);
+
+const MigrationProgressState = ({
+  title,
+  description,
+  progress,
+  completedBatches,
+  totalBatches,
+}: {
+  title: string;
+  description: string;
+  progress: number;
+  completedBatches: number;
+  totalBatches: number;
+}) => (
+  <Flex
+    flex={1}
+    flexDir="column"
+    alignItems="center"
+    justifyContent="center"
+    gap={3}
+    px={{ base: 2, md: 8 }}
+    py={{ base: 6, md: 10 }}
+  >
+    <Flex
+      w="100%"
+      maxW="640px"
+      flexDir="column"
+      alignItems="center"
+      justifyContent="center"
+      gap={4}
+      border="1px solid rgba(255,255,255,0.14)"
+      bg="rgba(6, 7, 16, 0.72)"
+      backdropFilter="blur(12px)"
+      borderRadius="8px"
+      boxShadow="0 18px 60px rgba(0,0,0,0.38)"
+      px={{ base: 4, md: 6 }}
+      py={{ base: 5, md: 6 }}
+    >
+      <Text
+        fontFamily="Orbitron"
+        fontSize={{ base: "15px", md: "18px" }}
+        textAlign="center"
+      >
+        {title}
+      </Text>
+      <Box w="100%" maxW="470px">
+        <ProgressBar
+          progress={progress}
+          mt={0}
+          height="16px"
+          label={
+            totalBatches > 0
+              ? `${completedBatches}/${totalBatches}`
+              : "0/0"
+          }
+          labelFontSize="11px"
+        />
+      </Box>
+      <Text
+        maxW="560px"
+        color="whiteAlpha.800"
+        fontSize={{ base: "12px", md: "14px" }}
+        lineHeight={1.5}
+        textAlign="center"
+      >
+        {description}
+      </Text>
+    </Flex>
+  </Flex>
+);
+
+const MigrationResultState = ({
+  status,
+  title,
+  description,
+}: {
+  status: "success" | "error";
+  title: string;
+  description: string;
+}) => (
+  <Flex
+    flexDir="column"
+    alignItems="center"
+    justifyContent="center"
+    gap={2}
+    px={{ base: 2, md: 8 }}
+  >
+    <Flex
+      w="100%"
+      maxW="640px"
+      flexDir="column"
+      alignItems="center"
+      justifyContent="center"
+      gap={2}
+      border="1px solid rgba(255,255,255,0.14)"
+      bg="rgba(6, 7, 16, 0.72)"
+      backdropFilter="blur(12px)"
+      borderRadius="8px"
+      boxShadow="0 18px 60px rgba(0,0,0,0.38)"
+      px={{ base: 4, md: 6 }}
+      py={{ base: 5, md: 6 }}
+    >
+      <Text
+        fontFamily="Orbitron"
+        fontSize={{ base: "15px", md: "18px" }}
+        color={status === "success" ? "#a6f5b4" : "#ff9b9b"}
+        textAlign="center"
+      >
+        {title}
+      </Text>
+      <Text
+        maxW="560px"
+        color="whiteAlpha.800"
+        fontSize={{ base: "12px", md: "14px" }}
+        lineHeight={1.5}
+        textAlign="center"
+      >
+        {description}
+      </Text>
+    </Flex>
   </Flex>
 );
 

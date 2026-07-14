@@ -488,7 +488,7 @@
     "guest-mode": "Modo convidado",
     "controller-migration-modal": {
       "title": "Controller está descontinuado",
-      "description": "Você quer migrar sua conta?",
+      "description": "Para migrar sua conta, acesse migrate.jokersofneon.com.",
       "confirm": "Migrar",
       "cancel": "Cancelar"
     },

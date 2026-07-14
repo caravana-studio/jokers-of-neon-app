@@ -83,6 +83,7 @@ const controllerOptions = {
   signupOptions,
 };
 
+console.log('policies', policies);
 export const controller = !isNative
   ? new ControllerConnector(controllerOptions)
   : new SessionConnector({

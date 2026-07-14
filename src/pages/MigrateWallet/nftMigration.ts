@@ -5,6 +5,13 @@ import { migrateMainnetRpcUrl } from "../../utils/migrateMainnet";
 const CARD_STATS_SERIALIZED_SIZE = 10;
 const TRANSFERS_PER_TRANSACTION = 10;
 
+type MigrationProgress = {
+  completedBatches: number;
+  totalBatches: number;
+  processedCards: number;
+  totalCards: number;
+};
+
 const getTokenIds = (response: string[]): string[] => {
   const cardsCount = Number(BigInt(response[0] ?? "0x0"));
   const expectedLength = 1 + cardsCount * CARD_STATS_SERIALIZED_SIZE;
@@ -29,6 +36,7 @@ export const migrateNfts = async (
   },
   controllerAddress: string,
   cavosAddress: string,
+  onProgress?: (progress: MigrationProgress) => void,
 ) => {
   if (!NFT_CONTRACT_ADDRESS) {
     throw new Error("NFT contract address is not configured");
@@ -42,13 +50,20 @@ export const migrateNfts = async (
   });
   const allTokenIds = getTokenIds(response);
   console.info("[MIGRATE] NFT count", allTokenIds.length);
-
-  // TODO: Remove this test limit to migrate every NFT.
-  const tokenIds = allTokenIds.slice(0, 20);
+  const tokenIds = allTokenIds;
+  const totalCards = tokenIds.length;
+  const totalBatches = Math.ceil(totalCards / TRANSFERS_PER_TRANSACTION);
 
   if (tokenIds.length === 0) {
     return null;
   }
+
+  onProgress?.({
+    completedBatches: 0,
+    totalBatches,
+    processedCards: 0,
+    totalCards,
+  });
 
   const transactionHashes: string[] = [];
 
@@ -79,6 +94,12 @@ export const migrateNfts = async (
     });
     await controllerAccount.waitForTransaction(transaction.transaction_hash);
     transactionHashes.push(transaction.transaction_hash);
+    onProgress?.({
+      completedBatches: transactionHashes.length,
+      totalBatches,
+      processedCards: Math.min(offset + tokenIdsBatch.length, totalCards),
+      totalCards,
+    });
   }
 
   return transactionHashes;
