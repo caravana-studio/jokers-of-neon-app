@@ -427,6 +427,7 @@
     "no-profile": "Por favor, inicia sesión para ver tu perfil",
     "apply-changes": "Aplicar cambios",
     "cancel": "Cancelar",
+    "wallet-address": "Dirección de wallet",
     "copy-wallet-address": "Copiar dirección de wallet",
     "wallet-address-copied": "Dirección de wallet copiada"
   },
