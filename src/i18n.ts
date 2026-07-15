@@ -17,6 +17,24 @@ const loadResources = async (language: string, namespace: string) => {
   }
 
   const normalizedLanguage = normalizeLanguage(language);
+
+  if (import.meta.env.MODE === "test") {
+    const [{ readFile }, pathModule] = await Promise.all([
+      import("node:fs/promises"),
+      import("node:path"),
+    ]);
+    const filePath = pathModule.join(
+      process.cwd(),
+      "public",
+      "locales",
+      normalizedLanguage,
+      namespace,
+      "translation.json",
+    );
+    const fileContents = await readFile(filePath, "utf-8");
+    return JSON.parse(fileContents) as Record<string, unknown>;
+  }
+
   const response = await fetch(
     `/locales/${normalizedLanguage}/${namespace}/translation.json`,
   );
