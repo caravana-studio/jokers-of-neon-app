@@ -1,5 +1,5 @@
-import { fetchVersion } from "../queries/fetchVersion";
 import { shortString } from "starknet";
+import { fetchVersion } from "../queries/fetchVersion";
 
 const DEFAULT_RPC_URL = "http://localhost:5050";
 const DEFAULT_TORII_URL = "http://localhost:8080";
@@ -22,22 +22,46 @@ const configuredAwsKatanaChainId =
   import.meta.env.VITE_AWS_KATANA_CHAIN_ID?.trim() ||
   DEFAULT_AWS_KATANA_CHAIN_ID;
 const isAwsProfile = configuredEnv.includes("aws");
-let slotSource: "version-api" | "env" | "default" = isAwsProfile
-  ? "env"
-  : configuredSlotInstance
+
+let slotSource: "version-api" | "version-endpoint" | "env" | "default" =
+  isAwsProfile
     ? "env"
-    : "default";
-export const usesCustomKatanaEndpoint = isAwsProfile;
-let endpointSource: "version-api" | "slot" | "env" | "default" = isAwsProfile
+    : configuredSlotInstance
+      ? "env"
+      : "default";
+let endpointSource:
+  | "version-api"
+  | "version-endpoint"
+  | "slot"
+  | "env"
+  | "default" = isAwsProfile
   ? "env"
   : configuredSlotInstance
     ? "slot"
     : "default";
 
+export const usesCustomKatanaEndpoint = isAwsProfile;
+
+type SlotEndpoint = {
+  kind?: string;
+  slotInstance?: string;
+  rpcUrl?: string;
+  toriiUrl?: string;
+  graphqlUrl?: string;
+  relayUrl?: string;
+  chainId?: string;
+};
+
+let slotEndpoint: SlotEndpoint | undefined;
+
 const getBaseUrl = (slot: string | undefined) =>
   slot ? `https://api.cartridge.gg/x/${slot}` : undefined;
 
 const getRpcUrl = (slot: string | undefined) => {
+  if (slotEndpoint?.rpcUrl) {
+    return slotEndpoint.rpcUrl.trim();
+  }
+
   if (isAwsProfile) {
     return configuredAwsKatanaRpcUrl;
   }
@@ -47,6 +71,10 @@ const getRpcUrl = (slot: string | undefined) => {
 };
 
 const getToriiUrl = (slot: string | undefined) => {
+  if (slotEndpoint?.toriiUrl) {
+    return slotEndpoint.toriiUrl.trim();
+  }
+
   if (isAwsProfile) {
     return configuredAwsToriiUrl;
   }
@@ -56,6 +84,10 @@ const getToriiUrl = (slot: string | undefined) => {
 };
 
 const getGraphqlUrl = (slot: string | undefined) => {
+  if (slotEndpoint?.graphqlUrl) {
+    return slotEndpoint.graphqlUrl.trim();
+  }
+
   if (isAwsProfile) {
     return `${configuredAwsToriiUrl}/graphql`;
   }
@@ -93,15 +125,22 @@ export const preloadSlotInstance = async () => {
       const endpointFromApi = versionData.slotEndpoints?.[configuredEnv];
 
       if (endpointFromApi) {
-        slotInstance = endpointFromApi.slotInstance?.trim() || configuredEnv;
-        slotChainId = normalizeChainId(endpointFromApi.chainId);
-        slotSource = "version-api";
-        endpointSource = "version-api";
+        slotEndpoint = endpointFromApi;
+        slotInstance =
+          endpointFromApi.slotInstance?.trim() ||
+          slotFromApi ||
+          (isAwsProfile ? configuredEnv : configuredSlotInstance);
+        slotChainId =
+          normalizeChainId(endpointFromApi.chainId) ||
+          (isAwsProfile ? normalizeChainId(configuredAwsKatanaChainId) : undefined);
+        slotSource = "version-endpoint";
+        endpointSource = "version-endpoint";
         rpcUrl = endpointFromApi.rpcUrl?.trim() || getRpcUrl(slotInstance);
         toriiUrl = endpointFromApi.toriiUrl?.trim() || getToriiUrl(slotInstance);
         graphqlUrl =
           endpointFromApi.graphqlUrl?.trim() || getGraphqlUrl(slotInstance);
       } else if (!isAwsProfile && slotFromApi) {
+        slotEndpoint = undefined;
         slotInstance = slotFromApi;
         slotChainId = undefined;
         slotSource = "version-api";
@@ -110,10 +149,21 @@ export const preloadSlotInstance = async () => {
         toriiUrl = getToriiUrl(slotInstance);
         graphqlUrl = getGraphqlUrl(slotInstance);
       } else {
+        slotEndpoint = undefined;
         slotInstance = isAwsProfile ? configuredEnv : configuredSlotInstance;
         slotChainId = isAwsProfile
           ? normalizeChainId(configuredAwsKatanaChainId)
           : undefined;
+        slotSource = isAwsProfile
+          ? "env"
+          : configuredSlotInstance
+            ? "env"
+            : "default";
+        endpointSource = isAwsProfile
+          ? "env"
+          : configuredSlotInstance
+            ? "slot"
+            : "default";
         rpcUrl = getRpcUrl(slotInstance);
         toriiUrl = getToriiUrl(slotInstance);
         graphqlUrl = getGraphqlUrl(slotInstance);

@@ -11,10 +11,12 @@ export interface VersionResponse {
   slotEndpoints?: Record<
     string,
     {
+      kind?: string;
       slotInstance?: string;
       rpcUrl?: string;
       toriiUrl?: string;
       graphqlUrl?: string;
+      relayUrl?: string;
       chainId?: string;
     }
   >;
@@ -32,6 +34,34 @@ const isStringMap = (value: unknown): value is Record<string, string> => {
   }
 
   return Object.values(value).every((slot) => typeof slot === "string");
+};
+
+const isSlotEndpointMap = (
+  value: unknown,
+): value is NonNullable<VersionResponse["slotEndpoints"]> => {
+  if (!value || typeof value !== "object") {
+    return false;
+  }
+
+  return Object.values(value).every((endpoint) => {
+    if (!endpoint || typeof endpoint !== "object") {
+      return false;
+    }
+
+    const candidate = endpoint as Record<string, unknown>;
+    return [
+      "kind",
+      "slotInstance",
+      "rpcUrl",
+      "toriiUrl",
+      "graphqlUrl",
+      "relayUrl",
+      "chainId",
+    ].every(
+      (key) =>
+        candidate[key] === undefined || typeof candidate[key] === "string",
+    );
+  });
 };
 
 const normalizeVersionResponse = (data: unknown): VersionResponse => {
@@ -59,10 +89,9 @@ const normalizeVersionResponse = (data: unknown): VersionResponse => {
         ? candidate.maintenance
         : undefined,
     slot: isStringMap(candidate.slot) ? candidate.slot : undefined,
-    slotEndpoints:
-      candidate.slotEndpoints && typeof candidate.slotEndpoints === "object"
-        ? (candidate.slotEndpoints as VersionResponse["slotEndpoints"])
-        : undefined,
+    slotEndpoints: isSlotEndpointMap(candidate.slotEndpoints)
+      ? candidate.slotEndpoints
+      : undefined,
     api: isStringMap(candidate.api) ? candidate.api : undefined,
   };
 };
@@ -74,7 +103,7 @@ export const fetchVersion = async (): Promise<VersionResponse> => {
         const controller = new AbortController();
         const timeoutId = window.setTimeout(
           () => controller.abort(),
-          FETCH_VERSION_TIMEOUT_MS
+          FETCH_VERSION_TIMEOUT_MS,
         );
         let response: Response;
 

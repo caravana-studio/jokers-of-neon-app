@@ -33,9 +33,10 @@ import { useCavosSafe } from "./cavos/CavosBridgeContext";
 import { useGameLoopBurnerSession } from "../hooks/useGameLoopBurnerSession";
 import type { SetupResult } from "./setup";
 
-const CHAIN = import.meta.env.VITE_CHAIN;
 const EARLY_ACCESS_VERSION = !!import.meta.env.VITE_EARLY_ACCESS_VERSION;
 const CAVOS_ENABLED = !!import.meta.env.VITE_CAVOS_APP_ID;
+const ENABLE_GUEST_MODE =
+  import.meta.env.VITE_ENABLE_GUEST_MODE?.trim().toLowerCase() === "true";
 const CAVOS_NATIVE_REDIRECT_URI =
   import.meta.env.VITE_CAVOS_NATIVE_REDIRECT_URI ||
   "jokers://open";
@@ -120,8 +121,7 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
   const appType = useAppContext();
 
   const allowGuest =
-    CHAIN !== "mainnet" &&
-    CHAIN !== "sepolia" &&
+    ENABLE_GUEST_MODE &&
     appType !== AppType.SHOP &&
     !EARLY_ACCESS_VERSION;
 
