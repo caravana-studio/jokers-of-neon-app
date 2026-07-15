@@ -33,6 +33,7 @@ import { Redirect } from "./pages/Redirect";
 import { RewardsPage } from "./pages/RewardsPage";
 import { SeasonPassOfferPage } from "./pages/SeasonPassOffer/SeasonPassOfferPage";
 import { MissionsPage } from "./pages/Missions/MissionsPage";
+import { MigrateWalletPage } from "./pages/MigrateWallet/MigrateWalletPage";
 import { SeasonProgressionPage } from "./pages/SeasonProgression/SeasonProgressionPage";
 import { SettingsPage } from "./pages/SettingsPage";
 import { ShopPage } from "./pages/Shop/ShopPage";
@@ -67,6 +68,14 @@ export const AppRoutes = () => {
         element={
           <AnimatedPage>
             <CavosWalletConnect />
+          </AnimatedPage>
+        }
+      />
+      <Route
+        path="/migrate"
+        element={
+          <AnimatedPage>
+            <MigrateWalletPage />
           </AnimatedPage>
         }
       />

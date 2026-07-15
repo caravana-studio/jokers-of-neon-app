@@ -487,6 +487,12 @@
     "go-back": "Go back",
     "just-try-question": "Just want to try the game?",
     "guest-mode": "Guest mode",
+    "controller-migration-modal": {
+      "title": "Controller is deprecated",
+      "description": "To migrate your account, visit migrate.jokersofneon.com.",
+      "confirm": "Migrate",
+      "cancel": "Cancel"
+    },
     "season-label": "SEASON",
     "errors": {
       "invalid-code": "Invalid code. Please check it and try again."

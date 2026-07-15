@@ -9,12 +9,16 @@ import {
   usesCustomKatanaEndpoint,
 } from "../../config/cartridgeUrls";
 import { isNative, isNativeAndroid } from "../../utils/capacitorUtils";
+import {
+  isMigrateContext,
+  migrateMainnetRpcUrl,
+} from "../../utils/migrateMainnet";
 import { policies } from "./policies";
 
 const standaloneMainnetRpc = import.meta.env.VITE_STARKNET_RPC_URL?.trim();
 const isStandaloneShopMode = import.meta.env.MODE === "standalone-shop";
-const shouldUseStandaloneMainnetRpc =
-  isStandaloneShopMode && !!standaloneMainnetRpc;
+const shouldUseForcedMainnetRpc =
+  isMigrateContext || (isStandaloneShopMode && !!standaloneMainnetRpc);
 
 const DOJO_NAMESPACE =
   import.meta.env.VITE_DOJO_NAMESPACE || "jokers_of_neon_core";
@@ -42,23 +46,28 @@ export const getSlotChainId = (slot: string) => {
   );
 };
 
-const resolvedChain = shouldUseStandaloneMainnetRpc
-  ? "mainnet"
-  : slotInstance || "jokers-of-neon";
+const resolvedChain =
+  shouldUseForcedMainnetRpc ? "mainnet" : slotInstance || "jokers-of-neon";
 const resolvedSlot =
   usesCustomKatanaEndpoint ||
   resolvedChain === "mainnet" ||
   resolvedChain === "sepolia"
     ? undefined
     : resolvedChain;
-const defaultChainId = slotChainId
-  ? encodeChainId(slotChainId)
-  : resolvedSlot !== undefined
-    ? getSlotChainId(resolvedSlot)
-    : getChainId(resolvedChain);
-const resolvedRpcUrl = shouldUseStandaloneMainnetRpc
-  ? standaloneMainnetRpc || rpcUrl
-  : rpcUrl;
+const defaultChainId =
+  shouldUseForcedMainnetRpc
+    ? getChainId("mainnet")
+    : slotChainId
+      ? encodeChainId(slotChainId)
+      : resolvedSlot !== undefined
+        ? getSlotChainId(resolvedSlot)
+        : getChainId(resolvedChain);
+const resolvedRpcUrl =
+  shouldUseForcedMainnetRpc
+    ? isMigrateContext
+      ? migrateMainnetRpcUrl
+      : standaloneMainnetRpc || rpcUrl
+    : rpcUrl;
 
 const signupOptions: AuthOptions = isNativeAndroid
   ? ["google", "discord", "password"]
@@ -74,6 +83,7 @@ const controllerOptions = {
   signupOptions,
 };
 
+console.log('policies', policies);
 export const controller = !isNative
   ? new ControllerConnector(controllerOptions)
   : new SessionConnector({

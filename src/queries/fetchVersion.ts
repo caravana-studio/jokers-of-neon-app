@@ -37,7 +37,7 @@ const isStringMap = (value: unknown): value is Record<string, string> => {
 };
 
 const isSlotEndpointMap = (
-  value: unknown
+  value: unknown,
 ): value is NonNullable<VersionResponse["slotEndpoints"]> => {
   if (!value || typeof value !== "object") {
     return false;
@@ -59,7 +59,7 @@ const isSlotEndpointMap = (
       "chainId",
     ].every(
       (key) =>
-        candidate[key] === undefined || typeof candidate[key] === "string"
+        candidate[key] === undefined || typeof candidate[key] === "string",
     );
   });
 };
@@ -103,7 +103,7 @@ export const fetchVersion = async (): Promise<VersionResponse> => {
         const controller = new AbortController();
         const timeoutId = window.setTimeout(
           () => controller.abort(),
-          FETCH_VERSION_TIMEOUT_MS
+          FETCH_VERSION_TIMEOUT_MS,
         );
         let response: Response;
 

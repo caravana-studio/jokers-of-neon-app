@@ -7,6 +7,7 @@ import {
 } from "react";
 import { Account, AccountInterface, RpcProvider } from "starknet";
 import { BurnerProvider, useBurnerManager } from "@dojoengine/create-burner";
+import { useLocation } from "react-router-dom";
 
 import { useAccountStore } from "./accountStore";
 import { SetupResult } from "./setup";
@@ -132,6 +133,7 @@ const DojoContextProvider = ({
   masterAccount,
 }: DojoContextProviderProps) => {
   const appType = useAppContext();
+  const location = useLocation();
   const {
     finalAccount,
     accountType,
@@ -158,12 +160,18 @@ const DojoContextProvider = ({
     []
   );
 
+  const initializedBurnerManager = value.burnerManager?.isInitialized
+    ? value.burnerManager
+    : undefined;
   const { create, list, get, select, isDeploying, clear } = useBurnerManager({
-    burnerManager: value.burnerManager,
+    burnerManager: initializedBurnerManager as any,
   });
+  const shouldAllowFallbackAccount =
+    appType === AppType.SHOP ||
+    location.pathname === "/login" ||
+    location.pathname === "/migrate";
   const resolvedAccount =
-    finalAccount ??
-    (appType === AppType.SHOP ? shopFallbackAccount : null);
+    finalAccount ?? (shouldAllowFallbackAccount ? shopFallbackAccount : null);
 
   useEffect(() => {
     if (

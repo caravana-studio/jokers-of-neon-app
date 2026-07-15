@@ -3,8 +3,50 @@ import { initReactI18next } from "react-i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 import resourcesToBackend from "i18next-resources-to-backend";
 
-const loadResources = (language: string, namespace: string) =>
-  import(`../public/locales/${language}/${namespace}/translation.json`);
+const normalizeLanguage = (language: string) => {
+  const normalized = language.toLowerCase();
+
+  if (normalized.startsWith("es")) return "es";
+  if (normalized.startsWith("pt")) return "pt";
+  return "en";
+};
+
+const loadResources = async (language: string, namespace: string) => {
+  if (namespace === "translation") {
+    return {};
+  }
+
+  const normalizedLanguage = normalizeLanguage(language);
+
+  if (import.meta.env.MODE === "test") {
+    const [{ readFile }, pathModule] = await Promise.all([
+      import("node:fs/promises"),
+      import("node:path"),
+    ]);
+    const filePath = pathModule.join(
+      process.cwd(),
+      "public",
+      "locales",
+      normalizedLanguage,
+      namespace,
+      "translation.json",
+    );
+    const fileContents = await readFile(filePath, "utf-8");
+    return JSON.parse(fileContents) as Record<string, unknown>;
+  }
+
+  const response = await fetch(
+    `/locales/${normalizedLanguage}/${namespace}/translation.json`,
+  );
+
+  if (!response.ok) {
+    throw new Error(
+      `Failed to load i18n resources for ${normalizedLanguage}/${namespace}`,
+    );
+  }
+
+  return response.json();
+};
 
 i18n
   .use(LanguageDetector)
@@ -13,6 +55,9 @@ i18n
   .init({
     fallbackLng: "en",
     debug: false,
+    supportedLngs: ["en", "es", "pt"],
+    nonExplicitSupportedLngs: true,
+    load: "languageOnly",
     interpolation: {
       escapeValue: false,
     },

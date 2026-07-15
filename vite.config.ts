@@ -10,12 +10,13 @@ import { defineConfig, type Plugin, type UserConfig } from "vite";
 import topLevelAwait from "vite-plugin-top-level-await";
 import wasm from "vite-plugin-wasm";
 
-type BuildTarget = "main" | "standaloneShop" | "miniapp" | "all";
+type BuildTarget = "main" | "standaloneShop" | "miniapp" | "migrate" | "all";
 
 const rootDir = fileURLToPath(new URL(".", import.meta.url));
 const indexHtml = path.resolve(rootDir, "index.html");
 const standaloneShopHtml = path.resolve(rootDir, "standalone-shop.html");
 const miniappHtml = path.resolve(rootDir, "miniapp.html");
+const migrateHtml = path.resolve(rootDir, "migrate.html");
 const localCertDir = path.resolve(rootDir, ".cert");
 const isReactCompilerEnabled = process.env.VITE_REACT_COMPILER !== "false";
 
@@ -93,13 +94,14 @@ const resolveHttpsServerConfig = () => {
 const createConfig = (target: BuildTarget): UserConfig => {
   const isStandaloneShop = target === "standaloneShop";
   const isMiniapp = target === "miniapp";
+  const isMigrate = target === "migrate";
   const isAll = target === "all";
   const assetBase = "/";
   const https = resolveHttpsServerConfig();
   const config: UserConfig = {
     base: assetBase,
     plugins: [
-      ...(isReactCompilerEnabled ? [reactCompilerPlugin] : []),
+      ...(isReactCompilerEnabled && !isMigrate ? [reactCompilerPlugin] : [react()]),
       wasm(),
       topLevelAwait(),
       svgx(),
@@ -111,8 +113,15 @@ const createConfig = (target: BuildTarget): UserConfig => {
           ? { shop: standaloneShopHtml }
           : isMiniapp
           ? { miniapp: miniappHtml }
+          : isMigrate
+          ? { migrate: migrateHtml }
           : isAll
-          ? { main: indexHtml, shop: standaloneShopHtml, miniapp: miniappHtml }
+          ? {
+              main: indexHtml,
+              shop: standaloneShopHtml,
+              miniapp: miniappHtml,
+              migrate: migrateHtml,
+            }
           : indexHtml,
       },
     },
@@ -159,6 +168,23 @@ const createConfig = (target: BuildTarget): UserConfig => {
     config.plugins?.push(htmlFallbackPlugin("/miniapp.html"));
   }
 
+  if (isMigrate) {
+    config.appType = "mpa";
+    config.build = {
+      ...config.build,
+      outDir: "dist-migrate",
+    };
+    config.server = {
+      ...config.server,
+      open: "/",
+    };
+    config.preview = {
+      ...config.preview,
+      open: "/",
+    };
+    config.plugins?.push(htmlFallbackPlugin("/migrate.html"));
+  }
+
   return config;
 };
 
@@ -202,6 +228,8 @@ export default defineConfig(({ mode }) => {
       ? "standaloneShop"
       : process.env.MINIAPP === "true" || mode === "miniapp"
       ? "miniapp"
+      : process.env.MIGRATE === "true" || mode === "migrate"
+      ? "migrate"
       : "main";
 
   return createConfig(target);

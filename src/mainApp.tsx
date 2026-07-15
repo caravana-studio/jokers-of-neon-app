@@ -56,6 +56,7 @@ const I18N_NAMESPACES = [
   "achievements",
   "map",
   "docs",
+  "migrate",
 ];
 
 const progressBarRef = createRef<LoadingScreenHandle>();

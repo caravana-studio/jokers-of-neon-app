@@ -163,11 +163,15 @@ const generatePolicies = (): Policies => {
     policiesContracts[USDC_ADDRESS] = {
       methods: [{ name: "Approve", entrypoint: "approve" }],
     };
-    if (NFT_CONTRACT_ADDRESS) {
-      policiesContracts[NFT_CONTRACT_ADDRESS] = {
-        methods: [{ name: "Approve", entrypoint: "approve" }],
-      };
-    }
+  }
+
+  if (NFT_CONTRACT_ADDRESS) {
+    policiesContracts[NFT_CONTRACT_ADDRESS] = {
+      methods: [
+        { name: "Approve", entrypoint: "approve" },
+        { name: "Transfer From", entrypoint: "transfer_from" },
+      ],
+    };
   }
 
   const messages: SignMessagePolicy[] = MARKETPLACE_CONTRACT_ADDRESS
