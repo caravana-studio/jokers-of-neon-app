@@ -1,4 +1,12 @@
-import { Divider, Flex, useToast } from "@chakra-ui/react";
+import {
+  Divider,
+  Flex,
+  IconButton,
+  Text,
+  Tooltip,
+  useToast,
+} from "@chakra-ui/react";
+import { Copy } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -43,7 +51,10 @@ export const ProfileContent = ({
   const updateUsernameForAddress = useUsernameStore(
     (store) => store.updateUsernameForAddress
   );
-  const setProfileUsername = useProfileStore((store) => store.setProfileUsername);
+  const setProfileUsername = useProfileStore(
+    (store) => store.setProfileUsername
+  );
+  const walletAddress = setup.account.account.address;
 
   const handleUpdateUsername = async (nextUsername: string) => {
     setUsernameSaving(true);
@@ -60,7 +71,6 @@ export const ProfileContent = ({
   };
 
   const handleCopyWalletAddress = async () => {
-    const walletAddress = setup.account.account.address;
     if (!walletAddress) {
       return;
     }
@@ -133,6 +143,53 @@ export const ProfileContent = ({
             }
           />
 
+          {walletAddress && (
+            <Flex
+              alignItems="center"
+              gap={3}
+              w="100%"
+              my={4}
+              px={4}
+              py={3}
+              borderRadius="12px"
+              bg="rgba(0, 0, 0, 0.5)"
+              boxShadow="0px 0px 8px rgba(255, 255, 255, 0.35), inset 0 0 5px rgba(255, 255, 255, 0.25)"
+            >
+              <Flex direction="column" minW={0} flex={1}>
+                <Text
+                  fontSize="10px"
+                  fontWeight="500"
+                  textTransform="uppercase"
+                  color="whiteAlpha.800"
+                >
+                  {tProfile("wallet-address")}
+                </Text>
+                <Text
+                  fontSize="xs"
+                  fontFamily="monospace"
+                  overflowWrap="anywhere"
+                  lineHeight="1.25"
+                >
+                  {walletAddress}
+                </Text>
+              </Flex>
+              <Tooltip label={tProfile("copy-wallet-address")}>
+                <IconButton
+                  aria-label={tProfile("copy-wallet-address")}
+                  icon={<Copy size={16} />}
+                  minW="32px"
+                  h="32px"
+                  p={0}
+                  size="sm"
+                  variant="ghost"
+                  color="white"
+                  _hover={{ color: "white", bg: "whiteAlpha.200" }}
+                  onClick={() => void handleCopyWalletAddress()}
+                />
+              </Tooltip>
+            </Flex>
+          )}
+
           <UsernameModal
             isOpen={usernameModalOpen}
             title={t("username-modal.title.edit")}
@@ -169,17 +226,6 @@ export const ProfileContent = ({
               description={t("game.game-menu.settings-btn")}
               label={t("game.game-menu.settings-btn")}
               onClick={() => navigate("/settings")}
-              arrowRight
-              width={btnWidth}
-            />
-            {isSmallScreen && (
-              <Divider borderColor="white" borderWidth="1px" my={2} />
-            )}
-            <MenuBtn
-              icon={Icons.DOCS}
-              description={tProfile("copy-wallet-address")}
-              label={tProfile("copy-wallet-address")}
-              onClick={() => void handleCopyWalletAddress()}
               arrowRight
               width={btnWidth}
             />
