@@ -10,11 +10,12 @@ const configuredEnv =
 const configuredSlotInstance =
   import.meta.env.VITE_SLOT_INSTANCE?.trim() || undefined;
 const isAwsProfile = configuredEnv.includes("aws");
-let slotSource: "version-api" | "version-endpoint" | "env" | "default" = isAwsProfile
-  ? "default"
-  : configuredSlotInstance
-    ? "env"
-    : "default";
+let slotSource: "version-api" | "version-endpoint" | "env" | "default" =
+  isAwsProfile
+    ? "default"
+    : configuredSlotInstance
+      ? "env"
+      : "default";
 export const usesCustomKatanaEndpoint = isAwsProfile;
 export let slotChainId: string | undefined = undefined;
 
