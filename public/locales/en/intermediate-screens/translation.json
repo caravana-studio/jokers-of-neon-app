@@ -491,6 +491,12 @@
     "errors": {
       "invalid-code": "Invalid code. Please check it and try again."
     },
+    "controller-migration-modal": {
+      "title": "Controller is deprecated",
+      "description": "To migrate your account, visit migrate.jokersofneon.com.",
+      "confirm": "Migrate",
+      "cancel": "Cancel"
+    },
     "terms": {
       "agreement": "By continuing you are agreeing to Jokers of Neon's",
       "link": "Terms and Conditions"

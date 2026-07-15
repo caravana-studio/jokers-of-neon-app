@@ -490,6 +490,12 @@
     "errors": {
       "invalid-code": "Código inválido. Verifique e tente novamente."
     },
+    "controller-migration-modal": {
+      "title": "Controller foi descontinuado",
+      "description": "Para migrar sua conta, acesse migrate.jokersofneon.com.",
+      "confirm": "Migrar",
+      "cancel": "Cancelar"
+    },
     "terms": {
       "agreement": "Ao continuar, você concorda com os",
       "link": "Termos e Condições"
