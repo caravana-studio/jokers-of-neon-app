@@ -1,4 +1,6 @@
+import { useToast } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { claimStreakRewards, fetchStreakStatus } from "../api/profile";
 import { getUserCards } from "../api/getUserCards";
@@ -16,10 +18,13 @@ import { StreakIncreasedLocationState } from "../utils/streakPresentation";
 import { ExternalPack } from "./ExternalPack/ExternalPack";
 
 const MOCKED_DAILY_STREAK = 30;
+const REWARD_CLAIM_ERROR_TOAST_ID = "streak-reward-claim-error";
 
 export const StreakIncreasedPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { t } = useTranslation("intermediate-screens");
+  const toast = useToast();
   const { account } = useDojo();
   const customNavigate = useCustomNavigate();
   const { navigateToMap } = useMapNavigate();
@@ -38,6 +43,7 @@ export const StreakIncreasedPage = () => {
   const [packs, setPacks] = useState<SeasonRewardPack[]>([]);
   const [currentPackIndex, setCurrentPackIndex] = useState(0);
   const [ownedCardIds, setOwnedCardIds] = useState<string[]>([]);
+  const rewardIncludesPack = reward?.items.some((item) => item.type === "pack") ?? false;
 
   if (HIDE_STREAK) {
     return <Navigate to={state?.from ?? "/"} replace />;
@@ -126,8 +132,20 @@ export const StreakIncreasedPage = () => {
     setIsRewardClaiming(true);
 
     try {
-      const userCardsData = await getUserCards(address);
-      setOwnedCardIds(userCardsData.ownedCardIds ?? []);
+      if (rewardIncludesPack) {
+        try {
+          const userCardsData = await getUserCards(address);
+          setOwnedCardIds(userCardsData.ownedCardIds ?? []);
+        } catch (error) {
+          console.warn(
+            "StreakIncreasedPage: failed to load user collection before reward claim",
+            error
+          );
+          setOwnedCardIds([]);
+        }
+      } else {
+        setOwnedCardIds([]);
+      }
 
       const result = await claimStreakRewards(address, reward.claimIds);
 
@@ -149,6 +167,15 @@ export const StreakIncreasedPage = () => {
       await handleClose();
     } catch (error) {
       console.error("StreakIncreasedPage: streak reward claim failed", error);
+      if (!toast.isActive(REWARD_CLAIM_ERROR_TOAST_ID)) {
+        toast({
+          id: REWARD_CLAIM_ERROR_TOAST_ID,
+          title: t("daily-streak.reward-claim-error"),
+          status: "error",
+          duration: 4000,
+          isClosable: true,
+        });
+      }
       setIsRewardClaiming(false);
     }
   };

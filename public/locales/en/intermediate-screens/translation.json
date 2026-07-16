@@ -513,6 +513,7 @@
     "reward-pack": "Pack x{{count}}",
     "reward-xp": "{{amount}} XP",
     "reward-protector": "Protector x{{count}}",
+    "reward-claim-error": "We couldn't claim your reward. Please try again.",
     "share": {
       "button": "SHARE ON",
       "variants": {

@@ -507,11 +507,12 @@
     "description": "Completa una misión diaria para comenzar tu racha.",
     "next-objective": "Próximo objetivo",
     "continue": "Continuar",
-    "open-reward": "Abrir reward",
-    "reward-ready": "Reward",
-    "reward-pack": "Pack x{{count}}",
+    "open-reward": "Abrir recompensa",
+    "reward-ready": "Recompensa",
+    "reward-pack": "Paquete x{{count}}",
     "reward-xp": "{{amount}} XP",
     "reward-protector": "Protector x{{count}}",
+    "reward-claim-error": "No pudimos reclamar tu recompensa. Inténtalo de nuevo.",
     "share": {
       "button": "COMPARTIR EN",
       "variants": {
