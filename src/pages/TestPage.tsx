@@ -1,5 +1,6 @@
 import { Box, Button, Divider, Flex, Input, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { validateUsername } from "../api/usernames";
 import { DelayedLoading } from "../components/DelayedLoading";
@@ -17,13 +18,128 @@ import { useGameStore } from "../state/useGameStore";
 import { useUsernameStore } from "../state/useUsernameStore";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import { formatAddress } from "../utils/starknetAddress";
+import type { StreakPresentationRewardApiData } from "../api/profile";
+import type { SeasonRewardPack } from "../api/claimSeasonReward";
 
 function getErrorMessage(error: unknown): string {
   return error instanceof Error ? error.message : "Unable to save username";
 }
 
+const dailyStreakRewardPreviewPacks: SeasonRewardPack[] = [
+  {
+    packId: 1,
+    packNumber: 1,
+    mintedCards: [
+      { card_id: 1, skin_id: 0 },
+      { card_id: 14, skin_id: 0 },
+      { card_id: 27, skin_id: 0 },
+    ],
+  },
+];
+
+type DailyStreakRewardTestCase = {
+  labelKey: string;
+  reward: StreakPresentationRewardApiData;
+  packs?: SeasonRewardPack[];
+};
+
+function buildDailyStreakRewardPreview({
+  xpAmount = 0,
+  protectorQuantity = 0,
+  includePacks = false,
+}: {
+  xpAmount?: number;
+  protectorQuantity?: number;
+  includePacks?: boolean;
+}): StreakPresentationRewardApiData {
+  return {
+    claimIds: [],
+    milestone: 30,
+    items: [
+      ...(xpAmount > 0
+        ? [
+            {
+              type: "xp" as const,
+              amount: xpAmount,
+              track: "normal" as const,
+            },
+          ]
+        : []),
+      ...(protectorQuantity > 0
+        ? [
+            {
+              type: "streak_protector" as const,
+              quantity: protectorQuantity,
+              optional: true,
+              track: "bonus" as const,
+            },
+          ]
+        : []),
+      ...(includePacks
+        ? [
+            {
+              type: "pack" as const,
+              tier: "basic" as const,
+              packId: 1,
+              quantity: dailyStreakRewardPreviewPacks.length,
+              track: "normal" as const,
+            },
+          ]
+        : []),
+    ],
+  };
+}
+
+const dailyStreakRewardTestCases: DailyStreakRewardTestCase[] = [
+  {
+    labelKey: "xp-only",
+    reward: buildDailyStreakRewardPreview({ xpAmount: 100 }),
+  },
+  {
+    labelKey: "protector-only",
+    reward: buildDailyStreakRewardPreview({ protectorQuantity: 2 }),
+  },
+  {
+    labelKey: "packs-only",
+    reward: buildDailyStreakRewardPreview({ includePacks: true }),
+    packs: dailyStreakRewardPreviewPacks,
+  },
+  {
+    labelKey: "xp-protector",
+    reward: buildDailyStreakRewardPreview({
+      xpAmount: 100,
+      protectorQuantity: 1,
+    }),
+  },
+  {
+    labelKey: "xp-packs",
+    reward: buildDailyStreakRewardPreview({ xpAmount: 100, includePacks: true }),
+    packs: dailyStreakRewardPreviewPacks,
+  },
+  {
+    labelKey: "protector-packs",
+    reward: buildDailyStreakRewardPreview({
+      protectorQuantity: 1,
+      includePacks: true,
+    }),
+    packs: dailyStreakRewardPreviewPacks,
+  },
+  {
+    labelKey: "all",
+    reward: buildDailyStreakRewardPreview({
+      xpAmount: 100,
+      protectorQuantity: 1,
+      includePacks: true,
+    }),
+    packs: dailyStreakRewardPreviewPacks,
+  },
+];
+
 export const TestPage = () => {
   const { isSmallScreen } = useResponsiveValues();
+  const { t } = useTranslation("intermediate-screens", {
+    keyPrefix: "test-features.daily-streak-rewards",
+  });
   const navigate = useNavigate();
   const {
     account: { account },
@@ -129,6 +245,31 @@ export const TestPage = () => {
           width="18px"
         />
         {isSmallScreen && <Divider borderColor="white" borderWidth="1px" my={2} />}
+        {dailyStreakRewardTestCases.map((testCase) => (
+          <Box key={testCase.labelKey}>
+            <MenuBtn
+              icon={Icons.GIFT}
+              description={t(testCase.labelKey)}
+              label={t(testCase.labelKey)}
+              onClick={() =>
+                navigate("/streak-increased", {
+                  state: {
+                    streak: 30,
+                    reward: testCase.reward,
+                    rewardPreviewPacks: testCase.packs ?? [],
+                    rewardPreviewOwnedCardIds: ["1_0"],
+                    from: "/test",
+                  },
+                })
+              }
+              arrowRight
+              width="18px"
+            />
+            {isSmallScreen && (
+              <Divider borderColor="white" borderWidth="1px" my={2} />
+            )}
+          </Box>
+        ))}
         <MenuBtn
           icon={Icons.LIST}
           description="View and set username"

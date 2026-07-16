@@ -60,6 +60,7 @@ export const useNextLevelButton = () => {
           if (presentation.show && presentation.streak !== null) {
             const navigated = navigateToStreakIncreased(navigate, {
               streak: presentation.streak,
+              reward: presentation.reward,
               continuation: {
                 type: "map",
               },

@@ -507,7 +507,16 @@
     "protectors": "Protectors",
     "description": "Complete a daily mission to start your streak.",
     "next-objective": "Next objective",
+    "next": "Next",
     "continue": "Continue",
+    "open-reward": "Reward",
+    "reward-ready": "Reward",
+    "reward-pack": "Pack x{{count}}",
+    "reward-xp": "{{amount}} XP",
+    "reward-protector": "Protector x{{count}}",
+    "reward-received": "Reward received",
+    "streak-protector-reward": "Streak protector",
+    "reward-claim-error": "We couldn't claim your reward. Please try again.",
     "share": {
       "button": "SHARE ON",
       "variants": {
@@ -529,6 +538,17 @@
       "friday": "Fr",
       "saturday": "Sa",
       "sunday": "Su"
+    }
+  },
+  "test-features": {
+    "daily-streak-rewards": {
+      "xp-only": "Daily Streak Reward: XP",
+      "protector-only": "Daily Streak Reward: Protector",
+      "packs-only": "Daily Streak Reward: Packs",
+      "xp-protector": "Daily Streak Reward: XP + Protector",
+      "xp-packs": "Daily Streak Reward: XP + Packs",
+      "protector-packs": "Daily Streak Reward: Protector + Packs",
+      "all": "Daily Streak Reward: All"
     }
   }
 }

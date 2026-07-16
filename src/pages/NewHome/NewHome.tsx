@@ -154,6 +154,7 @@ export const NewHome = () => {
         ) {
           const navigated = navigateToStreakIncreased(navigate, {
             streak: presentation.streak,
+            reward: presentation.reward,
             continuation: {
               type: "route",
               to: "/",

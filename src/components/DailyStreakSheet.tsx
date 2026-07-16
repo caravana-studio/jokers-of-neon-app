@@ -26,6 +26,7 @@ import { MobileBottomBar } from "./MobileBottomBar";
 import { MobileDecoration } from "./MobileDecoration";
 import { RollingNumber } from "./RollingNumber";
 import { useResponsiveValues } from "../theme/responsiveSettings";
+import type { StreakPresentationRewardApiData } from "../api/profile";
 
 const CELEBRATION_INTRO_DURATION_MS = 4000;
 
@@ -42,6 +43,8 @@ export interface DailyStreakSheetProps {
   streakProtectors?: number;
   onClose: () => void | Promise<void>;
   onContinue?: () => void | Promise<void>;
+  reward?: StreakPresentationRewardApiData | null;
+  isRewardClaiming?: boolean;
   referenceDate?: Date;
   showCelebrationIntroOnEntry?: boolean;
 }
@@ -51,6 +54,8 @@ export const DailyStreakSheet = ({
   streakProtectors = 0,
   onClose,
   onContinue,
+  reward,
+  isRewardClaiming = false,
   referenceDate,
   showCelebrationIntroOnEntry = true,
 }: DailyStreakSheetProps) => {
@@ -461,9 +466,9 @@ export const DailyStreakSheet = ({
               }
               secondButton={{
                 onClick: handleContinueClick,
-                label: t("daily-streak.continue"),
-                isLoading: isContinuing,
-                disabled: isContinuing,
+                label: reward ? t("daily-streak.open-reward") : t("daily-streak.continue"),
+                isLoading: isContinuing || isRewardClaiming,
+                disabled: isContinuing || isRewardClaiming,
               }}
             />
           </motion.div>
