@@ -506,12 +506,15 @@
     "protectors": "Protectores",
     "description": "Completa una misión diaria para comenzar tu racha.",
     "next-objective": "Próximo objetivo",
+    "next": "Siguiente",
     "continue": "Continuar",
-    "open-reward": "Abrir recompensa",
+    "open-reward": "Recompensa",
     "reward-ready": "Recompensa",
     "reward-pack": "Paquete x{{count}}",
     "reward-xp": "{{amount}} XP",
     "reward-protector": "Protector x{{count}}",
+    "reward-received": "Recompensa recibida",
+    "streak-protector-reward": "Protector de racha",
     "reward-claim-error": "No pudimos reclamar tu recompensa. Inténtalo de nuevo.",
     "share": {
       "button": "COMPARTIR EN",
@@ -534,6 +537,17 @@
       "friday": "Vi",
       "saturday": "Sa",
       "sunday": "Do"
+    }
+  },
+  "test-features": {
+    "daily-streak-rewards": {
+      "xp-only": "Recompensa de racha: XP",
+      "protector-only": "Recompensa de racha: Protector",
+      "packs-only": "Recompensa de racha: Paquetes",
+      "xp-protector": "Recompensa de racha: XP + Protector",
+      "xp-packs": "Recompensa de racha: XP + Paquetes",
+      "protector-packs": "Recompensa de racha: Protector + Paquetes",
+      "all": "Recompensa de racha: Todo"
     }
   }
 }
