@@ -1,3 +1,4 @@
+import { Browser } from "@capacitor/browser";
 import { Flex, Image, Link, Text } from "@chakra-ui/react";
 import { keyframes } from "@emotion/react";
 import { AnimatePresence, motion } from "framer-motion";
@@ -5,10 +6,11 @@ import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useWallet } from "../../dojo/WalletContext";
+import { ConfirmationModal } from "../../components/ConfirmationModal";
 import LanguageSwitcher from "../../components/LanguageSwitcher";
 import { MobileDecoration } from "../../components/MobileDecoration";
 import { useSeasonNumber } from "../../constants/season";
-import { isNativeAndroid, nativePaddingTop } from "../../utils/capacitorUtils";
+import { isNative, isNativeAndroid, nativePaddingTop } from "../../utils/capacitorUtils";
 import { PreThemeLoadingPage } from "../PreThemeLoadingPage";
 import { AuthOptionsView } from "./components/AuthOptionsView";
 import { EmailCodeView } from "./components/EmailCodeView";
@@ -30,6 +32,7 @@ const bossFloatAnimation = keyframes`
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const RESEND_CODE_COOLDOWN_SECONDS = 90;
+const CONTROLLER_MIGRATION_URL = "https://migrate.jokersofneon.com";
 
 const normalizeCavosErrorCode = (error: string) =>
   error.trim().toLowerCase().replace(/[\s-]+/g, "_");
@@ -46,9 +49,10 @@ export const CavosWalletConnect = () => {
   const [isSendingEmailOtp, setIsSendingEmailOtp] = useState(false);
   const [isVerifyingEmailOtp, setIsVerifyingEmailOtp] = useState(false);
   const [resendCooldownSeconds, setResendCooldownSeconds] = useState(0);
+  const [isControllerMigrationModalOpen, setIsControllerMigrationModalOpen] =
+    useState(false);
   const stageTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const {
-    switchToController,
     continueAsGuest,
     continueWithCavosOAuth,
     sendCavosEmailOtp,
@@ -132,7 +136,20 @@ export const CavosWalletConnect = () => {
   };
 
   const handleContinueWithControllerClick = () => {
-    switchToController();
+    setIsControllerMigrationModalOpen(true);
+  };
+
+  const handleControllerMigrationConfirm = () => {
+    setIsControllerMigrationModalOpen(false);
+
+    if (isNative) {
+      Browser.open({ url: CONTROLLER_MIGRATION_URL }).catch((error) => {
+        console.error("Failed to open controller migration URL", error);
+      });
+      return;
+    }
+
+    window.open(CONTROLLER_MIGRATION_URL, "_blank", "noopener,noreferrer");
   };
 
   const handleGuestModeClick = async () => {
@@ -460,6 +477,16 @@ export const CavosWalletConnect = () => {
           </Link>
         </Text>
       </Flex>
+
+      <ConfirmationModal
+        isOpen={isControllerMigrationModalOpen}
+        close={() => setIsControllerMigrationModalOpen(false)}
+        title={t("controller-migration-modal.title")}
+        description={t("controller-migration-modal.description")}
+        confirmText={t("controller-migration-modal.confirm")}
+        cancelText={t("controller-migration-modal.cancel")}
+        onConfirm={handleControllerMigrationConfirm}
+      />
     </PreThemeLoadingPage>
   );
 };

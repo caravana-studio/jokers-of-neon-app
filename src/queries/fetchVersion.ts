@@ -8,6 +8,18 @@ export interface VersionResponse {
   version: string;
   maintenance?: boolean;
   slot?: Record<string, string>;
+  slotEndpoints?: Record<
+    string,
+    {
+      kind?: string;
+      slotInstance?: string;
+      rpcUrl?: string;
+      toriiUrl?: string;
+      graphqlUrl?: string;
+      relayUrl?: string;
+      chainId?: string;
+    }
+  >;
   api?: Record<string, string>;
 }
 
@@ -24,6 +36,34 @@ const isStringMap = (value: unknown): value is Record<string, string> => {
   return Object.values(value).every((slot) => typeof slot === "string");
 };
 
+const isSlotEndpointMap = (
+  value: unknown
+): value is NonNullable<VersionResponse["slotEndpoints"]> => {
+  if (!value || typeof value !== "object") {
+    return false;
+  }
+
+  return Object.values(value).every((endpoint) => {
+    if (!endpoint || typeof endpoint !== "object") {
+      return false;
+    }
+
+    const candidate = endpoint as Record<string, unknown>;
+    return [
+      "kind",
+      "slotInstance",
+      "rpcUrl",
+      "toriiUrl",
+      "graphqlUrl",
+      "relayUrl",
+      "chainId",
+    ].every(
+      (key) =>
+        candidate[key] === undefined || typeof candidate[key] === "string"
+    );
+  });
+};
+
 const normalizeVersionResponse = (data: unknown): VersionResponse => {
   if (!data || typeof data !== "object") {
     return FALLBACK_VERSION_RESPONSE;
@@ -33,6 +73,7 @@ const normalizeVersionResponse = (data: unknown): VersionResponse => {
     version?: unknown;
     maintenance?: unknown;
     slot?: unknown;
+    slotEndpoints?: unknown;
     api?: unknown;
   };
 
@@ -48,6 +89,9 @@ const normalizeVersionResponse = (data: unknown): VersionResponse => {
         ? candidate.maintenance
         : undefined,
     slot: isStringMap(candidate.slot) ? candidate.slot : undefined,
+    slotEndpoints: isSlotEndpointMap(candidate.slotEndpoints)
+      ? candidate.slotEndpoints
+      : undefined,
     api: isStringMap(candidate.api) ? candidate.api : undefined,
   };
 };
