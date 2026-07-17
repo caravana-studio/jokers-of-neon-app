@@ -49,7 +49,11 @@ import { PracticeGameProvider } from "./providers/PracticeGameProvider";
 import { StoreProvider } from "./providers/StoreProvider";
 import { LoginGate } from "./utils/LoginGate";
 
-export const AppRoutes = () => {
+type AppRoutesProps = {
+  isClaimingLives: boolean;
+};
+
+export const AppRoutes = ({ isClaimingLives }: AppRoutesProps) => {
   const location = useLocation();
 
   return (
@@ -58,7 +62,7 @@ export const AppRoutes = () => {
         path="/"
         element={
           <AnimatedPage>
-            <NewHome />
+            <NewHome isClaimingLives={isClaimingLives} />
           </AnimatedPage>
         }
       />

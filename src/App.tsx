@@ -54,7 +54,10 @@ function App() {
   const { accountType } = useWallet();
 
   const { claimLives } = useGameActions();
-  useClaimLivesOnAccountReady(account?.address, claimLives);
+  const isClaimingLives = useClaimLivesOnAccountReady(
+    account?.address,
+    claimLives
+  );
 
   // Handle AppsFlyer referral data
   useAppsFlyerReferral();
@@ -150,7 +153,7 @@ function App() {
                         <BackgroundAnimationProvider>
                           <Layout>
                             <AnimatePresence mode="wait">
-                              <AppRoutes />
+                              <AppRoutes isClaimingLives={isClaimingLives} />
                             </AnimatePresence>
                           </Layout>
                         </BackgroundAnimationProvider>

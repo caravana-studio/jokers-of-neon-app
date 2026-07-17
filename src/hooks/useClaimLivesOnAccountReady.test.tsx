@@ -1,6 +1,6 @@
 /* @vitest-environment jsdom */
 
-import { cleanup, render, waitFor } from "@testing-library/react";
+import { act, cleanup, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, expect, test, vi } from "vitest";
 import { useClaimLivesOnAccountReady } from "./useClaimLivesOnAccountReady";
 
@@ -10,21 +10,38 @@ type HarnessProps = {
 };
 
 const Harness = ({ accountAddress, claimLives }: HarnessProps) => {
-  useClaimLivesOnAccountReady(accountAddress, claimLives);
-  return null;
+  const isClaimingLives = useClaimLivesOnAccountReady(
+    accountAddress,
+    claimLives
+  );
+  return <div>{isClaimingLives ? "claiming" : "idle"}</div>;
 };
 
 afterEach(cleanup);
 
 test("claims lives when a first-time account becomes ready without a username", async () => {
-  const claimLives = vi.fn().mockResolvedValue({ success: true });
+  let resolveClaim!: (result: { success: boolean }) => void;
+  const claimLives = vi.fn(
+    () =>
+      new Promise<{ success: boolean }>((resolve) => {
+        resolveClaim = resolve;
+      })
+  );
   const { rerender } = render(<Harness claimLives={claimLives} />);
 
   expect(claimLives).not.toHaveBeenCalled();
 
   rerender(<Harness accountAddress="0xcavos" claimLives={claimLives} />);
 
+  expect(screen.getByText("claiming")).toBeTruthy();
   await waitFor(() => expect(claimLives).toHaveBeenCalledTimes(1));
+  expect(screen.getByText("claiming")).toBeTruthy();
+
+  await act(async () => {
+    resolveClaim({ success: true });
+  });
+
+  await waitFor(() => expect(screen.getByText("idle")).toBeTruthy());
 });
 
 test("does not claim again just because the action callback changes", async () => {
