@@ -1,6 +1,6 @@
 /* @vitest-environment jsdom */
 
-import { act, cleanup, render, screen, waitFor } from "@testing-library/react";
+import { act, cleanup, render } from "@testing-library/react";
 import { afterEach, expect, test, vi } from "vitest";
 import { useClaimLivesOnAccountReady } from "./useClaimLivesOnAccountReady";
 
@@ -27,21 +27,21 @@ test("claims lives when a first-time account becomes ready without a username", 
         resolveClaim = resolve;
       })
   );
-  const { rerender } = render(<Harness claimLives={claimLives} />);
+  const { getByText, rerender } = render(<Harness claimLives={claimLives} />);
 
   expect(claimLives).not.toHaveBeenCalled();
 
   rerender(<Harness accountAddress="0xcavos" claimLives={claimLives} />);
 
-  expect(screen.getByText("claiming")).toBeTruthy();
-  await waitFor(() => expect(claimLives).toHaveBeenCalledTimes(1));
-  expect(screen.getByText("claiming")).toBeTruthy();
+  expect(getByText("claiming")).toBeTruthy();
+  expect(claimLives).toHaveBeenCalledTimes(1);
+  expect(getByText("claiming")).toBeTruthy();
 
   await act(async () => {
     resolveClaim({ success: true });
   });
 
-  await waitFor(() => expect(screen.getByText("idle")).toBeTruthy());
+  expect(getByText("idle")).toBeTruthy();
 });
 
 test("does not claim again just because the action callback changes", async () => {
@@ -51,7 +51,7 @@ test("does not claim again just because the action callback changes", async () =
     <Harness accountAddress="0xcavos" claimLives={firstClaimLives} />
   );
 
-  await waitFor(() => expect(firstClaimLives).toHaveBeenCalledTimes(1));
+  expect(firstClaimLives).toHaveBeenCalledTimes(1);
 
   rerender(<Harness accountAddress="0xcavos" claimLives={nextClaimLives} />);
 
