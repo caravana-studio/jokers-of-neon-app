@@ -17,7 +17,7 @@ const getTokenIds = (response: string[]): string[] => {
   const expectedLength = 1 + cardsCount * CARD_STATS_SERIALIZED_SIZE;
 
   if (response.length !== expectedLength) {
-    throw new Error("Unexpected get_user_cards response");
+    throw new Error("Unexpected get_user_special_cards response");
   }
 
   return Array.from({ length: cardsCount }, (_, index) => {
@@ -45,7 +45,7 @@ export const migrateNfts = async (
   const provider = new RpcProvider({ nodeUrl: migrateMainnetRpcUrl });
   const response = await provider.callContract({
     contractAddress: NFT_CONTRACT_ADDRESS,
-    entrypoint: "get_user_cards",
+    entrypoint: "get_user_special_cards",
     calldata: [controllerAddress],
   });
   const allTokenIds = getTokenIds(response);
