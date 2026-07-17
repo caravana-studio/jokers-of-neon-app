@@ -56,7 +56,11 @@ const bossFloatAnimation = keyframes`
 
 const DESKTOP_BANNER_MIN_FIT_SCALE = 0.55;
 
-export const NewHome = () => {
+type NewHomeProps = {
+  isClaimingLives: boolean;
+};
+
+export const NewHome = ({ isClaimingLives }: NewHomeProps) => {
   const { t } = useTranslation(["home"]);
   const { t: tCommon } = useTranslation("intermediate-screens", {
     keyPrefix: "common",
@@ -435,6 +439,7 @@ export const NewHome = () => {
               firstButton={{
                 label: hasActiveGames ? t("my-games") : t("play"),
                 onClick: handlePlayClick,
+                isLoading: !hasActiveGames && isClaimingLives,
               }}
             />
           </Flex>
@@ -587,6 +592,7 @@ export const NewHome = () => {
                 onClick={handlePlayClick}
                 w="300px"
                 variant="secondarySolid"
+                isLoading={!hasActiveGames && isClaimingLives}
               >
                 {hasActiveGames ? t("my-games") : t("play")}
               </Button>

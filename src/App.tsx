@@ -15,6 +15,7 @@ import { useGameActions } from "./dojo/useGameActions";
 import { useUsername } from "./dojo/utils/useUsername";
 import { useWallet } from "./dojo/WalletContext";
 import { useAppsFlyerReferral } from "./hooks/useAppsFlyerReferral";
+import { useClaimLivesOnAccountReady } from "./hooks/useClaimLivesOnAccountReady";
 import { HapticsProvider } from "./haptics/HapticsProvider";
 import { setAnalyticsUserId, setAnalyticsUserProperty } from "./utils/analytics";
 import { initAppsFlyerReferralListener, initWebReferralDetection } from "./utils/appsflyerReferral";
@@ -53,6 +54,10 @@ function App() {
   const { accountType } = useWallet();
 
   const { claimLives } = useGameActions();
+  const isClaimingLives = useClaimLivesOnAccountReady(
+    account?.address,
+    claimLives
+  );
 
   // Handle AppsFlyer referral data
   useAppsFlyerReferral();
@@ -128,8 +133,6 @@ function App() {
       return;
     }
 
-    claimLives().catch(() => {});
-
     fetchOrCreateProfile(account.address)
       .catch((error) => {
         console.warn("Failed to fetch or create profile", error);
@@ -150,7 +153,7 @@ function App() {
                         <BackgroundAnimationProvider>
                           <Layout>
                             <AnimatePresence mode="wait">
-                              <AppRoutes />
+                              <AppRoutes isClaimingLives={isClaimingLives} />
                             </AnimatePresence>
                           </Layout>
                         </BackgroundAnimationProvider>
