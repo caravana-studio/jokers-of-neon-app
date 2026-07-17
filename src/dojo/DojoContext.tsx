@@ -15,6 +15,7 @@ import { useWallet } from "./WalletContext";
 import { rpcUrl } from "../config/cartridgeUrls";
 import { LoadingScreen } from "../pages/LoadingScreen/LoadingScreen";
 import { AppType, useAppContext } from "../providers/AppContextProvider";
+import { withSlotNoFeeResourceBoundsAccount } from "./slotNoFeeExecuteOptions";
 
 interface DojoAccount {
   create: () => void;
@@ -164,6 +165,13 @@ const DojoContextProvider = ({
   const resolvedAccount =
     finalAccount ??
     (appType === AppType.SHOP ? shopFallbackAccount : null);
+  const optimizedAccount = useMemo(
+    () =>
+      resolvedAccount && accountType === "burner"
+        ? withSlotNoFeeResourceBoundsAccount(resolvedAccount)
+        : resolvedAccount,
+    [resolvedAccount, accountType]
+  );
 
   useEffect(() => {
     if (
@@ -197,7 +205,7 @@ const DojoContextProvider = ({
     onSuccessCallback,
   ]);
 
-  if (!resolvedAccount) {
+  if (!optimizedAccount) {
     return <LoadingScreen />;
   }
 
@@ -216,10 +224,10 @@ const DojoContextProvider = ({
           get,
           select,
           clear,
-          account: resolvedAccount as Account,
+          account: optimizedAccount as Account,
           isDeploying,
           accountDisplay: displayAddress(
-            (resolvedAccount as Account | AccountInterface)?.address || ""
+            (optimizedAccount as Account | AccountInterface)?.address || ""
           ),
         },
       }}
