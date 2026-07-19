@@ -146,6 +146,7 @@ export const MiniAppProfilePage = () => {
             level={profileData.profile.level}
             streak={profileData.profile.streak}
             streakCompletedToday={profileData.profile.streakCompletedToday}
+            streakPendingToday={profileData.profile.streakPendingToday}
             streakProtectors={profileData.profile.streakProtectors ?? 0}
             games={profileData.playerStats.games}
             victories={profileData.playerStats.victories}

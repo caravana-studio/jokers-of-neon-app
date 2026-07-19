@@ -5,13 +5,90 @@ import {
   fetchProfileLevelConfigByAddress,
   fetchProfileLevelConfigByLevel,
   fetchStreakStatus,
+  type StreakStatusApiData,
   fetchProfileStats,
   updateProfileAvatar,
 } from "../api/profile";
 import { registerMilestone } from "../utils/appsflyerReferral";
+import { normalizeStarknetAddress } from "../utils/starknetAddress";
+
+type OptimisticDailyStreak = {
+  address: string;
+  periodId: number;
+  projectedStreak: number;
+};
+
+type StreakView = {
+  streak: number;
+  completedToday: boolean;
+  pendingToday: boolean;
+  optimisticDailyStreak: OptimisticDailyStreak | null;
+};
+
+function toStreakInt(value: number): number {
+  return Number.isFinite(value) ? Math.max(0, Math.trunc(value)) : 0;
+}
+
+function resolveStreakView(input: {
+  address: string;
+  fallbackStreak: number;
+  status: StreakStatusApiData | null;
+  optimisticDailyStreak: OptimisticDailyStreak | null;
+}): StreakView {
+  const normalizedAddress = normalizeStarknetAddress(input.address);
+  const status = input.status;
+  const serverStreak = toStreakInt(
+    status?.effectiveStreak ?? input.fallbackStreak
+  );
+  const serverPendingToday = Boolean(
+    status &&
+      status.syncStatus === "pending" &&
+      status.pendingPeriodId === status.currentPeriodId &&
+      !status.isBroken
+  );
+  const serverView: StreakView = {
+    streak: serverStreak,
+    completedToday: status?.completedToday ?? false,
+    pendingToday: serverPendingToday,
+    optimisticDailyStreak: null,
+  };
+  const optimistic = input.optimisticDailyStreak;
+
+  if (!optimistic || optimistic.address !== normalizedAddress) {
+    return serverView;
+  }
+
+  if (
+    status &&
+    (status.currentPeriodId > optimistic.periodId ||
+      status.lastCompletedDay > optimistic.periodId ||
+      (status.syncStatus === "failed" &&
+        status.pendingPeriodId === optimistic.periodId))
+  ) {
+    return serverView;
+  }
+
+  if (
+    status?.syncStatus === "confirmed" &&
+    status.completedToday &&
+    status.lastCompletedDay === optimistic.periodId
+  ) {
+    return serverView;
+  }
+
+  return {
+    streak: Math.max(serverStreak, optimistic.projectedStreak),
+    completedToday: false,
+    pendingToday: true,
+    optimisticDailyStreak: optimistic,
+  };
+}
 
 export type ProfileStore = {
   profileData: ProfileData | null;
+  profileAddress: string | null;
+  streakStatus: StreakStatusApiData | null;
+  optimisticDailyStreak: OptimisticDailyStreak | null;
   loading: boolean;
   pendingAvatarId: number | null;
   previousLevel: number | null;
@@ -29,6 +106,7 @@ export type ProfileStore = {
   ) => Promise<void>;
 
   applyStreakStatus: (status: Awaited<ReturnType<typeof fetchStreakStatus>>) => void;
+  markDailyStreakPending: (address: string, periodId: number) => void;
 
   updateAvatar: (
     client: any,
@@ -44,6 +122,9 @@ export type ProfileStore = {
 
 export const useProfileStore = create<ProfileStore>((set, get) => ({
   profileData: null,
+  profileAddress: null,
+  streakStatus: null,
+  optimisticDailyStreak: null,
   loading: false,
   pendingAvatarId: null,
   previousLevel: null,
@@ -107,6 +188,16 @@ export const useProfileStore = create<ProfileStore>((set, get) => ({
         streakStatusResult !== null
           ? toInt(streakStatusResult.protectorsAvailable)
           : 0;
+      const normalizedAddress = normalizeStarknetAddress(userAddress);
+      const streakView = resolveStreakView({
+        address: normalizedAddress,
+        fallbackStreak: effectiveDailyStreak,
+        status: streakStatusResult,
+        optimisticDailyStreak:
+          get().optimisticDailyStreak?.address === normalizedAddress
+            ? get().optimisticDailyStreak
+            : null,
+      });
 
       if (import.meta.env.DEV) {
         console.info("[PROFILE-DEBUG] useProfileStore streak mapping", {
@@ -126,8 +217,9 @@ export const useProfileStore = create<ProfileStore>((set, get) => ({
           currentXp: sanitizedCurrentXp,
           totalXp: sanitizedTotalXp,
           level: toInt(profile.level),
-          streak: effectiveDailyStreak,
-          streakCompletedToday: streakStatusResult?.completedToday ?? false,
+          streak: streakView.streak,
+          streakCompletedToday: streakView.completedToday,
+          streakPendingToday: streakView.pendingToday,
           streakProtectors,
           avatarId: finalAvatarId,
         },
@@ -180,9 +272,26 @@ export const useProfileStore = create<ProfileStore>((set, get) => ({
       }
 
       if (pendingAvatarId !== null && toInt(profile.avatarId) === pendingAvatarId) {
-        set({ profileData, loading: false, pendingAvatarId: null, previousLevel: newLevel, previousGamesCount: newGamesCount });
+        set({
+          profileData,
+          profileAddress: normalizedAddress,
+          streakStatus: streakStatusResult,
+          optimisticDailyStreak: streakView.optimisticDailyStreak,
+          loading: false,
+          pendingAvatarId: null,
+          previousLevel: newLevel,
+          previousGamesCount: newGamesCount,
+        });
       } else {
-        set({ profileData, loading: false, previousLevel: newLevel, previousGamesCount: newGamesCount });
+        set({
+          profileData,
+          profileAddress: normalizedAddress,
+          streakStatus: streakStatusResult,
+          optimisticDailyStreak: streakView.optimisticDailyStreak,
+          loading: false,
+          previousLevel: newLevel,
+          previousGamesCount: newGamesCount,
+        });
       }
     } catch (e) {
       console.log("Error fetching profile data", e);
@@ -192,21 +301,100 @@ export const useProfileStore = create<ProfileStore>((set, get) => ({
 
   applyStreakStatus: (status) => {
     const current = get().profileData;
-    if (!current) return;
+    const statusAddress = normalizeStarknetAddress(status.player);
+    if (
+      !current ||
+      (get().profileAddress && get().profileAddress !== statusAddress)
+    ) {
+      return;
+    }
+
+    const streakView = resolveStreakView({
+      address: statusAddress,
+      fallbackStreak: current.profile.streak,
+      status,
+      optimisticDailyStreak: get().optimisticDailyStreak,
+    });
 
     set({
+      profileAddress: statusAddress,
+      streakStatus: status,
+      optimisticDailyStreak: streakView.optimisticDailyStreak,
       profileData: {
         ...current,
         profile: {
           ...current.profile,
-          streak: Math.max(0, Math.trunc(status.effectiveStreak)),
-          streakCompletedToday: status.completedToday,
+          streak: streakView.streak,
+          streakCompletedToday: streakView.completedToday,
+          streakPendingToday: streakView.pendingToday,
           streakProtectors: Math.max(
             0,
             Math.trunc(status.protectorsAvailable)
           ),
         },
       },
+    });
+  },
+
+  markDailyStreakPending: (address, periodId) => {
+    const normalizedAddress = normalizeStarknetAddress(address);
+    if (!normalizedAddress || !Number.isInteger(periodId) || periodId <= 0) {
+      return;
+    }
+
+    const state = get();
+    const currentProjection = state.optimisticDailyStreak;
+    if (
+      currentProjection?.address === normalizedAddress &&
+      currentProjection.periodId === periodId
+    ) {
+      return;
+    }
+
+    const status = state.streakStatus;
+    if (
+      status &&
+      normalizeStarknetAddress(status.player) === normalizedAddress &&
+      status.syncStatus === "confirmed" &&
+      status.completedToday &&
+      status.lastCompletedDay === periodId
+    ) {
+      return;
+    }
+
+    const currentProfile =
+      state.profileAddress === null || state.profileAddress === normalizedAddress
+        ? state.profileData
+        : null;
+    const serverAlreadyProjected = Boolean(
+      status &&
+        normalizeStarknetAddress(status.player) === normalizedAddress &&
+        status.syncStatus === "pending" &&
+        status.pendingPeriodId === periodId
+    );
+    const projectedStreak = serverAlreadyProjected
+      ? toStreakInt(status?.effectiveStreak ?? 0)
+      : toStreakInt(currentProfile?.profile.streak ?? status?.effectiveStreak ?? 0) + 1;
+    const optimisticDailyStreak: OptimisticDailyStreak = {
+      address: normalizedAddress,
+      periodId,
+      projectedStreak,
+    };
+
+    set({
+      profileAddress: state.profileAddress ?? normalizedAddress,
+      optimisticDailyStreak,
+      profileData: currentProfile
+        ? {
+            ...currentProfile,
+            profile: {
+              ...currentProfile.profile,
+              streak: projectedStreak,
+              streakCompletedToday: false,
+              streakPendingToday: true,
+            },
+          }
+        : state.profileData,
     });
   },
 
@@ -249,5 +437,14 @@ export const useProfileStore = create<ProfileStore>((set, get) => ({
     });
   },
 
-  reset: () => set({ profileData: null, pendingAvatarId: null, previousLevel: null, previousGamesCount: null }),
+  reset: () =>
+    set({
+      profileData: null,
+      profileAddress: null,
+      streakStatus: null,
+      optimisticDailyStreak: null,
+      pendingAvatarId: null,
+      previousLevel: null,
+      previousGamesCount: null,
+    }),
 }));

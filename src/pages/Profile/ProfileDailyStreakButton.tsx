@@ -10,6 +10,7 @@ import { useResponsiveValues } from "../../theme/responsiveSettings";
 interface ProfileDailyStreakButtonProps {
   streak: number;
   completedToday: boolean;
+  pendingToday?: boolean;
   streakProtectors?: number;
   onClick: () => void;
 }
@@ -17,6 +18,7 @@ interface ProfileDailyStreakButtonProps {
 export const ProfileDailyStreakButton = ({
   streak,
   completedToday,
+  pendingToday = false,
   streakProtectors = 0,
   onClick,
 }: ProfileDailyStreakButtonProps) => {
@@ -24,6 +26,7 @@ export const ProfileDailyStreakButton = ({
   const normalizedStreak = Number.isFinite(streak)
     ? Math.max(0, Math.floor(streak))
     : 0;
+  const isStreakActive = completedToday || pendingToday;
 
   const { isSmallScreen } = useResponsiveValues();
 
@@ -62,7 +65,7 @@ export const ProfileDailyStreakButton = ({
 
         <Flex alignItems="center" gap={1} minW={0}>
           <Box flexShrink={0}>
-            <DailyStreakFireAnimation size={88} grayscale={!completedToday} />
+            <DailyStreakFireAnimation size={88} grayscale={!isStreakActive} />
           </Box>
 
           <Flex flexDirection="column" alignItems="flex-start" gap={0.5} minW={0}>
@@ -80,8 +83,8 @@ export const ProfileDailyStreakButton = ({
               lineHeight={1}
               fontFamily="Orbitron"
               fontWeight={700}
-              color={completedToday ? DIAMONDS : "grey"}
-              textShadow={completedToday ? `0 0 12px ${DIAMONDS}` : "none"}
+              color={isStreakActive ? DIAMONDS : "grey"}
+              textShadow={isStreakActive ? `0 0 12px ${DIAMONDS}` : "none"}
             >
               {normalizedStreak}
             </Text>

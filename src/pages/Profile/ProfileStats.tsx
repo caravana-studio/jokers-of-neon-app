@@ -22,6 +22,7 @@ export interface ProfileStatsProps {
   level: number;
   streak: number;
   streakCompletedToday: boolean;
+  streakPendingToday?: boolean;
   streakProtectors?: number;
   games: number;
   victories: number;
@@ -52,6 +53,7 @@ export const ProfileStats: React.FC<
   level,
   streak,
   streakCompletedToday,
+  streakPendingToday = false,
   streakProtectors = 0,
   games,
   victories,
@@ -185,6 +187,7 @@ export const ProfileStats: React.FC<
           <ProfileDailyStreakButton
             streak={streak}
             completedToday={streakCompletedToday}
+            pendingToday={streakPendingToday}
             streakProtectors={streakProtectors}
             onClick={onOpenDailyStreak ?? (() => undefined)}
           />

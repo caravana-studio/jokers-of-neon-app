@@ -41,6 +41,8 @@ async function checkPresentation(
       status = await waitForConfirmedStreakPeriod({
         expectedPeriodId,
         fetchStatus: () => fetchStreakStatus(address),
+        onStatus: (nextStatus) =>
+          useProfileStore.getState().applyStreakStatus(nextStatus),
       });
     } else {
       status = await fetchStreakStatus(address).catch((error) => {

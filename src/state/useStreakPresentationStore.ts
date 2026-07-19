@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { normalizeStarknetAddress } from "../utils/starknetAddress";
+import { useProfileStore } from "./useProfileStore";
 
 type DetectedDailyMission = {
   address: string;
@@ -40,6 +41,9 @@ export const useStreakPresentationStore = create<StreakPresentationStore>(
           detectedAt: Date.now(),
         },
       });
+      useProfileStore
+        .getState()
+        .markDailyStreakPending(normalizedAddress, periodId);
     },
 
     getDetectedPeriodId: (address) => {

@@ -254,6 +254,9 @@ export const StreakIncreasedPage = () => {
   const profileStreakCompletedToday = useProfileStore(
     (store) => store.profileData?.profile.streakCompletedToday ?? false
   );
+  const profileStreakPendingToday = useProfileStore(
+    (store) => store.profileData?.profile.streakPendingToday ?? false
+  );
   const streak = state?.streak ?? profileStreak ?? MOCKED_DAILY_STREAK;
   const [liveStreakProtectors, setLiveStreakProtectors] = useState<number | null>(
     null
@@ -568,7 +571,9 @@ export const StreakIncreasedPage = () => {
       <DailyStreakSheet
         streak={streak}
         completedToday={
-          state?.from === "/profile" ? profileStreakCompletedToday : true
+          state?.from === "/profile"
+            ? profileStreakCompletedToday || profileStreakPendingToday
+            : true
         }
         streakProtectors={streakProtectors}
         onClose={handleClose}

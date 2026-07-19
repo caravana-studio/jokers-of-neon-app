@@ -18,6 +18,7 @@ export async function waitForConfirmedStreakPeriod(options: {
   maxAttempts?: number;
   intervalMs?: number;
   delay?: (milliseconds: number) => Promise<void>;
+  onStatus?: (status: StreakStatusApiData) => void;
 }): Promise<StreakStatusApiData | null> {
   const {
     expectedPeriodId,
@@ -31,6 +32,7 @@ export async function waitForConfirmedStreakPeriod(options: {
   for (let attempt = 0; attempt < maxAttempts; attempt += 1) {
     try {
       const status = await fetchStatus();
+      options.onStatus?.(status);
       if (isConfirmedStreakPeriod(status, expectedPeriodId)) {
         return status;
       }

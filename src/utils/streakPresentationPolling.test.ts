@@ -45,17 +45,22 @@ describe("streak presentation polling", () => {
       )
       .mockResolvedValueOnce(streakStatus());
     const delay = vi.fn(async () => undefined);
+    const onStatus = vi.fn();
 
     const result = await waitForConfirmedStreakPeriod({
       expectedPeriodId: 100,
       fetchStatus,
       maxAttempts: 5,
       delay,
+      onStatus,
     });
 
     expect(result?.completedToday).toBe(true);
     expect(fetchStatus).toHaveBeenCalledTimes(3);
     expect(delay).toHaveBeenCalledTimes(2);
+    expect(onStatus).toHaveBeenCalledTimes(3);
+    expect(onStatus.mock.calls[0][0].syncStatus).toBe("pending");
+    expect(onStatus.mock.calls[2][0].completedToday).toBe(true);
   });
 
   it("stops after the bounded number of attempts", async () => {
