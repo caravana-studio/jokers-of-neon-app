@@ -25,6 +25,8 @@ function streakStatus(
     updatedAt: null,
     currentPeriodId: 100,
     completedToday: true,
+    completionState: "confirmed",
+    projectedStreak: 4,
     ...overrides,
   };
 }
@@ -38,10 +40,15 @@ describe("streak presentation polling", () => {
           syncStatus: "pending",
           pendingPeriodId: 100,
           completedToday: false,
+          completionState: "pending",
         })
       )
       .mockResolvedValueOnce(
-        streakStatus({ lastCompletedDay: 99, completedToday: false })
+        streakStatus({
+          lastCompletedDay: 99,
+          completedToday: false,
+          completionState: "idle",
+        })
       )
       .mockResolvedValueOnce(streakStatus());
     const delay = vi.fn(async () => undefined);
@@ -68,6 +75,7 @@ describe("streak presentation polling", () => {
       streakStatus({
         syncStatus: "pending",
         completedToday: false,
+        completionState: "pending",
       })
     );
     const delay = vi.fn(async () => undefined);

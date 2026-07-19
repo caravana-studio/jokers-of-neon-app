@@ -1,10 +1,8 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { useProfileStore } from "./useProfileStore";
 import { useStreakPresentationStore } from "./useStreakPresentationStore";
 
 describe("streak presentation store", () => {
   beforeEach(() => {
-    useProfileStore.getState().reset();
     useStreakPresentationStore.setState({
       detectedMission: null,
       activePresentation: null,

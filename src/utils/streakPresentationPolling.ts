@@ -5,7 +5,7 @@ export function isConfirmedStreakPeriod(
   expectedPeriodId: number
 ): boolean {
   return (
-    status.syncStatus === "confirmed" &&
+    status.completionState === "confirmed" &&
     status.completedToday &&
     status.currentPeriodId === expectedPeriodId &&
     status.lastCompletedDay === expectedPeriodId

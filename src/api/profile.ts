@@ -87,6 +87,10 @@ type GetStreakStatusApiResponse = {
     completed_today?: boolean | number | null;
     currentPeriodId?: string | number | null;
     completedToday?: boolean | number | null;
+    completion_state?: StreakCompletionState | null;
+    completionState?: StreakCompletionState | null;
+    projected_streak?: string | number | null;
+    projectedStreak?: string | number | null;
   };
 };
 
@@ -223,6 +227,12 @@ export type ProfileLevelConfigApiData = {
   xpRequired: number;
 };
 
+export type StreakCompletionState =
+  | "idle"
+  | "pending"
+  | "confirmed"
+  | "failed";
+
 export type StreakStatusApiData = {
   player: string;
   currentStreak: number;
@@ -240,6 +250,8 @@ export type StreakStatusApiData = {
   updatedAt: string | null;
   currentPeriodId: number;
   completedToday: boolean;
+  completionState: StreakCompletionState;
+  projectedStreak: number;
 };
 
 export type StreakPresentationClaimApiData = {
@@ -720,30 +732,54 @@ export async function fetchStreakStatus(
   }
 
   const data = json.data;
+  const syncStatus = data.sync_status ?? "confirmed";
+  const pendingPeriodId =
+    data.pending_period_id === null || data.pending_period_id === undefined
+      ? null
+      : sanitizeNumber(data.pending_period_id);
+  const currentPeriodId = sanitizeNumber(
+    data.currentPeriodId ?? data.current_period_id
+  );
+  const lastCompletedDay = sanitizeNumber(data.last_completed_day);
+  const completedToday = Boolean(
+    data.completedToday ?? data.completed_today
+  );
+  const rawCompletionState =
+    data.completionState ?? data.completion_state;
+  const completionState: StreakCompletionState = rawCompletionState ??
+    (syncStatus === "pending" && pendingPeriodId === currentPeriodId
+      ? "pending"
+      : syncStatus === "failed" && pendingPeriodId === currentPeriodId
+        ? "failed"
+        : syncStatus === "confirmed" &&
+            completedToday &&
+            lastCompletedDay === currentPeriodId
+          ? "confirmed"
+          : "idle");
 
   const streakStatus = {
     player: data.player ?? address,
     currentStreak: sanitizeNumber(data.current_streak),
     effectiveStreak: sanitizeNumber(data.effective_streak ?? data.current_streak),
     longestStreak: sanitizeNumber(data.longest_streak),
-    lastCompletedDay: sanitizeNumber(data.last_completed_day),
+    lastCompletedDay,
     protectorsAvailable: sanitizeNumber(data.protectors_available),
     protectorsNeeded: sanitizeNumber(data.protectors_needed),
     daysMissed: sanitizeNumber(data.days_missed),
     isProtected: Boolean(data.is_protected),
     isBroken: Boolean(data.is_broken),
-    syncStatus: data.sync_status ?? "confirmed",
-    pendingPeriodId:
-      data.pending_period_id === null || data.pending_period_id === undefined
-        ? null
-        : sanitizeNumber(data.pending_period_id),
+    syncStatus,
+    pendingPeriodId,
     source: data.source ?? "chain",
     updatedAt: data.updated_at ?? null,
-    currentPeriodId: sanitizeNumber(
-      data.currentPeriodId ?? data.current_period_id
-    ),
-    completedToday: Boolean(
-      data.completedToday ?? data.completed_today
+    currentPeriodId,
+    completedToday,
+    completionState,
+    projectedStreak: sanitizeNumber(
+      data.projectedStreak ??
+        data.projected_streak ??
+        data.effective_streak ??
+        data.current_streak
     ),
   };
 
