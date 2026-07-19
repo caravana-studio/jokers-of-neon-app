@@ -29,7 +29,7 @@ export const ProfileTile = () => {
   const { profileData, fetchProfileData, loading } = useProfileStore();
   const usernameStatus = useUsernameStore((store) => store.status);
   const streak = profileData?.profile.streak ?? 0;
-  const isZeroStreak = streak === 0;
+  const completedToday = profileData?.profile.streakCompletedToday ?? false;
 
   useEffect(() => {
     if (client && account && loggedInUser && usernameStatus === "ready" && !loading) {
@@ -93,13 +93,13 @@ export const ProfileTile = () => {
             <Flex alignItems="center" gap={0}>
               <DailyStreakFireAnimation
                 size={isSmallScreen ? 16 : 20}
-                grayscale={isZeroStreak}
+                grayscale={!completedToday}
               />
               <Heading
                 fontSize={isSmallScreen ? 10 : 13}
                 textAlign="center"
                 fontFamily="Orbitron"
-                color={isZeroStreak ? "grey" : DIAMONDS}
+                color={completedToday ? DIAMONDS : "grey"}
                 lineHeight={1}
                 ml={-0.5}
               >

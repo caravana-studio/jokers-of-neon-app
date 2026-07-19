@@ -22,6 +22,7 @@ export type StreakPresentationContinuation =
 
 export type StreakIncreasedLocationState = {
   streak?: number;
+  periodId?: number;
   reward?: StreakPresentationRewardApiData | null;
   rewardPreviewPacks?: SeasonRewardPack[];
   rewardPreviewOwnedCardIds?: string[];
@@ -35,6 +36,7 @@ export function navigateToStreakIncreased(
   navigate: NavigateFunction,
   options: {
     streak: number;
+    periodId?: number;
     reward?: StreakPresentationRewardApiData | null;
     continuation?: StreakPresentationContinuation;
     from?: string;
@@ -49,6 +51,7 @@ export function navigateToStreakIncreased(
 
   const {
     streak,
+    periodId,
     reward,
     continuation,
     from,
@@ -61,6 +64,7 @@ export function navigateToStreakIncreased(
     replace,
     state: {
       streak,
+      periodId,
       reward,
       continuation,
       from,

@@ -83,6 +83,10 @@ type GetStreakStatusApiResponse = {
     pending_period_id?: string | number | null;
     source?: "cache" | "chain" | null;
     updated_at?: string | null;
+    current_period_id?: string | number | null;
+    completed_today?: boolean | number | null;
+    currentPeriodId?: string | number | null;
+    completedToday?: boolean | number | null;
   };
 };
 
@@ -94,13 +98,29 @@ type ClaimStreakPresentationApiResponse = {
     period_id?: string | number | null;
     periodId?: string | number | null;
     reward?: RawStreakPresentationReward | null;
+    reason?: StreakPresentationReason | null;
+    acknowledged?: boolean | null;
+    presentedAt?: string | null;
   };
   show?: boolean | null;
   streak?: string | number | null;
   period_id?: string | number | null;
   periodId?: string | number | null;
   reward?: RawStreakPresentationReward | null;
+  reason?: StreakPresentationReason | null;
+  acknowledged?: boolean | null;
+  presentedAt?: string | null;
 };
+
+export type StreakPresentationReason =
+  | "already_claimed"
+  | "missing_username"
+  | "not_completed_today"
+  | "sync_pending"
+  | "sync_failed"
+  | "period_mismatch"
+  | "table_missing"
+  | "streak_unavailable";
 
 type RawStreakRewardItem =
   | {
@@ -218,6 +238,8 @@ export type StreakStatusApiData = {
   pendingPeriodId: number | null;
   source: "cache" | "chain";
   updatedAt: string | null;
+  currentPeriodId: number;
+  completedToday: boolean;
 };
 
 export type StreakPresentationClaimApiData = {
@@ -225,6 +247,8 @@ export type StreakPresentationClaimApiData = {
   streak: number | null;
   periodId: number | null;
   reward: StreakPresentationRewardApiData | null;
+  reason: StreakPresentationReason | null;
+  acknowledged: boolean;
 };
 
 export type StreakRewardTrack = "normal" | "recurring" | "bonus";
@@ -253,6 +277,33 @@ export type StreakPresentationRewardApiData = {
   milestone: number;
   items: StreakRewardItemApiData[];
 };
+
+function parseStreakPresentationResponse(
+  json: ClaimStreakPresentationApiResponse
+): StreakPresentationClaimApiData {
+  const data = json.data ?? json;
+
+  if (typeof data.show !== "boolean") {
+    throw new Error("Streak presentation API did not return a valid payload");
+  }
+
+  const rawPeriodId = data.period_id ?? data.periodId;
+
+  return {
+    show: data.show,
+    streak:
+      data.streak === null || data.streak === undefined
+        ? null
+        : sanitizeNumber(data.streak),
+    periodId:
+      rawPeriodId === null || rawPeriodId === undefined
+        ? null
+        : sanitizeNumber(rawPeriodId),
+    reward: parseStreakPresentationReward(data.reward),
+    reason: data.reason ?? null,
+    acknowledged: Boolean(data.acknowledged),
+  };
+}
 
 export type ClaimStreakRewardsResult = {
   packs: SeasonRewardPack[];
@@ -688,6 +739,12 @@ export async function fetchStreakStatus(
         : sanitizeNumber(data.pending_period_id),
     source: data.source ?? "chain",
     updatedAt: data.updated_at ?? null,
+    currentPeriodId: sanitizeNumber(
+      data.currentPeriodId ?? data.current_period_id
+    ),
+    completedToday: Boolean(
+      data.completedToday ?? data.completed_today
+    ),
   };
 
   return streakStatus;
@@ -722,36 +779,68 @@ export async function claimStreakPresentation(
     );
   }
 
-  const json: ClaimStreakPresentationApiResponse = await response.json();
-  const data = json.data ?? json;
+  return parseStreakPresentationResponse(await response.json());
+}
 
-  if (typeof data.show !== "boolean") {
+export async function fetchStreakPresentation(
+  address: string
+): Promise<StreakPresentationClaimApiData> {
+  if (!address) {
+    throw new Error("fetchStreakPresentation: address is required");
+  }
+
+  const response = await fetch(
+    `${getBaseUrl()}/api/profile/streak/${encodeURIComponent(address)}/presentation`,
+    {
+      method: "GET",
+      headers: { "X-API-Key": getApiKey() },
+    }
+  );
+
+  if (!response.ok) {
+    const details = await response.text().catch(() => "");
     throw new Error(
-      "claimStreakPresentation: API did not return a valid payload"
+      `fetchStreakPresentation: ${response.status} ${response.statusText}${
+        details ? ` - ${details}` : ""
+      }`
     );
   }
 
-  if (!data.show) {
-    return {
-      show: false,
-      streak: null,
-      periodId: null,
-      reward: null,
-    };
+  return parseStreakPresentationResponse(await response.json());
+}
+
+export async function acknowledgeStreakPresentation(
+  address: string,
+  periodId: number
+): Promise<StreakPresentationClaimApiData> {
+  if (!address || !Number.isInteger(periodId) || periodId <= 0) {
+    throw new Error(
+      "acknowledgeStreakPresentation: address and periodId are required"
+    );
   }
 
-  const rawPeriodId = data.period_id ?? data.periodId;
-  const reward = parseStreakPresentationReward(data.reward);
+  const response = await fetch(
+    `${getBaseUrl()}/api/profile/streak/${encodeURIComponent(address)}/presentation/ack`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-API-Key": getApiKey(),
+      },
+      body: JSON.stringify({ periodId }),
+    }
+  );
 
-  return {
-    show: true,
-    streak: sanitizeNumber(data.streak),
-    periodId:
-      rawPeriodId === null || rawPeriodId === undefined
-        ? null
-        : sanitizeNumber(rawPeriodId),
-    reward,
-  };
+  if (!response.ok) {
+    const details = await response.text().catch(() => "");
+    throw new Error(
+      `acknowledgeStreakPresentation: ${response.status} ${response.statusText}${
+        details ? ` - ${details}` : ""
+      }`
+    );
+  }
+
+  return parseStreakPresentationResponse(await response.json());
 }
 
 export async function claimStreakRewards(

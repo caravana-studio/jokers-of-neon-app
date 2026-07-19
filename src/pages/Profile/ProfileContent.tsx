@@ -103,6 +103,7 @@ export const ProfileContent = ({
             username={profile.username}
             level={profile.level}
             streak={profile.streak}
+            streakCompletedToday={profile.streakCompletedToday}
             streakProtectors={profile.streakProtectors ?? 0}
             games={playerStats.games}
             victories={playerStats.victories}

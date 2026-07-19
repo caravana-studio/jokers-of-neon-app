@@ -5,7 +5,6 @@ import { useTranslation } from "react-i18next";
 
 import { Preferences } from "@capacitor/preferences";
 import { useLocation, useNavigate } from "react-router-dom";
-import { claimStreakPresentation } from "../../api/profile";
 import { BannerRenderer } from "../../components/BannerRenderer/BannerRenderer";
 import { ConfirmationModal } from "../../components/ConfirmationModal";
 import { DelayedLoading } from "../../components/DelayedLoading";
@@ -28,6 +27,7 @@ import { useSeasonNumber } from "../../constants/season";
 import { APP_VERSION } from "../../constants/version";
 import { useDojo } from "../../dojo/DojoContext";
 import { useGameContext } from "../../providers/GameProvider";
+import { useStreakPresentationFlow } from "../../hooks/useStreakPresentationFlow";
 import { fetchVersion } from "../../queries/fetchVersion";
 import { useDistributionSettings } from "../../queries/useDistributionSettings";
 import { useGetMyGames } from "../../queries/useGetMyGames";
@@ -37,7 +37,6 @@ import { APP_URL, isNative } from "../../utils/capacitorUtils";
 import { hasInProgressGames } from "../../utils/inProgressGames";
 import {
   isStreakHidden,
-  navigateToStreakIncreased,
   SKIP_STREAK_PRESENTATION_CHECK,
 } from "../../utils/streakPresentation";
 import { getMajor, getMinor, getPatch } from "../../utils/versionUtils";
@@ -83,7 +82,7 @@ export const NewHome = ({ isClaimingLives }: NewHomeProps) => {
     useState(false);
   const desktopBannerViewportRef = useRef<HTMLDivElement | null>(null);
   const desktopBannerContentRef = useRef<HTMLDivElement | null>(null);
-  const streakCheckAddressRef = useRef<string | null>(null);
+  const { presentStreak } = useStreakPresentationFlow();
 
   const banners = settings?.home?.banners || [];
   const desktopBannerFitKey = banners
@@ -140,49 +139,24 @@ export const NewHome = ({ isClaimingLives }: NewHomeProps) => {
     }
 
     const address = account?.account?.address;
-    if (!address || streakCheckAddressRef.current === address) {
+    if (!address) {
       return;
     }
 
-    streakCheckAddressRef.current = address;
-    let active = true;
-
     void (async () => {
-      try {
-        const presentation = await claimStreakPresentation(address);
-
-        if (
-          active &&
-          presentation.show &&
-          presentation.streak !== null
-        ) {
-          const navigated = navigateToStreakIncreased(navigate, {
-            streak: presentation.streak,
-            reward: presentation.reward,
-            continuation: {
-              type: "route",
-              to: "/",
-              replace: true,
-              state: {
-                [SKIP_STREAK_PRESENTATION_CHECK]: true,
-              },
-            },
-            replace: true,
-          });
-
-          if (navigated) {
-            return;
-          }
-        }
-      } catch (error) {
-        console.warn("NewHome: streak presentation claim failed", error);
-      }
+      await presentStreak({
+        continuation: {
+          type: "route",
+          to: "/",
+          replace: true,
+          state: {
+            [SKIP_STREAK_PRESENTATION_CHECK]: true,
+          },
+        },
+        replace: true,
+      });
     })();
-
-    return () => {
-      active = false;
-    };
-  }, [account?.account?.address, location.state, navigate]);
+  }, [account?.account?.address, location.state, presentStreak]);
 
   useEffect(() => {
     if (!useBurnerAcc) return;

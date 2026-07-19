@@ -1,12 +1,14 @@
 import { Box, Flex, Text, useToast } from "@chakra-ui/react";
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import {
+  acknowledgeStreakPresentation,
   claimStreakRewards,
   fetchStreakStatus,
   type ClaimStreakRewardsResult,
+  type StreakPresentationClaimApiData,
   type StreakPresentationRewardApiData,
 } from "../api/profile";
 import { getUserCards } from "../api/getUserCards";
@@ -23,6 +25,7 @@ import { GameStateEnum } from "../dojo/typescript/custom";
 import { useCustomNavigate } from "../hooks/useCustomNavigate";
 import { useMapNavigate } from "../hooks/useMapNavigate";
 import { useProfileStore } from "../state/useProfileStore";
+import { useStreakPresentationStore } from "../state/useStreakPresentationStore";
 import { useGameStore } from "../state/useGameStore";
 import { BLUE_LIGHT } from "../theme/colors";
 import { StreakIncreasedLocationState } from "../utils/streakPresentation";
@@ -242,11 +245,14 @@ export const StreakIncreasedPage = () => {
   const { navigateToMap } = useMapNavigate();
   const setRoundRewards = useGameStore((store) => store.setRoundRewards);
   const state = location.state as StreakIncreasedLocationState | null;
-  const reward = state?.reward ?? null;
+  const initialReward = state?.reward ?? null;
   const rewardPreviewPacks = state?.rewardPreviewPacks ?? [];
   const rewardPreviewOwnedCardIds = state?.rewardPreviewOwnedCardIds ?? [];
   const profileStreak = useProfileStore(
     (store) => store.profileData?.profile.streak ?? 0
+  );
+  const profileStreakCompletedToday = useProfileStore(
+    (store) => store.profileData?.profile.streakCompletedToday ?? false
   );
   const streak = state?.streak ?? profileStreak ?? MOCKED_DAILY_STREAK;
   const [liveStreakProtectors, setLiveStreakProtectors] = useState<number | null>(
@@ -254,17 +260,97 @@ export const StreakIncreasedPage = () => {
   );
   const streakProtectors = liveStreakProtectors ?? 0;
   const [isRewardClaiming, setIsRewardClaiming] = useState(false);
+  const [isAcknowledgingPresentation, setIsAcknowledgingPresentation] =
+    useState(false);
+  const [presentationAcknowledgement, setPresentationAcknowledgement] =
+    useState<StreakPresentationClaimApiData | null>(null);
+  const acknowledgementPromiseRef = useRef<Promise<
+    StreakPresentationClaimApiData | null
+  > | null>(null);
+  const reward = presentationAcknowledgement?.reward ?? initialReward;
   const [rewardSteps, setRewardSteps] = useState<RewardPresentationStep[]>([]);
   const [currentRewardStepIndex, setCurrentRewardStepIndex] = useState(0);
   const [ownedCardIds, setOwnedCardIds] = useState<string[]>([]);
-  const rewardIncludesPack = reward?.items.some((item) => item.type === "pack") ?? false;
-  const isRewardPreview =
-    Boolean(reward?.items.length) && reward?.claimIds.length === 0;
   const currentRewardStep = rewardSteps[currentRewardStepIndex];
+  const requiresPresentationAcknowledgement =
+    !HIDE_STREAK &&
+    state?.from !== "/profile" &&
+    Number(state?.periodId) > 0;
+  const presentationAcknowledged =
+    !requiresPresentationAcknowledgement ||
+    presentationAcknowledgement?.acknowledged === true ||
+    presentationAcknowledgement?.reason === "already_claimed";
 
-  if (HIDE_STREAK) {
-    return <Navigate to={state?.from ?? "/"} replace />;
-  }
+  const ensurePresentationAcknowledged = useCallback(async () => {
+    if (!requiresPresentationAcknowledgement) {
+      return null;
+    }
+
+    if (presentationAcknowledged) {
+      return presentationAcknowledgement;
+    }
+
+    const address = account?.account?.address;
+    const periodId = state?.periodId;
+    if (!address || !periodId) {
+      return null;
+    }
+
+    if (acknowledgementPromiseRef.current) {
+      return acknowledgementPromiseRef.current;
+    }
+
+    setIsAcknowledgingPresentation(true);
+    const acknowledgementPromise = acknowledgeStreakPresentation(
+      address,
+      periodId
+    )
+      .then((result) => {
+        if (result.acknowledged || result.reason === "already_claimed") {
+          setPresentationAcknowledgement(result);
+          useStreakPresentationStore
+            .getState()
+            .finishPresentation(address, periodId);
+          return result;
+        }
+
+        console.warn(
+          "StreakIncreasedPage: presentation acknowledgement was rejected",
+          result.reason
+        );
+        return null;
+      })
+      .catch((error) => {
+        console.warn(
+          "StreakIncreasedPage: presentation acknowledgement failed",
+          error
+        );
+        return null;
+      })
+      .finally(() => {
+        acknowledgementPromiseRef.current = null;
+        setIsAcknowledgingPresentation(false);
+      });
+
+    acknowledgementPromiseRef.current = acknowledgementPromise;
+    return acknowledgementPromise;
+  }, [
+    account?.account?.address,
+    presentationAcknowledged,
+    presentationAcknowledgement,
+    requiresPresentationAcknowledgement,
+    state?.periodId,
+  ]);
+
+  useEffect(() => {
+    if (requiresPresentationAcknowledgement && !presentationAcknowledged) {
+      void ensurePresentationAcknowledged();
+    }
+  }, [
+    ensurePresentationAcknowledged,
+    presentationAcknowledged,
+    requiresPresentationAcknowledgement,
+  ]);
 
   useEffect(() => {
     const address = account?.account?.address;
@@ -293,6 +379,10 @@ export const StreakIncreasedPage = () => {
       active = false;
     };
   }, [account?.account?.address]);
+
+  if (HIDE_STREAK) {
+    return <Navigate to={state?.from ?? "/"} replace />;
+  }
 
   const handleClose = async () => {
     if (state?.continuation?.type === "map-after-rewards") {
@@ -334,12 +424,18 @@ export const StreakIncreasedPage = () => {
     navigate(-1);
   };
 
-  const handleRewardContinue = async () => {
-    if (isRewardPreview) {
+  const handleRewardContinue = async (
+    rewardToPresent: StreakPresentationRewardApiData | null = reward
+  ) => {
+    const isPreview =
+      Boolean(rewardToPresent?.items.length) &&
+      rewardToPresent?.claimIds.length === 0;
+
+    if (isPreview) {
       setOwnedCardIds(rewardPreviewOwnedCardIds);
       const nextRewardSteps = buildRewardPresentationSteps({
-        xpAmount: getRewardPreviewXpAmount(reward),
-        protectorQuantity: getRewardPreviewProtectorQuantity(reward),
+        xpAmount: getRewardPreviewXpAmount(rewardToPresent),
+        protectorQuantity: getRewardPreviewProtectorQuantity(rewardToPresent),
         packs: rewardPreviewPacks,
       });
 
@@ -353,7 +449,7 @@ export const StreakIncreasedPage = () => {
       return;
     }
 
-    if (!reward?.claimIds.length) {
+    if (!rewardToPresent?.claimIds.length) {
       await handleClose();
       return;
     }
@@ -367,7 +463,10 @@ export const StreakIncreasedPage = () => {
     setIsRewardClaiming(true);
 
     try {
-      if (rewardIncludesPack) {
+      const includesPack = rewardToPresent.items.some(
+        (item) => item.type === "pack"
+      );
+      if (includesPack) {
         try {
           const userCardsData = await getUserCards(address);
           setOwnedCardIds(userCardsData.ownedCardIds ?? []);
@@ -382,7 +481,7 @@ export const StreakIncreasedPage = () => {
         setOwnedCardIds([]);
       }
 
-      const result = await claimStreakRewards(address, reward.claimIds);
+      const result = await claimStreakRewards(address, rewardToPresent.claimIds);
 
       if (import.meta.env.DEV) {
         console.info("[STREAK-REWARD] claimed", {
@@ -421,6 +520,20 @@ export const StreakIncreasedPage = () => {
     }
   };
 
+  const handleStreakContinue = async () => {
+    let acknowledgedReward = reward;
+
+    if (!presentationAcknowledged) {
+      const acknowledgement = await ensurePresentationAcknowledged();
+      if (!acknowledgement) {
+        return;
+      }
+      acknowledgedReward = acknowledgement.reward ?? acknowledgedReward;
+    }
+
+    await handleRewardContinue(acknowledgedReward);
+  };
+
   const handleRewardStepContinue = async () => {
     if (rewardSteps[currentRewardStepIndex + 1]) {
       setCurrentRewardStepIndex((current) => current + 1);
@@ -454,11 +567,20 @@ export const StreakIncreasedPage = () => {
     <DelayedLoading ms={0}>
       <DailyStreakSheet
         streak={streak}
+        completedToday={
+          state?.from === "/profile" ? profileStreakCompletedToday : true
+        }
         streakProtectors={streakProtectors}
         onClose={handleClose}
-        onContinue={reward ? handleRewardContinue : handleClose}
+        onContinue={
+          reward || requiresPresentationAcknowledgement
+            ? handleStreakContinue
+            : handleClose
+        }
         reward={reward}
-        isRewardClaiming={isRewardClaiming}
+        isRewardClaiming={
+          isRewardClaiming || isAcknowledgingPresentation
+        }
         showCelebrationIntroOnEntry={state?.from !== "/profile"}
       />
     </DelayedLoading>

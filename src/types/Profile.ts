@@ -17,6 +17,7 @@ interface Profile {
   totalXp: number;
   level: number;
   streak: number;
+  streakCompletedToday: boolean;
   streakProtectors?: number;
   avatarId: number;
 }

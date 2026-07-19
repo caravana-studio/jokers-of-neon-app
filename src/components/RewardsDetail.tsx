@@ -2,20 +2,14 @@ import { Box, Flex, Heading } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
-import { claimStreakPresentation } from "../api/profile.ts";
 import { BOSS_LEVEL } from "../constants/general.ts";
-import { useDojo } from "../dojo/DojoContext.tsx";
 import { useMapNavigate } from "../hooks/useMapNavigate.tsx";
+import { useStreakPresentationFlow } from "../hooks/useStreakPresentationFlow.ts";
 import { RerollIndicators } from "../pages/DynamicStore/storeComponents/TopBar/RerollIndicators.tsx";
 import { useGameStore } from "../state/useGameStore.ts";
 import { BLUE_LIGHT, VIOLET_LIGHT } from "../theme/colors";
 import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
 import { RoundRewards } from "../types/RoundRewards.ts";
-import {
-  isStreakHidden,
-  navigateToStreakIncreased,
-} from "../utils/streakPresentation.ts";
 import { StaggeredList } from "./animations/StaggeredList.tsx";
 import { CashSymbol } from "./CashSymbol.tsx";
 import { PinkBox } from "./PinkBox.tsx";
@@ -105,11 +99,8 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "rewards-details.labels",
   });
-  const navigate = useNavigate();
   const { navigateToMap } = useMapNavigate();
-  const {
-    account: { account },
-  } = useDojo();
+  const { presentStreak } = useStreakPresentationFlow();
   const { isSmallScreen } = useResponsiveValues();
   const { currentScore, setRoundRewards } = useGameStore();
   const [animationEnded, setAnimationEnded] = useState(false);
@@ -179,27 +170,13 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
     setIsNavigating(true);
 
     try {
-      if (!isStreakHidden) {
-        try {
-          const presentation = await claimStreakPresentation(account.address);
+      const presented = await presentStreak({
+        continuation: { type: "map-after-rewards" },
+        replace: true,
+      });
 
-          if (presentation.show && presentation.streak !== null) {
-            const navigated = navigateToStreakIncreased(navigate, {
-              streak: presentation.streak,
-              reward: presentation.reward,
-              continuation: {
-                type: "map-after-rewards",
-              },
-              replace: true,
-            });
-
-            if (navigated) {
-              return;
-            }
-          }
-        } catch (error) {
-          console.warn("RewardsDetail: streak presentation claim failed", error);
-        }
+      if (presented) {
+        return;
       }
 
       await navigateToMap();

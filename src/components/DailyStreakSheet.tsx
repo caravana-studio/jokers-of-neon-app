@@ -40,6 +40,7 @@ const triggerEntryVibration = (duration: number) => {
 
 export interface DailyStreakSheetProps {
   streak: number;
+  completedToday?: boolean;
   streakProtectors?: number;
   onClose: () => void | Promise<void>;
   onContinue?: () => void | Promise<void>;
@@ -51,6 +52,7 @@ export interface DailyStreakSheetProps {
 
 export const DailyStreakSheet = ({
   streak,
+  completedToday = true,
   streakProtectors = 0,
   onClose,
   onContinue,
@@ -68,9 +70,10 @@ export const DailyStreakSheet = ({
     ? Math.max(0, Math.floor(streak))
     : 0;
   const isZeroStreak = normalizedStreak === 0;
+  const isStreakActive = completedToday && !isZeroStreak;
   const isMilestoneHit = isDailyStreakAtMilestone(normalizedStreak);
   const [showCelebrationIntro, setShowCelebrationIntro] = useState(
-    showCelebrationIntroOnEntry && !isZeroStreak
+    showCelebrationIntroOnEntry && isStreakActive
   );
   const [isContinuing, setIsContinuing] = useState(false);
   const celebrationIntroTimeoutRef = useRef<number | null>(null);
@@ -78,7 +81,7 @@ export const DailyStreakSheet = ({
   const { isSmallScreen } = useResponsiveValues();
 
   useEffect(() => {
-    if (!showCelebrationIntroOnEntry || isZeroStreak) {
+    if (!showCelebrationIntroOnEntry || !isStreakActive) {
       setShowCelebrationIntro(false);
       return;
     }
@@ -95,10 +98,10 @@ export const DailyStreakSheet = ({
         celebrationIntroTimeoutRef.current = null;
       }
     };
-  }, [isMilestoneHit, isZeroStreak, normalizedStreak, showCelebrationIntroOnEntry]);
+  }, [isMilestoneHit, isStreakActive, normalizedStreak, showCelebrationIntroOnEntry]);
 
   useEffect(() => {
-    if (isZeroStreak) {
+    if (!isStreakActive) {
       return () => {
         hideLightPillarAnimation();
       };
@@ -118,7 +121,7 @@ export const DailyStreakSheet = ({
   }, [
     hideLightPillarAnimation,
     isMilestoneHit,
-    isZeroStreak,
+    isStreakActive,
     normalizedStreak,
     showLightPillarAnimation,
   ]);
@@ -258,7 +261,7 @@ export const DailyStreakSheet = ({
                     bg="rgba(255, 147, 75, 0.08)"
                     p={2}
                   >
-                    <DailyStreakFireAnimation size={112} grayscale={isZeroStreak} />
+                    <DailyStreakFireAnimation size={112} grayscale={!isStreakActive} />
                   </Box>
 
                   <Flex flexDirection="column" alignItems="center" gap={2}>
@@ -273,7 +276,7 @@ export const DailyStreakSheet = ({
                     </Text>
                     <motion.div
                       animate={
-                        isZeroStreak
+                        !isStreakActive
                           ? {
                               scale: 1,
                               filter: "none",
@@ -293,7 +296,7 @@ export const DailyStreakSheet = ({
                             }
                       }
                       transition={
-                        isMilestoneHit && !isZeroStreak
+                        isMilestoneHit && isStreakActive
                           ? {
                               duration: 1.8,
                               repeat: Infinity,
@@ -315,7 +318,7 @@ export const DailyStreakSheet = ({
                         fontSize={{ base: "72px", sm: "88px" }}
                         lineHeight={1}
                         fontWeight={600}
-                        color={isZeroStreak ? "grey" : DIAMONDS}
+                        color={isStreakActive ? DIAMONDS : "grey"}
                         display="block"
                         sx={{
                           "& span": {

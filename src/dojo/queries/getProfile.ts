@@ -16,6 +16,7 @@ export const getProfile = async (
         currentXp: Number(tx_result.xp),
         level: Number(tx_result.level),
         streak: Number(tx_result.daily_streak),
+        streakCompletedToday: false,
         avatarId: Number(tx_result.avatar_id),
     };
     

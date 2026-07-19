@@ -28,6 +28,8 @@ export type ProfileStore = {
     }
   ) => Promise<void>;
 
+  applyStreakStatus: (status: Awaited<ReturnType<typeof fetchStreakStatus>>) => void;
+
   updateAvatar: (
     client: any,
     snAccount: Account | AccountInterface,
@@ -125,6 +127,7 @@ export const useProfileStore = create<ProfileStore>((set, get) => ({
           totalXp: sanitizedTotalXp,
           level: toInt(profile.level),
           streak: effectiveDailyStreak,
+          streakCompletedToday: streakStatusResult?.completedToday ?? false,
           streakProtectors,
           avatarId: finalAvatarId,
         },
@@ -185,6 +188,26 @@ export const useProfileStore = create<ProfileStore>((set, get) => ({
       console.log("Error fetching profile data", e);
       set({ profileData: null, loading: false });
     }
+  },
+
+  applyStreakStatus: (status) => {
+    const current = get().profileData;
+    if (!current) return;
+
+    set({
+      profileData: {
+        ...current,
+        profile: {
+          ...current.profile,
+          streak: Math.max(0, Math.trunc(status.effectiveStreak)),
+          streakCompletedToday: status.completedToday,
+          streakProtectors: Math.max(
+            0,
+            Math.trunc(status.protectorsAvailable)
+          ),
+        },
+      },
+    });
   },
 
   updateAvatar: async (_client, _snAccount, address, avatarId) => {

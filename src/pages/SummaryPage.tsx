@@ -5,7 +5,6 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
-import { claimStreakPresentation } from "../api/profile";
 import { StaggeredList } from "../components/animations/StaggeredList";
 import { BackgroundDecoration } from "../components/Background";
 import { DelayedLoading } from "../components/DelayedLoading";
@@ -20,7 +19,7 @@ import {
   DEFAULT_TRACKER_VIEW,
   getGameTracker,
 } from "../dojo/queries/getGameTracker";
-import { useDojo } from "../dojo/useDojo";
+import { useStreakPresentationFlow } from "../hooks/useStreakPresentationFlow";
 import { Plays } from "../enums/plays";
 import { useMapNavigate } from "../hooks/useMapNavigate";
 import { triggerHaptic } from "../haptics";
@@ -31,7 +30,6 @@ import { formatNumber } from "../utils/formatNumber";
 import { shareOnX } from "../utils/shareOnX";
 import {
   isStreakHidden,
-  navigateToStreakIncreased,
   SKIP_STREAK_PRESENTATION_CHECK,
 } from "../utils/streakPresentation";
 
@@ -66,9 +64,7 @@ const SummaryDetail = ({ win }: SummaryPageProps) => {
   const { navigateToMap } = useMapNavigate();
   const navigate = useNavigate();
   const location = useLocation();
-  const {
-    account: { account },
-  } = useDojo();
+  const { presentStreak } = useStreakPresentationFlow();
   const { isSmallScreen } = useResponsiveValues();
   const [skip, setSkip] = useState(false);
   const [animationEnded, setAnimationEnded] = useState(false);
@@ -106,30 +102,20 @@ const SummaryDetail = ({ win }: SummaryPageProps) => {
 
     void (async () => {
       try {
-        const presentation = await claimStreakPresentation(account.address);
-
-        if (
-          active &&
-          presentation.show &&
-          presentation.streak !== null
-        ) {
-          const navigated = navigateToStreakIncreased(navigate, {
-            streak: presentation.streak,
-            reward: presentation.reward,
-            continuation: {
-              type: "route",
-              to: location.pathname,
-              replace: true,
-              state: {
-                [SKIP_STREAK_PRESENTATION_CHECK]: true,
-              },
-            },
+        const navigated = await presentStreak({
+          continuation: {
+            type: "route",
+            to: location.pathname,
             replace: true,
-          });
+            state: {
+              [SKIP_STREAK_PRESENTATION_CHECK]: true,
+            },
+          },
+          replace: true,
+        });
 
-          if (navigated) {
-            return;
-          }
+        if (active && navigated) {
+          return;
         }
       } catch (error) {
         console.warn("SummaryPage: streak presentation claim failed", error);
@@ -143,7 +129,7 @@ const SummaryDetail = ({ win }: SummaryPageProps) => {
     return () => {
       active = false;
     };
-  }, [account.address, location.pathname, location.state, navigate]);
+  }, [location.pathname, location.state, presentStreak]);
 
   useEffect(() => {
     let active = true;

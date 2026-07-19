@@ -9,12 +9,14 @@ import { useResponsiveValues } from "../../theme/responsiveSettings";
 
 interface ProfileDailyStreakButtonProps {
   streak: number;
+  completedToday: boolean;
   streakProtectors?: number;
   onClick: () => void;
 }
 
 export const ProfileDailyStreakButton = ({
   streak,
+  completedToday,
   streakProtectors = 0,
   onClick,
 }: ProfileDailyStreakButtonProps) => {
@@ -22,7 +24,6 @@ export const ProfileDailyStreakButton = ({
   const normalizedStreak = Number.isFinite(streak)
     ? Math.max(0, Math.floor(streak))
     : 0;
-  const isZeroStreak = normalizedStreak === 0;
 
   const { isSmallScreen } = useResponsiveValues();
 
@@ -61,7 +62,7 @@ export const ProfileDailyStreakButton = ({
 
         <Flex alignItems="center" gap={1} minW={0}>
           <Box flexShrink={0}>
-            <DailyStreakFireAnimation size={88} grayscale={isZeroStreak} />
+            <DailyStreakFireAnimation size={88} grayscale={!completedToday} />
           </Box>
 
           <Flex flexDirection="column" alignItems="flex-start" gap={0.5} minW={0}>
@@ -79,8 +80,8 @@ export const ProfileDailyStreakButton = ({
               lineHeight={1}
               fontFamily="Orbitron"
               fontWeight={700}
-              color={isZeroStreak ? "grey" : DIAMONDS}
-              textShadow={isZeroStreak ? "none" : `0 0 12px ${DIAMONDS}`}
+              color={completedToday ? DIAMONDS : "grey"}
+              textShadow={completedToday ? `0 0 12px ${DIAMONDS}` : "none"}
             >
               {normalizedStreak}
             </Text>
