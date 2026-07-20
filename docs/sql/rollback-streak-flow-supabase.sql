@@ -47,7 +47,7 @@ BEGIN
   IF EXISTS (
     SELECT 1
     FROM pg_publication_tables
-    WHERE publicationname = 'supabase_realtime'
+    WHERE pubname = 'supabase_realtime'
       AND schemaname = 'public'
       AND tablename = 'player_streaks'
   ) THEN

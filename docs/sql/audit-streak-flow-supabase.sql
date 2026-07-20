@@ -33,11 +33,11 @@ WHERE schemaname = 'public'
   AND indexname = 'idx_player_streaks_pending_intent';
 
 SELECT
-  publicationname,
+  pubname,
   schemaname,
   tablename
 FROM pg_publication_tables
-WHERE publicationname = 'supabase_realtime'
+WHERE pubname = 'supabase_realtime'
   AND schemaname = 'public'
   AND tablename = 'player_streaks';
 
