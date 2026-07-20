@@ -63,6 +63,7 @@ export const CavosWalletConnect = () => {
     finalAccount,
     isLoadingLastGameId,
     isLoadingWallet,
+    isRecoveringCavosSession,
     isCavosEnabled,
     cavosOAuthProvider,
     cavosError,
@@ -238,6 +239,7 @@ export const CavosWalletConnect = () => {
   const isVerificationCodeValid = verificationCode.length === 6;
   const isAuthActionInProgress =
     isLoadingWallet ||
+    isRecoveringCavosSession ||
     isSendingEmailOtp ||
     isVerifyingEmailOtp ||
     Boolean(cavosOAuthProvider);
@@ -376,6 +378,7 @@ export const CavosWalletConnect = () => {
                 showAppleLogin={showAppleLogin}
                 showGuestMode={allowGuest}
                 isCavosAuthDisabled={isCavosAuthDisabled}
+                isSessionRecoveryLoading={isRecoveringCavosSession}
                 isControllerActionDisabled={isControllerActionDisabled}
                 isControllerActionLoading={false}
                 isGuestActionDisabled={isGuestActionDisabled}

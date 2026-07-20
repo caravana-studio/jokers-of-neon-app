@@ -29,6 +29,7 @@ interface AuthOptionsViewProps {
   showAppleLogin: boolean;
   showGuestMode: boolean;
   isCavosAuthDisabled?: boolean;
+  isSessionRecoveryLoading?: boolean;
   isControllerActionDisabled?: boolean;
   isControllerActionLoading?: boolean;
   isGuestActionDisabled?: boolean;
@@ -48,6 +49,7 @@ export const AuthOptionsView = ({
   showAppleLogin,
   showGuestMode,
   isCavosAuthDisabled = false,
+  isSessionRecoveryLoading = false,
   isControllerActionDisabled = false,
   isControllerActionLoading = false,
   isGuestActionDisabled = false,
@@ -103,7 +105,9 @@ export const AuthOptionsView = ({
                   color="#0B0B0D"
                   onClick={onContinueWithAppleClick}
                   disabled={isCavosAuthDisabled}
-                  isLoading={cavosOAuthProvider === "apple"}
+                  isLoading={
+                    isSessionRecoveryLoading || cavosOAuthProvider === "apple"
+                  }
                 />
               )}
 
@@ -115,7 +119,9 @@ export const AuthOptionsView = ({
                 color="#0B0B0D"
                 onClick={onContinueWithGoogleClick}
                 disabled={isCavosAuthDisabled}
-                isLoading={cavosOAuthProvider === "google"}
+                isLoading={
+                  isSessionRecoveryLoading || cavosOAuthProvider === "google"
+                }
               />
 
               <AuthButton
@@ -124,6 +130,7 @@ export const AuthOptionsView = ({
                 color="white"
                 onClick={onContinueWithEmailClick}
                 disabled={isCavosAuthDisabled}
+                isLoading={isSessionRecoveryLoading}
               />
             </Flex>
           </motion.div>
@@ -164,7 +171,9 @@ export const AuthOptionsView = ({
                 color="#0B0B0D"
                 onClick={onContinueWithControllerClick}
                 disabled={isControllerActionDisabled}
-                isLoading={isControllerActionLoading}
+                isLoading={
+                  isSessionRecoveryLoading || isControllerActionLoading
+                }
               />
               {showGuestMode && (
                 <Flex flexDir="column" alignItems="center" gap={2.5} w="100%">
@@ -182,6 +191,7 @@ export const AuthOptionsView = ({
                     color="white"
                     onClick={onGuestModeClick}
                     disabled={isGuestActionDisabled}
+                    isLoading={isSessionRecoveryLoading}
                   />
                 </Flex>
               )}
