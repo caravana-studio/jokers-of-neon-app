@@ -6,6 +6,7 @@ import {
   showLevelCompleteToast,
 } from "./transactionNotifications";
 import { registerMilestone } from "./appsflyerReferral";
+import { useStreakPresentationStore } from "../state/useStreakPresentationStore";
 
 export const handleXPEvents = async (
   events: DojoEvent[],
@@ -19,6 +20,21 @@ export const handleXPEvents = async (
   const levelCompleteEvents = getLevelCompleteEvent(events);
 
   if (dailyMissionEvent && dailyMissionEvent.length > 0) {
+    const completedDailyMissions = dailyMissionEvent.filter(
+      (mission) => mission.periodType === "daily"
+    );
+    const completedDailyPeriodId = completedDailyMissions
+      .reduce(
+        (latest, mission) => Math.max(latest, mission.periodId ?? 0),
+        0
+      );
+
+    if (completedDailyMissions.length > 0) {
+      useStreakPresentationStore
+        .getState()
+        .requestCheck(address, completedDailyPeriodId);
+    }
+
     achievementSound();
 
     if (showToasts) {

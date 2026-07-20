@@ -4,8 +4,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { Preferences } from "@capacitor/preferences";
-import { useLocation, useNavigate } from "react-router-dom";
-import { claimStreakPresentation } from "../../api/profile";
+import { useNavigate } from "react-router-dom";
 import { BannerRenderer } from "../../components/BannerRenderer/BannerRenderer";
 import { ConfirmationModal } from "../../components/ConfirmationModal";
 import { DelayedLoading } from "../../components/DelayedLoading";
@@ -35,11 +34,6 @@ import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { logEvent } from "../../utils/analytics";
 import { APP_URL, isNative } from "../../utils/capacitorUtils";
 import { hasInProgressGames } from "../../utils/inProgressGames";
-import {
-  isStreakHidden,
-  navigateToStreakIncreased,
-  SKIP_STREAK_PRESENTATION_CHECK,
-} from "../../utils/streakPresentation";
 import { getMajor, getMinor, getPatch } from "../../utils/versionUtils";
 
 const bossFloatAnimation = keyframes`
@@ -67,7 +61,6 @@ export const NewHome = ({ isClaimingLives }: NewHomeProps) => {
   });
   const { isSmallScreen } = useResponsiveValues();
   const { settings } = useDistributionSettings();
-  const location = useLocation();
   const navigate = useNavigate();
   const { prepareNewGame, executeCreateGame } = useGameContext();
   const { data: games } = useGetMyGames();
@@ -83,7 +76,6 @@ export const NewHome = ({ isClaimingLives }: NewHomeProps) => {
     useState(false);
   const desktopBannerViewportRef = useRef<HTMLDivElement | null>(null);
   const desktopBannerContentRef = useRef<HTMLDivElement | null>(null);
-  const streakCheckAddressRef = useRef<string | null>(null);
 
   const banners = settings?.home?.banners || [];
   const desktopBannerFitKey = banners
@@ -91,7 +83,6 @@ export const NewHome = ({ isClaimingLives }: NewHomeProps) => {
     .join("|");
   const {
     setup: { useBurnerAcc },
-    account,
   } = useDojo();
 
   const desktopBannerWidth =
@@ -125,64 +116,6 @@ export const NewHome = ({ isClaimingLives }: NewHomeProps) => {
 
     }
   }, []);
-
-  useEffect(() => {
-    if (isStreakHidden) {
-      return;
-    }
-
-    if (
-      (location.state as Record<string, unknown> | null)?.[
-        SKIP_STREAK_PRESENTATION_CHECK
-      ] === true
-    ) {
-      return;
-    }
-
-    const address = account?.account?.address;
-    if (!address || streakCheckAddressRef.current === address) {
-      return;
-    }
-
-    streakCheckAddressRef.current = address;
-    let active = true;
-
-    void (async () => {
-      try {
-        const presentation = await claimStreakPresentation(address);
-
-        if (
-          active &&
-          presentation.show &&
-          presentation.streak !== null
-        ) {
-          const navigated = navigateToStreakIncreased(navigate, {
-            streak: presentation.streak,
-            reward: presentation.reward,
-            continuation: {
-              type: "route",
-              to: "/",
-              replace: true,
-              state: {
-                [SKIP_STREAK_PRESENTATION_CHECK]: true,
-              },
-            },
-            replace: true,
-          });
-
-          if (navigated) {
-            return;
-          }
-        }
-      } catch (error) {
-        console.warn("NewHome: streak presentation claim failed", error);
-      }
-    })();
-
-    return () => {
-      active = false;
-    };
-  }, [account?.account?.address, location.state, navigate]);
 
   useEffect(() => {
     if (!useBurnerAcc) return;

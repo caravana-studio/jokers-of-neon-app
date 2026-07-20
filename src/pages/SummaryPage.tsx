@@ -4,8 +4,7 @@ import { faXTwitter } from "@fortawesome/free-brands-svg-icons";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useLocation, useNavigate } from "react-router-dom";
-import { claimStreakPresentation } from "../api/profile";
+import { useNavigate } from "react-router-dom";
 import { StaggeredList } from "../components/animations/StaggeredList";
 import { BackgroundDecoration } from "../components/Background";
 import { DelayedLoading } from "../components/DelayedLoading";
@@ -20,7 +19,6 @@ import {
   DEFAULT_TRACKER_VIEW,
   getGameTracker,
 } from "../dojo/queries/getGameTracker";
-import { useDojo } from "../dojo/useDojo";
 import { Plays } from "../enums/plays";
 import { useMapNavigate } from "../hooks/useMapNavigate";
 import { triggerHaptic } from "../haptics";
@@ -29,11 +27,6 @@ import { BLUE_LIGHT, VIOLET_LIGHT } from "../theme/colors";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import { formatNumber } from "../utils/formatNumber";
 import { shareOnX } from "../utils/shareOnX";
-import {
-  isStreakHidden,
-  navigateToStreakIncreased,
-  SKIP_STREAK_PRESENTATION_CHECK,
-} from "../utils/streakPresentation";
 
 const DELAY_START = 1.25;
 const STAGGER = 0.5;
@@ -65,15 +58,10 @@ const SummaryDetail = ({ win }: SummaryPageProps) => {
 
   const { navigateToMap } = useMapNavigate();
   const navigate = useNavigate();
-  const location = useLocation();
-  const {
-    account: { account },
-  } = useDojo();
   const { isSmallScreen } = useResponsiveValues();
   const [skip, setSkip] = useState(false);
   const [animationEnded, setAnimationEnded] = useState(false);
   const [isNavigating, setIsNavigating] = useState(false);
-  const [isCheckingStreak, setIsCheckingStreak] = useState(true);
   const {
     totalScore,
     level,
@@ -86,64 +74,6 @@ const SummaryDetail = ({ win }: SummaryPageProps) => {
   useEffect(() => {
     triggerHaptic(win ? "win" : "lose");
   }, [win]);
-
-  useEffect(() => {
-    if (isStreakHidden) {
-      setIsCheckingStreak(false);
-      return;
-    }
-
-    if (
-      (location.state as Record<string, unknown> | null)?.[
-        SKIP_STREAK_PRESENTATION_CHECK
-      ] === true
-    ) {
-      setIsCheckingStreak(false);
-      return;
-    }
-
-    let active = true;
-
-    void (async () => {
-      try {
-        const presentation = await claimStreakPresentation(account.address);
-
-        if (
-          active &&
-          presentation.show &&
-          presentation.streak !== null
-        ) {
-          const navigated = navigateToStreakIncreased(navigate, {
-            streak: presentation.streak,
-            reward: presentation.reward,
-            continuation: {
-              type: "route",
-              to: location.pathname,
-              replace: true,
-              state: {
-                [SKIP_STREAK_PRESENTATION_CHECK]: true,
-              },
-            },
-            replace: true,
-          });
-
-          if (navigated) {
-            return;
-          }
-        }
-      } catch (error) {
-        console.warn("SummaryPage: streak presentation claim failed", error);
-      }
-
-      if (active) {
-        setIsCheckingStreak(false);
-      }
-    })();
-
-    return () => {
-      active = false;
-    };
-  }, [account.address, location.pathname, location.state, navigate]);
 
   useEffect(() => {
     let active = true;
@@ -197,7 +127,7 @@ const SummaryDetail = ({ win }: SummaryPageProps) => {
     t("defeated-rages"),
   ];
 
-  if (isNavigating || isCheckingStreak) {
+  if (isNavigating) {
     return (
       <Flex
         position="fixed"

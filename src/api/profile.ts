@@ -694,7 +694,8 @@ export async function fetchStreakStatus(
 }
 
 export async function claimStreakPresentation(
-  address: string
+  address: string,
+  options: { signal?: AbortSignal } = {}
 ): Promise<StreakPresentationClaimApiData> {
   if (!address) {
     throw new Error("claimStreakPresentation: address is required");
@@ -711,6 +712,7 @@ export async function claimStreakPresentation(
     headers: {
       "X-API-Key": apiKey,
     },
+    signal: options.signal,
   });
 
   if (!response.ok) {

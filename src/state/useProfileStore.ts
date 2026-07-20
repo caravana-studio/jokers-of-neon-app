@@ -5,6 +5,7 @@ import {
   fetchProfileLevelConfigByAddress,
   fetchProfileLevelConfigByLevel,
   fetchStreakStatus,
+  type StreakStatusApiData,
   fetchProfileStats,
   updateProfileAvatar,
 } from "../api/profile";
@@ -27,6 +28,12 @@ export type ProfileStore = {
       refreshStreakStatus?: boolean;
     }
   ) => Promise<void>;
+
+  applyStreakPresentation: (streak: number) => void;
+  applyStreakStatus: (
+    status: StreakStatusApiData,
+    minimumStreak?: number
+  ) => void;
 
   updateAvatar: (
     client: any,
@@ -185,6 +192,48 @@ export const useProfileStore = create<ProfileStore>((set, get) => ({
       console.log("Error fetching profile data", e);
       set({ profileData: null, loading: false });
     }
+  },
+
+  applyStreakPresentation: (streak) => {
+    const current = get().profileData;
+    if (!current) return;
+
+    const nextStreak = Number.isFinite(streak)
+      ? Math.max(0, Math.trunc(streak))
+      : current.profile.streak;
+
+    set({
+      profileData: {
+        ...current,
+        profile: {
+          ...current.profile,
+          streak: nextStreak,
+        },
+      },
+    });
+  },
+
+  applyStreakStatus: (status, minimumStreak = 0) => {
+    const current = get().profileData;
+    if (!current) return;
+
+    const sanitizeInt = (value: number) =>
+      Number.isFinite(value) ? Math.max(0, Math.trunc(value)) : 0;
+    const nextStreak = Math.max(
+      sanitizeInt(status.effectiveStreak),
+      sanitizeInt(minimumStreak)
+    );
+
+    set({
+      profileData: {
+        ...current,
+        profile: {
+          ...current.profile,
+          streak: nextStreak,
+          streakProtectors: sanitizeInt(status.protectorsAvailable),
+        },
+      },
+    });
   },
 
   updateAvatar: async (_client, _snAccount, address, avatarId) => {
