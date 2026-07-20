@@ -45,12 +45,6 @@ ALTER TABLE public.player_streak_reward_claims
 -- membership is harmless for the clean code, and PostgreSQL does not record
 -- enough provenance to prove that this experiment originally added it.
 
--- Remove remote migration history entries that no longer exist on the clean
--- branches. If a migration was applied manually, its DELETE simply affects zero
--- rows.
-DELETE FROM supabase_migrations.schema_migrations
-WHERE version IN ('20260719120000', '20260720160000', '20260720173000');
-
 NOTIFY pgrst, 'reload schema';
 
 COMMIT;
@@ -70,8 +64,3 @@ WHERE table_schema = 'public'
 SELECT to_regprocedure(
   'public.enqueue_daily_streak_intent(jsonb,jsonb,jsonb)'
 ) IS NOT NULL AS atomic_streak_rpc_still_exists;
-
--- Expected result: no rows.
-SELECT version
-FROM supabase_migrations.schema_migrations
-WHERE version IN ('20260719120000', '20260720160000', '20260720173000');
