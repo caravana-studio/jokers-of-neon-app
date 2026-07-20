@@ -8,23 +8,51 @@ type WaitRequest = typeof waitForStreakPresentation;
 
 export const STREAK_PRESENTATION_WAIT_TIMEOUT_MS = 8_000;
 
+async function waitForConfirmedPeriod(options: {
+  address: string;
+  expectedPeriodId: number;
+  intentId?: string | null;
+  retryOnTimeout?: boolean;
+  request: WaitRequest;
+  onStatus?: (status: StreakStatusApiData) => void;
+}): Promise<StreakPresentationWaitApiData> {
+  while (true) {
+    const result = await options.request(
+      options.address,
+      options.expectedPeriodId,
+      {
+        until: "confirmed",
+        ...(options.intentId ? { intentId: options.intentId } : {}),
+        timeoutMs: STREAK_PRESENTATION_WAIT_TIMEOUT_MS,
+      }
+    );
+
+    if (result.status) {
+      options.onStatus?.(result.status);
+    }
+
+    if (result.state !== "timeout" || !options.retryOnTimeout) {
+      return result;
+    }
+
+    console.info("[streak-presentation] retrying timed out period", {
+      periodId: options.expectedPeriodId,
+      completionState: result.status?.completionState ?? null,
+    });
+  }
+}
+
 export async function waitForStreakPresentationPeriod(options: {
   address: string;
   expectedPeriodId: number;
   request?: WaitRequest;
   onStatus?: (status: StreakStatusApiData) => void;
+  retryOnTimeout?: boolean;
 }): Promise<StreakPresentationWaitApiData> {
-  const request = options.request ?? waitForStreakPresentation;
-  const result = await request(options.address, options.expectedPeriodId, {
-    until: "confirmed",
-    timeoutMs: STREAK_PRESENTATION_WAIT_TIMEOUT_MS,
+  return waitForConfirmedPeriod({
+    ...options,
+    request: options.request ?? waitForStreakPresentation,
   });
-
-  if (result.status) {
-    options.onStatus?.(result.status);
-  }
-
-  return result;
 }
 
 export async function resumePendingStreakPresentation(options: {
@@ -32,6 +60,7 @@ export async function resumePendingStreakPresentation(options: {
   status: StreakStatusApiData;
   request?: WaitRequest;
   onStatus?: (status: StreakStatusApiData) => void;
+  retryOnTimeout?: boolean;
 }): Promise<StreakPresentationWaitApiData | null> {
   const { status } = options;
   if (
@@ -42,16 +71,12 @@ export async function resumePendingStreakPresentation(options: {
     return null;
   }
 
-  const request = options.request ?? waitForStreakPresentation;
-  const result = await request(options.address, status.pendingPeriodId, {
-    until: "confirmed",
+  return waitForConfirmedPeriod({
+    address: options.address,
+    expectedPeriodId: status.pendingPeriodId,
     intentId: status.pendingIntentId,
-    timeoutMs: STREAK_PRESENTATION_WAIT_TIMEOUT_MS,
+    retryOnTimeout: options.retryOnTimeout,
+    request: options.request ?? waitForStreakPresentation,
+    onStatus: options.onStatus,
   });
-
-  if (result.status) {
-    options.onStatus?.(result.status);
-  }
-
-  return result;
 }

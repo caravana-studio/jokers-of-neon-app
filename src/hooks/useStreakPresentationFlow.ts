@@ -49,6 +49,7 @@ async function checkPresentation(
         address,
         expectedPeriodId,
         onStatus: applyStatus,
+        retryOnTimeout: true,
       });
 
       return {
@@ -67,6 +68,7 @@ async function checkPresentation(
           address,
           status,
           onStatus: applyStatus,
+          retryOnTimeout: true,
         });
 
         if (resumed) {

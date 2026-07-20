@@ -168,4 +168,56 @@ describe("streak presentation wait", () => {
     expect(result.presentation).toBeNull();
     expect(request).toHaveBeenCalledTimes(1);
   });
+
+  it("keeps waiting after a timeout while the app flow is active", async () => {
+    const pending = streakStatus({
+      syncStatus: "pending",
+      pendingPeriodId: 100,
+      completionState: "pending",
+      projectedStreak: 5,
+    });
+    const confirmed = streakStatus({
+      currentStreak: 5,
+      effectiveStreak: 5,
+      longestStreak: 5,
+      lastCompletedDay: 100,
+      completedToday: true,
+      completionState: "confirmed",
+      projectedStreak: 5,
+    });
+    const request = vi
+      .fn()
+      .mockResolvedValueOnce(
+        waitResult({ state: "timeout", status: pending })
+      )
+      .mockResolvedValueOnce(
+        waitResult({
+          state: "confirmed",
+          status: confirmed,
+          presentation: {
+            show: true,
+            streak: 5,
+            periodId: 100,
+            reward: null,
+            reason: null,
+            acknowledged: false,
+          },
+        })
+      );
+    const onStatus = vi.fn();
+
+    const result = await waitForStreakPresentationPeriod({
+      address: "0x1",
+      expectedPeriodId: 100,
+      request,
+      onStatus,
+      retryOnTimeout: true,
+    });
+
+    expect(result.state).toBe("confirmed");
+    expect(result.presentation?.show).toBe(true);
+    expect(request).toHaveBeenCalledTimes(2);
+    expect(onStatus).toHaveBeenNthCalledWith(1, pending);
+    expect(onStatus).toHaveBeenNthCalledWith(2, confirmed);
+  });
 });
