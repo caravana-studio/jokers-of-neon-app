@@ -26,9 +26,10 @@ const decodeFeltStringFromEvent = (event: DojoEvent, index: number) => {
 const parseMissionCompletedEvent = (event: DojoEvent): DailyMissionCompleted => {
   const layouts = [
     {
-      player: 1,
-      periodType: 2,
-      periodId: 3,
+      // Transaction receipts prepend two Dojo metadata felts before the event.
+      player: 2,
+      periodType: 3,
+      periodId: 4,
       missionId: 5,
       templateId: 6,
       difficulty: 7,
@@ -38,9 +39,10 @@ const parseMissionCompletedEvent = (event: DojoEvent): DailyMissionCompleted => 
       gameId: 11,
     },
     {
-      player: undefined,
-      periodType: 0,
-      periodId: 1,
+      // Some callers provide the serialized event without the Dojo prefix.
+      player: 0,
+      periodType: 1,
+      periodId: 2,
       missionId: 3,
       templateId: 4,
       difficulty: 5,
@@ -55,8 +57,11 @@ const parseMissionCompletedEvent = (event: DojoEvent): DailyMissionCompleted => 
     .map((layout) => {
       const missionId = decodeFeltStringFromEvent(event, layout.missionId);
       const templateId = decodeFeltStringFromEvent(event, layout.templateId);
-      const periodTypeNumber =
-        getNumberValueFromEvent(event, layout.periodType) ?? MISSION_PERIOD.DAILY;
+      const periodTypeNumber = getNumberValueFromEvent(
+        event,
+        layout.periodType
+      );
+      const periodId = getNumberValueFromEvent(event, layout.periodId) ?? 0;
       const target = getNumberValueFromEvent(event, layout.target) ?? 0;
       const progress = getNumberValueFromEvent(event, layout.progress) ?? target;
       const baseXp = getNumberValueFromEvent(event, layout.xp) ?? 0;
@@ -67,15 +72,13 @@ const parseMissionCompletedEvent = (event: DojoEvent): DailyMissionCompleted => 
           : ("daily" as const);
 
       return {
-        player:
-          layout.player !== undefined
-            ? event.data.at(layout.player) ?? event.keys.at(2) ?? ""
-            : event.keys.at(2) ?? event.keys.at(1) ?? "",
+        player: event.data.at(layout.player) ?? event.keys.at(2) ?? "",
         dailyMissionId: templateId || missionId,
         missionId,
         templateId,
         periodType,
-        periodId: getNumberValueFromEvent(event, layout.periodId) ?? 0,
+        periodTypeNumber,
+        periodId,
         difficulty: getNumberValueFromEvent(event, layout.difficulty) ?? 0,
         target,
         progress,
@@ -83,10 +86,22 @@ const parseMissionCompletedEvent = (event: DojoEvent): DailyMissionCompleted => 
         gameId: getNumberValueFromEvent(event, layout.gameId) ?? 0,
       };
     })
-    .find((candidate) => candidate.base_xp > 0 && candidate.dailyMissionId);
+    .find(
+      (candidate) =>
+        (candidate.periodTypeNumber === MISSION_PERIOD.DAILY ||
+          candidate.periodTypeNumber === MISSION_PERIOD.WEEKLY) &&
+        candidate.periodId > 0 &&
+        candidate.base_xp > 0 &&
+        candidate.dailyMissionId
+    );
 
-  return parsed ?? {
-    player: event.data.at(1) ?? event.keys.at(2) ?? "",
+  if (parsed) {
+    const { periodTypeNumber: _periodTypeNumber, ...mission } = parsed;
+    return mission;
+  }
+
+  return {
+    player: event.data.at(2) ?? event.keys.at(2) ?? "",
     dailyMissionId: "",
     missionId: "",
     templateId: "",
