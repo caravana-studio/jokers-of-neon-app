@@ -67,6 +67,7 @@ interface WalletContextType {
   resetCavosAuthState: () => void;
   logout: () => Promise<void>;
   isLoadingWallet: boolean;
+  isRecoveringCavosSession: boolean;
   burnerAccount: Account | AccountInterface | null;
   controllerAccount: AccountInterface | null | undefined;
   isControllerConnected: boolean | undefined;
@@ -744,6 +745,14 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     (accountType === "cavos" || connectionStatus === "selecting") &&
     isCavosSetupInProgress;
 
+  const isRecoveringCavosSession =
+    accountType === "cavos" &&
+    !finalAccount &&
+    connectionStatus === "selecting" &&
+    !!cavos &&
+    (cavos.isLoading === true ||
+      (cavos.isAuthenticated === true && !cavosError));
+
   const shouldBlockWithWalletScreen =
     appType !== AppType.SHOP &&
     (!finalAccount || (EARLY_ACCESS_VERSION && (!isUserAllowed || allowedLoading)));
@@ -770,6 +779,7 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
         verifyCavosEmailOtp,
         resetCavosAuthState,
         isLoadingWallet,
+        isRecoveringCavosSession,
         burnerAccount: gameLoopBurnerAccount ?? burnerAccount,
         controllerAccount,
         isControllerConnected,
