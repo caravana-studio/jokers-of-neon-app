@@ -41,26 +41,9 @@ ALTER TABLE public.player_streak_reward_claims
   DROP COLUMN IF EXISTS submission_complete,
   DROP COLUMN IF EXISTS delivery_result;
 
--- Added only so the discarded API could long-poll streak cache transitions.
-DO $$
-BEGIN
-  IF EXISTS (
-    SELECT 1
-    FROM pg_catalog.pg_publication AS p
-    JOIN pg_catalog.pg_publication_rel AS pr
-      ON pr.prpubid = p.oid
-    JOIN pg_catalog.pg_class AS c
-      ON c.oid = pr.prrelid
-    JOIN pg_catalog.pg_namespace AS n
-      ON n.oid = c.relnamespace
-    WHERE p.pubname = 'supabase_realtime'
-      AND n.nspname = 'public'
-      AND c.relname = 'player_streaks'
-  ) THEN
-    EXECUTE 'ALTER PUBLICATION supabase_realtime DROP TABLE public.player_streaks';
-  END IF;
-END;
-$$;
+-- player_streaks may remain in the supabase_realtime publication. That
+-- membership is harmless for the clean code, and PostgreSQL does not record
+-- enough provenance to prove that this experiment originally added it.
 
 -- Remove remote migration history entries that no longer exist on the clean
 -- branches. If a migration was applied manually, its DELETE simply affects zero
