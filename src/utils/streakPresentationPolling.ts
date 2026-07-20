@@ -4,6 +4,8 @@ import type {
 } from "../api/profile";
 
 const DEFAULT_RETRY_DELAYS_MS = [2_000, 3_000, 5_000, 10_000] as const;
+const SECONDS_PER_DAY = 86_400;
+const DAILY_PERIOD_OFFSET_SECONDS = 21_600;
 
 type PollForStreakPresentationOptions = {
   signal: AbortSignal;
@@ -13,6 +15,13 @@ type PollForStreakPresentationOptions = {
   retryDelaysMs?: readonly number[];
   delay?: (milliseconds: number, signal: AbortSignal) => Promise<void>;
 };
+
+export function getCurrentDailyPeriodId(now = Date.now()): number {
+  return Math.floor(
+    (Math.floor(now / 1_000) - DAILY_PERIOD_OFFSET_SECONDS) /
+      SECONDS_PER_DAY
+  );
+}
 
 export function getPresentationFallback(
   status: StreakStatusApiData,

@@ -13,6 +13,7 @@ import {
   navigateToStreakIncreased,
 } from "../utils/streakPresentation";
 import {
+  getCurrentDailyPeriodId,
   getPresentationFallback,
   pollForStreakPresentation,
   recoverAlreadyClaimedPresentation,
@@ -70,6 +71,36 @@ export const StreakPresentationCoordinator = () => {
       useStreakPresentationStore.getState().reset();
     }
   }, [accountAddress]);
+
+  useEffect(() => {
+    if (isStreakHidden || !accountAddress || request) {
+      return;
+    }
+
+    const controller = new AbortController();
+    void fetchStreakStatus(accountAddress, { signal: controller.signal })
+      .then((status) => {
+        if (controller.signal.aborted) return;
+
+        useProfileStore.getState().applyStreakStatus(status);
+        const currentPeriodId = getCurrentDailyPeriodId();
+        if (!getPresentationFallback(status, currentPeriodId)) return;
+
+        console.info(
+          "[streak-presentation] recovering completed daily period",
+          { periodId: currentPeriodId }
+        );
+        useStreakPresentationStore
+          .getState()
+          .requestCheck(accountAddress, currentPeriodId);
+      })
+      .catch((error) => {
+        if (controller.signal.aborted) return;
+        console.warn("Failed to recover streak presentation status", error);
+      });
+
+    return () => controller.abort();
+  }, [accountAddress, request]);
 
   useEffect(() => {
     if (

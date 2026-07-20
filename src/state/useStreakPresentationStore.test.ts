@@ -1,3 +1,5 @@
+/* @vitest-environment jsdom */
+
 import { afterEach, describe, expect, it } from "vitest";
 import { useStreakPresentationStore } from "./useStreakPresentationStore";
 
@@ -11,6 +13,7 @@ const readyPresentation = {
 describe("streak presentation store", () => {
   afterEach(() => {
     useStreakPresentationStore.getState().reset();
+    window.sessionStorage.clear();
   });
 
   it("deduplicates repeated mission events for the same player and period", () => {
@@ -59,5 +62,22 @@ describe("streak presentation store", () => {
     expect(
       useStreakPresentationStore.getState().pendingPresentation
     ).toBeNull();
+  });
+
+  it("does not request a presentation twice in the same browser session", () => {
+    const store = useStreakPresentationStore.getState();
+    store.requestCheck("0x2", 200);
+    const requestId = useStreakPresentationStore.getState().request!.id;
+    store.beginPolling(requestId);
+    store.resolvePresentation(requestId, {
+      ...readyPresentation,
+      periodId: 200,
+    });
+    store.markDelivered("0x2", 200);
+    store.reset();
+
+    useStreakPresentationStore.getState().requestCheck("0x02", 200);
+
+    expect(useStreakPresentationStore.getState().request).toBeNull();
   });
 });

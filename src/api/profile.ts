@@ -633,7 +633,7 @@ export async function fetchProfileLevelConfigByLevel(
 
 export async function fetchStreakStatus(
   address: string,
-  options: { refresh?: boolean } = {}
+  options: { refresh?: boolean; signal?: AbortSignal } = {}
 ): Promise<StreakStatusApiData> {
   if (!address) {
     throw new Error("fetchStreakStatus: address is required");
@@ -654,6 +654,7 @@ export async function fetchStreakStatus(
     headers: {
       "X-API-Key": apiKey,
     },
+    signal: options.signal,
   });
 
   if (!response.ok) {

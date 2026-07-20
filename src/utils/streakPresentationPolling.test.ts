@@ -1,10 +1,22 @@
 import { describe, expect, it, vi } from "vitest";
 import type { StreakPresentationClaimApiData } from "../api/profile";
 import {
+  getCurrentDailyPeriodId,
   getPresentationFallback,
   pollForStreakPresentation,
   recoverAlreadyClaimedPresentation,
 } from "./streakPresentationPolling";
+
+describe("getCurrentDailyPeriodId", () => {
+  it("uses the same 06:00 UTC boundary as daily missions", () => {
+    expect(getCurrentDailyPeriodId(Date.parse("2026-07-20T05:59:59Z"))).toBe(
+      20_653
+    );
+    expect(getCurrentDailyPeriodId(Date.parse("2026-07-20T06:00:00Z"))).toBe(
+      20_654
+    );
+  });
+});
 
 const notReady: StreakPresentationClaimApiData = {
   show: false,

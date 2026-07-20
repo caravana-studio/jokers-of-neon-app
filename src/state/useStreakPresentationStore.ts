@@ -33,6 +33,8 @@ type StreakPresentationStore = {
   reset: () => void;
 };
 
+const PENDING_REQUEST_STORAGE_KEY = "streak-presentation:pending";
+const DELIVERED_STORAGE_KEY_PREFIX = "streak-presentation:delivered";
 let nextRequestId = 1;
 
 const normalizePeriodId = (periodId?: number | null): number | null =>
@@ -40,9 +42,82 @@ const normalizePeriodId = (periodId?: number | null): number | null =>
     ? Number(periodId)
     : null;
 
+const getSessionStorage = (): Storage | null => {
+  try {
+    return typeof window !== "undefined" ? window.sessionStorage : null;
+  } catch {
+    return null;
+  }
+};
+
+const getDeliveredStorageKey = (address: string, periodId: number): string =>
+  `${DELIVERED_STORAGE_KEY_PREFIX}:${address}:${periodId}`;
+
+const wasDeliveredInSession = (address: string, periodId: number): boolean =>
+  getSessionStorage()?.getItem(getDeliveredStorageKey(address, periodId)) ===
+  "1";
+
+const persistPendingRequest = (request: StreakPresentationRequest): void => {
+  const storage = getSessionStorage();
+  if (!storage || request.periodId === null) return;
+
+  try {
+    storage.setItem(
+      PENDING_REQUEST_STORAGE_KEY,
+      JSON.stringify({
+        address: request.address,
+        periodId: request.periodId,
+        detectedAt: request.detectedAt,
+      })
+    );
+  } catch {
+    // Presentation recovery is best-effort when storage is unavailable.
+  }
+};
+
+const clearPendingRequest = (): void => {
+  try {
+    getSessionStorage()?.removeItem(PENDING_REQUEST_STORAGE_KEY);
+  } catch {
+    // Presentation recovery is best-effort when storage is unavailable.
+  }
+};
+
+const restorePendingRequest = (): StreakPresentationRequest | null => {
+  try {
+    const serialized = getSessionStorage()?.getItem(
+      PENDING_REQUEST_STORAGE_KEY
+    );
+    if (!serialized) return null;
+
+    const value = JSON.parse(serialized) as Record<string, unknown>;
+    const address = normalizeStarknetAddress(
+      typeof value.address === "string" ? value.address : undefined
+    );
+    const periodId = normalizePeriodId(Number(value.periodId));
+    const detectedAt = Number(value.detectedAt);
+    if (!address || periodId === null) {
+      clearPendingRequest();
+      return null;
+    }
+
+    return {
+      id: nextRequestId++,
+      address,
+      periodId,
+      detectedAt: Number.isFinite(detectedAt) ? detectedAt : Date.now(),
+    };
+  } catch {
+    clearPendingRequest();
+    return null;
+  }
+};
+
+const restoredRequest = restorePendingRequest();
+
 export const useStreakPresentationStore = create<StreakPresentationStore>(
   (set, get) => ({
-    request: null,
+    request: restoredRequest,
     pendingPresentation: null,
     phase: "idle",
     attempts: 0,
@@ -52,6 +127,13 @@ export const useStreakPresentationStore = create<StreakPresentationStore>(
       if (!normalizedAddress) return;
 
       const normalizedPeriodId = normalizePeriodId(periodId);
+      if (
+        normalizedPeriodId !== null &&
+        wasDeliveredInSession(normalizedAddress, normalizedPeriodId)
+      ) {
+        return;
+      }
+
       const current = get().request;
       if (
         current?.address === normalizedAddress &&
@@ -60,13 +142,16 @@ export const useStreakPresentationStore = create<StreakPresentationStore>(
         return;
       }
 
+      const nextRequest: StreakPresentationRequest = {
+        id: nextRequestId++,
+        address: normalizedAddress,
+        periodId: normalizedPeriodId,
+        detectedAt: Date.now(),
+      };
+      persistPendingRequest(nextRequest);
+
       set({
-        request: {
-          id: nextRequestId++,
-          address: normalizedAddress,
-          periodId: normalizedPeriodId,
-          detectedAt: Date.now(),
-        },
+        request: nextRequest,
         pendingPresentation: null,
         phase: "idle",
         attempts: 0,
@@ -129,15 +214,26 @@ export const useStreakPresentationStore = create<StreakPresentationStore>(
         return;
       }
 
+      try {
+        getSessionStorage()?.setItem(
+          getDeliveredStorageKey(normalizedAddress, periodId),
+          "1"
+        );
+      } catch {
+        // Presentation delivery remains valid when storage is unavailable.
+      }
+      clearPendingRequest();
       set({ pendingPresentation: null, phase: "delivered" });
     },
 
-    reset: () =>
+    reset: () => {
+      clearPendingRequest();
       set({
         request: null,
         pendingPresentation: null,
         phase: "idle",
         attempts: 0,
-      }),
+      });
+    },
   })
 );
