@@ -66,32 +66,36 @@ type GetLevelConfigApiResponse = {
   };
 };
 
+type RawStreakStatusApiData = {
+  player?: string;
+  current_streak?: string | number | null;
+  effective_streak?: string | number | null;
+  longest_streak?: string | number | null;
+  last_completed_day?: string | number | null;
+  protectors_available?: string | number | null;
+  protectors_needed?: string | number | null;
+  days_missed?: string | number | null;
+  is_protected?: boolean | number | null;
+  is_broken?: boolean | number | null;
+  sync_status?: "confirmed" | "pending" | "failed" | null;
+  pending_period_id?: string | number | null;
+  pending_intent_id?: string | null;
+  pendingIntentId?: string | null;
+  source?: "cache" | "chain" | null;
+  updated_at?: string | null;
+  current_period_id?: string | number | null;
+  completed_today?: boolean | number | null;
+  currentPeriodId?: string | number | null;
+  completedToday?: boolean | number | null;
+  completion_state?: StreakCompletionState | null;
+  completionState?: StreakCompletionState | null;
+  projected_streak?: string | number | null;
+  projectedStreak?: string | number | null;
+};
+
 type GetStreakStatusApiResponse = {
   success?: boolean;
-  data?: {
-    player?: string;
-    current_streak?: string | number | null;
-    effective_streak?: string | number | null;
-    longest_streak?: string | number | null;
-    last_completed_day?: string | number | null;
-    protectors_available?: string | number | null;
-    protectors_needed?: string | number | null;
-    days_missed?: string | number | null;
-    is_protected?: boolean | number | null;
-    is_broken?: boolean | number | null;
-    sync_status?: "confirmed" | "pending" | "failed" | null;
-    pending_period_id?: string | number | null;
-    source?: "cache" | "chain" | null;
-    updated_at?: string | null;
-    current_period_id?: string | number | null;
-    completed_today?: boolean | number | null;
-    currentPeriodId?: string | number | null;
-    completedToday?: boolean | number | null;
-    completion_state?: StreakCompletionState | null;
-    completionState?: StreakCompletionState | null;
-    projected_streak?: string | number | null;
-    projectedStreak?: string | number | null;
-  };
+  data?: RawStreakStatusApiData;
 };
 
 type ClaimStreakPresentationApiResponse = {
@@ -114,6 +118,17 @@ type ClaimStreakPresentationApiResponse = {
   reason?: StreakPresentationReason | null;
   acknowledged?: boolean | null;
   presentedAt?: string | null;
+};
+
+type WaitForStreakPresentationApiResponse = {
+  success?: boolean;
+  error?: string;
+  data?: {
+    state?: StreakPresentationWaitState;
+    status?: RawStreakStatusApiData | null;
+    presentation?: ClaimStreakPresentationApiResponse["data"] | null;
+    intentId?: string | null;
+  };
 };
 
 export type StreakPresentationReason =
@@ -158,6 +173,7 @@ type ClaimStreakRewardsApiResponse = {
   success?: boolean;
   error?: string;
   code?: string;
+  state?: StreakRewardDeliveryState;
   mintedCards?: RawMintedCard[];
   xp?: {
     requested?: number;
@@ -246,12 +262,27 @@ export type StreakStatusApiData = {
   isBroken: boolean;
   syncStatus: "confirmed" | "pending" | "failed";
   pendingPeriodId: number | null;
+  pendingIntentId: string | null;
   source: "cache" | "chain";
   updatedAt: string | null;
   currentPeriodId: number;
   completedToday: boolean;
   completionState: StreakCompletionState;
   projectedStreak: number;
+};
+
+export type StreakPresentationWaitState =
+  | "pending"
+  | "confirmed"
+  | "failed"
+  | "expired"
+  | "timeout";
+
+export type StreakPresentationWaitApiData = {
+  state: StreakPresentationWaitState;
+  status: StreakStatusApiData | null;
+  presentation: StreakPresentationClaimApiData | null;
+  intentId: string | null;
 };
 
 export type StreakPresentationClaimApiData = {
@@ -317,7 +348,66 @@ function parseStreakPresentationResponse(
   };
 }
 
+function parseStreakStatusData(
+  data: RawStreakStatusApiData,
+  fallbackAddress: string
+): StreakStatusApiData {
+  const syncStatus = data.sync_status ?? "confirmed";
+  const pendingPeriodId =
+    data.pending_period_id === null || data.pending_period_id === undefined
+      ? null
+      : sanitizeNumber(data.pending_period_id);
+  const currentPeriodId = sanitizeNumber(
+    data.currentPeriodId ?? data.current_period_id
+  );
+  const lastCompletedDay = sanitizeNumber(data.last_completed_day);
+  const completedToday = Boolean(
+    data.completedToday ?? data.completed_today
+  );
+  const rawCompletionState =
+    data.completionState ?? data.completion_state;
+  const completionState: StreakCompletionState = rawCompletionState ??
+    (syncStatus === "pending" && pendingPeriodId === currentPeriodId
+      ? "pending"
+      : syncStatus === "failed" && pendingPeriodId === currentPeriodId
+        ? "failed"
+        : syncStatus === "confirmed" &&
+            completedToday &&
+            lastCompletedDay === currentPeriodId
+          ? "confirmed"
+          : "idle");
+
+  return {
+    player: data.player ?? fallbackAddress,
+    currentStreak: sanitizeNumber(data.current_streak),
+    effectiveStreak: sanitizeNumber(data.effective_streak ?? data.current_streak),
+    longestStreak: sanitizeNumber(data.longest_streak),
+    lastCompletedDay,
+    protectorsAvailable: sanitizeNumber(data.protectors_available),
+    protectorsNeeded: sanitizeNumber(data.protectors_needed),
+    daysMissed: sanitizeNumber(data.days_missed),
+    isProtected: Boolean(data.is_protected),
+    isBroken: Boolean(data.is_broken),
+    syncStatus,
+    pendingPeriodId,
+    pendingIntentId:
+      data.pendingIntentId ?? data.pending_intent_id ?? null,
+    source: data.source ?? "chain",
+    updatedAt: data.updated_at ?? null,
+    currentPeriodId,
+    completedToday,
+    completionState,
+    projectedStreak: sanitizeNumber(
+      data.projectedStreak ??
+        data.projected_streak ??
+        data.effective_streak ??
+        data.current_streak
+    ),
+  };
+}
+
 export type ClaimStreakRewardsResult = {
+  state: StreakRewardDeliveryState;
   packs: SeasonRewardPack[];
   xp: {
     requested: number;
@@ -336,6 +426,12 @@ export type ClaimStreakRewardsResult = {
   alreadyClaimed: boolean;
 };
 
+export type StreakRewardDeliveryState =
+  | "available"
+  | "submitted"
+  | "confirmed"
+  | "failed";
+
 function getBaseUrl(): string {
   return getGameApiBaseUrl();
 }
@@ -350,6 +446,21 @@ function getApiKey(): string {
     throw new Error("profileApi: Missing VITE_GAME_API_KEY environment variable");
   }
   return apiKey;
+}
+
+async function fetchWithTimeout(
+  input: RequestInfo | URL,
+  init: RequestInit,
+  timeoutMs: number
+): Promise<Response> {
+  const controller = new AbortController();
+  const timeout = globalThis.setTimeout(() => controller.abort(), timeoutMs);
+
+  try {
+    return await fetch(input, { ...init, signal: controller.signal });
+  } finally {
+    globalThis.clearTimeout(timeout);
+  }
 }
 
 function normalizeRewardTrack(track: unknown): StreakRewardTrack {
@@ -731,59 +842,7 @@ export async function fetchStreakStatus(
     throw new Error("fetchStreakStatus: API did not return a valid payload");
   }
 
-  const data = json.data;
-  const syncStatus = data.sync_status ?? "confirmed";
-  const pendingPeriodId =
-    data.pending_period_id === null || data.pending_period_id === undefined
-      ? null
-      : sanitizeNumber(data.pending_period_id);
-  const currentPeriodId = sanitizeNumber(
-    data.currentPeriodId ?? data.current_period_id
-  );
-  const lastCompletedDay = sanitizeNumber(data.last_completed_day);
-  const completedToday = Boolean(
-    data.completedToday ?? data.completed_today
-  );
-  const rawCompletionState =
-    data.completionState ?? data.completion_state;
-  const completionState: StreakCompletionState = rawCompletionState ??
-    (syncStatus === "pending" && pendingPeriodId === currentPeriodId
-      ? "pending"
-      : syncStatus === "failed" && pendingPeriodId === currentPeriodId
-        ? "failed"
-        : syncStatus === "confirmed" &&
-            completedToday &&
-            lastCompletedDay === currentPeriodId
-          ? "confirmed"
-          : "idle");
-
-  const streakStatus = {
-    player: data.player ?? address,
-    currentStreak: sanitizeNumber(data.current_streak),
-    effectiveStreak: sanitizeNumber(data.effective_streak ?? data.current_streak),
-    longestStreak: sanitizeNumber(data.longest_streak),
-    lastCompletedDay,
-    protectorsAvailable: sanitizeNumber(data.protectors_available),
-    protectorsNeeded: sanitizeNumber(data.protectors_needed),
-    daysMissed: sanitizeNumber(data.days_missed),
-    isProtected: Boolean(data.is_protected),
-    isBroken: Boolean(data.is_broken),
-    syncStatus,
-    pendingPeriodId,
-    source: data.source ?? "chain",
-    updatedAt: data.updated_at ?? null,
-    currentPeriodId,
-    completedToday,
-    completionState,
-    projectedStreak: sanitizeNumber(
-      data.projectedStreak ??
-        data.projected_streak ??
-        data.effective_streak ??
-        data.current_streak
-    ),
-  };
-
-  return streakStatus;
+  return parseStreakStatusData(json.data, address);
 }
 
 export async function claimStreakPresentation(
@@ -845,6 +904,73 @@ export async function fetchStreakPresentation(
   return parseStreakPresentationResponse(await response.json());
 }
 
+export async function waitForStreakPresentation(
+  address: string,
+  periodId: number,
+  options: {
+    until: "pending" | "confirmed";
+    intentId?: string | null;
+    timeoutMs?: number;
+  }
+): Promise<StreakPresentationWaitApiData> {
+  if (!address || !Number.isInteger(periodId) || periodId <= 0) {
+    throw new Error(
+      "waitForStreakPresentation: address and periodId are required"
+    );
+  }
+
+  const requestUrl = new URL(
+    `${getBaseUrl()}/api/profile/streak/${encodeURIComponent(
+      address
+    )}/presentation/wait`
+  );
+  requestUrl.searchParams.set("periodId", String(periodId));
+  requestUrl.searchParams.set("until", options.until);
+  requestUrl.searchParams.set("timeoutMs", String(options.timeoutMs ?? 8_000));
+  if (options.intentId) {
+    requestUrl.searchParams.set("intentId", options.intentId);
+  }
+
+  const response = await fetchWithTimeout(
+    requestUrl.toString(),
+    {
+      method: "GET",
+      headers: { "X-API-Key": getApiKey() },
+    },
+    (options.timeoutMs ?? 8_000) + 2_000
+  );
+
+  if (!response.ok) {
+    const details = await response.text().catch(() => "");
+    throw new Error(
+      `waitForStreakPresentation: ${response.status} ${response.statusText}${
+        details ? ` - ${details}` : ""
+      }`
+    );
+  }
+
+  const json: WaitForStreakPresentationApiResponse = await response.json();
+  if (!json.success || !json.data?.state) {
+    throw new Error(
+      json.error ?? "waitForStreakPresentation: API did not return a valid payload"
+    );
+  }
+
+  return {
+    state: json.data.state,
+    status: json.data.status
+      ? parseStreakStatusData(json.data.status, address)
+      : null,
+    presentation: json.data.presentation
+      ? parseStreakPresentationResponse({
+          success: true,
+          data: json.data.presentation,
+        })
+      : null,
+    intentId: json.data.intentId ?? null,
+  };
+}
+
 export async function acknowledgeStreakPresentation(
   address: string,
   periodId: number
@@ -855,7 +981,7 @@ export async function acknowledgeStreakPresentation(
     );
   }
 
-  const response = await fetch(
+  const response = await fetchWithTimeout(
     `${getBaseUrl()}/api/profile/streak/${encodeURIComponent(address)}/presentation/ack`,
     {
       method: "POST",
@@ -864,7 +990,8 @@ export async function acknowledgeStreakPresentation(
         "X-API-Key": getApiKey(),
       },
       body: JSON.stringify({ periodId }),
-    }
+    },
+    10_000
   );
 
   if (!response.ok) {
@@ -879,48 +1006,15 @@ export async function acknowledgeStreakPresentation(
   return parseStreakPresentationResponse(await response.json());
 }
 
-export async function claimStreakRewards(
-  address: string,
-  claimIds: string[]
-): Promise<ClaimStreakRewardsResult> {
-  if (!address) {
-    throw new Error("claimStreakRewards: address is required");
-  }
-
-  if (!Array.isArray(claimIds) || claimIds.length === 0) {
-    throw new Error("claimStreakRewards: claimIds is required");
-  }
-
-  const apiKey = getApiKey();
-  const baseUrl = getBaseUrl();
-  const requestUrl = `${baseUrl}/api/profile/streak/${encodeURIComponent(
-    address
-  )}/rewards/claim`;
-
-  const response = await fetch(requestUrl, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "X-API-Key": apiKey,
-    },
-    body: JSON.stringify({ claimIds }),
-  });
-
-  if (!response.ok) {
-    const errorDetails = await response.text().catch(() => "");
-    throw new Error(
-      `claimStreakRewards: ${response.status} ${response.statusText}${
-        errorDetails ? ` - ${errorDetails}` : ""
-      }`
-    );
-  }
-
-  const json: ClaimStreakRewardsApiResponse = await response.json();
+function parseClaimStreakRewardsResult(
+  json: ClaimStreakRewardsApiResponse
+): ClaimStreakRewardsResult {
   if (!json.success) {
     throw new Error(json.error ?? "claimStreakRewards: API did not return success");
   }
 
   return {
+    state: json.state ?? (json.alreadyClaimed ? "confirmed" : "submitted"),
     packs: json.mintedCards?.length
       ? parseMintedCards(json.mintedCards, "claimStreakRewards")
       : [],
@@ -949,6 +1043,87 @@ export async function claimStreakRewards(
     transactionIds: json.transactionIds ?? [],
     alreadyClaimed: Boolean(json.alreadyClaimed),
   };
+}
+
+export async function claimStreakRewards(
+  address: string,
+  claimIds: string[]
+): Promise<ClaimStreakRewardsResult> {
+  if (!address) {
+    throw new Error("claimStreakRewards: address is required");
+  }
+
+  if (!Array.isArray(claimIds) || claimIds.length === 0) {
+    throw new Error("claimStreakRewards: claimIds is required");
+  }
+
+  const apiKey = getApiKey();
+  const baseUrl = getBaseUrl();
+  const requestUrl = `${baseUrl}/api/profile/streak/${encodeURIComponent(
+    address
+  )}/rewards/claim`;
+
+  const response = await fetchWithTimeout(
+    requestUrl,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-API-Key": apiKey,
+      },
+      body: JSON.stringify({ claimIds }),
+    },
+    30_000
+  );
+
+  if (!response.ok) {
+    const errorDetails = await response.text().catch(() => "");
+    throw new Error(
+      `claimStreakRewards: ${response.status} ${response.statusText}${
+        errorDetails ? ` - ${errorDetails}` : ""
+      }`
+    );
+  }
+
+  return parseClaimStreakRewardsResult(await response.json());
+}
+
+export async function fetchStreakRewardClaimStatus(
+  address: string,
+  claimIds: string[]
+): Promise<ClaimStreakRewardsResult> {
+  if (!address || !Array.isArray(claimIds) || claimIds.length === 0) {
+    throw new Error(
+      "fetchStreakRewardClaimStatus: address and claimIds are required"
+    );
+  }
+
+  const requestUrl = new URL(
+    `${getBaseUrl()}/api/profile/streak/${encodeURIComponent(
+      address
+    )}/rewards/claim-status`
+  );
+  requestUrl.searchParams.set("claimIds", claimIds.join(","));
+
+  const response = await fetchWithTimeout(
+    requestUrl.toString(),
+    {
+      method: "GET",
+      headers: { "X-API-Key": getApiKey() },
+    },
+    10_000
+  );
+
+  if (!response.ok) {
+    const details = await response.text().catch(() => "");
+    throw new Error(
+      `fetchStreakRewardClaimStatus: ${response.status} ${response.statusText}${
+        details ? ` - ${details}` : ""
+      }`
+    );
+  }
+
+  return parseClaimStreakRewardsResult(await response.json());
 }
 
 export async function createProfile(

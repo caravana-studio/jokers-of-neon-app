@@ -22,6 +22,7 @@ function streakStatus(
     isBroken: false,
     syncStatus: "confirmed",
     pendingPeriodId: null,
+    pendingIntentId: null,
     source: "cache",
     updatedAt: null,
     currentPeriodId: 100,
@@ -64,6 +65,7 @@ function pendingStatus(): StreakStatusApiData {
     lastCompletedDay: 100,
     syncStatus: "pending",
     pendingPeriodId: 100,
+    pendingIntentId: "intent-100",
     completionState: "pending",
     projectedStreak: 5,
   });

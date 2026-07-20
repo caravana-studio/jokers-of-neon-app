@@ -14,11 +14,14 @@ import {
   navigateToStreakIncreased,
   type StreakPresentationContinuation,
 } from "../utils/streakPresentation";
-import { waitForConfirmedStreakPeriod } from "../utils/streakPresentationPolling";
+import {
+  resumePendingStreakPresentation,
+  waitForStreakPresentationPeriod,
+} from "../utils/streakPresentationWait";
 import { normalizeStarknetAddress } from "../utils/starknetAddress";
 
 type PresentationCheckResult = {
-  presentation: StreakPresentationClaimApiData;
+  presentation: StreakPresentationClaimApiData | null;
   status: StreakStatusApiData | null;
 };
 
@@ -36,19 +39,43 @@ async function checkPresentation(
 
   const check = (async () => {
     let status: StreakStatusApiData | null = null;
+    const applyStatus = (nextStatus: StreakStatusApiData) => {
+      status = nextStatus;
+      useProfileStore.getState().applyStreakStatus(nextStatus);
+    };
 
     if (expectedPeriodId !== null) {
-      status = await waitForConfirmedStreakPeriod({
+      const result = await waitForStreakPresentationPeriod({
+        address,
         expectedPeriodId,
-        fetchStatus: () => fetchStreakStatus(address),
-        onStatus: (nextStatus) =>
-          useProfileStore.getState().applyStreakStatus(nextStatus),
+        onStatus: applyStatus,
       });
+
+      return {
+        status: result.status ?? status,
+        presentation: result.presentation,
+      };
     } else {
       status = await fetchStreakStatus(address).catch((error) => {
-        console.warn("Streak presentation: status read failed", error);
+        console.warn("Streak presentation: initial status read failed", error);
         return null;
       });
+
+      if (status) {
+        applyStatus(status);
+        const resumed = await resumePendingStreakPresentation({
+          address,
+          status,
+          onStatus: applyStatus,
+        });
+
+        if (resumed) {
+          return {
+            status: resumed.status ?? status,
+            presentation: resumed.presentation,
+          };
+        }
+      }
     }
 
     return {
@@ -114,6 +141,10 @@ export function useStreakPresentationFlow() {
 
         if (status) {
           useProfileStore.getState().applyStreakStatus(status);
+        }
+
+        if (!presentation) {
+          return false;
         }
 
         if (presentation.reason === "already_claimed") {

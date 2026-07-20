@@ -5,7 +5,6 @@ import { useTranslation } from "react-i18next";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import {
   acknowledgeStreakPresentation,
-  claimStreakRewards,
   fetchStreakStatus,
   type ClaimStreakRewardsResult,
   type StreakPresentationClaimApiData,
@@ -29,10 +28,35 @@ import { useStreakPresentationStore } from "../state/useStreakPresentationStore"
 import { useGameStore } from "../state/useGameStore";
 import { BLUE_LIGHT } from "../theme/colors";
 import { StreakIncreasedLocationState } from "../utils/streakPresentation";
+import { claimStreakRewardsReliably } from "../utils/streakRewardClaim";
 import { ExternalPack } from "./ExternalPack/ExternalPack";
 
 const MOCKED_DAILY_STREAK = 30;
 const REWARD_CLAIM_ERROR_TOAST_ID = "streak-reward-claim-error";
+const PRESENTATION_ACK_RETRY_DELAYS_MS = [0, 500, 1_000] as const;
+
+async function acknowledgePresentationWithRetry(
+  address: string,
+  periodId: number
+): Promise<StreakPresentationClaimApiData> {
+  let lastError: unknown;
+
+  for (const delayMs of PRESENTATION_ACK_RETRY_DELAYS_MS) {
+    if (delayMs > 0) {
+      await new Promise((resolve) => window.setTimeout(resolve, delayMs));
+    }
+
+    try {
+      return await acknowledgeStreakPresentation(address, periodId);
+    } catch (error) {
+      lastError = error;
+    }
+  }
+
+  throw lastError instanceof Error
+    ? lastError
+    : new Error("Streak presentation acknowledgement failed");
+}
 
 type RewardPresentationStep =
   | {
@@ -304,7 +328,7 @@ export const StreakIncreasedPage = () => {
     }
 
     setIsAcknowledgingPresentation(true);
-    const acknowledgementPromise = acknowledgeStreakPresentation(
+    const acknowledgementPromise = acknowledgePresentationWithRetry(
       address,
       periodId
     )
@@ -484,7 +508,10 @@ export const StreakIncreasedPage = () => {
         setOwnedCardIds([]);
       }
 
-      const result = await claimStreakRewards(address, rewardToPresent.claimIds);
+      const result = await claimStreakRewardsReliably({
+        address,
+        claimIds: rewardToPresent.claimIds,
+      });
 
       if (import.meta.env.DEV) {
         console.info("[STREAK-REWARD] claimed", {
