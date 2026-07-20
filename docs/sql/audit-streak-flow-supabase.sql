@@ -33,13 +33,19 @@ WHERE schemaname = 'public'
   AND indexname = 'idx_player_streaks_pending_intent';
 
 SELECT
-  pubname,
-  schemaname,
-  tablename
-FROM pg_publication_tables
-WHERE pubname = 'supabase_realtime'
-  AND schemaname = 'public'
-  AND tablename = 'player_streaks';
+  publication.pubname,
+  namespace.nspname AS schemaname,
+  relation.relname AS tablename
+FROM pg_catalog.pg_publication AS publication
+JOIN pg_catalog.pg_publication_rel AS publication_relation
+  ON publication_relation.prpubid = publication.oid
+JOIN pg_catalog.pg_class AS relation
+  ON relation.oid = publication_relation.prrelid
+JOIN pg_catalog.pg_namespace AS namespace
+  ON namespace.oid = relation.relnamespace
+WHERE publication.pubname = 'supabase_realtime'
+  AND namespace.nspname = 'public'
+  AND relation.relname = 'player_streaks';
 
 SELECT
   schemaname,
