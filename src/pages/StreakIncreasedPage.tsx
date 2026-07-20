@@ -262,10 +262,6 @@ export const StreakIncreasedPage = () => {
     Boolean(reward?.items.length) && reward?.claimIds.length === 0;
   const currentRewardStep = rewardSteps[currentRewardStepIndex];
 
-  if (HIDE_STREAK) {
-    return <Navigate to={state?.from ?? "/"} replace />;
-  }
-
   useEffect(() => {
     const address = account?.account?.address;
     if (!address) {
@@ -277,7 +273,7 @@ export const StreakIncreasedPage = () => {
 
     void (async () => {
       try {
-        const streakStatus = await fetchStreakStatus(address, { refresh: true });
+        const streakStatus = await fetchStreakStatus(address);
         if (active) {
           setLiveStreakProtectors(streakStatus.protectorsAvailable);
         }
@@ -293,6 +289,10 @@ export const StreakIncreasedPage = () => {
       active = false;
     };
   }, [account?.account?.address]);
+
+  if (HIDE_STREAK) {
+    return <Navigate to={state?.from ?? "/"} replace />;
+  }
 
   const handleClose = async () => {
     if (state?.continuation?.type === "map-after-rewards") {

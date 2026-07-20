@@ -93,12 +93,14 @@ type ClaimStreakPresentationApiResponse = {
     streak?: string | number | null;
     period_id?: string | number | null;
     periodId?: string | number | null;
+    reason?: string | null;
     reward?: RawStreakPresentationReward | null;
   };
   show?: boolean | null;
   streak?: string | number | null;
   period_id?: string | number | null;
   periodId?: string | number | null;
+  reason?: string | null;
   reward?: RawStreakPresentationReward | null;
 };
 
@@ -224,6 +226,7 @@ export type StreakPresentationClaimApiData = {
   show: boolean;
   streak: number | null;
   periodId: number | null;
+  reason?: string | null;
   reward: StreakPresentationRewardApiData | null;
 };
 
@@ -734,10 +737,19 @@ export async function claimStreakPresentation(
   }
 
   if (!data.show) {
+    const rawPeriodId = data.period_id ?? data.periodId;
+
     return {
       show: false,
-      streak: null,
-      periodId: null,
+      streak:
+        data.streak === null || data.streak === undefined
+          ? null
+          : sanitizeNumber(data.streak),
+      periodId:
+        rawPeriodId === null || rawPeriodId === undefined
+          ? null
+          : sanitizeNumber(rawPeriodId),
+      reason: typeof data.reason === "string" ? data.reason : null,
       reward: null,
     };
   }

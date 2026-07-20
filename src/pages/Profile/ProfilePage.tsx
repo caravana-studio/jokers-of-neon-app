@@ -22,8 +22,7 @@ export const ProfilePage = () => {
         account.account.address,
         account.account,
         loggedInUser,
-        accountType,
-        { refreshStreakStatus: true }
+        accountType
       );
     }
   }, [client, account, loggedInUser, usernameStatus, profileData?.profile.username, accountType]);

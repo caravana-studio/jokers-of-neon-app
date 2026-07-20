@@ -1,8 +1,9 @@
 import { describe, expect, it, vi } from "vitest";
 import type { StreakPresentationClaimApiData } from "../api/profile";
 import {
-  getConfirmedPresentationFallback,
+  getPresentationFallback,
   pollForStreakPresentation,
+  recoverAlreadyClaimedPresentation,
 } from "./streakPresentationPolling";
 
 const notReady: StreakPresentationClaimApiData = {
@@ -83,7 +84,7 @@ describe("pollForStreakPresentation", () => {
   });
 });
 
-describe("getConfirmedPresentationFallback", () => {
+describe("getPresentationFallback", () => {
   const confirmedStatus = {
     player: "0x1",
     currentStreak: 1,
@@ -102,20 +103,65 @@ describe("getConfirmedPresentationFallback", () => {
   };
 
   it("recovers the presentation after a lost claim response", () => {
-    expect(
-      getConfirmedPresentationFallback(confirmedStatus, 20_654)
-    ).toEqual(ready);
+    expect(getPresentationFallback(confirmedStatus, 20_654)).toEqual(ready);
   });
 
-  it("does not synthesize a presentation for another or pending period", () => {
+  it("does not synthesize a presentation for another or failed period", () => {
     expect(
-      getConfirmedPresentationFallback(confirmedStatus, 20_653)
+      getPresentationFallback(confirmedStatus, 20_653)
     ).toBeNull();
     expect(
-      getConfirmedPresentationFallback(
-        { ...confirmedStatus, syncStatus: "pending" },
+      getPresentationFallback(
+        { ...confirmedStatus, syncStatus: "failed" },
         20_654
       )
     ).toBeNull();
+  });
+
+  it("allows the worker projection before mainnet confirmation", () => {
+    expect(
+      getPresentationFallback(
+        {
+          ...confirmedStatus,
+          syncStatus: "pending",
+          pendingPeriodId: 20_654,
+        },
+        20_654
+      )
+    ).toEqual(ready);
+  });
+
+  it("recovers a claim whose successful response was lost", () => {
+    expect(
+      recoverAlreadyClaimedPresentation(
+        {
+          show: false,
+          streak: 1,
+          periodId: 20_654,
+          reason: "already_claimed",
+          reward: null,
+        },
+        confirmedStatus,
+        20_654
+      )
+    ).toEqual(ready);
+  });
+
+  it("does not recover a claim rejected for another reason", () => {
+    const rejected: StreakPresentationClaimApiData = {
+      show: false,
+      streak: 1,
+      periodId: 20_654,
+      reason: "missing_username",
+      reward: null,
+    };
+
+    expect(
+      recoverAlreadyClaimedPresentation(
+        rejected,
+        confirmedStatus,
+        20_654
+      )
+    ).toBe(rejected);
   });
 });

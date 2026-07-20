@@ -14,13 +14,13 @@ type PollForStreakPresentationOptions = {
   delay?: (milliseconds: number, signal: AbortSignal) => Promise<void>;
 };
 
-export function getConfirmedPresentationFallback(
+export function getPresentationFallback(
   status: StreakStatusApiData,
   expectedPeriodId: number | null
 ): StreakPresentationClaimApiData | null {
   if (
     expectedPeriodId === null ||
-    status.syncStatus !== "confirmed" ||
+    status.syncStatus === "failed" ||
     status.lastCompletedDay !== expectedPeriodId ||
     status.isBroken ||
     status.effectiveStreak <= 0
@@ -34,6 +34,18 @@ export function getConfirmedPresentationFallback(
     periodId: expectedPeriodId,
     reward: null,
   };
+}
+
+export function recoverAlreadyClaimedPresentation(
+  claim: StreakPresentationClaimApiData,
+  status: StreakStatusApiData,
+  expectedPeriodId: number | null
+): StreakPresentationClaimApiData {
+  if (claim.show || claim.reason !== "already_claimed") {
+    return claim;
+  }
+
+  return getPresentationFallback(status, expectedPeriodId) ?? claim;
 }
 
 const delayWithAbort = (

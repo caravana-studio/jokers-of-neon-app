@@ -13,8 +13,9 @@ import {
   navigateToStreakIncreased,
 } from "../utils/streakPresentation";
 import {
-  getConfirmedPresentationFallback,
+  getPresentationFallback,
   pollForStreakPresentation,
+  recoverAlreadyClaimedPresentation,
 } from "../utils/streakPresentationPolling";
 import { normalizeStarknetAddress } from "../utils/starknetAddress";
 
@@ -61,7 +62,11 @@ export const StreakPresentationCoordinator = () => {
 
   useEffect(() => {
     const currentRequest = useStreakPresentationStore.getState().request;
-    if (currentRequest && currentRequest.address !== accountAddress) {
+    if (
+      currentRequest &&
+      accountAddress &&
+      currentRequest.address !== accountAddress
+    ) {
       useStreakPresentationStore.getState().reset();
     }
   }, [accountAddress]);
@@ -91,24 +96,42 @@ export const StreakPresentationCoordinator = () => {
     void pollForStreakPresentation({
       signal: controller.signal,
       claim: async (signal) => {
+        let fallback: StreakPresentationClaimApiData | null = null;
+        let status: Awaited<ReturnType<typeof fetchStreakStatus>> | null = null;
+
         try {
-          return await claimWithTimeout(request.address, signal);
-        } catch (error) {
-          if (signal.aborted) throw error;
+          status = await fetchStreakStatus(request.address);
+          fallback = getPresentationFallback(status, request.periodId);
 
-          try {
-            const status = await fetchStreakStatus(request.address);
-            const fallback = getConfirmedPresentationFallback(
-              status,
-              request.periodId
-            );
-            if (fallback) return fallback;
-          } catch {
-            // The polling loop owns retries and error reporting.
+          if (fallback?.streak != null) {
+            useProfileStore
+              .getState()
+              .applyStreakStatus(status, fallback.streak);
           }
-
-          throw error;
+        } catch {
+          // The claim can still succeed if the status preflight is unavailable.
         }
+
+        if (request.periodId !== null && !fallback) {
+          return {
+            show: false,
+            streak: null,
+            periodId: request.periodId,
+            reason: "status_not_ready",
+            reward: null,
+          };
+        }
+
+        const presentation = await claimWithTimeout(request.address, signal);
+        if (status) {
+          return recoverAlreadyClaimedPresentation(
+            presentation,
+            status,
+            request.periodId
+          );
+        }
+
+        return presentation;
       },
       onAttempt: (attempt) => {
         useStreakPresentationStore
