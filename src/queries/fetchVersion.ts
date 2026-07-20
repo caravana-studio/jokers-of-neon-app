@@ -7,6 +7,7 @@ const FETCH_VERSION_TIMEOUT_MS = 6000;
 export interface VersionResponse {
   version: string;
   maintenance?: boolean;
+  "marketplace-maintenance"?: boolean;
   slot?: Record<string, string>;
   slotEndpoints?: Record<
     string,
@@ -72,6 +73,7 @@ const normalizeVersionResponse = (data: unknown): VersionResponse => {
   const candidate = data as {
     version?: unknown;
     maintenance?: unknown;
+    "marketplace-maintenance"?: unknown;
     slot?: unknown;
     slotEndpoints?: unknown;
     api?: unknown;
@@ -87,6 +89,10 @@ const normalizeVersionResponse = (data: unknown): VersionResponse => {
     maintenance:
       typeof candidate.maintenance === "boolean"
         ? candidate.maintenance
+        : undefined,
+    "marketplace-maintenance":
+      typeof candidate["marketplace-maintenance"] === "boolean"
+        ? candidate["marketplace-maintenance"]
         : undefined,
     slot: isStringMap(candidate.slot) ? candidate.slot : undefined,
     slotEndpoints: isSlotEndpointMap(candidate.slotEndpoints)
