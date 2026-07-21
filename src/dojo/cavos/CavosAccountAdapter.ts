@@ -11,6 +11,28 @@ import {
 } from "../../utils/logTransactionError";
 import { withSlotNoFeeExecuteOptions } from "../slotNoFeeExecuteOptions";
 
+const ACTIVE_SESSION_CACHE_MS = 15_000;
+const SESSION_EXPIRY_SAFETY_MARGIN_MS = 30_000;
+
+type CavosSessionStatus = {
+  registered: boolean;
+  active: boolean;
+  expired: boolean;
+  canRenew: boolean;
+  validUntil?: bigint;
+};
+
+type CachedSessionStatus = {
+  manager: any;
+  status: CavosSessionStatus;
+  expiresAt: number;
+};
+
+type CachedDirectAccount = {
+  manager: any;
+  account: any;
+};
+
 /**
  * Adapts the Cavos SDK's executeOnSlot function to look like a starknet Account.
  * This allows all existing DojoProvider/game actions to work without modification.
@@ -27,6 +49,8 @@ export class CavosAccountAdapter {
   private _getSlotProvider: () => RpcProvider | null;
   private _isSlotDeployed: () => boolean;
   private _getCavosSdk: () => any;
+  private _cachedSessionStatus: CachedSessionStatus | null = null;
+  private _cachedDirectAccount: CachedDirectAccount | null = null;
 
   constructor(
     address: string,
@@ -48,6 +72,70 @@ export class CavosAccountAdapter {
       throw new Error("Slot provider not available");
     }
     return provider as RpcProvider;
+  }
+
+  private _invalidateFastPathCaches(): void {
+    this._cachedSessionStatus = null;
+    this._cachedDirectAccount = null;
+  }
+
+  private async _getActiveSessionStatus(
+    slotTransactionManager: any,
+  ): Promise<CavosSessionStatus> {
+    const now = Date.now();
+    const cached = this._cachedSessionStatus;
+
+    if (
+      cached &&
+      cached.manager === slotTransactionManager &&
+      now < cached.expiresAt
+    ) {
+      return cached.status;
+    }
+
+    const status =
+      (await slotTransactionManager.getSessionStatus()) as CavosSessionStatus;
+
+    if (status.registered && status.active && !status.expired) {
+      const sessionExpiresAt = status.validUntil
+        ? Number(status.validUntil) * 1_000 - SESSION_EXPIRY_SAFETY_MARGIN_MS
+        : Number.POSITIVE_INFINITY;
+      const expiresAt = Math.min(
+        now + ACTIVE_SESSION_CACHE_MS,
+        sessionExpiresAt,
+      );
+
+      if (expiresAt > now) {
+        this._cachedSessionStatus = {
+          manager: slotTransactionManager,
+          status,
+          expiresAt,
+        };
+      }
+    } else {
+      this._cachedSessionStatus = null;
+    }
+
+    return status;
+  }
+
+  private _getDirectAccount(slotTransactionManager: any): any {
+    const cached = this._cachedDirectAccount;
+    if (cached && cached.manager === slotTransactionManager) {
+      return cached.account;
+    }
+
+    const account = slotTransactionManager.createDirectAccount(false);
+
+    // Cavos Slot accounts are Cairo 1. Supplying the known version prevents
+    // starknet.js from fetching the complete account class via getClassAt.
+    account.cairoVersion = "1";
+    this._cachedDirectAccount = {
+      manager: slotTransactionManager,
+      account,
+    };
+
+    return account;
   }
 
   /**
@@ -99,12 +187,12 @@ export class CavosAccountAdapter {
     }
 
     try {
-      const status = await slotTransactionManager.getSessionStatus();
+      const status = await this._getActiveSessionStatus(slotTransactionManager);
       if (!status.registered || status.expired || !status.active) {
         return null;
       }
 
-      const account = slotTransactionManager.createDirectAccount(false);
+      const account = this._getDirectAccount(slotTransactionManager);
       const result = await account.execute(
         calls,
         withSlotNoFeeExecuteOptions({
@@ -115,6 +203,7 @@ export class CavosAccountAdapter {
 
       return result.transaction_hash;
     } catch (error) {
+      this._invalidateFastPathCaches();
       logTransactionError("Cavos fast Slot execute path unavailable", error, {
         address: this.address,
         calls: calls.map((call) => ({

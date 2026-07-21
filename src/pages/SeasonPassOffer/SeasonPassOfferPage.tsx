@@ -5,7 +5,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { BackgroundType } from "../../components/Background";
 import BackgroundVideo from "../../components/BackgroundVideo";
 import CachedImage from "../../components/CachedImage";
-import { MobileBottomBar } from "../../components/MobileBottomBar";
 import { MobileDecoration } from "../../components/MobileDecoration";
 import { SeasonPass } from "../../components/SeasonPass/SeasonPass";
 import {
@@ -106,8 +105,8 @@ export const SeasonPassOfferPage = () => {
       ref={pageRef}
       position="relative"
       w="100%"
-      h="100dvh"
-      minH="100dvh"
+      h="100%"
+      minH={0}
       overflow="hidden"
       color="white"
       sx={{
@@ -141,13 +140,15 @@ export const SeasonPassOfferPage = () => {
       <Flex
         flexDir="column"
         alignItems="center"
-        justifyContent="center"
+        justifyContent={isSmallScreen ? "flex-start" : "center"}
         w="100%"
         h="100%"
-        minH="100%"
+        minH={0}
         px={isSmallScreen ? 4 : 8}
-        pt={isSmallScreen ? "70px" : "56px"}
-        pb={isSmallScreen ? "188px" : "56px"}
+        pt={isSmallScreen ? "52px" : "56px"}
+        pb={isSmallScreen ? "138px" : "56px"}
+        overflowX="hidden"
+        overflowY={isSmallScreen ? "auto" : "hidden"}
       >
         <Flex
           w="100%"
@@ -169,19 +170,20 @@ export const SeasonPassOfferPage = () => {
             justifyContent="center"
             w="100%"
             maxW={isDesktop ? "460px" : "560px"}
-            minH={isSmallScreen ? "220px" : "250px"}
-            mb={isSmallScreen ? 4 : 3}
+            minH={isSmallScreen ? "184px" : "250px"}
+            mb={isSmallScreen ? 2 : 3}
+            overflow={isSmallScreen ? "visible" : undefined}
             zIndex={2}
           >
             <Flex
               position="absolute"
               insetX={0}
               justifyContent="center"
-              top={isSmallScreen ? "220px" : "98px"}
+              top={isSmallScreen ? "156px" : "98px"}
             >
               <CachedImage
                 src="/shop/season-pass/coins-back.png"
-                w={isSmallScreen ? "350px" : "460px"}
+                w={isSmallScreen ? "330px" : "460px"}
                 opacity={isSmallScreen ? 0.42 : 0.58}
                 animation={`${coinPulseBack} 4s ease-in-out infinite`}
                 transformOrigin="center"
@@ -194,7 +196,7 @@ export const SeasonPassOfferPage = () => {
             >
               <SeasonPass
                 rotate="-10deg"
-                w={isSmallScreen ? "180px" : "250px"}
+                w={isSmallScreen ? "160px" : "250px"}
                 unlocked
               />
             </Flex>
@@ -202,11 +204,11 @@ export const SeasonPassOfferPage = () => {
               position="absolute"
               insetX={0}
               justifyContent="center"
-              top={isSmallScreen ? "150px" : "70px"}
+              top={isSmallScreen ? "112px" : "70px"}
             >
               <CachedImage
                 src="/shop/season-pass/coins-front.png"
-                w={isSmallScreen ? "340px" : "500px"}
+                w={isSmallScreen ? "320px" : "500px"}
                 opacity={isSmallScreen ? 0.86 : 0.92}
                 animation={`${coinPulse} 4s ease-in-out infinite`}
                 transformOrigin="center"
@@ -232,9 +234,10 @@ export const SeasonPassOfferPage = () => {
             zIndex={4}
             textAlign="center"
             color="lightViolet"
-            fontSize={isSmallScreen ? "31px" : "52px"}
+            fontSize={isSmallScreen ? "28px" : "52px"}
             lineHeight={0.95}
             textShadow={`0 0 12px ${VIOLET_LIGHT}`}
+            maxW="100%"
           >
             {t("season-pass")}
           </Heading>
@@ -243,10 +246,10 @@ export const SeasonPassOfferPage = () => {
             position="relative"
             zIndex={4}
             w="100%"
-            maxW={isSmallScreen ? "290px" : "420px"}
-            mt={isSmallScreen ? 5 : 7}
+            maxW={isSmallScreen ? "300px" : "420px"}
+            mt={isSmallScreen ? 4 : 7}
             flexDir="column"
-            gap={isSmallScreen ? 4 : 4}
+            gap={isSmallScreen ? 3 : 4}
           >
             {benefits.map((benefit) => (
               <Flex key={benefit.title} gap={3} alignItems="flex-start">
@@ -338,41 +341,49 @@ export const SeasonPassOfferPage = () => {
           zIndex={10}
           justifyContent="center"
           pointerEvents="none"
+          px={4}
         >
           <Flex
             w="100%"
-            flexDir="column"
+            maxW="340px"
             alignItems="center"
+            justifyContent="center"
+            gap={4}
             pointerEvents="auto"
             background="transparent"
-            pt={4}
           >
-            <MobileBottomBar
-              firstButton={{
-                label: t("offer.skip"),
-                onClick: () => navigate(returnTo, { replace: true }),
-                variant: "ghost",
-                color: "whiteAlpha.700",
-                _hover: {
-                  color: "whiteAlpha.900",
-                },
+            <Button
+              variant="ghost"
+              color="whiteAlpha.700"
+              w="130px"
+              h="28px"
+              fontSize="10px"
+              onClick={() => navigate(returnTo, { replace: true })}
+              _hover={{
+                color: "whiteAlpha.900",
               }}
-              secondButton={{
-                label:
-                  isScreenLoading ||
-                  isLoading ||
-                  isCryptoPurchasing ||
-                  isResolvingUsername ? (
-                    <Spinner size="xs" />
-                  ) : seasonPassUnlocked ? (
-                    t("unlocked")
-                  ) : (
-                    buyLabel
-                  ),
-                onClick: handlePurchaseClick,
-                disabled: isButtonDisabled,
-              }}
-            />
+            >
+              {t("offer.skip")}
+            </Button>
+            <Button
+              variant="secondarySolid"
+              w="170px"
+              h="28px"
+              fontSize="10px"
+              onClick={handlePurchaseClick}
+              isDisabled={isButtonDisabled}
+            >
+              {isScreenLoading ||
+              isLoading ||
+              isCryptoPurchasing ||
+              isResolvingUsername ? (
+                <Spinner size="xs" />
+              ) : seasonPassUnlocked ? (
+                t("unlocked")
+              ) : (
+                buyLabel
+              )}
+            </Button>
           </Flex>
         </Flex>
       )}

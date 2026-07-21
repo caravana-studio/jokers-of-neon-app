@@ -21,12 +21,14 @@ import "../marketplace/index.css";
 import { initDatadogRum } from "../monitoring/datadogRum.ts";
 import { DatadogUserContext } from "../monitoring/DatadogUserContext.tsx";
 import { LoadingScreen } from "../pages/LoadingScreen/LoadingScreen.tsx";
+import { Maintenance } from "../pages/Maintenance.tsx";
 import {
   AppContextProvider,
   AppType,
 } from "../providers/AppContextProvider.tsx";
 import { SettingsProvider } from "../providers/SettingsProvider.tsx";
 import { StarknetProvider } from "../providers/StarknetProvider.tsx";
+import { fetchVersion } from "../queries/fetchVersion.ts";
 import customTheme from "../theme/theme";
 import { LoadingScreenHandle } from "../types/LoadingProgress.ts";
 import { preloadImages, preloadVideos } from "../utils/cacheUtils.ts";
@@ -49,6 +51,21 @@ const I18N_NAMESPACES = [
 
 const progressBarRef = createRef<LoadingScreenHandle>();
 
+const parseBooleanEnv = (value: unknown): boolean =>
+  typeof value === "string" ? value.toLowerCase() === "true" : false;
+
+const BYPASS_MAINTENANCE = parseBooleanEnv(
+  import.meta.env.VITE_BYPASS_MAINTENANCE
+);
+const MAINTENANCE_BYPASS_QUERY_PARAM = "bypassMaintenance";
+
+const shouldBypassMaintenance = (): boolean =>
+  window.location.hostname === "localhost" ||
+  BYPASS_MAINTENANCE ||
+  new URLSearchParams(window.location.search).has(
+    MAINTENANCE_BYPASS_QUERY_PARAM
+  );
+
 initDatadogRum();
 registerAppUrlOpenListener();
 
@@ -65,6 +82,19 @@ async function init() {
   let setCanFadeOut: (value: boolean) => void = () => {};
 
   const theme = extendTheme(customTheme);
+
+  const versionData = await fetchVersion();
+  if (
+    versionData["marketplace-maintenance"] &&
+    !shouldBypassMaintenance()
+  ) {
+    root.render(
+      <I18nextProvider i18n={localI18n} defaultNS={undefined}>
+        <Maintenance />
+      </I18nextProvider>
+    );
+    return;
+  }
 
   const renderApp = (setupResult: any) => {
     const queryClient = new QueryClient();

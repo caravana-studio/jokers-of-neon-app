@@ -4,7 +4,7 @@ import { Box, Flex, Text } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXTwitter } from "@fortawesome/free-brands-svg-icons";
 import { motion } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDojo } from "../dojo/DojoContext";
 import { DIAMONDS } from "../theme/colors";
@@ -26,6 +26,7 @@ import { MobileBottomBar } from "./MobileBottomBar";
 import { MobileDecoration } from "./MobileDecoration";
 import { RollingNumber } from "./RollingNumber";
 import { useResponsiveValues } from "../theme/responsiveSettings";
+import type { StreakPresentationRewardApiData } from "../api/profile";
 
 const CELEBRATION_INTRO_DURATION_MS = 4000;
 
@@ -42,6 +43,8 @@ export interface DailyStreakSheetProps {
   streakProtectors?: number;
   onClose: () => void | Promise<void>;
   onContinue?: () => void | Promise<void>;
+  reward?: StreakPresentationRewardApiData | null;
+  isRewardClaiming?: boolean;
   referenceDate?: Date;
   showCelebrationIntroOnEntry?: boolean;
 }
@@ -51,6 +54,8 @@ export const DailyStreakSheet = ({
   streakProtectors = 0,
   onClose,
   onContinue,
+  reward,
+  isRewardClaiming = false,
   referenceDate,
   showCelebrationIntroOnEntry = true,
 }: DailyStreakSheetProps) => {
@@ -64,24 +69,28 @@ export const DailyStreakSheet = ({
     : 0;
   const isZeroStreak = normalizedStreak === 0;
   const isMilestoneHit = isDailyStreakAtMilestone(normalizedStreak);
-  const [showCelebrationIntro, setShowCelebrationIntro] = useState(
+  const shouldShowCelebrationIntroRef = useRef(
     showCelebrationIntroOnEntry && !isZeroStreak
   );
+  const initialPresentationRef = useRef({ isMilestoneHit, isZeroStreak });
+  const [showCelebrationIntro, setShowCelebrationIntro] = useState(
+    shouldShowCelebrationIntroRef.current
+  );
   const [isContinuing, setIsContinuing] = useState(false);
+  const isContinueActionRunningRef = useRef(false);
   const celebrationIntroTimeoutRef = useRef<number | null>(null);
 
   const { isSmallScreen } = useResponsiveValues();
 
   useEffect(() => {
-    if (!showCelebrationIntroOnEntry || isZeroStreak) {
+    if (!shouldShowCelebrationIntroRef.current) {
       setShowCelebrationIntro(false);
       return;
     }
 
-    setShowCelebrationIntro(true);
-
     celebrationIntroTimeoutRef.current = window.setTimeout(() => {
       setShowCelebrationIntro(false);
+      celebrationIntroTimeoutRef.current = null;
     }, CELEBRATION_INTRO_DURATION_MS);
 
     return () => {
@@ -90,20 +99,26 @@ export const DailyStreakSheet = ({
         celebrationIntroTimeoutRef.current = null;
       }
     };
-  }, [isMilestoneHit, isZeroStreak, normalizedStreak, showCelebrationIntroOnEntry]);
+  }, []);
 
   useEffect(() => {
-    if (isZeroStreak) {
+    const initialPresentation = initialPresentationRef.current;
+
+    if (initialPresentation.isZeroStreak) {
       return () => {
         hideLightPillarAnimation();
       };
     }
 
-    AudioManager.getInstance().play(isMilestoneHit ? clearLevel : clearRound);
-    triggerEntryVibration(isMilestoneHit ? 800 : 400);
+    AudioManager.getInstance().play(
+      initialPresentation.isMilestoneHit ? clearLevel : clearRound
+    );
+    triggerEntryVibration(initialPresentation.isMilestoneHit ? 800 : 400);
 
     showLightPillarAnimation({
-      intensityLevel: isMilestoneHit ? Intensity.MEDIUM : Intensity.LOW,
+      intensityLevel: initialPresentation.isMilestoneHit
+        ? Intensity.MEDIUM
+        : Intensity.LOW,
       persist: true,
     });
 
@@ -112,9 +127,6 @@ export const DailyStreakSheet = ({
     };
   }, [
     hideLightPillarAnimation,
-    isMilestoneHit,
-    isZeroStreak,
-    normalizedStreak,
     showLightPillarAnimation,
   ]);
 
@@ -142,18 +154,27 @@ export const DailyStreakSheet = ({
   };
 
   const handleContinueClick = async () => {
-    if (isContinuing) {
+    if (isContinueActionRunningRef.current) {
       return;
     }
 
+    isContinueActionRunningRef.current = true;
     setIsContinuing(true);
 
     try {
       await (onContinue ?? onClose)();
     } catch {
+      // The action owner handles user-facing errors. Re-enable the button so it
+      // can be retried when the current screen remains mounted.
+    } finally {
+      isContinueActionRunningRef.current = false;
       setIsContinuing(false);
     }
   };
+
+  const handleProgressStepActivated = useCallback(() => {
+    triggerHaptic("interaction");
+  }, []);
 
   const handleCelebrationIntroSkip = () => {
     if (!showCelebrationIntro) {
@@ -419,7 +440,7 @@ export const DailyStreakSheet = ({
                           streak={normalizedStreak}
                           referenceDate={referenceDate}
                           animationStartDelayMs={getAnimationStartDelayMs(1)}
-                          onStepActivated={() => triggerHaptic("interaction")}
+                          onStepActivated={handleProgressStepActivated}
                         />
                       </Box>
                     </motion.div>
@@ -433,7 +454,7 @@ export const DailyStreakSheet = ({
                       <DailyStreakMilestoneProgress
                         streak={normalizedStreak}
                         animationStartDelayMs={getAnimationStartDelayMs(2) + 280}
-                        onStepActivated={() => triggerHaptic("interaction")}
+                        onStepActivated={handleProgressStepActivated}
                       />
                     </motion.div>
                   </>
@@ -461,9 +482,9 @@ export const DailyStreakSheet = ({
               }
               secondButton={{
                 onClick: handleContinueClick,
-                label: t("daily-streak.continue"),
-                isLoading: isContinuing,
-                disabled: isContinuing,
+                label: reward ? t("daily-streak.open-reward") : t("daily-streak.continue"),
+                isLoading: isContinuing || isRewardClaiming,
+                disabled: isContinuing || isRewardClaiming,
               }}
             />
           </motion.div>

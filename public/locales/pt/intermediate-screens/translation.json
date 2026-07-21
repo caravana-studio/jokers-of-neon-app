@@ -490,6 +490,12 @@
     "errors": {
       "invalid-code": "Código inválido. Verifique e tente novamente."
     },
+    "controller-migration-modal": {
+      "title": "Controller foi descontinuado",
+      "description": "Para migrar sua conta, acesse migrate.jokersofneon.com.",
+      "confirm": "Migrar",
+      "cancel": "Cancelar"
+    },
     "terms": {
       "agreement": "Ao continuar, você concorda com os",
       "link": "Termos e Condições"
@@ -500,7 +506,16 @@
     "protectors": "Protetores",
     "description": "Complete uma missão diária para começar sua sequência.",
     "next-objective": "Próximo objetivo",
+    "next": "Próximo",
     "continue": "Continuar",
+    "open-reward": "Recompensa",
+    "reward-ready": "Recompensa",
+    "reward-pack": "Pacote x{{count}}",
+    "reward-xp": "{{amount}} XP",
+    "reward-protector": "Protetor x{{count}}",
+    "reward-received": "Recompensa recebida",
+    "streak-protector-reward": "Protetor de sequência",
+    "reward-claim-error": "Não foi possível resgatar sua recompensa. Tente novamente.",
     "share": {
       "button": "COMPARTILHAR NO",
       "variants": {
@@ -522,6 +537,17 @@
       "friday": "6a",
       "saturday": "Sa",
       "sunday": "Do"
+    }
+  },
+  "test-features": {
+    "daily-streak-rewards": {
+      "xp-only": "Recompensa de sequência: XP",
+      "protector-only": "Recompensa de sequência: Protetor",
+      "packs-only": "Recompensa de sequência: Pacotes",
+      "xp-protector": "Recompensa de sequência: XP + Protetor",
+      "xp-packs": "Recompensa de sequência: XP + Pacotes",
+      "protector-packs": "Recompensa de sequência: Protetor + Pacotes",
+      "all": "Recompensa de sequência: Tudo"
     }
   }
 }

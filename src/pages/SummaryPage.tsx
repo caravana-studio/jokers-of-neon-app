@@ -115,6 +115,7 @@ const SummaryDetail = ({ win }: SummaryPageProps) => {
         ) {
           const navigated = navigateToStreakIncreased(navigate, {
             streak: presentation.streak,
+            reward: presentation.reward,
             continuation: {
               type: "route",
               to: location.pathname,

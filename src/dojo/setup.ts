@@ -16,8 +16,11 @@ import type { Message, ToriiClient } from "@dojoengine/torii-client";
 export type SetupResult = Awaited<ReturnType<typeof setup>>;
 const DOJO_NAMESPACE =
   import.meta.env.VITE_DOJO_NAMESPACE || "jokers_of_neon_core";
+const ENABLE_GUEST_MODE =
+  import.meta.env.VITE_ENABLE_GUEST_MODE?.trim().toLowerCase() === "true";
 const SHOULD_BOOTSTRAP_FRONTEND_BURNER =
-  (import.meta.env.VITE_BLOCKCHAIN?.trim() || "starknet") === "starknet";
+  (import.meta.env.VITE_BLOCKCHAIN?.trim() || "starknet") === "starknet" &&
+  ENABLE_GUEST_MODE;
 
 let sync: any;
 
@@ -184,8 +187,11 @@ export async function setup({ ...config }: DojoConfig) {
       await burnerManager.create();
     }
   } catch (e) {
-    console.log("error initializing burnerManager");
-    console.error(e);
+    console.error("[dojo/setup] Failed to initialize burner manager", {
+      rpcUrl: config.rpcUrl,
+      error: e,
+    });
+    throw e;
   }
 
   // await syncEntitiesForGameID();
