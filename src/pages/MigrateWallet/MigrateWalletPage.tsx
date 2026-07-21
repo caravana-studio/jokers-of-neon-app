@@ -25,8 +25,21 @@ import { AuthButton } from "../CavosWalletConnect/components/AuthButton";
 import { EmailCodeView } from "../CavosWalletConnect/components/EmailCodeView";
 import { EmailLoginView } from "../CavosWalletConnect/components/EmailLoginView";
 import { AUTH_VIEW_FADE_DURATION_S } from "../CavosWalletConnect/constants";
-import { trackAccountMigration } from "./accountMigration";
-import { migrateNfts } from "./nftMigration";
+import {
+  clearActiveMigration,
+  confirmAccountMigrationCleanup,
+  createAccountMigration,
+  getAccountMigrationStatus,
+  readActiveMigration,
+  retryAccountMigration,
+  type ActiveMigration,
+  type MigrationStatus,
+} from "./accountMigration";
+import {
+  ACCOUNT_MIGRATION_EXECUTORS,
+  buildWorkerApprovalCalls,
+  getWorkerExecutorsByApproval,
+} from "./nftMigration";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const RESEND_CODE_COOLDOWN_SECONDS = 90;
@@ -267,8 +280,10 @@ export const MigrateWalletPage = () => {
   const [migrationStatus, setMigrationStatus] = useState<
     "success" | "error" | null
   >(null);
-  const [migrationCompletedBatches, setMigrationCompletedBatches] = useState(0);
-  const [migrationTotalBatches, setMigrationTotalBatches] = useState(0);
+  const [activeMigration, setActiveMigration] = useState<ActiveMigration | null>(null);
+  const [migrationProgressStatus, setMigrationProgressStatus] =
+    useState<MigrationStatus | null>(null);
+  const cleanupInProgressRef = useRef(false);
   const controllerSuccessHandledRef = useRef(false);
 
   const { isSmallScreen } = useResponsiveValues();
@@ -426,14 +441,81 @@ export const MigrateWalletPage = () => {
   const shouldShowLoginCancel = appType === AppType.FULL_GAME;
   const isMigrateActionDisabled =
     !canMigrate || isMigrating || migrationStatus === "success";
-  const migrationProgress =
-    migrationTotalBatches > 0
-      ? (migrationCompletedBatches / migrationTotalBatches) * 100
-      : 0;
+  const migrationProgress = (() => {
+    if (!migrationProgressStatus) return 0;
+    const { phase, transfers, xp } = migrationProgressStatus;
+    if (phase === "transfers") {
+      return transfers.total > 0 ? (transfers.completed / transfers.total) * 80 : 0;
+    }
+    if (phase === "roguelike") return 82;
+    if (phase === "xp") {
+      return 85 + (xp.total > 0 ? (xp.completed / xp.total) * 10 : 0);
+    }
+    if (phase === "cleanup") return 97;
+    return 100;
+  })();
+  const migrationActionLabel = migrationProgressStatus?.cleanupRequired
+    ? t("migration.cleanup-action")
+    : migrationProgressStatus?.canRetry
+      ? t("migration.retry-action")
+      : t("connect.migrate");
 
   useEffect(() => {
     setMigrationStatus(null);
   }, [controllerAddress, jokersAddress]);
+
+  useEffect(() => {
+    if (!controllerAddress || !jokersAddress || activeMigration) return;
+    const stored = readActiveMigration(controllerAddress, jokersAddress);
+    if (stored) {
+      setActiveMigration(stored);
+      setIsMigrating(true);
+    }
+  }, [activeMigration, controllerAddress, jokersAddress]);
+
+  useEffect(() => {
+    if (!activeMigration || !isMigrating) return;
+    const abortController = new AbortController();
+    let timeoutId: number | undefined;
+
+    const poll = async () => {
+      try {
+        const status = await getAccountMigrationStatus(
+          activeMigration,
+          abortController.signal,
+        );
+        setMigrationProgressStatus(status);
+        if (status.status === "completed") {
+          clearActiveMigration();
+          setActiveMigration(null);
+          setMigrationStatus("success");
+          setIsMigrating(false);
+          return;
+        }
+        if (status.cleanupRequired) {
+          setIsMigrating(false);
+          return;
+        }
+        if (status.canRetry) {
+          setMigrationStatus("error");
+          setIsMigrating(false);
+          return;
+        }
+        timeoutId = window.setTimeout(poll, 2500);
+      } catch (error) {
+        if (abortController.signal.aborted) return;
+        console.error("Failed to poll account migration", error);
+        setMigrationStatus("error");
+        setIsMigrating(false);
+      }
+    };
+
+    void poll();
+    return () => {
+      abortController.abort();
+      if (timeoutId !== undefined) window.clearTimeout(timeoutId);
+    };
+  }, [activeMigration, isMigrating]);
 
   const handleMigrate = async () => {
     if (
@@ -448,30 +530,86 @@ export const MigrateWalletPage = () => {
     setIsConfirmationOpen(false);
     setIsMigrating(true);
     setMigrationStatus(null);
-    setMigrationCompletedBatches(0);
-    setMigrationTotalBatches(0);
+    let approvedExecutors: string[] = [];
     try {
-      await migrateNfts(
-        controllerAccount,
+      if (activeMigration?.id) {
+        if (migrationProgressStatus?.cleanupRequired) {
+          if (cleanupInProgressRef.current) return;
+          cleanupInProgressRef.current = true;
+          const approvedExecutorsToRevoke = await getWorkerExecutorsByApproval(
+            controllerAddress,
+            activeMigration.executors,
+            true,
+          );
+          let cleanupTransactionHash = "";
+          if (approvedExecutorsToRevoke.length > 0) {
+            const cleanupTransaction = await controllerAccount.execute(
+              buildWorkerApprovalCalls(approvedExecutorsToRevoke, false),
+            );
+            await controllerAccount.waitForTransaction(
+              cleanupTransaction.transaction_hash,
+            );
+            cleanupTransactionHash = cleanupTransaction.transaction_hash;
+          }
+          const status = await confirmAccountMigrationCleanup(
+            activeMigration,
+            cleanupTransactionHash,
+          );
+          setMigrationProgressStatus(status);
+          clearActiveMigration();
+          setActiveMigration(null);
+          setMigrationStatus("success");
+          setIsMigrating(false);
+          return;
+        }
+        if (migrationProgressStatus?.canRetry) {
+          const status = await retryAccountMigration(activeMigration);
+          setMigrationProgressStatus(status);
+        }
+        return;
+      }
+
+      const executorsMissingApproval = await getWorkerExecutorsByApproval(
         controllerAddress,
-        jokersAddress,
-        ({ completedBatches, totalBatches }) => {
-          setMigrationCompletedBatches(completedBatches);
-          setMigrationTotalBatches(totalBatches);
-        },
+        ACCOUNT_MIGRATION_EXECUTORS,
+        false,
       );
-      await trackAccountMigration({
+      let approvalTransactionHash: string | undefined;
+      if (executorsMissingApproval.length > 0) {
+        const approvalTransaction = await controllerAccount.execute(
+          buildWorkerApprovalCalls(executorsMissingApproval, true),
+        );
+        await controllerAccount.waitForTransaction(
+          approvalTransaction.transaction_hash,
+        );
+        approvalTransactionHash = approvalTransaction.transaction_hash;
+        approvedExecutors = executorsMissingApproval;
+      }
+      const migration = await createAccountMigration({
         controllerAddress,
         cavosAddress: jokersAddress,
+        approvalTransactionHash,
+        executors: [...ACCOUNT_MIGRATION_EXECUTORS],
       });
-
-      setMigrationStatus("success");
-      setIsConfirmationOpen(false);
+      setActiveMigration(migration);
     } catch (error) {
       console.error("Failed to migrate NFTs", error);
+      if (!activeMigration && approvedExecutors.length > 0) {
+        try {
+          const revokeTransaction = await controllerAccount.execute(
+            buildWorkerApprovalCalls(approvedExecutors, false),
+          );
+          await controllerAccount.waitForTransaction(
+            revokeTransaction.transaction_hash,
+          );
+        } catch (revokeError) {
+          console.error("Failed to revoke migration approvals", revokeError);
+        }
+      }
       setMigrationStatus("error");
-    } finally {
       setIsMigrating(false);
+    } finally {
+      cleanupInProgressRef.current = false;
     }
   };
 
@@ -595,10 +733,16 @@ export const MigrateWalletPage = () => {
               {isMigrating ? (
                 <MigrationProgressState
                   title={t("migration.in-progress-title")}
-                  description={t("migration.in-progress-description")}
+                  description={
+                    migrationProgressStatus
+                      ? t(`migration.phase-${migrationProgressStatus.phase}`)
+                      : t("migration.counting-cards-description")
+                  }
                   progress={migrationProgress}
-                  completedBatches={migrationCompletedBatches}
-                  totalBatches={migrationTotalBatches}
+                  completedItems={migrationProgressStatus?.transfers.completed ?? 0}
+                  totalItems={migrationProgressStatus?.transfers.total ?? 0}
+                  isCountingCards={!migrationProgressStatus}
+                  countingCardsLabel={t("migration.counting-cards")}
                 />
               ) : null}
               {!isMigrating && (
@@ -876,7 +1020,7 @@ export const MigrateWalletPage = () => {
                           : undefined
                       }
                       secondButton={{
-                        label: t("connect.migrate"),
+                        label: migrationActionLabel,
                         onClick: () => setIsConfirmationOpen(true),
                         disabled: isMigrateActionDisabled,
                         boxShadow: !isMigrateActionDisabled
@@ -910,7 +1054,7 @@ export const MigrateWalletPage = () => {
                             : "none"
                         }
                       >
-                        {t("connect.migrate")}
+                        {migrationActionLabel}
                       </Button>
                     </Flex>
                   )}
@@ -929,8 +1073,20 @@ export const MigrateWalletPage = () => {
       {isConfirmationOpen && (
         <ConfirmationModal
           close={() => setIsConfirmationOpen(false)}
-          title={t("confirmation.title")}
-          confirmText={t("confirmation.continue")}
+          title={t(
+            migrationProgressStatus?.cleanupRequired
+              ? "confirmation.cleanup.title"
+              : migrationProgressStatus?.canRetry
+                ? "confirmation.retry.title"
+                : "confirmation.title",
+          )}
+          confirmText={t(
+            migrationProgressStatus?.cleanupRequired
+              ? "confirmation.cleanup.continue"
+              : migrationProgressStatus?.canRetry
+                ? "confirmation.retry.continue"
+                : "confirmation.continue",
+          )}
           cancelText={t("confirmation.cancel")}
           onCancel={() => setIsConfirmationOpen(false)}
           onConfirm={() => {
@@ -941,7 +1097,13 @@ export const MigrateWalletPage = () => {
           titleLineHeight={["1.15", "1.2"]}
         >
           <Text textAlign="center" color="whiteAlpha.800" lineHeight={1.5}>
-            {t("confirmation.description")}
+            {t(
+              migrationProgressStatus?.cleanupRequired
+                ? "confirmation.cleanup.description"
+                : migrationProgressStatus?.canRetry
+                  ? "confirmation.retry.description"
+                  : "confirmation.description",
+            )}
           </Text>
         </ConfirmationModal>
       )}
@@ -988,14 +1150,18 @@ const MigrationProgressState = ({
   title,
   description,
   progress,
-  completedBatches,
-  totalBatches,
+  completedItems,
+  totalItems,
+  isCountingCards,
+  countingCardsLabel,
 }: {
   title: string;
   description: string;
   progress: number;
-  completedBatches: number;
-  totalBatches: number;
+  completedItems: number;
+  totalItems: number;
+  isCountingCards: boolean;
+  countingCardsLabel: string;
 }) => (
   <Flex
     flex={1}
@@ -1028,19 +1194,37 @@ const MigrationProgressState = ({
       >
         {title}
       </Text>
-      <Box w="100%" maxW="470px">
-        <ProgressBar
-          progress={progress}
-          mt={0}
-          height="16px"
-          label={
-            totalBatches > 0
-              ? `${completedBatches}/${totalBatches}`
-              : "0/0"
-          }
-          labelFontSize="11px"
-        />
-      </Box>
+      <AnimatePresence initial={false} mode="wait">
+        {isCountingCards ? (
+          <motion.div
+            key="counting-cards"
+            initial={{ opacity: 0, y: 8, filter: "blur(4px)" }}
+            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            exit={{ opacity: 0, y: -8, filter: "blur(4px)" }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            style={{ width: "100%" }}
+          >
+            <CountingCards label={countingCardsLabel} />
+          </motion.div>
+        ) : (
+          <motion.div
+            key="migration-progress"
+            initial={{ opacity: 0, y: 8, filter: "blur(4px)" }}
+            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            exit={{ opacity: 0, y: -8, filter: "blur(4px)" }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            style={{ width: "100%", maxWidth: "470px" }}
+          >
+            <ProgressBar
+              progress={progress}
+              mt={0}
+              height="16px"
+              label={totalItems > 0 ? `${completedItems}/${totalItems}` : ""}
+              labelFontSize="11px"
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
       <Text
         maxW="560px"
         color="whiteAlpha.800"
@@ -1053,6 +1237,42 @@ const MigrationProgressState = ({
     </Flex>
   </Flex>
 );
+
+const CountingCards = ({ label }: { label: string }) => {
+  const [dotCount, setDotCount] = useState(1);
+
+  useEffect(() => {
+    const intervalId = window.setInterval(() => {
+      setDotCount((count) => (count % 3) + 1);
+    }, 450);
+    return () => window.clearInterval(intervalId);
+  }, []);
+
+  return (
+    <Flex
+      minH="32px"
+      alignItems="center"
+      justifyContent="center"
+      color="whiteAlpha.900"
+      fontFamily="Orbitron"
+      fontSize={{ base: "13px", md: "15px" }}
+      role="status"
+      aria-live="polite"
+    >
+      <Text as="span">{label}</Text>
+      <Text
+        as="span"
+        w="3ch"
+        ml="0.5ch"
+        textAlign="left"
+        style={{ fontVariantNumeric: "tabular-nums" }}
+        aria-hidden="true"
+      >
+        {".".repeat(dotCount)}
+      </Text>
+    </Flex>
+  );
+};
 
 const MigrationResultState = ({
   status,

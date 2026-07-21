@@ -25,11 +25,30 @@
     "title": "Confirm migration",
     "description": "You are about to permanently migrate all your progress and NFT cards from your Cartridge Controller to your Jokers of Neon account. This action is irreversible.",
     "cancel": "Cancel",
-    "continue": "Continue"
+    "continue": "Continue",
+    "retry": {
+      "title": "Retry migration",
+      "description": "Only the failed migration operations will be retried.",
+      "continue": "Retry"
+    },
+    "cleanup": {
+      "title": "Remove worker access",
+      "description": "Your cards and progress have been migrated. Confirm one final transaction to remove access from all migration workers.",
+      "continue": "Remove access"
+    }
   },
   "migration": {
     "in-progress-title": "Migration in progress",
     "in-progress-description": "This migration can take several minutes. Please do not close this tab.",
+    "counting-cards": "Counting your cards",
+    "counting-cards-description": "We're preparing your migration. This may take a few seconds.",
+    "phase-transfers": "Your cards are being transferred securely by the migration workers. You can close this page and return later.",
+    "phase-roguelike": "Your roguelike progress is being migrated.",
+    "phase-xp": "Your XP is being migrated.",
+    "phase-cleanup": "Migration processing is complete. Remove worker access to finish securely.",
+    "phase-completed": "Migration completed.",
+    "retry-action": "Retry migration",
+    "cleanup-action": "Remove worker access",
     "success-title": "Migration completed",
     "success": "You can now log in to Jokers of Neon with your new account.",
     "error-title": "Migration failed",

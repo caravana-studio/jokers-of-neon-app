@@ -1,106 +1,59 @@
-import { CallData, RpcProvider, uint256, type Call } from "starknet";
+import { RpcProvider, type Call } from "starknet";
 import { NFT_CONTRACT_ADDRESS } from "../../marketplace/config/contracts";
 import { migrateMainnetRpcUrl } from "../../utils/migrateMainnet";
 
-const CARD_STATS_SERIALIZED_SIZE = 10;
-const TRANSFERS_PER_TRANSACTION = 10;
+export const ACCOUNT_MIGRATION_EXECUTORS = [
+  "0x04e67200958b58c414c86d7caab796a2a4aa486ecfbdff1a0643dbbcc7f4fec8",
+  "0x01497232727dc02ff1ad3d47a197a064debc6be97f658f4b302b5cbc8520be16",
+  "0x04a549ce5e2f2b52cdcc49e8e9f53984768efe5d80873e8d0fb6e8e0c4146ca3",
+  "0x07541c4c9fba3fd706cccaf2fef6ab3991df4d8014d0d558ad9cc9c93cfaf526",
+] as const;
 
-type MigrationProgress = {
-  completedBatches: number;
-  totalBatches: number;
-  processedCards: number;
-  totalCards: number;
-};
-
-const getTokenIds = (response: string[]): string[] => {
-  const cardsCount = Number(BigInt(response[0] ?? "0x0"));
-  const expectedLength = 1 + cardsCount * CARD_STATS_SERIALIZED_SIZE;
-
-  if (response.length !== expectedLength) {
-    throw new Error("Unexpected get_user_special_cards response");
-  }
-
-  return Array.from({ length: cardsCount }, (_, index) => {
-    const tokenOffset = 1 + index * CARD_STATS_SERIALIZED_SIZE;
-    const low = BigInt(response[tokenOffset]);
-    const high = BigInt(response[tokenOffset + 1]);
-
-    return (low + (high << 128n)).toString();
-  });
-};
-
-export const migrateNfts = async (
-  controllerAccount: {
-    execute: (calls: Call[]) => Promise<{ transaction_hash: string }>;
-    waitForTransaction: (transactionHash: string) => Promise<unknown>;
-  },
-  controllerAddress: string,
-  cavosAddress: string,
-  onProgress?: (progress: MigrationProgress) => void,
-) => {
-  if (!NFT_CONTRACT_ADDRESS) {
+export const buildWorkerApprovalCalls = (
+  executors: readonly string[],
+  approved: boolean,
+  contractAddress = NFT_CONTRACT_ADDRESS,
+): Call[] => {
+  if (!contractAddress) {
     throw new Error("NFT contract address is not configured");
   }
+  return executors.map((executor) => ({
+    contractAddress,
+    entrypoint: "set_approval_for_all",
+    calldata: [executor, approved ? "1" : "0"],
+  }));
+};
 
-  const provider = new RpcProvider({ nodeUrl: migrateMainnetRpcUrl });
-  const response = await provider.callContract({
-    contractAddress: NFT_CONTRACT_ADDRESS,
-    entrypoint: "get_user_special_cards",
-    calldata: [controllerAddress],
-  });
-  const allTokenIds = getTokenIds(response);
-  console.info("[MIGRATE] NFT count", allTokenIds.length);
-  const tokenIds = allTokenIds;
-  const totalCards = tokenIds.length;
-  const totalBatches = Math.ceil(totalCards / TRANSFERS_PER_TRANSACTION);
+type ContractCaller = (request: {
+  contractAddress: string;
+  entrypoint: string;
+  calldata: string[];
+}) => Promise<readonly string[]>;
 
-  if (tokenIds.length === 0) {
-    return null;
+export const getWorkerExecutorsByApproval = async (
+  owner: string,
+  executors: readonly string[],
+  approved: boolean,
+  contractAddress = NFT_CONTRACT_ADDRESS,
+  callContract?: ContractCaller,
+): Promise<string[]> => {
+  if (!contractAddress) {
+    throw new Error("NFT contract address is not configured");
   }
-
-  onProgress?.({
-    completedBatches: 0,
-    totalBatches,
-    processedCards: 0,
-    totalCards,
-  });
-
-  const transactionHashes: string[] = [];
-
-  for (
-    let offset = 0;
-    offset < tokenIds.length;
-    offset += TRANSFERS_PER_TRANSACTION
-  ) {
-    const tokenIdsBatch = tokenIds.slice(
-      offset,
-      offset + TRANSFERS_PER_TRANSACTION,
-    );
-    const transaction = await controllerAccount.execute(
-      tokenIdsBatch.map((tokenId) => ({
-        contractAddress: NFT_CONTRACT_ADDRESS,
-        entrypoint: "transfer_from",
-        calldata: CallData.compile({
-          from: controllerAddress,
-          to: cavosAddress,
-          token_id: uint256.bnToUint256(BigInt(tokenId)),
-        }),
-      })),
-    );
-
-    console.info("[MIGRATE] NFT transfer transaction hash", {
-      batch: Math.floor(offset / TRANSFERS_PER_TRANSACTION) + 1,
-      transactionHash: transaction.transaction_hash,
-    });
-    await controllerAccount.waitForTransaction(transaction.transaction_hash);
-    transactionHashes.push(transaction.transaction_hash);
-    onProgress?.({
-      completedBatches: transactionHashes.length,
-      totalBatches,
-      processedCards: Math.min(offset + tokenIdsBatch.length, totalCards),
-      totalCards,
-    });
-  }
-
-  return transactionHashes;
+  const provider = callContract
+    ? null
+    : new RpcProvider({ nodeUrl: migrateMainnetRpcUrl });
+  const readContract =
+    callContract ?? ((request) => provider!.callContract(request));
+  const approvalStates = await Promise.all(
+    executors.map(async (executor) => {
+      const result = await readContract({
+        contractAddress,
+        entrypoint: "is_approved_for_all",
+        calldata: [owner, executor],
+      });
+      return BigInt(result[0] ?? "0x0") !== 0n;
+    }),
+  );
+  return executors.filter((_executor, index) => approvalStates[index] === approved);
 };
