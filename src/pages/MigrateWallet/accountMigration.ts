@@ -48,6 +48,8 @@ export function getMigrationFailedItemCount(status: MigrationStatus): number {
 }
 
 export function isAccountMigrationRetryReady(status: MigrationStatus): boolean {
+  const isTerminalFailure =
+    status.status === "failed" || status.status.endsWith("_failed");
   const currentPhaseHasActiveWork = (() => {
     if (status.phase === "transfers") {
       return activeIntentCount(status.transfers) > 0;
@@ -64,6 +66,7 @@ export function isAccountMigrationRetryReady(status: MigrationStatus): boolean {
 
   return (
     status.canRetry &&
+    isTerminalFailure &&
     !currentPhaseHasActiveWork &&
     getMigrationFailedItemCount(status) > 0
   );

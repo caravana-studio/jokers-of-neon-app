@@ -65,7 +65,14 @@ async function init() {
   const theme = extendTheme(customTheme);
 
   flushSync(() => {
-    root.render(<LoadingFallback text="" />);
+    root.render(
+      <LoadingFallback
+        text={localI18n.t("loading-screen.loading", {
+          ns: "intermediate-screens",
+          defaultValue: "Loading...",
+        })}
+      />,
+    );
   });
 
   try {

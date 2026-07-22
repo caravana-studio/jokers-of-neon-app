@@ -112,6 +112,7 @@
     "description": "We're updating Jokers of Neon to bring you new features and improvements. The game will be back shortly, thanks for your patience!"
   },
   "loading-screen": {
+    "loading": "Loading...",
     "error": "Error loading the game",
     "skip": "Skip",
     "steps": {

@@ -23,7 +23,7 @@ const migration: ActiveMigration = {
 
 const inProgressStatus: MigrationStatus = {
   id: migration.id,
-  status: "transferring",
+  status: "transfers_processing",
   phase: "transfers",
   transfers: {
     total: 2,
@@ -107,6 +107,7 @@ describe("isAccountMigrationRetryReady", () => {
   it("allows retry when no transfers remain active and at least one failed", () => {
     const status: MigrationStatus = {
       ...inProgressStatus,
+      status: "transfers_failed",
       canRetry: true,
       transfers: {
         ...inProgressStatus.transfers,
@@ -124,6 +125,7 @@ describe("isAccountMigrationRetryReady", () => {
   it("does not allow retry without failed items", () => {
     const status: MigrationStatus = {
       ...inProgressStatus,
+      status: "transfers_failed",
       canRetry: true,
       transfers: {
         ...inProgressStatus.transfers,
@@ -132,6 +134,24 @@ describe("isAccountMigrationRetryReady", () => {
         submitted: 0,
         completed: 2,
         failed: 0,
+      },
+    };
+
+    expect(isAccountMigrationRetryReady(status)).toBe(false);
+  });
+
+  it("keeps polling for a processing status even if canRetry is true", () => {
+    const status: MigrationStatus = {
+      ...inProgressStatus,
+      status: "transfers_processing",
+      canRetry: true,
+      transfers: {
+        ...inProgressStatus.transfers,
+        pending: 0,
+        processing: 0,
+        submitted: 0,
+        completed: 1,
+        failed: 1,
       },
     };
 
