@@ -435,7 +435,9 @@ export const MigrateWalletPage = () => {
   const localizedCavosError =
     normalizeCavosErrorCode(cavosError) === "invalid_code"
       ? tWallet("errors.invalid-code")
-      : cavosError;
+      : cavosError
+        ? t("jokers.auth-error")
+        : "";
   const canMigrate = Boolean(controllerAddress && jokersAddress);
   const showAppleLogin = !isNativeAndroid;
   const shouldShowLoginCancel = appType === AppType.FULL_GAME;

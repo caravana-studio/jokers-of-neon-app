@@ -487,9 +487,9 @@
     "just-try-question": "Quer apenas experimentar o jogo?",
     "guest-mode": "Modo convidado",
     "controller-migration-modal": {
-      "title": "Controller está descontinuado",
-      "description": "Para migrar sua conta, acesse migrate.jokersofneon.com.",
-      "confirm": "Migrar",
+      "title": "Migre sua conta do Cartridge",
+      "description": "O Cartridge Controller deixará de ser compatível. Para manter seu progresso e suas cartas, migre sua conta em migrate.jokersofneon.com.",
+      "confirm": "Ir para a migração",
       "cancel": "Cancelar"
     },
     "season-label": "TEMPORADA",

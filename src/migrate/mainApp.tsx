@@ -65,7 +65,7 @@ async function init() {
   const theme = extendTheme(customTheme);
 
   flushSync(() => {
-    root.render(<LoadingFallback text="Loading..." />);
+    root.render(<LoadingFallback text="" />);
   });
 
   try {
@@ -89,10 +89,9 @@ async function init() {
     flushSync(() => {
       root.render(
         <LoadingFallback
-          text={`${localI18n.t("loading-screen.error", {
+          text={localI18n.t("loading-screen.error", {
             ns: "intermediate-screens",
-            defaultValue: "Error loading the game",
-          })}: ${String(error)}`}
+          })}
         />,
       );
     });
