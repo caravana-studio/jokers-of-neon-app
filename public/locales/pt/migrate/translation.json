@@ -35,6 +35,7 @@
     "cleanup": {
       "title": "Concluir migração",
       "description": "Suas cartas e seu progresso já estão na nova conta. Confirme uma última etapa no Cartridge para remover as permissões temporárias usadas durante a migração.",
+      "failed-description": "A migração será finalizada sem tentar novamente as transferências que falharam. Confirme a última etapa no Cartridge para remover as permissões temporárias.",
       "continue": "Finalizar migração"
     }
   },
@@ -50,10 +51,13 @@
     "phase-cleanup": "Suas cartas e seu progresso já estão na nova conta. Conclua a última etapa para finalizar.",
     "phase-completed": "Migração concluída.",
     "retry-action": "Tentar migração novamente",
+    "retry-action-with-count": "Tentar novamente ({{count}})",
     "cleanup-action": "Finalizar migração",
     "success-title": "Migração concluída",
     "success": "A migração foi concluída. Agora você pode entrar no Jokers of Neon com sua nova conta.",
     "error-title": "Falha na migração",
+    "failed-transfers_one": "{{count}} transferência falhou.",
+    "failed-transfers_other": "{{count}} transferências falharam.",
     "error": "Não foi possível concluir a migração. Tente novamente."
   }
 }

@@ -45,6 +45,7 @@ import {
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const RESEND_CODE_COOLDOWN_SECONDS = 90;
+type MigrationConfirmationAction = "migrate" | "retry" | "cleanup";
 
 const normalizeCavosErrorCode = (error: string) =>
   error
@@ -277,9 +278,11 @@ export const MigrateWalletPage = () => {
   const [resendCooldownSeconds, setResendCooldownSeconds] = useState(0);
   const [controllerAddress, setControllerAddress] = useState("");
   const [jokersAddress, setJokersAddress] = useState("");
-  const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
+  const [confirmationAction, setConfirmationAction] =
+    useState<MigrationConfirmationAction | null>(null);
   const [isMigrating, setIsMigrating] = useState(false);
   const [isRetryRequestPending, setIsRetryRequestPending] = useState(false);
+  const [isFinalizingMigration, setIsFinalizingMigration] = useState(false);
   const [migrationStatus, setMigrationStatus] = useState<
     "success" | "error" | null
   >(null);
@@ -445,7 +448,10 @@ export const MigrateWalletPage = () => {
   const showAppleLogin = !isNativeAndroid;
   const shouldShowLoginCancel = appType === AppType.FULL_GAME;
   const isMigrateActionDisabled =
-    !canMigrate || isMigrating || migrationStatus === "success";
+    !canMigrate ||
+    isMigrating ||
+    isFinalizingMigration ||
+    migrationStatus === "success";
   const migrationProgress = (() => {
     if (!migrationProgressStatus) return 0;
     const { phase, transfers, xp } = migrationProgressStatus;
@@ -459,14 +465,18 @@ export const MigrateWalletPage = () => {
     if (phase === "cleanup") return 97;
     return 100;
   })();
-  const migrationActionLabel = migrationProgressStatus?.cleanupRequired
-    ? t("migration.cleanup-action")
-    : migrationProgressStatus?.canRetry
-      ? t("migration.retry-action")
-      : t("connect.migrate");
   const failedMigrationItems = migrationProgressStatus
     ? getMigrationFailedItemCount(migrationProgressStatus)
     : 0;
+  const isRetryReady = migrationProgressStatus
+    ? isAccountMigrationRetryReady(migrationProgressStatus)
+    : false;
+  const migrationActionLabel = migrationProgressStatus?.cleanupRequired
+    ? t("migration.cleanup-action")
+    : t("connect.migrate");
+  const retryActionLabel = t("migration.retry-action-with-count", {
+    count: failedMigrationItems,
+  });
 
   useEffect(() => {
     setMigrationStatus(null);
@@ -525,25 +535,32 @@ export const MigrateWalletPage = () => {
     };
   }, [activeMigration, isMigrating, isRetryRequestPending]);
 
-  const handleMigrate = async () => {
+  const handleMigrationAction = async (
+    action: MigrationConfirmationAction,
+  ) => {
     if (
       !controllerAccount ||
       !controllerAddress ||
       !jokersAddress ||
-      isMigrating
+      isMigrating ||
+      isFinalizingMigration ||
+      (action === "cleanup" && cleanupInProgressRef.current)
     ) {
       return;
     }
 
-    setIsConfirmationOpen(false);
-    setIsMigrating(true);
-    setMigrationStatus(null);
+    if (action === "cleanup") {
+      cleanupInProgressRef.current = true;
+      setIsFinalizingMigration(true);
+    } else {
+      setConfirmationAction(null);
+      setIsMigrating(true);
+    }
+    if (action !== "cleanup") setMigrationStatus(null);
     let approvedExecutors: string[] = [];
     try {
       if (activeMigration?.id) {
-        if (migrationProgressStatus?.cleanupRequired) {
-          if (cleanupInProgressRef.current) return;
-          cleanupInProgressRef.current = true;
+        if (action === "cleanup") {
           const approvedExecutorsToRevoke = await getWorkerExecutorsByApproval(
             controllerAddress,
             activeMigration.executors,
@@ -567,10 +584,11 @@ export const MigrateWalletPage = () => {
           clearActiveMigration();
           setActiveMigration(null);
           setMigrationStatus("success");
+          setConfirmationAction(null);
           setIsMigrating(false);
           return;
         }
-        if (migrationProgressStatus?.canRetry) {
+        if (action === "retry" && migrationProgressStatus?.canRetry) {
           setIsRetryRequestPending(true);
           try {
             const status = await retryAccountMigration(activeMigration);
@@ -581,6 +599,8 @@ export const MigrateWalletPage = () => {
         }
         return;
       }
+
+      if (action !== "migrate") return;
 
       const executorsMissingApproval = await getWorkerExecutorsByApproval(
         controllerAddress,
@@ -619,10 +639,12 @@ export const MigrateWalletPage = () => {
           console.error("Failed to revoke migration approvals", revokeError);
         }
       }
+      setConfirmationAction(null);
       setMigrationStatus("error");
       setIsMigrating(false);
     } finally {
       cleanupInProgressRef.current = false;
+      setIsFinalizingMigration(false);
     }
   };
 
@@ -1021,14 +1043,28 @@ export const MigrateWalletPage = () => {
                     <MigrationResultState
                       status={migrationStatus}
                       title={t(`migration.${migrationStatus}-title`)}
-                      description={t(`migration.${migrationStatus}`)}
+                      description={
+                        migrationStatus === "error" && failedMigrationItems > 0
+                          ? t("migration.failed-transfers", {
+                              count: failedMigrationItems,
+                            })
+                          : t(`migration.${migrationStatus}`)
+                      }
                     />
                   ) : null}
 
                   {isSmallScreen ? (
                     <MobileBottomBar
                       firstButton={
-                        shouldShowLoginCancel
+                        isRetryReady
+                          ? {
+                              label: t("migration.cleanup-action"),
+                              onClick: () => setConfirmationAction("cleanup"),
+                              variant: "solid",
+                              disabled: isFinalizingMigration,
+                              isLoading: isFinalizingMigration,
+                            }
+                          : shouldShowLoginCancel
                           ? {
                               label: t("connect.cancel"),
                               onClick: () => navigate("/login"),
@@ -1036,43 +1072,96 @@ export const MigrateWalletPage = () => {
                             }
                           : undefined
                       }
-                      secondButton={{
-                        label: migrationActionLabel,
-                        onClick: () => setIsConfirmationOpen(true),
-                        disabled: isMigrateActionDisabled,
-                        boxShadow: !isMigrateActionDisabled
-                          ? "0 0 18px rgba(162,69,188,0.75)"
-                          : "none",
-                      }}
+                      secondButton={
+                        isRetryReady
+                          ? {
+                              label: retryActionLabel,
+                              onClick: () => setConfirmationAction("retry"),
+                              disabled: isMigrateActionDisabled,
+                              boxShadow: !isMigrateActionDisabled
+                                ? "0 0 18px rgba(162,69,188,0.75)"
+                                : "none",
+                            }
+                          : {
+                              label: migrationActionLabel,
+                              onClick: () =>
+                                setConfirmationAction(
+                                  migrationProgressStatus?.cleanupRequired
+                                    ? "cleanup"
+                                    : "migrate",
+                                ),
+                              disabled: isMigrateActionDisabled,
+                              isLoading: isFinalizingMigration,
+                              boxShadow: !isMigrateActionDisabled
+                                ? "0 0 18px rgba(162,69,188,0.75)"
+                                : "none",
+                            }
+                      }
                     />
                   ) : (
                     <Flex justifyContent="center" gap={3} wrap="wrap">
-                      {shouldShowLoginCancel && (
-                        <Button
-                          variant="solid"
-                          onClick={() => navigate("/login")}
-                          minW={{ base: "190px", md: "240px" }}
-                          h={{ base: "44px", md: "50px" }}
-                          fontSize={{ base: "16px", md: "18px" }}
-                        >
-                          {t("connect.cancel")}
-                        </Button>
+                      {isRetryReady ? (
+                        <>
+                          <Button
+                            variant="solid"
+                            onClick={() => setConfirmationAction("cleanup")}
+                            isDisabled={isFinalizingMigration}
+                            isLoading={isFinalizingMigration}
+                            minW={{ base: "190px", md: "240px" }}
+                            h={{ base: "44px", md: "50px" }}
+                            fontSize={{ base: "16px", md: "18px" }}
+                          >
+                            {t("migration.cleanup-action")}
+                          </Button>
+                          <Button
+                            variant="secondarySolid"
+                            onClick={() => setConfirmationAction("retry")}
+                            isDisabled={isMigrateActionDisabled}
+                            minW={{ base: "190px", md: "240px" }}
+                            h={{ base: "44px", md: "50px" }}
+                            fontSize={{ base: "16px", md: "18px" }}
+                            boxShadow="0 0 18px rgba(162,69,188,0.75)"
+                          >
+                            {retryActionLabel}
+                          </Button>
+                        </>
+                      ) : (
+                        <>
+                          {shouldShowLoginCancel && (
+                            <Button
+                              variant="solid"
+                              onClick={() => navigate("/login")}
+                              minW={{ base: "190px", md: "240px" }}
+                              h={{ base: "44px", md: "50px" }}
+                              fontSize={{ base: "16px", md: "18px" }}
+                            >
+                              {t("connect.cancel")}
+                            </Button>
+                          )}
+                          <Button
+                            variant="secondarySolid"
+                            onClick={() =>
+                              setConfirmationAction(
+                                migrationProgressStatus?.cleanupRequired
+                                  ? "cleanup"
+                                  : "migrate",
+                              )
+                            }
+                            isDisabled={isMigrateActionDisabled}
+                            isLoading={isFinalizingMigration}
+                            minW={{ base: "190px", md: "240px" }}
+                            h={{ base: "44px", md: "50px" }}
+                            fontSize={{ base: "16px", md: "18px" }}
+                            boxShadow={
+                              !isMigrateActionDisabled
+                                ? "0 0 18px rgba(162,69,188,0.75)"
+                                : "none"
+                            }
+                          >
+                            {migrationActionLabel}
+                          </Button>
+                        </>
                       )}
-                      <Button
-                        variant="secondarySolid"
-                        onClick={() => setIsConfirmationOpen(true)}
-                        isDisabled={isMigrateActionDisabled}
-                        minW={{ base: "190px", md: "240px" }}
-                        h={{ base: "44px", md: "50px" }}
-                        fontSize={{ base: "16px", md: "18px" }}
-                        boxShadow={
-                          !isMigrateActionDisabled
-                            ? "0 0 18px rgba(162,69,188,0.75)"
-                            : "none"
-                        }
-                      >
-                        {migrationActionLabel}
-                      </Button>
                     </Flex>
                   )}
                 </>
@@ -1087,39 +1176,49 @@ export const MigrateWalletPage = () => {
         </Flex>
       )}
 
-      {isConfirmationOpen && (
+      {confirmationAction && (
         <ConfirmationModal
-          close={() => setIsConfirmationOpen(false)}
+          close={() => {
+            if (!isFinalizingMigration) setConfirmationAction(null);
+          }}
           title={t(
-            migrationProgressStatus?.cleanupRequired
+            confirmationAction === "cleanup"
               ? "confirmation.cleanup.title"
-              : migrationProgressStatus?.canRetry
+              : confirmationAction === "retry"
                 ? "confirmation.retry.title"
                 : "confirmation.title",
           )}
           confirmText={t(
-            migrationProgressStatus?.cleanupRequired
+            confirmationAction === "cleanup"
               ? "confirmation.cleanup.continue"
-              : migrationProgressStatus?.canRetry
+              : confirmationAction === "retry"
                 ? "confirmation.retry.continue"
                 : "confirmation.continue",
           )}
           cancelText={t("confirmation.cancel")}
-          onCancel={() => setIsConfirmationOpen(false)}
-          onConfirm={() => {
-            void handleMigrate();
+          onCancel={() => {
+            if (!isFinalizingMigration) setConfirmationAction(null);
           }}
+          onConfirm={() => {
+            void handleMigrationAction(confirmationAction);
+          }}
+          isConfirmDisabled={isFinalizingMigration}
+          isConfirmLoading={isFinalizingMigration}
+          closeOnOverlayClick={!isFinalizingMigration}
           contentMaxW="560px"
           titleFontSize={["20px", "26px"]}
           titleLineHeight={["1.15", "1.2"]}
         >
           <Text textAlign="center" color="whiteAlpha.800" lineHeight={1.5}>
             {t(
-              migrationProgressStatus?.cleanupRequired
-                ? "confirmation.cleanup.description"
-                : migrationProgressStatus?.canRetry
+              confirmationAction === "cleanup" && isRetryReady
+                ? "confirmation.cleanup.failed-description"
+                : confirmationAction === "cleanup"
+                  ? "confirmation.cleanup.description"
+                  : confirmationAction === "retry"
                   ? "confirmation.retry.description"
                   : "confirmation.description",
+              { count: failedMigrationItems },
             )}
           </Text>
         </ConfirmationModal>
