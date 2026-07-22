@@ -6,6 +6,8 @@ vi.mock("../../marketplace/config/contracts", () => ({
 }));
 
 import {
+  getMigrationFailedItemCount,
+  isAccountMigrationRetryReady,
   type ActiveMigration,
   type MigrationStatus,
   retryAccountMigration,
@@ -77,5 +79,62 @@ describe("retryAccountMigration", () => {
     expect(fetchMock.mock.calls[1][0]).toBe(
       "https://api.example.test/v1/user/account-migrations/migration-1",
     );
+  });
+});
+
+describe("isAccountMigrationRetryReady", () => {
+  it.each(["pending", "processing", "submitted"] as const)(
+    "keeps polling while a failed migration still has %s transfers",
+    (activeState) => {
+      const status: MigrationStatus = {
+        ...inProgressStatus,
+        canRetry: true,
+        transfers: {
+          ...inProgressStatus.transfers,
+          pending: 0,
+          processing: 0,
+          submitted: 0,
+          failed: 1,
+          [activeState]: 1,
+        },
+      };
+
+      expect(isAccountMigrationRetryReady(status)).toBe(false);
+      expect(getMigrationFailedItemCount(status)).toBe(1);
+    },
+  );
+
+  it("allows retry when no transfers remain active and at least one failed", () => {
+    const status: MigrationStatus = {
+      ...inProgressStatus,
+      canRetry: true,
+      transfers: {
+        ...inProgressStatus.transfers,
+        pending: 0,
+        processing: 0,
+        submitted: 0,
+        completed: 1,
+        failed: 1,
+      },
+    };
+
+    expect(isAccountMigrationRetryReady(status)).toBe(true);
+  });
+
+  it("does not allow retry without failed items", () => {
+    const status: MigrationStatus = {
+      ...inProgressStatus,
+      canRetry: true,
+      transfers: {
+        ...inProgressStatus.transfers,
+        pending: 0,
+        processing: 0,
+        submitted: 0,
+        completed: 2,
+        failed: 0,
+      },
+    };
+
+    expect(isAccountMigrationRetryReady(status)).toBe(false);
   });
 });

@@ -43,6 +43,7 @@
     "in-progress-description": "This migration can take several minutes. Please do not close this tab.",
     "counting-cards": "Preparing your cards",
     "counting-cards-description": "We're getting everything ready. This may take a few seconds.",
+    "failed-items": "{{count}} failed",
     "phase-transfers": "We're moving your cards to your new account.",
     "phase-roguelike": "We're migrating your Roguelike mode progress.",
     "phase-xp": "We're migrating your experience (XP).",

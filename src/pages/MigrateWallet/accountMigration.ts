@@ -36,6 +36,39 @@ export type ActiveMigration = {
   executors: string[];
 };
 
+const activeIntentCount = (counts: MigrationIntentCounts) =>
+  counts.pending + counts.processing + counts.submitted;
+
+export function getMigrationFailedItemCount(status: MigrationStatus): number {
+  return (
+    status.transfers.failed +
+    status.xp.failed +
+    (status.roguelike.status === "failed" ? 1 : 0)
+  );
+}
+
+export function isAccountMigrationRetryReady(status: MigrationStatus): boolean {
+  const currentPhaseHasActiveWork = (() => {
+    if (status.phase === "transfers") {
+      return activeIntentCount(status.transfers) > 0;
+    }
+    if (status.phase === "xp") {
+      return activeIntentCount(status.xp) > 0;
+    }
+    if (status.phase === "roguelike") {
+      return status.roguelike.status !== "completed" &&
+        status.roguelike.status !== "failed";
+    }
+    return false;
+  })();
+
+  return (
+    status.canRetry &&
+    !currentPhaseHasActiveWork &&
+    getMigrationFailedItemCount(status) > 0
+  );
+}
+
 type ApiErrorResponse = { success?: false; code?: string; error?: string };
 
 type AccountMigrationApiError = Error & { code?: string };

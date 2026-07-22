@@ -30,6 +30,8 @@ import {
   confirmAccountMigrationCleanup,
   createAccountMigration,
   getAccountMigrationStatus,
+  getMigrationFailedItemCount,
+  isAccountMigrationRetryReady,
   readActiveMigration,
   retryAccountMigration,
   type ActiveMigration,
@@ -461,6 +463,9 @@ export const MigrateWalletPage = () => {
     : migrationProgressStatus?.canRetry
       ? t("migration.retry-action")
       : t("connect.migrate");
+  const failedMigrationItems = migrationProgressStatus
+    ? getMigrationFailedItemCount(migrationProgressStatus)
+    : 0;
 
   useEffect(() => {
     setMigrationStatus(null);
@@ -498,7 +503,7 @@ export const MigrateWalletPage = () => {
           setIsMigrating(false);
           return;
         }
-        if (status.canRetry) {
+        if (isAccountMigrationRetryReady(status)) {
           setMigrationStatus("error");
           setIsMigrating(false);
           return;
@@ -745,6 +750,10 @@ export const MigrateWalletPage = () => {
                   totalItems={migrationProgressStatus?.transfers.total ?? 0}
                   isCountingCards={!migrationProgressStatus}
                   countingCardsLabel={t("migration.counting-cards")}
+                  failedItems={failedMigrationItems}
+                  failedItemsLabel={t("migration.failed-items", {
+                    count: failedMigrationItems,
+                  })}
                 />
               ) : null}
               {!isMigrating && (
@@ -1156,6 +1165,8 @@ const MigrationProgressState = ({
   totalItems,
   isCountingCards,
   countingCardsLabel,
+  failedItems,
+  failedItemsLabel,
 }: {
   title: string;
   description: string;
@@ -1164,6 +1175,8 @@ const MigrationProgressState = ({
   totalItems: number;
   isCountingCards: boolean;
   countingCardsLabel: string;
+  failedItems: number;
+  failedItemsLabel: string;
 }) => (
   <Flex
     flex={1}
@@ -1224,6 +1237,16 @@ const MigrationProgressState = ({
               label={totalItems > 0 ? `${completedItems}/${totalItems}` : ""}
               labelFontSize="11px"
             />
+            {failedItems > 0 && (
+              <Text
+                mt={2}
+                color="#ff9b9b"
+                fontSize={{ base: "11px", md: "12px" }}
+                textAlign="center"
+              >
+                {failedItemsLabel}
+              </Text>
+            )}
           </motion.div>
         )}
       </AnimatePresence>
