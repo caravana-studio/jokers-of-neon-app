@@ -2,6 +2,7 @@ import { Box, Flex } from "@chakra-ui/react";
 import { SpinePlayer } from "@esotericsoftware/spine-player";
 import {
   forwardRef,
+  useCallback,
   useEffect,
   useImperativeHandle,
   useRef,
@@ -10,6 +11,7 @@ import {
 import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { hasPriceValue } from "../utils/pricing";
+import { observeRenderActivity } from "../utils/renderLifecycle";
 import { PriceBox } from "./PriceBox";
 import { PurchasedLbl } from "./PurchasedLbl";
 
@@ -67,12 +69,27 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
   ) => {
     const containerRef = useRef<HTMLDivElement | null>(null);
     const playerRef = useRef<SpinePlayer | null>(null);
+    const renderActiveRef = useRef(true);
+    const isRenderingRef = useRef(false);
     const [isHovered, setIsHovered] = useState(false);
     const [playerReady, setPlayerReady] = useState(false);
     const openAnimationSpeed = 0.3;
     const { t } = useTranslation(["store"]);
     const [isAnimationRunning, setIsAnimationRunning] = useState(false);
     const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+
+    const syncRenderingState = useCallback(() => {
+      const player = playerRef.current;
+      if (!player) return;
+
+      if (renderActiveRef.current && !isRenderingRef.current) {
+        player.startRendering();
+        isRenderingRef.current = true;
+      } else if (!renderActiveRef.current && isRenderingRef.current) {
+        player.stopRendering();
+        isRenderingRef.current = false;
+      }
+    }, []);
 
     const fontSize = isMobile
       ? 15
@@ -122,6 +139,16 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
     }, []);
 
     useEffect(() => {
+      const container = containerRef.current;
+      if (!container) return;
+
+      return observeRenderActivity(container, (active) => {
+        renderActiveRef.current = active;
+        syncRenderingState();
+      });
+    }, [syncRenderingState]);
+
+    useEffect(() => {
       if (containerRef.current && !playerRef.current) {
         const config = {
           skeleton: jsonUrl,
@@ -129,14 +156,13 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
           alpha: true,
           backgroundColor: "#00000000",
           showControls: false,
-          preserveDrawingBuffer: true,
+          preserveDrawingBuffer: false,
           premultipliedAlpha: true,
           animation: initialAnimation,
           scale: scale,
           showLoading: false,
           success: (player: SpinePlayer) => {
             if (player.skeleton != null) {
-              player.startRendering();
               setPlayerReady(true);
 
               player.animationState?.addListener({
@@ -162,15 +188,21 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
         };
 
         playerRef.current = new SpinePlayer(containerRef.current, config);
+        // Spine starts its own loop in the constructor. Track that loop instead
+        // of calling startRendering() again, which would create a second RAF chain.
+        isRenderingRef.current = true;
+        syncRenderingState();
       }
 
       return () => {
         if (playerRef.current) {
+          playerRef.current.stopRendering();
           playerRef.current.dispose();
           playerRef.current = null; // reset after disposal
+          isRenderingRef.current = false;
         }
       };
-    }, [jsonUrl, atlasUrl, screenWidth]);
+    }, [jsonUrl, atlasUrl, screenWidth, syncRenderingState]);
 
     // Handle hover state
     useEffect(() => {

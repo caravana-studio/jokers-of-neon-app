@@ -1,5 +1,11 @@
 import React, { useRef, useEffect, useState } from 'react';
 import * as THREE from 'three';
+import {
+  createThrottledAnimationLoop,
+  GPU_EFFECTS_MAX_FPS,
+  GPU_EFFECTS_RESOLUTION_SCALE,
+  observeRenderActivity
+} from '../../../utils/renderLifecycle';
 import './LightPillar.css';
 
 interface LightPillarProps {
@@ -32,7 +38,6 @@ const LightPillar: React.FC<LightPillarProps> = ({
   pillarRotation = 180
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const rafRef = useRef<number | null>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
   const materialRef = useRef<THREE.ShaderMaterial | null>(null);
   const sceneRef = useRef<THREE.Scene | null>(null);
@@ -81,8 +86,8 @@ const LightPillar: React.FC<LightPillarProps> = ({
       return;
     }
 
+    renderer.setPixelRatio(GPU_EFFECTS_RESOLUTION_SCALE);
     renderer.setSize(width, height);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     container.appendChild(renderer.domElement);
     rendererRef.current = renderer;
 
@@ -225,7 +230,7 @@ const LightPillar: React.FC<LightPillarProps> = ({
       fragmentShader,
       uniforms: {
         uTime: { value: 0 },
-        uResolution: { value: new THREE.Vector2(width, height) },
+        uResolution: { value: new THREE.Vector2(renderer.domElement.width, renderer.domElement.height) },
         uMouse: { value: mouseRef.current },
         uTopColor: { value: parseColor(topColor) },
         uBottomColor: { value: parseColor(bottomColor) },
@@ -269,26 +274,28 @@ const LightPillar: React.FC<LightPillarProps> = ({
       container.addEventListener('mousemove', handleMouseMove, { passive: true });
     }
 
-    // Animation loop with fixed timestep
-    let lastTime = performance.now();
-    const targetFPS = 60;
-    const frameTime = 1000 / targetFPS;
-
+    // Keep the shader's visual speed stable while rendering fewer frames.
+    let lastAnimationTime: number | null = null;
     const animate = (currentTime: number) => {
       if (!materialRef.current || !rendererRef.current || !sceneRef.current || !cameraRef.current) return;
 
-      const deltaTime = currentTime - lastTime;
-
-      if (deltaTime >= frameTime) {
-        timeRef.current += 0.016 * rotationSpeed;
-        materialRef.current.uniforms.uTime.value = timeRef.current;
-        rendererRef.current.render(sceneRef.current, cameraRef.current);
-        lastTime = currentTime - (deltaTime % frameTime);
-      }
-
-      rafRef.current = requestAnimationFrame(animate);
+      const deltaSeconds = lastAnimationTime === null
+        ? 1 / GPU_EFFECTS_MAX_FPS
+        : Math.min((currentTime - lastAnimationTime) / 1000, 0.1);
+      lastAnimationTime = currentTime;
+      timeRef.current += deltaSeconds * rotationSpeed;
+      materialRef.current.uniforms.uTime.value = timeRef.current;
+      rendererRef.current.render(sceneRef.current, cameraRef.current);
     };
-    rafRef.current = requestAnimationFrame(animate);
+    const animationLoop = createThrottledAnimationLoop(animate);
+    const stopObservingActivity = observeRenderActivity(container, (active) => {
+      if (active) {
+        lastAnimationTime = null;
+        animationLoop.start();
+      } else {
+        animationLoop.stop();
+      }
+    });
 
     // Handle resize with debouncing
     let resizeTimeout: number | null = null;
@@ -302,7 +309,10 @@ const LightPillar: React.FC<LightPillarProps> = ({
         const newWidth = containerRef.current.clientWidth;
         const newHeight = containerRef.current.clientHeight;
         rendererRef.current.setSize(newWidth, newHeight);
-        materialRef.current.uniforms.uResolution.value.set(newWidth, newHeight);
+        materialRef.current.uniforms.uResolution.value.set(
+          rendererRef.current.domElement.width,
+          rendererRef.current.domElement.height
+        );
       }, 150);
     };
 
@@ -310,13 +320,14 @@ const LightPillar: React.FC<LightPillarProps> = ({
 
     // Cleanup
     return () => {
+      stopObservingActivity();
+      animationLoop.stop();
       window.removeEventListener('resize', handleResize);
       if (interactive) {
         container.removeEventListener('mousemove', handleMouseMove);
       }
-      if (rafRef.current) {
-        cancelAnimationFrame(rafRef.current);
-      }
+      if (resizeTimeout) clearTimeout(resizeTimeout);
+      if (mouseMoveTimeout) clearTimeout(mouseMoveTimeout);
       if (rendererRef.current) {
         rendererRef.current.dispose();
         rendererRef.current.forceContextLoss();
@@ -336,7 +347,6 @@ const LightPillar: React.FC<LightPillarProps> = ({
       sceneRef.current = null;
       cameraRef.current = null;
       geometryRef.current = null;
-      rafRef.current = null;
     };
   }, [
     topColor,

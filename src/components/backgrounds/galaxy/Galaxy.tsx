@@ -1,5 +1,10 @@
 import { Renderer, Program, Mesh, Color, Triangle } from 'ogl';
 import { useEffect, useRef } from 'react';
+import {
+  createThrottledAnimationLoop,
+  GPU_EFFECTS_RESOLUTION_SCALE,
+  observeRenderActivity
+} from '../../../utils/renderLifecycle';
 import './Galaxy.css';
 
 const vertexShader = `
@@ -215,7 +220,6 @@ export default function Galaxy({
   const smoothMouseActive = useRef(0.0);
   const programRef = useRef<Program | null>(null);
   const rendererRef = useRef<Renderer | null>(null);
-  const animateIdRef = useRef<number>();
   const initialUniformsRef = useRef({
     focal,
     rotation,
@@ -249,7 +253,8 @@ export default function Galaxy({
     const ctn = ctnDom.current;
     const renderer = new Renderer({
       alpha: transparent,
-      premultipliedAlpha: false
+      premultipliedAlpha: false,
+      dpr: GPU_EFFECTS_RESOLUTION_SCALE
     });
     const gl = renderer.gl;
     rendererRef.current = renderer;
@@ -265,8 +270,7 @@ export default function Galaxy({
     let program: Program;
 
     function resize() {
-      const scale = 1;
-      renderer.setSize(ctn.offsetWidth * scale, ctn.offsetHeight * scale);
+      renderer.setSize(ctn.offsetWidth, ctn.offsetHeight);
       if (program) {
         program.uniforms.uResolution.value = new Color(
           gl.canvas.width,
@@ -312,7 +316,6 @@ export default function Galaxy({
     const mesh = new Mesh(gl, { geometry, program });
 
     function update(t: number) {
-      animateIdRef.current = requestAnimationFrame(update);
       if (!propsRef.current.disableAnimation) {
         program.uniforms.uTime.value = t * 0.001;
         program.uniforms.uStarSpeed.value = (t * 0.001 * propsRef.current.starSpeed) / 10.0;
@@ -331,8 +334,15 @@ export default function Galaxy({
 
       renderer.render({ scene: mesh });
     }
-    animateIdRef.current = requestAnimationFrame(update);
     ctn.appendChild(gl.canvas);
+    const animationLoop = createThrottledAnimationLoop(update);
+    const stopObservingActivity = observeRenderActivity(ctn, (active) => {
+      if (active) {
+        animationLoop.start();
+      } else {
+        animationLoop.stop();
+      }
+    });
 
     function handleMouseMove(e: MouseEvent) {
       const rect = ctn.getBoundingClientRect();
@@ -352,13 +362,16 @@ export default function Galaxy({
     }
 
     return () => {
-      if (animateIdRef.current) cancelAnimationFrame(animateIdRef.current);
+      stopObservingActivity();
+      animationLoop.stop();
       window.removeEventListener('resize', resize);
       if (mouseInteraction) {
         ctn.removeEventListener('mousemove', handleMouseMove);
         ctn.removeEventListener('mouseleave', handleMouseLeave);
       }
-      ctn.removeChild(gl.canvas);
+      if (ctn.contains(gl.canvas)) {
+        ctn.removeChild(gl.canvas);
+      }
       gl.getExtension('WEBGL_lose_context')?.loseContext();
       programRef.current = null;
       rendererRef.current = null;

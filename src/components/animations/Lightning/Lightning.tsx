@@ -1,4 +1,9 @@
 import React, { useRef, useEffect } from 'react';
+import {
+  createThrottledAnimationLoop,
+  GPU_EFFECTS_RESOLUTION_SCALE,
+  observeRenderActivity
+} from '../../../utils/renderLifecycle';
 import './Lightning.css';
 
 interface LightningProps {
@@ -17,11 +22,10 @@ const Lightning: React.FC<LightningProps> = ({ hue = 230, xOffset = 0, speed = 1
     if (!canvas) return;
 
     const resizeCanvas = () => {
-      canvas.width = canvas.clientWidth;
-      canvas.height = canvas.clientHeight;
+      canvas.width = Math.max(1, Math.floor(canvas.clientWidth * GPU_EFFECTS_RESOLUTION_SCALE));
+      canvas.height = Math.max(1, Math.floor(canvas.clientHeight * GPU_EFFECTS_RESOLUTION_SCALE));
     };
     resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
 
     const gl = canvas.getContext('webgl', { alpha: true });
     if (!gl) {
@@ -164,12 +168,10 @@ const Lightning: React.FC<LightningProps> = ({ hue = 230, xOffset = 0, speed = 1
     const uSizeLocation = gl.getUniformLocation(program, 'uSize');
 
     const startTime = performance.now();
-    const render = () => {
-      resizeCanvas();
+    const render = (currentTime: number) => {
       gl.viewport(0, 0, canvas.width, canvas.height);
       gl.clear(gl.COLOR_BUFFER_BIT);
       gl.uniform2f(iResolutionLocation, canvas.width, canvas.height);
-      const currentTime = performance.now();
       gl.uniform1f(iTimeLocation, (currentTime - startTime) / 1000.0);
       gl.uniform1f(uHueLocation, hue);
       gl.uniform1f(uXOffsetLocation, xOffset);
@@ -177,12 +179,31 @@ const Lightning: React.FC<LightningProps> = ({ hue = 230, xOffset = 0, speed = 1
       gl.uniform1f(uIntensityLocation, intensity);
       gl.uniform1f(uSizeLocation, size);
       gl.drawArrays(gl.TRIANGLES, 0, 6);
-      requestAnimationFrame(render);
     };
-    requestAnimationFrame(render);
+    const animationLoop = createThrottledAnimationLoop(render);
+    const stopObservingActivity = observeRenderActivity(canvas, (active) => {
+      if (active) {
+        animationLoop.start();
+      } else {
+        animationLoop.stop();
+      }
+    });
+    const resizeObserver = typeof ResizeObserver === 'undefined'
+      ? null
+      : new ResizeObserver(resizeCanvas);
+    resizeObserver?.observe(canvas);
+    window.addEventListener('resize', resizeCanvas, { passive: true });
 
     return () => {
+      stopObservingActivity();
+      animationLoop.stop();
+      resizeObserver?.disconnect();
       window.removeEventListener('resize', resizeCanvas);
+      gl.deleteBuffer(vertexBuffer);
+      gl.deleteProgram(program);
+      gl.deleteShader(vertexShader);
+      gl.deleteShader(fragmentShader);
+      gl.getExtension('WEBGL_lose_context')?.loseContext();
     };
   }, [hue, xOffset, speed, intensity, size]);
 
