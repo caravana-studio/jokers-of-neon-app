@@ -279,6 +279,7 @@ export const MigrateWalletPage = () => {
   const [jokersAddress, setJokersAddress] = useState("");
   const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
   const [isMigrating, setIsMigrating] = useState(false);
+  const [isRetryRequestPending, setIsRetryRequestPending] = useState(false);
   const [migrationStatus, setMigrationStatus] = useState<
     "success" | "error" | null
   >(null);
@@ -481,7 +482,7 @@ export const MigrateWalletPage = () => {
   }, [activeMigration, controllerAddress, jokersAddress]);
 
   useEffect(() => {
-    if (!activeMigration || !isMigrating) return;
+    if (!activeMigration || !isMigrating || isRetryRequestPending) return;
     const abortController = new AbortController();
     let timeoutId: number | undefined;
 
@@ -522,7 +523,7 @@ export const MigrateWalletPage = () => {
       abortController.abort();
       if (timeoutId !== undefined) window.clearTimeout(timeoutId);
     };
-  }, [activeMigration, isMigrating]);
+  }, [activeMigration, isMigrating, isRetryRequestPending]);
 
   const handleMigrate = async () => {
     if (
@@ -570,8 +571,13 @@ export const MigrateWalletPage = () => {
           return;
         }
         if (migrationProgressStatus?.canRetry) {
-          const status = await retryAccountMigration(activeMigration);
-          setMigrationProgressStatus(status);
+          setIsRetryRequestPending(true);
+          try {
+            const status = await retryAccountMigration(activeMigration);
+            setMigrationProgressStatus(status);
+          } finally {
+            setIsRetryRequestPending(false);
+          }
         }
         return;
       }
