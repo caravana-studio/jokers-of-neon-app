@@ -47,6 +47,12 @@ export function getMigrationFailedItemCount(status: MigrationStatus): number {
   );
 }
 
+export function shouldAutoCompleteAccountMigration(
+  status: MigrationStatus,
+): boolean {
+  return status.cleanupRequired && getMigrationFailedItemCount(status) === 0;
+}
+
 export function isAccountMigrationRetryReady(status: MigrationStatus): boolean {
   const isTerminalFailure =
     status.status === "failed" || status.status.endsWith("_failed");

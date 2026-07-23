@@ -2,7 +2,7 @@ import { Box, Button, Flex, Heading, Image, Spinner, Text } from "@chakra-ui/rea
 import { useAccount, useConnect, useDisconnect } from "@starknet-react/core";
 import { AnimatePresence, motion } from "framer-motion";
 import type { ReactNode } from "react";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { ProgressBar } from "../../components/CompactRoundData/ProgressBar";
@@ -34,6 +34,7 @@ import {
   isAccountMigrationRetryReady,
   readActiveMigration,
   retryAccountMigration,
+  shouldAutoCompleteAccountMigration,
   type ActiveMigration,
   type MigrationStatus,
 } from "./accountMigration";
@@ -491,6 +492,49 @@ export const MigrateWalletPage = () => {
     }
   }, [activeMigration, controllerAddress, jokersAddress]);
 
+  const completeMigration = useCallback(
+    async (migration: ActiveMigration) => {
+      if (!controllerAccount || !controllerAddress) {
+        throw new Error("Controller account is unavailable for cleanup");
+      }
+      if (cleanupInProgressRef.current) return;
+
+      cleanupInProgressRef.current = true;
+      setIsFinalizingMigration(true);
+      try {
+        const approvedExecutorsToRevoke = await getWorkerExecutorsByApproval(
+          controllerAddress,
+          migration.executors,
+          true,
+        );
+        let cleanupTransactionHash = "";
+        if (approvedExecutorsToRevoke.length > 0) {
+          const cleanupTransaction = await controllerAccount.execute(
+            buildWorkerApprovalCalls(approvedExecutorsToRevoke, false),
+          );
+          await controllerAccount.waitForTransaction(
+            cleanupTransaction.transaction_hash,
+          );
+          cleanupTransactionHash = cleanupTransaction.transaction_hash;
+        }
+        const status = await confirmAccountMigrationCleanup(
+          migration,
+          cleanupTransactionHash,
+        );
+        setMigrationProgressStatus(status);
+        clearActiveMigration();
+        setActiveMigration(null);
+        setMigrationStatus("success");
+        setConfirmationAction(null);
+        setIsMigrating(false);
+      } finally {
+        cleanupInProgressRef.current = false;
+        setIsFinalizingMigration(false);
+      }
+    },
+    [controllerAccount, controllerAddress],
+  );
+
   useEffect(() => {
     if (!activeMigration || !isMigrating || isRetryRequestPending) return;
     const abortController = new AbortController();
@@ -511,7 +555,20 @@ export const MigrateWalletPage = () => {
           return;
         }
         if (status.cleanupRequired) {
-          setIsMigrating(false);
+          if (shouldAutoCompleteAccountMigration(status)) {
+            try {
+              await completeMigration(activeMigration);
+            } catch (error) {
+              console.error(
+                "Failed to automatically complete account migration",
+                error,
+              );
+              setMigrationStatus("error");
+              setIsMigrating(false);
+            }
+          } else {
+            setIsMigrating(false);
+          }
           return;
         }
         if (isAccountMigrationRetryReady(status)) {
@@ -533,7 +590,12 @@ export const MigrateWalletPage = () => {
       abortController.abort();
       if (timeoutId !== undefined) window.clearTimeout(timeoutId);
     };
-  }, [activeMigration, isMigrating, isRetryRequestPending]);
+  }, [
+    activeMigration,
+    completeMigration,
+    isMigrating,
+    isRetryRequestPending,
+  ]);
 
   const handleMigrationAction = async (
     action: MigrationConfirmationAction,
@@ -549,10 +611,7 @@ export const MigrateWalletPage = () => {
       return;
     }
 
-    if (action === "cleanup") {
-      cleanupInProgressRef.current = true;
-      setIsFinalizingMigration(true);
-    } else {
+    if (action !== "cleanup") {
       setConfirmationAction(null);
       setIsMigrating(true);
     }
@@ -561,31 +620,7 @@ export const MigrateWalletPage = () => {
     try {
       if (activeMigration?.id) {
         if (action === "cleanup") {
-          const approvedExecutorsToRevoke = await getWorkerExecutorsByApproval(
-            controllerAddress,
-            activeMigration.executors,
-            true,
-          );
-          let cleanupTransactionHash = "";
-          if (approvedExecutorsToRevoke.length > 0) {
-            const cleanupTransaction = await controllerAccount.execute(
-              buildWorkerApprovalCalls(approvedExecutorsToRevoke, false),
-            );
-            await controllerAccount.waitForTransaction(
-              cleanupTransaction.transaction_hash,
-            );
-            cleanupTransactionHash = cleanupTransaction.transaction_hash;
-          }
-          const status = await confirmAccountMigrationCleanup(
-            activeMigration,
-            cleanupTransactionHash,
-          );
-          setMigrationProgressStatus(status);
-          clearActiveMigration();
-          setActiveMigration(null);
-          setMigrationStatus("success");
-          setConfirmationAction(null);
-          setIsMigrating(false);
+          await completeMigration(activeMigration);
           return;
         }
         if (action === "retry" && migrationProgressStatus?.canRetry) {
@@ -642,9 +677,6 @@ export const MigrateWalletPage = () => {
       setConfirmationAction(null);
       setMigrationStatus("error");
       setIsMigrating(false);
-    } finally {
-      cleanupInProgressRef.current = false;
-      setIsFinalizingMigration(false);
     }
   };
 

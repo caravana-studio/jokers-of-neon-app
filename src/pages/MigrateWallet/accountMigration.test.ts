@@ -8,6 +8,7 @@ vi.mock("../../marketplace/config/contracts", () => ({
 import {
   getMigrationFailedItemCount,
   isAccountMigrationRetryReady,
+  shouldAutoCompleteAccountMigration,
   type ActiveMigration,
   type MigrationStatus,
   retryAccountMigration,
@@ -156,5 +157,43 @@ describe("isAccountMigrationRetryReady", () => {
     };
 
     expect(isAccountMigrationRetryReady(status)).toBe(false);
+  });
+});
+
+describe("shouldAutoCompleteAccountMigration", () => {
+  it("auto-completes cleanup when the migration has no failures", () => {
+    const status: MigrationStatus = {
+      ...inProgressStatus,
+      status: "cleanup_required",
+      phase: "cleanup",
+      cleanupRequired: true,
+      transfers: {
+        ...inProgressStatus.transfers,
+        pending: 0,
+        processing: 0,
+        completed: 2,
+      },
+      roguelike: { status: "completed", retries: 0 },
+    };
+
+    expect(shouldAutoCompleteAccountMigration(status)).toBe(true);
+  });
+
+  it("keeps cleanup manual when at least one transfer failed", () => {
+    const status: MigrationStatus = {
+      ...inProgressStatus,
+      status: "transfers_failed",
+      phase: "cleanup",
+      cleanupRequired: true,
+      transfers: {
+        ...inProgressStatus.transfers,
+        pending: 0,
+        processing: 0,
+        completed: 1,
+        failed: 1,
+      },
+    };
+
+    expect(shouldAutoCompleteAccountMigration(status)).toBe(false);
   });
 });
