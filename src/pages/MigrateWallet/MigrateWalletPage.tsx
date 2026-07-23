@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Heading, Image, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Image, Spinner, Text } from "@chakra-ui/react";
 import { useAccount, useConnect, useDisconnect } from "@starknet-react/core";
 import { AnimatePresence, motion } from "framer-motion";
 import type { ReactNode } from "react";
@@ -1314,6 +1314,13 @@ const MigrationProgressState = ({
       >
         {title}
       </Text>
+      <Spinner
+        thickness="3px"
+        speed="0.7s"
+        emptyColor="whiteAlpha.300"
+        color="#A245BC"
+        size="md"
+      />
       <AnimatePresence initial={false} mode="wait">
         {isCountingCards ? (
           <motion.div
