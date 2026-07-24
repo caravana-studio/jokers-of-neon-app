@@ -710,7 +710,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const onPlayClick = () => {
     const handByIdx = new Map(hand.map((card) => [card.idx, card]));
     const isDebuffedPlay = debuffedPlayerHands.includes(preSelectedPlay);
-    const nonAnimatedCardIndexes = new Set(
+    const silentCardIndexes = new Set(
       preSelectedCards.filter((cardIdx) => {
         const card = handByIdx.get(cardIdx);
         if (!card) {
@@ -721,7 +721,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       })
     );
     if (isDebuffedPlay) {
-      preSelectedCards.forEach((cardIdx) => nonAnimatedCardIndexes.add(cardIdx));
+      preSelectedCards.forEach((cardIdx) => silentCardIndexes.add(cardIdx));
     }
 
     const playPitchState = { index: 0 };
@@ -747,7 +747,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         preSelectedCards,
         specialCards,
         preSelectedModifiers,
-        silentCardIndexes: nonAnimatedCardIndexes,
+        rageCards,
+        silentCardIndexes,
         changeEvents: optimisticCardPlayChangeEvents,
       });
       optimisticPowerUpEvents = buildOptimisticPowerUpEvents({
@@ -798,7 +799,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             : response;
           const filteredResponse = filterSilentCardEventsFromPlayEvents(
             dedupedResponse,
-            nonAnimatedCardIndexes
+            silentCardIndexes
           );
 
           queueResolvedPlayAnimation(

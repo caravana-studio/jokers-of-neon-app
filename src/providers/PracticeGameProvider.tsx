@@ -242,7 +242,7 @@ export const PracticeGameProvider = ({ children }: { children: ReactNode }) => {
 
     const pokerHandLevels = toPokerHandLevels(scenario.plays);
     const handByIdx = new Map(handStore.hand.map((card) => [card.idx, card]));
-    const nonAnimatedCardIndexes = new Set(
+    const silentCardIndexes = new Set(
       handStore.preSelectedCards.filter((cardIdx) => {
         const card = handByIdx.get(cardIdx);
         if (!card) {
@@ -278,7 +278,8 @@ export const PracticeGameProvider = ({ children }: { children: ReactNode }) => {
         preSelectedCards: handStore.preSelectedCards,
         specialCards: gameStore.specialCards,
         preSelectedModifiers: handStore.preSelectedModifiers,
-        silentCardIndexes: nonAnimatedCardIndexes,
+        rageCards: gameStore.rageCards,
+        silentCardIndexes,
         changeEvents: optimisticCardPlayChangeEvents,
       });
       optimisticPowerUpEvents = buildOptimisticPowerUpEvents({
@@ -357,7 +358,7 @@ export const PracticeGameProvider = ({ children }: { children: ReactNode }) => {
         : resolvedPlayEvents;
       const filteredResponse = filterSilentCardEventsFromPlayEvents(
         dedupedResponse,
-        nonAnimatedCardIndexes,
+        silentCardIndexes,
       );
 
       if (optimisticAnimation) {
